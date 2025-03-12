@@ -69,6 +69,8 @@ public:
 	virtual void On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)override;
 public:
 	void Set_Direction(T_DIRECTION _eTDir);
+	void Switch_Animation(ANIM_STATE_CYBERJOT2D _eAnim);
+	void Register_AnimEndCallback(const function<void(COORDINATE, _uint)>& fCallback);
 	void Key_Input(_float _fTimeDelta);
 	void Start_Transform();
 	void Shoot();

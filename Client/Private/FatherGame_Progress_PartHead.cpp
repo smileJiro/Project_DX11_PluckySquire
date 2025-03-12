@@ -9,6 +9,7 @@
 #include "Player.h"
 #include "ZetPack_Child.h"
 #include "MiniGame_Defender.h"
+#include "DefenderPlayer.h"
 
 
 CFatherGame_Progress_PartHead::CFatherGame_Progress_PartHead(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -36,6 +37,24 @@ HRESULT CFatherGame_Progress_PartHead::Progress_Enter()
 
     
     {/* Create MiniGameDefender */
+
+        CSection_Manager* pSectionMgr = CSection_Manager::GetInstance();
+
+        CMiniGame_Defender::DEFENDER_DESC tDesc = {};
+        tDesc.iCurLevelID = LEVEL_CHAPTER_6;
+        tDesc.tTransform2DDesc.vInitialPosition = { -2020.f, -80.f, 0.f };   // TODO ::임시 위치
+        m_pMiniGameDefender = static_cast<CMiniGame_Defender*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_Minigame_Defender"), &tDesc));;
+        m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_6, TEXT("Layer_Defender"), m_pMiniGameDefender);
+        pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter6_SKSP_04"), m_pMiniGameDefender, SECTION_2D_PLAYMAP_OBJECT);
+
+        CDefenderPlayer::DEFENDERPLAYER_DESC tDeffenderPlayerDesc = {};
+        tDeffenderPlayerDesc.iCurLevelID = LEVEL_CHAPTER_6;
+        tDeffenderPlayerDesc.pMinigame = m_pMiniGameDefender;
+        CDefenderPlayer* pPlayer = static_cast<CDefenderPlayer*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_DefenderPlayer"), &tDeffenderPlayerDesc));
+        m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_6, TEXT("Layer_Defender"), pPlayer);
+        pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter6_SKSP_04"), pPlayer, SECTION_2D_PLAYMAP_OBJECT);
+        pPlayer->Set_Active(false);
+
 
         m_pMiniGameDefender;
 
