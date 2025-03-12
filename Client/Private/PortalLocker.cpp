@@ -71,6 +71,15 @@ void CPortalLocker::Priority_Update(_float _fTimeDelta)
 
 void CPortalLocker::Update(_float _fTimeDelta)
 {
+	if (KEY_PRESSING(KEY::CTRL))
+	{
+		if (KEY_DOWN(KEY::F))
+		{
+			Open_Locker(); // 디버그 키 
+		}
+	}
+
+
 	Action_State(_fTimeDelta);
 
 	__super::Update(_fTimeDelta);

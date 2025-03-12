@@ -31,12 +31,16 @@ HRESULT CFloorWord::Initialize(void* _pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	if (false == m_isMake)
-	{
-		m_isMake = true;
-		if (FAILED(Load_Json(TEXT("../Bin/Resources/Dialogue/FloorWord_Section01.json"), TEXT("Layer_UI"))))
-			return E_FAIL;
-	}
+
+	Create_PrintFloorWord(pDesc->iCurLevelID, pDesc->strLayerTag);
+
+
+	//if (false == m_isMake)
+	//{
+	//	m_isMake = true;
+	//	if (FAILED(Load_Json(TEXT("../Bin/Resources/Dialogue/FloorWord_Section01.json"), TEXT("Layer_UI"))))
+	//		return E_FAIL;
+	//}
 
 
 
@@ -127,6 +131,38 @@ void CFloorWord::Free()
 
 HRESULT CFloorWord::Cleanup_DeadReferences()
 {
+
+
+	return S_OK;
+}
+
+
+HRESULT CFloorWord::Create_PrintFloorWord(_int _CurLevel, _wstring strLayerTag)
+{
+	LEVEL_ID eId = (LEVEL_ID)_CurLevel;
+
+	switch (eId)
+	{
+	case Client::LEVEL_CHAPTER_2:
+		if (FAILED(Load_Json(TEXT("../Bin/Resources/Dialogue/FloorWord_Chapter_02.json"), strLayerTag)))
+			return E_FAIL;
+		break;
+	case Client::LEVEL_CHAPTER_4:
+		if (FAILED(Load_Json(TEXT("../Bin/Resources/Dialogue/FloorWord_Chapter_04.json"), strLayerTag)))
+			return E_FAIL;
+		break;
+	case Client::LEVEL_CHAPTER_6:
+		if (FAILED(Load_Json(TEXT("../Bin/Resources/Dialogue/FloorWord_Chapter_06.json"), strLayerTag)))
+			return E_FAIL;
+		break;
+	case Client::LEVEL_CHAPTER_8:
+		if (FAILED(Load_Json(TEXT("../Bin/Resources/Dialogue/FloorWord_Chapter_08.json"), strLayerTag)))
+			return E_FAIL;
+		break;
+	default:
+		break;
+	}
+
 	return S_OK;
 }
 

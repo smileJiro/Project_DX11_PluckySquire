@@ -16,6 +16,10 @@
 				"Y": 1440.0
 			},
 			"Next_Page_Tag": "Chapter4_P0304"
+		},
+		"MiniGame_Info": {
+			"MiniGame_Type": 0,
+			"MiniGame_Name": "WordGame_00"
 		}
 	},
 	{
@@ -73,6 +77,10 @@
 		"Section_Type": 0,
 		"Section_Info": {
 			"Pre_Page_Tag": "Chapter4_P0506"
+		},
+		"MiniGame_Info": {
+			"MiniGame_Type": 0,
+			"MiniGame_Name": "WordGame_02_1"
 		}
 	},
 		{
