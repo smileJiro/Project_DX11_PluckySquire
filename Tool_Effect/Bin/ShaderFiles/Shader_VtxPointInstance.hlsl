@@ -255,7 +255,7 @@ VS_ROUT VS_SRV_RMAIN2(uint iVertexID : SV_VertexID)
     Out.vVelocity = normalize(mul(float4(Particles[iVertexID].vVelocity, 0.f), g_WorldMatrix)) * fScaleVelocity;
     //Out.vUp = mul((Particles[iVertexID].InstancingMatrix._21_22_23_24), g_WorldMatrix) * (1.f - g_fAbsolute)
     //+ g_fAbsolute * Particles[iVertexID].InstancingMatrix._21_22_23_24;
-    Out.vUp = (Particles[iVertexID].InstancingMatrix._21_22_23_24);
+    Out.vUp = mul(Particles[iVertexID].InstancingMatrix._21_22_23_24, g_WorldMatrix);
     Out.fRandom = Particles[iVertexID].fRandom;
 
     return Out;

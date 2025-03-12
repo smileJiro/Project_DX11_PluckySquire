@@ -4,6 +4,7 @@
 #include "3DModel.h"
 #include "ModelObject.h"
 #include "GameInstance.h"
+#include "Effect_Manager.h"
 
 CCyberPlayerBullet::CCyberPlayerBullet(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CContainerObject(_pDevice, _pContext)
@@ -121,6 +122,8 @@ void CCyberPlayerBullet::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& 
 	//여긴 MONSTER 아니면 MONSTER_PROJECTILE만 충돌됨.
 	Event_Hit(this, static_cast<CCharacter*>(_Other.pActorUserData->pOwner), m_iDamg, _vector{ 0.f,0.f,0.f });
 	Event_DeleteObject(this);
+
+	CEffect_Manager::GetInstance()->Active_EffectPosition(TEXT("CyberBulletHit"), true, Get_FinalPosition());
 }
 
 

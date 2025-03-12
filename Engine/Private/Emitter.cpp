@@ -174,11 +174,9 @@ void CEmitter::Update(_float _fTimeDelta)
 		{
 			++m_iAccLoop;
 			m_fAccTime = 0.f;
-			// 왜 이걸 하지 않으면 파티클이 보이지 안흘까..
-
 			Set_Matrix();
 		}
-		if (0 < m_iAccLoop)
+		else if (0 < m_iAccLoop)
 		{
 			if (m_fActiveTime <= m_fAccTime && m_iAccLoop <= m_iLoopTime)
 			{

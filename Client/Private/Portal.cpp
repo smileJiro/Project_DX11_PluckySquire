@@ -64,7 +64,7 @@ void CPortal::Priority_Update(_float _fTimeDelta)
 void CPortal::Update(_float fTimeDelta)
 {
     if (nullptr != m_pDefaultEffect && false == m_pDefaultEffect->Is_Active())
-        m_pDefaultEffect->Active_Effect(true);
+        m_pDefaultEffect->Active_Effect(false);
 
     __super::Update(fTimeDelta);
 }

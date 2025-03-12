@@ -2008,6 +2008,10 @@ void CPlayer::Set_Mode(PLAYER_MODE _eNewMode)
         Equip_Part(PLAYER_PART_RIFLE);
         Equip_Part(PLAYER_PART_VISOR);
         Equip_Part(PLAYER_PART_ZETPACK);
+        
+        if (nullptr != m_pZetPack)
+            m_pZetPack->Switch_State(CZetPack::STATE_CYBER);
+
         break;
     default:
         break;

@@ -45,6 +45,23 @@ HRESULT CZetPack::Initialize(void* _pArg)
     if (FAILED(Ready_TargetLight()))
         return E_FAIL;
 
+    // CyberZip Efffect
+
+    CEffect_System::EFFECT_SYSTEM_DESC EffectDesc = {};
+    EffectDesc.eStartCoord = COORDINATE_3D;
+    EffectDesc.isCoordChangeEnable = false;
+    EffectDesc.iSpriteShaderLevel = LEVEL_STATIC;
+    EffectDesc.szSpriteShaderTags = L"Prototype_Component_Shader_VtxPointInstance";
+    EffectDesc.iEffectShaderLevel = LEVEL_STATIC;
+    EffectDesc.szEffectShaderTags = L"Prototype_Component_Shader_VtxMeshEffect";
+    EffectDesc.szSpriteComputeShaderTag = L"Prototype_Component_Compute_Shader_SpriteInstance";
+
+    m_pCyberZipEffect = static_cast<CEffect_System*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_iCurLevelID, TEXT("CyberZip.json"), &EffectDesc));
+    if (nullptr != m_pCyberZipEffect)
+    {
+        m_pCyberZipEffect->Set_SpawnMatrix(&m_WorldMatrices[COORDINATE_3D]);
+        m_pCyberZipEffect->Set_Position(XMVectorSet(0.f, -0.4f, 0.f, 1.f));
+    }
 	return S_OK;
 }
 
@@ -59,7 +76,8 @@ void CZetPack::Update(_float _fTimeDelta)
 
 	__super::Update(_fTimeDelta);
 
-
+    if (STATE_CYBER == m_eState && COORDINATE_3D == Get_CurCoord() && nullptr != m_pCyberZipEffect)
+        m_pCyberZipEffect->Update(_fTimeDelta);
 }
 
 void CZetPack::Late_Update(_float _fTimeDelta)
@@ -73,8 +91,14 @@ void CZetPack::Late_Update(_float _fTimeDelta)
         else if (0.f < fPlayerUpForce)
             Switch_State(ZET_STATE::STATE_ASCEND);
     }
-    else
+    else if (ZET_STATE::STATE_CYBER != m_eState)
+    {
         Switch_State(ZET_STATE::STATE_IDLE);
+    }
+
+
+    if (STATE_CYBER == m_eState && COORDINATE_3D == Get_CurCoord() && nullptr != m_pCyberZipEffect)
+        m_pCyberZipEffect->Late_Update(_fTimeDelta);
 }
 
 HRESULT CZetPack::Render()
@@ -86,8 +110,11 @@ HRESULT CZetPack::Render()
 void CZetPack::Enter_Section(const _wstring _strIncludeSectionName)
 {
     __super::Enter_Section(_strIncludeSectionName);
-    auto pSection = SECTION_MGR->Find_Section(_strIncludeSectionName);
-
+    //auto pSection = SECTION_MGR->Find_Section(_strIncludeSectionName);
+    if (Is_Active() && STATE_CYBER != m_eState)
+    {
+        CEffect_Manager::GetInstance()->Stop_Spawn(TEXT("Zip"), 0.25f);
+    }
 
 }
 
@@ -139,7 +166,7 @@ void CZetPack::Switch_State(ZET_STATE _eState)
         }
         else
         {
-            CEffect_Manager::GetInstance()->Active_EffectID(TEXT("Zip"), true, &m_WorldMatrices[COORDINATE_3D], 0);
+            CEffect_Manager::GetInstance()->Active_EffectID(TEXT("Zip"), false, &m_WorldMatrices[COORDINATE_3D], 0);
             CEffect_Manager::GetInstance()->Stop_SpawnID(TEXT("Zip"), 1.f, 1);
             Event_SetActive(m_pTargetLight, false);
         }
@@ -167,6 +194,13 @@ void CZetPack::Switch_State(ZET_STATE _eState)
             Event_SetActive(m_pTargetLight, true);
         }
 		break;
+    case STATE_CYBER:
+        if (nullptr != m_pCyberZipEffect)
+        {
+            m_pCyberZipEffect->Active_All(true);
+        }
+
+        break;
 	default:
 		break;
 	}
@@ -200,6 +234,9 @@ void CZetPack::Active_OnEnable()
 
 void CZetPack::Active_OnDisable()
 {
+    if (nullptr != m_pCyberZipEffect && STATE_CYBER == m_eState)
+        m_pCyberZipEffect->Inactive_Effect();
+
     __super::Active_OnDisable();
 }
 

@@ -26,7 +26,7 @@ HRESULT CPlayerRifle::Initialize(void* _pArg)
 	PLAYER_RIFLE_DESC* pDesc = static_cast<PLAYER_RIFLE_DESC*>(_pArg);
 	m_pPlayer = pDesc->pPlayer;
 	pDesc->eStartCoord = COORDINATE_3D;
-	pDesc->iCurLevelID = m_iCurLevelID;
+	//pDesc->iCurLevelID = m_iCurLevelID;
 	pDesc->isCoordChangeEnable =false;
 
 	pDesc->iModelPrototypeLevelID_3D = LEVEL_STATIC;
@@ -52,6 +52,11 @@ HRESULT CPlayerRifle::Initialize(void* _pArg)
 	m_pShotEffect = static_cast<CEffect_System*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_iCurLevelID, TEXT("CyberShot.json"), &EffectDesc));
 	//if (nullptr == m_pShotEffect)
 	//	return E_FAIL;
+	if (nullptr != m_pShotEffect)
+	{
+		m_pShotEffect->Set_SpawnMatrix(&m_WorldMatrices[COORDINATE_3D]);
+		m_pShotEffect->Set_Position(XMVectorSet(0.08f, 0.f, 0.5f, 1.f));
+	}
 
 	return S_OK;
 }
@@ -59,9 +64,35 @@ HRESULT CPlayerRifle::Initialize(void* _pArg)
 void CPlayerRifle::Update(_float _fTimeDelta)
 {
 	m_fShootTimeAcc += _fTimeDelta;
+
 	if (m_fShootTimeAcc > m_fShhotDelay)
+	{
 		m_fShootTimeAcc = m_fShhotDelay;
+	}
+	if (nullptr != m_pShotEffect)
+	{
+		m_fAccEffectDelay += _fTimeDelta;
+
+		if (m_isEffect && 0.25f <= m_fAccEffectDelay)
+		{
+			m_fAccEffectDelay = 0.f;
+			m_isEffect = false;
+
+			m_pShotEffect->Stop_Spawn(0.15f);
+		}
+
+		m_pShotEffect->Update(_fTimeDelta);
+	}
+	
 	__super::Update(_fTimeDelta);
+}
+
+void CPlayerRifle::Late_Update(_float _fTimeDelta)
+{
+	__super::Late_Update(_fTimeDelta);
+
+	if (nullptr != m_pShotEffect)
+		m_pShotEffect->Late_Update(_fTimeDelta);
 }
 
 void CPlayerRifle::Shoot()
@@ -96,8 +127,8 @@ void CPlayerRifle::Shoot()
 		
 		if (nullptr != m_pShotEffect)
 		{
-			//m_pShotEffect->Set_SpawnMatrix()
-			//m_pShotEffect->Active_Effect(false);
+			m_isEffect = true;
+			m_pShotEffect->Active_Effect(false);
 		}
 
 	}
