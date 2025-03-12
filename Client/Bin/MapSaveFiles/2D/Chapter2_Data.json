@@ -21,7 +21,7 @@
 	},
 	{
 		"Section_Name": "Chapter1_P0506",
-		"Section_Start": true,
+
 		"Section_BackGround_Name": "Chapter1_P0506_BackGround",
 		"Section_File_Name": "Chapter1_P0506.m2chc",
 		"Section_Type": 0,
@@ -85,8 +85,7 @@
 	},
 	{
 		"Section_Name": "Chapter2_P0304",
-
-
+		"Section_Start": true,
 		"Section_File_Name": "Chapter2_P0304.m2chc",
 		"Section_BackGround_Name": "Chapter2_P0304_BackGround",
 		"Section_Type": 0,

@@ -95,6 +95,9 @@ void CPlayerState_JumpUp::Update(_float _fTimeDelta)
 
 void CPlayerState_JumpUp::Enter()
 {
+	// ÅÂ¿õ Ãß°¡ 03.12
+	m_pGameInstance->Erase_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::BLOCKER_JUMPPASS);
+	m_pOwner->Set_Upforce(0.0f);
 	m_fAirRunSpeed = m_pOwner->Get_AirRunSpeed();
 	m_bPlatformerMode = m_pOwner->Is_PlatformerMode();
 	m_fAirRotateSpeed = m_pOwner->Get_AirRotationSpeed();
@@ -118,6 +121,9 @@ void CPlayerState_JumpUp::Enter()
 
 void CPlayerState_JumpUp::Exit()
 {
+	// ÅÂ¿õÃß°¡ 03.12
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::BLOCKER_JUMPPASS);
+
 	COORDINATE eCoord = m_pOwner->Get_CurCoord();
 	m_pOwner->Get_ActorDynamic()->Set_LinearDamping(0.f);
 	if (COORDINATE_2D == eCoord)

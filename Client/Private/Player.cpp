@@ -904,45 +904,50 @@ void CPlayer::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCo
     case Client::PLAYER_TRIGGER:
         break;
     case Client::BLOCKER:
+    case Client::BLOCKER_JUMPPASS:
     {
-        if (true == _pMyCollider->Is_Trigger())
-            break;
-        if (false == static_cast<CBlocker*>(_pOtherObject)->Is_Floor())
-            break;
-
-        if (true == Is_PlatformerMode())
+        if (OBJECT_GROUP::PLAYER & _pMyCollider->Get_CollisionGroupID())
         {
-            /* 1. Blocker은 항상 AABB임을 가정. */
+            if (true == _pMyCollider->Is_Trigger())
+                break;
+            if (false == static_cast<CBlocker*>(_pOtherObject)->Is_Floor())
+                break;
 
-                   /* 2. 나의 Collider 중점 기준, AABB에 가장 가까운 점을 찾는다. */
-            _bool isResult = false;
-            _float fEpsilon = 0.01f;
-            _float2 vContactVector = {};
-            isResult = static_cast<CCollider_Circle*>(_pMyCollider)->Compute_NearestPoint_AABB(static_cast<CCollider_AABB*>(_pOtherCollider), nullptr, &vContactVector);
-            if (true == isResult)
+            if (true == Is_PlatformerMode())
             {
-                /* 3. 충돌지점 벡터와 중력벡터를 내적하여 그 결과를 기반으로 Floor 인지 체크. */
-                _float3 vGravityDir = m_pGravityCom->Get_GravityDirection();
-                _float2 vGravityDirection = _float2(vGravityDir.x, vGravityDir.y);
-                _float fGdotC = XMVectorGetX(XMVector2Dot(XMLoadFloat2(&vGravityDirection), XMVector2Normalize(XMLoadFloat2(&vContactVector))));
-                if (1.0f - fEpsilon <= fGdotC)
-                {
-                    /* 결과가 1에 근접한다면 이는 floor로 봐야겠지. */
-                    m_pGravityCom->Change_State(CGravity::STATE_FLOOR);
-                    //Set_State(STATE::IDLE);
-                    m_f2DUpForce = 0.f;
+                /* 1. Blocker은 항상 AABB임을 가정. */
 
-                }
-                else if (-1.0f + fEpsilon >= fGdotC)
+                       /* 2. 나의 Collider 중점 기준, AABB에 가장 가까운 점을 찾는다. */
+                _bool isResult = false;
+                _float fEpsilon = 0.01f;
+                _float2 vContactVector = {};
+                isResult = static_cast<CCollider_Circle*>(_pMyCollider)->Compute_NearestPoint_AABB(static_cast<CCollider_AABB*>(_pOtherCollider), nullptr, &vContactVector);
+                if (true == isResult)
                 {
-                    m_pGravityCom->Set_GravityAcc(0.0f);
-                    if (STATE::ROLL == Get_CurrentStateID())
-                        break;
-                    Set_State(STATE::JUMP_DOWN);
-                    m_f2DUpForce = 0.f;
+                    /* 3. 충돌지점 벡터와 중력벡터를 내적하여 그 결과를 기반으로 Floor 인지 체크. */
+                    _float3 vGravityDir = m_pGravityCom->Get_GravityDirection();
+                    _float2 vGravityDirection = _float2(vGravityDir.x, vGravityDir.y);
+                    _float fGdotC = XMVectorGetX(XMVector2Dot(XMLoadFloat2(&vGravityDirection), XMVector2Normalize(XMLoadFloat2(&vContactVector))));
+                    if (1.0f - fEpsilon <= fGdotC)
+                    {
+                        /* 결과가 1에 근접한다면 이는 floor로 봐야겠지. */
+                        m_pGravityCom->Change_State(CGravity::STATE_FLOOR);
+                        //Set_State(STATE::IDLE);
+                        m_f2DUpForce = 0.f;
+
+                    }
+                    else if (-1.0f + fEpsilon >= fGdotC)
+                    {
+                        m_pGravityCom->Set_GravityAcc(0.0f);
+                        if (STATE::ROLL == Get_CurrentStateID())
+                            break;
+                        Set_State(STATE::JUMP_DOWN);
+                        m_f2DUpForce = 0.f;
+                    }
                 }
             }
         }
+        
        
         
     }
@@ -974,7 +979,17 @@ void CPlayer::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCol
             }
         }
         
-        if (OBJECT_GROUP::BLOCKER == eGroup)
+        
+    }
+    else if (_pMyCollider == m_pAttack2DTriggerCom
+        && OBJECT_GROUP::MONSTER == eGroup)
+    {
+        Attack(_pOtherObject);
+    }
+
+    if (OBJECT_GROUP::PLAYER & _pMyCollider->Get_CollisionGroupID())
+    {
+        if ((OBJECT_GROUP::BLOCKER & eGroup) || (OBJECT_GROUP::BLOCKER_JUMPPASS & eGroup))
         {
             if (true == _pMyCollider->Is_Trigger())
             {
@@ -1002,20 +1017,16 @@ void CPlayer::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCol
                     if (1.0f - fEpsilon <= fGdotC)
                     {
                         /* 결과가 1에 근접한다면 이는 floor로 봐야겠지. */
-                       
-                        m_pGravityCom->Change_State(CGravity::STATE_FLOOR);
 
+                        m_pGravityCom->Change_State(CGravity::STATE_FLOOR);
+                        m_pGravityCom->Set_GravityAcc(0.0f);
                     }
                 }
             }
-           
+
         }
     }
-    else if (_pMyCollider == m_pAttack2DTriggerCom
-        && OBJECT_GROUP::MONSTER == eGroup)
-    {
-        Attack(_pOtherObject);
-    }
+    
 }
 
 void CPlayer::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
@@ -1046,14 +1057,19 @@ void CPlayer::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCol
     case Client::PLAYER_TRIGGER:
         break;
     case Client::BLOCKER:
+    case Client::BLOCKER_JUMPPASS:
     {
-        if (true == _pMyCollider->Is_Trigger())
-            break;
-
-        if (static_cast<CBlocker*>(_pOtherObject)->Is_Floor())
+        if (OBJECT_GROUP::PLAYER & _pMyCollider->Get_CollisionGroupID())
         {
-            m_pGravityCom->Change_State(CGravity::STATE_FALLDOWN);
+            if (true == _pMyCollider->Is_Trigger())
+                break;
+
+            if (static_cast<CBlocker*>(_pOtherObject)->Is_Floor())
+            {
+                m_pGravityCom->Change_State(CGravity::STATE_FALLDOWN);
+            }
         }
+
     }
     break;    
     case DOOR:
@@ -1709,7 +1725,7 @@ _float CPlayer::Get_UpForce()
     if (COORDINATE_2D == eCoord)
     {
         if (Is_PlatformerMode())
-            return -m_pGravityCom->Get_GravityAcc();
+            return m_f2DUpForce-m_pGravityCom->Get_GravityAcc();
         else
             return m_f2DUpForce;
     }
