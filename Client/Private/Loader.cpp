@@ -1513,6 +1513,11 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 			CGameEventExecuter_C6::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
+		/* For. Prototype_GameObject_CollapseBlock */
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_CollapseBlock"),
+			CCollapseBlock::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
 		/* Chapter 6 FatherGame */
 
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_Mat"),

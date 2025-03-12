@@ -282,16 +282,6 @@ void CLevel_Chapter_04::Update(_float _fTimeDelta)
 		CCamera_Manager::GetInstance()->Start_ZoomOut();
 #endif // _DEBUG
 
-	if (KEY_DOWN(KEY::I)) {
-		CCamera_Manager::GetInstance()->Set_NextCutSceneData(TEXT("Chapter4_Intro"));
-		CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::CUTSCENE, true, 0.8f);
-	}
-
-	if (KEY_DOWN(KEY::J)) {
-		CCamera_Manager::GetInstance()->Set_NextCutSceneData(TEXT("Chapter4_Flag"));
-		CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::CUTSCENE, true, 0.8f);
-	}
-
 	static _float3 vOutPos = {};
 
 	if (IS_IMPORT_IMGUI)
@@ -624,6 +614,7 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Player(const _wstring& _strLayerTag, CGam
 	CPlayer::CHARACTER_DESC Desc;
 	Desc.iCurLevelID = m_eLevelID;
 	Desc.tTransform3DDesc.vInitialPosition = { -3.f, 0.35f, -19.3f };   // TODO ::임시 위치
+	Desc.eStartCoord = COORDINATE_2D;
 	//Desc.tTransform3DDesc.vInitialPosition = { -1954, -725.f, 0.f};   // TODO ::임시 위치
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_TestPlayer"), m_eLevelID, _strLayerTag, _ppOut, &Desc)))

@@ -5,7 +5,7 @@
 
 BEGIN(Client)
 class CPortal;
-class CPortalLocker final : public CModelObject
+class CPortalLocker : public CModelObject
 {
 public:
 	enum PORTALLOCKER_TYPE { TYPE_PURPLE = 0, TYPE_YELLOW = 2, TYPE_LAST };
@@ -33,10 +33,10 @@ public:
 public:
 	void						Open_Locker() { m_eCurState = STATE_OPEN; State_Change(); }
 
-private:
+protected:
 	CPortal*					m_pTargetPortal = nullptr;
 
-private:
+protected:
 	PORTALLOCKER_TYPE			m_ePortalLockerType = PORTALLOCKER_TYPE::TYPE_PURPLE;
 	STATE						m_ePreState = STATE::STATE_LAST;
 	STATE						m_eCurState = STATE::STATE_LAST;
@@ -49,15 +49,18 @@ private:
 
 private:
 	void						Action_State(_float _fTimeDelta);
-	void						Action_State_Lock(_float _fTimeDelta);
+protected:
+	virtual void				Action_State_Lock(_float _fTimeDelta);
+private:
 	void						Action_State_Open(_float _fTimeDelta);
 	void						Action_State_Dead(_float _fTimeDelta);
 	
 private:
 	void						On_AnimEnd(COORDINATE _eCoord, _uint _iAnimIdx);
+
 public:
 	static CPortalLocker*		Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
-	CPortalLocker*				Clone(void* _pArg);
+	CGameObject*				Clone(void* _pArg);
 	void						Free() override;
 };
 

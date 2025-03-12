@@ -2761,7 +2761,10 @@
   "TextureName": "C04_0910_fg_09_png1"
  },
  {
-  "Active": false,
+  "Active": true,
+  "ActivePropertis": {
+   "ActiveType": 4
+  },
   "BackGround": false,
   "Collider": false,
   "ModelType": 0,
@@ -4198,7 +4201,10 @@
   "TextureName": "D06_SKSP_SIGN_Sprite"
  },
  {
-  "Active": false,
+  "Active": true,
+  "ActivePropertis": {
+   "ActiveType": 5
+  },
   "BackGround": false,
   "Collider": false,
   "ModelType": 0,
@@ -6623,5 +6629,26 @@
   "SearchTag": "stairs_03_mask_island_Sprite",
   "Sorting": false,
   "TextureName": "stairs_03_mask_island_Sprite"
+ },
+ {
+  "Active": false,
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 1,
+  "SearchTag": "Left_WaterLog",
+  "Sorting": false,
+  "TextureName": "Left_WaterLog"
+ },
+ {
+  "Active": true,
+  "ActivePropertis": {
+   "ActiveType": 6
+  },
+  "BackGround": false,
+  "Collider": false,
+  "ModelType": 1,
+  "SearchTag": "Right_WaterLog",
+  "Sorting": false,
+  "TextureName": "Right_WaterLog"
  }
 ]

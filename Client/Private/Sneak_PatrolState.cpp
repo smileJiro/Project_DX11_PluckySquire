@@ -23,8 +23,10 @@ HRESULT CSneak_PatrolState::Initialize(void* _pArg)
 	m_iDir = -1;
 	//m_fDelayTime = 1.f;
 
-	Initialize_PatrolPoints(pDesc->eWayIndex);
 	Initialize_WayPoints(pDesc->eWayIndex);
+	if(false == m_pOwner->Is_Stay())
+		Initialize_PatrolPoints(pDesc->eWayIndex);
+	Initialize_PatrolDirections(pDesc->eWayIndex);
 		
 	return S_OK;
 }
@@ -56,21 +58,6 @@ void CSneak_PatrolState::State_Update(_float _fTimeDelta)
 {
 	if (nullptr == m_pOwner)
 		return;
-	//cout << "Patrol" << endl;
-	//일단 적용해봄
-	//if(COORDINATE_3D == m_pOwner->Get_CurCoord())
-	//{
-	//	if (true == m_isTurn)
-	//	{
-	//		m_pOwner->Rotate_To(XMLoadFloat3(&m_vRotate), m_pOwner->Get_ControllerTransform()->Get_RotationPerSec());
-	//		//각속도 0이면
-	//		if (XMVectorGetY(XMVectorEqual(static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Get_AngularVelocity(), XMVectorZero())))
-	//		{
-	//			m_isTurn = false;
-	//		}
-	//		return;
-	//	}
-	//}
 	//cout << "Patrol" << endl;
 	if (true == m_isMove)
 		m_fAccTime += _fTimeDelta;
@@ -126,15 +113,18 @@ void CSneak_PatrolState::Sneak_PatrolMove(_float _fTimeDelta, _int _iDir)
 	if (m_PatrolWays.size() <= m_iCurWayIndex)
 		return;
 
-	_vector vDir = XMLoadFloat3(&m_WayPoints[m_PatrolWays[m_iCurWayIndex]].vPosition) - m_pOwner->Get_FinalPosition();
-	if (0.1f >= XMVectorGetX(XMVector3Length(vDir)))
+	if(false == m_PatrolWays.empty())
 	{
-		m_pOwner->Stop_Rotate();
-		m_pOwner->Stop_Move();
-		m_isTurn = false;
-		m_isMove = false;
+		_vector vDir = XMLoadFloat3(&m_WayPoints[m_PatrolWays[m_iCurWayIndex]].vPosition) - m_pOwner->Get_FinalPosition();
+		if (0.1f >= XMVectorGetX(XMVector3Length(vDir)))
+		{
+			m_pOwner->Stop_Rotate();
+			m_pOwner->Stop_Move();
+			m_isTurn = false;
+			m_isMove = false;
 
-		Event_ChangeMonsterState(MONSTER_STATE::SNEAK_IDLE, m_pFSM);
+			Event_ChangeMonsterState(MONSTER_STATE::SNEAK_IDLE, m_pFSM);
+		}
 	}
 
 	//회전
@@ -142,9 +132,18 @@ void CSneak_PatrolState::Sneak_PatrolMove(_float _fTimeDelta, _int _iDir)
 	{
 		if (m_pOwner->Rotate_To_Radians(XMLoadFloat3(&m_vDir), m_pOwner->Get_ControllerTransform()->Get_RotationPerSec()))
 		{
-			m_isMove = true;
+			//정찰 경로가 없는 경우 회전만 하고 idle 전환
+			if (1 >= m_PatrolWays.size())
+			{
+				Event_ChangeMonsterState(MONSTER_STATE::SNEAK_IDLE, m_pFSM);
+			}
 
-			m_pOwner->Change_Animation();
+			else
+			{
+				m_isMove = true;
+				m_pOwner->Change_Animation();
+			}
+
 		}
 		else
 		{
@@ -185,152 +184,99 @@ void CSneak_PatrolState::Determine_Direction()
 	if (COORDINATE::COORDINATE_LAST == m_pOwner->Get_CurCoord())
 		return;
 
-
-	//다음 웨이 포인트로 넘어감.
-	if (false == m_isBack)
+	//정찰 경로가 있을 때
+	if (1 < m_PatrolWays.size())
 	{
-		++m_iCurWayIndex;
-
-		if (m_PatrolWays.size() - 1 == m_iCurWayIndex)
-			m_isBack = true;
-
-		//예외처리
-		if (m_PatrolWays.size()-1 < m_iCurWayIndex)
+		//다음 웨이 포인트로 넘어감.
+		if (false == m_isBack)
 		{
-			m_iCurWayIndex = (_int)m_PatrolWays.size() - 1;
-			m_isBack = true;
+			++m_iCurWayIndex;
+
+			if (m_PatrolWays.size() - 1 == m_iCurWayIndex)
+				m_isBack = true;
+
+			//예외처리
+			if (m_PatrolWays.size() - 1 < m_iCurWayIndex)
+			{
+				m_iCurWayIndex = (_int)m_PatrolWays.size() - 1;
+				m_isBack = true;
+			}
 		}
+		else
+		{
+			--m_iCurWayIndex;
+
+			if (0 == m_iCurWayIndex)
+				m_isBack = false;
+
+			//예외처리
+			if (0 > m_iCurWayIndex)
+			{
+				m_iCurWayIndex = 0;
+				m_isBack = false;
+			}
+		}
+
+		//시간 랜덤으로 지정 (양 끝 지점만 최솟값을 크게 놓음)
+		if (0 == m_iCurWayIndex || m_PatrolWays.size() - 1 == m_iCurWayIndex)
+			m_pFSM->Set_Sneak_StopTime(m_pGameInstance->Compute_Random(2.5f, 3.f));
+		else
+		{
+			m_pFSM->Set_Sneak_StopTime(m_pGameInstance->Compute_Random(0.f, 3.f));
+		}
+		//XMStoreFloat3(&m_vDir, XMVector3Normalize(XMVectorSetY(XMLoadFloat3(&m_WayPoints[m_PatrolWays[m_iCurWayIndex]].vPosition) - m_pOwner->Get_FinalPosition(),0.f)));
+		XMStoreFloat3(&m_vDir, XMVector3Normalize(XMLoadFloat3(&m_WayPoints[m_PatrolWays[m_iCurWayIndex]].vPosition) - m_pOwner->Get_FinalPosition()));
+		if (m_vDir.y > 0.f)
+			int a = 10;
 	}
+	//정찰 경로가 없을 때
 	else
 	{
-		--m_iCurWayIndex;
-		
-		if (0 == m_iCurWayIndex)
-			m_isBack = false;
 
-		//예외처리
-		if (0 > m_iCurWayIndex)
+	}
+
+	if (1 < m_PatrolDirections.size())
+	{
+		if (false == m_isDirBack)
 		{
-			m_iCurWayIndex = 0;
-			m_isBack = false;
+			++m_iCurDirectionIndex;
+
+			if (m_PatrolWays.size() - 1 == m_iCurDirectionIndex)
+				m_isDirBack = true;
+
+			//예외처리
+			if (m_PatrolWays.size() - 1 < m_iCurDirectionIndex)
+			{
+				m_iCurDirectionIndex = (_int)m_PatrolWays.size() - 1;
+				m_isDirBack = true;
+			}
 		}
-	}
-
-	//시간 랜덤으로 지정 (양 끝 지점만 최솟값을 크게 놓음)
-	if (0 == m_iCurWayIndex || m_PatrolWays.size() - 1 == m_iCurWayIndex)
-		m_pFSM->Set_Sneak_StopTime(m_pGameInstance->Compute_Random(2.5f, 3.f));
-	else
-	{
-		m_pFSM->Set_Sneak_StopTime(m_pGameInstance->Compute_Random(0.f, 3.f));
-	}
-
-	//XMStoreFloat3(&m_vDir, XMVector3Normalize(XMVectorSetY(XMLoadFloat3(&m_WayPoints[m_PatrolWays[m_iCurWayIndex]].vPosition) - m_pOwner->Get_FinalPosition(),0.f)));
-	XMStoreFloat3(&m_vDir, XMVector3Normalize(XMLoadFloat3(&m_WayPoints[m_PatrolWays[m_iCurWayIndex]].vPosition) - m_pOwner->Get_FinalPosition()));
-	if (m_vDir.y > 0.f)
-		int a = 10;
-}
-
-_vector CSneak_PatrolState::Set_Sneak_PatrolDirection(_int _iDir)
-{
-	_vector vDir = {};
-	switch (_iDir)
-	{
-	case 0:
-		vDir = XMVectorSet(0.f, 0.f, 1.f, 0.f);
-		//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_FinalPosition() + vDir);
-		//cout << "상" << endl;
-		break;
-	case 1:
-		vDir = XMVectorSet(1.f, 0.f, 1.f, 0.f);
-		//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_FinalPosition() + vDir);
-		//cout << "우상" << endl;
-		break;
-	case 2:
-		vDir = XMVectorSet(1.f, 0.f, 0.f, 0.f);
-		//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_FinalPosition() + vDir);
-		//cout << "우" << endl;
-		break;
-	case 3:
-		vDir = XMVectorSet(1.f, 0.f, -1.f, 0.f);
-		//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_FinalPosition() + vDir);
-		//cout << "우하" << endl;
-		break;
-	case 4:
-		vDir = XMVectorSet(0.f, 0.f, -1.f, 0.f);
-		//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_FinalPosition() + vDir);
-		//cout << "하" << endl;
-		break;
-	case 5:
-		vDir = XMVectorSet(-1.f, 0.f, -1.f, 0.f);
-		//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_FinalPosition() + vDir);
-		//cout << "좌하" << endl;
-		break;
-	case 6:
-		vDir = XMVectorSet(-1.f, 0.f, 0.f, 0.f);
-		//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_FinalPosition() + vDir);
-		//cout << "좌" << endl;
-		break;
-	case 7:
-		vDir = XMVectorSet(-1.f, 0.f, 1.f, 0.f);
-		//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pOwner->Get_FinalPosition() + vDir);
-		//cout << "좌상" << endl;
-		break;
-	default:
-		break;
-	}
-	
-	return vDir;
-}
-
-void CSneak_PatrolState::Check_Bound(_float _fTimeDelta)
-{
-	_float3 vPos;
-	_bool isOut = false;
-	//델타타임으로 다음 위치 예상해서 막기
-	XMStoreFloat3(&vPos, m_pOwner->Get_FinalPosition() + Set_Sneak_PatrolDirection(m_iDir) * m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec() * _fTimeDelta);
-	//나갔을 때 반대방향으로
-	//XMStoreFloat3(&vPos, m_pOwner->Get_FinalPosition());
-	if (COORDINATE_3D == m_pOwner->Get_CurCoord())
-	{
-		if (m_tSneak_PatrolBound.vMin.x > vPos.x || m_tSneak_PatrolBound.vMax.x < vPos.x || m_tSneak_PatrolBound.vMin.z > vPos.z || m_tSneak_PatrolBound.vMax.z < vPos.z)
+		else
 		{
-			isOut = true;
-		}
-	}
-	else if (COORDINATE_2D == m_pOwner->Get_CurCoord())
-	{
-		//일단 2D는 처리안해놓음
-		/*if (m_tSneak_PatrolBound.vMin.x > vPos.x || m_tSneak_PatrolBound.vMax.x < vPos.x || m_tSneak_PatrolBound.vMin.y > vPos.y || m_tSneak_PatrolBound.vMax.y < vPos.y)
-		{
-			isOut = true;
-		}*/
-	}
+			--m_iCurDirectionIndex;
 
-	if (true == isOut)
-	{
-		m_isBack = true;
-		Event_ChangeMonsterState(MONSTER_STATE::SNEAK_IDLE, m_pFSM);
-	}
-	//반대방향으로 진행해도 경계를 벗어나는 경우가 있나?
-	if (true == m_isBack)
-	{
-		if (COORDINATE_3D == m_pOwner->Get_CurCoord())
-		{
-			if (4 > m_iDir)
-				m_iDir += 4;
-			else
-				m_iDir -= 4;
+			if (0 == m_iCurDirectionIndex)
+				m_isDirBack = false;
+
+			//예외처리
+			if (0 > m_iCurDirectionIndex)
+			{
+				m_iCurDirectionIndex = 0;
+				m_isDirBack = false;
+			}
 		}
 
-		else if (COORDINATE_2D == m_pOwner->Get_CurCoord())
+		if (true == m_PatrolWays.empty())
 		{
-			if (2 > m_iDir)
-				m_iDir += 2;
-			else
-				m_iDir -= 2;
+			m_pFSM->Set_Sneak_StopTime(m_pGameInstance->Compute_Random(2.5f, 3.f));
 		}
 
-		m_isBack = false;
+		m_vDir = m_PatrolDirections[m_iCurDirectionIndex];
+	}
+	else if (1 == m_PatrolDirections.size())
+	{
+		m_iCurDirectionIndex = 0;
+		m_vDir = m_PatrolDirections[m_iCurDirectionIndex];
 	}
 }
 
