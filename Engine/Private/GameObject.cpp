@@ -142,6 +142,11 @@ HRESULT CGameObject::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPo
     return S_OK;
 }
 
+_bool CGameObject::Is_ValidGameObject()
+{
+    return (true == m_isActive) && (false == m_isDead);
+}
+
 
 HRESULT CGameObject::Add_Component(_uint _iPrototypeLevelID, const _wstring& _strPrototypeTag, const _wstring& _strComponentTag, CComponent** _ppOut, void* _pArg)
 {

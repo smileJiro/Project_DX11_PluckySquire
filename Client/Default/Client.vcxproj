@@ -224,6 +224,7 @@
     <ClInclude Include="..\public\FatherPart_Prop.h" />
     <ClInclude Include="..\public\Mat.h" />
     <ClInclude Include="..\public\Mug_Alien.h" />
+    <ClInclude Include="..\public\PortalLocker_LayerCount.h" />
     <ClInclude Include="..\Public\Projectile_SketchSpace_UFO.h" />
     <ClInclude Include="..\Public\Room_Door.h" />
     <ClInclude Include="..\Public\CrossBow_Arrow.h" />
@@ -580,6 +581,7 @@
     <ClCompile Include="..\private\FatherPart_Prop.cpp" />
     <ClCompile Include="..\private\Mat.cpp" />
     <ClCompile Include="..\private\Mug_Alien.cpp" />
+    <ClCompile Include="..\private\PortalLocker_LayerCount.cpp" />
     <ClCompile Include="..\Private\Projectile_SketchSpace_UFO.cpp" />
     <ClCompile Include="..\Private\Room_Door.cpp" />
     <ClCompile Include="..\Private\CrossBow_Arrow.cpp" />
