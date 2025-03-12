@@ -93,6 +93,11 @@ void CDefenderSpawner::Add_Spawn(SPAWN_DESC tDesc)
 	m_SpawnList.push_back(tDesc);
 }
 
+void CDefenderSpawner::Delete_Pool()
+{
+	m_pPoolMgr->Delete_Pool(m_strPoolTag);
+}
+
 void CDefenderSpawner::Spawn_Single(T_DIRECTION _eDirection, _vector _vPos,_float _fMoveSpeed)
 {
 
@@ -221,7 +226,7 @@ CGameObject* CDefenderSpawner::Clone(void* _pArg)
 }
 void CDefenderSpawner::Free()
 {
-	m_pPoolMgr->Delete_Pool(m_strPoolTag);
+
 	Safe_Release(m_pPlayer);
 	__super::Free();
 }
