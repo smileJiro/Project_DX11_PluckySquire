@@ -118,8 +118,8 @@ void CCyberPlayerBullet::Update(_float _fTimeDelta)
 
 void CCyberPlayerBullet::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
 {	//여긴 MONSTER 아니면 MONSTER_PROJECTILE만 충돌됨.
-	if (OBJECT_GROUP::MONSTER & _Other.pActorUserData->iObjectGroup
-		|| OBJECT_GROUP::MONSTER_PROJECTILE & _Other.pActorUserData->iObjectGroup)
+	if (OBJECT_GROUP::BOSS & _Other.pActorUserData->iObjectGroup
+		|| OBJECT_GROUP::BOSS_PROJECTILE & _Other.pActorUserData->iObjectGroup)
 	{
 		Event_Hit(this, static_cast<CCharacter*>(_Other.pActorUserData->pOwner), m_iDamg, _vector{ 0.f,0.f,0.f });
 		Event_DeleteObject(this);
