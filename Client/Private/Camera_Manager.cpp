@@ -583,7 +583,7 @@ void CCamera_Manager::Save_ArmData(CAMERA_TYPE _eCameraType)
 	m_Cameras[_eCameraType]->Save_ArmData();
 }
 
-void CCamera_Manager::Load_SavedArmData(CAMERA_TYPE _eCameraType, _float _fLoadTime)
+void CCamera_Manager::Load_SavedArmData(_float _fLoadTime, CAMERA_TYPE _eCameraType)
 {
 	if (nullptr == m_Cameras[_eCameraType])
 		return;

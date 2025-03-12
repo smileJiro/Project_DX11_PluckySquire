@@ -116,7 +116,7 @@ public:
 	void				Save_ArmData(CAMERA_TYPE _eCameraType = TARGET);
 
 	// 2. 원하는 시점으로 _fLoadTime 동안 원복하고 싶을 때 호출한다
-	void				Load_SavedArmData(CAMERA_TYPE _eCameraType = TARGET, _float _fLoadTime);
+	void				Load_SavedArmData(_float _fLoadTime, CAMERA_TYPE _eCameraType = TARGET);
 
 
 	void				Start_FadeIn(_float _fFadeTime = 1.0f);
