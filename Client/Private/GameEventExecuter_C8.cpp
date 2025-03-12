@@ -34,7 +34,8 @@ HRESULT CGameEventExecuter_C8::Initialize(void* _pArg)
 
 void CGameEventExecuter_C8::Priority_Update(_float _fTimeDelta)
 {
-	_wstring strEventTag;
+	__super::Priority_Update(_fTimeDelta);
+
 }
 
 void CGameEventExecuter_C8::Update(_float _fTimeDelta)

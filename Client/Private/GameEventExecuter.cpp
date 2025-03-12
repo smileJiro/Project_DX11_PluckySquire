@@ -55,7 +55,7 @@ void CGameEventExecuter::Priority_Update(_float _fTimeDelta)
 {
 	if (m_isNextChapter)
 	{
-		Next_Event_Process();
+		Next_Event_Process(_fTimeDelta);
 	}
 }
 
@@ -250,8 +250,9 @@ _bool CGameEventExecuter::Setting_Postit_Page(const _wstring& _strPostItSectionT
 	return true;
 }
 
-_bool CGameEventExecuter::Next_Event_Process()
+_bool CGameEventExecuter::Next_Event_Process(_float _fTimeDelta)
 {
+	m_fTimer += _fTimeDelta;
 	if (Is_Start())
 	{
 		auto pPlayer = Get_Player();
@@ -259,10 +260,10 @@ _bool CGameEventExecuter::Next_Event_Process()
 		{
 			pPlayer->Set_BlockPlayerInput(false);
 		}
-		CCamera_Manager::GetInstance()->Start_FadeOut(1.f);
+		CCamera_Manager::GetInstance()->Start_FadeOut(2.f);
 	}
 
-	if (Next_Step_Over(1.05f))
+	if (Next_Step_Over(2.05f))
 	{
 		LEVEL_ID eNextLevelID = LEVEL_END;
 
@@ -286,7 +287,8 @@ _bool CGameEventExecuter::Next_Event_Process()
 
 		if (eNextLevelID != LEVEL_END)
 		{
-			Event_LevelChange(m_pGameInstance->Get_CurLevelID(), eNextLevelID);
+			Event_LevelChange(LEVEL_LOADING, eNextLevelID);
+			//Event_LevelChange(m_pGameInstance->Get_CurLevelID(), eNextLevelID);
 			GameEvent_End();
 		}
 	}

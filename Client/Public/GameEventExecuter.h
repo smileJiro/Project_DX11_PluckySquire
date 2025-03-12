@@ -143,7 +143,7 @@ protected:
 
 	_bool Setting_Postit_Page(const _wstring& _strPostItSectionTag);
 
-	_bool Next_Event_Process();
+	_bool Next_Event_Process(_float _fTimeDelta);
 
 #pragma endregion
 
