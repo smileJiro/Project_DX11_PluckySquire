@@ -4,6 +4,9 @@
 #include "UI_Manager.h"
 
 
+#include "Dialog_Manager.h"
+
+
 CBombStamp_UI::CBombStamp_UI(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CUI (_pDevice, _pContext)
 {
@@ -40,6 +43,9 @@ void CBombStamp_UI::Update(_float _fTimeDelta)
 {
 	CUI_Manager* pUIManager = CUI_Manager::GetInstance();
 	
+
+
+
 	// 밤 도장을 가지고 있지 않으면 리턴을 시켜주자.
 	if (false == pUIManager->Get_StampHave(0))
 		return;
@@ -60,12 +66,13 @@ void CBombStamp_UI::Update(_float _fTimeDelta)
 	{
 		if (false == m_isFirstPositionAdjusted)
 		{
-
+			_float2 vPos;
 			// 크기 및 위치 조정
-			m_fX = g_iWinSizeX / 7.5f;
-			m_fY = g_iWinSizeY - g_iWinSizeY / 10.f;
+			vPos.x = g_iWinSizeX - g_iWinSizeX / 12.f;
+			vPos.y = g_iWinSizeY - g_iWinSizeY / 6.f;
 
-			m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(m_fX, m_fY, 0.f, 1.f));
+			m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(vPos.x - g_iWinSizeX * 0.5f, -vPos.y + g_iWinSizeY * 0.5f, 0.f, 1.f));
+
 			m_pControllerTransform->Set_Scale(96.f, 148.f, 1.f);
 
 			//m_isFirstPositionAdjusted = true;
