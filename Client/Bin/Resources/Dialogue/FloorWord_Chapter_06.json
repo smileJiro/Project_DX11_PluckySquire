@@ -1,0 +1,16 @@
+{
+	"Texts": [
+		{
+			"strSection": "Chapter6_P0102",
+			"PosX": 819.4,
+			"PosY": -16.8,
+			"strSFX": "Chapter6_P0102_1",
+			"Text": "좀 위험해 보이는군요",
+			"highlight": {
+				"substring": "",
+				"defaultSize": 30,
+				"highlightSize": 40
+			}
+		}
+	]
+}

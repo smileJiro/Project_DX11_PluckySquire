@@ -437,13 +437,18 @@ void CFatherGame::Free()
 		Safe_Release(m_pMat);
 		Safe_Release(m_pMugAlien);
 		Safe_Release(m_pZetPack_Child);
+		Safe_Release(m_pZetPack_Father);
 		Safe_Release(m_pJellyKing);
 
-		for (_uint i = 0; i < (_uint)FATHER_PART::FATHER_LAST; ++i)
+		
+		if (false == m_FatherParts_UIs.empty())
 		{
-			Safe_Release(m_FatherParts_UIs[i]);
+			for (_uint i = 0; i < (_uint)FATHER_PART::FATHER_LAST; ++i)
+			{
+				Safe_Release(m_FatherParts_UIs[i]);
+			}
+			m_FatherParts_UIs.clear();
 		}
-		m_FatherParts_UIs.clear();
 
 		for (auto& pProgress : m_Progress)
 			Safe_Release(pProgress);
