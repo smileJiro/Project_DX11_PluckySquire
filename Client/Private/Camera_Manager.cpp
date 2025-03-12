@@ -328,8 +328,6 @@ void CCamera_Manager::Change_CameraType(_uint _iCurrentCameraType, _bool _isInit
 		else
 		{
 			Camera->Set_Active(false);
-			Camera->Compute_FocalLength();
-			Camera->Bind_DofConstBuffer();
 		}
 
 	}

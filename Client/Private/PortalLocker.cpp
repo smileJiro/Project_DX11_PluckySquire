@@ -223,7 +223,7 @@ CPortalLocker* CPortalLocker::Create(ID3D11Device* _pDevice, ID3D11DeviceContext
 	return pInstance;
 }
 
-CPortalLocker* CPortalLocker::Clone(void* _pArg)
+CGameObject* CPortalLocker::Clone(void* _pArg)
 {
 	CPortalLocker* pInstance = new CPortalLocker(*this);
 

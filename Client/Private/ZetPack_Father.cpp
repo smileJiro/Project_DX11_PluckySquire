@@ -292,6 +292,7 @@ void CZetPack_Father::On_AnimEnd(COORDINATE _eCoord, _uint _iAnimIdx)
 		CCamera_Manager::GetInstance()->Start_ZoomIn();
 		m_eCurState = STATE_TALK;
 		// TODO:: 도장 튀어 나오게도 해야함. 컵 돌아가면서 
+		CFatherGame::GetInstance()->Start_StopStampMoveWork();
 		break;
 	case Client::CZetPack_Father::STATE_REASSEMBLE:
 		m_eCurState = STATE_HAPPY;

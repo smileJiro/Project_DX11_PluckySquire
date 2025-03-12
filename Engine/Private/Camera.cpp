@@ -20,6 +20,7 @@ HRESULT CCamera::Initialize_Prototype()
 
 HRESULT CCamera::Initialize(void* _pArg)
 {
+
 	/* Zoom Level */
 	m_ZoomLevels[(int)ZOOM_LEVEL::LEVEL_1] = XMConvertToRadians(8.f);
 	m_ZoomLevels[(int)ZOOM_LEVEL::LEVEL_2] = XMConvertToRadians(25.f);

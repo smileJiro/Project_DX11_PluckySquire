@@ -11,9 +11,10 @@
 #include "JellyKing.h"
 #include "ZetPack_Father.h"
 #include "Mat.h"
-#include "PlayerData_Manager.h"
 #include "PlayerItem.h"
 
+#include "PlayerData_Manager.h"
+#include "Camera_Manager.h"
 /* Progress */
 #include "FatherGame_Progress_Start.h"
 #include "FatherGame_Progress_ZetPack.h"
@@ -210,7 +211,7 @@ HRESULT CFatherGame::Start_Game(ID3D11Device* _pDevice, ID3D11DeviceContext* _pC
 	}/* Mat */
 
 	{ /* Item StopStamp */
-		if(FAILED(CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)LEVEL_CHAPTER_6, TEXT("Stop_Stamp"), _float3(2.11f, 3.87f, -0.39f))))
+		if(FAILED(CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)LEVEL_CHAPTER_6, TEXT("Stop_Stamp"), _float3(2.11f, 3.87f, -0.39f), _float3(1.0f, 1.0f, 1.0f))))
 			return E_FAIL;
 
 	}/* Item StopStamp */
@@ -354,7 +355,10 @@ void CFatherGame::Start_StopStampMoveWork()
 	m_pMat->Get_ActorCom()->Set_AngularVelocity(_float3(10.f, 0.0f, 0.0f));
 
 	CPlayerItem* pPlayerItem = CPlayerData_Manager::GetInstance()->Get_PlayerItem_Ptr(TEXT("Stop_Stamp"));
-	pPlayerItem->Get_ActorCom()->Add_Impulse(_float3(0.0f, 20.0f, 5.0f));
+	static_cast<CActor_Dynamic*>(pPlayerItem->Get_ActorCom())->Set_Gravity(true);
+	pPlayerItem->Get_ActorCom()->Add_Impulse(_float3(0.0f, 18.0f, -3.5f));
+
+	CCamera_Manager::GetInstance()->Start_Shake_ByCount(CCamera_Manager::TARGET_2D, 0.3f, 0.1f, 50, CCamera::SHAKE_XY, 0.0f);
 }
 
 void CFatherGame::Set_ZetPack_Child(CZetPack_Child* _pZetPack_Child)
