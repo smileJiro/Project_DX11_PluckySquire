@@ -10,6 +10,7 @@
 #include "Section_2D_PlayMap.h"
 #include "Section_Manager.h"
 #include "Dialog_Manager.h"
+#include "2DMapActionObject.h"
 
 CGameEventExecuter_C4::CGameEventExecuter_C4(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CGameEventExecuter(_pDevice, _pContext)
@@ -46,7 +47,11 @@ void CGameEventExecuter_C4::Update(_float _fTimeDelta)
 	{
 		switch ((CTrigger_Manager::EVENT_EXECUTER_ACTION_TYPE)m_iEventExcuterAction)
 		{
-		case Client::CTrigger_Manager::C02P0910_LIGHTNING_BOLT_SPAWN:
+		case Client::CTrigger_Manager::CHAPTER4_3D_OUT_01:
+			Chapter4_3D_Out_01(_fTimeDelta);
+			break;		
+		case Client::CTrigger_Manager::CHAPTER4_3D_OUT_02:
+			Chapter4_3D_Out_02(_fTimeDelta);
 			break;
 		case Client::CTrigger_Manager::CHAPTER4_INTRO:
 			Chapter4_Intro(_fTimeDelta);
@@ -142,10 +147,10 @@ void CGameEventExecuter_C4::Chapter4_Intro_Postit_Sequence(_float _fTimeDelta)
 				EASE_IN_OUT);
 
 			};
-		Postit_Process_Start(L"Chapter4_SKSP_Postit",1.f, true, fCamerafunc);
+		Postit_Process_Start(L"Chapter4_SKSP_Postit", 1.f, true, fCamerafunc);
 	}
-	else if(Step_Check(STEP_1))
-	{ 
+	else if (Step_Check(STEP_1))
+	{
 		Postit_Process_PageAppear();
 	}
 	else if (Step_Check(STEP_2))
@@ -198,7 +203,7 @@ void CGameEventExecuter_C4::Chapter4_Ride_Zipline(_float _fTimeDelta)
 
 		if (CCamera_2D::DEFAULT == iCameraMode) {
 			CCamera_Manager::GetInstance()->Change_CameraMode(CCamera_2D::ZIPLINE);
-			
+
 			Next_Step(true);
 		}
 	}
@@ -219,12 +224,12 @@ void CGameEventExecuter_C4::Chapter4_Event_Flag(_float _fTimeDelta)
 		}
 
 		_bool isFinishCutScene = static_cast<CCamera_CutScene*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::CUTSCENE))->Is_Finish_CutScene();
-		
+
 		if (true == isFinishCutScene) {
 			Next_Step(true);
 		}
 
-		
+
 	}
 	// 2. CutScene이 끝났다면 CutScene 카메라로 GameOver 시작
 	else if (Step_Check(STEP_1)) {
@@ -258,7 +263,7 @@ void CGameEventExecuter_C4::Chapter4_StorySequence(_float _fTimeDelta)
 	function fCamerafunc = []() {
 
 		// 암 5 땡기기
-		CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Increase(CCamera_Manager::TARGET,1.f,
+		CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Increase(CCamera_Manager::TARGET, 1.f,
 			10.f, EASE_IN_OUT);
 		//CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Decrease(CCamera_Manager::TARGET, 5.f,
 		//	1.f, EASE_IN_OUT);
@@ -271,12 +276,26 @@ void CGameEventExecuter_C4::Chapter4_StorySequence(_float _fTimeDelta)
 			EASE_IN_OUT);
 
 		};
-	if (true == Postit_Process(L"Chapter4_SKSP_Postit",L"Postit_Page_01", 1.f, CPostit_Page::POSTIT_PAGE_POSTION_TYPE_D, false, fCamerafunc))
+	if (true == Postit_Process(L"Chapter4_SKSP_Postit", L"Postit_Page_01", 1.f, CPostit_Page::POSTIT_PAGE_POSTION_TYPE_D, false, fCamerafunc))
 	{
 		CSection* pSection = SECTION_MGR->Find_Section(L"Chapter4_SKSP_Postit");
 
 		if (nullptr != pSection)
 			static_cast<CSection_2D_PlayMap*>(pSection)->Set_PortalActive(true);
+
+		// 투디 트리거를 생성합니다.
+		CTriggerObject::TRIGGEROBJECT_DESC Desc = {};
+		Desc.vHalfExtents = { 100.f, 100.f, 0.f };
+		Desc.iTriggerType = (_uint)TRIGGER_TYPE::EVENT_TRIGGER;
+		Desc.szEventTag = TEXT("Chapter4_2D_In");
+		Desc.eConditionType = CTriggerObject::TRIGGER_ENTER;
+		Desc.isReusable = false; // 한 번 하고 삭제할 때
+		Desc.eStartCoord = COORDINATE_2D;
+		Desc.tTransform2DDesc.vInitialPosition = { -568.347412f,-22.5205593f, 0.f };
+
+		CSection* pBookSection = CSection_Manager::GetInstance()->Find_Section(TEXT("Chapter4_P0708"));
+		CTrigger_Manager::GetInstance()->Create_TriggerObject(LEVEL_STATIC, LEVEL_CHAPTER_2, &Desc, pBookSection);
+
 		GameEvent_End();
 	}
 
@@ -385,6 +404,131 @@ void CGameEventExecuter_C4::Chapter4_StorySequence(_float _fTimeDelta)
 	//}
 }
 
+void CGameEventExecuter_C4::Chapter4_3D_Out_01(_float _fTimeDelta)
+{
+	m_fTimer += _fTimeDelta;
+
+	if (Step_Check(STEP_0))
+	{
+		if (Is_Start())
+		{
+		// 1. 카메라 위치 박스로 세팅. target을 바꿔버리면 위화감이 좀 잇을거같으니 걍 암오프셋만 좀 바까주자.
+			CCamera_Manager::GetInstance()->Set_ResetData(CCamera_Manager::TARGET_2D);
+
+			CCamera_Manager::GetInstance()->Start_Changing_AtOffset(CCamera_Manager::TARGET_2D,
+				0.5f,
+				XMVectorSet(0.f, 0.f, 0.5f, 0.f),
+				EASE_IN_OUT);
+		}
+
+		Next_Step_Over(1.f);
+	}
+	else if (Step_Check(STEP_1))
+	{
+
+		// 대화 1 재생
+		if (Is_Start())
+			CDialog_Manager::GetInstance()->Set_DialogId(L"Chapter4_3D_Out_01_Dialog_01");
+		else
+			Next_Step(!CDialog_Manager::GetInstance()->Get_DisPlayDialogue());
+	}
+	else if (Step_Check(STEP_2))
+	{
+
+		if (Is_Start())
+		{
+			// 카메라 위치 2로 세팅. 나무 올리기 위함.
+			CCamera_Manager::GetInstance()->Start_Changing_AtOffset(CCamera_Manager::TARGET_2D,
+				0.5f,
+				XMVectorSet(-0.5f, 0.f, -0.5f, 0.f),
+				EASE_IN_OUT);
+		}
+
+		Next_Step_Over(0.5f);
+	}
+	// 여기 바이올렛 추가되면 애니메이션 추가.
+	else if (Step_Check(STEP_3))
+	{
+
+		if (Is_Start())
+		{
+		CSection_2D* pSection = static_cast<CSection_2D*>(SECTION_MGR->Find_Section(L"Chapter4_P0708"));
+
+		auto pLayer = pSection->Get_Section_Layer(SECTION_PLAYMAP_2D_RENDERGROUP::SECTION_2D_PLAYMAP_OBJECT);
+
+		const auto& Objects = pLayer->Get_GameObjects();
+
+		for_each(Objects.begin(), Objects.end(), [](CGameObject* pGameObject) {
+			auto pActionObj = dynamic_cast<C2DMapActionObject*>(pGameObject);
+
+			//섹션에 있는 액션맵오브젝트 남김없이 액션 실행(애니메이션 재생!)
+			if (nullptr != pActionObj)
+			{
+				if (C2DMapActionObject::ACTIVE_TYPE_ACTIONANIM == pActionObj->Get_ActionType())
+					pActionObj->Ready_Action();
+			}
+
+			});
+		}
+
+		Next_Step_Over(2.f);
+	}
+	else if (Step_Check(STEP_4))
+	{
+		// 대화 2 재생
+		if (Is_Start())
+			CDialog_Manager::GetInstance()->Set_DialogId(L"Chapter4_3D_Out_01_Dialog_02");
+		else
+			Next_Step(!CDialog_Manager::GetInstance()->Get_DisPlayDialogue());
+	}
+	else if (Step_Check(STEP_5))
+	{
+		if (Is_Start())
+		{
+		// 카메라 원복
+		CCamera_Manager::GetInstance()->Start_ResetArm_To_SettingPoint(CCamera_Manager::TARGET_2D, 1.f);
+		}
+		Next_Step_Over(1.f);
+	}
+	else
+		GameEvent_End();
+
+}
+
+void CGameEventExecuter_C4::Chapter4_3D_Out_02(_float _fTimeDelta)
+{
+	m_fTimer += _fTimeDelta;
+
+	if (Step_Check(STEP_0))
+	{
+
+		// 1. 카메라 위치 박스로 세팅. target을 바꿔버리면 위화감이 좀 잇을거같으니 걍 암오프셋만 좀 바까주자.
+		CCamera_Manager::GetInstance()->Set_ResetData(CCamera_Manager::TARGET);
+
+		CCamera_Manager::GetInstance()->Start_Changing_AtOffset(CCamera_Manager::TARGET,
+			0.5f,
+			XMVectorSet(-.5f, 0.f, 0.0f, 0.f),
+			EASE_IN_OUT);
+
+		Next_Step_Over(0.5f);
+	}
+	else if (Step_Check(STEP_1))
+	{
+		// 대화 1 재생
+		if (Is_Start())
+			CDialog_Manager::GetInstance()->Set_DialogId(L"Chapter4_3D_Out_02_Dialog_01");
+		else
+			Next_Step(!CDialog_Manager::GetInstance()->Get_DisPlayDialogue());
+	}
+	else if (Step_Check(STEP_2))
+	{
+		// 카메라 원복
+		CCamera_Manager::GetInstance()->Start_ResetArm_To_SettingPoint(CCamera_Manager::TARGET, 0.5f);
+		Next_Step_Over(0.5f);
+	}
+	else
+		GameEvent_End();
+}
 
 CGameEventExecuter_C4* CGameEventExecuter_C4::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {

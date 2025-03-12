@@ -61,6 +61,8 @@ private:
 	void							Chapter4_Ride_Zipline(_float _fTimeDelta);
 	void							Chapter4_Event_Flag(_float _fTimeDelta);
 	void							Chapter4_StorySequence(_float _fTimeDelta);
+	void							Chapter4_3D_Out_01(_float _fTimeDelta);
+	void							Chapter4_3D_Out_02(_float _fTimeDelta);
 
 public:
 	static CGameEventExecuter_C4* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
