@@ -44,6 +44,9 @@ void CStopStamp_UI::Priority_Update(_float _fTimeDelta)
 void CStopStamp_UI::Update(_float _fTimeDelta)
 {
 	
+	CUI_Manager* pUIManager = CUI_Manager::GetInstance();
+	if (false == pUIManager->Get_StampHave(1))
+		return;
 
 
 	if (m_isActive == false)
@@ -72,20 +75,29 @@ void CStopStamp_UI::Update(_float _fTimeDelta)
 		return;
 	}
 		
-
-	ChangeStamp(_fTimeDelta);
+	
+	if (true == pUIManager->Get_StampHave(0) &&
+		true == pUIManager->Get_StampHave(1))
+	{
+		ChangeStamp(_fTimeDelta);
+	}
 	
 
 }
 
 void CStopStamp_UI::Late_Update(_float _fTimeDelta)
 {
+	if (false == Uimgr->GetInstance()->Get_StampHave(1))
+		return;
+
 	__super::Late_Update(_fTimeDelta);
 }
 
 HRESULT CStopStamp_UI::Render()
 {
-	
+	if (false == Uimgr->GetInstance()->Get_StampHave(1))
+		return S_OK;
+
 	if (FAILED(m_pControllerTransform->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
 		return E_FAIL;
 
@@ -113,8 +125,6 @@ void CStopStamp_UI::ChangeStamp(_float _fTimeDelta)
 {
 	CUI_Manager::STAMP eStamp;
 	eStamp = CUI_Manager::GetInstance()->Get_StampIndex();
-
-	
 
 	if (m_ePreStamp != eStamp && false == m_isScaling)
 	{
@@ -144,7 +154,7 @@ void CStopStamp_UI::ChangeStamp(_float _fTimeDelta)
 	{
 		if (true == m_isBig)
 		{
-			if (m_fSizeX <= 96)
+			if (m_fSizeX <= 96.f)
 			{
 				m_fSizeX += _fTimeDelta * 100.f;
 				m_fSizeY += (_fTimeDelta * 1.54f) * 100.f;
@@ -160,7 +170,7 @@ void CStopStamp_UI::ChangeStamp(_float _fTimeDelta)
 		}
 		else if (true == m_isSmall)
 		{
-			if (m_fSizeX > 72)
+			if (m_fSizeX > 72.f)
 			{
 				m_fSizeX -= _fTimeDelta * 100.f;
 				m_fSizeY -= (_fTimeDelta * 1.54f) * 100.f;

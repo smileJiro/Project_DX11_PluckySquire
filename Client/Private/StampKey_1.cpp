@@ -1,26 +1,26 @@
 #include "stdafx.h"
-#include "ArrowForStamp.h"
+#include "StampKey_1.h"
 #include "GameInstance.h"
 #include "UI_Manager.h"
 
 
 
-CArrowForStamp::CArrowForStamp(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
+CStampKey_1::CStampKey_1(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CUI (_pDevice, _pContext)
 {
 }
 
-CArrowForStamp::CArrowForStamp(const CArrowForStamp& _Prototype)
+CStampKey_1::CStampKey_1(const CStampKey_1& _Prototype)
 	: CUI ( _Prototype )
 {
 }
 
-HRESULT CArrowForStamp::Initialize_Prototype()
+HRESULT CStampKey_1::Initialize_Prototype()
 {
 	return S_OK;
 }
 
-HRESULT CArrowForStamp::Initialize(void* _pArg)
+HRESULT CStampKey_1::Initialize(void* _pArg)
 {
 	UIOBJDESC* pDesc = static_cast<UIOBJDESC*>(_pArg);
 
@@ -39,20 +39,20 @@ HRESULT CArrowForStamp::Initialize(void* _pArg)
 	return S_OK;
 }
 
-void CArrowForStamp::Priority_Update(_float _fTimeDelta)
+void CStampKey_1::Priority_Update(_float _fTimeDelta)
 {
 }
 
-void CArrowForStamp::Update(_float _fTimeDelta)
+void CStampKey_1::Update(_float _fTimeDelta)
 {
 }
 
-void CArrowForStamp::Late_Update(_float _fTimeDelta)
+void CStampKey_1::Late_Update(_float _fTimeDelta)
 {
 	__super::Late_Update(_fTimeDelta);
 }
 
-HRESULT CArrowForStamp::Render()
+HRESULT CStampKey_1::Render()
 {
 	CUI_Manager* pUIManager = CUI_Manager::GetInstance();
 	if (false == pUIManager->Get_StampHave(0) || false == pUIManager->Get_StampHave(1))
@@ -83,7 +83,7 @@ HRESULT CArrowForStamp::Render()
 
 
 
-HRESULT CArrowForStamp::Ready_Components()
+HRESULT CStampKey_1::Ready_Components()
 {
 	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxPosTex"),
 		TEXT("Com_Shader_2D"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
@@ -103,13 +103,13 @@ HRESULT CArrowForStamp::Ready_Components()
 }
 
 
-CArrowForStamp* CArrowForStamp::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
+CStampKey_1* CStampKey_1::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
-	CArrowForStamp* pInstance = new CArrowForStamp(_pDevice, _pContext);
+	CStampKey_1* pInstance = new CStampKey_1(_pDevice, _pContext);
 
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
-		MSG_BOX("Created CArrowForStamp Failed");
+		MSG_BOX("Created CStampKey_1 Failed");
 		Safe_Release(pInstance);
 		return nullptr;
 	}
@@ -117,13 +117,13 @@ CArrowForStamp* CArrowForStamp::Create(ID3D11Device* _pDevice, ID3D11DeviceConte
 	return pInstance;
 }
 
-CGameObject* CArrowForStamp::Clone(void* _pArg)
+CGameObject* CStampKey_1::Clone(void* _pArg)
 {
-	CArrowForStamp* pInstance = new CArrowForStamp(*this);
+	CStampKey_1* pInstance = new CStampKey_1(*this);
 
 	if (FAILED(pInstance->Initialize(_pArg)))
 	{
-		MSG_BOX("Clone CArrowForStamp Failed");
+		MSG_BOX("Clone CStampKey_1 Failed");
 		Safe_Release(pInstance);
 		return nullptr;
 	}
@@ -131,14 +131,14 @@ CGameObject* CArrowForStamp::Clone(void* _pArg)
 	return pInstance;
 }
 
-void CArrowForStamp::Free()
+void CStampKey_1::Free()
 {
 	
 	__super::Free();
 	
 }
 
-HRESULT CArrowForStamp::Cleanup_DeadReferences()
+HRESULT CStampKey_1::Cleanup_DeadReferences()
 {
 
 	return S_OK;

@@ -274,6 +274,10 @@ void CLevel_Chapter_04::Update(_float _fTimeDelta)
 	}
 
 #ifdef _DEBUG
+	if (KEY_DOWN(KEY::I))
+	{
+		CTrigger_Manager::GetInstance()->Register_TriggerEvent(L"Next_Chapter_Event", 0);
+	}
 	if (KEY_DOWN(KEY::P))
 		CCamera_Manager::GetInstance()->Start_ZoomIn();
 
@@ -609,6 +613,8 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 		pCamera->Enter_Section(pPlayer->Get_Include_Section_Name());
 		pCamera->Switch_CameraView(nullptr);
 	}
+
+	CCamera_Manager::GetInstance()->Start_FadeIn(3.f);
 
 	return S_OK;
 }

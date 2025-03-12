@@ -1,21 +1,20 @@
 #pragma once
 #include "UI.h"
 #include "Client_Defines.h"
-#include "UI_Manager.h"
 
 BEGIN(Engine)
 class CShader;
 class CModel;
 class CVIBuffer_Collider;
 END
-BEGIN(Client)
-class CBombStamp_UI final : public CUI
+
+class CStampKey_1 final : public CUI
 {
 
 protected:
-	explicit CBombStamp_UI(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
-	explicit CBombStamp_UI(const CBombStamp_UI& _Prototype);
-	virtual ~CBombStamp_UI() = default;
+	explicit CStampKey_1(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
+	explicit CStampKey_1(const CStampKey_1& _Prototype);
+	virtual ~CStampKey_1() = default;
 
 public:
 	virtual HRESULT			Initialize_Prototype() override;
@@ -26,25 +25,14 @@ public:
 	virtual HRESULT			Render() override;
 
 
-private:
-	CUI_Manager::STAMP		m_ePreStamp = { CUI_Manager::STAMP_END };
-	_bool					m_isSmall	= {false};
-	_bool					m_isBig = { false };
-	bool					m_isScaling = { false };
-
-	_bool					m_isFirstPositionAdjusted = { false };
-
-private:
-	void					ChangeStamp(_float _fTimeDelta);
-
 protected:
 	virtual HRESULT			Ready_Components() override;
 
 public:
-	static CBombStamp_UI*		Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
+	static CStampKey_1*		Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject*	Clone(void* _pArg);
 	virtual void			Free() override;
 	HRESULT					Cleanup_DeadReferences() override;
 
 };
-END
+
