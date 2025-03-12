@@ -1043,8 +1043,8 @@ void CDialog::NextDialogue(_float2 _RTSize)
 			vPos.x = m_vDialoguePos.x;
 			vPos.y = m_vDialoguePos.y;
 
-			vPos.x -= _RTSize.x * 0.165f;
-			vPos.y -= _RTSize.y * 0.14f;
+			vPos.x -= _RTSize.x * 0.165f / fScaleX;
+			vPos.y -= _RTSize.y * 0.14f / fScaleY;
 		}
 		break;
 

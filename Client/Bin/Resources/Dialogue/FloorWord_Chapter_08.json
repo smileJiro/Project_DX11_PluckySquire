@@ -1,0 +1,64 @@
+{
+	"Texts": [
+		{
+			"strSection": "Chapter8_P0506",
+			"PosX": -170.0,
+			"PosY": 18.58,
+			"strSFX": "Chapter8_P0506",
+			"Text": "반항하는 백성 중에는 한심한\n견습 기사 저트가 있었습니다\n파멸의 구덩이에서도\n가장 깊은 감방에\n갇혀 있었지요\n그래도 싼 녀석이니까요",
+			"highlight": {
+				"substring": "",
+				"defaultSize": 30,
+				"highlightSize": 40
+			}
+		},
+		{
+			"strSection": "Chapter8_P0506",
+			"PosX": -772.0,
+			"PosY": 162.0,
+			"strSFX": "",
+			"Text": "부서진 벽은\n다른 감방으로\n이어질 뿐이었죠, 하하!",
+			"highlight": {
+				"substring": "",
+				"defaultSize": 30,
+				"highlightSize": 40
+			}
+		},
+		{
+			"strSection": "Chapter8_P0708",
+			"PosX": 989.7,
+			"PosY": 126.6,
+			"strSFX": "",
+			"Text": "환풍구는 아주\n무서워 보였어요\n어느 모로 보나\n다른 곳으로\n이어지는 통로라곤\n볼 수 없었죠",
+			"highlight": {
+				"substring": "",
+				"defaultSize": 30,
+				"highlightSize": 40
+			}
+		},
+		{
+			"strSection": "Chapter8_P1112",
+			"PosX": -409.0,
+			"PosY": -113.0,
+			"strSFX": "Chapter8_P1112",
+			"Text": "따뜻해 보이는\n에너지 광선은\n매혹적이었습니다",
+			"highlight": {
+				"substring": "",
+				"defaultSize": 30,
+				"highlightSize": 40
+			}
+		},
+		{
+			"strSection": "Chapter8_P1920",
+			"PosX": -76.8,
+			"PosY": -20.4,
+			"strSFX": "Chapter8_P1920",
+			"Text": "아주 빨리 달려가면\n벨트 사이를\n무사히 통과할 수\n있을 것 같았어요",
+			"highlight": {
+				"substring": "",
+				"defaultSize": 30,
+				"highlightSize": 40
+			}
+		}
+	]
+}
