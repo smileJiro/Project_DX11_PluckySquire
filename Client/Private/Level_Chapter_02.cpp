@@ -120,7 +120,7 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 	}
 	if (FAILED(Ready_Layer_Monster()))
 	{
-		MSG_BOX(" Failed Ready_Layer_Monster (Level_Chapter_02::Initialize)");
+		MSG_BOX(" Failed Ready_Layer_Monster (CLevel_Chapter_02::Initialize)");
 		assert(nullptr);
 	}
 	if (FAILED(Ready_Layer_Monster_Projectile(TEXT("Layer_Monster_Projectile"))))
@@ -748,6 +748,8 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 	XMStoreFloat3(&Target2DDesc.vArm, XMVector3Normalize(XMVectorSet(0.f, 0.981f, -0.191f, 0.f)));
 	Target2DDesc.fLength = { 12.5f };
 
+	XMStoreFloat3(&Target2DDesc.vArm, XMVector3Normalize(XMVectorSet(0.f, 0.981f, -0.191f, 0.f)));
+	Target2DDesc.fLength = { 12.5f };
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Camera_2D"),
 		m_eLevelID, _strLayerTag, &pCamera, &Target2DDesc)))
 		return E_FAIL;
@@ -1362,6 +1364,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Monster_3D()
 	return S_OK;
 }
 
+
 HRESULT CLevel_Chapter_02::Ready_Layer_Monster_Projectile(const _wstring& _strLayerTag, CGameObject** _ppOut)
 {
 	/*  Projectile  */
@@ -1678,6 +1681,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_RoomDoor(const _wstring& _strLayerTag)
 
 	return S_OK;
 }
+
 
 HRESULT CLevel_Chapter_02::Map_Object_Create(_wstring _strFileName)
 {
