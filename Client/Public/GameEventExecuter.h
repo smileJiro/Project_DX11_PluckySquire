@@ -67,6 +67,7 @@ public :
 	typedef struct tagGameEventExecuter : public CGameObject::GAMEOBJECT_DESC
 	{
 		_wstring	strEventTag;
+		_bool		isChapterChangeEvent = false;
 	}EVENT_EXECUTER_DESC;
 protected:
 	CGameEventExecuter(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
@@ -74,6 +75,7 @@ protected:
 
 public :
 	virtual HRESULT					Initialize(void* _pArg);
+	virtual void					Priority_Update(_float _fTimeDelta);
 	virtual void					Update(_float _fTimeDelta)  abstract;
 
 	virtual void					GameEvent_End();
@@ -141,9 +143,13 @@ protected:
 
 	_bool Setting_Postit_Page(const _wstring& _strPostItSectionTag);
 
+	_bool Next_Event_Process();
+
 #pragma endregion
 
 protected:
+	_bool		m_isNextChapter = false;
+	_wstring	m_strNextChapter = L"";
 	_float		m_fMaxTimer = 0.f;
 	_float		m_fTimer = 0.f;
 	_wstring	m_strEventTag;

@@ -30,17 +30,33 @@ HRESULT CGameEventExecuter::Initialize(void* _pArg)
 	CGameEventExecuter::EVENT_EXECUTER_DESC* pDesc =
 		static_cast<CGameEventExecuter::EVENT_EXECUTER_DESC*>(_pArg);
 
-	m_iEventExcuterAction =
-		CTrigger_Manager::GetInstance()->Find_ExecuterAction(pDesc->strEventTag);
+	m_isNextChapter = pDesc->isChapterChangeEvent;
+	if (m_isNextChapter)
+	{
+		m_strNextChapter = pDesc->strEventTag;
+	}
+	else 
+	{
+		m_iEventExcuterAction =
+			CTrigger_Manager::GetInstance()->Find_ExecuterAction(pDesc->strEventTag);
 
-	m_strEventTag = pDesc->strEventTag;
+		m_strEventTag = pDesc->strEventTag;
 
-	if (m_iEventExcuterAction == -1 ||
-		m_iEventExcuterAction == CTrigger_Manager::EVENT_EXECUTER_ACTION_TYPE_LAST)
-		return E_FAIL;
+		if (m_iEventExcuterAction == -1 ||
+			m_iEventExcuterAction == CTrigger_Manager::EVENT_EXECUTER_ACTION_TYPE_LAST)
+			return E_FAIL;
+	}
 
 
 	return S_OK;
+}
+
+void CGameEventExecuter::Priority_Update(_float _fTimeDelta)
+{
+	if (m_isNextChapter)
+	{
+		Next_Event_Process();
+	}
 }
 
 void CGameEventExecuter::GameEvent_End()
@@ -71,7 +87,6 @@ _bool CGameEventExecuter::Postit_Process(const _wstring& _strPostItSectionTag, c
 		Postit_Process_PageTalk(_strPostItDialogTag, _ePostionType);
 		return false;
 	}
-
 	else if (Step_Check(STEP_3))
 	{
 		Postit_Process_End(_fStartChaseCameraTime);
@@ -232,6 +247,50 @@ _bool CGameEventExecuter::Setting_Postit_Page(const _wstring& _strPostItSectionT
 	else
 		m_pPostitPage = dynamic_cast<CPostit_Page*>(m_pTargetObject);
 	m_pTargetObject = nullptr;
+	return true;
+}
+
+_bool CGameEventExecuter::Next_Event_Process()
+{
+	if (Is_Start())
+	{
+		auto pPlayer = Get_Player();
+		if (nullptr != pPlayer)
+		{
+			pPlayer->Set_BlockPlayerInput(false);
+		}
+		CCamera_Manager::GetInstance()->Start_FadeOut(1.f);
+	}
+
+	if (Next_Step_Over(1.05f))
+	{
+		LEVEL_ID eNextLevelID = LEVEL_END;
+
+
+		if (L"Chapter2" == m_strNextChapter)
+		{
+			eNextLevelID = LEVEL_CHAPTER_2;
+		}
+		else if (L"Chapter4" == m_strNextChapter)
+		{
+			eNextLevelID = LEVEL_CHAPTER_4;
+		}
+		else if (L"Chapter6" == m_strNextChapter)
+		{
+			eNextLevelID = LEVEL_CHAPTER_6;
+		}
+		else if (L"Chapter8" == m_strNextChapter)
+		{
+			eNextLevelID = LEVEL_CHAPTER_8;
+		}
+
+		if (eNextLevelID != LEVEL_END)
+		{
+			Event_LevelChange(m_pGameInstance->Get_CurLevelID(), eNextLevelID);
+			GameEvent_End();
+		}
+	}
+	
 	return true;
 }
 
