@@ -1,11 +1,11 @@
 {
 	"Texts": [
 		{
-			"strSection": "Chapter4_P0506",
-			"PosX": 81.43,
-			"PosY": -120.0,
+			"strSection": "Chapter4_P0102",
+			"PosX": -2121.0,
+			"PosY": -255.0,
 			"strSFX": "",
-			"Text": "다리가\n부서져 있었습니다.",
+			"Text": "아주 불쾌하게\n생긴 벌레가\n나타났습니다",
 			"highlight": {
 				"substring": "",
 				"defaultSize": 30,

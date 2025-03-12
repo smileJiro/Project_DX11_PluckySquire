@@ -16,6 +16,7 @@ void CPlayerState_GetItem::Enter()
 	switch (eCoord)
 	{
 	case Engine::COORDINATE_2D:
+		m_pOwner->Set_2DDirection(E_DIRECTION::LEFT);
 		m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_ITEM_RETRIEVE);
 		break;
 	case Engine::COORDINATE_3D:
@@ -39,6 +40,7 @@ void CPlayerState_GetItem::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 	case Engine::COORDINATE_2D:
 		if (iAnimIdx == (_uint)CPlayer::ANIM_STATE_2D::PLAYER_ITEM_RETRIEVE)
 		{
+			m_pOwner->Set_2DDirection(E_DIRECTION::RIGHT);
 			m_pOwner->Set_State(CPlayer::IDLE);
 		}
 		break;

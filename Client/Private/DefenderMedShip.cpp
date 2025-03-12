@@ -99,8 +99,6 @@ void CDefenderMedShip::Update(_float _fTimeDelta)
 
 
 	__super::Update(_fTimeDelta);
-
-
 }
 
 HRESULT CDefenderMedShip::Render()
