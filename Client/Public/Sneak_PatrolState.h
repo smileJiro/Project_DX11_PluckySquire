@@ -31,8 +31,6 @@ public:
 private:
 	void Sneak_PatrolMove(_float _fTimeDelta, _int _iDir);
 	void Determine_Direction();
-	_vector Set_Sneak_PatrolDirection(_int _iDir);
-	void Check_Bound(_float _fTimeDelta);
 
 private:
 	_float m_fAccTime = { 0.f };
@@ -48,7 +46,9 @@ private:
 	_bool m_isTurn = { false };
 	_float3 m_vRotate = {};
 	_int m_iCurWayIndex = { 0 };
+	_int m_iCurDirectionIndex = { 0 };
 	_bool m_isBack = { false };
+	_bool m_isDirBack = { false };
 	_bool m_isToWay = { false };
 	_float3 m_vDir = {};
 

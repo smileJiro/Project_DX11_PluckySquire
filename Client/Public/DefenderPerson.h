@@ -46,7 +46,7 @@ public:
 	virtual void Enter_Section(const _wstring _strIncludeSectionName) override;
 
 public:
-	void Set_FollowObject(CGameObject* _pObject);
+	void Start_FollowObject(CGameObject* _pObject);
 	void Dissapear();
 
 	void On_BodyAnimEnd(COORDINATE _eCoord, _uint iAnimIdx);

@@ -65,9 +65,6 @@ void CDialog_Manager::Set_DialogEnd()
 		Safe_Release(m_pNPC);
 		m_pNPC = nullptr;
 	}
-
-
-
 }
 
 _int CDialog_Manager::Get_CurrentLineIndex()

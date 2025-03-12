@@ -76,7 +76,14 @@ void CGameEventExecuter_C8::Chapter8_Intro_Postit_Sequence(_float _fTimeDelta)
 {
 	m_fTimer += _fTimeDelta;
 
-	function fCamerafunc = []() {
+	function fCamerafunc = []() 
+		{
+			// <-으로 돌리기. 1초동안
+		CCamera_Manager::GetInstance()->Start_Turn_AxisY(CCamera_Manager::TARGET, 1.f, XMConvertToRadians(-40.f), XMConvertToRadians(-25.f));
+		 // 암 3.f 줄이기, 1초동안
+		CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Decrease(CCamera_Manager::TARGET, 1.f,
+			3.f, EASE_IN_OUT);
+		// 타겟 오프셋 y -2.f
 		CCamera_Manager::GetInstance()->Start_Changing_AtOffset(CCamera_Manager::TARGET,
 			1.f,
 			XMVectorSet(0.f, -2.f, 0.f, 0.f),
@@ -96,8 +103,16 @@ void CGameEventExecuter_C8::Chapter8_Sword(_float _fTimeDelta)
 {
 	m_fTimer += _fTimeDelta;
 
-	function fCamerafunc = []() {
+	function fCamerafunc = []() 
+		{
+		CCamera_Manager::GetInstance()->Start_Turn_AxisY(CCamera_Manager::TARGET, 1.f, XMConvertToRadians(60.f), (_uint)EASE_IN_OUT);
 
+		//CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Increase(CCamera_Manager::TARGET, 1.f,
+		//	3.f, EASE_IN_OUT);
+		CCamera_Manager::GetInstance()->Start_Changing_AtOffset(CCamera_Manager::TARGET,
+			1.f,
+			XMVectorSet(0.f, -2.5f, 0.f, 0.f),
+			EASE_IN_OUT);
 		};
 	if (true == Postit_Process(L"Chapter8_SKSP_Postit", L"Chapter8_Sword", 1.f, CPostit_Page::POSTIT_PAGE_POSTION_TYPE_A, false, fCamerafunc))
 	{
@@ -110,8 +125,16 @@ void CGameEventExecuter_C8::Chapter8_Stop_Stamp(_float _fTimeDelta)
 {
 	m_fTimer += _fTimeDelta;
 
-	function fCamerafunc = []() {
-
+	function fCamerafunc = []() 
+		{
+			// <-으로 돌리기. 1초동안
+		CCamera_Manager::GetInstance()->Start_Turn_AxisY(CCamera_Manager::TARGET, 1.f, XMConvertToRadians(-70.f), (_uint)EASE_IN_OUT);
+		CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Increase(CCamera_Manager::TARGET, 1.f,
+				3.f, EASE_IN_OUT);
+		CCamera_Manager::GetInstance()->Start_Changing_AtOffset(CCamera_Manager::TARGET,
+			1.f,
+			XMVectorSet(0.f, -2.f, 0.f, 0.f),
+			EASE_IN_OUT);
 		};
 	if (true == Postit_Process(L"Chapter8_SKSP_Postit", L"Chapter8_Stop_Stamp", 1.f, CPostit_Page::POSTIT_PAGE_POSTION_TYPE_A, false, fCamerafunc))
 	{
@@ -123,8 +146,15 @@ void CGameEventExecuter_C8::Chapter8_Bomb_Stamp(_float _fTimeDelta)
 {
 	m_fTimer += _fTimeDelta;
 
-	function fCamerafunc = []() {
-
+	function fCamerafunc = []() 
+		{
+			CCamera_Manager::GetInstance()->Start_Turn_AxisY(CCamera_Manager::TARGET, 1.f, XMConvertToRadians(-60.f), (_uint)EASE_IN_OUT);
+			CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Increase(CCamera_Manager::TARGET, 1.f,
+				3.f, EASE_IN_OUT);
+		CCamera_Manager::GetInstance()->Start_Changing_AtOffset(CCamera_Manager::TARGET,
+			1.f,
+			XMVectorSet(0.f, -2.f, 0.f, 0.f),
+			EASE_IN_OUT);
 		};
 	if (true == Postit_Process(L"Chapter8_SKSP_Postit", L"Chapter8_Bomb_Stamp", 1.f, CPostit_Page::POSTIT_PAGE_POSTION_TYPE_A, false, fCamerafunc))
 	{
@@ -136,8 +166,16 @@ void CGameEventExecuter_C8::Chapter8_Tilting_Glove(_float _fTimeDelta)
 {
 	m_fTimer += _fTimeDelta;
 
-	function fCamerafunc = []() {
+	function fCamerafunc = []() 
+		{
+		CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Increase(CCamera_Manager::TARGET, 1.f,
+				1.f, EASE_IN_OUT);
+		CCamera_Manager::GetInstance()->Start_Changing_AtOffset(CCamera_Manager::TARGET,
+			1.f,
+			XMVectorSet(0.f, -2.5f, 0.f, 0.f),
+			EASE_IN_OUT);
 
+		CCamera_Manager::GetInstance()->Start_Turn_AxisRight(CCamera_Manager::TARGET, 1.f, XMConvertToRadians(30.f), (_uint)EASE_IN_OUT);
 		};
 	if (true == Postit_Process(L"Chapter8_SKSP_Postit", L"Chapter8_Tilting_Glove", 1.f, CPostit_Page::POSTIT_PAGE_POSTION_TYPE_A, false, fCamerafunc))
 	{

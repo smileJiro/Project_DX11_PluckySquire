@@ -75,7 +75,7 @@ public:
 			{
 				case C2DMapActionObject::ACTIVE_TYPE_DROPBLOCK:
 					strObjectTag = L"Prototype_GameObject_CollapseBlock";
-					eObjectCloneLevel = LEVEL_CHAPTER_2;
+					eObjectCloneLevel = _eLevelID;
 					break;
 				default:
 					strObjectTag = L"Prototype_GameObject_2DMap_ActionObject";

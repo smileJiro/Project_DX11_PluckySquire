@@ -132,17 +132,25 @@ void CDefenderCapsule::On_Explode()
 {
 	m_pBody->Switch_Animation(SPHERE_BREAK);
 
-	CScrollModelObject::SCROLLMODELOBJ_DESC tDesc = {};
-	tDesc.iCurLevelID = m_iCurLevelID;
-	XMStoreFloat3(&tDesc.tTransform2DDesc.vInitialPosition, Get_FinalPosition());
-	CGameObject* pPerson = nullptr;
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_iCurLevelID, TEXT("Prototype_GameObject_DefenderPerson"), m_iCurLevelID, TEXT("Layer_Defender"),(CGameObject**)&pPerson, &tDesc)))
-		return ;
-	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(m_strSectionName, pPerson, SECTION_2D_PLAYMAP_OBJECT);
+	for (_uint i = 0; i < m_iPersonCount; i++)
+	{
+		CScrollModelObject::SCROLLMODELOBJ_DESC tDesc = {};
+		tDesc.iCurLevelID = m_iCurLevelID;
+		_vector vRandomOffset = { (_float)rand() / RAND_MAX *20.f, (_float)rand() / RAND_MAX * 20.f };
+		XMStoreFloat3(&tDesc.tTransform2DDesc.vInitialPosition, Get_FinalPosition()+ vRandomOffset);
+		CGameObject* pPerson = nullptr;
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_iCurLevelID, TEXT("Prototype_GameObject_DefenderPerson"), m_iCurLevelID, TEXT("Layer_Defender"), (CGameObject**)&pPerson, &tDesc)))
+			return;
+		CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(m_strSectionName, pPerson, SECTION_2D_PLAYMAP_OBJECT);
+	}
 
 }
 
 void CDefenderCapsule::On_Spawned()
+{
+}
+
+void CDefenderCapsule::On_Teleport()
 {
 }
 

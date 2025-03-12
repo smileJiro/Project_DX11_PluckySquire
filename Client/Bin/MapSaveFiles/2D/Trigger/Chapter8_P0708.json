@@ -3,7 +3,7 @@
         "Collider_Info": {
             "Position": [
                 1091.0,
-                211.0
+                265.0
             ],
             "Scale": [
                 63.0,
@@ -17,18 +17,18 @@
         "Trigger_EventTag": "BookSectionChange_Next",
         "Trigger_Type": 6,
 		 "MapTrigger_Info": {
-		"Next_Position": [
-                781.0,
-                -333.0
-		]
+      "Next_Position": [
+        -807.0,
+        181.0
+      ]
 		}
     },
     {
         "Collider_Info": {
-            "Position": [
-                -376.0,
-                -377.0
-            ],
+          "Position": [
+            -774.0,
+            -377.0
+          ],
             "Scale": [
                 173.0,
                 30.0

@@ -298,7 +298,7 @@ void CMinigame_Sneak::EndGame()
 	m_eGameState = NONE;
 	
 	// 페이지 전환.
-	_float3 fDefaultPos = { };
+	_float3 fDefaultPos = { 42.f, -315.f,0.f };
 	Event_Book_Main_Section_Change_Start(1, &fDefaultPos);
 	
 	// 모든 오브젝트 끄기.

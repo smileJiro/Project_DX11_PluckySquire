@@ -573,6 +573,22 @@ void CCamera_Manager::Start_ResetArm_To_SettingPoint(CAMERA_TYPE _eCameraType, _
 	m_Cameras[_eCameraType]->Start_ResetArm_To_SettingPoint(_fResetTime);
 }
 
+RETURN_ARMDATA CCamera_Manager::Save_ArmData(CAMERA_TYPE _eCameraType)
+{
+	if (nullptr == m_Cameras[_eCameraType])
+		return RETURN_ARMDATA{};
+
+	return m_Cameras[_eCameraType]->Save_ArmData();
+}
+
+void CCamera_Manager::Load_SavedArmData(RETURN_ARMDATA& _tSavedData, _float _fLoadTime, CAMERA_TYPE _eCameraType)
+{
+	if (nullptr == m_Cameras[_eCameraType])
+		return;
+
+	m_Cameras[_eCameraType]->Load_SavedArmData(_tSavedData, _fLoadTime);
+}
+
 void CCamera_Manager::Start_FadeIn(_float _fFadeTime)
 {
 	m_Cameras[m_eCurrentCameraType]->Start_PostProcessing_Fade(CCamera::FADE_IN, _fFadeTime);
