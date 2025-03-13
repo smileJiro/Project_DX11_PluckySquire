@@ -541,9 +541,6 @@
     <Filter Include="02.GameObjects\MapObject\Book">
       <UniqueIdentifier>{8bf5a38a-cd6a-4ee8-b268-00e43d9656dc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="90. Minigame_Sneak">
-      <UniqueIdentifier>{fa690acd-ae0f-4182-89a0-5fe73843553f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\MiniGameObjects">
       <UniqueIdentifier>{cab1d124-560b-4b6f-9de4-6ba7f2182691}</UniqueIdentifier>
     </Filter>
@@ -702,6 +699,12 @@
     </Filter>
     <Filter Include="02.GameObjects\Portal\PortalLocker\MonsterCount">
       <UniqueIdentifier>{07a12f08-94a2-4b76-a9a9-440425e711a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\FresnelModel">
+      <UniqueIdentifier>{9949c8f9-286b-46e5-95db-fa0dbf771f02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05.MiniGames\Minigame_Sneak">
+      <UniqueIdentifier>{fa690acd-ae0f-4182-89a0-5fe73843553f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1518,7 +1521,7 @@
       <Filter>04.Section\Section_2D\MiniGame_2D\Pip</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Minigame_Sneak.h">
-      <Filter>90. Minigame_Sneak</Filter>
+      <Filter>05.MiniGames\Minigame_Sneak</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Narration_Manager.h" />
     <ClInclude Include="..\Public\Narration_New.h" />
@@ -1704,11 +1707,6 @@
     <ClInclude Include="..\Public\ShopPanel_RenderFont.h">
       <Filter>02.GameObjects\UI\02. ShopPanel\00. ShopPanel_BG\02. Shop_RenderFont</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\Pip_Player.h" />
-    <ClInclude Include="..\public\Sneak_MapObject.h" />
-    <ClInclude Include="..\public\Sneak_FlipObject.h" />
-    <ClInclude Include="..\public\Sneak_InteractObject.h" />
-    <ClInclude Include="..\public\Sneak_Troop.h" />
     <ClInclude Include="..\Public\DefenderCapsule.h" />
     <ClInclude Include="..\Public\DefenderPerson.h" />
     <ClInclude Include="..\public\Pip_Player.h" />
@@ -1754,6 +1752,24 @@
     </ClInclude>
     <ClInclude Include="..\public\PortalLocker_LayerCount.h">
       <Filter>02.GameObjects\Portal\PortalLocker\MonsterCount</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\FresnelModelObject.h">
+      <Filter>02.GameObjects\FresnelModel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Sneak_Troop.h">
+      <Filter>05.MiniGames\Minigame_Sneak</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Pip_Player.h">
+      <Filter>05.MiniGames\Minigame_Sneak</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Sneak_FlipObject.h">
+      <Filter>05.MiniGames\Minigame_Sneak</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Sneak_InteractObject.h">
+      <Filter>05.MiniGames\Minigame_Sneak</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Sneak_MapObject.h">
+      <Filter>05.MiniGames\Minigame_Sneak</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -2559,7 +2575,7 @@
       <Filter>04.Section\Section_2D\MiniGame_2D\Pip</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Minigame_Sneak.cpp">
-      <Filter>90. Minigame_Sneak</Filter>
+      <Filter>05.MiniGames\Minigame_Sneak</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Sneak_Default_Tile.cpp">
       <Filter>02.GameObjects\MiniGameObjects\Sneak\Tile\Default</Filter>
@@ -2743,11 +2759,6 @@
     <ClCompile Include="..\Private\ShopPanel_RenderFont.cpp">
       <Filter>02.GameObjects\UI\02. ShopPanel\00. ShopPanel_BG\02. Shop_RenderFont</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\Pip_Player.cpp" />
-    <ClCompile Include="..\private\Sneak_MapObject.cpp" />
-    <ClCompile Include="..\private\Sneak_FlipObject.cpp" />
-    <ClCompile Include="..\private\Sneak_InteractObject.cpp" />
-    <ClCompile Include="..\private\Sneak_Troop.cpp" />
     <ClCompile Include="..\Private\DefenderCapsule.cpp" />
     <ClCompile Include="..\Private\DefenderPerson.cpp" />
     <ClCompile Include="..\private\Pip_Player.cpp" />
@@ -2793,6 +2804,24 @@
     </ClCompile>
     <ClCompile Include="..\private\PortalLocker_LayerCount.cpp">
       <Filter>02.GameObjects\Portal\PortalLocker\MonsterCount</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\FresnelModelObject.cpp">
+      <Filter>02.GameObjects\FresnelModel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Pip_Player.cpp">
+      <Filter>05.MiniGames\Minigame_Sneak</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Sneak_FlipObject.cpp">
+      <Filter>05.MiniGames\Minigame_Sneak</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Sneak_InteractObject.cpp">
+      <Filter>05.MiniGames\Minigame_Sneak</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Sneak_MapObject.cpp">
+      <Filter>05.MiniGames\Minigame_Sneak</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Sneak_Troop.cpp">
+      <Filter>05.MiniGames\Minigame_Sneak</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

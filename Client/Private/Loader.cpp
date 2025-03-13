@@ -79,6 +79,7 @@
 #include "ScrollModelObject.h"
 #include "CarriableObject.h"
 #include "DraggableObject.h"
+#include "FresnelModelObject.h"
 #include "Player.h"
 #include "PlayerBody.h"
 #include "PlayerSword.h"
@@ -741,6 +742,9 @@ HRESULT CLoader::Loading_Level_Static()
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_DraggableObject"),
 		CDraggableObject::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_FresnelModelObject"),
+		CFresnelModelObject::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_2DMapObject"),
 		C2DMapDefaultObject::Create(m_pDevice, m_pContext))))

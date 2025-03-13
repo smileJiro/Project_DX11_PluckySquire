@@ -148,6 +148,12 @@ HRESULT CEffectToolLoader::Loading_Level_Tool()
                 ), matPretransform))))
         return E_FAIL;
 
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Model_PlayerBullet"),
+        C3DModel::Create(m_pDevice, m_pContext,
+            ("../Bin/Resources/Models/Nonanim/etc/CyberPlayerBullet.model"
+                ), matPretransform))))
+        return E_FAIL;
+
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Model_StarSticker"),
         C3DModel::Create(m_pDevice, m_pContext,
             ("../Bin/Resources/Models/Nonanim/Star/StarSticker.model"
@@ -155,9 +161,27 @@ HRESULT CEffectToolLoader::Loading_Level_Tool()
         return E_FAIL;
 
 
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Model_Sphere"),
+        C3DModel::Create(m_pDevice, m_pContext,
+            ("../Bin/Resources/Models/Nonanim/etc/S_FX_CMN_Sphere_01.model"
+                ), matPretransform))))
+        return E_FAIL;
+
+
+
+    
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Effect_MagicHand"),
         CEffect_System::Create(m_pDevice, m_pContext, TEXT("../Bin/DataFiles/Effects/BookOut.json")))))
         return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Component_Texture_Diffuse"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effects/T_FX_CMN_Noise_06.dds")))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Component_Texture_Distortion"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effects/T_FX_CMN_Noise_03.dds")))))
+        return E_FAIL;
+
 
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
     m_isFinished = true;

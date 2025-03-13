@@ -17,7 +17,7 @@
 #include "Object_Background.h"
 #include "SkyBox.h"
 #include "CubeMap.h"
-
+#include "TestShadingModel.h"
 
 CMainEffectTool::CMainEffectTool()
 	: m_pGameInstance(CGameInstance::GetInstance())
@@ -237,6 +237,10 @@ HRESULT CMainEffectTool::Ready_Prototype_Static()
 
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_CubeMap"),
 		CCubeMap::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_TestShadingModel"),
+		CTestShadingModel::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 
