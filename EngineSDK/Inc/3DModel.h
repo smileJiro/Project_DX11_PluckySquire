@@ -95,7 +95,7 @@ public:
 
 	void					Update_ConstBuffer();
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 public:
 	vector<CMesh*>&			Get_Meshs() { return m_Meshes; }
 	vector<CMaterial*>&		Get_Materials() { return m_Materials; }

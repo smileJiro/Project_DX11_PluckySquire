@@ -69,6 +69,7 @@
 #include "Loader.h"
 
 #include "PlayerItem.h"
+#include "BackGroundObject.h"
 
 CLevel_Chapter_02::CLevel_Chapter_02(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: 
@@ -202,6 +203,18 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 	{
 		MSG_BOX(" Failed Ready_Layer_RoomDoor (Level_Chapter_02::Initialize)");
 		assert(nullptr);
+	}
+	
+	{ // BackGround Test
+		m_pBackGroundObject;
+		CBackGroundObject::BACKGROUNDOBJ_DESC Desc;
+		Desc.iCurLevelID = LEVEL_CHAPTER_2;
+		Desc.isCoordChangeEnable = false;
+		Desc.strTexturePrototypeTag = TEXT("Prototype_Component_Texture_BackGround_Chapter2_Main");
+		Desc.Build_3D_Transform(_float3(-20.0f, 90.0f, 150.0f), _float3(400.f, 400.f,10.f));
+
+		if(FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BackGroundObject"), LEVEL_CHAPTER_2, TEXT("Layer_BackGround"), &Desc)))
+			return E_FAIL;
 	}
 
 	///* Pooling Test */
@@ -434,8 +447,8 @@ HRESULT CLevel_Chapter_02::Ready_Lights()
 	m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/Chapter2_Bright.json"));
 #endif // _DEBUG
 
-	m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/Chapter2_Night_Main.json"));
-	m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/Chapter2_Night_Main.json"));
+	m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/Chapter2_Bright.json"));
+	//m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/Chapter2_Night_Main.json"));
 
 	//CONST_LIGHT LightDesc{};
 	//

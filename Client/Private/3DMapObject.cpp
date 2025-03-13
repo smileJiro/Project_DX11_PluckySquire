@@ -186,8 +186,7 @@ void C3DMapObject::Late_Update(_float _fTimeDelta)
 {
     CGameObject::Late_Update_Component(_fTimeDelta);
 
-        /* Add Render Group */
-
+    /* Add Render Group */
     Register_RenderGroup(REDNERGROUP_SHADOWID, 0);
     if (false == m_isCulling || false == m_isFrustumCulling)
     {
