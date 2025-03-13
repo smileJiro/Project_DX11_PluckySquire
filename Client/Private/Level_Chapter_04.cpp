@@ -72,7 +72,6 @@ HRESULT CLevel_Chapter_04::Initialize(LEVEL_ID _eLevelID)
 	m_eLevelID = _eLevelID;
 
 
-
 	if (FAILED(CSection_Manager::GetInstance()->Level_Enter(_eLevelID)))
 	{
 		MSG_BOX(" Failed CSection_Manager Level_Enter(CLevel_Chapter_04::Initialize)");
