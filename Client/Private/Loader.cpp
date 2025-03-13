@@ -98,6 +98,7 @@
 #include "TestTerrain.h"
 #include "RabbitLunch.h"
 #include "Bomb.h"
+#include "BombableBox.h"
 #include "TiltSwapPusher.h"
 #include "Key.h"
 
@@ -1308,6 +1309,12 @@ HRESULT CLoader::Loading_Level_Chapter_4(LEVEL_ID _eLoadLevelID)
 			return E_FAIL;
 
 		/* UI */
+		/* For. Prototype_GameObject_2DMap_BombableBox */
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_2DMap_BombableBox"),
+			CBombableBox::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		/* UI */
 		if (FAILED(UI_Object_Load(_eLoadLevelID)))
 			return E_FAIL;
 
@@ -2107,12 +2114,15 @@ HRESULT CLoader::Model_Load(LEVEL_ID _eResourceLevelID, LEVEL_ID _eLoadLevelID)
 	case LEVEL_CHAPTER_2:
 		str3DMapProtoJsonName = L"Chapter_02_Play_Desk.json";
 		if (FAILED(Load_Models_FromJson(_eLoadLevelID, MAP_3D_DEFAULT_PATH, L"Chapter_Intro.json", matPretransform, true)))
-			return E_FAIL;
+			return E_FAIL;		
+
 		strChapterName += L"Chapter2";
 		break;
 	case LEVEL_CHAPTER_4:
 		str3DMapProtoJsonName = L"Chapter_04_Play_Desk.json";
 		strChapterName += L"Chapter4";
+		if (FAILED(Load_Models_FromJson(_eLoadLevelID, MAP_3D_DEFAULT_PATH, L"Chapter_04_Default_Desk.json", matPretransform, true)))
+			return E_FAIL;
 		break;
 	case LEVEL_CHAPTER_6:
 		str3DMapProtoJsonName = L"Chapter_06_Play_Desk.json";

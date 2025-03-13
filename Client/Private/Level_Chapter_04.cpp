@@ -72,7 +72,6 @@ HRESULT CLevel_Chapter_04::Initialize(LEVEL_ID _eLevelID)
 	m_eLevelID = _eLevelID;
 
 
-
 	if (FAILED(CSection_Manager::GetInstance()->Level_Enter(_eLevelID)))
 	{
 		MSG_BOX(" Failed CSection_Manager Level_Enter(CLevel_Chapter_04::Initialize)");
@@ -182,6 +181,7 @@ HRESULT CLevel_Chapter_04::Initialize(LEVEL_ID _eLevelID)
 
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_TRIGGER, OBJECT_GROUP::WORD_GAME);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_PROJECTILE, OBJECT_GROUP::WORD_GAME);
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_PROJECTILE, OBJECT_GROUP::MAPOBJECT);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::INTERACTION_OBEJCT, OBJECT_GROUP::WORD_GAME);
 
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::PLAYER);
@@ -282,11 +282,11 @@ void CLevel_Chapter_04::Update(_float _fTimeDelta)
 	//
 	//}
 
-#ifdef _DEBUG
-	if (KEY_DOWN(KEY::I))
-	{
-		CTrigger_Manager::GetInstance()->Register_TriggerEvent(L"Next_Chapter_Event", 0);
-	}
+#ifdef _DEBUG	//if (KEY_DOWN(KEY::I))
+	//{
+	//	CTrigger_Manager::GetInstance()->Register_TriggerEvent(L"Next_Chapter_Event", 0);
+	//}
+
 	if (KEY_DOWN(KEY::P))
 		CCamera_Manager::GetInstance()->Start_ZoomIn();
 
@@ -495,7 +495,8 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Map()
 			return E_FAIL;
 		break;
 	case Client::LEVEL_CHAPTER_4:
-		if (FAILED(Map_Object_Create(L"Chapter_04_Play_Desk.mchc")))
+		if (FAILED(Map_Object_Create(L"Chapter_04_Default_Desk.mchc")))
+		//if (FAILED(Map_Object_Create(L"Chapter_04_Play_Desk.mchc")))
 			return E_FAIL;
 		break;
 	case Client::LEVEL_CHAPTER_6:
@@ -1102,8 +1103,8 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Monster()
 	if (FAILED(Ready_Layer_Monster_2D()))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_Monster_3D()))
-		return E_FAIL;
+	//if (FAILED(Ready_Layer_Monster_3D()))
+	//	return E_FAIL;
 
 	return S_OK;
 }

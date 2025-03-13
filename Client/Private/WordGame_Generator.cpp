@@ -145,15 +145,27 @@ HRESULT CWordGame_Generator::WordGame_Generate(CSection_2D* _pSection, const _ws
 			{
 				for (auto& WordObject : ChildJson["Word_Object_List"])
 				{
+					//_int iOverride = -1;
+					//if (WordObject.contains("Object_Override"))
+					//	iOverride = WordObject["Object_Override"];
 					C2DMapWordObject::WORD_OBJECT_DESC Desc = {};
 					Desc.WordObjectJson = WordObject;
 
 					CGameObject* pGameObject = nullptr;
 
-					if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, 
+/*					if (-1 != iOverride)
+					{
+						
+						if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(SECTION_MGR->Get_SectionLeveID(),
+							TEXT("Prototype_GameObject_2DMap_BombableBox"),
+							eCurLevelID, L"Layer_2DMapWordObject", &pGameObject, &Desc)))
+							return E_FAIL;
+					}
+					else */if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, 
 						TEXT("Prototype_GameObject_2DMap_WordObject"),
 						eCurLevelID, L"Layer_2DMapWordObject", &pGameObject, &Desc)))
 						return E_FAIL;
+
 					if (nullptr != pGameObject)
 					{
 						_pSection->Add_GameObject_ToSectionLayer(pGameObject, SECTION_2D_PLAYMAP_WORDOBJ);

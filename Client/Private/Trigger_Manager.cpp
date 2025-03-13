@@ -69,6 +69,8 @@ HRESULT CTrigger_Manager::Mapping_ExecuterTag()
 	m_EventExecuterTags[CHAPTER2_BETTLE_PAGE] = L"Chapter2_Bettle_Page";
 	m_EventExecuterTags[CHAPTER2_OPENBOOKEVENT] = L"Chapter2_OpenBookEvent";
 	m_EventExecuterTags[CHAPTER2_STORYSEQUENCE] = L"Chapter2_StorySequence";
+	m_EventExecuterTags[CHAPTER2_AFTER_OPENING_BOOK] = L"Chapter2_After_Opening_Book";
+	m_EventExecuterTags[CHAPTER2_GOING_TO_ARTIA] = L"Chapter2_Going_To_Artia";
 
 	m_EventExecuterTags[CHAPTER4_3D_OUT_01] = L"Chapter4_3D_Out_01";
 	m_EventExecuterTags[CHAPTER4_3D_OUT_02] = L"Chapter4_3D_Out_02";

@@ -161,11 +161,11 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 		assert(nullptr);
 	}
 
-	if (FAILED(Ready_Layer_Domino(TEXT("Layer_FallingRock"))))
-	{
-		MSG_BOX(" Failed Ready_Layer_Domino (Level_Chapter_02::Initialize)");
-		assert(nullptr);
-	}
+	//if (FAILED(Ready_Layer_Domino(TEXT("Layer_FallingRock"))))
+	//{
+	//	MSG_BOX(" Failed Ready_Layer_Domino (Level_Chapter_02::Initialize)");
+	//	assert(nullptr);
+	//}
 	//µµ½Ã¶ô
 	if (FAILED(Ready_Layer_LunchBox(TEXT("Layer_LunchBox"))))
 	{
@@ -188,11 +188,11 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 		MSG_BOX(" Failed Ready_Layer_MagicHand (Level_Chapter_02::Initialize)");
 		assert(nullptr);
 	}
-	if (FAILED(Ready_Layer_Draggable(TEXT("Layer_Draggable"))))
-	{
-		MSG_BOX(" Failed REady_Layer_Draggable (Level_Chapter_02::Initialize)");
-		assert(nullptr);
-	}
+	//if (FAILED(Ready_Layer_Draggable(TEXT("Layer_Draggable"))))
+	//{
+	//	MSG_BOX(" Failed REady_Layer_Draggable (Level_Chapter_02::Initialize)");
+	//	assert(nullptr);
+	//}
 	if (FAILED(Ready_Layer_MapGimmick(TEXT("Layer_MapGimmick"))))
 	{
 		MSG_BOX(" Failed Ready_Layer_MapGimmick (Level_Chapter_02::Initialize)");
@@ -290,6 +290,9 @@ void CLevel_Chapter_02::Update(_float _fTimeDelta)
 		//_wstring wsSectionKey = CSection_Manager::GetInstance()->Get_Cur_Section_Key();
 		//CSection* pSection = CSection_Manager::GetInstance()->Find_Section(wsSectionKey);
 		//CTrigger_Manager::GetInstance()->Create_TriggerObject(LEVEL_STATIC, LEVEL_CHAPTER_2, &DescA, pSection);
+
+		CModelObject* pBook = static_cast<CModelObject*>(m_pGameInstance->Get_GameObject_Ptr(m_eLevelID, TEXT("Layer_Book"), 0));
+		pBook->Switch_Animation(CBook::ANIM_ACTION_CLOSEBYHAND);
 	}
 
 	Uimgr->UI_Update();
@@ -1265,8 +1268,8 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Monster()
 	if (FAILED(Ready_Layer_Monster_2D()))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_Monster_3D()))
-		return E_FAIL;
+	//if (FAILED(Ready_Layer_Monster_3D()))
+	//	return E_FAIL;
 
 	return S_OK;
 }
