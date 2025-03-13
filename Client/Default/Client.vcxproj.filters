@@ -694,6 +694,9 @@
     <Filter Include="05.MiniGames\Minigame_Sneak\Tile\Trap">
       <UniqueIdentifier>{60ba1fac-436c-4f94-bf84-e2e833d8a327}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\BackGround">
+      <UniqueIdentifier>{ad43be9a-1a9c-4caf-ab24-79dd37331218}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -1770,6 +1773,9 @@
     <ClInclude Include="..\public\Sneak_SentryTroop.h">
       <Filter>05.MiniGames\Minigame_Sneak</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\BackGroundObject.h">
+      <Filter>02.GameObjects\BackGround</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -2832,6 +2838,9 @@
     <ClCompile Include="..\Private\PlayerState_RetriveSword.cpp" />
     <ClCompile Include="..\private\Sneak_SentryTroop.cpp">
       <Filter>05.MiniGames\Minigame_Sneak</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\BackGroundObject.cpp">
+      <Filter>02.GameObjects\BackGround</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

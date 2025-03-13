@@ -189,6 +189,7 @@
     <ClInclude Include="..\Public\2DMapObject.h" />
     <ClInclude Include="..\Public\2DMapWordObject.h" />
     <ClInclude Include="..\public\3DMapEmissiveObject.h" />
+    <ClInclude Include="..\public\BackGroundObject.h" />
     <ClInclude Include="..\Public\Bomb.h" />
     <ClInclude Include="..\Public\Bombable.h" />
     <ClInclude Include="..\Public\BombableBox.h" />
@@ -551,6 +552,7 @@
     <ClCompile Include="..\Private\2DMapObject.cpp" />
     <ClCompile Include="..\Private\2DMapWordObject.cpp" />
     <ClCompile Include="..\private\3DMapEmissiveObject.cpp" />
+    <ClCompile Include="..\private\BackGroundObject.cpp" />
     <ClCompile Include="..\Private\Bomb.cpp" />
     <ClCompile Include="..\Private\Bombable.cpp" />
     <ClCompile Include="..\Private\BombableBox.cpp" />

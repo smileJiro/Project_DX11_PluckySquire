@@ -121,7 +121,7 @@ HRESULT CImgui_Manager::LevelChange_Imgui()
 	return S_OK;
 }
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 
 HRESULT CImgui_Manager::Imgui_Debug_Render()
 {
@@ -596,6 +596,7 @@ HRESULT CImgui_Manager::Imgui_Debug_Lights()
 		static CONST_LIGHT tConstLightData = {};
 		auto iter = Lights.begin();
 		static auto& Selectiter = Lights.begin();
+		_float fLength = 0.0f;
 		if (true == Lights.empty())
 		{
 			Selectiter = Lights.end();
@@ -633,6 +634,7 @@ HRESULT CImgui_Manager::Imgui_Debug_Lights()
 						(*Selectiter)->Set_Select(false);
 					(*iter)->Set_Select(true);
 					tConstLightData = (*iter)->Get_LightDesc();
+					fLength = (*iter)->Get_DirectionalLightLength();
 					eType = (*iter)->Get_Type();
 					Selectiter = iter;
 					
@@ -677,6 +679,14 @@ HRESULT CImgui_Manager::Imgui_Debug_Lights()
 			(*Selectiter)->Set_LightConstData_AndUpdateBuffer(tConstLightData);
 			(*Selectiter)->Compute_ViewProjMatrix();
 		}
+
+		 // 전역 광원의 위치에 기여하는거리값.
+		if (ImGui::SliderFloat("DirectionalLength##Light", &fLength, 0.0f, 300.f, "%.2f"))
+		{
+			(*Selectiter)->Set_DirectionalLightLength(fLength);
+			(*Selectiter)->Compute_ViewProjMatrix();
+		}
+
 		if (ImGui::DragFloat3("Radiance##Light", &tConstLightData.vRadiance.x, 0.1f, 0.f, 500.f, "%.3f", ImGuiSliderFlags_AlwaysClamp))
 		{
 			(*Selectiter)->Set_LightConstData_AndUpdateBuffer(tConstLightData);

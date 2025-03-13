@@ -16,7 +16,7 @@ CActor::CActor(const CActor& _Prototype)
 	, m_OffsetMatrix(_Prototype.m_OffsetMatrix)
 	, m_eActorType(_Prototype.m_eActorType)
 {
-#ifdef _DEBUG
+#ifdef NDEBUG
 	m_pInputLayout = _Prototype.m_pInputLayout;
 	m_pBatch = _Prototype.m_pBatch;
 	m_pEffect = _Prototype.m_pEffect;
@@ -27,7 +27,7 @@ CActor::CActor(const CActor& _Prototype)
 HRESULT CActor::Initialize_Prototype()
 {
 	
-#ifdef _DEBUG
+#ifdef NDEBUG
 	m_pBatch = new PrimitiveBatch<VertexPositionColor>(m_pContext);
 	m_pEffect = new BasicEffect(m_pDevice);
 
@@ -101,12 +101,12 @@ void CActor::Update(_float _fTimeDelta)
 
 void CActor::Late_Update(_float _fTimeDelta)
 {
-//#ifdef _DEBUG
+//#ifdef NDEBUG
 //	m_pGameInstance->Add_DebugComponent(this);
 //#endif // _DEBUG
 
 }
-#ifdef _DEBUG
+#ifdef NDEBUG
 HRESULT CActor::Render()
 {
 	if (false == m_isActive)
@@ -431,7 +431,7 @@ HRESULT CActor::Add_Shape(const SHAPE_DATA& _ShapeData)
 	if (true == _ShapeData.isSceneQuery)
 		ShapeFlags |= PxShapeFlag::eSCENE_QUERY_SHAPE;
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 	if (true == _ShapeData.isVisual)
 		ShapeFlags |= PxShapeFlag::eVISUALIZATION;
 #endif // _DEBUG
@@ -864,7 +864,7 @@ HRESULT CActor::Ready_Shapes(const vector<SHAPE_DATA>& _ShapeDatas)
 //        pShape->userData = pShapeUserData;
 //        m_pGameInstance->Add_ShapeUserData(pShapeUserData);
 //        m_pActor->attachShape(*pShape);
-//#ifdef _DEBUG
+//#ifdef NDEBUG
 //        if (true == _ShapeDatas[i].isTrigger)
 //        {
 //            m_pTriggerShapes.push_back(pShape);
@@ -882,7 +882,7 @@ HRESULT CActor::Ready_Shapes(const vector<SHAPE_DATA>& _ShapeDatas)
 
 void CActor::Free()
 {
-#ifdef _DEBUG
+#ifdef NDEBUG
 
 	Safe_Release(m_pInputLayout);
 

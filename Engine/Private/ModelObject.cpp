@@ -88,7 +88,7 @@ HRESULT CModelObject::Render_WorldPosMap(const _wstring& _strCopyRTTag, const _w
 HRESULT CModelObject::Render()
 {
 
-#ifdef _DEBUG
+#ifdef NDEBUG
     if (m_iInstanceID == 90)
     {
         int a = 0;
@@ -602,7 +602,7 @@ void CModelObject::Free()
     __super::Free();
 }
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 
 HRESULT CModelObject::Imgui_Render_ObjectInfos()
 {

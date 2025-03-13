@@ -20,7 +20,7 @@ public:
 	HRESULT						Initialize(void* _pArg) override;
 	void						Update(_float _fTimeDelta) override;
 	void						Late_Update(_float _fTimeDelta) override;
-#ifdef _DEBUG
+#ifdef NDEBUG
 
 	HRESULT						Render(_float2 _fRenderTargetSize) override;
 

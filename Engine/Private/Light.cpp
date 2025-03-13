@@ -40,7 +40,7 @@ HRESULT CLight::Initialize(const CONST_LIGHT& _LightDesc)
 	if (FAILED(m_pGameInstance->CreateConstBuffer(m_tLightConstData, D3D11_USAGE_DYNAMIC, &m_pLightConstbuffer)))
 		return E_FAIL;
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 	m_pBatch = new PrimitiveBatch<VertexPositionColor>(m_pContext);
 	m_pEffect = new BasicEffect(m_pDevice);
 
@@ -96,7 +96,7 @@ HRESULT CLight::Render_Light(CShader* _pShader, CVIBuffer_Rect* _pVIBuffer)
 	_pVIBuffer->Render();
 
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 	m_pGameInstance->Add_BaseDebug(this);
 #endif // _DEBUG
 
@@ -109,7 +109,7 @@ void CLight::Update(_float _fTimeDelta)
 
 }
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 
 HRESULT CLight::Render_Base_Debug()
 {
@@ -146,7 +146,7 @@ HRESULT CLight::Compute_ViewProjMatrix()
 	if (LIGHT_TYPE::DIRECTOINAL == m_eType)
 	{
 		_vector vLightDir = XMVector3Normalize(XMLoadFloat3(&m_tLightConstData.vDirection));
-		_vector vEye = vLightDir * -1.0f * 70.f;
+		_vector vEye = vLightDir * -1.0f * m_fDirectionalLightLength;
 		XMStoreFloat3(&m_tLightConstData.vPosition, vEye);
 		_vector vAt = vEye + vLightDir;
 		_vector vWorldUp = { 0.0f, 1.0f, 0.0f, 0.0f };
@@ -268,7 +268,7 @@ CLight* CLight::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, c
 
 void CLight::Free()
 {
-#ifdef _DEBUG
+#ifdef NDEBUG
 	Safe_Release(m_pInputLayout);
 	Safe_Delete(m_pBatch);
 	Safe_Delete(m_pEffect);

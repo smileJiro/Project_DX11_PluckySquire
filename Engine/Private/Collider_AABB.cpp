@@ -62,12 +62,12 @@ void CCollider_AABB::Late_Update(_float _fTimeDelta)
     Update_OwnerTransform();
 
     __super::Late_Update(_fTimeDelta); // Collision_Manager¿¡ µî·Ï
-//#ifdef _DEBUG
+//#ifdef NDEBUG
 //    m_pGameInstance->Add_DebugComponent(this);
 //#endif // _DEBUG
 }
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 HRESULT CCollider_AABB::Render(_float2 _fRenderTargetSize)
 {
     if (COORDINATE_2D != m_pOwner->Get_CurCoord())
