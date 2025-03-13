@@ -413,6 +413,8 @@ void CGameEventExecuter_C4::Chapter4_3D_Out_01(_float _fTimeDelta)
 	{
 		if (Is_Start())
 		{
+			CPlayer* pPlayer = Get_Player();
+			pPlayer->Set_BlockPlayerInput(true);
 		// 1. 카메라 위치 박스로 세팅. target을 바꿔버리면 위화감이 좀 잇을거같으니 걍 암오프셋만 좀 바까주자.
 			CCamera_Manager::GetInstance()->Set_ResetData(CCamera_Manager::TARGET_2D);
 
@@ -438,11 +440,32 @@ void CGameEventExecuter_C4::Chapter4_3D_Out_01(_float _fTimeDelta)
 
 		if (Is_Start())
 		{
+			CSection_2D* pSection = static_cast<CSection_2D*>(SECTION_MGR->Find_Section(L"Chapter4_P0708"));
+
+			auto pLayer = pSection->Get_Section_Layer(SECTION_PLAYMAP_2D_RENDERGROUP::SECTION_2D_PLAYMAP_BACKGROUND);
+
+			const auto& Objects = pLayer->Get_GameObjects();
+
+			auto iter = find_if(Objects.begin(), Objects.end(), [](CGameObject* pGameObject) {
+				auto pActionObj = dynamic_cast<C2DMapActionObject*>(pGameObject);
+
+				//섹션에 있는 액션맵오브젝트 남김없이 액션 실행(애니메이션 재생!)
+				if (nullptr != pActionObj)
+				{
+					if (C2DMapActionObject::ACTIVE_TYPE_ACTIONANIM == pActionObj->Get_ActionType())
+					return true;
+				}
+				return false;
+
+				});
+			if (Objects.end() != iter)
+				CCamera_Manager::GetInstance()->Change_CameraTarget(*iter);
+
 			// 카메라 위치 2로 세팅. 나무 올리기 위함.
-			CCamera_Manager::GetInstance()->Start_Changing_AtOffset(CCamera_Manager::TARGET_2D,
-				0.5f,
-				XMVectorSet(-0.5f, 0.f, -0.5f, 0.f),
-				EASE_IN_OUT);
+			//CCamera_Manager::GetInstance()->Start_Changing_AtOffset(CCamera_Manager::TARGET_2D,
+			//	0.5f,
+			//	XMVectorSet(-0.5f, 0.f, -0.5f, 0.f),
+			//	EASE_IN_OUT);
 		}
 
 		Next_Step_Over(0.5f);
@@ -455,7 +478,7 @@ void CGameEventExecuter_C4::Chapter4_3D_Out_01(_float _fTimeDelta)
 		{
 		CSection_2D* pSection = static_cast<CSection_2D*>(SECTION_MGR->Find_Section(L"Chapter4_P0708"));
 
-		auto pLayer = pSection->Get_Section_Layer(SECTION_PLAYMAP_2D_RENDERGROUP::SECTION_2D_PLAYMAP_OBJECT);
+		auto pLayer = pSection->Get_Section_Layer(SECTION_PLAYMAP_2D_RENDERGROUP::SECTION_2D_PLAYMAP_BACKGROUND);
 
 		const auto& Objects = pLayer->Get_GameObjects();
 
@@ -487,12 +510,20 @@ void CGameEventExecuter_C4::Chapter4_3D_Out_01(_float _fTimeDelta)
 		if (Is_Start())
 		{
 		// 카메라 원복
+		CPlayer* pPlayer = Get_Player();
+
+		CCamera_Manager::GetInstance()->Change_CameraTarget(pPlayer);
 		CCamera_Manager::GetInstance()->Start_ResetArm_To_SettingPoint(CCamera_Manager::TARGET_2D, 1.f);
 		}
 		Next_Step_Over(1.f);
 	}
 	else
+	{
+		CPlayer* pPlayer = Get_Player();
+
+		pPlayer->Set_BlockPlayerInput(false);
 		GameEvent_End();
+	}
 
 }
 

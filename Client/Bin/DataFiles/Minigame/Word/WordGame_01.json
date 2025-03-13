@@ -336,6 +336,7 @@
       {
         "Controller_Index": 0,
         "Text": "## 벌레가 길을\n막고 있었습니다",
+        "FadeIn": false,
         "Init_Word_Type": [ 1 ],
         "Position": [
           0.0,
@@ -362,6 +363,7 @@
       {
         "Controller_Index": 2,
         "Text": "## 개구리가\n벌레를 바라보았습니다",
+        "FadeIn": false,
         "Init_Word_Type": [ 2 ],
         "Position": [
           -627.0,

@@ -531,19 +531,7 @@ void CPlayer::Enter_Section(const _wstring _strIncludeSectionName)
     /* еб©У : */
     __super::Enter_Section(_strIncludeSectionName);
     if (Is_CarryingObject())
-    {
-        _int eCoord = m_pCarryingObject->Get_CurCoord();
-        eCoord ^= 1;
-        m_pCarryingObject->Change_Coordinate((COORDINATE)eCoord);
-        if (COORDINATE_2D == eCoord)
-        {
-            CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(m_strSectionName, m_pCarryingObject);
-        }
-        else
-        {
-            CSection_Manager::GetInstance()->Remove_GameObject_FromSectionLayer(m_strSectionName, m_pCarryingObject);
-        }
-    }
+            CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(_strIncludeSectionName, m_pCarryingObject);
     
 
 
@@ -578,20 +566,7 @@ void CPlayer::Exit_Section(const _wstring _strIncludeSectionName)
 {
     __super::Exit_Section(_strIncludeSectionName);
     if (Is_CarryingObject())
-    {
-        _int eCoord =  m_pCarryingObject->Get_CurCoord();
-        eCoord ^= 1;
-        m_pCarryingObject->Change_Coordinate((COORDINATE)eCoord);
-        if (COORDINATE_2D == eCoord)
-        {
-            CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(m_strSectionName, m_pCarryingObject);
-        }
-        else
-        {
-            CSection_Manager::GetInstance()->Remove_GameObject_FromSectionLayer(m_strSectionName, m_pCarryingObject);
-        }
-
-    }
+            CSection_Manager::GetInstance()->Remove_GameObject_FromSectionLayer(_strIncludeSectionName, m_pCarryingObject);
     if (Is_ZetPackMode())
         Equip_Part(PLAYER_PART_ZETPACK);
 }
@@ -1126,6 +1101,14 @@ void CPlayer::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
 
 HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition)
 {
+
+    if (Is_CarryingObject())
+    {
+        _int eCoord = m_pCarryingObject->Get_CurCoord();
+        eCoord ^= 1;
+        m_pCarryingObject->Change_Coordinate((COORDINATE)eCoord);
+    }
+
     if (FAILED(__super::Change_Coordinate(_eCoordinate, _pNewPosition)))
         return E_FAIL;
     m_pInteractableObject = nullptr;
