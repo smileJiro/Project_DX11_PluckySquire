@@ -22,4 +22,10 @@ namespace Client
 		_float	fDummy;
 
 	} FRESNEL_INFO;
+
+	typedef struct tagColorsInfo
+	{
+		_float4 vDiffuseColor = { 1.f, 1.f, 1.f, 1.f };
+		_float4 vBloomColor = { 1.f, 1.f ,1.f, 1.f };
+	} COLORS_INFO;
 }

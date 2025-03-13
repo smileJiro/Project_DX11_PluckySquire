@@ -3,6 +3,7 @@
 #include "Pooling_Manager.h"
 #include "Player.h"
 #include "GameInstance.h"
+#include "Effect_Manager.h"
 
 CPlayerRifle::CPlayerRifle(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CModelObject(_pDevice, _pContext)
@@ -25,7 +26,7 @@ HRESULT CPlayerRifle::Initialize(void* _pArg)
 	PLAYER_RIFLE_DESC* pDesc = static_cast<PLAYER_RIFLE_DESC*>(_pArg);
 	m_pPlayer = pDesc->pPlayer;
 	pDesc->eStartCoord = COORDINATE_3D;
-	pDesc->iCurLevelID = m_iCurLevelID;
+	//pDesc->iCurLevelID = m_iCurLevelID;
 	pDesc->isCoordChangeEnable =false;
 
 	pDesc->iModelPrototypeLevelID_3D = LEVEL_STATIC;
@@ -37,20 +38,65 @@ HRESULT CPlayerRifle::Initialize(void* _pArg)
 
 	if (FAILED(__super::Initialize(_pArg)))
 		return E_FAIL;
+
+	// Effect »ý¼º.
+	CEffect_System::EFFECT_SYSTEM_DESC EffectDesc = {};
+	EffectDesc.eStartCoord = COORDINATE_3D;
+	EffectDesc.isCoordChangeEnable = false;
+	EffectDesc.iSpriteShaderLevel = LEVEL_STATIC;
+	EffectDesc.szSpriteShaderTags = L"Prototype_Component_Shader_VtxPointInstance";
+	EffectDesc.iEffectShaderLevel = LEVEL_STATIC;
+	EffectDesc.szEffectShaderTags = L"Prototype_Component_Shader_VtxMeshEffect";
+	EffectDesc.szSpriteComputeShaderTag = L"Prototype_Component_Compute_Shader_SpriteInstance";
+
+	m_pShotEffect = static_cast<CEffect_System*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_iCurLevelID, TEXT("CyberShot.json"), &EffectDesc));
+	//if (nullptr == m_pShotEffect)
+	//	return E_FAIL;
+	if (nullptr != m_pShotEffect)
+	{
+		m_pShotEffect->Set_SpawnMatrix(&m_WorldMatrices[COORDINATE_3D]);
+		m_pShotEffect->Set_Position(XMVectorSet(0.08f, 0.f, 0.5f, 1.f));
+	}
+
 	return S_OK;
 }
 
 void CPlayerRifle::Update(_float _fTimeDelta)
 {
 	m_fShootTimeAcc += _fTimeDelta;
+
 	if (m_fShootTimeAcc > m_fShhotDelay)
+	{
 		m_fShootTimeAcc = m_fShhotDelay;
+	}
+	if (nullptr != m_pShotEffect)
+	{
+		m_fAccEffectDelay += _fTimeDelta;
+
+		if (m_isEffect && 0.25f <= m_fAccEffectDelay)
+		{
+			m_fAccEffectDelay = 0.f;
+			m_isEffect = false;
+
+			m_pShotEffect->Stop_Spawn(0.15f);
+		}
+
+		m_pShotEffect->Update(_fTimeDelta);
+	}
+	
 	__super::Update(_fTimeDelta);
+}
+
+void CPlayerRifle::Late_Update(_float _fTimeDelta)
+{
+	__super::Late_Update(_fTimeDelta);
+
+	if (nullptr != m_pShotEffect)
+		m_pShotEffect->Late_Update(_fTimeDelta);
 }
 
 void CPlayerRifle::Shoot()
 {
-
 	if (m_fShhotDelay <= m_fShootTimeAcc)
 	{
 		m_fShootTimeAcc = 0.f;
@@ -73,6 +119,18 @@ void CPlayerRifle::Shoot()
 		_float4 vRot; XMStoreFloat4(&vRot, XMQuaternionRotationAxis(vAxis, fAngle));
 
 		m_pPoolMgr->Create_Object(TEXT("Pooling_Projectile_CyberPlayerBullet"), COORDINATE_3D, &vPos, &vRot);
+
+		// TEMP
+		//CEffect_Manager::GetInstance()->Active_EffectPosition(TEXT("CyberShot"), false, vFirePosition);
+		//CEffect_Manager::GetInstance()->Active_Effect(TEXT("CyberShot"), true, &m_WorldMatrices[COORDINATE_3D]);
+		//CEffect_Manager::GetInstance()->Stop_Spawn(TEXT("CyberShot"), 0.5f);
+		
+		if (nullptr != m_pShotEffect)
+		{
+			m_isEffect = true;
+			m_pShotEffect->Active_Effect(false);
+		}
+
 	}
 }
 
@@ -100,5 +158,7 @@ CGameObject* CPlayerRifle::Clone(void* _pArg)
 
 void CPlayerRifle::Free()
 {
+	Safe_Release(m_pShotEffect);
+
 	__super::Free();
 }

@@ -33,6 +33,7 @@ public:
 		STATE_IDLE,
 		STATE_ASCEND,
 		STATE_DESCEND,
+		STATE_CYBER,
 		ZET_STATE_LAST
 	};
 public:
@@ -93,6 +94,9 @@ private:
 
 
 	ZET_STATE m_eState = ZET_STATE::STATE_IDLE;
+
+	// Cyber Zip effect
+	class CEffect_System* m_pCyberZipEffect = { nullptr };
 
 private: /* ÅÂ¿õ Ãß°¡ Target Light */
 	HRESULT Ready_TargetLight();

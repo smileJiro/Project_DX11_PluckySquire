@@ -293,10 +293,6 @@ void CPip_Player::Dir_Move(_float _fTimeDelta)
 
 void CPip_Player::Key_Input(_float _fTimeDelta)
 {
-#ifdef _DEBUG
-	if (KEY_DOWN(KEY::W) || KEY_DOWN(KEY::S) || KEY_DOWN(KEY::A) || KEY_DOWN(KEY::D))
-		cout << m_pSneakGameManager->Get_InputTime() << endl;
-#endif
 	if (false == (m_pSneakGameManager->Is_InputTime(_fTimeDelta)) || F_DIRECTION::F_DIR_LAST != m_eInputDirection)/* || MOVE == m_eCurAction*/
 		return;
 

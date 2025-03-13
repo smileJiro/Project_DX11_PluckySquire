@@ -40,7 +40,7 @@ public:
 	virtual HRESULT				Render() override;
 
 public:
-	void						Change_Mode(_uint _iItemMode) { m_iItemMode = _iItemMode; }
+	void						Change_Mode(_uint _iItemMode);
 
 private:
 	CShader*					m_pShaderCom = { nullptr };

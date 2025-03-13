@@ -1,9 +1,8 @@
 #pragma once
 #include "ContainerObject.h"
-BEGIN(Engine)
-class CModelObject;
-END
+
 BEGIN(Client)
+class CFresnelModelObject;
 class CCyberPlayerBullet :
     public CContainerObject
 {
@@ -28,12 +27,16 @@ public:
 public:
 	virtual void OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)override;
 private:
-	CModelObject* m_pModel = nullptr;
+	CFresnelModelObject* m_pModel = nullptr;
 	_vector m_vLookDIr = { 0.f,0.f,0.f,0.f };
 	_float m_fLifeTime = 10.f;
 	_float m_fLifeTimeAcc = 0.f;
 	_int m_iDamg = 1;
 	_float m_fSpeed = 30.f;
+
+	ID3D11Buffer* m_pFresnelBuffer = { nullptr };
+	ID3D11Buffer* m_pColorBuffer = { nullptr };
+
 public:
 	static CCyberPlayerBullet* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject* Clone(void* _pArg) override;

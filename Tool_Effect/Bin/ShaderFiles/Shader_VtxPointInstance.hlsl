@@ -228,7 +228,38 @@ VS_ROUT VS_SRV_RMAIN(uint iVertexID : SV_VertexID)
     return Out;
 }
 
+VS_ROUT VS_SRV_RMAIN2(uint iVertexID : SV_VertexID)
+{
+    VS_ROUT Out;
+    
+    float fAlive = step(0.f, Particles[iVertexID].vLifeTime.y) * step(Particles[iVertexID].vLifeTime.y, Particles[iVertexID].vLifeTime.x);
 
+    float fScaleX = length(Particles[iVertexID].InstancingMatrix._11_12_13) * Particles[iVertexID].fAlive;
+    float fScaleY = length(Particles[iVertexID].InstancingMatrix._21_22_23) * Particles[iVertexID].fAlive;
+   
+    matrix FinalMatrix = float4x4(Particles[iVertexID].InstancingMatrix._11_12_13_14,
+                                    Particles[iVertexID].InstancingMatrix._21_22_23_24,
+                                    Particles[iVertexID].InstancingMatrix._31_32_33_34,
+                                    Particles[iVertexID].InstancingMatrix._41_42_43_44);
+    
+    vector vPostion = mul(float4(0.f, 0.f, 0.f, 1.0f), FinalMatrix);
+
+    Out.vPosition = mul(vPostion, g_WorldMatrix) * (1.f - g_fAbsolute) + g_fAbsolute * vPostion;
+    Out.vPSize = float2(fScaleX, fScaleY);
+    Out.vLifeTime = Particles[iVertexID].vLifeTime;
+    Out.vTexcoord = Particles[iVertexID].vTexcoord;
+    Out.vColor = Particles[iVertexID].vColor;
+    
+    float fScaleVelocity = length(Particles[iVertexID].vVelocity);
+    
+    Out.vVelocity = normalize(mul(float4(Particles[iVertexID].vVelocity, 0.f), g_WorldMatrix)) * fScaleVelocity;
+    //Out.vUp = mul((Particles[iVertexID].InstancingMatrix._21_22_23_24), g_WorldMatrix) * (1.f - g_fAbsolute)
+    //+ g_fAbsolute * Particles[iVertexID].InstancingMatrix._21_22_23_24;
+    Out.vUp = mul(Particles[iVertexID].InstancingMatrix._21_22_23_24, g_WorldMatrix);
+    Out.fRandom = Particles[iVertexID].fRandom;
+
+    return Out;
+}
 
 // Rendering PipeLine : Vertex Shader // 
 VS_OUT VS_MAIN(VS_IN In)
@@ -306,6 +337,8 @@ VS_ROUT VS_RMAIN(VS_IN In)
     
     return Out;
 }
+
+
 
 //GS_MAIN(triangle GS_IN In[3])
 //GS_MAIN(line GS_IN In[2])
@@ -402,12 +435,10 @@ void GS_NEWBILLBOARD(point GS_RIN In[1], inout TriangleStream<GS_OUT> OutStream)
     vector vLookDir = g_vLook;
     float3 vRightDir = normalize(cross(normalize(In[0].vUp.xyz), vLookDir.xyz));
     float3 vUpDir = normalize(cross(vLookDir.xyz, vRightDir));
-    
-    float fDot = dot(vUpDir, normalize(In[0].vUp.xyz));
-    
+        
     float3 vCenter = In[0].vPosition.xyz;
-    float3 vRightDist = vRightDir * In[0].vPSize.x * 0.5f * sqrt(1.f - fDot * fDot);
-    float3 vUpDist = vUpDir * In[0].vPSize.y * 0.5f * abs(fDot);
+    float3 vRightDist = vRightDir * In[0].vPSize.x * 0.5f;
+    float3 vUpDist = vUpDir * In[0].vPSize.y;
     
     matrix matVP = mul(g_ViewMatrix, g_ProjMatrix);
         
@@ -430,7 +461,7 @@ void GS_NEWBILLBOARD(point GS_RIN In[1], inout TriangleStream<GS_OUT> OutStream)
     //Out[1].fWeight = Out[1].vPosition.w;
 
     // 정점 기준 좌하단 (카메라가 바라보는 기준 우하단.)
-    Out[2].vPosition = float4(vCenter - vRightDist - vUpDist, 1.0f);
+    Out[2].vPosition = float4(vCenter - vRightDist, 1.0f);
     Out[2].vPosition = mul(Out[2].vPosition, matVP);
     Out[2].vTexcoord = float2(In[0].vTexcoord.z, In[0].vTexcoord.w);
     Out[2].vLifeTime = In[0].vLifeTime;
@@ -439,7 +470,7 @@ void GS_NEWBILLBOARD(point GS_RIN In[1], inout TriangleStream<GS_OUT> OutStream)
     //Out[2].fWeight = Out[2].vPosition.w;
 
     // 정점 기준 우하단 (카메라가 바라보는 기준 좌하단.)
-    Out[3].vPosition = float4(vCenter + vRightDist - vUpDist, 1.0f);
+    Out[3].vPosition = float4(vCenter + vRightDist, 1.0f);
     Out[3].vPosition = mul(Out[3].vPosition, matVP);
     Out[3].vTexcoord = float2(In[0].vTexcoord.x, In[0].vTexcoord.w);
     Out[3].vLifeTime = In[0].vLifeTime;
@@ -980,7 +1011,7 @@ technique11 DefaultTechnique
         SetBlendState(BS_WeightAccumulate, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
         //SetBlendState(BS_WeightAccumulate, float4(0.f, 0, f, 0.f, 0.f), 0xffffffff);
 
-        VertexShader = compile vs_5_0 VS_SRV_RMAIN();
+        VertexShader = compile vs_5_0 VS_SRV_RMAIN2();
         GeometryShader = compile gs_5_0 GS_NEWBILLBOARD();
         PixelShader = compile ps_5_0 PS_WEIGHT_BLENDED();
         ComputeShader = NULL;
@@ -994,7 +1025,7 @@ technique11 DefaultTechnique
         SetBlendState(BS_WeightAccumulate, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
         //SetBlendState(BS_WeightAccumulate, float4(0.f, 0, f, 0.f, 0.f), 0xffffffff);
 
-        VertexShader = compile vs_5_0 VS_SRV_RMAIN();
+        VertexShader = compile vs_5_0 VS_SRV_RMAIN2();
         GeometryShader = compile gs_5_0 GS_NEWBILLBOARD();
         PixelShader = compile ps_5_0 PS_WEIGHT_BLENDEDBLOOM();
         ComputeShader = NULL;
@@ -1103,6 +1134,19 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_SRV_MAIN();
         GeometryShader = compile gs_5_0 GS_MAIN();
         PixelShader = compile ps_5_0 PS_FIRE();
+        ComputeShader = NULL;
+    }
+
+    pass ROTATIONBILL_SUBBLOOM // 12
+    {
+        SetRasterizerState(RS_Cull_None);
+        SetDepthStencilState(DSS_WriteNone, 0);
+        SetBlendState(BS_WeightAccumulate, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        //SetBlendState(BS_WeightAccumulate, float4(0.f, 0, f, 0.f, 0.f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_SRV_RMAIN2();
+        GeometryShader = compile gs_5_0 GS_NEWBILLBOARD();
+        PixelShader = compile ps_5_0 PS_WEIGHT_BLENDEDSUBCOLORBLOOM();
         ComputeShader = NULL;
     }
 
