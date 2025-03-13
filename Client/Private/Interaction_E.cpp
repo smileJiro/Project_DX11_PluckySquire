@@ -183,6 +183,8 @@ HRESULT CInteraction_E::Render()
 	if (nullptr == pInteractableObject)
 		return S_OK;
 
+	
+
 
 	if (true == m_isRender /* && COORDINATE_2D == Uimgr->Get_Player()->Get_CurCoord()*/)
 	{
@@ -561,6 +563,10 @@ void CInteraction_E::Display_Text(_float3 _vPos, _float2 _vRTSize, IInteractable
 	case INTERACT_ID::ZIPLINE:
 		m_strDisplayText = TEXT("타기");
 		break;
+		
+	case INTERACT_ID::PALMDECAL:
+		m_strDisplayText = TEXT("지우기");
+		break;
 
 
 
@@ -634,7 +640,11 @@ void CInteraction_E::Display_Text(_float3 _vPos, _float2 _vRTSize, IInteractable
 		//else
 		if (m_strDisplayText == TEXT("들어가기"))
 		{
-			m_pGameInstance->Render_Font(TEXT("Font18"), m_strDisplayText.c_str(), _float2(vTextPos.x - g_iWinSizeY / 80.f, vTextPos.y - g_iWinSizeY / 80.f), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
+			m_pGameInstance->Render_Font(TEXT("Font18"), m_strDisplayText.c_str(), _float2(vTextPos.x - g_iWinSizeX / 180.f, vTextPos.y - g_iWinSizeY / 80.f), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
+		}
+		else if (m_strDisplayText == TEXT("지우기"))
+		{
+			m_pGameInstance->Render_Font(TEXT("Font18"), m_strDisplayText.c_str(), _float2(vTextPos.x - g_iWinSizeX / 200.f, vTextPos.y - g_iWinSizeY / 80.f), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
 		}
 		else
 			m_pGameInstance->Render_Font(TEXT("Font18"), m_strDisplayText.c_str(), _float2(vTextPos.x, vTextPos.y - g_iWinSizeY / 80.f), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));

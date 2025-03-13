@@ -7,14 +7,18 @@
 
 void CEvictedSword::Interact(CPlayer* _pUser)
 {
-    _pUser->Set_Position(Get_FinalPosition());
+    _vector vPos = Get_FinalPosition();
+	vPos.m128_f32[0]+= m_vSwordOffset.x;
+	vPos.m128_f32[1] += m_vSwordOffset.y;
+
+    _pUser->Set_Position(vPos);
     _pUser->RetrieveSword();
 	Set_Active(false); 
 }
 
 _bool CEvictedSword::Is_Interactable(CPlayer* _pUser)
 {
-	return Get_Distance(COORDINATE_2D, _pUser) < 30.f;
+	return true;
 }
 
 _float CEvictedSword::Get_Distance(COORDINATE _eCoord, CPlayer* _pUser)
@@ -60,9 +64,9 @@ HRESULT CEvictedSword::Initialize(void* _pArg)
     /* Test 2D Collider */
     CCollider_Circle::COLLIDER_CIRCLE_DESC CircleDesc = {};
     CircleDesc.pOwner = this;
-    CircleDesc.fRadius = 100.f;
+    CircleDesc.fRadius = 50.f;
     CircleDesc.vScale = { 1.0f, 1.0f };
-    CircleDesc.vOffsetPosition = { 0.f, CircleDesc.fRadius * 0.5f };
+    CircleDesc.vOffsetPosition = { m_vSwordOffset.x, CircleDesc.fRadius * 0.5f + m_vSwordOffset .y};
     CircleDesc.isBlock = false;
     CircleDesc.isTrigger = true;
     CircleDesc.iCollisionGroupID = OBJECT_GROUP::INTERACTION_OBEJCT;

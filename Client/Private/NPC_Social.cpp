@@ -44,6 +44,7 @@ HRESULT CNPC_Social::Initialize(void* _pArg)
 	m_fNPCCollsionHalfHeight = pDesc->fCollisionHalfHeight;
 	m_fNPCCollisionRadius = pDesc->fCollisionRadius;
 	m_fNPCTriggerRadius = pDesc->fTriggerRadius;
+	m_strNPCName = pDesc->strNPCName;
 
 
 	

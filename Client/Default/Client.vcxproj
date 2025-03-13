@@ -298,7 +298,7 @@
     <ClInclude Include="..\public\Sneak_Troop.h" />
     <ClInclude Include="..\Public\JellyKing.h" />
     <ClInclude Include="..\Public\StampKey_1.h" />
-    <ClInclude Include="..\Public\StampKey_Q.h" />
+    <ClInclude Include="..\Public\Interaction_Key.h" />
     <ClInclude Include="..\public\TurnBookEffect.h" />
     <ClInclude Include="..\public\ZetPack_Child.h" />
     <ClInclude Include="..\Public\ZetPack_Father.h" />
@@ -659,7 +659,7 @@
     <ClCompile Include="..\private\Sneak_Troop.cpp" />
     <ClCompile Include="..\Private\JellyKing.cpp" />
     <ClCompile Include="..\Private\StampKey_1.cpp" />
-    <ClCompile Include="..\Private\StampKey_Q.cpp" />
+    <ClCompile Include="..\Private\Interaction_Key.cpp" />
     <ClCompile Include="..\private\TurnBookEffect.cpp" />
     <ClCompile Include="..\private\ZetPack_Child.cpp" />
     <ClCompile Include="..\Private\ZetPack_Father.cpp" />

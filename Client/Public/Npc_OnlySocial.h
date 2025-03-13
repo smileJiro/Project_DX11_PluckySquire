@@ -28,6 +28,7 @@ public:
 		_float		fCollisionRadius		= { 0.f };
 		_float		fTriggerRadius			= { 0.f };
 		_float		fRotateAngle			= { 0.f };
+		wstring		strNPCName				= { TEXT("")};
 
 	};
 

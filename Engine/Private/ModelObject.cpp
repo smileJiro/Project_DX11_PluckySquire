@@ -352,7 +352,9 @@ void CModelObject::Action_Fade(_float _fTimeDelta)
 
 void CModelObject::Update(_float _fTimeDelta)
 {
-
+    if (m_iInstanceID == 889) {
+        int i = 0;
+    }
     if (m_pControllerModel)
     {
         if(m_bPlayingAnim)

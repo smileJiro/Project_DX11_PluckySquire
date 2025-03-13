@@ -38,6 +38,8 @@
 #include "StopStamp_UI.h"
 #include "BombStamp_UI.h"
 #include "ArrowForStamp.h"
+#include "StampKey_1.h"
+#include "Interaction_Key.h"
 #include "ESC_HeartPoint.h"
 #include "UI_Interaction_Book.h"
 #include "ShopPanel_BG_New.h"
@@ -96,6 +98,7 @@
 #include "TestTerrain.h"
 #include "RabbitLunch.h"
 #include "Bomb.h"
+#include "BombableBox.h"
 #include "TiltSwapPusher.h"
 #include "Key.h"
 
@@ -490,6 +493,14 @@ HRESULT CLoader::Loading_Level_Static()
 
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Interact_Book"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Static/KeyIcon/Keyboard_Book_%d.dds"), 2))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Interact_Key"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Static/KeyIcon/Interaction_Key_%d.dds"), 2))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_StampChange"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Static/KeyIcon/keyboard_Stamp_%d.dds"), 2))))
 		return E_FAIL;
 
 #pragma endregion
@@ -1316,6 +1327,12 @@ HRESULT CLoader::Loading_Level_Chapter_4(LEVEL_ID _eLoadLevelID)
 			return E_FAIL;
 
 		/* UI */
+		/* For. Prototype_GameObject_2DMap_BombableBox */
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_2DMap_BombableBox"),
+			CBombableBox::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		/* UI */
 		if (FAILED(UI_Object_Load(_eLoadLevelID)))
 			return E_FAIL;
 
@@ -2115,12 +2132,15 @@ HRESULT CLoader::Model_Load(LEVEL_ID _eResourceLevelID, LEVEL_ID _eLoadLevelID)
 	case LEVEL_CHAPTER_2:
 		str3DMapProtoJsonName = L"Chapter_02_Play_Desk.json";
 		if (FAILED(Load_Models_FromJson(_eLoadLevelID, MAP_3D_DEFAULT_PATH, L"Chapter_Intro.json", matPretransform, true)))
-			return E_FAIL;
+			return E_FAIL;		
+
 		strChapterName += L"Chapter2";
 		break;
 	case LEVEL_CHAPTER_4:
 		str3DMapProtoJsonName = L"Chapter_04_Play_Desk.json";
 		strChapterName += L"Chapter4";
+		if (FAILED(Load_Models_FromJson(_eLoadLevelID, MAP_3D_DEFAULT_PATH, L"Chapter_04_Default_Desk.json", matPretransform, true)))
+			return E_FAIL;
 		break;
 	case LEVEL_CHAPTER_6:
 		str3DMapProtoJsonName = L"Chapter_06_Play_Desk.json";
@@ -2343,6 +2363,14 @@ HRESULT CLoader::UI_Object_Load(LEVEL_ID _eLevelID)
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_GameObject_ArrowForStamp"),
 		CArrowForStamp::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_GameObject_StampKey_Q"),
+		CInteraction_Key::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_GameObject_StampKey_1"),
+		CStampKey_1::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_GameObject_ESCHeartPoint"),
 		ESC_HeartPoint::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
