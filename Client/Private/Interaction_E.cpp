@@ -183,6 +183,8 @@ HRESULT CInteraction_E::Render()
 	if (nullptr == pInteractableObject)
 		return S_OK;
 
+	
+
 
 	if (true == m_isRender /* && COORDINATE_2D == Uimgr->Get_Player()->Get_CurCoord()*/)
 	{
