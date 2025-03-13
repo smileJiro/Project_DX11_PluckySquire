@@ -20,6 +20,7 @@
 #include "2DMapActionObject.h"
 #include "Postit_Page.h"
 #include "CarriableObject.h"
+#include "Section_2D_PlayMap.h"
 
 #include "Zippy.h"
 #include "Room_Door.h"
@@ -101,6 +102,12 @@ void CGameEventExecuter_C2::Update(_float _fTimeDelta)
 			break;
 		case Client::CTrigger_Manager::CHAPTER2_STORYSEQUENCE:
 			Chapter2_StorySequence(_fTimeDelta);
+			break;
+		case Client::CTrigger_Manager::CHAPTER2_AFTER_OPENING_BOOK:
+			Chapter2_After_Opening_Book(_fTimeDelta);
+			break;
+		case Client::CTrigger_Manager::CHAPTER2_GOING_TO_ARTIA:
+			Chapter2_Goint_To_Artia(_fTimeDelta);
 			break;
 		default:
 			break;
@@ -596,25 +603,35 @@ void CGameEventExecuter_C2::Chapter2_Humgrump(_float _fTimeDelta)
 
 		if (COORDINATE_3D == pPlayer->Get_CurCoord())
 		{
-			/*CCamera_Target* pCamera = static_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET));
-			pCamera->Set_CameraMode(CCamera_Target::MOVE_TO_CUSTOMARM);
-
-			ARM_DATA tData = {};
-			tData.fMoveTimeAxisRight = { 3.f, 0.f };
-			tData.fRotationPerSecAxisRight = { XMConvertToRadians(-15.f), XMConvertToRadians(-1.f) };
-			tData.iRotationRatioType = EASE_IN_OUT;
-			tData.fLength = 20.f;
-			tData.fLengthTime = { 3.f, 0.f };
-			tData.iLengthRatioType = EASE_OUT;
-
-			pCamera->Add_CustomArm(tData);
-
-			pCamera->Start_Changing_AtOffset(3.f, XMVectorSet(0.f, 4.f, 0.f, 0.f), EASE_IN_OUT);*/
-
 			CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::CUTSCENE);
 			CCamera_Manager::GetInstance()->Set_NextCutSceneData(TEXT("CutScene_Humgrump"));
 
 			Next_Step(true);
+		}
+	}
+	else if (Step_Check(STEP_1)) {
+
+		if (m_fTimer >= 13.f) {
+			// Portal Active 켜기
+			CSection* pSection = CSection_Manager::GetInstance()->Find_Section(TEXT("Chapter2_P1314"));
+			static_cast<CSection_2D_PlayMap*>(pSection)->Set_PortalActive(true);
+
+			// Event Trigger 생성
+			CTriggerObject::TRIGGEROBJECT_DESC Desc = {};
+			Desc.vHalfExtents = { 10.f, 10.f, 0.f };
+			Desc.iTriggerType = (_uint)TRIGGER_TYPE::EVENT_TRIGGER;
+			Desc.szEventTag = TEXT("Chapter2_After_Opening_Book");
+			Desc.eConditionType = CTriggerObject::TRIGGER_ENTER;
+			Desc.isReusable = false; // 한 번 하고 삭제할 때
+			Desc.eStartCoord = COORDINATE_2D;
+			Desc.tTransform2DDesc.vInitialPosition = { 70.f, 130.f, 0.f };
+
+			CTrigger_Manager::GetInstance()->Create_TriggerObject(LEVEL_STATIC, LEVEL_CHAPTER_2, &Desc, pSection);
+			
+			// 기존 NPC 삭제
+
+			// 스레쉬와 바이올렛 생성
+
 
 			GameEvent_End();
 		}
@@ -1339,6 +1356,36 @@ void CGameEventExecuter_C2::Chapter2_StorySequence(_float _fTimeDelta)
 		GameEvent_End();
 	}
 		
+}
+
+void CGameEventExecuter_C2::Chapter2_After_Opening_Book(_float _fTimeDelta)
+{
+	m_fTimer += _fTimeDelta;
+
+	if (Step_Check(STEP_0)) {
+		if (m_fTimer >= 2.f) {
+			// Player Lock
+			CPlayer* pPlayer = Get_Player();
+			pPlayer->Set_BlockPlayerInput(true);
+
+			// 검 줍자는 대화 시작
+			CDialog_Manager::GetInstance()->Set_DialogId(L"Dialogue_Into_HumgrumCastle");
+			Next_Step(true);
+		}
+	}
+	if (Step_Check(STEP_1)) {
+
+		if (false == CDialog_Manager::GetInstance()->Get_DisPlayDialogue()) {
+			CPlayer* pPlayer = Get_Player();
+			pPlayer->Set_BlockPlayerInput(false);
+
+			GameEvent_End();
+		}
+	}
+}
+
+void CGameEventExecuter_C2::Chapter2_Goint_To_Artia(_float _fTimeDelta)
+{
 }
 
 
