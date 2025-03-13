@@ -38,6 +38,7 @@
 #include "StopStamp_UI.h"
 #include "BombStamp_UI.h"
 #include "ArrowForStamp.h"
+#include "Interaction_Key.h"
 #include "ESC_HeartPoint.h"
 #include "UI_Interaction_Book.h"
 #include "ShopPanel_BG_New.h"
@@ -2332,6 +2333,11 @@ HRESULT CLoader::UI_Object_Load(LEVEL_ID _eLevelID)
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_GameObject_ArrowForStamp"),
 		CArrowForStamp::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_GameObject_StampKey_Q"),
+		CInteraction_Key::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_GameObject_ESCHeartPoint"),
 		ESC_HeartPoint::Create(m_pDevice, m_pContext))))
 		return E_FAIL;

@@ -3,6 +3,7 @@
 		{
 			"strSectionid": "Chapter1_P0506",
 			"strAnimaionName": "DJ_MoonBeard",
+			"strNPCName": "DJ_MoonBeard",
 			"strCreateSection": 3,
 			"strDialogueId": "DJ_Moobeard_Dialogue_01",
 			"iStartAnimation": 0,
@@ -18,6 +19,7 @@
 		{
 			"strSectionid": "Chapter1_P0910",
 			"strAnimaionName": "Benny_Bee",
+			"strNPCName": "Benny_Bee",
 			"strCreateSection": 3,
 			"strDialogueId": "Honey_Bee_Benny_01",
 			"iStartAnimation": 0,
@@ -33,6 +35,7 @@
 		{
 			"strSectionid": "Chapter2_P1314",
 			"strAnimaionName": "C01_Humgrump",
+			"strNPCName": "Humgrump",
 			"strCreateSection": 3,
 			"strDialogueId": "C01_Humgrump_01",
 			"iStartAnimation": 2,
@@ -48,6 +51,7 @@
 		{
 			"strSectionid": "Chapter2_P1314",
 			"strAnimaionName": "Spear_Trooper",
+			"strNPCName": "Spear_Trooper0",
 			"strCreateSection": 3,
 			"iStartAnimation": 29,
 			"vPositionX": -95.7,
@@ -62,6 +66,7 @@
 		{
 			"strSectionid": "Chapter2_P1314",
 			"strAnimaionName": "Spear_Trooper",
+			"strNPCName": "Spear_Trooper1",
 			"strCreateSection": 3,
 			"strDialogueId": "",
 			"iStartAnimation": 29,
@@ -77,6 +82,7 @@
 		{
 			"strSectionid": "Chapter2_P1112",
 			"strAnimaionName": "Postit_Page",
+			"strNPCName": "PostitPage",
 			"strCreateSection": 3,
 			"strDialogueId": "Page_First_Dialog_01",
 			"iStartAnimation": 3,

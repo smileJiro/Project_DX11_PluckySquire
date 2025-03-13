@@ -290,6 +290,9 @@ void CLevel_Chapter_02::Update(_float _fTimeDelta)
 		//_wstring wsSectionKey = CSection_Manager::GetInstance()->Get_Cur_Section_Key();
 		//CSection* pSection = CSection_Manager::GetInstance()->Find_Section(wsSectionKey);
 		//CTrigger_Manager::GetInstance()->Create_TriggerObject(LEVEL_STATIC, LEVEL_CHAPTER_2, &DescA, pSection);
+
+		CModelObject* pBook = static_cast<CModelObject*>(m_pGameInstance->Get_GameObject_Ptr(m_eLevelID, TEXT("Layer_Book"), 0));
+		pBook->Switch_Animation(CBook::ANIM_ACTION_CLOSEBYHAND);
 	}
 
 	Uimgr->UI_Update();

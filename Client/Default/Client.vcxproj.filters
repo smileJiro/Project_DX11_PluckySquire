@@ -679,9 +679,6 @@
     <Filter Include="02.GameObjects\UI\00. GamePlay\01. Stamp\03. StampKeyCommand">
       <UniqueIdentifier>{115a7848-fee5-4ccf-a075-7eecfd6d3d8a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\UI\00. GamePlay\01. Stamp\03. StampKeyCommand\00. StampKey_Q">
-      <UniqueIdentifier>{ce0696e3-d547-4a38-92c8-f2701e53d999}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\UI\00. GamePlay\01. Stamp\03. StampKeyCommand\01. StampKey_1">
       <UniqueIdentifier>{e9af5f88-52ae-4f9c-af2d-98a9d8a39c52}</UniqueIdentifier>
     </Filter>
@@ -693,6 +690,9 @@
     </Filter>
     <Filter Include="05.MiniGames\Minigame_Sneak\Tile\Trap">
       <UniqueIdentifier>{60ba1fac-436c-4f94-bf84-e2e833d8a327}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UI\00. GamePlay\03. InterAction\03. Interaction_Key">
+      <UniqueIdentifier>{1f3066a6-8b75-432c-bf2e-33079187947e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1762,8 +1762,8 @@
     <ClInclude Include="..\Public\StampKey_1.h">
       <Filter>02.GameObjects\UI\00. GamePlay\01. Stamp\03. StampKeyCommand\01. StampKey_1</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\StampKey_Q.h">
-      <Filter>02.GameObjects\UI\00. GamePlay\01. Stamp\03. StampKeyCommand\00. StampKey_Q</Filter>
+    <ClInclude Include="..\Public\Interaction_Key.h">
+      <Filter>02.GameObjects\UI\00. GamePlay\03. InterAction\03. Interaction_Key</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\EvictedSword.h" />
     <ClInclude Include="..\Public\PlayerState_RetriveSword.h" />
@@ -2825,8 +2825,8 @@
     <ClCompile Include="..\Private\StampKey_1.cpp">
       <Filter>02.GameObjects\UI\00. GamePlay\01. Stamp\03. StampKeyCommand\01. StampKey_1</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\StampKey_Q.cpp">
-      <Filter>02.GameObjects\UI\00. GamePlay\01. Stamp\03. StampKeyCommand\00. StampKey_Q</Filter>
+    <ClCompile Include="..\Private\Intetaction_Key.cpp">
+      <Filter>02.GameObjects\UI\00. GamePlay\03. InterAction\03. Interaction_Key</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\EvictedSword.cpp" />
     <ClCompile Include="..\Private\PlayerState_RetriveSword.cpp" />

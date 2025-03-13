@@ -711,6 +711,18 @@ HRESULT CLevel_Chapter_04::Ready_Layer_UI(const _wstring& _strLayerTag)
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_ArrowForStamp"), m_eLevelID, _strLayerTag, &pDesc)))
 		return E_FAIL;
+
+
+
+	// -------------------------------------- //
+	pDesc.fX = g_iWinSizeX - g_iWinSizeX / 10.8f;
+	pDesc.fY = g_iWinSizeY - g_iWinSizeY / 20.f;
+	pDesc.fSizeX = 72.f;
+	pDesc.fSizeY = 72.f;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_StampKey_Q"), m_eLevelID, _strLayerTag, &pDesc)))
+		return E_FAIL;
+
 #pragma endregion STAMP UI
 
 #pragma region InterAction UI
