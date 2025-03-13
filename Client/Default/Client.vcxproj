@@ -212,6 +212,7 @@
     <ClInclude Include="..\Public\ButterGrump_RightEye.h" />
     <ClInclude Include="..\Public\ButterGrump_Shield.h" />
     <ClInclude Include="..\Public\ButterGrump_Tongue.h" />
+    <ClInclude Include="..\Public\C08_Box.h" />
     <ClInclude Include="..\Public\C6_IdleState.h" />
     <ClInclude Include="..\public\Candle.h" />
     <ClInclude Include="..\Public\CandleGame.h" />
@@ -578,6 +579,7 @@
     <ClCompile Include="..\Private\ButterGrump_RightEye.cpp" />
     <ClCompile Include="..\Private\ButterGrump_Shield.cpp" />
     <ClCompile Include="..\Private\ButterGrump_Tongue.cpp" />
+    <ClCompile Include="..\Private\C08_Box.cpp" />
     <ClCompile Include="..\Private\C6_IdleState.cpp" />
     <ClCompile Include="..\private\Candle.cpp" />
     <ClCompile Include="..\Private\CandleGame.cpp" />

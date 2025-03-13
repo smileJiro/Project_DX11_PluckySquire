@@ -1788,6 +1788,9 @@
     <ClInclude Include="..\Public\C6_IdleState.h">
       <Filter>03.Components\FSM\State\Idle</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\C08_Box.h">
+      <Filter>02.GameObjects\Interact\Carriable</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -2862,6 +2865,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\C6_IdleState.cpp">
       <Filter>03.Components\FSM\State\Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\C08_Box.cpp">
+      <Filter>02.GameObjects\Interact\Carriable</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
