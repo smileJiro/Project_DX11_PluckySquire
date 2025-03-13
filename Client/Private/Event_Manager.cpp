@@ -543,6 +543,26 @@ HRESULT CEvent_Manager::Execute_ChangeMapObject(const EVENT& _tEvent)
 		m_DeadObjectsList.push_back(pGameObject);
 		Safe_AddRef(pGameObject);
 	}
+
+	// 맵 레이어 추가했어야해서 
+	pLayer = m_pGameInstance->Find_Layer(iCurLevelID, L"Layer_Postit");
+	//if (nullptr == pLayer)
+	//{
+	//	Safe_Delete(pMapObjectFilePath);
+	//	Safe_Delete(pMapObjectLayerTag);
+	//	return E_FAIL;
+	//}
+
+	//m_isCreateFinished = false;
+	if (nullptr != pLayer)
+	{
+		for (auto& pGameObject : pLayer->Get_GameObjects())
+		{
+			pGameObject->Set_Dead();
+			m_DeadObjectsList.push_back(pGameObject);
+			Safe_AddRef(pGameObject);
+		}
+	}
 	
 	m_pMapObjectFilePath = pMapObjectFilePath;
 	m_pMapObjectLayerTag = pMapObjectLayerTag;

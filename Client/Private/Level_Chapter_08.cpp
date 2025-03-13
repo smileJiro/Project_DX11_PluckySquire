@@ -38,6 +38,7 @@
 #include "TiltSwapPusher.h"
 #include "MudPit.h"
 #include "Postit_Page.h"
+#include "Door_Yellow.h"
 
 
 #include "RayShape.h"
@@ -166,7 +167,11 @@ HRESULT CLevel_Chapter_08::Initialize(LEVEL_ID _eLevelID)
 		MSG_BOX(" Failed Ready_Layer_PortalLocker (Level_Chapter_08::Initialize)");
 		assert(nullptr);
 	}
-	
+	if (FAILED(Ready_Layer_MapGimmick(TEXT("Layer_MapGimmick"))))
+	{
+		MSG_BOX(" Failed Ready_Layer_MapGimmick (Level_Chapter_02::Initialize)");
+		assert(nullptr);
+	}
 	/* Collision Check Matrix */
 	// 그룹필터 추가 >> 중복해서 넣어도 돼 내부적으로 걸러줌 알아서 
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::MONSTER);
@@ -1274,6 +1279,7 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Effects2D(const _wstring& _strLayerTag)
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("bushburst_leaves2"), m_eLevelID, 3);
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("bushburst_dust1"), m_eLevelID, 3);
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("bushburst_dust2"), m_eLevelID, 3);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Barrel_Break"), LEVEL_STATIC, 3);
 
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Death_Burst"), LEVEL_STATIC, 3);
 
@@ -1352,6 +1358,48 @@ HRESULT CLevel_Chapter_08::Ready_Layer_PortalLocker(const _wstring& _strLayerTag
 
 	}/* PortalLocker_LayerCount 1 */
 
+
+	return S_OK;
+}
+
+HRESULT CLevel_Chapter_08::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
+{
+	CDoor_Yellow::DOOR_YELLOW_DESC Desc = {};
+	Desc.tTransform2DDesc.vInitialPosition = _float3(265.f, 306.8f, 0.f);
+	Desc.iCurLevelID = m_eLevelID;
+	Desc.isHorizontal = true;
+	Desc.eSize = CDoor_2D::MED;
+	Desc.eInitialState = CDoor_2D::CLOSED;
+	Desc.vPressurePlatePos = _float3(243.5, -113.f, 0.f);
+	Desc.strSectionTag = L"Chapter8_SKSP_02";
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorYellow"),
+		m_eLevelID, _strLayerTag, &Desc)))
+		return E_FAIL;
+
+	Desc.tTransform2DDesc.vInitialPosition = _float3(260.f, -716.8f, 0.f);
+	Desc.iCurLevelID = m_eLevelID;
+	Desc.isHorizontal = true;
+	Desc.eSize = CDoor_2D::MED;
+	Desc.eInitialState = CDoor_2D::CLOSED;
+	Desc.vPressurePlatePos = _float3(-30.5f, -786.f, 0.f);
+	Desc.strSectionTag = L"Chapter8_SKSP_02";
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorYellow"),
+		m_eLevelID, _strLayerTag, &Desc)))
+		return E_FAIL;
+	
+	Desc.tTransform2DDesc.vInitialPosition = _float3(-5.f, 1086.f, 0.f);
+	Desc.iCurLevelID = m_eLevelID;
+	Desc.isHorizontal = true;
+	Desc.eSize = CDoor_2D::MED;
+	Desc.eInitialState = CDoor_2D::CLOSED;
+	Desc.vPressurePlatePos = _float3(-280.5f, 586.f, 0.f);
+	Desc.strSectionTag = L"Chapter8_SKSP_02";
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorYellow"),
+		m_eLevelID, _strLayerTag, &Desc)))
+		return E_FAIL;
 
 	return S_OK;
 }
