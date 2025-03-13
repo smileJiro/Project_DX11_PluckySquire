@@ -33,6 +33,7 @@
 #include "PlayerState_GetItem.h"
 #include "PlayerState_TransformIn.h"
 #include "PlayerState_CyberIdle.h"
+#include "PlayerState_RetriveSword.h"
 #include "Actor_Dynamic.h"
 #include "PlayerSword.h"    
 #include "PlayerBody.h"
@@ -1602,6 +1603,11 @@ void CPlayer::Start_Invinciblity()
 	//m_pBody2DColliderCom->Set_Active(false);
 }
 
+void CPlayer::RetrieveSword()
+{
+    Set_State(RETRIVE_SWORD);
+}
+
 INTERACT_RESULT CPlayer::Try_Interact(_float _fTimeDelta)
 {
     //이미 인터렉터블 오브젝트가 있다? 
@@ -1981,6 +1987,9 @@ void CPlayer::Set_State(STATE _eState)
         break;
     case Client::CPlayer::CYBER_DASH:
         m_pStateMachine->Transition_To(new CPlayerState_CyberDash(this));
+        break;
+    case Client::CPlayer::RETRIVE_SWORD:
+        m_pStateMachine->Transition_To(new CPlayerState_RetriveSword(this));
         break;
     case Client::CPlayer::STATE_LAST:
         break;
@@ -2408,6 +2417,7 @@ void CPlayer::Key_Input(_float _fTimeDelta)
         //Add_AutoMoveCommand(tCommand);
 
         //Start_AutoMove(true);
+		Set_State(EVICT);
     }
     if (m_pActorCom->Is_Kinematic())
     {
@@ -2431,13 +2441,16 @@ void CPlayer::Key_Input(_float _fTimeDelta)
         if (STATE::STAMP == Get_CurrentStateID())
             Equip_Part(PLAYER_PART_BOMB_STMAP);
     }
-    if (KEY_DOWN(KEY::H))
+	if (KEY_PRESSING(KEY::CTRL))
     {
-        //m_pActorCom->Set_GlobalPose(_float3(-31.f, 6.56f, 22.5f));
-        //m_pActorCom->Set_GlobalPose(_float3(23.5f, 20.56f, 22.5f));
-        //m_pActorCom->Set_GlobalPose(_float3(42.f, 8.6f, 20.f));
-        //m_pActorCom->Set_GlobalPose(_float3(40.f, 0.35f, -7.f));
-        m_pActorCom->Set_GlobalPose(_float3(18.36f, 21.58f, 1.11f));
+        if (KEY_DOWN(KEY::H))
+        {
+            //m_pActorCom->Set_GlobalPose(_float3(-31.f, 6.56f, 22.5f));
+            //m_pActorCom->Set_GlobalPose(_float3(23.5f, 20.56f, 22.5f));
+            //m_pActorCom->Set_GlobalPose(_float3(42.f, 8.6f, 20.f));
+            //m_pActorCom->Set_GlobalPose(_float3(40.f, 0.35f, -7.f));
+            m_pActorCom->Set_GlobalPose(_float3(18.36f, 21.58f, 1.11f));
+        }
     }
     //if (KEY_DOWN(KEY::J))
     //{

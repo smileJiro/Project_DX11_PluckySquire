@@ -24,12 +24,29 @@ HRESULT CSpear_Soldier::Initialize_Prototype()
 
 HRESULT CSpear_Soldier::Initialize(void* _pArg)
 {
-    CSpear_Soldier::MONSTER_DESC* pDesc = static_cast<CSpear_Soldier::MONSTER_DESC*>(_pArg);
-    pDesc->eStartCoord = COORDINATE_3D;
-    pDesc->isCoordChangeEnable = false;
+    CSpear_Soldier::SPEARSOLDIER_DESC* pDesc = static_cast<CSpear_Soldier::SPEARSOLDIER_DESC*>(_pArg);
+    //pDesc->isCoordChangeEnable = true;
 
-    pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(360.f);
-    pDesc->tTransform3DDesc.fSpeedPerSec = 6.f;
+    if(false == pDesc->isCoordChangeEnable)
+    {
+        if (COORDINATE_3D == pDesc->eStartCoord)
+        {
+            pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(360.f);
+            pDesc->tTransform3DDesc.fSpeedPerSec = 6.f;
+        }
+        else
+        {
+            pDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(360.f);
+            pDesc->tTransform2DDesc.fSpeedPerSec = 80.f;
+        }
+    }
+    else
+    {
+        pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(360.f);
+        pDesc->tTransform3DDesc.fSpeedPerSec = 6.f;
+        pDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(360.f);
+        pDesc->tTransform2DDesc.fSpeedPerSec = 80.f;
+    }
 
     pDesc->fAlertRange = 5.f;
     pDesc->fChaseRange = 12.f;
@@ -46,8 +63,6 @@ HRESULT CSpear_Soldier::Initialize(void* _pArg)
     pDesc->_tStat.iMaxHP = 5;
     pDesc->_tStat.iDamg = 1;
 
-    m_fDashDistance = 10.f;
-
     /* Create Test Actor (Desc를 채우는 함수니까. __super::Initialize() 전에 위치해야함. )*/
     if (FAILED(Ready_ActorDesc(pDesc)))
         return E_FAIL;
@@ -61,25 +76,52 @@ HRESULT CSpear_Soldier::Initialize(void* _pArg)
     if (FAILED(Ready_PartObjects()))
         return E_FAIL;
 
+
+	if (false == pDesc->isC6BossMode)
+        m_isC6BossMode = pDesc->isC6BossMode;
+
     CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
 
     pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, IDLE, true);
     pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, WALK, true);
     pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, CHASE, true);
 
+
+    if (COORDINATE_3D == Get_CurCoord())
+    {
+        m_fDashDistance = 10.f;
+    }
+    else if (COORDINATE_2D == Get_CurCoord())
+    {
+        m_fDashDistance = 200.f;
+    }
+
     if(false == m_isSneakMode)
     {
-        m_pFSM->Add_State((_uint)MONSTER_STATE::IDLE);
-        m_pFSM->Add_State((_uint)MONSTER_STATE::PATROL);
-        m_pFSM->Add_State((_uint)MONSTER_STATE::ALERT);
-        m_pFSM->Add_State((_uint)MONSTER_STATE::STANDBY);
-        m_pFSM->Add_State((_uint)MONSTER_STATE::CHASE);
-        m_pFSM->Add_State((_uint)MONSTER_STATE::ATTACK);
-        m_pFSM->Add_State((_uint)MONSTER_STATE::HIT);
-        m_pFSM->Add_State((_uint)MONSTER_STATE::DEAD);
-        m_pFSM->Set_State((_uint)MONSTER_STATE::IDLE);
+        if(false == m_isC6BossMode)
+        {
+            m_pFSM->Add_State((_uint)MONSTER_STATE::IDLE);
+            m_pFSM->Add_State((_uint)MONSTER_STATE::PATROL);
+            m_pFSM->Add_State((_uint)MONSTER_STATE::ALERT);
+            m_pFSM->Add_State((_uint)MONSTER_STATE::STANDBY);
+            m_pFSM->Add_State((_uint)MONSTER_STATE::CHASE);
+            m_pFSM->Add_State((_uint)MONSTER_STATE::ATTACK);
+            m_pFSM->Add_State((_uint)MONSTER_STATE::HIT);
+            m_pFSM->Add_State((_uint)MONSTER_STATE::DEAD);
+            m_pFSM->Set_State((_uint)MONSTER_STATE::IDLE);
+        }
+        else
+        {
+            //점프가 추가될 예정 -> 점프 장소까지 이동 후 블록커와 충돌을 순간 끄고 점프가 끝나면 다시 켜는 작업을 수행
 
-        pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, BLOCK_HOLD_LOOP, true);
+            m_pFSM->Add_State((_uint)MONSTER_STATE::IDLE);
+            m_pFSM->Add_State((_uint)MONSTER_STATE::STANDBY);
+            m_pFSM->Add_State((_uint)MONSTER_STATE::CHASE);
+            m_pFSM->Add_State((_uint)MONSTER_STATE::ATTACK);
+            m_pFSM->Add_State((_uint)MONSTER_STATE::HIT);
+            m_pFSM->Add_State((_uint)MONSTER_STATE::DEAD);
+            m_pFSM->Set_State((_uint)MONSTER_STATE::IDLE);
+        }
     }
     else if(true == m_isSneakMode)
     {
@@ -87,9 +129,29 @@ HRESULT CSpear_Soldier::Initialize(void* _pArg)
         m_pFSM->Set_State((_uint)MONSTER_STATE::SNEAK_IDLE);
     }
 
-    
 
-    pModelObject->Set_Animation(IDLE);
+    if (COORDINATE_3D == Get_CurCoord())
+    {
+        pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, BLOCK_HOLD_LOOP, true);
+
+        pModelObject->Set_Animation(IDLE);
+    }
+    else if (COORDINATE_2D == Get_CurCoord())
+    {
+        pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, IDLE_DOWN, true);
+        pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, IDLE_RIGHT, true);
+        pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, IDLE_UP, true);
+
+        pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, CHASE_DOWN, true);
+        pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, CHASE_RIGHT, true);
+        pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, CHASE_UP, true);
+
+        pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, WALK_DOWN, true);
+        pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, WALK_RIGHT, true);
+        pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_2D, WALK_UP, true);
+
+        pModelObject->Set_Animation(IDLE_DOWN);
+    }
 
     pModelObject->Register_OnAnimEndCallBack(bind(&CSpear_Soldier::Animation_End, this, placeholders::_1, placeholders::_2));
 
@@ -202,64 +264,158 @@ void CSpear_Soldier::Change_Animation()
 {
     if(m_iState != m_iPreState)
     {
-        switch (MONSTER_STATE(m_iState))
+        if(COORDINATE_3D == Get_CurCoord())
         {
-        case MONSTER_STATE::IDLE:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(IDLE);
-            break;
+            switch (MONSTER_STATE(m_iState))
+            {
+            case MONSTER_STATE::IDLE:
+                static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(IDLE);
+                break;
 
-        case MONSTER_STATE::PATROL:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(WALK);
-            break;
+            case MONSTER_STATE::PATROL:
+                static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(WALK);
+                break;
 
-        case MONSTER_STATE::ALERT:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(ALERT);
-            break;
+            case MONSTER_STATE::ALERT:
+                static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(ALERT);
+                break;
 
-        case MONSTER_STATE::STANDBY:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(BLOCK_HOLD_UP);
-            break;
+            case MONSTER_STATE::STANDBY:
+                static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(BLOCK_HOLD_UP);
+                break;
 
-        case MONSTER_STATE::CHASE:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(CHASE);
-            break;
+            case MONSTER_STATE::CHASE:
+                static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(CHASE);
+                break;
 
-        case MONSTER_STATE::ATTACK:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(DASH_ATTACK_STARTUP);
-            break;
+            case MONSTER_STATE::ATTACK:
+                static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(DASH_ATTACK_STARTUP);
+                break;
 
-        case MONSTER_STATE::SNEAK_IDLE:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(IDLE);  
-            break;
+            case MONSTER_STATE::SNEAK_IDLE:
+                static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(IDLE);
+                break;
 
-        case MONSTER_STATE::SNEAK_PATROL:
-        case MONSTER_STATE::SNEAK_BACK:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(WALK);
-            break;
+            case MONSTER_STATE::SNEAK_PATROL:
+            case MONSTER_STATE::SNEAK_BACK:
+                static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(WALK);
+                break;
 
-        case MONSTER_STATE::SNEAK_AWARE:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(IDLE);
-            Set_AnimChangeable(true);
-            break;
+            case MONSTER_STATE::SNEAK_AWARE:
+                static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(IDLE);
+                Set_AnimChangeable(true);
+                break;
 
-        case MONSTER_STATE::SNEAK_INVESTIGATE:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(WALK);
-            break;
+            case MONSTER_STATE::SNEAK_INVESTIGATE:
+                static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(WALK);
+                break;
 
-        case MONSTER_STATE::SNEAK_ALERT:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(ARREST);
-            break;
+            case MONSTER_STATE::SNEAK_ALERT:
+                static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(ARREST);
+                break;
 
-        case MONSTER_STATE::HIT:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(HIT_FRONT);
-            break;
+            case MONSTER_STATE::SNEAK_CHASE:
+                static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(CHASE);
+                break;
 
-        case MONSTER_STATE::DEAD:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(DEATH_02_EDIT);
-            break;
+            case MONSTER_STATE::HIT:
+                static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(HIT_FRONT);
+                break;
 
-        default:
-            break;
+            case MONSTER_STATE::DEAD:
+                static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(DEATH_02_EDIT);
+                break;
+
+            default:
+                break;
+            }
+        }
+
+        else if (COORDINATE_2D == Get_CurCoord())
+        {
+            CSpear_Soldier::Animation2D eAnim = ANIM2D_LAST;
+            switch (MONSTER_STATE(m_iState))
+            {
+            case MONSTER_STATE::IDLE:
+                if (F_DIRECTION::UP == m_e2DDirection)
+                    eAnim = IDLE_UP;
+                else if (F_DIRECTION::DOWN == m_e2DDirection)
+                    eAnim = IDLE_DOWN;
+                else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
+                    eAnim = IDLE_RIGHT;
+                break;
+
+            case MONSTER_STATE::PATROL:
+                if (F_DIRECTION::UP == m_e2DDirection)
+                    eAnim = WALK_UP;
+                else if (F_DIRECTION::DOWN == m_e2DDirection)
+                    eAnim = WALK_DOWN;
+                else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
+                    eAnim = WALK_RIGHT;
+                break;
+
+            case MONSTER_STATE::ALERT:
+                if (F_DIRECTION::UP == m_e2DDirection)
+                    eAnim = ALERT_UP;
+                else if (F_DIRECTION::DOWN == m_e2DDirection)
+                    eAnim = ALERT_DOWN;
+                else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
+                    eAnim = ALERT_RIGHT;
+                break;
+
+            case MONSTER_STATE::STANDBY:
+                if (F_DIRECTION::UP == m_e2DDirection)
+                    eAnim = IDLE_UP;
+                else if (F_DIRECTION::DOWN == m_e2DDirection)
+                    eAnim = IDLE_DOWN;
+                else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
+                    eAnim = IDLE_RIGHT;
+                break;
+
+            case MONSTER_STATE::CHASE:
+                if (F_DIRECTION::UP == m_e2DDirection)
+                    eAnim = WALK_UP;
+                else if (F_DIRECTION::DOWN == m_e2DDirection)
+                    eAnim = WALK_DOWN;
+                else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
+                    eAnim = WALK_RIGHT;
+                break;
+
+            case MONSTER_STATE::ATTACK:
+                if (F_DIRECTION::UP == m_e2DDirection)
+                    eAnim = DASHATTACK_INTO_UP;
+                else if (F_DIRECTION::DOWN == m_e2DDirection)
+                    eAnim = DASHATTACK_INTO_DOWN;
+                else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
+                    eAnim = DASHATTACK_INTO_RIGHT;
+                break;
+
+            case MONSTER_STATE::HIT:
+                if (F_DIRECTION::UP == m_e2DDirection)
+                    eAnim = HIT_UP;
+                else if (F_DIRECTION::DOWN == m_e2DDirection)
+                    eAnim = HIT_DOWN;
+                else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
+                    eAnim = HIT_RIGHT;
+                break;
+
+            case MONSTER_STATE::DEAD:
+                if (F_DIRECTION::UP == m_e2DDirection)
+                    eAnim = DEATH_UP;
+                else if (F_DIRECTION::DOWN == m_e2DDirection)
+                    eAnim = DEATH_DOWN;
+                else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
+                    eAnim = DEATH_RIGHT;
+                break;
+
+            default:
+                break;
+            }
+
+            if (ANIM2D_LAST == eAnim)
+                return;
+
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(eAnim);
         }
     }
 }

@@ -58,6 +58,11 @@ HRESULT CMonster::Initialize(void* _pArg)
 	if (FAILED(__super::Initialize(_pArg)))
 		return E_FAIL;
 
+	if (COORDINATE_2D == Get_CurCoord())
+	{
+		Set_2D_Direction(F_DIRECTION::DOWN);
+	}
+
 
 	if (true == m_isStay)
 	{
@@ -278,6 +283,11 @@ void CMonster::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
 			}
 		}
 	}
+}
+
+void CMonster::On_Change2DDirection(E_DIRECTION _eCurrentDir)
+{
+	Change_Animation();
 }
 
 void CMonster::Monster_Death()

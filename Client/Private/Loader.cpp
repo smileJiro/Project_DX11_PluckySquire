@@ -89,6 +89,7 @@
 #include "ZetPack.h"
 #include "PlayerRifle.h"
 #include "CyberPlayerBullet.h"
+#include "EvictedSword.h"
 #include "PalmMarker.h"
 #include "PalmDecal.h"
 #include "TestTerrain.h"
@@ -1188,7 +1189,9 @@ HRESULT CLoader::Loading_Level_Chapter_2(LEVEL_ID _eLoadLevelID)
 		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_MagicHandBody"),
 			CMagic_Hand_Body::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
-
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_EvictedSword"),
+			CEvictedSword::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
 	#pragma endregion
 
 #pragma region Chapter 2 - Monster Load

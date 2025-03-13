@@ -67,7 +67,7 @@ void CSneak_PatrolState::State_Enter()
 	m_isToWay = false;
 	m_isTurn = false;
 	m_isMove = false;
-	cout << "Patrol" << endl;
+	//cout << "Patrol" << endl;
 }
 
 void CSneak_PatrolState::State_Update(_float _fTimeDelta)

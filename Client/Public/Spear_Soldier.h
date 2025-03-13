@@ -4,6 +4,11 @@ BEGIN(Client)
 class CSpear_Soldier final : public CMonster
 {
 public:
+	typedef struct tagSpear_SoldierDesc : public CMonster::MONSTER_DESC
+	{
+		_bool isC6BossMode = false;
+	}SPEARSOLDIER_DESC;
+
 	enum Animation
 	{
 		ALERT = 13,
@@ -33,6 +38,47 @@ public:
 		WALK,
 		ARREST = 41,
 		LAST,
+	};
+
+	enum Animation2D
+	{
+		ALERT_DOWN = 1,
+		ALERT_RIGHT,
+		ALERT_UP,
+		CHASE_DOWN,
+		CHASE_RIGHT,
+		CHASE_UP,
+		CHAT01,
+		DASHATTACK_INTO_DOWN,
+		DASHATTACK_INTO_RIGHT,
+		DASHATTACK_INTO_UP,
+		DASHATTACK_LOOP_DOWN,
+		DASHATTACK_LOOP_RIGHT,
+		DASHATTACK_LOOP_UP,
+		DASHATTACK_OUT_DOWN,
+		DASHATTACK_OUT_RIGHT,
+		DEATH_DOWN,
+		DEATH_RIGHT,
+		DEATH_UP,
+		HIT_DOWN,
+		HIT_RIGHT,
+		HIT_UP,
+		IDLE_DOWN,
+		IDLE_RIGHT,
+		IDLE_UP,
+		JUMP_FALL_DOWN,
+		JUMP_FALL_RIGHT,
+		JUMP_RISE_DOWN,
+		JUMP_RISE_RIGHT,
+		TALK_GENERIC_DOWN,
+		TALK_GENERIC_UP,
+		TALK_REDGATE,
+		TALK_THEYVEGOTSWORDS,
+		TALK_TROUBLESOMEPERSONS,
+		WALK_DOWN,
+		WALK_RIGHT,
+		WALK_UP,
+		ANIM2D_LAST
 	};
 
 	/*enum Animation
@@ -110,6 +156,8 @@ private:
 	_float m_fDashDistance = { 0.f };
 	_float m_fAccDistance = { 0.f };
 	_float3 m_vDir = {};
+
+	_bool m_isC6BossMode = { false };
 
 private:
 	virtual	HRESULT					Ready_ActorDesc(void* _pArg);
