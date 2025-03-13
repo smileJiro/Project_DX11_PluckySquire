@@ -475,6 +475,10 @@ void CCamera_2D::Set_InitialData(_wstring _szSectionTag)
 
 void CCamera_2D::SetUp_InitialPos()
 {
+	CGameObject* pPlayer = CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr();
+	Enter_Section(pPlayer->Get_Include_Section_Name());
+	Switch_CameraView(nullptr);
+
 	CGameObject* pBook = m_pGameInstance->Get_GameObject_Ptr(m_iCurLevelID, TEXT("Layer_Book"), 0);
 	m_pTargetWorldMatrix = pBook->Get_ControllerTransform()->Get_WorldMatrix_Ptr();
 	m_eTargetCoordinate = COORDINATE_3D;
@@ -1530,8 +1534,6 @@ void CCamera_2D::Free()
 		Safe_Delete(ArmData.second.second);
 	}
 	m_ArmDatas.clear();
-
-	Safe_Release(m_pCurArm);
 
 	__super::Free();
 }
