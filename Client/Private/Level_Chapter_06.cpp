@@ -401,6 +401,55 @@ void CLevel_Chapter_06::Update(_float _fTimeDelta)
 		CCamera_Manager::GetInstance()->Set_NextCutSceneData(TEXT("Chapter6_Intro"));
 		CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::CUTSCENE, true, 0.8f);
 	}
+
+	if (KEY_DOWN(KEY::NUMPAD5))
+	{
+		CGameObject* pObject;
+
+		wstring strLayerTag = TEXT("Layer_Monster");
+
+		CSpear_Soldier::SPEARSOLDIER_DESC Spear_Soldier2D_Desc;
+		Spear_Soldier2D_Desc.iCurLevelID = m_eLevelID;
+		Spear_Soldier2D_Desc.eStartCoord = COORDINATE_2D;
+		Spear_Soldier2D_Desc.tTransform2DDesc.vInitialPosition = _float3(1000.0f, -64.f, 0.f);
+		//Spear_Soldier2D_Desc.tTransform2DDesc.vInitialPosition = _float3(690.0f, -64.f, 0.f);
+		Spear_Soldier2D_Desc.tTransform2DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+		Spear_Soldier2D_Desc.isC6BossMode = true;
+		Spear_Soldier2D_Desc.eDirection = F_DIRECTION::LEFT;
+
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Spear_Soldier"), m_eLevelID, strLayerTag, &pObject, &Spear_Soldier2D_Desc)))
+			return;
+
+		CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_P0708"), pObject);
+
+		//Spear_Soldier2D_Desc.tTransform2DDesc.vInitialPosition = _float3(1050.0f, -242.f, 0.f);
+		//Spear_Soldier2D_Desc.isC6BossMode = true;
+		//Spear_Soldier2D_Desc.eDirection = F_DIRECTION::LEFT;
+
+		//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Spear_Soldier"), m_eLevelID, strLayerTag, &pObject, &Spear_Soldier2D_Desc)))
+		//	return;
+
+		//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_P0708"), pObject);
+
+
+		//Spear_Soldier2D_Desc.tTransform2DDesc.vInitialPosition = _float3(-1000.0f, -87.f, 0.f);
+		//Spear_Soldier2D_Desc.isC6BossMode = true;
+		//Spear_Soldier2D_Desc.eDirection = F_DIRECTION::RIGHT;
+
+		//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Spear_Soldier"), m_eLevelID, strLayerTag, &pObject, &Spear_Soldier2D_Desc)))
+		//	return;
+
+		//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_P0708"), pObject);
+
+		Spear_Soldier2D_Desc.tTransform2DDesc.vInitialPosition = _float3(-1200.0f, -242.f, 0.f);
+		Spear_Soldier2D_Desc.isC6BossMode = true;
+		Spear_Soldier2D_Desc.eDirection = F_DIRECTION::RIGHT;
+
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Spear_Soldier"), m_eLevelID, strLayerTag, &pObject, &Spear_Soldier2D_Desc)))
+			return;
+
+		CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_P0708"), pObject);
+	}
 }
 
 HRESULT CLevel_Chapter_06::Render()
@@ -1264,6 +1313,19 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Monster()
 	//if (FAILED(Ready_Layer_Monster_3D()))
 	//	return E_FAIL;
 
+	//wstring strLayerTag = TEXT("Layer_Monster");
+
+	//CSpear_Soldier::MONSTER_DESC Spear_Soldier2D_Desc;
+	//Spear_Soldier2D_Desc.iCurLevelID = m_eLevelID;
+	//Spear_Soldier2D_Desc.eStartCoord = COORDINATE_2D;
+	////Spear_Soldier2D_Desc.tTransform2DDesc.vInitialPosition = _float3(1000.0f, -64.f, 0.f);
+	//Spear_Soldier2D_Desc.tTransform2DDesc.vInitialPosition = _float3(690.0f, -64.f, 0.f);
+	//Spear_Soldier2D_Desc.tTransform2DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Spear_Soldier"), m_eLevelID, strLayerTag, &pObject, &Spear_Soldier2D_Desc)))
+	//	return E_FAIL;
+
+	//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_P0708"), pObject);
 
 	//CBirdMonster::MONSTER_DESC BirdMonster_Desc;
 	//BirdMonster_Desc.iCurLevelID = m_eLevelID;

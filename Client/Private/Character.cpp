@@ -429,7 +429,7 @@ void CCharacter::Set_ScrollingMode(_bool _bScrollingMode)
     m_bScrollingMode = _bScrollingMode;
 }
 
-void CCharacter::Set_2DDirection(E_DIRECTION _eEDir)
+void CCharacter::Set_2DDirection(E_DIRECTION _eEDir, _bool _isOnChange)
 {
 
     if (m_e2DDirection_E != _eEDir) 
@@ -441,7 +441,8 @@ void CCharacter::Set_2DDirection(E_DIRECTION _eEDir)
         case Client::E_DIRECTION::LEFT_DOWN:
         {
             _vector vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
-            m_PartObjects[PART_BODY]->Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, -XMVectorAbs(vRight));
+            m_PartObjects[PART_BODY]->Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, -1.f * XMVectorAbs(vRight));
+            vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
             break;
         }
         case Client::E_DIRECTION::RIGHT:
@@ -456,13 +457,15 @@ void CCharacter::Set_2DDirection(E_DIRECTION _eEDir)
             break;
         }
         m_e2DDirection_E = _eEDir;
-        On_Change2DDirection(m_e2DDirection_E);
+
+        if(true == _isOnChange)
+            On_Change2DDirection(m_e2DDirection_E);
     }
 }
 
-void CCharacter::Set_2DDirection(F_DIRECTION _eFDir)
+void CCharacter::Set_2DDirection(F_DIRECTION _eFDir, _bool _isOnChange)
 {
-	Set_2DDirection( FDir_To_EDir(_eFDir));
+	Set_2DDirection( FDir_To_EDir(_eFDir), _isOnChange);
 }
 
 
@@ -626,6 +629,31 @@ _vector CCharacter::StepAssist(_fvector _vVelocity,_float _fTimeDelta)
         }
     }
 	return _vVelocity;
+}
+
+void CCharacter::Go_Straight_F_Dir(_float _fTimeDelta)
+{
+    switch (Get_2DDirection())
+    {
+    case E_DIRECTION::LEFT:
+        Get_ControllerTransform()->Go_Left(_fTimeDelta);
+        break;
+
+    case E_DIRECTION::RIGHT:
+        Get_ControllerTransform()->Go_Right(_fTimeDelta);
+        break;
+
+    case E_DIRECTION::UP:
+        Get_ControllerTransform()->Go_Up(_fTimeDelta);
+        break;
+
+    case E_DIRECTION::DOWN:
+        Get_ControllerTransform()->Go_Down(_fTimeDelta);
+        break;
+
+    default:
+        break;
+    }
 }
 
 

@@ -369,6 +369,9 @@ HRESULT CLoader::Loading_Level_Static()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_SoldierAttackAnimEvent"),
 		CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DAnim/Static/Monster/humgrump_troop_Rig_GT/SoldierAttack.animevt"))))
 		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_SoldierAttack2DAnimEvent"),
+		CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DAnim/Static/Monster/Spear_Soldier/Spear_Soldier2d_Attack.animevt"))))
+		return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_FSM"),
 		CFSM::Create(m_pDevice, m_pContext))))

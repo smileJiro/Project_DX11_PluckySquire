@@ -34,7 +34,7 @@ void CSneak_InvestigateState::State_Enter()
 	m_isRenew = false;
 	m_isTurn = false;
 	m_iCurWayIndex = 0;
-	//cout << "Investigate" << endl;
+	cout << "Investigate" << endl;
 }
 
 void CSneak_InvestigateState::State_Update(_float _fTimeDelta)
@@ -85,6 +85,13 @@ void CSneak_InvestigateState::State_Update(_float _fTimeDelta)
 	{
 		m_pOwner->Stop_Rotate();
 		m_pOwner->Stop_Move();
+
+		_vector vDir = XMVectorSetY(m_pTarget->Get_FinalPosition() - m_pOwner->Get_FinalPosition(), 0.f);
+		_float fDis = XMVectorGetX(XMVector3Length((vDir)));
+		//공격 범위 안일 경우 바로 공격으로 전환
+		if (fDis <= Get_CurCoordRange(MONSTER_STATE::ATTACK))
+			Event_ChangeMonsterState(MONSTER_STATE::ATTACK, m_pFSM);
+
 		return;
 	}
 
@@ -116,7 +123,7 @@ void CSneak_InvestigateState::State_Update(_float _fTimeDelta)
 		if (m_pOwner->Rotate_To_Radians(XMLoadFloat3(&m_vDir), m_pOwner->Get_ControllerTransform()->Get_RotationPerSec()))
 		{
 			m_isMove = true;
-			m_pOwner->Change_Animation();
+			//m_pOwner->Change_Animation();
 		}
 		else
 		{

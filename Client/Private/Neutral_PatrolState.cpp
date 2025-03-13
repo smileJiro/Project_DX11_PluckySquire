@@ -147,7 +147,7 @@ void CNeutral_PatrolState::PatrolMove(_float _fTimeDelta, _int _iDir)
 			switch (m_eDir)
 			{
 			case Client::F_DIRECTION::LEFT:
-				m_pOwner->Get_ControllerTransform()->Go_Right(_fTimeDelta);
+				m_pOwner->Get_ControllerTransform()->Go_Left(_fTimeDelta);
 				break;
 
 			case Client::F_DIRECTION::RIGHT:

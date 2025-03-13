@@ -202,6 +202,11 @@ void CMonster::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherC
 			m_pTarget = CPlayerData_Manager::GetInstance()->Get_CurrentPlayer_Ptr();
 		Event_Hit(this, static_cast<CCharacter*>(_pOtherObject), Get_Stat().iDamg, XMVector3Normalize(m_pTarget->Get_FinalPosition() - Get_FinalPosition()), 300.f);
 	}
+
+	if (OBJECT_GROUP::BLOCKER & _pOtherCollider->Get_CollisionGroupID())
+	{
+		m_isContact_Block = true;
+	}
 }
 
 void CMonster::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
@@ -210,6 +215,10 @@ void CMonster::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCo
 
 void CMonster::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
+	if (OBJECT_GROUP::BLOCKER & _pOtherCollider->Get_CollisionGroupID())
+	{
+		m_isContact_Block = false;
+	}
 }
 
 void CMonster::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
@@ -383,7 +392,7 @@ HRESULT CMonster::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosit
 	return S_OK;
 }
 
-void CMonster::Change_Dir()
+void CMonster::Change_Dir(_bool _isOnChange)
 {
 	//플레이어와의 각도를 구해 방향 전환 (시야각이 있을 때 기준)
 	//_vector vUp = XMVectorSet(0.f, 0.f, 1.f, 0.f);
@@ -395,17 +404,20 @@ void CMonster::Change_Dir()
 	//{
 	//	fAngle = 360 - fAngle;
 	//}
+
+	if (COORDINATE_2D != Get_CurCoord())
+		return;
 	
 	_float fResult = m_pGameInstance->Get_Angle_Between_Vectors(XMVectorSet(0.f, 0.f, -1.f, 0.f), XMVectorSet(0.f, 1.f, 0.f, 0.f), m_pTarget->Get_FinalPosition() - Get_FinalPosition());
 	
 	if ((315.f <= fResult && fResult < 360.f) || (45.f > fResult && 0.f <= fResult))
-		Set_2DDirection(F_DIRECTION::UP);
+		Set_2DDirection(F_DIRECTION::UP, _isOnChange);
 	else if (45.f <= fResult && 135.f > fResult)
-		Set_2DDirection(F_DIRECTION::RIGHT);
+		Set_2DDirection(F_DIRECTION::RIGHT, _isOnChange);
 	else if (135.f <= fResult && 225.f > fResult)
-		Set_2DDirection(F_DIRECTION::DOWN);
+		Set_2DDirection(F_DIRECTION::DOWN, _isOnChange);
 	else if (225.f <= fResult && 315.f > fResult)
-		Set_2DDirection(F_DIRECTION::LEFT);
+		Set_2DDirection(F_DIRECTION::LEFT, _isOnChange);
 }
 
 _bool CMonster::IsTarget_In_Detection()
@@ -538,12 +550,17 @@ _bool CMonster::Check_InAir_Next(_fvector _vForce, _float _fTimeDelta)
 
 _bool CMonster::Check_Block(_float _fTimeDelta)
 {
-	if (COORDINATE_3D != Get_CurCoord())
-		return false;
+	if (COORDINATE_3D == Get_CurCoord())
+	{
+		_vector vVelocity = XMVectorSetW(static_cast<CActor_Dynamic*>(Get_ActorCom())->Get_LinearVelocity(), 0.f);
 
-	_vector vVelocity = XMVectorSetW(static_cast<CActor_Dynamic*>(Get_ActorCom())->Get_LinearVelocity(), 0.f);
-
-	return Check_Block(vVelocity, _fTimeDelta);
+		return Check_Block(vVelocity, _fTimeDelta);
+	}
+	else if (COORDINATE_2D == Get_CurCoord())
+	{
+		return m_isContact_Block;
+	}
+	return false;
 }
 
 _bool CMonster::Check_Block(_fvector _vForce, _float _fTimeDelta)

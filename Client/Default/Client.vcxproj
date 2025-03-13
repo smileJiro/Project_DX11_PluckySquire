@@ -211,6 +211,7 @@
     <ClInclude Include="..\Public\ButterGrump_RightEye.h" />
     <ClInclude Include="..\Public\ButterGrump_Shield.h" />
     <ClInclude Include="..\Public\ButterGrump_Tongue.h" />
+    <ClInclude Include="..\Public\C6_IdleState.h" />
     <ClInclude Include="..\public\Candle.h" />
     <ClInclude Include="..\Public\CandleGame.h" />
     <ClInclude Include="..\public\Candle_Body.h" />
@@ -226,6 +227,8 @@
     <ClInclude Include="..\public\FatherPart_Prop.h" />
     <ClInclude Include="..\public\FresnelModelObject.h" />
     <ClInclude Include="..\public\Mat.h" />
+    <ClInclude Include="..\Public\MonsterJumpState.h" />
+    <ClInclude Include="..\Public\MonsterMoveState.h" />
     <ClInclude Include="..\public\Mug_Alien.h" />
     <ClInclude Include="..\Public\PlayerState_RetriveSword.h" />
     <ClInclude Include="..\public\PortalLocker_LayerCount.h" />
@@ -573,6 +576,7 @@
     <ClCompile Include="..\Private\ButterGrump_RightEye.cpp" />
     <ClCompile Include="..\Private\ButterGrump_Shield.cpp" />
     <ClCompile Include="..\Private\ButterGrump_Tongue.cpp" />
+    <ClCompile Include="..\Private\C6_IdleState.cpp" />
     <ClCompile Include="..\private\Candle.cpp" />
     <ClCompile Include="..\Private\CandleGame.cpp" />
     <ClCompile Include="..\private\Candle_Body.cpp" />
@@ -589,6 +593,8 @@
     <ClCompile Include="..\private\FatherPart_Prop.cpp" />
     <ClCompile Include="..\private\FresnelModelObject.cpp" />
     <ClCompile Include="..\private\Mat.cpp" />
+    <ClCompile Include="..\Private\MonsterJumpState.cpp" />
+    <ClCompile Include="..\Private\MonsterMoveState.cpp" />
     <ClCompile Include="..\private\Mug_Alien.cpp" />
     <ClCompile Include="..\Private\PlayerState_RetriveSword.cpp" />
     <ClCompile Include="..\private\PortalLocker_LayerCount.cpp" />

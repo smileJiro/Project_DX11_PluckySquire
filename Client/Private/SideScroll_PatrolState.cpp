@@ -73,8 +73,11 @@ void CSideScroll_PatrolState::State_Update(_float _fTimeDelta)
 {
 	if (nullptr == m_pOwner)
 		return;
-
-	m_pOwner->Get_ControllerTransform()->Go_Right(_fTimeDelta);
+	
+	if(E_DIRECTION ::LEFT==m_pOwner->Get_2DDirection())
+		m_pOwner->Get_ControllerTransform()->Go_Left(_fTimeDelta);
+	else
+		m_pOwner->Get_ControllerTransform()->Go_Right(_fTimeDelta);
 	_float4 vPos; XMStoreFloat4(&vPos, m_pOwner->Get_FinalPosition());
 	//오른쪽을 넘어서면
 	if (m_tPatrolBound.fMaxX <= vPos.x)
