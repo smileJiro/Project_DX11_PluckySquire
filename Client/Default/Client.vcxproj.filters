@@ -1776,6 +1776,8 @@
     <ClInclude Include="..\Public\StampKey_Q.h">
       <Filter>02.GameObjects\UI\00. GamePlay\01. Stamp\03. StampKeyCommand\00. StampKey_Q</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\EvictedSword.h" />
+    <ClInclude Include="..\Public\PlayerState_RetriveSword.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -2824,6 +2826,8 @@
     <ClCompile Include="..\Private\StampKey_Q.cpp">
       <Filter>02.GameObjects\UI\00. GamePlay\01. Stamp\03. StampKeyCommand\00. StampKey_Q</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\EvictedSword.cpp" />
+    <ClCompile Include="..\Private\PlayerState_RetriveSword.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

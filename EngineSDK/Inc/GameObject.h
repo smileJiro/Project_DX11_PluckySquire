@@ -73,7 +73,7 @@ public:
 	//Set
 	void						Set_Name(const _wstring& _strName)				{ m_strName = _strName; }
 	void						Set_WorldMatrix(_float4x4 _WorldMatrix)			{ m_pControllerTransform->Set_WorldMatrix(_WorldMatrix); }
-	void						Set_Position(_fvector _vPos);
+	void						Set_Position(_fvector _vPos)					{ m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSetW(_vPos, 1.0f)); };
 	void						Set_Scale(_float _fX, _float _fY, _float _fZ)	{ m_pControllerTransform->Set_Scale(_fX, _fY, _fZ); }
 	void						Set_Scale(const _float3& _vScale)				{ m_pControllerTransform->Set_Scale(_vScale); }
 	void						Set_Scale(COORDINATE _eCoord, _float _fX, _float _fY, _float _fZ) { m_pControllerTransform->Set_Scale(_eCoord,_fX, _fY, _fZ); }
