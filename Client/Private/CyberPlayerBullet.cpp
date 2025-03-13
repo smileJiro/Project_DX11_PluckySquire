@@ -4,6 +4,8 @@
 #include "3DModel.h"
 #include "ModelObject.h"
 #include "GameInstance.h"
+#include "Effect_Manager.h"
+#include "FresnelModelObject.h"
 
 CCyberPlayerBullet::CCyberPlayerBullet(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CContainerObject(_pDevice, _pContext)
@@ -12,11 +14,28 @@ CCyberPlayerBullet::CCyberPlayerBullet(ID3D11Device* _pDevice, ID3D11DeviceConte
 
 CCyberPlayerBullet::CCyberPlayerBullet(const CCyberPlayerBullet& _Prototype)
 	: CContainerObject(_Prototype)
+	, m_pFresnelBuffer(_Prototype.m_pFresnelBuffer)
+	, m_pColorBuffer(_Prototype.m_pColorBuffer)
 {
+	Safe_AddRef(m_pFresnelBuffer);
+	Safe_AddRef(m_pColorBuffer);
 }
 
 HRESULT CCyberPlayerBullet::Initialize_Prototype()
 {
+	FRESNEL_INFO tBulletFresnelInfo = {};
+	tBulletFresnelInfo.fBaseReflect = 0.04f;
+	tBulletFresnelInfo.fExp = 0.19f;
+	tBulletFresnelInfo.vColor = { 0.690f, 1.0f, 1.0f, 0.5f };
+	tBulletFresnelInfo.fStrength = 1.f; // 안씀.
+	m_pGameInstance->CreateConstBuffer(tBulletFresnelInfo, D3D11_USAGE_DEFAULT, &m_pFresnelBuffer);
+
+
+	COLORS_INFO tColorsInfo = {};
+	tColorsInfo.vDiffuseColor = _float4(0.2f, 0.8f, 1.f, 1.f);
+	tColorsInfo.vBloomColor = _float4(0.27f, 0.83f, 1.f, 1.f);
+	m_pGameInstance->CreateConstBuffer(tColorsInfo, D3D11_USAGE_DEFAULT, &m_pColorBuffer);
+
 	return S_OK;
 }
 
@@ -73,16 +92,20 @@ HRESULT CCyberPlayerBullet::Initialize(void* _pArg)
 	if (FAILED(__super::Initialize(_pArg)))
 		return E_FAIL;
 
-	CModelObject::MODELOBJECT_DESC tModelDesc{};
+	CFresnelModelObject::FRESNEL_MODEL_DESC tModelDesc{};
 	tModelDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
 	tModelDesc.strModelPrototypeTag_3D = TEXT("CyberPlayerBullet");
 	tModelDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
-	tModelDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
+	tModelDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::FRESNEL;
 	tModelDesc.iRenderGroupID_3D = RG_3D;
-	tModelDesc.iPriorityID_3D = PR3D_GEOMETRY;
+	tModelDesc.iPriorityID_3D = PR3D_EFFECT;
 	tModelDesc.eStartCoord = COORDINATE_3D;
 	tModelDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
-	m_PartObjects[PART_BODY] = m_pModel= static_cast<CModelObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &tModelDesc));
+	// 이 버퍼를 이용해서 Render 합니다.
+	tModelDesc.pColorBuffer = m_pColorBuffer;
+	tModelDesc.pFresnelBuffer = m_pFresnelBuffer;
+
+	m_PartObjects[PART_BODY] = m_pModel= static_cast<CFresnelModelObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_FresnelModelObject"), &tModelDesc));
 	if (nullptr == m_PartObjects[PART_BODY])
 	{
 		MSG_BOX("CPlayer VISOR Creation Failed");
@@ -123,6 +146,8 @@ void CCyberPlayerBullet::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& 
 	{
 		Event_Hit(this, static_cast<CCharacter*>(_Other.pActorUserData->pOwner), m_iDamg, _vector{ 0.f,0.f,0.f });
 		Event_DeleteObject(this);
+
+		CEffect_Manager::GetInstance()->Active_EffectPosition(TEXT("CyberBulletHit"), true, Get_FinalPosition());
 	}
 }
 
@@ -152,6 +177,9 @@ CGameObject* CCyberPlayerBullet::Clone(void* _pArg)
 
 void CCyberPlayerBullet::Free()
 {
+	Safe_Release(m_pFresnelBuffer);
+	Safe_Release(m_pColorBuffer);
+
 	Safe_Release(m_pModel);
 	__super::Free();
 }

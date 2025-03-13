@@ -58,6 +58,7 @@ public:
 	virtual void				Free() override;
 	virtual HRESULT				Cleanup_DeadReferences() override; // 참조 중인 게임오브젝트들 중 죽은 Dead상태인 오브젝트를 체크해서 참조해제.(액티브 false인 애들때매 만듬)
 	_bool						is_2D() { return m_is2D; }
+	wstring						Get_NPCName() { return m_strNPCName; }
 
 
 private:
@@ -89,6 +90,8 @@ private:
 	_float			m_fNPCCollsionHalfHeight	= { 0.f };
 	_float			m_fNPCCollisionRadius		= { 0.f };
 	_float			m_fNPCTriggerRadius		= { 0.f };
+
+	wstring			m_strNPCName = { TEXT("") };
 
 
 

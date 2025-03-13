@@ -111,7 +111,7 @@
                 },
                 {
                     "Name": "SpawnRate",
-                    "Value": 150.0
+                    "Value": 240.0
                 }
             ],
             "Float4": [
@@ -167,7 +167,7 @@
                         "Float": [
                             {
                                 "Name": "Amount",
-                                "Value": 0.4000000059604645
+                                "Value": 0.25
                             }
                         ]
                     },
@@ -251,7 +251,7 @@
             ],
             "Pooling": "REVIVE",
             "ShaderPass": "SUBCOLOR_BLOOM",
-            "SpawnPosition": "RELATIVE_WORLD",
+            "SpawnPosition": "FOLLOW_PARENT",
             "SpawnType": "SPAWN_RATE",
             "Texture": "../Bin/Resources/Textures/Effects/T_FX_CMN_Flash_01.dds",
             "Time": 3.4028234663852886e+38,
@@ -386,7 +386,7 @@
                 },
                 {
                     "Name": "SpawnRate",
-                    "Value": 45.0
+                    "Value": 120.0
                 }
             ],
             "Float4": [
@@ -439,7 +439,7 @@
             ],
             "Pooling": "REVIVE",
             "ShaderPass": "SUBCOLOR_BLOOM",
-            "SpawnPosition": "RELATIVE_WORLD",
+            "SpawnPosition": "FOLLOW_PARENT",
             "SpawnType": "SPAWN_RATE",
             "Texture": "../Bin/Resources/Textures/Effects/T_FX_CMN_Flash8x1_01.dds",
             "Time": 3.4028234663852886e+38,
@@ -574,7 +574,7 @@
                 },
                 {
                     "Name": "SpawnRate",
-                    "Value": 30.0
+                    "Value": 150.0
                 }
             ],
             "Float4": [
@@ -627,7 +627,7 @@
             ],
             "Pooling": "REVIVE",
             "ShaderPass": "SUBCOLOR_BLOOM",
-            "SpawnPosition": "RELATIVE_WORLD",
+            "SpawnPosition": "FOLLOW_PARENT",
             "SpawnType": "SPAWN_RATE",
             "Texture": "../Bin/Resources/Textures/Effects/T_FX_CMN_Flash8x1_01.dds",
             "Time": 3.4028234663852886e+38,
@@ -653,10 +653,10 @@
         },
         {
             "Color": [
-                0.2199999988079071,
-                0.8600000143051147,
-                0.5130000114440918,
-                2.5
+                0.3499999940395355,
+                0.949999988079071,
+                0.5400000214576721,
+                2.0
             ],
             "DelayTime": 0.10000000149011612,
             "Event": 0,
@@ -762,7 +762,7 @@
                 1.0
             ],
             "ShaderPass": "BLOOM_DISSOLVE_BILLBOARD",
-            "SpawnPosition": "RELATIVE_WORLD",
+            "SpawnPosition": "FOLLOW_PARENT",
             "SpawnType": "SPAWN_RATE",
             "Textures": [
                 {
@@ -776,17 +776,17 @@
             ],
             "Time": 1.600000023841858,
             "Transform": [
-                1.0,
+                3.869661331176758,
                 0.0,
                 0.0,
                 0.0,
                 0.0,
-                1.0,
+                3.869661331176758,
                 0.0,
                 0.0,
                 0.0,
                 0.0,
-                1.0,
+                3.869661331176758,
                 0.0,
                 0.0,
                 0.0,
@@ -797,10 +797,10 @@
         },
         {
             "Color": [
-                0.4000000059604645,
-                0.699999988079071,
+                0.5,
+                0.8199999928474426,
                 0.9829999804496765,
-                2.5
+                2.0
             ],
             "DelayTime": 0.699999988079071,
             "Event": 0,
@@ -824,6 +824,10 @@
                 {
                     "Name": "DissolveTimeFactor",
                     "Value": 0.5
+                },
+                {
+                    "Name": "SpawnRate",
+                    "Value": 0.0
                 }
             ],
             "Float4": [
@@ -906,7 +910,7 @@
                 1.0
             ],
             "ShaderPass": "BLOOM_DISSOLVE_BILLBOARD",
-            "SpawnPosition": "RELATIVE_WORLD",
+            "SpawnPosition": "FOLLOW_PARENT",
             "SpawnType": "SPAWN_RATE",
             "Textures": [
                 {
@@ -920,17 +924,17 @@
             ],
             "Time": 1.600000023841858,
             "Transform": [
-                1.0,
+                2.2957663536071777,
                 0.0,
                 0.0,
                 0.0,
                 0.0,
-                1.0,
+                2.2957663536071777,
                 0.0,
                 0.0,
                 0.0,
                 0.0,
-                1.0,
+                2.2957663536071777,
                 0.0,
                 0.0,
                 0.0,
@@ -1506,5 +1510,5 @@
         }
     ],
     "Name": "Guntlet1",
-    "ToolLoopTime": 0.5
+    "ToolLoopTime": 10000.0
 }

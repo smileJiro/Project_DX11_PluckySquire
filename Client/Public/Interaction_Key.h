@@ -9,12 +9,12 @@ class CModel;
 class CVIBuffer_Collider;
 END
 
-class CStampKey_Q final : public CUI
+class CInteraction_Key final : public CUI
 {
 protected:
-	explicit CStampKey_Q(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
-	explicit CStampKey_Q(const CStampKey_Q& _Prototype);
-	virtual ~CStampKey_Q() = default;
+	explicit CInteraction_Key(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
+	explicit CInteraction_Key(const CInteraction_Key& _Prototype);
+	virtual ~CInteraction_Key() = default;
 
 public:
 	virtual HRESULT			Initialize_Prototype() override;
@@ -29,7 +29,7 @@ protected:
 	virtual HRESULT			Ready_Components() override;
 
 public:
-	static CStampKey_Q*		Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
+	static CInteraction_Key*		Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject*	Clone(void* _pArg);
 	virtual void			Free() override;
 	HRESULT					Cleanup_DeadReferences() override;

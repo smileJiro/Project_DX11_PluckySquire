@@ -1243,6 +1243,26 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Effects(const _wstring& _strLayerTag)
 			CEffect_Manager::GetInstance()->Add_Effect(static_cast<CEffect_System*>(pOut));
 		}
 	}
+
+
+	pJson = m_pGameInstance->Find_Json_InLevel(TEXT("FX_Level8"), m_eLevelID);
+	if (nullptr == pJson)
+		return E_FAIL;
+
+	for (_int i = 0; i < (*pJson).size(); ++i)
+	{
+		_wstring strName = STRINGTOWSTRING((*pJson)[i]["Name"]);
+		_int iCount = (*pJson)[i]["Count"];
+
+		for (_int j = 0; j < iCount; ++j)
+		{
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, strName, m_eLevelID, _strLayerTag, &pOut, &Desc)))
+				return E_FAIL;
+			CEffect_Manager::GetInstance()->Add_Effect(static_cast<CEffect_System*>(pOut));
+		}
+	}
+
+
 	return S_OK;
 }
 

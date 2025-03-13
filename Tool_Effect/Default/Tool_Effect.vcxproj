@@ -169,6 +169,7 @@
     <ClInclude Include="..\public\SkyBox.h" />
     <ClInclude Include="..\public\TestBeam.h" />
     <ClInclude Include="..\public\TestEmissive.h" />
+    <ClInclude Include="..\public\TestShadingModel.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Resource.h" />
@@ -196,6 +197,7 @@
     <ClCompile Include="..\private\SkyBox.cpp" />
     <ClCompile Include="..\private\TestBeam.cpp" />
     <ClCompile Include="..\private\TestEmissive.cpp" />
+    <ClCompile Include="..\private\TestShadingModel.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>

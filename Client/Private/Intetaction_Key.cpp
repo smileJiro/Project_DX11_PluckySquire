@@ -1,26 +1,26 @@
 #include "stdafx.h"
-#include "StampKey_Q.h"
+#include "Interaction_Key.h"
 #include "GameInstance.h"
 #include "UI_Manager.h"
 
 
 
-CStampKey_Q::CStampKey_Q(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
+CInteraction_Key::CInteraction_Key(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CUI (_pDevice, _pContext)
 {
 }
 
-CStampKey_Q::CStampKey_Q(const CStampKey_Q& _Prototype)
+CInteraction_Key::CInteraction_Key(const CInteraction_Key& _Prototype)
 	: CUI ( _Prototype )
 {
 }
 
-HRESULT CStampKey_Q::Initialize_Prototype()
+HRESULT CInteraction_Key::Initialize_Prototype()
 {
 	return S_OK;
 }
 
-HRESULT CStampKey_Q::Initialize(void* _pArg)
+HRESULT CInteraction_Key::Initialize(void* _pArg)
 {
 	UIOBJDESC* pDesc = static_cast<UIOBJDESC*>(_pArg);
 
@@ -34,24 +34,37 @@ HRESULT CStampKey_Q::Initialize(void* _pArg)
 	return S_OK;
 }
 
-void CStampKey_Q::Priority_Update(_float _fTimeDelta)
+void CInteraction_Key::Priority_Update(_float _fTimeDelta)
 {
 }
 
-void CStampKey_Q::Update(_float _fTimeDelta)
-{
-	ChangeStampWord();
-}
-
-void CStampKey_Q::Late_Update(_float _fTimeDelta)
-{
-	__super::Late_Update(_fTimeDelta);
-}
-
-HRESULT CStampKey_Q::Render()
+void CInteraction_Key::Update(_float _fTimeDelta)
 {
 	CUI_Manager* pUIManager = CUI_Manager::GetInstance();
-	if (false == pUIManager->Get_StampHave(0) || false == pUIManager->Get_StampHave(1))
+
+	if ((true == pUIManager->Get_StampHave(0) ||
+		true == pUIManager->Get_StampHave(1)))
+	{
+		ChangeStampWord();
+	}
+}
+
+void CInteraction_Key::Late_Update(_float _fTimeDelta)
+{
+	CUI_Manager* pUIManager = CUI_Manager::GetInstance();
+
+	if ((true == pUIManager->Get_StampHave(0) ||
+		true == pUIManager->Get_StampHave(1)))
+	{
+		__super::Late_Update(_fTimeDelta);
+	}
+	
+}
+
+HRESULT CInteraction_Key::Render()
+{
+	CUI_Manager* pUIManager = CUI_Manager::GetInstance();
+	if (false == pUIManager->Get_StampHave(0) && false == pUIManager->Get_StampHave(1))
 		return S_OK;
 
 	if (FAILED(m_pControllerTransform->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
@@ -78,7 +91,7 @@ HRESULT CStampKey_Q::Render()
 
 
 
-HRESULT CStampKey_Q::Ready_Components()
+HRESULT CInteraction_Key::Ready_Components()
 {
 	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxPosTex"),
 		TEXT("Com_Shader_2D"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
@@ -90,7 +103,7 @@ HRESULT CStampKey_Q::Ready_Components()
 		return E_FAIL;
 
 	/* Com_Texture */
-	if (FAILED(Add_Component(m_iCurLevelID, TEXT("Prototype_Component_Texture_Interact_Book"),
+	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Interact_Book"),
 		TEXT("Com_Texture_2D"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
 		return E_FAIL;
 
@@ -98,13 +111,13 @@ HRESULT CStampKey_Q::Ready_Components()
 }
 
 
-CStampKey_Q* CStampKey_Q::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
+CInteraction_Key* CInteraction_Key::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
-	CStampKey_Q* pInstance = new CStampKey_Q(_pDevice, _pContext);
+	CInteraction_Key* pInstance = new CInteraction_Key(_pDevice, _pContext);
 
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
-		MSG_BOX("Created CStampKey_Q Failed");
+		MSG_BOX("Created CInteraction_Key Failed");
 		Safe_Release(pInstance);
 		return nullptr;
 	}
@@ -112,13 +125,13 @@ CStampKey_Q* CStampKey_Q::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _p
 	return pInstance;
 }
 
-CGameObject* CStampKey_Q::Clone(void* _pArg)
+CGameObject* CInteraction_Key::Clone(void* _pArg)
 {
-	CStampKey_Q* pInstance = new CStampKey_Q(*this);
+	CInteraction_Key* pInstance = new CInteraction_Key(*this);
 
 	if (FAILED(pInstance->Initialize(_pArg)))
 	{
-		MSG_BOX("Clone CStampKey_Q Failed");
+		MSG_BOX("Clone CInteraction_Key Failed");
 		Safe_Release(pInstance);
 		return nullptr;
 	}
@@ -126,20 +139,20 @@ CGameObject* CStampKey_Q::Clone(void* _pArg)
 	return pInstance;
 }
 
-void CStampKey_Q::Free()
+void CInteraction_Key::Free()
 {
 	
 	__super::Free();
 	
 }
 
-HRESULT CStampKey_Q::Cleanup_DeadReferences()
+HRESULT CInteraction_Key::Cleanup_DeadReferences()
 {
 
 	return S_OK;
 }
 
-void CStampKey_Q::ChangeStampWord()
+void CInteraction_Key::ChangeStampWord()
 {
 	CUI_Manager::STAMP eStamp;
 	eStamp = CUI_Manager::GetInstance()->Get_StampIndex();

@@ -224,6 +224,7 @@
     <ClInclude Include="..\Public\FatherGame_Progress_PartHead.h" />
     <ClInclude Include="..\Public\FatherGame_Progress_PartWing.h" />
     <ClInclude Include="..\public\FatherPart_Prop.h" />
+    <ClInclude Include="..\public\FresnelModelObject.h" />
     <ClInclude Include="..\public\Mat.h" />
     <ClInclude Include="..\public\Mug_Alien.h" />
     <ClInclude Include="..\Public\PlayerState_RetriveSword.h" />
@@ -296,7 +297,7 @@
     <ClInclude Include="..\public\Sneak_Troop.h" />
     <ClInclude Include="..\Public\JellyKing.h" />
     <ClInclude Include="..\Public\StampKey_1.h" />
-    <ClInclude Include="..\Public\StampKey_Q.h" />
+    <ClInclude Include="..\Public\Interaction_Key.h" />
     <ClInclude Include="..\public\TurnBookEffect.h" />
     <ClInclude Include="..\public\ZetPack_Child.h" />
     <ClInclude Include="..\Public\ZetPack_Father.h" />
@@ -586,6 +587,7 @@
     <ClCompile Include="..\Private\FatherGame_Progress_PartHead.cpp" />
     <ClCompile Include="..\Private\FatherGame_Progress_PartWing.cpp" />
     <ClCompile Include="..\private\FatherPart_Prop.cpp" />
+    <ClCompile Include="..\private\FresnelModelObject.cpp" />
     <ClCompile Include="..\private\Mat.cpp" />
     <ClCompile Include="..\private\Mug_Alien.cpp" />
     <ClCompile Include="..\Private\PlayerState_RetriveSword.cpp" />
@@ -655,7 +657,7 @@
     <ClCompile Include="..\private\Sneak_Troop.cpp" />
     <ClCompile Include="..\Private\JellyKing.cpp" />
     <ClCompile Include="..\Private\StampKey_1.cpp" />
-    <ClCompile Include="..\Private\StampKey_Q.cpp" />
+    <ClCompile Include="..\Private\Intetaction_Key.cpp" />
     <ClCompile Include="..\private\TurnBookEffect.cpp" />
     <ClCompile Include="..\private\ZetPack_Child.cpp" />
     <ClCompile Include="..\Private\ZetPack_Father.cpp" />

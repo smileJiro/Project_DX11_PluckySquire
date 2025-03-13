@@ -25,7 +25,7 @@ HRESULT C3DMapEmissiveObject::Initialize(void* _pArg)
     //EMISSIVEOBJECT_DESC* pDesc = static_cast<EMISSIVEOBJECT_DESC*>(_pArg);
     //
     //m_vColor = pDesc->m_vColor;
-    //m_vBloomColor = pDesc->m_vBloomColor;
+    //vBloomColor = pDesc->vBloomColor;
 
     //if (FAILED(Ready_TargetLight()))
     //    return E_FAIL;

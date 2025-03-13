@@ -27,6 +27,8 @@ HRESULT CLevel_EffectTool::Initialize()
 		return E_FAIL;
 	if (FAILED(Ready_Layer_Model(TEXT("Layer_Model"))))
 		return E_FAIL;
+	if (FAILED(Ready_Layer_ShadingModel(TEXT("Layer_ShadingModel"))))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -61,10 +63,6 @@ HRESULT CLevel_EffectTool::Ready_Lights()
 
 	if (FAILED(m_pGameInstance->Add_Light(LightDesc, LIGHT_TYPE::POINT)))
 		return E_FAIL;
-
-
-	return S_OK;
-
 
 	return S_OK;
 }
@@ -323,6 +321,26 @@ HRESULT CLevel_EffectTool::Ready_Layer_Model(const _wstring& _strLayerTag)
 
 
 
+
+	return S_OK;
+}
+
+HRESULT CLevel_EffectTool::Ready_Layer_ShadingModel(const _wstring& _strLayerTag)
+{
+	CModelObject* pOut = { nullptr };
+	CModelObject::MODELOBJECT_DESC Desc = {};
+
+	Desc.eStartCoord = COORDINATE_3D;
+	Desc.iCurLevelID = LEVEL_TOOL;
+	Desc.iModelPrototypeLevelID_3D = LEVEL_TOOL;
+	Desc.strModelPrototypeTag_3D = L"Prototype_Model_Sphere";
+	Desc.iShaderPass_3D = 13;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_TestShadingModel"),
+		LEVEL_TOOL, _strLayerTag, reinterpret_cast<CGameObject**>(&pOut), &Desc)))
+		return E_FAIL;
+
+	//pOut->Set_Active(false);
 
 	return S_OK;
 }
