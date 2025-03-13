@@ -20,6 +20,7 @@
 #include "2DMapActionObject.h"
 #include "Postit_Page.h"
 #include "CarriableObject.h"
+#include "DraggableObject.h"
 
 #include "Zippy.h"
 #include "Room_Door.h"
@@ -535,17 +536,20 @@ void CGameEventExecuter_C2::Chapter2_Humgrump(_float _fTimeDelta)
 		}
 		if (m_fTimer > 1.2f && 2 == m_iSubStep)
 		{
+
+			LEVEL_ID eCurLevelID = (LEVEL_ID)m_pGameInstance->Get_CurLevelID();
+
 			m_iSubStep++;
-			//임시로 주사위 만들어 봄.
+			//주사위
 			CCarriableObject::CARRIABLE_DESC tCarriableDesc{};
 			tCarriableDesc.eStartCoord = COORDINATE_3D;
 			tCarriableDesc.iCurLevelID = m_pGameInstance->Get_CurLevelID();
 			tCarriableDesc.tTransform3DDesc.vInitialPosition = _float3(15.f, 6.8f, 21.5f);
-			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_pGameInstance->Get_CurLevelID(), TEXT("Prototype_GameObject_Dice"), m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Domino"), &tCarriableDesc)))
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eCurLevelID, TEXT("Prototype_GameObject_Dice"), eCurLevelID, TEXT("Layer_Domino"), &tCarriableDesc)))
 				return;
 			CModelObject::MODELOBJECT_DESC tModelDesc{};
 			tModelDesc.eStartCoord = COORDINATE_3D;
-			tModelDesc.iCurLevelID = m_pGameInstance->Get_CurLevelID();
+			tModelDesc.iCurLevelID = eCurLevelID;
 			_float fDominoXPosition = 14.47f;
 			_float fDominoYPosition = 1.31f;
 			_float fDominoZPosition = 24.3f;
@@ -554,25 +558,26 @@ void CGameEventExecuter_C2::Chapter2_Humgrump(_float _fTimeDelta)
 			tModelDesc.tTransform3DDesc.vInitialScaling = _float3(1.5f, 1.5f, 1.5f);
 
 			tModelDesc.strModelPrototypeTag_3D = TEXT("Domino_4");
-			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_pGameInstance->Get_CurLevelID(), TEXT("Prototype_GameObject_Domino"), m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Domino"), &tModelDesc)))
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eCurLevelID, TEXT("Prototype_GameObject_Domino"), eCurLevelID, TEXT("Layer_Domino"), &tModelDesc)))
 				return;
 			tModelDesc.tTransform3DDesc.vInitialPosition.x += fDominoXPositionStep;
 			tModelDesc.strModelPrototypeTag_3D = TEXT("Domino_2");
-			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_pGameInstance->Get_CurLevelID(), TEXT("Prototype_GameObject_Domino"), m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Domino"), &tModelDesc)))
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eCurLevelID, TEXT("Prototype_GameObject_Domino"), eCurLevelID, TEXT("Layer_Domino"), &tModelDesc)))
 				return;
 			tModelDesc.tTransform3DDesc.vInitialPosition.x += fDominoXPositionStep;
 			tModelDesc.tTransform3DDesc.vInitialPosition.y += 0.001f;
 			tModelDesc.strModelPrototypeTag_3D = TEXT("Domino_3");
-			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_pGameInstance->Get_CurLevelID(), TEXT("Prototype_GameObject_Domino"), m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Domino"), &tModelDesc)))
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eCurLevelID, TEXT("Prototype_GameObject_Domino"), eCurLevelID, TEXT("Layer_Domino"), &tModelDesc)))
 				return;
 			tModelDesc.tTransform3DDesc.vInitialPosition.x += fDominoXPositionStep;
 			tModelDesc.strModelPrototypeTag_3D = TEXT("Domino_1");
-			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_pGameInstance->Get_CurLevelID(), TEXT("Prototype_GameObject_Domino"), m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Domino"), &tModelDesc)))
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eCurLevelID, TEXT("Prototype_GameObject_Domino"), eCurLevelID, TEXT("Layer_Domino"), &tModelDesc)))
 				return;
 
+			// 도미노
 			//2번째 도미노
 			tCarriableDesc.tTransform3DDesc.vInitialPosition = _float3(48.13f, 2.61f, -5.02f);
-			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_pGameInstance->Get_CurLevelID(), TEXT("Prototype_GameObject_Dice"), m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Domino"), &tCarriableDesc)))
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eCurLevelID, TEXT("Prototype_GameObject_Dice"), eCurLevelID, TEXT("Layer_Domino"), &tCarriableDesc)))
 				return;
 
 			fDominoXPosition = 64.5f;
@@ -581,14 +586,29 @@ void CGameEventExecuter_C2::Chapter2_Humgrump(_float _fTimeDelta)
 			fDominoXPositionStep = -3.5f;
 			tModelDesc.tTransform3DDesc.vInitialPosition = _float3(fDominoXPosition, fDominoYPosition, fDominoZPosition);
 			tModelDesc.strModelPrototypeTag_3D = TEXT("Domino_1");
-			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_pGameInstance->Get_CurLevelID(), TEXT("Prototype_GameObject_Domino"), m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Domino"), &tModelDesc)))
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eCurLevelID, TEXT("Prototype_GameObject_Domino"), eCurLevelID, TEXT("Layer_Domino"), &tModelDesc)))
 				return;
 
 
 			tModelDesc.tTransform3DDesc.vInitialPosition.x += fDominoXPositionStep;
 			tModelDesc.strModelPrototypeTag_3D = TEXT("Domino_3");
-			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_pGameInstance->Get_CurLevelID(), TEXT("Prototype_GameObject_Domino"), m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Domino"), &tModelDesc)))
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eCurLevelID, TEXT("Prototype_GameObject_Domino"), eCurLevelID, TEXT("Layer_Domino"), &tModelDesc)))
 				return;
+
+
+			CDraggableObject::DRAGGABLE_DESC tDraggableDesc = {};
+			tDraggableDesc.iModelPrototypeLevelID_3D = eCurLevelID;
+			tDraggableDesc.iCurLevelID = eCurLevelID;
+			tDraggableDesc.strModelPrototypeTag_3D = TEXT("SM_Plastic_Block_04");
+			tDraggableDesc.eStartCoord = COORDINATE_3D;
+			tDraggableDesc.vBoxHalfExtents = { 1.02f,1.02f,1.02f };
+			tDraggableDesc.vBoxOffset = { 0.f,tDraggableDesc.vBoxHalfExtents.y,0.f };
+			tDraggableDesc.tTransform3DDesc.vInitialPosition = { -47.f, 5.82f, 15.f };
+
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DraggableObject"),
+				eCurLevelID, TEXT("Layer_Draggable"), &tDraggableDesc)))
+				return ;
+
 		}
 
 

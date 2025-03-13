@@ -2105,12 +2105,15 @@ HRESULT CLoader::Model_Load(LEVEL_ID _eResourceLevelID, LEVEL_ID _eLoadLevelID)
 	case LEVEL_CHAPTER_2:
 		str3DMapProtoJsonName = L"Chapter_02_Play_Desk.json";
 		if (FAILED(Load_Models_FromJson(_eLoadLevelID, MAP_3D_DEFAULT_PATH, L"Chapter_Intro.json", matPretransform, true)))
-			return E_FAIL;
+			return E_FAIL;		
+
 		strChapterName += L"Chapter2";
 		break;
 	case LEVEL_CHAPTER_4:
 		str3DMapProtoJsonName = L"Chapter_04_Play_Desk.json";
 		strChapterName += L"Chapter4";
+		if (FAILED(Load_Models_FromJson(_eLoadLevelID, MAP_3D_DEFAULT_PATH, L"Chapter_04_Default_Desk.json", matPretransform, true)))
+			return E_FAIL;
 		break;
 	case LEVEL_CHAPTER_6:
 		str3DMapProtoJsonName = L"Chapter_06_Play_Desk.json";

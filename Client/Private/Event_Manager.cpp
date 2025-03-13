@@ -1090,7 +1090,7 @@ HRESULT CEvent_Manager::Map_Object_Create(const _wstring& _strFileName, _uint _i
 				int a = 1;
 
 			}
-
+			_wstring strIncludeLayerTag = wstrLayerTag;
 			C3DMapObject* pGameObject =
 				CMapObjectFactory::Bulid_3DObject<C3DMapObject>(
 					(LEVEL_ID)_iCurLevelID,
@@ -1099,7 +1099,12 @@ HRESULT CEvent_Manager::Map_Object_Create(const _wstring& _strFileName, _uint _i
 
 			if (nullptr != pGameObject)
 			{
-				m_pGameInstance->Add_GameObject_ToLayer(_iCurLevelID, wstrLayerTag.c_str(), pGameObject);
+
+				if (ContainWstring(pGameObject->Get_MapObjectModelName(), L"SM_sticky_notes"))
+					strIncludeLayerTag = L"Layer_Postit";
+				m_pGameInstance->Add_GameObject_ToLayer(_iCurLevelID, strIncludeLayerTag.c_str(), pGameObject);
+
+				//m_pGameInstance->Add_GameObject_ToLayer(_iCurLevelID, wstrLayerTag.c_str(), pGameObject);
 				// 쓰레드를 통해 생성된 맵오브젝트들을 별도 저장. 
 				m_ThreadCreateMapObjects.push_back(static_cast<CMapObject*>(pGameObject));
 				Safe_AddRef(m_ThreadCreateMapObjects[i]);
