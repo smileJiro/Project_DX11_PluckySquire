@@ -188,11 +188,11 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 		MSG_BOX(" Failed Ready_Layer_MagicHand (Level_Chapter_02::Initialize)");
 		assert(nullptr);
 	}
-	if (FAILED(Ready_Layer_Draggable(TEXT("Layer_Draggable"))))
-	{
-		MSG_BOX(" Failed REady_Layer_Draggable (Level_Chapter_02::Initialize)");
-		assert(nullptr);
-	}
+	//if (FAILED(Ready_Layer_Draggable(TEXT("Layer_Draggable"))))
+	//{
+	//	MSG_BOX(" Failed REady_Layer_Draggable (Level_Chapter_02::Initialize)");
+	//	assert(nullptr);
+	//}
 	if (FAILED(Ready_Layer_MapGimmick(TEXT("Layer_MapGimmick"))))
 	{
 		MSG_BOX(" Failed Ready_Layer_MapGimmick (Level_Chapter_02::Initialize)");
