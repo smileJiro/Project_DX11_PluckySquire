@@ -79,6 +79,7 @@
 #include "ScrollModelObject.h"
 #include "CarriableObject.h"
 #include "DraggableObject.h"
+#include "FresnelModelObject.h"
 #include "Player.h"
 #include "PlayerBody.h"
 #include "PlayerSword.h"
@@ -742,6 +743,9 @@ HRESULT CLoader::Loading_Level_Static()
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_DraggableObject"),
 		CDraggableObject::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_FresnelModelObject"),
+		CFresnelModelObject::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_2DMapObject"),
 		C2DMapDefaultObject::Create(m_pDevice, m_pContext))))
@@ -1808,8 +1812,13 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 
 #pragma region Chapter 8 - Effect Load
 
-	lstrcpy(m_szLoadingText, TEXT("Level6 이펙트 로딩중입니다."));
+	lstrcpy(m_szLoadingText, TEXT("Level8 이펙트 로딩중입니다."));
 
+	if (FAILED(Load_Directory_Effects(LEVEL_CHAPTER_8, TEXT("../Bin/DataFiles/FX/Level8/LoadInfo.json"))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Load_Json_InLevel(TEXT("../Bin/DataFiles/FX/FX_Level8.json"), TEXT("FX_Level8"), LEVEL_CHAPTER_8)))
+		return E_FAIL;
 #pragma endregion
 
 #pragma region Chapter 8 - Object Create

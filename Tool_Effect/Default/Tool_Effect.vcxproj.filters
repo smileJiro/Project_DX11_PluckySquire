@@ -138,6 +138,9 @@
     <ClInclude Include="..\public\TestEmissive.h">
       <Filter>02. GameObject\MagicHand</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\TestShadingModel.h">
+      <Filter>02. GameObject\Etc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
@@ -218,6 +221,9 @@
     </ClCompile>
     <ClCompile Include="..\private\TestEmissive.cpp">
       <Filter>02. GameObject\MagicHand</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\TestShadingModel.cpp">
+      <Filter>02. GameObject\Etc</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

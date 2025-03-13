@@ -391,6 +391,7 @@ HRESULT CParticle_Sprite_Emitter::Bind_ShaderValue_ByPass()
         break;
     }
     case SUBCOLORBLOOM:
+    case ROTATION_BILLBOARD_SUBBLOOM:
     {
         if (FAILED(Bind_Float4("SubColor", "g_vSubColor")))
             return E_FAIL;
@@ -774,7 +775,7 @@ void CParticle_Sprite_Emitter::Tool_Update(_float _fTimeDelta)
             "ROTATION_BILLBOARD_BLOOM", "VELOCITY_BILLBOARD",
             "VELOCITY_BILLBOARD_BLOOM", "SUBCOLOR_BLOOM",
             "DEFAULT_DISSOLVE", "VELOCITY_BILLBOARD_SUBCOLORBLOOM",
-            "DISSOLVE_SUBCOLORBLOOM", "FIRESMOKE", "FIRE"
+            "DISSOLVE_SUBCOLORBLOOM", "FIRESMOKE", "FIRE", "ROTATION_BILLBOARD_SUBBLOOM"
         };
         static _int item_selected_idx = 0;
         const char* combo_preview_value = items[item_selected_idx];
