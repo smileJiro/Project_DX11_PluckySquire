@@ -1078,7 +1078,6 @@
 					"isPortrait": false,
 					"isLineEnter": true,
 					"animation": {
-					"animation": {
 						"duration": 1000,
 						"speed": 350
 					},
