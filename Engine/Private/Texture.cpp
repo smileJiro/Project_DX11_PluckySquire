@@ -53,7 +53,7 @@ HRESULT CTexture::Initialize_Prototype(const _tchar* _pTextureFilePath, _uint _i
 				CreateDDSTextureFromFileEx(m_pDevice, szTextureFilePath, 0, D3D11_USAGE_IMMUTABLE, D3D11_BIND_SHADER_RESOURCE, 0, miscFlags,
 					DDS_LOADER_FLAGS(false), nullptr, &pSRV, NULL);
 
-#ifdef NDEBUG
+#ifdef _DEBUG
 				D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
 				pSRV->GetDesc(&srvDesc);
 #endif // _DEBUG
@@ -157,7 +157,7 @@ HRESULT CTexture::Initialize_Prototype(const _char* _szTextureFilePath, _uint _i
 					DDS_LOADER_FLAGS(false), nullptr, &pSRV, NULL);
 
 
-#ifdef NDEBUG
+#ifdef _DEBUG
 				D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
 				pSRV->GetDesc(&srvDesc);
 #endif // _DEBUG

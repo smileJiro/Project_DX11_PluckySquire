@@ -91,7 +91,7 @@ HRESULT CParticle_Sprite_Emitter::Initialize_Prototype(const json& _jsonInfo)
         m_pDistortionTextureCom = static_cast<CTexture*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, m_pGameInstance->Get_StaticLevelID(),
             STRINGTOWSTRING(strTexturePath), nullptr));
     }
-#ifdef NDEBUG
+#ifdef _DEBUG
     if (m_pMaskTextureCom)
         m_pMaskTextureCom->Add_SRVName(STRINGTOWSTRING(_jsonInfo["Texture"]));
     if (m_pDissolveTextureCom)
@@ -548,7 +548,7 @@ HRESULT CParticle_Sprite_Emitter::Cleanup_DeadReferences()
 	return S_OK;
 }
 
-#ifdef NDEBUG
+#ifdef _DEBUG
 void CParticle_Sprite_Emitter::Tool_Setting()
 {
     if (m_pParticleBufferCom)

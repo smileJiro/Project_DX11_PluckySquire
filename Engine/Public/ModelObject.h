@@ -169,7 +169,7 @@ public:
 	virtual CGameObject* Clone(void* _pArg) override;
 	virtual void			Free() override;
 
-#ifdef NDEBUG
+#ifdef _DEBUG
 public:
 	HRESULT Imgui_Render_ObjectInfos() override;
 #endif // _DEBUG
