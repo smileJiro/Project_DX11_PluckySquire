@@ -29,6 +29,7 @@ public:
 	HRESULT					Ready_Layer_TestTerrain(const _wstring& _strLayerTag);
 	HRESULT					Ready_SkyBox(const _wstring& _strLayerTag);
 	HRESULT					Ready_Layer_Model(const _wstring& _strLayerTag);
+	HRESULT					Ready_Layer_ShadingModel(const _wstring& _strLayerTag);
 
 private:
 	class CEffect_System*							m_pNowItem = { nullptr };

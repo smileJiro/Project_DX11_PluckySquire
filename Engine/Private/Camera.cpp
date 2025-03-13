@@ -635,6 +635,7 @@ HRESULT CCamera::Compute_FocalLength()
 
 void CCamera::Free()
 {
+	Safe_Release(m_pCurArm);
 	Safe_Release(m_pConstDofBuffer);
 	__super::Free();
 }

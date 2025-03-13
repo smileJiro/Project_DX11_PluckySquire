@@ -33,11 +33,21 @@ cbuffer MultiFresnels : register(b1)
     Fresnel OuterFresnel;
 }
 
+cbuffer SingleFresnel : register(b2)
+{
+    Fresnel OneFresnel;
+};
 
+cbuffer ColorBuffer : register(b3)
+{
+    float4 vDiffuseColor;
+    float4 vBloomColor;
+}
 
 /* 상수 테이블 */
 float4x4 g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 Texture2D g_AlbedoTexture, g_NormalTexture, g_ORMHTexture, g_MetallicTexture, g_RoughnessTexture, g_AOTexture; // PBR
+Texture2D g_DiffuseTexture, g_DistortionTexture;
 
 float g_fFarZ = 300.f;
 int g_iFlag = 0;
@@ -84,7 +94,7 @@ VS_OUT VS_MAIN(VS_IN In)
     Out.vPosition = mul(float4(In.vPosition, 1.0), matWVP);
     Out.vNormal = normalize(mul(float4(In.vNormal, 0), g_WorldMatrix));
     Out.vTexcoord = In.vTexcoord;
-    Out.vWorldPos = mul(Out.vPosition, g_WorldMatrix);
+    Out.vWorldPos = float4(In.vPosition, 1.f);
     Out.vProjPos = Out.vPosition; // w 나누기를 수행하지 않은 0 ~ far 사이의 z 값이 보존되어있는 position
     Out.vTangent = In.vTangent;
     return Out;
@@ -348,7 +358,7 @@ float Compute_Fresnel(float3 vNormal, float3 vViewDir, float fBaseReflect, float
     
     float fFresnelFactor = fBaseReflect + (1.f - fBaseReflect) * pow(1 - fNDotV, fExponent);
     
-    return saturate(fFresnelFactor * fStrength);
+    return saturate(fFresnelFactor);
 }
 
 struct PS_DIFFUSE
@@ -405,6 +415,46 @@ PS_BLOOM PS_EMISSIVE(PS_IN In)
     Out.vDiffuse = vColor;
     Out.vBrightness = g_vSubColor;
     
+    return Out;
+}
+
+PS_BLOOM PS_SINGLEFRESNEL(PS_IN In)
+{
+    PS_BLOOM Out = (PS_BLOOM) 0;
+    
+    float3 vViewDirection = g_vCamPosition.xyz - In.vWorldPos.xyz;
+    float fLength = length(vViewDirection);
+    vViewDirection = normalize(vViewDirection);
+    
+    float FresnelValue = Compute_Fresnel(In.vNormal.xyz, vViewDirection, OneFresnel.fBaseReflect, OneFresnel.fExp, OneFresnel.fStrength);
+    
+    float3 vFresnelColor = OneFresnel.vColor * FresnelValue;
+    Out.vDiffuse.xyz = lerp(vDiffuseColor.xyz, vFresnelColor.xyz, FresnelValue);
+    //Out.vDiffuse = (OneFresnel.vColor * FresnelValue);
+    Out.vDiffuse.w = vDiffuseColor.a;
+    Out.vBrightness = vBloomColor;
+    return Out;
+}
+
+PS_BLOOM PS_NOISEFRESNEL(PS_IN In)
+{
+    PS_BLOOM Out = (PS_BLOOM) 0;
+    
+    float3 vViewDirection = g_vCamPosition.xyz - In.vWorldPos.xyz;
+    float fLength = length(vViewDirection);
+    vViewDirection = normalize(vViewDirection);
+    
+    float FresnelValue = Compute_Fresnel(In.vNormal.xyz, vViewDirection, OneFresnel.fBaseReflect, OneFresnel.fExp, OneFresnel.fStrength);
+    float3 vFresnelColor = OneFresnel.vColor * FresnelValue;
+    
+    float4 vDistortion = g_DistortionTexture.Sample(LinearSampler, float2(In.vTexcoord.x * 2.f, In.vTexcoord.y * 3.f));
+    float4 vDiffuse = g_DiffuseTexture.Sample(LinearSampler, In.vTexcoord + float2(vDistortion.x, vDistortion.y));     
+    
+    
+    Out.vDiffuse.xyz = lerp(vDiffuse.x * vDiffuseColor.xyz, vFresnelColor.xyz, FresnelValue);
+    //Out.vDiffuse = (OneFresnel.vColor * FresnelValue);
+    Out.vDiffuse.w = vDiffuseColor.a;
+    Out.vBrightness = vBloomColor;
     return Out;
 }
 
@@ -533,6 +583,26 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_EMISSIVE();
+    }
+
+    pass SingleFresnel // 12
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_SINGLEFRESNEL();
+    }
+
+    pass NoiseFresnel // 13
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_NOISEFRESNEL();
     }
 }
 

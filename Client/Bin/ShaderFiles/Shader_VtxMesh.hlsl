@@ -30,13 +30,16 @@ struct Fresnel
     float fDummy;
 };
 
-cbuffer MultiFresnels : register(b1)
+cbuffer SingleFresnel : register(b1)
 {
-    Fresnel InnerFresnel;
-    Fresnel OuterFresnel;
+    Fresnel OneFresnel;
+};
+
+cbuffer ColorBuffer : register(b2)
+{
+    float4 vDiffuseColor;
+    float4 vBloomColor;
 }
-
-
 
 /* 상수 테이블 */
 float4x4 g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
@@ -88,7 +91,7 @@ VS_OUT VS_MAIN(VS_IN In)
     Out.vPosition = mul(float4(In.vPosition, 1.0), matWVP);
     Out.vNormal = normalize(mul(float4(In.vNormal, 0), g_WorldMatrix));
     Out.vTexcoord = In.vTexcoord;
-    Out.vWorldPos = mul(Out.vPosition, g_WorldMatrix);
+    Out.vWorldPos = mul(float4(In.vPosition, 1.f), g_WorldMatrix);
     Out.vProjPos = Out.vPosition; // w 나누기를 수행하지 않은 0 ~ far 사이의 z 값이 보존되어있는 position
     Out.vTangent = In.vTangent;
     return Out;
@@ -443,6 +446,23 @@ PS_BLOOM PS_EMISSIVE(PS_IN In)
     return Out;
 }
 
+PS_BLOOM PS_SINGLEFRESNEL(PS_IN In)
+{
+    PS_BLOOM Out = (PS_BLOOM) 0;
+    
+    float3 vViewDirection = g_vCamPosition.xyz - In.vWorldPos.xyz;
+    float fLength = length(vViewDirection);
+    vViewDirection = normalize(vViewDirection);
+    
+    float FresnelValue = Compute_Fresnel(In.vNormal.xyz, vViewDirection, OneFresnel.fBaseReflect, OneFresnel.fExp, OneFresnel.fStrength);
+    
+    float3 vFresnelColor = OneFresnel.vColor * FresnelValue;
+    Out.vDiffuse.xyz = lerp(vDiffuseColor.xyz, vFresnelColor.xyz, FresnelValue);
+    //Out.vDiffuse = (OneFresnel.vColor * FresnelValue);
+    Out.vDiffuse.w = vDiffuseColor.a;
+    Out.vBrightness = vBloomColor;
+    return Out;
+}
 
 technique11 DefaultTechnique
 {
@@ -580,6 +600,16 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_EMISSIVE();
+    }
+
+    pass SingleFresnel // 13
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_SINGLEFRESNEL();
     }
 
 }

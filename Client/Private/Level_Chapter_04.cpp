@@ -610,8 +610,8 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 	if (COORDINATE_2D == eCoord)
 	{
 		auto pCamera = CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D);
-		pCamera->Enter_Section(pPlayer->Get_Include_Section_Name());
-		pCamera->Switch_CameraView(nullptr);
+		//pCamera->Enter_Section(pPlayer->Get_Include_Section_Name());
+		//pCamera->Switch_CameraView(nullptr);
 	}
 
 	CCamera_Manager::GetInstance()->Start_FadeIn(3.f);

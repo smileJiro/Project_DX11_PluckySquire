@@ -33,6 +33,7 @@
 #include "PlayerState_GetItem.h"
 #include "PlayerState_TransformIn.h"
 #include "PlayerState_CyberIdle.h"
+#include "PlayerState_RetriveSword.h"
 #include "Actor_Dynamic.h"
 #include "PlayerSword.h"    
 #include "PlayerBody.h"
@@ -481,6 +482,7 @@ HRESULT CPlayer::Ready_PartObjects()
     if (nullptr == m_pTurnBookEffect)
         return E_FAIL;
     m_pTurnBookEffect->Set_Active(false);
+    Safe_AddRef(m_pTurnBookEffect);
 
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CPlayer::On_AnimEnd, this, placeholders::_1, placeholders::_2));
     static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_IDLE_RIGHT, true);
@@ -1602,6 +1604,11 @@ void CPlayer::Start_Invinciblity()
 	//m_pBody2DColliderCom->Set_Active(false);
 }
 
+void CPlayer::RetrieveSword()
+{
+    Set_State(RETRIVE_SWORD);
+}
+
 INTERACT_RESULT CPlayer::Try_Interact(_float _fTimeDelta)
 {
     //이미 인터렉터블 오브젝트가 있다? 
@@ -1982,6 +1989,9 @@ void CPlayer::Set_State(STATE _eState)
     case Client::CPlayer::CYBER_DASH:
         m_pStateMachine->Transition_To(new CPlayerState_CyberDash(this));
         break;
+    case Client::CPlayer::RETRIVE_SWORD:
+        m_pStateMachine->Transition_To(new CPlayerState_RetriveSword(this));
+        break;
     case Client::CPlayer::STATE_LAST:
         break;
     default:
@@ -2041,6 +2051,10 @@ void CPlayer::Set_Mode(PLAYER_MODE _eNewMode)
         Equip_Part(PLAYER_PART_RIFLE);
         Equip_Part(PLAYER_PART_VISOR);
         Equip_Part(PLAYER_PART_ZETPACK);
+        
+        if (nullptr != m_pZetPack)
+            m_pZetPack->Switch_State(CZetPack::STATE_CYBER);
+
         break;
     default:
         break;
@@ -2408,6 +2422,7 @@ void CPlayer::Key_Input(_float _fTimeDelta)
         //Add_AutoMoveCommand(tCommand);
 
         //Start_AutoMove(true);
+		Set_State(EVICT);
     }
     if (m_pActorCom->Is_Kinematic())
     {
@@ -2418,6 +2433,7 @@ void CPlayer::Key_Input(_float _fTimeDelta)
     }
     if (KEY_DOWN(KEY::NUM1))
     {
+       Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_SWORD_RETRIEVE);
         if (false == m_pDetonator->Is_DetonationMode())
         {
             Set_CurrentStampType(PLAYER_PART_STOP_STMAP);

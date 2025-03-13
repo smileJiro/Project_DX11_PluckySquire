@@ -57,7 +57,15 @@ void CPlayerState_Evict::Enter()
 	assert(COORDINATE_2D == m_pOwner->Get_CurCoord());
 	m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::JOT_HANDEVICT);
 	m_eCurState = GRABBED;
+	m_pOwner->Set_Mode(CPlayer::PLAYER_MODE_SNEAK);
+	_float3 vPos; XMStoreFloat3(&vPos, m_pOwner->Get_FinalPosition());
+	CModelObject::MODELOBJECT_DESC tDesc = {};
+	tDesc.tTransform2DDesc.vInitialPosition = vPos;
+	CModelObject* pSword ;
+	m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_2, TEXT("Prototype_GameObject_EvictedSword"), LEVEL_CHAPTER_2, TEXT("Layer_Player"), (CGameObject**)&pSword,&tDesc);
+	CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(pSword, SECTION_2D_PLAYMAP_OBJECT);
 }
+
 
 void CPlayerState_Evict::Exit()
 {
