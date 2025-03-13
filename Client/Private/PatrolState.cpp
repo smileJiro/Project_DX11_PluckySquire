@@ -202,7 +202,7 @@ void CPatrolState::PatrolMove(_float _fTimeDelta, _int _iDir)
 		if (true == m_isTurn)
 		{
 			Set_PatrolDirection(_iDir);
-			m_pOwner->Set_2D_Direction(m_eDir);
+			m_pOwner->Set_2DDirection(m_eDir);
 
 			m_isTurn = false;
 			m_isMove = true;

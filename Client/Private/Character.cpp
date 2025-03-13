@@ -460,9 +460,9 @@ void CCharacter::Set_2DDirection(E_DIRECTION _eEDir)
     }
 }
 
-void CCharacter::Set_2DDirection(F_DIRECTION _eEDir)
+void CCharacter::Set_2DDirection(F_DIRECTION _eFDir)
 {
-	Set_2DDirection( FDir_To_EDir(_eEDir));
+	Set_2DDirection( FDir_To_EDir(_eFDir));
 }
 
 

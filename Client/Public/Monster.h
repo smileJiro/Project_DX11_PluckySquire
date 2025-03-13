@@ -69,11 +69,11 @@ public:
 		return m_isAnimChangeable;
 	}
 
-	void Set_2D_Direction(F_DIRECTION _eDir);
-	F_DIRECTION Get_2DDirection() 
-	{ 
-		return m_e2DDirection; 
-	}
+	//void Set_2D_Direction(F_DIRECTION _eDir);
+	//F_DIRECTION Get_2DDirection() 
+	//{ 
+	//	return m_e2DDirection; 
+	//}
 
 	void Set_SneakMode(_bool _isSneak)
 	{
@@ -254,7 +254,7 @@ protected:
 	_bool m_isDetect_Block = { false };
 	_uint m_iDetect_Block_Count = { 0 };
 
-	F_DIRECTION m_e2DDirection = { F_DIRECTION::F_DIR_LAST };
+	//F_DIRECTION m_e2DDirection = { F_DIRECTION::F_DIR_LAST };
 
 public:
 	HRESULT Cleanup_DeadReferences() override;

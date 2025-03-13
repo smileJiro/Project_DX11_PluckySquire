@@ -137,7 +137,7 @@ public:
 	//SET
 	void Set_ScrollingMode(_bool _bScrollingMode);
 	virtual void Set_2DDirection(E_DIRECTION _eEDir);
-	virtual void Set_2DDirection(F_DIRECTION _eEDir);
+	virtual void Set_2DDirection(F_DIRECTION _eFDir);
 
 	
 protected:

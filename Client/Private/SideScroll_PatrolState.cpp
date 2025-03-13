@@ -81,7 +81,7 @@ void CSideScroll_PatrolState::State_Update(_float _fTimeDelta)
 	{
 		vPos.x = m_tPatrolBound.fMaxX;
 		m_pOwner->Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, vPos);
-		m_pOwner->Set_2D_Direction(F_DIRECTION::LEFT);
+		m_pOwner->Set_2DDirection(F_DIRECTION::LEFT);
 	}
 
 	//왼쪽을 넘어서면
@@ -89,7 +89,7 @@ void CSideScroll_PatrolState::State_Update(_float _fTimeDelta)
 	{
 		vPos.x = m_tPatrolBound.fMinX;
 		m_pOwner->Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, vPos);
-		m_pOwner->Set_2D_Direction(F_DIRECTION::RIGHT);
+		m_pOwner->Set_2DDirection(F_DIRECTION::RIGHT);
 	}
 }
 

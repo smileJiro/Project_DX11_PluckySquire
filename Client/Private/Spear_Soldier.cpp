@@ -337,74 +337,74 @@ void CSpear_Soldier::Change_Animation()
             switch (MONSTER_STATE(m_iState))
             {
             case MONSTER_STATE::IDLE:
-                if (F_DIRECTION::UP == m_e2DDirection)
+                if (E_DIRECTION::UP == Get_2DDirection())
                     eAnim = IDLE_UP;
-                else if (F_DIRECTION::DOWN == m_e2DDirection)
+                else if (E_DIRECTION::DOWN == Get_2DDirection())
                     eAnim = IDLE_DOWN;
-                else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
+                else if (E_DIRECTION::RIGHT == Get_2DDirection() || E_DIRECTION::LEFT == Get_2DDirection())
                     eAnim = IDLE_RIGHT;
                 break;
 
             case MONSTER_STATE::PATROL:
-                if (F_DIRECTION::UP == m_e2DDirection)
+                if (E_DIRECTION::UP == Get_2DDirection())
                     eAnim = WALK_UP;
-                else if (F_DIRECTION::DOWN == m_e2DDirection)
+                else if (E_DIRECTION::DOWN == Get_2DDirection())
                     eAnim = WALK_DOWN;
-                else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
+                else if (E_DIRECTION::RIGHT == Get_2DDirection() || E_DIRECTION::LEFT == Get_2DDirection())
                     eAnim = WALK_RIGHT;
                 break;
 
             case MONSTER_STATE::ALERT:
-                if (F_DIRECTION::UP == m_e2DDirection)
+                if (E_DIRECTION::UP == Get_2DDirection())
                     eAnim = ALERT_UP;
-                else if (F_DIRECTION::DOWN == m_e2DDirection)
+                else if (E_DIRECTION::DOWN == Get_2DDirection())
                     eAnim = ALERT_DOWN;
-                else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
+                else if (E_DIRECTION::RIGHT == Get_2DDirection() || E_DIRECTION::LEFT == Get_2DDirection())
                     eAnim = ALERT_RIGHT;
                 break;
 
             case MONSTER_STATE::STANDBY:
-                if (F_DIRECTION::UP == m_e2DDirection)
+                if (E_DIRECTION::UP == Get_2DDirection())
                     eAnim = IDLE_UP;
-                else if (F_DIRECTION::DOWN == m_e2DDirection)
+                else if (E_DIRECTION::DOWN == Get_2DDirection())
                     eAnim = IDLE_DOWN;
-                else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
+                else if (E_DIRECTION::RIGHT == Get_2DDirection() || E_DIRECTION::LEFT == Get_2DDirection())
                     eAnim = IDLE_RIGHT;
                 break;
 
             case MONSTER_STATE::CHASE:
-                if (F_DIRECTION::UP == m_e2DDirection)
+                if (E_DIRECTION::UP == Get_2DDirection())
                     eAnim = WALK_UP;
-                else if (F_DIRECTION::DOWN == m_e2DDirection)
+                else if (E_DIRECTION::DOWN == Get_2DDirection())
                     eAnim = WALK_DOWN;
-                else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
+                else if (E_DIRECTION::RIGHT == Get_2DDirection() || E_DIRECTION::LEFT == Get_2DDirection())
                     eAnim = WALK_RIGHT;
                 break;
 
             case MONSTER_STATE::ATTACK:
-                if (F_DIRECTION::UP == m_e2DDirection)
+                if (E_DIRECTION::UP == Get_2DDirection())
                     eAnim = DASHATTACK_INTO_UP;
-                else if (F_DIRECTION::DOWN == m_e2DDirection)
+                else if (E_DIRECTION::DOWN == Get_2DDirection())
                     eAnim = DASHATTACK_INTO_DOWN;
-                else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
+                else if (E_DIRECTION::RIGHT == Get_2DDirection() || E_DIRECTION::LEFT == Get_2DDirection())
                     eAnim = DASHATTACK_INTO_RIGHT;
                 break;
 
             case MONSTER_STATE::HIT:
-                if (F_DIRECTION::UP == m_e2DDirection)
+                if (E_DIRECTION::UP == Get_2DDirection())
                     eAnim = HIT_UP;
-                else if (F_DIRECTION::DOWN == m_e2DDirection)
+                else if (E_DIRECTION::DOWN == Get_2DDirection())
                     eAnim = HIT_DOWN;
-                else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
+                else if (E_DIRECTION::RIGHT == Get_2DDirection() || E_DIRECTION::LEFT == Get_2DDirection())
                     eAnim = HIT_RIGHT;
                 break;
 
             case MONSTER_STATE::DEAD:
-                if (F_DIRECTION::UP == m_e2DDirection)
+                if (E_DIRECTION::UP == Get_2DDirection())
                     eAnim = DEATH_UP;
-                else if (F_DIRECTION::DOWN == m_e2DDirection)
+                else if (E_DIRECTION::DOWN == Get_2DDirection())
                     eAnim = DEATH_DOWN;
-                else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
+                else if (E_DIRECTION::RIGHT == Get_2DDirection() || E_DIRECTION::LEFT == Get_2DDirection())
                     eAnim = DEATH_RIGHT;
                 break;
 
@@ -423,45 +423,81 @@ void CSpear_Soldier::Change_Animation()
 void CSpear_Soldier::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
 {
     CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
-    switch ((CSpear_Soldier::Animation)pModelObject->Get_Model(COORDINATE_3D)->Get_CurrentAnimIndex())
+    if (COORDINATE_3D == Get_CurCoord())
     {
-    case ALERT:
-        Set_AnimChangeable(true);
-        break;
-        
-    case DASH_ATTACK_STARTUP:
-        pModelObject->Switch_Animation(DASH_ATTACK_LOOP);
-        break;
+        switch ((CSpear_Soldier::Animation)pModelObject->Get_Model(COORDINATE_3D)->Get_CurrentAnimIndex())
+        {
+        case ALERT:
+            Set_AnimChangeable(true);
+            break;
 
-    case DASH_ATTACK_LOOP:
-        m_isDash = false;
-        Stop_MoveXZ();
-        pModelObject->Switch_Animation(DASH_ATTACK_RECOVERY);
-        CoolTime_On();
-        break;
+        case DASH_ATTACK_STARTUP:
+            pModelObject->Switch_Animation(DASH_ATTACK_LOOP);
+            break;
 
-    case DASH_ATTACK_RECOVERY:
-        Set_AnimChangeable(true);
-        break;
+        case DASH_ATTACK_LOOP:
+            m_isDash = false;
+            Stop_MoveXZ();
+            pModelObject->Switch_Animation(DASH_ATTACK_RECOVERY);
+            CoolTime_On();
+            break;
 
-    case BLOCK_HOLD_UP:
-        pModelObject->Switch_Animation(BLOCK_HOLD_LOOP);
-        break;
+        case DASH_ATTACK_RECOVERY:
+            Set_AnimChangeable(true);
+            break;
 
-    case ARREST:
-        Set_AnimChangeable(true);
-        break;
+        case BLOCK_HOLD_UP:
+            pModelObject->Switch_Animation(BLOCK_HOLD_LOOP);
+            break;
 
-    case HIT_FRONT:
-        Set_AnimChangeable(true);
-        break;
+        case ARREST:
+            Set_AnimChangeable(true);
+            break;
 
-    case DEATH_02_EDIT:
-        Monster_Death();
-        break;
+        case HIT_FRONT:
+            Set_AnimChangeable(true);
+            break;
 
-    default:
-        break;
+        case DEATH_02_EDIT:
+            Monster_Death();
+            break;
+
+        default:
+            break;
+        }
+    }
+    else if (COORDINATE_2D == Get_CurCoord())
+    {
+        switch ((CSpear_Soldier::Animation2D)pModelObject->Get_Model(COORDINATE_2D)->Get_CurrentAnimIndex())
+        {
+        case ALERT_DOWN:
+        case ALERT_RIGHT:
+        case ALERT_UP:
+            Set_AnimChangeable(true);
+            break;
+
+        case DASHATTACK_INTO_DOWN:
+        case DASHATTACK_INTO_RIGHT:
+        case DASHATTACK_INTO_UP:
+            //pModelObject->Switch_Animation()
+            //Set_AnimChangeable(true);
+            break;
+
+        case HIT_DOWN:
+        case HIT_RIGHT:
+        case HIT_UP:
+            Set_AnimChangeable(true);
+            break;
+
+        case DEATH_DOWN:
+        case DEATH_RIGHT:
+        case DEATH_UP:
+            Monster_Death();
+            break;
+
+        default:
+            break;
+        }
     }
 }
 
