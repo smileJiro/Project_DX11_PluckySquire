@@ -80,9 +80,19 @@ public:
 		m_isSneakMode = _isSneak;
 	}
 
-	_bool Get_SneakMode()
+	_bool Is_SneakMode()
 	{
 		return m_isSneakMode;
+	}
+
+	void Set_CombatMode(_bool _isCombat)
+	{
+		m_isCombatMode = _isCombat;
+	}
+
+	_bool Is_CombatMode()
+	{
+		return m_isCombatMode;
 	}
 
 	_bool IsDelay() 
@@ -251,6 +261,8 @@ protected:
 
 	//잠입 모드
 	_bool m_isSneakMode = { false };
+	//잠입 모드 해제 후 전투모드
+	_bool m_isCombatMode = { false };
 
 	//장애물 탐지
 	SNEAKWAYPOINTINDEX m_eWayIndex;

@@ -1791,6 +1791,9 @@
     <ClInclude Include="..\Public\C08_Box.h">
       <Filter>02.GameObjects\Interact\Carriable</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Patrol_WayState.h">
+      <Filter>03.Components\FSM\State\Patrol</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -2868,6 +2871,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\C08_Box.cpp">
       <Filter>02.GameObjects\Interact\Carriable</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Patrol_WayState.cpp">
+      <Filter>03.Components\FSM\State\Patrol</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

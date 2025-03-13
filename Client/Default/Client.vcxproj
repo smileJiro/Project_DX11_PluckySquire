@@ -232,6 +232,7 @@
     <ClInclude Include="..\Public\MonsterJumpState.h" />
     <ClInclude Include="..\Public\MonsterMoveState.h" />
     <ClInclude Include="..\public\Mug_Alien.h" />
+    <ClInclude Include="..\Public\Patrol_WayState.h" />
     <ClInclude Include="..\Public\PlayerState_RetriveSword.h" />
     <ClInclude Include="..\public\PortalLocker_LayerCount.h" />
     <ClInclude Include="..\Public\Projectile_SketchSpace_UFO.h" />
@@ -600,6 +601,7 @@
     <ClCompile Include="..\Private\MonsterJumpState.cpp" />
     <ClCompile Include="..\Private\MonsterMoveState.cpp" />
     <ClCompile Include="..\private\Mug_Alien.cpp" />
+    <ClCompile Include="..\Private\Patrol_WayState.cpp" />
     <ClCompile Include="..\Private\PlayerState_RetriveSword.cpp" />
     <ClCompile Include="..\private\PortalLocker_LayerCount.cpp" />
     <ClCompile Include="..\Private\Projectile_SketchSpace_UFO.cpp" />

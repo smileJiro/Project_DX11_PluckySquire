@@ -260,6 +260,9 @@ HRESULT CSpear_Soldier::Render()
     if (COORDINATE_3D == Get_CurCoord())
     {
         m_pDetectionField->Render();
+
+        if (true == m_isSneakMode)
+            m_pSneak_DetectionField->Render();
     }
 #endif // _DEBUG
 
