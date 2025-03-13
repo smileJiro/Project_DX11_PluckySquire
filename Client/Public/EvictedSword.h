@@ -23,7 +23,7 @@ public:
 public:
 	void On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx);
 private:
-
+	_float2 m_vSwordOffset = { -250.f, 64.f };
 
 public:
 	static CEvictedSword* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

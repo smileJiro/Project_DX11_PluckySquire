@@ -2428,6 +2428,7 @@ void CPlayer::Key_Input(_float _fTimeDelta)
     }
     if (KEY_DOWN(KEY::NUM1))
     {
+       Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_SWORD_RETRIEVE);
         if (false == m_pDetonator->Is_DetonationMode())
         {
             Set_CurrentStampType(PLAYER_PART_STOP_STMAP);
