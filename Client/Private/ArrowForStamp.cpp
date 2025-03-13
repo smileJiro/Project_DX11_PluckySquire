@@ -2,7 +2,7 @@
 #include "ArrowForStamp.h"
 #include "GameInstance.h"
 #include "UI_Manager.h"
-
+#include "Book.h"
 
 
 CArrowForStamp::CArrowForStamp(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -49,7 +49,17 @@ void CArrowForStamp::Update(_float _fTimeDelta)
 
 void CArrowForStamp::Late_Update(_float _fTimeDelta)
 {
-	__super::Late_Update(_fTimeDelta);
+	CBook* pBook = Uimgr->Get_Book();
+
+	if (nullptr == pBook)
+		assert(pBook);
+
+	if (true == pBook->Get_PlayerAbove())
+	{
+		if (true == Uimgr->Get_StampHave(0) && true == Uimgr->Get_StampHave(1))
+			__super::Late_Update(_fTimeDelta);
+	}
+		
 }
 
 HRESULT CArrowForStamp::Render()

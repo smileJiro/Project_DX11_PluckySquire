@@ -3,6 +3,7 @@
 #include "Client_Defines.h"
 
 
+
 BEGIN(Engine)
 class CShader;
 class CModel;
@@ -35,11 +36,18 @@ public:
 	HRESULT					Cleanup_DeadReferences() override;
 
 private:
+	void					StampWord();
 	void					ChangeStampWord();
+	void					ChangeBombWord();
+
+	void					ChangeExitBookState();
 
 private:
-	wstring					m_strStampKeyInfomation = { L"" };
+	wstring					m_strKeyInfomation = { L"" };
 	_uint					m_iPreStamp = { 2 };
+
+
+	_uint					m_iDisplayTexture = { 0 };
 
 
 };

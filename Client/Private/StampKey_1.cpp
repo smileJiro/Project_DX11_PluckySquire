@@ -45,11 +45,34 @@ void CStampKey_1::Priority_Update(_float _fTimeDelta)
 
 void CStampKey_1::Update(_float _fTimeDelta)
 {
+	CBook* pBook = Uimgr->Get_Book();
+
+	if (nullptr == pBook)
+		assert(pBook);
+
+	if (true == pBook->Get_PlayerAbove())
+	{
+		if (true == Uimgr->Get_StampHave(0) && true == Uimgr->Get_StampHave(1))
+		{
+			Change_StampKeyWord();
+		}
+	}
+
 }
 
 void CStampKey_1::Late_Update(_float _fTimeDelta)
 {
-	__super::Late_Update(_fTimeDelta);
+	CBook* pBook = Uimgr->Get_Book();
+
+	if (nullptr == pBook)
+		assert(pBook);
+
+	if (true == pBook->Get_PlayerAbove())
+	{
+		if (true == Uimgr->Get_StampHave(0) && true == Uimgr->Get_StampHave(1))
+			__super::Late_Update(_fTimeDelta);
+	}
+	
 }
 
 HRESULT CStampKey_1::Render()
@@ -67,13 +90,27 @@ HRESULT CStampKey_1::Render()
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
 		return E_FAIL;
 
-	if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_DiffuseTexture")))
+	if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_DiffuseTexture", m_iTextureKind)))
 		return E_FAIL;
 
 
 	m_pShaderCom->Begin((_uint)PASS_VTXPOSTEX::DEFAULT);
 	m_pVIBufferCom->Bind_BufferDesc();
 	m_pVIBufferCom->Render();
+
+
+	/*
+		pDesc.fX = g_iWinSizeX / 18.f;
+	pDesc.fY = g_iWinSizeY - g_iWinSizeY / 20.f;
+	*/
+
+
+	m_pGameInstance->Render_Font(TEXT("Font30"), m_strStampInfo.c_str(), _float2(g_iWinSizeX / 13.f - 2.5f, g_iWinSizeY - g_iWinSizeY / 14.f), XMVectorSet(0.f, 0.f, 0.f, 1.0f));
+	m_pGameInstance->Render_Font(TEXT("Font30"), m_strStampInfo.c_str(), _float2(g_iWinSizeX / 13.f + 2.5f, g_iWinSizeY - g_iWinSizeY / 14.f), XMVectorSet(0.f, 0.f, 0.f, 1.0f));
+	m_pGameInstance->Render_Font(TEXT("Font30"), m_strStampInfo.c_str(), _float2(g_iWinSizeX / 13.f, g_iWinSizeY - g_iWinSizeY / 14.f - 2.5f), XMVectorSet(0.f, 0.f, 0.f, 1.0f));
+	m_pGameInstance->Render_Font(TEXT("Font30"), m_strStampInfo.c_str(), _float2(g_iWinSizeX / 13.f, g_iWinSizeY - g_iWinSizeY / 14.f + 2.5f), XMVectorSet(0.f, 0.f, 0.f, 1.0f));
+
+	m_pGameInstance->Render_Font(TEXT("Font30"), m_strStampInfo.c_str(), _float2(g_iWinSizeX / 13.f, g_iWinSizeY - g_iWinSizeY / 14.f), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
 
 	//__super::Render();
 	
@@ -95,11 +132,39 @@ HRESULT CStampKey_1::Ready_Components()
 		return E_FAIL;
 
 	/* Com_Texture */
-	if (FAILED(Add_Component(m_iCurLevelID, TEXT("Prototype_Component_Texture_ArrowForStamp"),
+	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Texture_StampChange"),
 		TEXT("Com_Texture_2D"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
 		return E_FAIL;
 
 	return S_OK;
+}
+
+void CStampKey_1::Change_StampKeyWord()
+{
+	CPlayer* pPlayer = Uimgr->Get_Player();
+	if (nullptr == pPlayer)
+	{
+		assert(pPlayer);
+	}
+
+	if (m_ePreStampChoose == pPlayer->Get_CurrentStampType())
+	{
+		return;
+	}
+	else
+	{
+		if (CPlayer::PLAYER_PART::PLAYER_PART_STOP_STMAP == pPlayer->Get_CurrentStampType())
+		{
+			m_iTextureKind = 1;
+			m_ePreStampChoose = CPlayer::PLAYER_PART::PLAYER_PART_STOP_STMAP;
+		}
+		else if (CPlayer::PLAYER_PART::PLAYER_PART_BOMB_STMAP == pPlayer->Get_CurrentStampType())
+		{
+			m_iTextureKind = 0;
+			m_ePreStampChoose = CPlayer::PLAYER_PART::PLAYER_PART_BOMB_STMAP;
+		}
+	}
+
 }
 
 

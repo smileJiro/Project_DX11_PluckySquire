@@ -38,6 +38,7 @@
 #include "StopStamp_UI.h"
 #include "BombStamp_UI.h"
 #include "ArrowForStamp.h"
+#include "StampKey_1.h"
 #include "Interaction_Key.h"
 #include "ESC_HeartPoint.h"
 #include "UI_Interaction_Book.h"
@@ -489,6 +490,14 @@ HRESULT CLoader::Loading_Level_Static()
 
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Interact_Book"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Static/KeyIcon/Keyboard_Book_%d.dds"), 2))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Interact_Key"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Static/KeyIcon/Interaction_Key_%d.dds"), 2))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_StampChange"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Static/KeyIcon/keyboard_Stamp_%d.dds"), 2))))
 		return E_FAIL;
 
 #pragma endregion
@@ -2329,6 +2338,9 @@ HRESULT CLoader::UI_Object_Load(LEVEL_ID _eLevelID)
 
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_GameObject_StampKey_Q"),
 		CInteraction_Key::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_GameObject_StampKey_1"),
+		CStampKey_1::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_GameObject_ESCHeartPoint"),

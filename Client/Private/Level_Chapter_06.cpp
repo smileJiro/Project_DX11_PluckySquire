@@ -310,18 +310,27 @@ void CLevel_Chapter_06::Update(_float _fTimeDelta)
 		CCamera_Manager::GetInstance()->Change_CameraType(iCurCameraType);
 	}
 
-	if (KEY_DOWN(KEY::Z))
+	if (KEY_DOWN(KEY::NUM1))
 	{
-		CUI_Manager::STAMP eStamp;
-		eStamp = CUI_Manager::GetInstance()->Get_StampIndex();
+		CUI_Manager* pUIManager = CUI_Manager::GetInstance();
 
-		if (eStamp == CUI_Manager::STAMP_BOMB)
+		if (nullptr == pUIManager)
+			assert(nullptr);
+
+		if (true == pUIManager->Get_StampHave(0) &&
+			true == pUIManager->Get_StampHave(1))
 		{
-			CUI_Manager::GetInstance()->Set_StampIndex(CUI_Manager::STAMP_STOP);
-		}
-		else if (eStamp == CUI_Manager::STAMP_STOP)
-		{
-			CUI_Manager::GetInstance()->Set_StampIndex(CUI_Manager::STAMP_BOMB);
+			CUI_Manager::STAMP eStamp;
+			eStamp = pUIManager->Get_StampIndex();
+
+			if (eStamp == CUI_Manager::STAMP_BOMB)
+			{
+				pUIManager->Set_StampIndex(CUI_Manager::STAMP_STOP);
+			}
+			else if (eStamp == CUI_Manager::STAMP_STOP)
+			{
+				pUIManager->Set_StampIndex(CUI_Manager::STAMP_BOMB);
+			}
 		}
 
 	}
@@ -686,9 +695,14 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Book(const _wstring& _strLayerTag)
 	CBook::BOOK_DESC Desc = {};
 	Desc.iCurLevelID = m_eLevelID;
 
+	CGameObject* pBook = nullptr;
+
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Book"),
-		m_eLevelID, L"Layer_Book", &Desc)))
+		m_eLevelID, L"Layer_Book", &pBook, &Desc)))
 		return E_FAIL;
+
+	Uimgr->Set_Book(static_cast<CBook*>(pBook));
+
 
 	return S_OK;
 }
@@ -712,35 +726,53 @@ HRESULT CLevel_Chapter_06::Ready_Layer_UI(const _wstring& _strLayerTag)
 #pragma endregion PickBubble UI
 
 #pragma region STAMP UI
-	//pDesc.fX = g_iWinSizeX / 20.f;
-	//pDesc.fY = g_iWinSizeY - g_iWinSizeY / 10.f;
-	//
-	//// 원래 크기
-	//pDesc.fSizeX = 96.f;
-	//pDesc.fSizeY = 148.f;
-	//
-	////작게  크기
-	////pDesc.fSizeX = 48.f;
-	////pDesc.fSizeY = 74.f;
-	//
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_StopStamp"), m_eLevelID, _strLayerTag, &pDesc)))
-	//	return E_FAIL;
-	//
-	//pDesc.fX = g_iWinSizeX / 7.5f;
-	//pDesc.fY = g_iWinSizeY - g_iWinSizeY / 10.f;
-	//pDesc.fSizeX = 72.f;
-	//pDesc.fSizeY = 111.f;
-	//
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_BombStamp"), m_eLevelID, _strLayerTag, &pDesc)))
-	//	return E_FAIL;
-	//
-	//pDesc.fX = g_iWinSizeX / 10.8f;
-	//pDesc.fY = g_iWinSizeY - g_iWinSizeY / 20.f;
-	//pDesc.fSizeX = 42.f;
-	//pDesc.fSizeY = 27.f;
-	//
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_ArrowForStamp"), m_eLevelID, _strLayerTag, &pDesc)))
-	//	return E_FAIL;
+	pDesc.fX = g_iWinSizeX / 20.f;
+	pDesc.fY = g_iWinSizeY - g_iWinSizeY / 6.f;
+
+	// 원래 크기
+	pDesc.fSizeX = 72.f;
+	pDesc.fSizeY = 111.f;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_StopStamp"), m_eLevelID, _strLayerTag, &pDesc)))
+		return E_FAIL;
+
+
+	pDesc.fX = g_iWinSizeX / 7.5f;
+	pDesc.fY = g_iWinSizeY - g_iWinSizeY / 6.f;
+	pDesc.fSizeX = 99.f;
+	pDesc.fSizeY = 153.f;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_BombStamp"), m_eLevelID, _strLayerTag, &pDesc)))
+		return E_FAIL;
+
+
+	pDesc.fX = g_iWinSizeX / 10.8f;
+	pDesc.fY = g_iWinSizeY - g_iWinSizeY / 8.f;
+	pDesc.fSizeX = 42.f;
+	pDesc.fSizeY = 27.f;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_ArrowForStamp"), m_eLevelID, _strLayerTag, &pDesc)))
+		return E_FAIL;
+
+
+
+	// -------------------------------------- //
+	pDesc.fX = g_iWinSizeX - g_iWinSizeX / 10.8f;
+	pDesc.fY = g_iWinSizeY - g_iWinSizeY / 20.f;
+	pDesc.fSizeX = 72.f;
+	pDesc.fSizeY = 72.f;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_StampKey_Q"), m_eLevelID, _strLayerTag, &pDesc)))
+		return E_FAIL;
+
+
+	pDesc.fX = g_iWinSizeX / 18.f;
+	pDesc.fY = g_iWinSizeY - g_iWinSizeY / 20.f;
+	pDesc.fSizeX = 72.f;
+	pDesc.fSizeY = 72.f;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_StampKey_1"), m_eLevelID, _strLayerTag, &pDesc)))
+		return E_FAIL;
 #pragma endregion STAMP UI
 
 #pragma region InterAction UI

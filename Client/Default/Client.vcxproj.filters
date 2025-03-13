@@ -1762,13 +1762,13 @@
     <ClInclude Include="..\Public\StampKey_1.h">
       <Filter>02.GameObjects\UI\00. GamePlay\01. Stamp\03. StampKeyCommand\01. StampKey_1</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Interaction_Key.h">
-      <Filter>02.GameObjects\UI\00. GamePlay\03. InterAction\03. Interaction_Key</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\EvictedSword.h" />
     <ClInclude Include="..\Public\PlayerState_RetriveSword.h" />
     <ClInclude Include="..\public\Sneak_SentryTroop.h">
       <Filter>05.MiniGames\Minigame_Sneak</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Interaction_Key.h">
+      <Filter>02.GameObjects\UI\00. GamePlay\03. InterAction\03. Interaction_Key</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -2825,7 +2825,7 @@
     <ClCompile Include="..\Private\StampKey_1.cpp">
       <Filter>02.GameObjects\UI\00. GamePlay\01. Stamp\03. StampKeyCommand\01. StampKey_1</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Intetaction_Key.cpp">
+    <ClCompile Include="..\Private\Interaction_Key.cpp">
       <Filter>02.GameObjects\UI\00. GamePlay\03. InterAction\03. Interaction_Key</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\EvictedSword.cpp" />
