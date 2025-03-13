@@ -161,11 +161,11 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 		assert(nullptr);
 	}
 
-	if (FAILED(Ready_Layer_Domino(TEXT("Layer_FallingRock"))))
-	{
-		MSG_BOX(" Failed Ready_Layer_Domino (Level_Chapter_02::Initialize)");
-		assert(nullptr);
-	}
+	//if (FAILED(Ready_Layer_Domino(TEXT("Layer_FallingRock"))))
+	//{
+	//	MSG_BOX(" Failed Ready_Layer_Domino (Level_Chapter_02::Initialize)");
+	//	assert(nullptr);
+	//}
 	//µµ½Ã¶ô
 	if (FAILED(Ready_Layer_LunchBox(TEXT("Layer_LunchBox"))))
 	{
@@ -1246,8 +1246,8 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Monster()
 	if (FAILED(Ready_Layer_Monster_2D()))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_Monster_3D()))
-		return E_FAIL;
+	//if (FAILED(Ready_Layer_Monster_3D()))
+	//	return E_FAIL;
 
 	return S_OK;
 }

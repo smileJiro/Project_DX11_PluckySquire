@@ -97,6 +97,7 @@
 #include "TestTerrain.h"
 #include "RabbitLunch.h"
 #include "Bomb.h"
+#include "BombableBox.h"
 #include "TiltSwapPusher.h"
 #include "Key.h"
 
@@ -1296,6 +1297,12 @@ HRESULT CLoader::Loading_Level_Chapter_4(LEVEL_ID _eLoadLevelID)
 		/* For. Prototype_GameObject_FallingRock */
 		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_FallingRock"),
 			CFallingRock::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		/* UI */
+		/* For. Prototype_GameObject_2DMap_BombableBox */
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_2DMap_BombableBox"),
+			CBombableBox::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
 		/* UI */
