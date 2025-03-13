@@ -1535,7 +1535,5 @@ void CCamera_2D::Free()
 	}
 	m_ArmDatas.clear();
 
-	Safe_Release(m_pCurArm);
-
 	__super::Free();
 }
