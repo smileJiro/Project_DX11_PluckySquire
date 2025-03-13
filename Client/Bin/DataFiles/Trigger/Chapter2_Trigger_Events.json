@@ -148,6 +148,25 @@
         "Is_Sequence": true
       }
     ]
+  },
+  {
+    "Trigger_EventTag": "Chapter2_After_Opening_Book",
+    "Actions": [
+      {
+        "ActionTag": "Create_EventExecuter",
+        "EventTag": "Chapter2_After_Opening_Book",
+        "Is_Sequence": true
+      }
+    ]
+  },
+  {
+    "Trigger_EventTag": "Chapter2_Going_To_Artia",
+    "Actions": [
+      {
+        "ActionTag": "Create_EventExecuter",
+        "EventTag": "Chapter2_Going_To_Artia",
+        "Is_Sequence": true
+      }
+    ]
   }
-
 ]
