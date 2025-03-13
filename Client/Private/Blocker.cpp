@@ -28,10 +28,11 @@ HRESULT CBlocker::Initialize(void* _pArg)
     BLOCKER_DESC* pDesc = static_cast<BLOCKER_DESC*>(_pArg);
     // Save
     m_isFloor = pDesc->isFloor;
-    
+    m_isJumpPass = pDesc->isJumpPass;
+
     // Add
     pDesc->eStartCoord = m_eBlockerCoord;
-    pDesc->iObjectGroupID = OBJECT_GROUP::BLOCKER;
+    pDesc->iObjectGroupID = m_isJumpPass == true ? OBJECT_GROUP::BLOCKER_JUMPPASS : OBJECT_GROUP::BLOCKER;
     pDesc->isCoordChangeEnable = false;
     
     if (FAILED(__super::Initialize(_pArg)))
@@ -70,7 +71,8 @@ HRESULT CBlocker::Ready_Component(BLOCKER_DESC* _pDesc)
         AABBDesc.vScale = Desc2D->vColliderScale;
         AABBDesc.vOffsetPosition = Desc2D->vOffsetPosition;
         AABBDesc.isBlock = true;
-        AABBDesc.iCollisionGroupID = OBJECT_GROUP::BLOCKER;
+        AABBDesc.iCollisionGroupID = m_isJumpPass == true ? OBJECT_GROUP::BLOCKER_JUMPPASS : OBJECT_GROUP::BLOCKER;
+        
         CCollider_AABB* pCollider = nullptr;
         if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
             TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &AABBDesc)))

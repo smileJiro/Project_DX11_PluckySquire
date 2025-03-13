@@ -120,7 +120,7 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 	}
 	if (FAILED(Ready_Layer_Monster()))
 	{
-		MSG_BOX(" Failed Ready_Layer_Monster (Level_Chapter_02::Initialize)");
+		MSG_BOX(" Failed Ready_Layer_Monster (CLevel_Chapter_02::Initialize)");
 		assert(nullptr);
 	}
 	if (FAILED(Ready_Layer_Monster_Projectile(TEXT("Layer_Monster_Projectile"))))
@@ -128,13 +128,6 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 		MSG_BOX(" Failed Ready_Layer_Monster_Projectile (Level_Chapter_02::Initialize)");
 		assert(nullptr);
 	}
-
-	if (FAILED(Ready_Layer_Domino(TEXT("Layer_FallingRock"))))
-	{
-		MSG_BOX(" Failed Ready_Layer_Domino (Level_Chapter_02::Initialize)");
-		assert(nullptr);
-	}
-
 	if (FAILED(Ready_Layer_UI(TEXT("Layer_UI"))))
 	{
 		MSG_BOX(" Failed Ready_Layer_UI (Level_Chapter_02::Initialize)");
@@ -168,6 +161,11 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 		assert(nullptr);
 	}
 
+	if (FAILED(Ready_Layer_Domino(TEXT("Layer_FallingRock"))))
+	{
+		MSG_BOX(" Failed Ready_Layer_Domino (Level_Chapter_02::Initialize)");
+		assert(nullptr);
+	}
 	//도시락
 	if (FAILED(Ready_Layer_LunchBox(TEXT("Layer_LunchBox"))))
 	{
@@ -225,6 +223,7 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::INTERACTION_OBEJCT);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::PLAYER_PROJECTILE);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::BLOCKER);
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::BLOCKER_JUMPPASS);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::FALLINGROCK_BASIC);
 	//m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::PORTAL);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_TRIGGER, OBJECT_GROUP::INTERACTION_OBEJCT); //3 8
@@ -267,8 +266,8 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 	m_pGameInstance->Start_BGM(TEXT("LCD_MUS_C02_C2FIELDMUSIC_LOOP_Stem_Base"), 20.f);
 
 	// Intro 시작
-	CTrigger_Manager::GetInstance()->Register_TriggerEvent(TEXT("Chapter2_Intro"), 50);
-	CCamera_Manager::GetInstance()->Start_FadeIn(3.f);
+	//CTrigger_Manager::GetInstance()->Register_TriggerEvent(TEXT("Chapter2_Intro"), 50);
+	//CCamera_Manager::GetInstance()->Start_FadeIn(3.f);
 
 	/* Set Shader PlayerHideColor */
 	m_pGameInstance->Set_PlayerHideColor(_float3(0.8f, 0.8f, 0.8f), true);
@@ -349,10 +348,6 @@ void CLevel_Chapter_02::Update(_float _fTimeDelta)
 #ifdef _DEBUG
 	if (KEY_DOWN(KEY::P))
 		CCamera_Manager::GetInstance()->Start_ZoomIn();
-	if (KEY_DOWN(KEY::I))
-	{
-		CTrigger_Manager::GetInstance()->Register_TriggerEvent(L"Next_Chapter_Event",0);
-	}
 
 
 	if (KEY_DOWN(KEY::O))
@@ -504,7 +499,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Map()
 	switch (eLevelID)
 	{
 	case Client::LEVEL_CHAPTER_2:
-		if (FAILED(Map_Object_Create(L"Chapter_Intro.mchc")))
+		if (FAILED(Map_Object_Create(L"Chapter_02_Play_Desk.mchc")))
 			return E_FAIL;
 		break;
 	case Client::LEVEL_CHAPTER_4:
@@ -749,10 +744,8 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 	Target2DDesc.vAt = _float3(0.f, 0.f, 0.f);
 	Target2DDesc.eZoomLevel = CCamera::LEVEL_6;
 	Target2DDesc.iCameraType = CCamera_Manager::TARGET_2D;
-
 	XMStoreFloat3(&Target2DDesc.vArm, XMVector3Normalize(XMVectorSet(0.f, 0.981f, -0.191f, 0.f)));
 	Target2DDesc.fLength = { 12.5f };
-
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Camera_2D"),
 		m_eLevelID, _strLayerTag, &pCamera, &Target2DDesc)))
 		return E_FAIL;
@@ -1127,8 +1120,8 @@ HRESULT CLevel_Chapter_02::Ready_Layer_UI(const _wstring& _strLayerTag)
 
 	CGameObject* pGameObject;
 	
-	pDesc.fSizeX = 360.f / 3.f;
-	pDesc.fSizeY = 149.f / 3.f;
+	pDesc.fSizeX = 360.f / 2.f;
+	pDesc.fSizeY = 149.f / 2.f;
 	
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_UIObejct_Interaction_E"), pDesc.iCurLevelID, _strLayerTag, &pGameObject, &pDesc)))
 		return E_FAIL;
@@ -1223,14 +1216,14 @@ HRESULT CLevel_Chapter_02::Ready_Layer_NPC(const _wstring& _strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_NPC_Companion"), NPCDesc.iCurLevelID, _strLayerTag, &NPCDesc)))
 		return E_FAIL;
 
-	wsprintf(NPCDesc.strDialogueIndex, L"Hungry_Rabbit_01");
-	NPCDesc.iCurLevelID = m_eLevelID;
-	NPCDesc.tTransform2DDesc.vInitialPosition = _float3(0.f, 0.f, 0.f);
-	NPCDesc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-	NPCDesc.iMainIndex = 0;
-	NPCDesc.iSubIndex = 0;
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_NPC_Rabbit"), NPCDesc.iCurLevelID, _strLayerTag, &NPCDesc)))
-		return E_FAIL;
+	//wsprintf(NPCDesc.strDialogueIndex, L"Hungry_Rabbit_01");
+	//NPCDesc.iCurLevelID = m_eLevelID;
+	//NPCDesc.tTransform2DDesc.vInitialPosition = _float3(0.f, 0.f, 0.f);
+	//NPCDesc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	//NPCDesc.iMainIndex = 0;
+	//NPCDesc.iSubIndex = 0;
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_NPC_Rabbit"), NPCDesc.iCurLevelID, _strLayerTag, &NPCDesc)))
+	//	return E_FAIL;
 
 	CPostit_Page::POSTIT_PAGE_DESC PostitDesc = {};
 	PostitDesc.strInitSkspName = L"Chapter2_SKSP_Postit";
@@ -1243,83 +1236,11 @@ HRESULT CLevel_Chapter_02::Ready_Layer_NPC(const _wstring& _strLayerTag)
 
 HRESULT CLevel_Chapter_02::Ready_Layer_Monster()
 {
-	
 	if (FAILED(Ready_Layer_Monster_2D()))
 		return E_FAIL;
 
-	//if (FAILED(Ready_Layer_Monster_3D()))
-	//	return E_FAIL;
-
-	CGameObject* pObject = nullptr;
-
-	const _wstring _strLayerTag = L"Layer_Monster";
-
-	CGoblin_SideScroller::SIDESCROLLDESC Goblin_SideScroller_Desc;
-	Goblin_SideScroller_Desc.iCurLevelID = m_eLevelID;
-	Goblin_SideScroller_Desc.eStartCoord = COORDINATE_2D;
-	Goblin_SideScroller_Desc.tTransform2DDesc.vInitialPosition = _float3(210.0f, 1203.f, 0.f); //  150   480
-	Goblin_SideScroller_Desc.tTransform2DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-	Goblin_SideScroller_Desc.eSideScroll_Bound = SIDESCROLL_PATROLBOUND::CHAPTER2_1_1;
-
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin_SideScroller"), m_eLevelID, _strLayerTag, &pObject, &Goblin_SideScroller_Desc)))
+	if (FAILED(Ready_Layer_Monster_3D()))
 		return E_FAIL;
-
-	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0102"), pObject);
-
-
-	Goblin_SideScroller_Desc.tTransform2DDesc.vInitialPosition = _float3(400.0f, 1203.f, 0.f); //  150   480
-	Goblin_SideScroller_Desc.eSideScroll_Bound = SIDESCROLL_PATROLBOUND::CHAPTER2_1_1;
-
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin_SideScroller"), m_eLevelID, _strLayerTag, &pObject, &Goblin_SideScroller_Desc)))
-		return E_FAIL;
-
-	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0102"), pObject);
-
-
-	Goblin_SideScroller_Desc.tTransform2DDesc.vInitialPosition = _float3(-400.0f, 211.1f, 0.f); //  -500   -320
-	Goblin_SideScroller_Desc.eSideScroll_Bound = SIDESCROLL_PATROLBOUND::CHAPTER2_1_2;
-
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin_SideScroller"), m_eLevelID, _strLayerTag, &pObject, &Goblin_SideScroller_Desc)))
-		return E_FAIL;
-
-	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0102"), pObject);
-
-
-	Goblin_SideScroller_Desc.tTransform2DDesc.vInitialPosition = _float3(-247.0f, -1086.f, 0.f); //  -400   -130
-	Goblin_SideScroller_Desc.eSideScroll_Bound = SIDESCROLL_PATROLBOUND::CHAPTER2_1_3;
-
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin_SideScroller"), m_eLevelID, _strLayerTag, &pObject, &Goblin_SideScroller_Desc)))
-		return E_FAIL;
-
-	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0102"), pObject);
-
-	Goblin_SideScroller_Desc.tTransform2DDesc.vInitialPosition = _float3(-600.0f, -1244.f, 0.f); //  -650   -520
-	Goblin_SideScroller_Desc.eSideScroll_Bound = SIDESCROLL_PATROLBOUND::CHAPTER2_1_4;
-
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin_SideScroller"), m_eLevelID, _strLayerTag, &pObject, &Goblin_SideScroller_Desc)))
-		return E_FAIL;
-
-	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0102"), pObject);
-
-	Goblin_SideScroller_Desc.tTransform2DDesc.vInitialPosition = _float3(-600.0f, -1695.f, 0.f); //  -650   -440
-	Goblin_SideScroller_Desc.eSideScroll_Bound = SIDESCROLL_PATROLBOUND::CHAPTER2_1_5;
-
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin_SideScroller"), m_eLevelID, _strLayerTag, &pObject, &Goblin_SideScroller_Desc)))
-		return E_FAIL;
-
-	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0102"), pObject);
-
-	Pooling_DESC Pooling_Desc;
-	Pooling_Desc.iPrototypeLevelID = LEVEL_STATIC;
-	Pooling_Desc.strLayerTag = _strLayerTag;
-	Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_LightningBolt");
-	Pooling_Desc.eSection2DRenderGroup = SECTION_PLAYMAP_2D_RENDERGROUP::SECTION_2D_PLAYMAP_OBJECT;
-
-
-	CLightningBolt::LIGHTNINGBOLT_DESC* pProjDesc = new CLightningBolt::LIGHTNINGBOLT_DESC;
-	pProjDesc->iCurLevelID = m_eLevelID;
-
-	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_LightningBolt"), Pooling_Desc, pProjDesc);
 
 	return S_OK;
 }
@@ -1327,6 +1248,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Monster()
 HRESULT CLevel_Chapter_02::Ready_Layer_Monster_2D()
 {
 	CGameObject* pObject = nullptr;
+
 	const json* pJson = m_pGameInstance->Find_Json_InLevel(TEXT("Chapter2_Monsters_2D"), m_eLevelID);
 
 	if (nullptr == pJson)
@@ -1388,13 +1310,83 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Monster_2D()
 			CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strSectionTag, pObject);
 		}
 	}
-	return S_OK;
 
+	wstring strLayerTag = TEXT("Layer_Monster");
+
+	CGoblin_SideScroller::SIDESCROLLDESC Goblin_SideScroller_Desc;
+	Goblin_SideScroller_Desc.iCurLevelID = m_eLevelID;
+	Goblin_SideScroller_Desc.eStartCoord = COORDINATE_2D;
+	Goblin_SideScroller_Desc.tTransform2DDesc.vInitialPosition = _float3(210.0f, 1203.f, 0.f); //  150   480
+	Goblin_SideScroller_Desc.tTransform2DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	Goblin_SideScroller_Desc.eSideScroll_Bound = SIDESCROLL_PATROLBOUND::CHAPTER2_1_1;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin_SideScroller"), m_eLevelID, strLayerTag, &pObject, &Goblin_SideScroller_Desc)))
+		return E_FAIL;
+
+	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0102"), pObject);
+
+
+	Goblin_SideScroller_Desc.tTransform2DDesc.vInitialPosition = _float3(400.0f, 1203.f, 0.f); //  150   480
+	Goblin_SideScroller_Desc.eSideScroll_Bound = SIDESCROLL_PATROLBOUND::CHAPTER2_1_1;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin_SideScroller"), m_eLevelID, strLayerTag, &pObject, &Goblin_SideScroller_Desc)))
+		return E_FAIL;
+
+	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0102"), pObject);
+
+
+	Goblin_SideScroller_Desc.tTransform2DDesc.vInitialPosition = _float3(-400.0f, 211.1f, 0.f); //  -500   -320
+	Goblin_SideScroller_Desc.eSideScroll_Bound = SIDESCROLL_PATROLBOUND::CHAPTER2_1_2;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin_SideScroller"), m_eLevelID, strLayerTag, &pObject, &Goblin_SideScroller_Desc)))
+		return E_FAIL;
+
+	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0102"), pObject);
+
+
+	Goblin_SideScroller_Desc.tTransform2DDesc.vInitialPosition = _float3(-247.0f, -1086.f, 0.f); //  -400   -130
+	Goblin_SideScroller_Desc.eSideScroll_Bound = SIDESCROLL_PATROLBOUND::CHAPTER2_1_3;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin_SideScroller"), m_eLevelID, strLayerTag, &pObject, &Goblin_SideScroller_Desc)))
+		return E_FAIL;
+
+	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0102"), pObject);
+
+	Goblin_SideScroller_Desc.tTransform2DDesc.vInitialPosition = _float3(-600.0f, -1244.f, 0.f); //  -650   -520
+	Goblin_SideScroller_Desc.eSideScroll_Bound = SIDESCROLL_PATROLBOUND::CHAPTER2_1_4;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin_SideScroller"), m_eLevelID, strLayerTag, &pObject, &Goblin_SideScroller_Desc)))
+		return E_FAIL;
+
+	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0102"), pObject);
+
+	Goblin_SideScroller_Desc.tTransform2DDesc.vInitialPosition = _float3(-600.0f, -1695.f, 0.f); //  -650   -440
+	Goblin_SideScroller_Desc.eSideScroll_Bound = SIDESCROLL_PATROLBOUND::CHAPTER2_1_5;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin_SideScroller"), m_eLevelID, strLayerTag, &pObject, &Goblin_SideScroller_Desc)))
+		return E_FAIL;
+
+	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0102"), pObject);
+
+	Pooling_DESC Pooling_Desc;
+	Pooling_Desc.iPrototypeLevelID = LEVEL_STATIC;
+	Pooling_Desc.strLayerTag = strLayerTag;
+	Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_LightningBolt");
+	Pooling_Desc.eSection2DRenderGroup = SECTION_PLAYMAP_2D_RENDERGROUP::SECTION_2D_PLAYMAP_OBJECT;
+
+
+	CLightningBolt::LIGHTNINGBOLT_DESC* pProjDesc = new CLightningBolt::LIGHTNINGBOLT_DESC;
+	pProjDesc->iCurLevelID = m_eLevelID;
+
+	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_LightningBolt"), Pooling_Desc, pProjDesc);
+
+	return S_OK;
 }
 
 HRESULT CLevel_Chapter_02::Ready_Layer_Monster_3D()
 {
 	CGameObject* pObject = nullptr;
+
 	const json* pJson = m_pGameInstance->Find_Json_InLevel(TEXT("Chapter2_Monsters_3D"), m_eLevelID);
 
 	if (nullptr == pJson)
@@ -1451,6 +1443,13 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Monster_3D()
 			if (Json.contains("IsStay"))
 			{
 				MonsterDesc3D.isStay = Json["IsStay"];
+				if (Json.contains("vLook"))
+				{
+					for (_int j = 0; j < 3; ++j)
+					{
+						*(((_float*)&MonsterDesc3D.vLook) + j) = Json["vLook"][j];
+					}
+				}
 			}
 
 			if (Json.contains("IsIgnoreGround"))
@@ -1464,6 +1463,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Monster_3D()
 	}
 	return S_OK;
 }
+
 
 HRESULT CLevel_Chapter_02::Ready_Layer_Monster_Projectile(const _wstring& _strLayerTag, CGameObject** _ppOut)
 {
@@ -1604,59 +1604,59 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Effects2D(const _wstring& _strLayerTag)
 HRESULT CLevel_Chapter_02::Ready_Layer_Domino(const _wstring& _strLayerTag)
 {
 
-	////임시로 주사위 만들어 봄.
-	//CCarriableObject::CARRIABLE_DESC tCarriableDesc{};
-	//tCarriableDesc.eStartCoord = COORDINATE_3D;
-	//tCarriableDesc.iCurLevelID = m_eLevelID;
-	//tCarriableDesc.tTransform3DDesc.vInitialPosition = _float3(15.f, 6.8f, 21.5f);
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Dice"), m_eLevelID, TEXT("Layer_Domino"), &tCarriableDesc)))
-	//	return E_FAIL;
-	//CModelObject::MODELOBJECT_DESC tModelDesc{};
-	//tModelDesc.eStartCoord = COORDINATE_3D;
-	//tModelDesc.iCurLevelID = m_eLevelID;
-	//_float fDominoXPosition = 14.47f;
-	//_float fDominoYPosition = 1.31f;
-	//_float fDominoZPosition = 24.3f;
-	//_float fDominoXPositionStep = -3.5f;
-	//tModelDesc.tTransform3DDesc.vInitialPosition = _float3(fDominoXPosition, fDominoYPosition, fDominoZPosition);
-	//tModelDesc.tTransform3DDesc.vInitialScaling = _float3(1.5f, 1.5f, 1.5f);
+	//임시로 주사위 만들어 봄.
+	CCarriableObject::CARRIABLE_DESC tCarriableDesc{};
+	tCarriableDesc.eStartCoord = COORDINATE_3D;
+	tCarriableDesc.iCurLevelID = m_eLevelID;
+	tCarriableDesc.tTransform3DDesc.vInitialPosition = _float3(15.f, 6.8f, 21.5f);
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Dice"), m_eLevelID, TEXT("Layer_Domino"), &tCarriableDesc)))
+		return E_FAIL;
+	CModelObject::MODELOBJECT_DESC tModelDesc{};
+	tModelDesc.eStartCoord = COORDINATE_3D;
+	tModelDesc.iCurLevelID = m_eLevelID;
+	_float fDominoXPosition = 14.47f;
+	_float fDominoYPosition = 1.31f;
+	_float fDominoZPosition = 24.3f;
+	_float fDominoXPositionStep = -3.5f;
+	tModelDesc.tTransform3DDesc.vInitialPosition = _float3(fDominoXPosition, fDominoYPosition, fDominoZPosition);
+	tModelDesc.tTransform3DDesc.vInitialScaling = _float3(1.5f, 1.5f, 1.5f);
 
-	//tModelDesc.strModelPrototypeTag_3D = TEXT("Domino_4");
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Domino"), m_eLevelID, TEXT("Layer_Domino"), &tModelDesc)))
-	//	return E_FAIL;
-	//tModelDesc.tTransform3DDesc.vInitialPosition.x += fDominoXPositionStep;
-	//tModelDesc.strModelPrototypeTag_3D = TEXT("Domino_2");
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Domino"), m_eLevelID, TEXT("Layer_Domino"), &tModelDesc)))
-	//	return E_FAIL;
-	//tModelDesc.tTransform3DDesc.vInitialPosition.x += fDominoXPositionStep;
-	//tModelDesc.tTransform3DDesc.vInitialPosition.y += 0.001f;
-	//tModelDesc.strModelPrototypeTag_3D = TEXT("Domino_3");
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Domino"), m_eLevelID, TEXT("Layer_Domino"), &tModelDesc)))
-	//	return E_FAIL;
-	//tModelDesc.tTransform3DDesc.vInitialPosition.x += fDominoXPositionStep;
-	//tModelDesc.strModelPrototypeTag_3D = TEXT("Domino_1");
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Domino"), m_eLevelID, TEXT("Layer_Domino"), &tModelDesc)))
-	//	return E_FAIL;
+	tModelDesc.strModelPrototypeTag_3D = TEXT("Domino_4");
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Domino"), m_eLevelID, TEXT("Layer_Domino"), &tModelDesc)))
+		return E_FAIL;
+	tModelDesc.tTransform3DDesc.vInitialPosition.x += fDominoXPositionStep;
+	tModelDesc.strModelPrototypeTag_3D = TEXT("Domino_2");
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Domino"), m_eLevelID, TEXT("Layer_Domino"), &tModelDesc)))
+		return E_FAIL;
+	tModelDesc.tTransform3DDesc.vInitialPosition.x += fDominoXPositionStep;
+	tModelDesc.tTransform3DDesc.vInitialPosition.y += 0.001f;
+	tModelDesc.strModelPrototypeTag_3D = TEXT("Domino_3");
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Domino"), m_eLevelID, TEXT("Layer_Domino"), &tModelDesc)))
+		return E_FAIL;
+	tModelDesc.tTransform3DDesc.vInitialPosition.x += fDominoXPositionStep;
+	tModelDesc.strModelPrototypeTag_3D = TEXT("Domino_1");
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Domino"), m_eLevelID, TEXT("Layer_Domino"), &tModelDesc)))
+		return E_FAIL;
 
-	////2번째 도미노
-	//tCarriableDesc.tTransform3DDesc.vInitialPosition = _float3(48.13f, 2.61f, -5.02f);
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Dice"), m_eLevelID, TEXT("Layer_Domino"), &tCarriableDesc)))
-	//	return E_FAIL;
+	//2번째 도미노
+	tCarriableDesc.tTransform3DDesc.vInitialPosition = _float3(48.13f, 2.61f, -5.02f);
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Dice"), m_eLevelID, TEXT("Layer_Domino"), &tCarriableDesc)))
+		return E_FAIL;
 
-	//fDominoXPosition = 64.5f;
-	//fDominoYPosition = 0.0;
-	//fDominoZPosition = -0.54f;
-	//fDominoXPositionStep = -3.5f;
-	//tModelDesc.tTransform3DDesc.vInitialPosition = _float3(fDominoXPosition, fDominoYPosition, fDominoZPosition);
-	//tModelDesc.strModelPrototypeTag_3D = TEXT("Domino_1");
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Domino"), m_eLevelID, TEXT("Layer_Domino"), &tModelDesc)))
-	//	return E_FAIL;
+	fDominoXPosition = 64.5f;
+	fDominoYPosition = 0.0;
+	fDominoZPosition = -0.54f;
+	fDominoXPositionStep = -3.5f;
+	tModelDesc.tTransform3DDesc.vInitialPosition = _float3(fDominoXPosition, fDominoYPosition, fDominoZPosition);
+	tModelDesc.strModelPrototypeTag_3D = TEXT("Domino_1");
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Domino"), m_eLevelID, TEXT("Layer_Domino"), &tModelDesc)))
+		return E_FAIL;
 
 
-	//tModelDesc.tTransform3DDesc.vInitialPosition.x += fDominoXPositionStep;
-	//tModelDesc.strModelPrototypeTag_3D = TEXT("Domino_3");
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Domino"), m_eLevelID, TEXT("Layer_Domino"), &tModelDesc)))
-	//	return E_FAIL;
+	tModelDesc.tTransform3DDesc.vInitialPosition.x += fDominoXPositionStep;
+	tModelDesc.strModelPrototypeTag_3D = TEXT("Domino_3");
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Domino"), m_eLevelID, TEXT("Layer_Domino"), &tModelDesc)))
+		return E_FAIL;
 
 
 	return S_OK;
@@ -1781,6 +1781,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_RoomDoor(const _wstring& _strLayerTag)
 
 	return S_OK;
 }
+
 
 HRESULT CLevel_Chapter_02::Map_Object_Create(_wstring _strFileName)
 {

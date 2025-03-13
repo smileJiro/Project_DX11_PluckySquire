@@ -72,6 +72,8 @@ HRESULT CSection_Manager::Level_Exit(_int _iChangeLevelID, _int _iNextChangeLeve
 {
 	m_iCurLevelID = (LEVEL_ID)_iChangeLevelID;
 
+	Safe_Release(m_pBookWorldPosMap);
+	m_pBookWorldPosMap = nullptr;
 	Clear_Sections();
 
 	return S_OK;
@@ -80,7 +82,7 @@ HRESULT CSection_Manager::Level_Exit(_int _iChangeLevelID, _int _iNextChangeLeve
 HRESULT CSection_Manager::Level_Enter(_int _iChangeLevelID)
 {
 	m_iLoadLevel = LEVEL_END == m_iLoadLevel ? m_iCurLevelID : m_iLoadLevel;
-
+	
 	/* 전환되는 레벨에 따른 Section 설정 필요. */
 	_wstring strJsonPath = L"";
 	_wstring strMapInfoJson = L"_Data";
@@ -507,7 +509,6 @@ void CSection_Manager::Set_BookWorldPosMapTexture(ID3D11Texture2D* _pBookWorldPo
 	m_vBookWorldMin = { fData[iLeftBotIndex],fData[iLeftBotIndex + 1],fData[iLeftBotIndex + 2] };
 	m_vBookWorldMax = { fData[iRightTopIndex],fData[iRightTopIndex + 1],fData[iRightTopIndex + 2] };
 	m_pContext->Unmap(m_pBookWorldPosMap, 0);
-
 	for (auto& SectionPair : m_CurLevelSections)
 	{
 		if (nullptr != SectionPair.second)

@@ -34,7 +34,7 @@ void CSneak_InvestigateState::State_Enter()
 	m_isRenew = false;
 	m_isTurn = false;
 	m_iCurWayIndex = 0;
-	cout << "Investigate" << endl;
+	//cout << "Investigate" << endl;
 }
 
 void CSneak_InvestigateState::State_Update(_float _fTimeDelta)
