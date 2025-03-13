@@ -12,6 +12,8 @@
 #include "ChaseFlyState.h"
 #include "MeleeAttackState.h"
 #include "RangedAttackState.h"
+#include "MonsterMoveState.h"
+#include "MonsterJumpState.h"
 #include "HitState.h"
 #include "DeadState.h"
 #include "Sneak_IdleState.h"
@@ -29,6 +31,7 @@
 #include "Neutral_IdleState.h"
 #include "Neutral_PatrolState.h"
 #include "Neutral_Patrol_JumpState.h"
+#include "C6_IdleState.h"
 
 CFSM::CFSM(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CComponent(_pDevice, _pContext)
@@ -70,6 +73,11 @@ void CFSM::Set_Sneak_AwarePos(_fvector _vPosition)
 	static_cast<CSneak_AwareState*>(m_States[(_uint)MONSTER_STATE::SNEAK_AWARE])->Set_Sneak_AwarePos(_vPosition);
 }
 
+void CFSM::Set_Sneak_Patrol_Index(_uint _iIndex)
+{
+	static_cast<CSneak_PatrolState*>(m_States[(_uint)MONSTER_STATE::SNEAK_PATROL])->Set_CurPatrolIndex(_iIndex);
+}
+
 void CFSM::Set_SideScroll_PatrolBound()
 {
 	static_cast<CSideScroll_PatrolState*>(m_States[(_uint)MONSTER_STATE::SIDESCROLL_PATROL])->Initialize_SideScroll_PatrolBound(m_eSideScroll_Bound);
@@ -96,6 +104,7 @@ HRESULT CFSM::Initialize(void* _pArg)
 	m_iCurLevel = pDesc->iCurLevel;
 	m_eWayIndex = pDesc->eWayIndex;
 	m_eSideScroll_Bound = pDesc->eSideScroll_Bound;
+	m_eMoveNextState = pDesc->eMoveNextState;
 
 	return S_OK;
 }
@@ -122,6 +131,7 @@ HRESULT CFSM::Add_State(_uint _iState)
 	Desc.fChase2DRange = m_fChase2DRange;
 	Desc.fAttack2DRange = m_fAttack2DRange;
 	Desc.iCurLevel = m_iCurLevel;
+	Desc.eMoveNextState = m_eMoveNextState;
 
 	switch ((MONSTER_STATE)_iState)
 	{
@@ -169,6 +179,24 @@ HRESULT CFSM::Add_State(_uint _iState)
 		pState->Set_Owner(m_pOwner);
 		pState->Set_FSM(this);
 		m_States.emplace((_uint)MONSTER_STATE::CHASE, pState);
+		break;
+
+	case Client::MONSTER_STATE::MOVE:
+		pState = CMonsterMoveState::Create(&Desc);
+		if (nullptr == pState)
+			return E_FAIL;
+		pState->Set_Owner(m_pOwner);
+		pState->Set_FSM(this);
+		m_States.emplace((_uint)MONSTER_STATE::MOVE, pState);
+		break;
+
+	case Client::MONSTER_STATE::JUMP:
+		pState = CMonsterJumpState::Create(&Desc);
+		if (nullptr == pState)
+			return E_FAIL;
+		pState->Set_Owner(m_pOwner);
+		pState->Set_FSM(this);
+		m_States.emplace((_uint)MONSTER_STATE::JUMP, pState);
 		break;
 
 	case Client::MONSTER_STATE::ATTACK:
@@ -539,6 +567,85 @@ HRESULT CFSM::Add_FlyUnit_State()
 	m_States.emplace((_uint)MONSTER_STATE::STANDBY, pState);
 
 	pState = CChaseFlyState::Create(&Desc);
+	if (nullptr == pState)
+		return E_FAIL;
+	pState->Set_Owner(m_pOwner);
+	pState->Set_FSM(this);
+	m_States.emplace((_uint)MONSTER_STATE::CHASE, pState);
+
+	if (true == m_isMelee)
+		pState = CMeleeAttackState::Create(&Desc);
+	else
+		pState = CRangedAttackState::Create(&Desc);
+
+	if (nullptr == pState)
+		return E_FAIL;
+	pState->Set_Owner(m_pOwner);
+	pState->Set_FSM(this);
+	m_States.emplace((_uint)MONSTER_STATE::ATTACK, pState);
+
+	pState = CHitState::Create(&Desc);
+	if (nullptr == pState)
+		return E_FAIL;
+	pState->Set_Owner(m_pOwner);
+	pState->Set_FSM(this);
+	m_States.emplace((_uint)MONSTER_STATE::HIT, pState);
+
+	pState = CDeadState::Create(&Desc);
+	if (nullptr == pState)
+		return E_FAIL;
+	pState->Set_Owner(m_pOwner);
+	pState->Set_FSM(this);
+	m_States.emplace((_uint)MONSTER_STATE::DEAD, pState);
+
+	return S_OK;
+}
+
+HRESULT CFSM::Add_C6_State()
+{
+	if (nullptr == m_pOwner)
+		return E_FAIL;
+
+	CState* pState = nullptr;
+	CState::STATEDESC Desc;
+	Desc.fAlertRange = m_fAlertRange;
+	Desc.fChaseRange = m_fChaseRange;
+	Desc.fAttackRange = m_fAttackRange;
+	Desc.fAlert2DRange = m_fAlert2DRange;
+	Desc.fChase2DRange = m_fChase2DRange;
+	Desc.fAttack2DRange = m_fAttack2DRange;
+	Desc.iCurLevel = m_iCurLevel;
+	Desc.eMoveNextState = m_eMoveNextState;
+
+	pState = CC6_IdleState::Create(&Desc);
+	if (nullptr == pState)
+		return E_FAIL;
+	pState->Set_Owner(m_pOwner);
+	pState->Set_FSM(this);
+	m_States.emplace((_uint)MONSTER_STATE::IDLE, pState);
+
+	pState = CMonsterMoveState::Create(&Desc);
+	if (nullptr == pState)
+		return E_FAIL;
+	pState->Set_Owner(m_pOwner);
+	pState->Set_FSM(this);
+	m_States.emplace((_uint)MONSTER_STATE::MOVE, pState);
+
+	pState = CMonsterJumpState::Create(&Desc);
+	if (nullptr == pState)
+		return E_FAIL;
+	pState->Set_Owner(m_pOwner);
+	pState->Set_FSM(this);
+	m_States.emplace((_uint)MONSTER_STATE::JUMP, pState);
+
+	pState = CStandbyState::Create(&Desc);
+	if (nullptr == pState)
+		return E_FAIL;
+	pState->Set_Owner(m_pOwner);
+	pState->Set_FSM(this);
+	m_States.emplace((_uint)MONSTER_STATE::STANDBY, pState);
+
+	pState = CChaseWalkState::Create(&Desc);
 	if (nullptr == pState)
 		return E_FAIL;
 	pState->Set_Owner(m_pOwner);

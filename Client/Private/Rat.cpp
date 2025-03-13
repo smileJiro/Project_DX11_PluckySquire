@@ -77,7 +77,7 @@ HRESULT CRat::Initialize(void* _pArg)
         pModelObject->Set_Animation(Animation::IDLE);
     else if (COORDINATE_2D == Get_CurCoord())
     {
-        Set_2D_Direction(F_DIRECTION::DOWN);
+        Set_2DDirection(F_DIRECTION::DOWN);
         pModelObject->Set_Animation(Animation2D::IDLE_DOWN);
     }
 
@@ -159,36 +159,36 @@ void CRat::Change_Animation()
             switch (MONSTER_STATE(m_iState))
             {
             case Client::MONSTER_STATE::IDLE:
-                if (F_DIRECTION::UP == m_e2DDirection)
+                if (E_DIRECTION::UP == Get_2DDirection())
                     eAnim = IDLE_UP;
-                else if (F_DIRECTION::DOWN == m_e2DDirection)
+                else if (E_DIRECTION::DOWN == Get_2DDirection())
                     eAnim = IDLE_DOWN;
-                else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
+                else if (E_DIRECTION::RIGHT == Get_2DDirection() || E_DIRECTION::LEFT == Get_2DDirection())
                     eAnim = IDLE_RIGHT;
                 break;
             case Client::MONSTER_STATE::PATROL:
-                if (F_DIRECTION::UP == m_e2DDirection)
+                if (E_DIRECTION::UP == Get_2DDirection())
                     eAnim = RUN_UP;
-                else if (F_DIRECTION::DOWN == m_e2DDirection)
+                else if (E_DIRECTION::DOWN == Get_2DDirection())
                     eAnim = RUN_DOWN;
-                else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
+                else if (E_DIRECTION::RIGHT == Get_2DDirection() || E_DIRECTION::LEFT == Get_2DDirection())
                     eAnim = RUN_RIGHT;
                 break;
 
             case Client::MONSTER_STATE::HIT:
-                if (F_DIRECTION::UP == m_e2DDirection)
+                if (E_DIRECTION::UP == Get_2DDirection())
                     eAnim = HIT_UP;
-                else if (F_DIRECTION::DOWN == m_e2DDirection)
+                else if (E_DIRECTION::DOWN == Get_2DDirection())
                     eAnim = HIT_DOWN;
-                else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
+                else if (E_DIRECTION::RIGHT == Get_2DDirection() || E_DIRECTION::LEFT == Get_2DDirection())
                     eAnim = HIT_RIGHT;
                 break;
             case Client::MONSTER_STATE::DEAD:
-                if (F_DIRECTION::UP == m_e2DDirection)
+                if (E_DIRECTION::UP == Get_2DDirection())
                     eAnim = DIE_UP;
-                else if (F_DIRECTION::DOWN == m_e2DDirection)
+                else if (E_DIRECTION::DOWN == Get_2DDirection())
                     eAnim = DIE_DOWN;
-                else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
+                else if (E_DIRECTION::RIGHT == Get_2DDirection() || E_DIRECTION::LEFT == Get_2DDirection())
                     eAnim = DIE_RIGHT;
                 break;
             default:

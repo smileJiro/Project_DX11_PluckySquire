@@ -5,6 +5,7 @@ class CGameObject;
 END
 
 BEGIN(Client)
+class CBackGroundObject;
 class CSpawner;
 class CLevel_Chapter_02 final : public CLevel
 {
@@ -48,7 +49,8 @@ private:
 	HRESULT					Map_Object_Create(_wstring _strFileName);
 
 	LEVEL_ID				m_eLevelID;
-
+private:
+	CBackGroundObject*		m_pBackGroundObject = nullptr;
 public:
 	static CLevel_Chapter_02* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, LEVEL_ID _eLevelID);
 	virtual void			Free() override;

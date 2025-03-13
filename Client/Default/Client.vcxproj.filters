@@ -694,6 +694,12 @@
     <Filter Include="02.GameObjects\UI\00. GamePlay\03. InterAction\03. Interaction_Key">
       <UniqueIdentifier>{1f3066a6-8b75-432c-bf2e-33079187947e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\BackGround">
+      <UniqueIdentifier>{ad43be9a-1a9c-4caf-ab24-79dd37331218}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Components\FSM\State\Move">
+      <UniqueIdentifier>{0956df86-2c63-44a2-bc2a-81c9181fa53a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -1762,13 +1768,25 @@
     <ClInclude Include="..\Public\StampKey_1.h">
       <Filter>02.GameObjects\UI\00. GamePlay\01. Stamp\03. StampKeyCommand\01. StampKey_1</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Interaction_Key.h">
-      <Filter>02.GameObjects\UI\00. GamePlay\03. InterAction\03. Interaction_Key</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\EvictedSword.h" />
     <ClInclude Include="..\Public\PlayerState_RetriveSword.h" />
     <ClInclude Include="..\public\Sneak_SentryTroop.h">
       <Filter>05.MiniGames\Minigame_Sneak</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Interaction_Key.h">
+      <Filter>02.GameObjects\UI\00. GamePlay\03. InterAction\03. Interaction_Key</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\BackGroundObject.h">
+      <Filter>02.GameObjects\BackGround</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterJumpState.h">
+      <Filter>03.Components\FSM\State\Move</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterMoveState.h">
+      <Filter>03.Components\FSM\State\Move</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\C6_IdleState.h">
+      <Filter>03.Components\FSM\State\Idle</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -2825,13 +2843,25 @@
     <ClCompile Include="..\Private\StampKey_1.cpp">
       <Filter>02.GameObjects\UI\00. GamePlay\01. Stamp\03. StampKeyCommand\01. StampKey_1</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Intetaction_Key.cpp">
+    <ClCompile Include="..\Private\Interaction_Key.cpp">
       <Filter>02.GameObjects\UI\00. GamePlay\03. InterAction\03. Interaction_Key</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\EvictedSword.cpp" />
     <ClCompile Include="..\Private\PlayerState_RetriveSword.cpp" />
     <ClCompile Include="..\private\Sneak_SentryTroop.cpp">
       <Filter>05.MiniGames\Minigame_Sneak</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\BackGroundObject.cpp">
+      <Filter>02.GameObjects\BackGround</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterMoveState.cpp">
+      <Filter>03.Components\FSM\State\Move</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterJumpState.cpp">
+      <Filter>03.Components\FSM\State\Move</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\C6_IdleState.cpp">
+      <Filter>03.Components\FSM\State\Idle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -38,6 +38,7 @@
 #include "StopStamp_UI.h"
 #include "BombStamp_UI.h"
 #include "ArrowForStamp.h"
+#include "StampKey_1.h"
 #include "Interaction_Key.h"
 #include "ESC_HeartPoint.h"
 #include "UI_Interaction_Book.h"
@@ -211,6 +212,7 @@
 #include "Effect2D.h"
 #include "Room_Door.h"
 #include "Room_Door_Body.h"
+#include "BackGroundObject.h"
 
 // Father Game 
 #include "Mat.h" 
@@ -231,6 +233,7 @@
 #include "Effect_Trail.h"
 #include "Effect_Beam.h"
 #include "TurnBookEffect.h"
+
 
 
 
@@ -371,6 +374,9 @@ HRESULT CLoader::Loading_Level_Static()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_SoldierAttackAnimEvent"),
 		CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DAnim/Static/Monster/humgrump_troop_Rig_GT/SoldierAttack.animevt"))))
 		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_SoldierAttack2DAnimEvent"),
+		CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DAnim/Static/Monster/Spear_Soldier/Spear_Soldier2d_Attack.animevt"))))
+		return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_FSM"),
 		CFSM::Create(m_pDevice, m_pContext))))
@@ -492,6 +498,14 @@ HRESULT CLoader::Loading_Level_Static()
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Static/KeyIcon/Keyboard_Book_%d.dds"), 2))))
 		return E_FAIL;
 
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Interact_Key"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Static/KeyIcon/Interaction_Key_%d.dds"), 2))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_StampChange"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Static/KeyIcon/keyboard_Stamp_%d.dds"), 2))))
+		return E_FAIL;
+
 #pragma endregion
 
 #pragma region Static - Sound Load
@@ -576,6 +590,10 @@ HRESULT CLoader::Loading_Level_Static()
 
 
 	XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
+	/* For. Prototype_Component_VIBuffer_Mesh */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Mesh"),
+		CVIBuffer_Mesh::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
 	/* For. Prototype_Component_VIBuffer_Rect */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"),
@@ -620,11 +638,15 @@ HRESULT CLoader::Loading_Level_Static()
 
 	lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
 
+	/* For. Prototype_GameObject_BackGroundObject */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_BackGroundObject"),
+		CBackGroundObject::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 	/* For. Prototype_GameObject_Simple_UI */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Simple_UI"),
 		CSimple_UI::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
-
 
 	/* For. Prototype_GameObject_PortalLocker_LayerCount */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_PortalLocker_LayerCount"),
@@ -1064,6 +1086,14 @@ HRESULT CLoader::Loading_Level_Chapter_2(LEVEL_ID _eLoadLevelID)
 		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_Component_LightningBoltAnimEvent"),
 			CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DAnim/Chapter2/MapObject/LightningBolt/LightningBolt.animevt"))))
 			return E_FAIL;
+
+		/* For. Prototype_Component_Texture_BackGround_Chapter2_Main */
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_Component_Texture_BackGround_Chapter2_Main"),
+			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/BackGround/Chapter2_Main.dds"), 1, true))));
+
+		/* For. Prototype_Component_Texture_BackGround_Chapter2_RedHouse */
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_Component_Texture_BackGround_Chapter2_RedHouse"),
+			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/BackGround/Chapter2_RedHouse.dds"), 1, true))));
 
 	#pragma endregion
 
@@ -2339,6 +2369,9 @@ HRESULT CLoader::UI_Object_Load(LEVEL_ID _eLevelID)
 
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_GameObject_StampKey_Q"),
 		CInteraction_Key::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_GameObject_StampKey_1"),
+		CStampKey_1::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_GameObject_ESCHeartPoint"),

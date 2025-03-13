@@ -147,7 +147,9 @@
     <ClInclude Include="..\Public\2DMap_Tool_Manager.h" />
     <ClInclude Include="..\Public\2DTile_RenderObject.h" />
     <ClInclude Include="..\Public\2DTrigger_Sample.h" />
-    <ClInclude Include="..\Public\BackGround.h" />
+    <ClInclude Include="..\Public\BackGround.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="..\Public\2DMapObjectInfo.h" />
     <ClInclude Include="..\Public\Event_Manager.h" />
     <ClInclude Include="..\Public\gizmo\GraphEditor.h" />
@@ -197,7 +199,9 @@
     <ClCompile Include="..\Private\2DMap_Tool_Manager.cpp" />
     <ClCompile Include="..\Private\2DTile_RenderObject.cpp" />
     <ClCompile Include="..\Private\2DTrigger_Sample.cpp" />
-    <ClCompile Include="..\Private\BackGround.cpp" />
+    <ClCompile Include="..\Private\BackGround.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\Private\2DMapObjectInfo.cpp" />
     <ClCompile Include="..\Private\Event_Manager.cpp" />
     <ClCompile Include="..\Private\gizmo\GraphEditor.cpp" />

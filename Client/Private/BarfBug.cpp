@@ -100,7 +100,7 @@ HRESULT CBarfBug::Initialize(void* _pArg)
         pModelObject->Set_Animation(Animation::IDLE);
     else if(COORDINATE_2D == Get_CurCoord())
     {
-        Set_2D_Direction(F_DIRECTION::DOWN);
+        Set_2DDirection(F_DIRECTION::DOWN);
         pModelObject->Set_Animation(Animation2D::IDLE_DOWN);
     }
 
@@ -290,74 +290,74 @@ void CBarfBug::Change_Animation()
             switch (MONSTER_STATE(m_iState))
             {
             case MONSTER_STATE::IDLE:
-                if (F_DIRECTION::UP == m_e2DDirection)
+                if (E_DIRECTION::UP == Get_2DDirection())
                     eAnim = IDLE_UP;
-                else if (F_DIRECTION::DOWN == m_e2DDirection)
+                else if (E_DIRECTION::DOWN == Get_2DDirection())
                     eAnim = IDLE_DOWN;
-                else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
+                else if (E_DIRECTION::RIGHT == Get_2DDirection() || E_DIRECTION::LEFT == Get_2DDirection())
                     eAnim = IDLE_RIGHT;
                 break;
 
             case MONSTER_STATE::PATROL:
-                if (F_DIRECTION::UP == m_e2DDirection)
+                if (E_DIRECTION::UP == Get_2DDirection())
                     eAnim = WALK_UP;
-                else if (F_DIRECTION::DOWN == m_e2DDirection)
+                else if (E_DIRECTION::DOWN == Get_2DDirection())
                     eAnim = WALK_DOWN;
-                else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
+                else if (E_DIRECTION::RIGHT == Get_2DDirection() || E_DIRECTION::LEFT == Get_2DDirection())
                     eAnim = WALK_RIGHT;
                 break;
 
             case MONSTER_STATE::ALERT:
-                if (F_DIRECTION::UP == m_e2DDirection)
+                if (E_DIRECTION::UP == Get_2DDirection())
                     eAnim = ALERT_UP;
-                else if (F_DIRECTION::DOWN == m_e2DDirection)
+                else if (E_DIRECTION::DOWN == Get_2DDirection())
                     eAnim = ALERT_DOWN;
-                else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
+                else if (E_DIRECTION::RIGHT == Get_2DDirection() || E_DIRECTION::LEFT == Get_2DDirection())
                     eAnim = ALERT_RIGHT;
                 break;
 
             case MONSTER_STATE::STANDBY:
-                if (F_DIRECTION::UP == m_e2DDirection)
+                if (E_DIRECTION::UP == Get_2DDirection())
                     eAnim = IDLE_UP;
-                else if (F_DIRECTION::DOWN == m_e2DDirection)
+                else if (E_DIRECTION::DOWN == Get_2DDirection())
                     eAnim = IDLE_DOWN;
-                else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
+                else if (E_DIRECTION::RIGHT == Get_2DDirection() || E_DIRECTION::LEFT == Get_2DDirection())
                     eAnim = IDLE_RIGHT;
                 break;
 
             case MONSTER_STATE::CHASE:
-                if (F_DIRECTION::UP == m_e2DDirection)
+                if (E_DIRECTION::UP == Get_2DDirection())
                     eAnim = WALK_UP;
-                else if (F_DIRECTION::DOWN == m_e2DDirection)
+                else if (E_DIRECTION::DOWN == Get_2DDirection())
                     eAnim = WALK_DOWN;
-                else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
+                else if (E_DIRECTION::RIGHT == Get_2DDirection() || E_DIRECTION::LEFT == Get_2DDirection())
                     eAnim = WALK_RIGHT;
                 break;
 
             case MONSTER_STATE::ATTACK:
-                if (F_DIRECTION::UP == m_e2DDirection)
+                if (E_DIRECTION::UP == Get_2DDirection())
                     eAnim = ATTACK_UP;
-                else if (F_DIRECTION::DOWN == m_e2DDirection)
+                else if (E_DIRECTION::DOWN == Get_2DDirection())
                     eAnim = ATTACK_DOWN;
-                else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
+                else if (E_DIRECTION::RIGHT == Get_2DDirection() || E_DIRECTION::LEFT == Get_2DDirection())
                     eAnim = ATTACK_RIGHT;
                 break;
 
             case MONSTER_STATE::HIT:
-                if (F_DIRECTION::UP == m_e2DDirection)
+                if (E_DIRECTION::UP == Get_2DDirection())
                     eAnim = HIT_UP;
-                else if (F_DIRECTION::DOWN == m_e2DDirection)
+                else if (E_DIRECTION::DOWN == Get_2DDirection())
                     eAnim = HIT_DOWN;
-                else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
+                else if (E_DIRECTION::RIGHT == Get_2DDirection() || E_DIRECTION::LEFT == Get_2DDirection())
                     eAnim = HIT_RIGHT;
                 break;
 
             case MONSTER_STATE::DEAD:
-                if (F_DIRECTION::UP == m_e2DDirection)
+                if (E_DIRECTION::UP == Get_2DDirection())
                     eAnim = DEATH_UP;
-                else if (F_DIRECTION::DOWN == m_e2DDirection)
+                else if (E_DIRECTION::DOWN == Get_2DDirection())
                     eAnim = DEATH_DOWN;
-                else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
+                else if (E_DIRECTION::RIGHT == Get_2DDirection() || E_DIRECTION::LEFT == Get_2DDirection())
                     eAnim = DEATH_RIGHT;
                 break;
 
@@ -394,18 +394,18 @@ void CBarfBug::Attack()
             //공격 위치 맞추기
             switch (Get_2DDirection())
             {
-            case Client::F_DIRECTION::LEFT:
+            case Client::E_DIRECTION::LEFT:
                 vPosition.x -= 50.f;
                 vPosition.y += 20.f;
                 break;
-            case Client::F_DIRECTION::RIGHT:
+            case Client::E_DIRECTION::RIGHT:
                 vPosition.x += 50.f;
                 vPosition.y += 40.f;
                 break;
-            case Client::F_DIRECTION::UP:
+            case Client::E_DIRECTION::UP:
                 vPosition.y += 70.f;
                 break;
-            case Client::F_DIRECTION::DOWN:
+            case Client::E_DIRECTION::DOWN:
                 vPosition.y -= 30.f;
                 break;
             default:
