@@ -28,10 +28,12 @@ public:
 	virtual HRESULT			Render() override;
 
 private:
-	CUI_Manager::STAMP		m_ePreStamp = { CUI_Manager::STAMP_END };
+	CPlayer::PLAYER_PART	m_ePreStamp = { CPlayer::PLAYER_PART::PLAYER_PART_LAST };
 	_bool					m_isSmall = { false };
 	_bool					m_isBig = { false };
 	_bool					m_isScaling = { false };
+
+	_bool					m_isFirstPositionAdjusted = { false };
 
 private:
 	void					ChangeStamp(_float _fTimeDelta);

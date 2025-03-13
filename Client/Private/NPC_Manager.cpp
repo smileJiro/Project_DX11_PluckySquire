@@ -10,6 +10,20 @@ CNPC_Manager::CNPC_Manager()
 }
 
 
+CNPC_Social* CNPC_Manager::Find_SocialNPC(wstring _NPCName)
+{
+	auto iter = find_if(m_pNpcSocials.begin(), m_pNpcSocials.end(),
+		[&_NPCName](CNPC_Social* SocialNpc)
+		{
+			return SocialNpc->Get_NPCName() == _NPCName;
+		});
+
+	if (iter != m_pNpcSocials.end())
+		return *iter;
+	else
+		return nullptr;
+}
+
 HRESULT CNPC_Manager::Level_Exit(_int iCurLevelID, _int _iChangeLevelID, _int _iNextChangeLevelID)
 {
 
@@ -25,6 +39,11 @@ HRESULT CNPC_Manager::Level_Exit(_int iCurLevelID, _int _iChangeLevelID, _int _i
 		m_pOnlyNpc = nullptr;
 	}
 
+	for (int i = 0; i < m_pNpcSocials.size(); ++i)
+	{
+		Safe_Release(m_pNpcSocials[i]);
+	}
+	m_pNpcSocials.clear();
 
 	return S_OK;
 }
@@ -51,6 +70,15 @@ void CNPC_Manager::Free()
 	Safe_Release(m_pGameInstance);
 	Safe_Release(m_pOnlyNpc);
 	Safe_Release(m_pNPC);
+
+
+
+
+	for (int i = 0; i < m_pNpcSocials.size(); ++i)
+	{
+		Safe_Release(m_pNpcSocials[i]);
+	}
+	m_pNpcSocials.clear();
 
 	__super::Free();
 }

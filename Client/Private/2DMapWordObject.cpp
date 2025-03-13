@@ -4,6 +4,7 @@
 #include "Section_Manager.h"
 #include "Camera_Manager.h"
 #include "PlayerData_Manager.h"
+#include "PlayerBomb.h"
 
 
 C2DMapWordObject::C2DMapWordObject(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -140,6 +141,10 @@ HRESULT C2DMapWordObject::Initialize(void* _pArg)
 			TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &AABBDesc)))
 			return E_FAIL;
 	}
+
+    Register_OnAnimEndCallBack(bind(&C2DMapWordObject::MapWordObject_AnimEnd, this, placeholders::_1, placeholders::_2));
+
+
     return S_OK; /* hr */
 }
 
@@ -363,6 +368,27 @@ void C2DMapWordObject::Action_Process(_float _fTimeDelta)
     }
 }
 
+void C2DMapWordObject::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
+{
+	__super::On_Collision2D_Enter(_pMyCollider, _pOtherCollider, _pOtherObject);
+    
+    if (m_strModelName == L"BoomBox")
+    {
+        if (0 == Get_CurrentAnimIndex())
+        {
+		    CPlayerBomb* pBomb = dynamic_cast<CPlayerBomb*>(_pOtherObject);
+		    if (nullptr == pBomb)
+		    	return;
+            else
+            {
+                Switch_Animation(3);
+            }
+        }
+
+    }
+
+}
+
 void C2DMapWordObject::Active_OnEnable()
 {
     if (m_IsWordActive != true)
@@ -373,6 +399,12 @@ void C2DMapWordObject::Active_OnDisable()
 {
     if (m_IsWordActive != false)
         Set_Active(m_IsWordActive);
+}
+
+void C2DMapWordObject::MapWordObject_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
+{
+    if (m_strModelName == L"BoomBox" && 3 == Get_CurrentAnimIndex())
+        Event_DeleteObject(this);
 }
 
 

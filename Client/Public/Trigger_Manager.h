@@ -48,6 +48,8 @@ public :
 		CHAPTER2_BETTLE_PAGE,		// 비틀 조우 직전의 책벌레
 		CHAPTER2_OPENBOOKEVENT,		// 2챕터 큰 책 앞에 도달한 책벌레
 		CHAPTER2_STORYSEQUENCE,		// 글로브 습득 후, 스케치스페이스 이벤트
+		CHAPTER2_AFTER_OPENING_BOOK,		// 3D 끝나고 책 열어서 책 속으로 들어갔을 때 나오는 이벤트
+		CHAPTER2_GOING_TO_ARTIA,		// 3D 끝나고 책 열어서 책 속으로 들어갔을 때 나오는 이벤트
 
 		CHAPTER4_3D_OUT_01,			// 3D로 나가는 맵 처음 들어갔을때 이벤트
 		CHAPTER4_3D_OUT_02,			// 포탈쪽으로 갔을때의 이벤트

@@ -18,7 +18,7 @@ private:
 	CDialog*		m_pDialogue = { nullptr };
 	
 	_bool			m_isDisPlayDialogue = { false };
-	CNPC* m_pNPC = { nullptr };
+	CNPC*			m_pNPC = { nullptr };
 
 	
 public:

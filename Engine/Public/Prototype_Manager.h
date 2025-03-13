@@ -29,6 +29,7 @@
 #include "Compute_Shader.h"
 #include "Transform_2D.h"
 #include "Transform_3D.h"
+#include "VIBuffer_Mesh.h"
 
 /* Etc */
 #include "CustomFont.h"

@@ -75,6 +75,8 @@ public:
         _bool isLineEnter = { false };
         _int  iAnimationIndex = { -1 };
 
+        _float2 vOffset = { _float2(0.f, 0.f) };
+
         _float3 vFontColor = _float3(0.f, 0.f, 0.f);
         
         LOC  location = LOC_MIDHIGH;    // 위치 설정

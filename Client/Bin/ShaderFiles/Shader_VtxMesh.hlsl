@@ -259,6 +259,29 @@ PS_OUT PS_MAIN(PS_IN In)
     return Out;
 }
 
+PS_OUT PS_BACKGROUND(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+    float4 vAlbedo = g_AlbedoTexture.Sample(LinearSampler, In.vTexcoord);
+    float3 vNormal = In.vNormal.xyz;
+    float4 vORMH = float4(0.2f, 0.5f, 0.0f, 0.0f);
+    float fSpecular = 0.0f;
+    float fEmissive = 0.0f;
+
+    if (vAlbedo.a < 0.01f)
+        discard;
+    
+    Out.vDiffuse = vAlbedo * Material.MultipleAlbedo;
+    Out.vNormal = float4(vNormal.xyz * 0.5f + 0.5f, 1.f);
+    Out.vORMH = vORMH;
+    Out.vDepth = float4(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / g_fFarZ, 0.0f, 1.0f);
+    float3 vEmissiveColor = float3(0.0f,0.0f,0.0f);
+    Out.vEtc = float4(vEmissiveColor, fSpecular);
+    
+    
+    return Out;
+}
+
 PS_ONLYALBEDO_OUT PS_ONLYALBEDO(PS_IN In) // 포스트 프로세싱 이후에 그리는
 {
     PS_ONLYALBEDO_OUT Out = (PS_ONLYALBEDO_OUT) 0;
@@ -610,6 +633,16 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_SINGLEFRESNEL();
+    }
+
+    pass Background // 13
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_BACKGROUND();
     }
 
 }
