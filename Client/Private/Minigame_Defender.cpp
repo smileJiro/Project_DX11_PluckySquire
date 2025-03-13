@@ -71,7 +71,7 @@ HRESULT CMiniGame_Defender::Initialize(void* _pArg)
     tAABBDesc.pOwner = this;
     tAABBDesc.vExtents = { 50.f , 300.f};
     tAABBDesc.vScale = { 1.0f, 1.0f };
-    tAABBDesc.vOffsetPosition = { 200.f,0.f };
+    tAABBDesc.vOffsetPosition = { 400.f,0.f };
     tAABBDesc.isBlock = false;
     tAABBDesc.isTrigger = true;
     tAABBDesc.iCollisionGroupID = OBJECT_GROUP::TRIGGER_OBJECT;
@@ -107,7 +107,6 @@ void CMiniGame_Defender::Priority_Update(_float _fTimeDelta)
 }
 void CMiniGame_Defender::Set_GameState(DEFENDER_PROGRESS_STATE _eState)
 {
-
 	if (m_eGameState == _eState)
 		return;
     m_eGameState = _eState;
@@ -116,15 +115,17 @@ void CMiniGame_Defender::Set_GameState(DEFENDER_PROGRESS_STATE _eState)
     case Client::CMiniGame_Defender::DEFENDER_PROG_NONE:
         break;
     case Client::CMiniGame_Defender::DEFENDER_PROG_ENTERED:
+    {
+		m_pPlayer->Set_BlockPlayerInput(true);
+        CPortal* pTargetPortal = static_cast<CPortal_Default*>(static_cast<CSection_2D_PlayMap*>(CSection_Manager::GetInstance()->Find_Section(m_strSectionName))->Get_Portal(0));
+        if (pTargetPortal)
+            pTargetPortal->Set_Active(false);
+        static_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_CurrentCamera())->Change_Target(this, m_fCamTargetChangeTime);
+        m_fCamTargetChangeTimeAcc = 0.f;
         break;
+    }
     case Client::CMiniGame_Defender::DEFENDER_PROG_BEGINNING_DIALOG:
     {
-        CPortal* pTargetPortal = static_cast<CPortal_Default*>(static_cast<CSection_2D_PlayMap*>(CSection_Manager::GetInstance()->Find_Section(m_strSectionName))->Get_Portal(0));
-		if (pTargetPortal)
-			pTargetPortal->Set_Active(false);
-
-        static_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_CurrentCamera())->Change_Target(this);
-
         //DIALOG
         m_pDialogManager->Set_DialogId(TEXT("DEFENDER_Dialogue_01"), m_strSectionName.c_str());
         //Uimgr->Set_DialogId(m_strDialogueIndex, m_strCurSecion);
@@ -134,22 +135,33 @@ void CMiniGame_Defender::Set_GameState(DEFENDER_PROGRESS_STATE _eState)
         m_pDialogManager->Set_DialoguePos(vPosition);
         //Uimgr->Set_DialoguePos(vPos);
         m_pDialogManager->Set_DisPlayDialogue(true);
-
-
         break;
     }
+	case Client::CMiniGame_Defender::DEFENDER_PROG_BEGINNING_DIALOG_ENDED:
+	{
+		_vector vPalyerPos = m_pPlayer->Get_FinalPosition();
+		AUTOMOVE_COMMAND tCommand{};
+		tCommand.eType = AUTOMOVE_TYPE::MOVE_TO;
+		tCommand.iAnimIndex = (_uint)CPlayer::ANIM_STATE_2D::PLAYER_RUN_SWORD_RIGHT;
+        
+		tCommand.vTarget = vPalyerPos += { 1000.f, 0.f, 0.f };
+        m_pPlayer->Add_AutoMoveCommand(tCommand);
+        m_pPlayer->Start_AutoMove(true);
+		break;
+	}
     case Client::CMiniGame_Defender::DEFENDER_PROG_TRANSFORM_IN:
     {
         CPlayerData_Manager* pPDM = CPlayerData_Manager::GetInstance();
-        CPlayer* pNormalPlayer = pPDM->Get_NormalPlayer_Ptr();
+        
         m_pDefenderPlayer = pPDM->Get_DefenderPlayer_Ptr();
         Safe_AddRef(m_pDefenderPlayer);
         m_pDefenderPlayer->Register_AnimEndCallback(bind(&CMiniGame_Defender::On_PlayerAnimEnd, this, placeholders::_1, placeholders::_2));
-        pNormalPlayer->Set_Active(false);
+        m_pPlayer->Set_Active(false);
+        m_pPlayer->Clear_AutoMove();
         m_pDefenderPlayer->Set_Active(true);
 
-        _vector vNormalPlayerPos = pNormalPlayer->Get_FinalPosition();
-        m_pDefenderPlayer->Set_Position(vNormalPlayerPos);
+        _vector vNormalPlayerPos = m_pPlayer->Get_FinalPosition();
+        m_pDefenderPlayer->Set_Position(vNormalPlayerPos + _vector{0.f,20.f,0.f});
         m_pDefenderPlayer->Start_Transform();
 
         static_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_CurrentCamera())->Change_Target(m_pDefenderPlayer);
@@ -182,7 +194,7 @@ void CMiniGame_Defender::Set_GameState(DEFENDER_PROGRESS_STATE _eState)
     case Client::CMiniGame_Defender::DEFENDER_PROG_TRANSFORM_OUT:
     {
         m_pDefenderPlayer->Switch_Animation(CDefenderPlayer::ANIM_STATE_CYBERJOT2D::CYBER2D_TRANSFORM_OUT);
-		m_pDefenderPlayer->Set_Direction(T_DIRECTION::LEFT);
+		m_pDefenderPlayer->Set_Direction(T_DIRECTION::RIGHT);
         break;
     }
     case Client::CMiniGame_Defender::DEFENDER_PROG_ENDING_DIALOG:
@@ -532,11 +544,19 @@ void CMiniGame_Defender::Update(_float _fTimeDelta)
 {
 
 	__super::Update(_fTimeDelta);
-
-    if (DEFENDER_PROG_BEGINNING_DIALOG == m_eGameState
+    if(DEFENDER_PROG_ENTERED == m_eGameState)
+    {
+		m_fCamTargetChangeTimeAcc += _fTimeDelta;
+		if (m_fCamTargetChangeTimeAcc >= m_fCamTargetChangeTime)
+		{
+			m_fCamTargetChangeTimeAcc = 0.f;
+			Set_GameState(DEFENDER_PROG_BEGINNING_DIALOG);
+		}
+    }
+    else if (DEFENDER_PROG_BEGINNING_DIALOG == m_eGameState
         && false == m_pDialogManager->Get_DisPlayDialogue())
     {
-       
+        Set_GameState(DEFENDER_PROG_BEGINNING_DIALOG_ENDED);
     }
     else if (DEFENDER_PROG_GAME == m_eGameState)
     {
@@ -633,7 +653,8 @@ void CMiniGame_Defender::Update(_float _fTimeDelta)
 
 	if (KEY_DOWN(KEY::Z))
 	{
-        Mission_Complete();
+        if(DEFENDER_PROG_GAME == m_eGameState)
+            Mission_Complete();
 	}
 }
 
@@ -653,17 +674,18 @@ HRESULT CMiniGame_Defender::Render()
 
 void CMiniGame_Defender::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-    //Dialog Start
+    //Entered
 	if (DEFENDER_PROG_NONE == m_eGameState
         && OBJECT_GROUP::PLAYER & _pOtherObject->Get_ObjectGroupID()
         && m_p2DColliderComs[1] == _pMyCollider)
     {
-
-		Set_GameState(DEFENDER_PROG_BEGINNING_DIALOG);
+		m_pPlayer = dynamic_cast<CPlayer*>(_pOtherObject);
+		Safe_AddRef(m_pPlayer);
+		Set_GameState(DEFENDER_PROG_ENTERED);
 
     }
     //GameStart
-    else if (DEFENDER_PROG_BEGINNING_DIALOG == m_eGameState
+    else if (DEFENDER_PROG_BEGINNING_DIALOG_ENDED == m_eGameState
         && OBJECT_GROUP::PLAYER & _pOtherObject->Get_ObjectGroupID()
         && m_p2DColliderComs[0] == _pMyCollider)
     {
@@ -687,12 +709,13 @@ void CMiniGame_Defender::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider*
 {
 }
 
-void CMiniGame_Defender::Start_Gamde()
+void CMiniGame_Defender::Start_Game()
 {
     if (FAILED(Ready_Spanwer()))
         return;
     m_PartObjects[DEFENDER_PART_COUNTER_BACK]->Set_Active(true);
 	Set_LeftPersonCount(m_iMaxPersonCount);
+    Set_GameState(DEFENDER_PROG_GAME);
 }
 
 void CMiniGame_Defender::Restart_Game()
@@ -756,6 +779,7 @@ CGameObject* CMiniGame_Defender::Clone(void* _pArg)
 void CMiniGame_Defender::Free()
 {
 	Safe_Release(m_pSidePersonUI);
+	Safe_Release(m_pPlayer);
 	Safe_Release(m_pDefenderPlayer);
     for (auto& pSpawner : m_Spawners)
     {

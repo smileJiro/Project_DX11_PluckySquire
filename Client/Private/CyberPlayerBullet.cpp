@@ -78,14 +78,14 @@ HRESULT CCyberPlayerBullet::Initialize(void* _pArg)
     tBodyShapeData.iShapeUse = (_uint)SHAPE_USE::SHAPE_BODY;
     tBodyShapeData.isTrigger = true;                  
     tBodyShapeData.FilterData.MyGroup = OBJECT_GROUP::PLAYER_PROJECTILE;
-	tBodyShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE;
+	tBodyShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::BOSS | OBJECT_GROUP::BOSS_PROJECTILE;
 	XMStoreFloat4x4(&tBodyShapeData.LocalOffsetMatrix, XMMatrixRotationY(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, 0.f, 0.0f));
 
     /* 최종으로 결정 된 ShapeData를 PushBack */
     ActorDesc.ShapeDatas[tBodyShapeData.iShapeUse] = tBodyShapeData;
 
     ActorDesc.tFilterData.MyGroup = OBJECT_GROUP::PLAYER_PROJECTILE;
-    ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE ;
+    ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::BOSS | OBJECT_GROUP::BOSS_PROJECTILE ;
 
     /* Actor Component Finished */
     pDesc->pActorDesc = &ActorDesc;

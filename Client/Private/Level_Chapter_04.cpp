@@ -274,6 +274,10 @@ void CLevel_Chapter_04::Update(_float _fTimeDelta)
 	}
 
 #ifdef _DEBUG
+	if (KEY_DOWN(KEY::I))
+	{
+		CTrigger_Manager::GetInstance()->Register_TriggerEvent(L"Next_Chapter_Event", 0);
+	}
 	if (KEY_DOWN(KEY::P))
 		CCamera_Manager::GetInstance()->Start_ZoomIn();
 
@@ -543,16 +547,14 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 	TargetDesc.eZoomLevel = CCamera::LEVEL_4;
 	TargetDesc.iCameraType = CCamera_Manager::TARGET;
 
+	XMStoreFloat3(&TargetDesc.vArm, XMVector3Normalize(XMVectorSet(0.f, 0.55f, -0.84f, 0.f)));
+	TargetDesc.fLength = { 17.9f };
+
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Camera_Target"),
 		m_eLevelID, _strLayerTag, &pCamera, &TargetDesc)))
 		return E_FAIL;
 
 	CCamera_Manager::GetInstance()->Add_Camera(CCamera_Manager::TARGET, static_cast<CCamera*>(pCamera));
-
-	_float3 vArm;
-	XMStoreFloat3(&vArm, XMVector3Normalize(XMVectorSet(0.f, 0.55f, -0.84f, 0.f)));
-	_float fLength = 17.9f;
-	Create_Arm((_uint)COORDINATE_3D, pCamera, vArm, fLength);
 
 	// CutScene Camera
 	CCamera_CutScene::CAMERA_DESC CutSceneDesc{};
@@ -587,15 +589,14 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 	Target2DDesc.eZoomLevel = CCamera::LEVEL_6;
 	Target2DDesc.iCameraType = CCamera_Manager::TARGET_2D;
 
+	XMStoreFloat3(&Target2DDesc.vArm, XMVector3Normalize(XMVectorSet(0.f, 0.981f, -0.191f, 0.f)));
+	Target2DDesc.fLength = { 12.5f };
+
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Camera_2D"),
 		m_eLevelID, _strLayerTag, &pCamera, &Target2DDesc)))
 		return E_FAIL;
 
 	CCamera_Manager::GetInstance()->Add_Camera(CCamera_Manager::TARGET_2D, static_cast<CCamera*>(pCamera));
-
-	XMStoreFloat3(&vArm, XMVector3Normalize(XMVectorSet(0.f, 0.981f, -0.191f, 0.f)));
-	fLength = 12.5f;
-	Create_Arm((_uint)COORDINATE_2D, pCamera, vArm, fLength);
 
 	// Set Cur Camera
 	//CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::FREE);
@@ -612,9 +613,8 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 		pCamera->Enter_Section(pPlayer->Get_Include_Section_Name());
 		pCamera->Switch_CameraView(nullptr);
 	}
-	
 
-
+	CCamera_Manager::GetInstance()->Start_FadeIn(3.f);
 
 	return S_OK;
 }
@@ -1061,12 +1061,22 @@ HRESULT CLevel_Chapter_04::Ready_Layer_NPC(const _wstring& _strLayerTag)
 	return S_OK;
 }
 
-HRESULT CLevel_Chapter_04::Ready_Layer_Monster(CGameObject** _ppout)
+HRESULT CLevel_Chapter_04::Ready_Layer_Monster()
 {
+
+	if (FAILED(Ready_Layer_Monster_2D()))
+		return E_FAIL;
+
+	if (FAILED(Ready_Layer_Monster_3D()))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Chapter_04::Ready_Layer_Monster_2D()
+{
+	const json* pJson = m_pGameInstance->Find_Json_InLevel(TEXT("Chapter4_Monsters_2D"), m_eLevelID);
 	CGameObject* pObject;
-
-	const json* pJson = m_pGameInstance->Find_Json_InLevel(TEXT("Chapter4_Monsters"), m_eLevelID);
-
 	if (nullptr == pJson)
 		return E_FAIL;
 
@@ -1121,6 +1131,15 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Monster(CGameObject** _ppout)
 			CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strSectionTag, pObject);
 		}
 	}
+	return S_OK;
+}
+
+HRESULT CLevel_Chapter_04::Ready_Layer_Monster_3D()
+{
+	const json* pJson = m_pGameInstance->Find_Json_InLevel(TEXT("Chapter4_Monsters_3D"), m_eLevelID);
+
+	CGameObject* pObject;
+
 
 	CMonster::MONSTER_DESC MonsterDesc3D = {};
 
@@ -1165,128 +1184,6 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Monster(CGameObject** _ppout)
 
 		}
 	}
-
-
-	//// 2D
-	//CBarfBug::MONSTER_DESC BarfBug_Desc;
-	//BarfBug_Desc.iCurLevelID = m_eLevelID;
-	//BarfBug_Desc.eStartCoord = COORDINATE_2D;
-	//BarfBug_Desc.tTransform2DDesc.vInitialPosition = _float3(-1000.0f, 150.f, 0.f);
-	//BarfBug_Desc.tTransform2DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-
-	//_wstring strSectionKey = TEXT("Chapter4_P0304");
-
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BarfBug"), m_eLevelID, _strLayerTag, &pObject, &BarfBug_Desc)))
-	//	return E_FAIL;
-
-	//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strSectionKey, pObject);
-	//
-	//BarfBug_Desc.tTransform2DDesc.vInitialPosition = _float3(-650.0f, -75.f, 0.f);
-
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BarfBug"), m_eLevelID, _strLayerTag, &pObject, &BarfBug_Desc)))
-	//	return E_FAIL;
-
-	//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strSectionKey, pObject);
-
-	//BarfBug_Desc.tTransform2DDesc.vInitialPosition = _float3(400.0f, 180.f, 0.f);
-
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BarfBug"), m_eLevelID, _strLayerTag, &pObject, &BarfBug_Desc)))
-	//	return E_FAIL;
-
-	//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strSectionKey, pObject);
-
-	//BarfBug_Desc.tTransform2DDesc.vInitialPosition = _float3(900.0f, 200.f, 0.f);
-
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BarfBug"), m_eLevelID, _strLayerTag, &pObject, &BarfBug_Desc)))
-	//	return E_FAIL;
-
-	//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strSectionKey, pObject);
-
-	//BarfBug_Desc.tTransform2DDesc.vInitialPosition = _float3(600.0f, -50.f, 0.f);
-
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BarfBug"), m_eLevelID, _strLayerTag, &pObject, &BarfBug_Desc)))
-	//	return E_FAIL;
-
-	//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strSectionKey, pObject);
-
-
-	//// 3D
-
-	//BarfBug_Desc.iCurLevelID = m_eLevelID;
-	//BarfBug_Desc.eStartCoord = COORDINATE_3D;
-
-	//BarfBug_Desc.tTransform3DDesc.vInitialPosition = _float3(35.0f, 4.89f, -2.8f);
-	//BarfBug_Desc.tTransform3DDesc.vInitialScaling = _float3(0.75f, 0.75f, 0.75f);
-
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BarfBug"), m_eLevelID, _strLayerTag, &BarfBug_Desc)))
-	//	return E_FAIL;
-
-	//CGoblin::MONSTER_DESC Goblin_Desc;
-	//Goblin_Desc.iCurLevelID = m_eLevelID;
-	//Goblin_Desc.eStartCoord = COORDINATE_3D;
-
-	//Goblin_Desc.tTransform3DDesc.vInitialPosition = _float3(32.5f, 4.85f, 0.f);
-	//Goblin_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin"), m_eLevelID, _strLayerTag, &pObject, &Goblin_Desc)))
-	//	return E_FAIL;
-
-	//Goblin_Desc.tTransform3DDesc.vInitialPosition = _float3(41.5f, 4.92f, -4.5f);
-
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin"), m_eLevelID, _strLayerTag, &pObject, &Goblin_Desc)))
-	//	return E_FAIL;
-
-	//Goblin_Desc.tTransform3DDesc.vInitialPosition = _float3(43.5f, 4.23f, 5.f);
-
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin"), m_eLevelID, _strLayerTag, &pObject, &Goblin_Desc)))
-	//	return E_FAIL;
-
-	//Goblin_Desc.tTransform3DDesc.vInitialPosition = _float3(49.f, 4.29f, 6.f);
-
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin"), m_eLevelID, _strLayerTag, &pObject, &Goblin_Desc)))
-	//	return E_FAIL;
-
-
-	//CGoblin::MONSTER_DESC Goblin_Desc;
-	//Goblin_Desc.iCurLevelID = m_eLevelID;
-	//Goblin_Desc.eStartCoord = COORDINATE_3D;
-	//Goblin_Desc.isCoordChangeEnable = false;
-
-	////Goblin_Desc.tTransform3DDesc.vInitialPosition = _float3(-1.5f, 0.85f, -3.f);
-	////Goblin_Desc.tTransform3DDesc.vInitialPosition = _float3(30.94f, 4.87f, -5.62f);
-	//Goblin_Desc.tTransform3DDesc.vInitialPosition = _float3(23.12f, 4.18f, -5.72f);
-	//Goblin_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin"), m_eLevelID, TEXT("Monster"), &pObject, &Goblin_Desc)))
-	//return E_FAIL;
-
-	////Goblin_Desc.tTransform3DDesc.vInitialPosition = _float3(-1.5f, 0.85f, -3.f);
-	//Goblin_Desc.tTransform3DDesc.vInitialPosition = _float3(30.94f, 4.87f, -5.62f);
-	////Goblin_Desc.tTransform3DDesc.vInitialPosition = _float3(23.12f, 4.18f, -5.72f);
-	//Goblin_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin"), m_eLevelID, TEXT("Monster"), &pObject, &Goblin_Desc)))
-	//	return E_FAIL;
-
-	//CBarfBug::MONSTER_DESC BarfBug_Desc;
-	//BarfBug_Desc.iCurLevelID = m_eLevelID;
-	//BarfBug_Desc.eStartCoord = COORDINATE_3D;
-
-	//BarfBug_Desc.tTransform3DDesc.vInitialPosition = _float3(23.12f, 4.18f, -5.72f);
-	//BarfBug_Desc.tTransform3DDesc.vInitialScaling = _float3(0.75f, 0.75f, 0.75f);
-
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BarfBug"), m_eLevelID, TEXT("Monster"), &BarfBug_Desc)))
-	//	return E_FAIL;
-
-	//CButterGrump::MONSTER_DESC Boss_Desc;
-	//Boss_Desc.iCurLevelID = m_eLevelID;
-	//Boss_Desc.eStartCoord = COORDINATE_3D;
-	//Boss_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-	//Boss_Desc.tTransform3DDesc.vInitialPosition = _float3(-3.f, 15.35f, -80.0f);
-
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_4, TEXT("Prototype_GameObject_ButterGrump"), m_eLevelID, TEXT("Layer_Monster"), &Boss_Desc)))
-	//	return E_FAIL;
-
 	return S_OK;
 }
 
@@ -1568,32 +1465,6 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Spawner(const _wstring& _strLayerTag)
 	} /* 4챕 스케치스페이스 */
 
 	return S_OK;
-}
-
-void CLevel_Chapter_04::Create_Arm(_uint _iCoordinateType, CGameObject* _pCamera, _float3 _vRotation, _float _fLength)
-{
-	CGameObject* pPlayer = m_pGameInstance->Get_GameObject_Ptr(m_eLevelID, TEXT("Layer_Player"), 0);
-	if (nullptr == pPlayer)
-		return;
-	_vector vPlayerLook = pPlayer->Get_ControllerTransform()->Get_Transform((COORDINATE)_iCoordinateType)->Get_State(CTransform::STATE_LOOK);
-
-	CCameraArm::CAMERA_ARM_DESC Desc = {};
-
-	//XMStoreFloat3(&Desc.vArm, -vPlayerLook);
-	Desc.vArm = _vRotation;
-	Desc.vPosOffset = { 0.f, 0.f, 0.f };
-	Desc.fLength = _fLength;
-
-	CCameraArm* pArm = CCameraArm::Create(m_pDevice, m_pContext, &Desc);
-
-	switch (_iCoordinateType) {
-	case (_uint)COORDINATE_3D:
-		dynamic_cast<CCamera_Target*>(_pCamera)->Add_CurArm(pArm);
-		break;
-	case (_uint)COORDINATE_2D:
-		dynamic_cast<CCamera_2D*>(_pCamera)->Add_CurArm(pArm);
-		break;
-	}
 }
 
 void CLevel_Chapter_04::Create_IntroTrigger()

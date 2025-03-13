@@ -4,6 +4,9 @@
 #include "UI_Manager.h"
 
 
+#include "Dialog_Manager.h"
+
+
 CBombStamp_UI::CBombStamp_UI(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CUI (_pDevice, _pContext)
 {
@@ -38,19 +41,60 @@ void CBombStamp_UI::Priority_Update(_float _fTimeDelta)
 
 void CBombStamp_UI::Update(_float _fTimeDelta)
 {
+	CUI_Manager* pUIManager = CUI_Manager::GetInstance();
+	
+
+
+
+	// 밤 도장을 가지고 있지 않으면 리턴을 시켜주자.
+	if (false == pUIManager->Get_StampHave(0))
+		return;
+
 	if (m_isActive == false)
 		return;
 
-	ChangeStamp(_fTimeDelta);
+	// 둘다 있으면 체인지 스탬프 준비하고
+	if (true == pUIManager->Get_StampHave(0) &&
+		true == pUIManager->Get_StampHave(1))
+	{
+		ChangeStamp(_fTimeDelta);
+	}
+
+	// 밤만 가지고 있으면 밤 도장 위치를 조정해주자.
+	else if (true == pUIManager->Get_StampHave(0) &&
+			false == pUIManager->Get_StampHave(1))
+	{
+		if (false == m_isFirstPositionAdjusted)
+		{
+			_float2 vPos;
+			// 크기 및 위치 조정
+			vPos.x = g_iWinSizeX - g_iWinSizeX / 12.f;
+			vPos.y = g_iWinSizeY - g_iWinSizeY / 6.f;
+
+			m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(vPos.x - g_iWinSizeX * 0.5f, -vPos.y + g_iWinSizeY * 0.5f, 0.f, 1.f));
+
+			m_pControllerTransform->Set_Scale(96.f, 148.f, 1.f);
+
+			//m_isFirstPositionAdjusted = true;
+		}
+	}
+	
 }
 
 void CBombStamp_UI::Late_Update(_float _fTimeDelta)
 {
+	if (false == Uimgr->GetInstance()->Get_StampHave(0))
+		return;
+
 	__super::Late_Update(_fTimeDelta);
 }
 
 HRESULT CBombStamp_UI::Render()
 {
+	if (false == Uimgr->GetInstance()->Get_StampHave(0))
+		return S_OK;
+
+
 	__super::Render();
 	return S_OK;
 }
@@ -90,7 +134,7 @@ void CBombStamp_UI::ChangeStamp(_float _fTimeDelta)
 	{
 		if (true == m_isBig)
 		{
-			if (m_fSizeX <= 96)
+			if (m_fSizeX <= 96.f)
 			{
 				m_fSizeX += _fTimeDelta * 100.f;
 				m_fSizeY += (_fTimeDelta * 1.54f) * 100.f;
@@ -106,7 +150,7 @@ void CBombStamp_UI::ChangeStamp(_float _fTimeDelta)
 		}
 		else if (true == m_isSmall)
 		{
-			if (m_fSizeX > 72)
+			if (m_fSizeX > 72.f)
 			{
 				m_fSizeX -= _fTimeDelta * 100.f;
 				m_fSizeY -= (_fTimeDelta * 1.54f) * 100.f;

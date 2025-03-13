@@ -37,7 +37,6 @@ public:
 private:
 	class CMinigame_Sneak* m_pSneakMinigameManager = { nullptr };
 private:
-	void					Create_Arm(_uint _iCoordinateType, CGameObject* _pCamera, _float3 _vArm, _float _fLength);
 
 	HRESULT					Map_Object_Create(_wstring _strFileName);
 

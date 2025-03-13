@@ -1,0 +1,160 @@
+{
+    "3D": [
+        {
+            "MonsterTag": "Prototype_GameObject_Goblin",
+            "LayerTag": "Layer_Monster_Door3",
+            "Position": [
+                60.0,
+                12.5,
+                13.0
+            ],
+            "Scaling": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        },
+        {
+            "MonsterTag": "Prototype_GameObject_Goblin",
+            "LayerTag": "Layer_Monster_Door3",
+            "Position": [
+                65.0,
+                12.5,
+                12.72
+            ],
+            "Scaling": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        },
+        {
+            "MonsterTag": "Prototype_GameObject_BarfBug",
+            "LayerTag": "Layer_Monster_Door3",
+            "Position": [
+                61.0,
+                12.5,
+                16.5
+            ],
+            "Scaling": [
+                0.75,
+                0.75,
+                0.75
+            ]
+        },
+
+        {
+            "MonsterTag": "Prototype_GameObject_Goblin",
+            "LayerTag": "Layer_Monster",
+            "Position": [
+                32.5,
+                4.85,
+                0
+            ],
+            "Scaling": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        },
+        {
+            "MonsterTag": "Prototype_GameObject_BarfBug",
+            "LayerTag": "Layer_Monster",
+            "Position": [
+                35.0,
+                4.89,
+                -2.8
+            ],
+            "Scaling": [
+                0.75,
+                0.75,
+                0.75
+            ]
+        },
+        {
+            "MonsterTag": "Prototype_GameObject_Goblin",
+            "LayerTag": "Layer_Monster",
+            "Position": [
+                41.5,
+                4.92,
+                -4.5
+            ],
+            "Scaling": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        },
+        {
+            "MonsterTag": "Prototype_GameObject_Goblin",
+            "LayerTag": "Layer_Monster",
+            "Position": [
+                43.5,
+                4.23,
+                5.0
+            ],
+            "Scaling": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        },
+        {
+            "MonsterTag": "Prototype_GameObject_Goblin",
+            "LayerTag": "Layer_Monster",
+            "Position": [
+                49.0,
+                4.29,
+                6.0
+            ],
+            "Scaling": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        },
+        {
+            "MonsterTag": "Prototype_GameObject_JumpBug",
+            "LayerTag": "Layer_Monster",
+            "Position": [
+                -41.0,
+                9.76,
+                -4.0
+            ],
+            "Scaling": [
+                0.75,
+                0.75,
+                0.75
+            ]
+        },
+        {
+            "MonsterTag": "Prototype_GameObject_JumpBug",
+            "LayerTag": "Layer_Monster",
+            "Position": [
+                -46.0,
+                9.76,
+                -7.0
+            ],
+            "Scaling": [
+                0.75,
+                0.75,
+                0.75
+            ]
+        },
+        {
+            "MonsterTag": "Prototype_GameObject_JumpBug",
+            "LayerTag": "Layer_Monster",
+            "Position": [
+                -50.0,
+                9.76,
+                -5.0
+            ],
+            "Scaling": [
+                0.75,
+                0.75,
+                0.75
+            ]
+        }
+
+    ]
+}

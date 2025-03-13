@@ -706,6 +706,18 @@
     <Filter Include="05.MiniGames\Minigame_Sneak">
       <UniqueIdentifier>{fa690acd-ae0f-4182-89a0-5fe73843553f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Bombable">
+      <UniqueIdentifier>{305d89b8-b0f9-4915-aab8-7d3d28fe2a10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UI\00. GamePlay\01. Stamp\03. StampKeyCommand">
+      <UniqueIdentifier>{115a7848-fee5-4ccf-a075-7eecfd6d3d8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UI\00. GamePlay\01. Stamp\03. StampKeyCommand\00. StampKey_Q">
+      <UniqueIdentifier>{ce0696e3-d547-4a38-92c8-f2701e53d999}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UI\00. GamePlay\01. Stamp\03. StampKeyCommand\01. StampKey_1">
+      <UniqueIdentifier>{e9af5f88-52ae-4f9c-af2d-98a9d8a39c52}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -1493,12 +1505,6 @@
     <ClInclude Include="..\Public\PlayerState_GetItem.h">
       <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\BombableObject.h">
-      <Filter>02.GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\TiltSwapPusher.h">
-      <Filter>02.GameObjects</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Boss_Crystal.h">
       <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
     </ClInclude>
@@ -1771,6 +1777,23 @@
     <ClInclude Include="..\public\Sneak_MapObject.h">
       <Filter>05.MiniGames\Minigame_Sneak</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\BombableObject.h">
+      <Filter>02.GameObjects\Bombable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\TiltSwapPusher.h">
+      <Filter>02.GameObjects\Bombable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BombableBox.h">
+      <Filter>02.GameObjects\Bombable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\StampKey_1.h">
+      <Filter>02.GameObjects\UI\00. GamePlay\01. Stamp\03. StampKeyCommand\01. StampKey_1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\StampKey_Q.h">
+      <Filter>02.GameObjects\UI\00. GamePlay\01. Stamp\03. StampKeyCommand\00. StampKey_Q</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EvictedSword.h" />
+    <ClInclude Include="..\Public\PlayerState_RetriveSword.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -2545,12 +2568,6 @@
     <ClCompile Include="..\Private\PlayerState_GetItem.cpp">
       <Filter>03.Components\PlayerState</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\BombableObject.cpp">
-      <Filter>02.GameObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\TiltSwapPusher.cpp">
-      <Filter>02.GameObjects</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Boss_Crystal.cpp">
       <Filter>02.GameObjects\Monster\Boss\Projectile</Filter>
     </ClCompile>
@@ -2823,6 +2840,23 @@
     <ClCompile Include="..\private\Sneak_Troop.cpp">
       <Filter>05.MiniGames\Minigame_Sneak</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\BombableObject.cpp">
+      <Filter>02.GameObjects\Bombable</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\TiltSwapPusher.cpp">
+      <Filter>02.GameObjects\Bombable</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BombableBox.cpp">
+      <Filter>02.GameObjects\Bombable</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\StampKey_1.cpp">
+      <Filter>02.GameObjects\UI\00. GamePlay\01. Stamp\03. StampKeyCommand\01. StampKey_1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\StampKey_Q.cpp">
+      <Filter>02.GameObjects\UI\00. GamePlay\01. Stamp\03. StampKeyCommand\00. StampKey_Q</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\EvictedSword.cpp" />
+    <ClCompile Include="..\Private\PlayerState_RetriveSword.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

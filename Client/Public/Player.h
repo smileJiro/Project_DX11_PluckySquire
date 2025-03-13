@@ -156,6 +156,8 @@ public:
 		CYBER_FLY,
 		CYBER_DASH,
 		CYBER_HIT,
+		RETRIVE_SWORD,
+		
 		STATE_LAST
 	};
 	enum class ANIM_STATE_2D
@@ -519,8 +521,10 @@ public:
 	virtual HRESULT	Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr) override;
 	virtual void On_Land() override;
 	virtual void On_Change2DDirection(E_DIRECTION _eCurrentDir) override;
-public:
+	virtual void On_StartAutoMove() override;
+	virtual void On_EndAutoMove() override;
 	void On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx);
+public:
 
 	void Move_Attack_3D();
 	void StampSmash();
@@ -555,6 +559,7 @@ public:
 	void Exit_Portal(CPortal* _pPortal);
 	void Set_PlayingAnim(_bool _bPlaying);
 	void Start_Invinciblity();
+	void RetrieveSword();
 	// interact 함수가 호출되면 true 반환.
 	INTERACT_RESULT Try_Interact(_float _fTimeDelta);
 

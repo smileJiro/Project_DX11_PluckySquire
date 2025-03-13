@@ -601,16 +601,14 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 	TargetDesc.eZoomLevel = CCamera::LEVEL_6;
 	TargetDesc.iCameraType = CCamera_Manager::TARGET;
 
+	XMStoreFloat3(&TargetDesc.vArm, XMVector3Normalize(XMVectorSet(0.f, 0.5776063799858093f, -0.87f, 0.f)));
+	TargetDesc.fLength = { 12.5f };
+
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Camera_Target"),
 		m_eLevelID, _strLayerTag, &pCamera, &TargetDesc)))
 		return E_FAIL;
 
 	CCamera_Manager::GetInstance()->Add_Camera(CCamera_Manager::TARGET, static_cast<CCamera*>(pCamera));
-
-	_float3 vArm;
-	XMStoreFloat3(&vArm, XMVector3Normalize(XMVectorSet(0.f, 0.5776063799858093f, -0.87f, 0.f)));
-	_float fLength = 12.5f;
-	Create_Arm((_uint)COORDINATE_3D, pCamera, vArm, fLength);
 
 	// CutScene Camera
 	CCamera_CutScene::CAMERA_DESC CutSceneDesc{};
@@ -645,16 +643,14 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 	Target2DDesc.eZoomLevel = CCamera::LEVEL_6;
 	Target2DDesc.iCameraType = CCamera_Manager::TARGET_2D;
 
+	XMStoreFloat3(&Target2DDesc.vArm, XMVector3Normalize(XMVectorSet(0.f, 0.981f, -0.191f, 0.f)));
+	Target2DDesc.fLength = { 12.5f };
+
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Camera_2D"),
 		m_eLevelID, _strLayerTag, &pCamera, &Target2DDesc)))
 		return E_FAIL;
 
 	CCamera_Manager::GetInstance()->Add_Camera(CCamera_Manager::TARGET_2D, static_cast<CCamera*>(pCamera));
-
-	XMStoreFloat3(&vArm, XMVector3Normalize(XMVectorSet(0.f, 0.981f, -0.191f, 0.f)));
-	//vRotation = { XMConvertToRadians(-79.2f), XMConvertToRadians(0.f), 0.f };
-	fLength = 12.5f;
-	Create_Arm((_uint)COORDINATE_2D, pCamera, vArm, fLength);
 
 	// Load CutSceneData, ArmData
 	CCamera_Manager::GetInstance()->Load_CutSceneData(m_eLevelID);
@@ -1358,31 +1354,6 @@ HRESULT CLevel_Chapter_08::Ready_Layer_PortalLocker(const _wstring& _strLayerTag
 
 
 	return S_OK;
-}
-
-void CLevel_Chapter_08::Create_Arm(_uint _iCoordinateType, CGameObject* _pCamera, _float3 _vArm, _float _fLength)
-{
-	CGameObject* pPlayer = m_pGameInstance->Get_GameObject_Ptr(m_eLevelID, TEXT("Layer_Player"), 0);
-	if (nullptr == pPlayer)
-		return;
-	_vector vPlayerLook = pPlayer->Get_ControllerTransform()->Get_Transform((COORDINATE)_iCoordinateType)->Get_State(CTransform::STATE_LOOK);
-
-	CCameraArm::CAMERA_ARM_DESC Desc = {};
-
-	Desc.vArm = _vArm;
-	Desc.vPosOffset = { 0.f, 0.f, 0.f };
-	Desc.fLength = _fLength;
-
-	CCameraArm* pArm = CCameraArm::Create(m_pDevice, m_pContext, &Desc);
-
-	switch (_iCoordinateType) {
-	case (_uint)COORDINATE_3D:
-		dynamic_cast<CCamera_Target*>(_pCamera)->Add_CurArm(pArm);
-		break;
-	case (_uint)COORDINATE_2D:
-		dynamic_cast<CCamera_2D*>(_pCamera)->Add_CurArm(pArm);
-		break;
-	}
 }
 
 HRESULT CLevel_Chapter_08::Map_Object_Create(_wstring _strFileName)

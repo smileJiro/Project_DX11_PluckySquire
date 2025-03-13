@@ -9,7 +9,8 @@ class CBlocker final : public CPartObject
 public:
 	typedef struct tagBlockerDesc : public CPartObject::tagPartObjectDesc
 	{
-		_bool isFloor = false; /* 오브젝트가 밟고 설수있는 판별의 기준 (점프판별시 활용)*/
+		_bool	isFloor = false; /* 오브젝트가 밟고 설수있는 판별의 기준 (점프판별시 활용)*/
+		_bool	isJumpPass = false;
 	}BLOCKER_DESC;
 	typedef struct tag2DBlockerDesc : public BLOCKER_DESC
 	{
@@ -39,6 +40,7 @@ public:
 	_bool					Is_Floor() const { return m_isFloor; }
 private:
 	_bool					m_isFloor = false;
+	_bool					m_isJumpPass = false;
 
 private:
 	HRESULT					Ready_Component(BLOCKER_DESC* _pDesc);

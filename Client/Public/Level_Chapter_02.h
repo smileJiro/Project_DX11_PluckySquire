@@ -29,7 +29,10 @@ public:
 	HRESULT					Ready_Layer_UI(const _wstring& _strLayerTag);
 	HRESULT					Ready_Layer_Item(const _wstring& _strLayerTag);
 	HRESULT					Ready_Layer_NPC(const _wstring& _strLayerTag);
-	HRESULT					Ready_Layer_Monster(const _wstring& _strLayerTag, CGameObject** _ppOut = nullptr);
+	HRESULT					Ready_Layer_Monster();
+	HRESULT					Ready_Layer_Monster_2D();
+	HRESULT					Ready_Layer_Monster_3D();
+
 	HRESULT					Ready_Layer_Monster_Projectile(const _wstring& _strLayerTag, CGameObject** _ppOut = nullptr);
 	HRESULT					Ready_Layer_Effects(const _wstring& _strLayerTag);
 	HRESULT					Ready_Layer_Effects2D(const _wstring& _strLayerTag);
@@ -40,9 +43,8 @@ public:
 	HRESULT					Ready_Layer_Draggable(const _wstring& _strLayerTag);
 	HRESULT					Ready_Layer_MapGimmick(const _wstring& _strLayerTag);
 	HRESULT					Ready_Layer_RoomDoor(const _wstring& _strLayerTag);
+
 private:
-	void					Create_Arm(_uint _iCoordinateType, CGameObject* _pCamera, _float3 _vArm, _float _fLength);
- 
 	HRESULT					Map_Object_Create(_wstring _strFileName);
 
 	LEVEL_ID				m_eLevelID;

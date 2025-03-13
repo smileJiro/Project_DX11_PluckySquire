@@ -158,7 +158,6 @@ private:
 	void				Show_ArmInfo();
 	void				Show_CutSceneInfo();
 
-	void				Create_Arms();
 	void				Show_ComboBox();
 	void				Show_SelectedArmData();
 	void				Show_CameraZoomInfo();

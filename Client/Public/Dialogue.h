@@ -111,6 +111,7 @@ public:
     void       Set_Portrait(CPortrait* _Portrait) { m_pPortrait = _Portrait; Safe_AddRef(_Portrait); }
     void       UpdateDialogueLine();
     HRESULT     NextLevelLoadJson(_int _iNextLevel);
+    _bool     Get_isLastDialogLine() { return m_isLastDialogLine; }
 
 private:
    
@@ -126,6 +127,7 @@ private:
     // 추후 수정해야한다. 주소를 받던가
     vector<CDialog::DialogData>			Get_Dialogue(const _wstring& _id);
     CDialog::DialogLine					Get_DialogueLine(const _wstring& _id, _int _LineIndex);
+
 
     /* UI_manager에서 이동*/
  public:
@@ -172,6 +174,8 @@ private:
     _bool               m_isOpenDialogue = { true };
     _float2              m_vRenderRatio = { 0.f , 0.f};
     _float2             m_vRTSize = { 0.f , 0.f };
+    
+    _bool               m_isLastDialogLine = { false };
 
 
 

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "ArrowForStamp.h"
 #include "GameInstance.h"
+#include "UI_Manager.h"
 
 
 
@@ -53,7 +54,10 @@ void CArrowForStamp::Late_Update(_float _fTimeDelta)
 
 HRESULT CArrowForStamp::Render()
 {
-	
+	CUI_Manager* pUIManager = CUI_Manager::GetInstance();
+	if (false == pUIManager->Get_StampHave(0) || false == pUIManager->Get_StampHave(1))
+		return S_OK;
+
 	if (FAILED(m_pControllerTransform->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
 		return E_FAIL;
 

@@ -51,7 +51,7 @@ void CSneak_BackState::State_Enter()
 	m_isTurn = false;
 	m_isMove = false;
 	m_isPathFind = true;
-	cout << "Back" << endl;
+	//cout << "Back" << endl;
 }
 
 void CSneak_BackState::State_Update(_float _fTimeDelta)
@@ -105,7 +105,7 @@ void CSneak_BackState::State_Update(_float _fTimeDelta)
 	}
 
 	//다음 웨이포인트 설정
-	if (false == m_isTurn)
+	if (false == m_isTurn && false == m_isMove)
 	{
 		//타겟 위치에 가까운 웨이포인트 찾아 목표 위치로 지정 
 
@@ -178,7 +178,7 @@ void CSneak_BackState::Sneak_BackMove(_float _fTimeDelta, _int _iDir)
 
 				m_isTurn = false;
 				m_isMove = false;
-				m_isOnWay = false;
+				//m_isOnWay = false;
 
 				if (m_Ways.size() <= m_iCurWayIndex)
 				{
@@ -357,6 +357,13 @@ void CSneak_BackState::Check_Bound(_float _fTimeDelta)
 
 void CSneak_BackState::Determine_BackDirection(_float3* _vDirection)
 {
+	if (true == m_isOnWay)
+	{
+		XMStoreFloat3(_vDirection, XMVector3Normalize(XMVectorSetY(XMLoadFloat3(&m_WayPoints[m_Ways[m_iCurWayIndex]].vPosition) - m_pOwner->Get_FinalPosition(), 0.f)));
+		return;
+	}
+
+
 	_float3 vOffset = m_pOwner->Get_RayOffset();
 	_float3 vRayPos; XMStoreFloat3(&vRayPos, XMVector3Transform(XMLoadFloat3(&vOffset), m_pOwner->Get_FinalWorldMatrix()));
 	_float3 vPos; XMStoreFloat3(&vPos, m_pOwner->Get_FinalPosition());
@@ -542,8 +549,12 @@ void CSneak_BackState::Determine_BackDirection(_float3* _vDirection)
 
 	//시작점까지 갔다가 다음 점으로 진행하는 거리와 다음 점으로 바로 가는 거리 비교해서 시작점으로 갈지 결정
 	_vector vFromStart = XMLoadFloat3(&m_WayPoints[iStartIndex].vPosition) - m_pOwner->Get_FinalPosition() + XMLoadFloat3(&m_WayPoints[m_Ways[m_Ways.size() - 1]].vPosition) - XMLoadFloat3(&m_WayPoints[iStartIndex].vPosition);
-	_vector vToNext = XMLoadFloat3(&m_WayPoints[m_Ways[m_Ways.size() - 1]].vPosition) - m_pOwner->Get_FinalPosition();
-	if (2 == m_pGameInstance->Compare_VectorLength(XMVectorSetY(vFromStart, 0.f), XMVectorSetY(vToNext, 0.f)))
+	_vector vToNext = XMVectorSetY(XMLoadFloat3(&m_WayPoints[m_Ways[m_Ways.size() - 1]].vPosition) - m_pOwner->Get_FinalPosition(), 0.f);
+	_float3 vToNextDir; XMStoreFloat3(&vToNextDir, XMVector3Normalize(vToNext));
+
+	//다음 점이 막혀있거나 거리가 더 길면 시작점으로 감
+	if (true == m_pGameInstance->RayCast_Nearest_GroupFilter(vPos, vToNextDir, XMVectorGetX(XMVector3Length(vToNext)), OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE)
+		|| 2 == m_pGameInstance->Compare_VectorLength(XMVectorSetY(vFromStart, 0.f), XMVectorSetY(vToNext, 0.f)))
 	{
 		m_Ways.push_back(iStartIndex);
 	}
