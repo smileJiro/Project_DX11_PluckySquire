@@ -285,6 +285,24 @@ void CActor_Dynamic::Set_Gravity(_bool _isGravity)
 	static_cast<PxRigidDynamic*>(m_pActor)->setActorFlag(PxActorFlag::eDISABLE_GRAVITY, !_isGravity);
 }
 
+void CActor_Dynamic::Freeze_Rotation(_bool _bFreezeX, _bool _bFreezeY, _bool _bFreezeZ)
+{
+	PxRigidDynamic* pActor = static_cast<PxRigidDynamic*>(m_pActor);
+	pActor->setRigidDynamicLockFlag(PxRigidDynamicLockFlag::eLOCK_ANGULAR_X, _bFreezeX);
+	pActor->setRigidDynamicLockFlag(PxRigidDynamicLockFlag::eLOCK_ANGULAR_Y, _bFreezeY);
+	pActor->setRigidDynamicLockFlag(PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z, _bFreezeZ);
+
+}
+
+void CActor_Dynamic::Freeze_Position(_bool _bFreezeX, _bool _bFreezeY, _bool _bFreezeZ)
+{
+	PxRigidDynamic* pActor = static_cast<PxRigidDynamic*>(m_pActor);
+
+	pActor->setRigidDynamicLockFlag(PxRigidDynamicLockFlag::eLOCK_LINEAR_X, _bFreezeX);
+	pActor->setRigidDynamicLockFlag(PxRigidDynamicLockFlag::eLOCK_LINEAR_Y, _bFreezeY);
+	pActor->setRigidDynamicLockFlag(PxRigidDynamicLockFlag::eLOCK_LINEAR_Z, _bFreezeZ);
+}
+
 
 void CActor_Dynamic::Add_Force(const _float3& _vForce)
 {

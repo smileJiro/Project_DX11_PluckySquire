@@ -205,6 +205,7 @@ void CActor::Set_ShapeMyFilterGroup(_uint _iShapeIdx, _uint _iFIlterGroup)
 
 
 
+
 HRESULT CActor::Ready_Actor(ACTOR_DESC* _pActorDesc)
 {
 	PxPhysics* pPhysic = m_pGameInstance->Get_Physics();
@@ -391,6 +392,14 @@ void CActor::Set_GlobalPose(const _float3& _vPos)
 {
 	PxTransform CurTransform = m_pActor->getGlobalPose();
 	CurTransform.p = { _vPos.x, _vPos.y , _vPos.z };
+	m_pActor->setGlobalPose(CurTransform);
+}
+
+void CActor::Set_GlobalPose(const _float3& _vPos, const _float4& _vQuaternion)
+{
+	PxTransform CurTransform = m_pActor->getGlobalPose();
+	CurTransform.p = { _vPos.x, _vPos.y , _vPos.z };
+	CurTransform.q = { _vQuaternion.x, _vQuaternion.y , _vQuaternion.z, _vQuaternion.w };
 	m_pActor->setGlobalPose(CurTransform);
 }
 

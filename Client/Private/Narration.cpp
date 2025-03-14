@@ -788,7 +788,7 @@ void CNarration::Update_Narration(_float _fTimeDelta)
 					m_fDelayTimer = 0.f;
 					m_fTextAlpha = 0.f;
 					m_bAnimationStarted = false;
-					m_isNarrationEnd = true;
+					m_isNarrationEnd = false;
 
 
 					//m_vAnimObjectsByLine.erase(m_iCurrentLine);

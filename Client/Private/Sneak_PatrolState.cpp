@@ -25,8 +25,7 @@ HRESULT CSneak_PatrolState::Initialize(void* _pArg)
 	//m_fDelayTime = 1.f;
 
 	Initialize_WayPoints(pDesc->eWayIndex);
-	if(false == m_pOwner->Is_Stay())
-		Initialize_PatrolPoints(pDesc->eWayIndex);
+	Initialize_PatrolPoints(pDesc->eWayIndex);
 	Initialize_PatrolDirections(pDesc->eWayIndex);
 	
 	if (1 < m_PatrolWays.size())

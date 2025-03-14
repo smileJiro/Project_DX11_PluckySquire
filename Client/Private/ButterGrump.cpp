@@ -122,7 +122,8 @@ HRESULT CButterGrump::Initialize(void* _pArg)
 
     static_cast<CActor_Dynamic*>(Get_ActorCom())->Set_Gravity(false);
 
-    m_PartObjects[BOSSPART_SHIELD]->Get_ControllerTransform()->RotationXYZ(_float3(0.f, 90.f, 0.f));
+
+    m_PartObjects[BOSSPART_SHIELD]->Get_ControllerTransform()->RotationXYZ(_float3(0.f, -90.f, 0.f));
     m_PartObjects[BOSSPART_SHIELD]->Set_Active(false);
 
     Get_ControllerTransform()->Rotation(XMConvertToRadians(180.f), XMVectorSet(0.f, 1.f, 0.f, 0.f));
@@ -353,7 +354,22 @@ void CButterGrump::Attack()
     if (false == m_pGameInstance->MatrixDecompose(&vScale, &vRotation, nullptr, Get_FinalWorldMatrix()))
         return;
 
-    XMStoreFloat4(&vRotation, m_pGameInstance->Direction_To_Quaternion(XMVectorSet(0.f, 0.f, 1.f, 0.f), m_pTarget->Get_FinalPosition() - XMLoadFloat3(&vPosition)));
+
+    vUp = {0.f,1.f,0.f,0.f};
+    _vector vLook = XMVector3Normalize(m_pTarget->Get_FinalPosition() - XMLoadFloat3(&vPosition));
+    _vector vRight = XMVector3Cross(vUp, vLook);
+
+    vUp = XMVector3Cross(vLook, vRight);
+
+    _matrix matRot = XMMatrixIdentity();
+
+    matRot.r[0] = vRight;
+    matRot.r[1] = vUp;
+    matRot.r[2] = vLook;
+
+    
+    m_pGameInstance->MatrixDecompose(nullptr, &vRotation, nullptr, matRot);
+    //XMStoreFloat4(&vRotation, m_pGameInstance->Direction_To_Quaternion(XMVectorSet(0.f, 0.f, 1.f, 0.f), XMVector4Normalize(m_pTarget->Get_FinalPosition() - XMLoadFloat3(&vPosition))));
 
     switch ((BOSS_STATE)m_iState)
     {
@@ -561,8 +577,8 @@ void CButterGrump::Attack()
 
     case BOSS_STATE::WINGSLAM:
     {
-        _float4 vRot;
-        XMStoreFloat4(&vRot, m_pGameInstance->Direction_To_Quaternion(XMVectorSet(0.f, 0.f, 1.f, 0.f), m_pTarget->Get_FinalPosition() - XMLoadFloat3(&vPosition)));
+        /*_float4 vRot;
+        XMStoreFloat4(&vRot, m_pGameInstance->Direction_To_Quaternion(XMVectorSet(0.f, 0.f, 1.f, 0.f), m_pTarget->Get_FinalPosition() - XMLoadFloat3(&vPosition)));*/
         CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Boss_WingSlam"), COORDINATE_3D, &vPosition, &vRotation);
         m_isAttack = false;
         break;
@@ -570,8 +586,8 @@ void CButterGrump::Attack()
 
     case BOSS_STATE::WINGSLICE:
     {
-        _float4 vRot;
-		XMStoreFloat4(&vRot, m_pGameInstance->Direction_To_Quaternion(XMVectorSet(0.f, 0.f, 1.f, 0.f), m_pTarget->Get_FinalPosition() - XMLoadFloat3(&vPosition)));
+  //      _float4 vRot;
+		//XMStoreFloat4(&vRot, m_pGameInstance->Direction_To_Quaternion(XMVectorSet(0.f, 0.f, 1.f, 0.f), m_pTarget->Get_FinalPosition() - XMLoadFloat3(&vPosition)));
         CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Boss_WingSlice"), COORDINATE_3D, &vPosition, &vRotation);
         m_isAttack = false;
         break;
@@ -1129,11 +1145,11 @@ HRESULT CButterGrump::Ready_PartObjects()
     ShieldDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
 
     ShieldDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
-    ShieldDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::ALPHABLEND;
+    ShieldDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
 
-    _float fScale = 25.f;
+    _float fScale = 30.f;
 
-	ShieldDesc.tTransform3DDesc.vInitialPosition = _float3(fScale * (-0.3f), 0.0f, fScale * (-0.1f));
+	ShieldDesc.tTransform3DDesc.vInitialPosition = _float3(fScale * (0.3f), 0.0f, fScale * (-0.3f));
 	//ShieldDesc.tTransform3DDesc.vInitialPosition = _float3(0.f, 0.f, 0.f);
     ShieldDesc.tTransform3DDesc.vInitialScaling = _float3(fScale, fScale, fScale);
     ShieldDesc.tTransform3DDesc.fRotationPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_RotationPerSec();

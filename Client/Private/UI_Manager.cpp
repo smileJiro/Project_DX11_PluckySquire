@@ -193,6 +193,22 @@ void CUI_Manager::Set_PlayNarration(const _wstring& _strid)
 	m_isPlayerNarration = true;
 }
 
+_bool CUI_Manager::is_PlayNarration()
+{
+	if (nullptr == m_pNarration)
+		assert(TEXT("m_pNarration == nullptr"));
+
+	return m_pNarration->is_PlayNarration();
+}
+
+_bool CUI_Manager::is_EndNarration()
+{
+	if (nullptr == m_pNarration)
+		assert(TEXT("m_pNarration == nullptr"));
+
+	return m_pNarration->is_EndNarration();
+}
+
 _bool CUI_Manager::isLeft_Right()
 {
 	assert(m_pNarration);
