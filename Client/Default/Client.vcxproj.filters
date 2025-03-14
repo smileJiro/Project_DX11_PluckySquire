@@ -1807,6 +1807,9 @@
     <ClInclude Include="..\Public\Laser_Container.h">
       <Filter>02.GameObjects\2DGimmik\Laser</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Laser_Beam.h">
+      <Filter>02.GameObjects\2DGimmik\Laser</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -2893,6 +2896,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\DynamicCastleGate.cpp" />
     <ClCompile Include="..\Private\Laser_Container.cpp">
+      <Filter>02.GameObjects\2DGimmik\Laser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Laser_Beam.cpp">
       <Filter>02.GameObjects\2DGimmik\Laser</Filter>
     </ClCompile>
   </ItemGroup>
