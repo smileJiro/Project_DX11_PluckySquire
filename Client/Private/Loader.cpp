@@ -100,6 +100,8 @@
 #include "Bomb.h"
 #include "BombableBox.h"
 #include "TiltSwapPusher.h"
+#include "BombSwitch.h"
+#include "BombSwitchStopper.h"
 #include "Key.h"
 #include "Beetle_Corpse.h"
 
@@ -208,6 +210,7 @@
 #include "Word.h"
 
 #include "Laser_Container.h"
+#include "Laser_Beam.h"
 
 
 // Etc
@@ -1621,9 +1624,6 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 			CRubboink_Tiny::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
-		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_TiltSwapPusher"),
-			CTiltSwapPusher::Create(m_pDevice, m_pContext))))
-			return E_FAIL;
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_Minigame_Defender"),
 			CMiniGame_Defender::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
@@ -1873,6 +1873,21 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Beetle_Corpse"),
 		CBeetle_Corpse::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_TiltSwapPusher"),
+		CTiltSwapPusher::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_BombSwitch"),
+		CBombSwitch::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_BombSwitchStopper"),
+		CBombSwitchStopper::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Laser_Beam"),
+		CLaser_Beam::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 #pragma endregion
 

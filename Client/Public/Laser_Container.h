@@ -3,6 +3,8 @@
 #include "Client_Defines.h"
 
 BEGIN(Client)
+class CPressure_Plate;
+
 class CLaser_Container final : public CContainerObject
 {
 public:
@@ -11,7 +13,11 @@ public:
 		_wstring	strInitSectionTag;
 		_float2		fStartPos;
 		_float2		fEndPos;
+		_float2		fPressurePlatePos;
 		_float		fMoveSpeed;
+		_bool		isMove = true;
+		_bool		isBeamOn = true;
+		_bool		isPressurePlate = false;
 		F_DIRECTION eDir;
 	}LASER_DESC;
 
@@ -62,17 +68,27 @@ public:
 	virtual void					Active_OnDisable() override;
 
 	virtual HRESULT					Ready_Components(LASER_DESC* _pDesc);
-	virtual HRESULT					Ready_PartObjects();
+	virtual HRESULT					Ready_PartObjects(LASER_DESC* _pDesc);
 
+	void							Pressured_Process(_float _fTimeDelta);
 
-	void							Compute_Beam();
+	void							Set_BeamOn(_bool _IsBeamOn);
+	void							Set_Move(_bool _IsMove) { m_IsMove = _IsMove; }
+	void							Compute_Beam(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject);
 
+	_float							Lerp_Pos(_float _f1, _float _f2, _float fPosOff)
+	{
+		if (_f1 > _f2)
+			swap(_f1, _f2);
+		return _f1 + fPosOff * (_f2 - _f1);
+	}
 private:;
 	F_DIRECTION		m_eDir = {};
 	_float2			m_fDir = {};
 
-	_bool			m_bIsBeamOn = true;
-	_bool			m_bIsBeamRotate = false;
+	_bool			m_IsMove = true;
+	_bool			m_IsBeamOn = true;
+	_bool			m_IsBeamRotate = false;
 	_bool			m_BackMove = false;
 
 	_float2			m_fStartPos = {};
@@ -88,7 +104,10 @@ private:;
 	CCollider*		m_pSizeTriggerCollider = {};
 	CCollider*		m_pBeamCollider = {};
 
-	_int			m_iBeamTargetIndex = {};
+	_int			m_iBeamTargetIndex = -1;
+
+private:
+	class CPressure_Plate* m_pPressurePlate = { nullptr };
 
 private:
 	//virtual HRESULT					Ready_ActorDesc(void* _pArg);

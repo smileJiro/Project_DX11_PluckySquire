@@ -126,7 +126,7 @@ void CPlayerState_TurnBook::Update(_float _fTimeDelta)
 				if (m_fSlidProgress <= m_pBook->Get_CurrentAnimationProgress())
 					m_pBook->SlideObjects_LToR();
 				//기울이는 중에 완전히 덮히면?
-				if (false == m_pBook->Is_DuringAnimation())
+				if (m_pBook->Is_DuringAnimation() && 1.f <= m_pBook->Get_CurrentAnimationProgress())
 					Set_State(CLOSED_RIGHT);
 			}
 		}
@@ -163,7 +163,7 @@ void CPlayerState_TurnBook::Update(_float _fTimeDelta)
 				if (m_fSlidProgress <= m_pBook->Get_CurrentAnimationProgress())
 					m_pBook->SlideObjects_RToL();
 				//기울이는 중에 완전히 덮히면?
-				if (false == m_pBook->Is_DuringAnimation())
+				if (m_pBook->Is_DuringAnimation() &&  1.f <= m_pBook->Get_CurrentAnimationProgress())
 					Set_State(CLOSED_LEFT);
 			}
 		}
