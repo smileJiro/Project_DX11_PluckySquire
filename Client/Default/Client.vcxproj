@@ -190,6 +190,8 @@
     <ClInclude Include="..\Public\2DMapWordObject.h" />
     <ClInclude Include="..\public\3DMapEmissiveObject.h" />
     <ClInclude Include="..\public\BackGroundObject.h" />
+    <ClInclude Include="..\Public\Back_WayState.h" />
+    <ClInclude Include="..\Public\Beetle_Corpse.h" />
     <ClInclude Include="..\Public\Bomb.h" />
     <ClInclude Include="..\Public\Bombable.h" />
     <ClInclude Include="..\Public\BombableBox.h" />
@@ -218,6 +220,7 @@
     <ClInclude Include="..\Public\CandleGame.h" />
     <ClInclude Include="..\public\Candle_Body.h" />
     <ClInclude Include="..\public\Candle_UI.h" />
+    <ClInclude Include="..\Public\Chase_WayState.h" />
     <ClInclude Include="..\Public\DefenderCapsule.h" />
     <ClInclude Include="..\Public\DefenderMedShip.h" />
     <ClInclude Include="..\Public\DefenderPerson.h" />
@@ -229,9 +232,7 @@
     <ClInclude Include="..\Public\FatherGame_Progress_PartWing.h" />
     <ClInclude Include="..\public\FatherPart_Prop.h" />
     <ClInclude Include="..\public\FresnelModelObject.h" />
-    <ClInclude Include="..\public\Friend.h" />
-    <ClInclude Include="..\public\Friend_Controller.h" />
-    <ClInclude Include="..\public\Friend_Thrash.h" />
+    <ClInclude Include="..\Public\Laser_Container.h" />
     <ClInclude Include="..\public\Mat.h" />
     <ClInclude Include="..\Public\MonsterJumpState.h" />
     <ClInclude Include="..\Public\MonsterMoveState.h" />
@@ -256,7 +257,6 @@
     <ClInclude Include="..\Public\ShopPanel_RenderFont.h" />
     <ClInclude Include="..\Public\SideScroll_AttackState.h" />
     <ClInclude Include="..\Public\SideScroll_IdleState.h" />
-    <ClInclude Include="..\public\FriendBody.h" />
     <ClInclude Include="..\public\Simple_UI.h" />
     <ClInclude Include="..\Public\Minigame_Defender.h" />
     <ClInclude Include="..\Public\Detonator.h" />
@@ -564,6 +564,8 @@
     <ClCompile Include="..\Private\2DMapWordObject.cpp" />
     <ClCompile Include="..\private\3DMapEmissiveObject.cpp" />
     <ClCompile Include="..\private\BackGroundObject.cpp" />
+    <ClCompile Include="..\Private\Back_WayState.cpp" />
+    <ClCompile Include="..\Private\Beetle_Corpse.cpp" />
     <ClCompile Include="..\Private\Bomb.cpp" />
     <ClCompile Include="..\Private\Bombable.cpp" />
     <ClCompile Include="..\Private\BombableBox.cpp" />
@@ -593,6 +595,7 @@
     <ClCompile Include="..\private\Candle_Body.cpp" />
     <ClCompile Include="..\private\Candle_UI.cpp" />
     <ClCompile Include="..\Private\ChaseFlyState.cpp" />
+    <ClCompile Include="..\Private\Chase_WayState.cpp" />
     <ClCompile Include="..\Private\DefenderCapsule.cpp" />
     <ClCompile Include="..\Private\DefenderMedShip.cpp" />
     <ClCompile Include="..\Private\DefenderPerson.cpp" />
@@ -604,9 +607,7 @@
     <ClCompile Include="..\Private\FatherGame_Progress_PartWing.cpp" />
     <ClCompile Include="..\private\FatherPart_Prop.cpp" />
     <ClCompile Include="..\private\FresnelModelObject.cpp" />
-    <ClCompile Include="..\private\Friend.cpp" />
-    <ClCompile Include="..\private\Friend_Controller.cpp" />
-    <ClCompile Include="..\private\Friend_Thrash.cpp" />
+    <ClCompile Include="..\Private\Laser_Container.cpp" />
     <ClCompile Include="..\private\Mat.cpp" />
     <ClCompile Include="..\Private\MonsterJumpState.cpp" />
     <ClCompile Include="..\Private\MonsterMoveState.cpp" />
@@ -631,7 +632,6 @@
     <ClCompile Include="..\Private\ShopPanel_RenderFont.cpp" />
     <ClCompile Include="..\Private\SideScroll_AttackState.cpp" />
     <ClCompile Include="..\Private\SideScroll_IdleState.cpp" />
-    <ClCompile Include="..\private\FriendBody.cpp" />
     <ClCompile Include="..\private\Simple_UI.cpp" />
     <ClCompile Include="..\Private\Minigame_Defender.cpp" />
     <ClCompile Include="..\Private\Detonator.cpp" />

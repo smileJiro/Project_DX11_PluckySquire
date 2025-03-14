@@ -122,7 +122,8 @@ HRESULT CButterGrump::Initialize(void* _pArg)
 
     static_cast<CActor_Dynamic*>(Get_ActorCom())->Set_Gravity(false);
 
-    m_PartObjects[BOSSPART_SHIELD]->Get_ControllerTransform()->RotationXYZ(_float3(0.f, 90.f, 0.f));
+
+    m_PartObjects[BOSSPART_SHIELD]->Get_ControllerTransform()->RotationXYZ(_float3(0.f, -90.f, 0.f));
     m_PartObjects[BOSSPART_SHIELD]->Set_Active(false);
 
     Get_ControllerTransform()->Rotation(XMConvertToRadians(180.f), XMVectorSet(0.f, 1.f, 0.f, 0.f));
@@ -1129,11 +1130,11 @@ HRESULT CButterGrump::Ready_PartObjects()
     ShieldDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
 
     ShieldDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
-    ShieldDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::ALPHABLEND;
+    ShieldDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
 
-    _float fScale = 25.f;
+    _float fScale = 30.f;
 
-	ShieldDesc.tTransform3DDesc.vInitialPosition = _float3(fScale * (-0.3f), 0.0f, fScale * (-0.1f));
+	ShieldDesc.tTransform3DDesc.vInitialPosition = _float3(fScale * (0.3f), 0.0f, fScale * (-0.3f));
 	//ShieldDesc.tTransform3DDesc.vInitialPosition = _float3(0.f, 0.f, 0.f);
     ShieldDesc.tTransform3DDesc.vInitialScaling = _float3(fScale, fScale, fScale);
     ShieldDesc.tTransform3DDesc.fRotationPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_RotationPerSec();

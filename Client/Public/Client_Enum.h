@@ -205,6 +205,7 @@ namespace Client
 		ATTACK,
 		MOVE,
 		JUMP,
+		BACK,
 		HIT,
 		DEAD,
 		SNEAK_IDLE,

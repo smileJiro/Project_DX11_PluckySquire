@@ -132,6 +132,12 @@ void CC08_Box::On_Land()
 		pCollider->Set_Active(true);
 }
 
+void CC08_Box::On_LayDownEnd(_fmatrix _matWorld)
+{
+	for (auto pCollider : m_p2DColliderComs)
+		pCollider->Set_Active(true);
+}
+
 
 CC08_Box* CC08_Box::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {

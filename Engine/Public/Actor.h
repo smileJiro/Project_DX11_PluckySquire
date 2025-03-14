@@ -103,6 +103,7 @@ public:
 	void						Set_MassLocalPos(_float3 _vPosition);
 	void						Set_Mass(_float _vValue);
 	void						Set_ShapeMyFilterGroup(_uint _iShapeIdx, _uint _iFIlterGroup);
+
 protected:
 	PxRigidActor*				m_pActor = nullptr; 
 	CActorObject*				m_pOwner = nullptr;
