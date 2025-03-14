@@ -26,7 +26,7 @@ HRESULT CCyberPlayerBullet::Initialize_Prototype()
 	FRESNEL_INFO tBulletFresnelInfo = {};
 	tBulletFresnelInfo.fBaseReflect = 0.04f;
 	tBulletFresnelInfo.fExp = 0.19f;
-	tBulletFresnelInfo.vColor = { 0.690f, 1.0f, 1.0f, 0.5f };
+	tBulletFresnelInfo.vColor = { 0.690f, 1.0f, 1.0f, 1.f };
 	tBulletFresnelInfo.fStrength = 1.f; // ¾È¾¸.
 	m_pGameInstance->CreateConstBuffer(tBulletFresnelInfo, D3D11_USAGE_DEFAULT, &m_pFresnelBuffer);
 

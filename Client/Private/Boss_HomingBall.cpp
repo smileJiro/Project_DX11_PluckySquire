@@ -3,6 +3,7 @@
 #include "ModelObject.h"
 #include "Pooling_Manager.h"
 #include "GameInstance.h"
+#include "FresnelModelObject.h"
 
 CBoss_HomingBall::CBoss_HomingBall(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CProjectile_Monster(_pDevice, _pContext)
@@ -11,12 +12,31 @@ CBoss_HomingBall::CBoss_HomingBall(ID3D11Device* _pDevice, ID3D11DeviceContext* 
 
 CBoss_HomingBall::CBoss_HomingBall(const CBoss_HomingBall& _Prototype)
 	: CProjectile_Monster(_Prototype)
+    , m_pFresnelBuffer(_Prototype.m_pFresnelBuffer)
+    , m_pColorBuffer(_Prototype.m_pColorBuffer)
 {
+    Safe_AddRef(m_pFresnelBuffer);
+    Safe_AddRef(m_pColorBuffer);
 }
 
 HRESULT CBoss_HomingBall::Initialize_Prototype()
 {
-	return S_OK;
+    FRESNEL_INFO tBulletFresnelInfo = {};
+    tBulletFresnelInfo.fBaseReflect = 1.46f;
+    tBulletFresnelInfo.fExp = -0.52f;
+    tBulletFresnelInfo.vColor = { 0.040f, 0.36f, 0.26f, 1.f };
+    tBulletFresnelInfo.fStrength = 1.f; // ¾È¾¸.
+    m_pGameInstance->CreateConstBuffer(tBulletFresnelInfo, D3D11_USAGE_DEFAULT, &m_pFresnelBuffer);
+
+
+    COLORS_INFO tColorsInfo = {};
+    tColorsInfo.vDiffuseColor = _float4(0.58f, 0.4f, 0.17f, 1.f);
+    tColorsInfo.vBloomColor = _float4(0.65f, 0.14f, 0.0f, 1.f);
+    tColorsInfo.vSubColor = _float4(0.46f, 0.08f, 0.07f, 1.f);
+    m_pGameInstance->CreateConstBuffer(tColorsInfo, D3D11_USAGE_DEFAULT, &m_pColorBuffer);
+
+
+    return S_OK;
 }
 
 HRESULT CBoss_HomingBall::Initialize(void* _pArg)
@@ -24,6 +44,7 @@ HRESULT CBoss_HomingBall::Initialize(void* _pArg)
     PROJECTILE_MONSTER_DESC* pDesc = static_cast<PROJECTILE_MONSTER_DESC*>(_pArg);
 
     m_fOriginSpeed = pDesc->tTransform3DDesc.fSpeedPerSec;
+    pDesc->iNumPartObjects = PART_HOMING_END;
 
     if (FAILED(Ready_ActorDesc(pDesc)))
         return E_FAIL;
@@ -113,6 +134,12 @@ HRESULT CBoss_HomingBall::Cleanup_DeadReferences()
 void CBoss_HomingBall::Active_OnEnable()
 {
     __super::Active_OnEnable();
+
+    if (nullptr != m_pEffectSystem)
+    {
+        m_pEffectSystem->Set_SpawnMatrix(m_pControllerTransform->Get_WorldMatrix_Ptr());
+        m_pEffectSystem->Active_All(true);
+    }
 }
 
 void CBoss_HomingBall::Active_OnDisable()
@@ -120,6 +147,9 @@ void CBoss_HomingBall::Active_OnDisable()
     m_pControllerTransform->Set_SpeedPerSec(m_fOriginSpeed);
     m_isHoming = false;
     XMStoreFloat3(&m_vDir, XMVectorZero());
+
+    if (nullptr != m_pEffectSystem)
+        m_pEffectSystem->Inactive_All();
 
     __super::Active_OnDisable();
 }
@@ -230,7 +260,7 @@ HRESULT CBoss_HomingBall::Ready_Components()
 
 HRESULT CBoss_HomingBall::Ready_PartObjects()
 {
-    CModelObject::MODELOBJECT_DESC BodyDesc{};
+    CFresnelModelObject::FRESNEL_MODEL_DESC BodyDesc{};
 
     BodyDesc.eStartCoord = m_pControllerTransform->Get_CurCoord();
     BodyDesc.iCurLevelID = m_iCurLevelID;
@@ -241,10 +271,10 @@ HRESULT CBoss_HomingBall::Ready_PartObjects()
     BodyDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
     BodyDesc.strModelPrototypeTag_3D = TEXT("S_FX_CMN_Sphere_01");
     BodyDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
-    BodyDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
+    BodyDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::NOISEFRESNEL;
 
     BodyDesc.iRenderGroupID_3D = RG_3D;
-    BodyDesc.iPriorityID_3D = PR3D_GEOMETRY;
+    BodyDesc.iPriorityID_3D = PR3D_EFFECT;
 
     BodyDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
 
@@ -253,12 +283,39 @@ HRESULT CBoss_HomingBall::Ready_PartObjects()
     BodyDesc.tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
     BodyDesc.tTransform3DDesc.fSpeedPerSec = 10.f;
 
-    m_PartObjects[PART_BODY] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &BodyDesc));
+    BodyDesc.pFresnelBuffer = m_pFresnelBuffer;
+    BodyDesc.pColorBuffer = m_pColorBuffer;
+    BodyDesc.szDiffusePrototypeTag = L"Prototype_Component_Texture_BossProjectileMain1";
+    BodyDesc.szNoisePrototypeTag = L"Prototype_Component_Texture_BossProjectileNoise1";
+    BodyDesc.vDiffuseScaling = { 1.f, 1.f };
+    BodyDesc.vNoiseScaling = { 3.f, 2.f };
+
+    m_PartObjects[PART_BODY] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_FresnelModelObject"), &BodyDesc));
     if (nullptr == m_PartObjects[PART_BODY])
         return E_FAIL;
 
     static_cast<C3DModel*>(static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D))->Set_MaterialConstBuffer_UseAlbedoMap(0, false, true);
     static_cast<C3DModel*>(static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D))->Set_MaterialConstBuffer_Albedo(0, _float4(1.f, 0.f, 0.f, 1.f), true);
+
+    // Effect »ý¼º.
+    CEffect_System::EFFECT_SYSTEM_DESC EffectDesc = {};
+    EffectDesc.eStartCoord = COORDINATE_3D;
+    EffectDesc.isCoordChangeEnable = false;
+    EffectDesc.iSpriteShaderLevel = LEVEL_STATIC;
+    EffectDesc.szSpriteShaderTags = L"Prototype_Component_Shader_VtxPointInstance";
+    EffectDesc.iEffectShaderLevel = LEVEL_STATIC;
+    EffectDesc.szEffectShaderTags = L"Prototype_Component_Shader_VtxMeshEffect";
+    EffectDesc.szSpriteComputeShaderTag = L"Prototype_Component_Compute_Shader_SpriteInstance";
+
+    m_PartObjects[PART_EFFECT] = m_pEffectSystem = static_cast<CEffect_System*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_iCurLevelID, TEXT("HomingBallDust.json"), &EffectDesc));
+    if (nullptr != m_pEffectSystem)
+    {
+        m_pEffectSystem->Set_SpawnMatrix(m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D));
+        m_pEffectSystem->Active_All(true);
+    }
+    Safe_AddRef(m_pEffectSystem);
+    
+    
 
     return S_OK;
 }
@@ -291,5 +348,10 @@ CGameObject* CBoss_HomingBall::Clone(void* _pArg)
 
 void CBoss_HomingBall::Free()
 {
+    Safe_Release(m_pEffectSystem);
+
+    Safe_Release(m_pColorBuffer);
+    Safe_Release(m_pFresnelBuffer);
+
     __super::Free();
 }

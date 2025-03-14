@@ -837,7 +837,7 @@ PS_OUT PS_AFTER_EFFECT(PS_IN In)
     vector vAccum = g_AccumulateTexture.Sample(LinearSampler_Clamp, In.vTexcoord + vDistortion * float2(In.vTexcoord.x - 0.5f, In.vTexcoord.y - 0.5f));
     float fRevealage = g_RevealageTexture.Sample(LinearSampler_Clamp, In.vTexcoord + vDistortion * float2(In.vTexcoord.x - 0.5f, In.vTexcoord.y - 0.5f)).r;
     
-    vector vBloomColor = vBloom1 * 0.5f + vBloom2 * 0.2f;
+    vector vBloomColor = vBloom1 * 0.5f + vBloom2 * 0.25f;
     vector vParticle = float4(vAccum.rgb / max(0.001, vAccum.a), fRevealage);
     
     vFinal.rgb = vFinal.rgb * (1 - vColor.a) + vColor.rgb * vColor.a;
@@ -845,8 +845,7 @@ PS_OUT PS_AFTER_EFFECT(PS_IN In)
     vFinal.rgb = vFinal.rgb + vBloomColor.rgb;
 
     Out.vColor = vFinal;
-    
-        
+
     return Out;
 }
 

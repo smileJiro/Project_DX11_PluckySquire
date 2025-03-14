@@ -1700,8 +1700,16 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 
 	#pragma region Chapter 8 - Component Load
 	
-		lstrcpy(m_szLoadingText, TEXT("컴포넌트를 로딩중입니다."));
+	lstrcpy(m_szLoadingText, TEXT("컴포넌트를 로딩중입니다."));
 	
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_Component_Texture_BossProjectileMain1"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effects/T_FX_CMN_Noise_06.dds")))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_Component_Texture_BossProjectileNoise1"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effects/T_FX_CMN_Noise_03_90.dds"), 1))))
+		return E_FAIL;
+
 	
 	#pragma endregion
 	

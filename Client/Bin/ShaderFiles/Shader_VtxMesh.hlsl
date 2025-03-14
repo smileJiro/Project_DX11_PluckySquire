@@ -39,11 +39,15 @@ cbuffer ColorBuffer : register(b2)
 {
     float4 vDiffuseColor;
     float4 vBloomColor;
+    float4 vSubColor;
 }
 
 /* 상수 테이블 */
 float4x4 g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 Texture2D g_AlbedoTexture, g_NormalTexture, g_ORMHTexture, g_MetallicTexture, g_RoughnessTexture, g_AOTexture, g_SpecularTexture, g_EmissiveTexture; // PBR
+
+Texture2D g_DiffuseTexture, g_NoiseTexture;
+float2 g_vDiffuseScaling, g_vNoiseScaling;
 
 float g_fFarZ = 500.f;
 int g_iFlag = 0;
@@ -464,6 +468,33 @@ PS_BLOOM PS_SINGLEFRESNEL(PS_IN In)
     return Out;
 }
 
+PS_BLOOM PS_NOISEFRESNEL(PS_IN In)
+{
+    PS_BLOOM Out = (PS_BLOOM) 0;
+    
+    float3 vViewDirection = g_vCamPosition.xyz - In.vWorldPos.xyz;
+    float fLength = length(vViewDirection);
+    vViewDirection = normalize(vViewDirection);
+    
+    float FresnelValue = Compute_Fresnel(In.vNormal.xyz, vViewDirection, OneFresnel.fBaseReflect, OneFresnel.fExp, OneFresnel.fStrength);
+    float3 vFresnelColor = OneFresnel.vColor * FresnelValue;
+    
+    float vDistortion = g_NoiseTexture.Sample(LinearSampler, float2(In.vTexcoord.x * g_vNoiseScaling.x, In.vTexcoord.y * g_vNoiseScaling.y));
+    //float4 vDistortion = g_NoiseTexture.Sample(LinearSampler, float2(In.vTexcoord.x, In.vTexcoord.y));
+    float vMain = g_DiffuseTexture.Sample(LinearSampler, (In.vTexcoord + float2(vDistortion, vDistortion)) * g_vDiffuseScaling);
+    //float4 vDiffuse = g_DiffuseTexture.Sample(LinearSampler, In.vTexcoord + float2(vDistortion.x, vDistortion.y))
+    
+    float3 vDefaultColor = lerp(vSubColor.xyz, vDiffuseColor.xyz, vMain);
+    
+    //Out.vDiffuse.xyz = lerp(vMain * vDiffuseColor.xyz, vFresnelColor.xyz, FresnelValue);
+    //Out.vDiffuse.xyz = lerp(vDefaultColor.xyz, vFresnelColor.xyz, FresnelValue);
+    Out.vDiffuse.xyz = vDefaultColor.xyz + vFresnelColor.xyz * FresnelValue;
+    //Out.vDiffuse = (OneFresnel.vColor * FresnelValue);
+    Out.vDiffuse.w = vDiffuseColor.a;
+    Out.vBrightness = vBloomColor;
+    return Out;
+}
+
 technique11 DefaultTechnique
 {
     pass DefaultPass // 0
@@ -610,6 +641,16 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_SINGLEFRESNEL();
+    }
+
+    pass NoiseFresnel // 14
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_NOISEFRESNEL();
     }
 
 }
