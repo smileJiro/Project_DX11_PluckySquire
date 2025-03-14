@@ -366,6 +366,7 @@ void CSpear_Soldier::Attack()
             XMStoreFloat3(&m_vDir, XMVector3Normalize(m_pTarget->Get_FinalPosition() - Get_FinalPosition()));
             //Change_Dir(false);
             m_isDash = true;
+            Set_PreAttack(false);
         }
     }
 }

@@ -58,15 +58,28 @@ public:
 	virtual void Turn_Animation(_bool _isCW) override;
 	void Animation_End(COORDINATE _eCoord, _uint iAnimIdx);
 
+	virtual void Attack();
+
 public:
 	virtual void OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
 	virtual void OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
 	virtual void OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
 
+	virtual void	On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)override;
+
 private:
 	virtual	HRESULT					Ready_ActorDesc(void* _pArg);
 	virtual HRESULT					Ready_Components();
 	virtual HRESULT					Ready_PartObjects();
+
+private:
+	_bool m_isBackFly = { false };
+	_bool m_isDash = { false };
+
+	_float m_fBackFlyTime = {};
+	_float m_fDashDistance = {};
+	_float m_fAccDistance = { 0.f };
+	_float3 m_vDir = {};
 
 public:
 	static CBeetle* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

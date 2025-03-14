@@ -19,6 +19,7 @@ public:
 		CARROT,
 		GRAPE,
 		BOMB,
+		BEETLE_CORPSE,
 		CARRIABLE_ID_LAST
 	};
 

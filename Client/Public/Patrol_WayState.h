@@ -20,10 +20,11 @@ private:
 
 public:
 	void Set_Bound(_float3& _vPosition);
+	void Set_WayPoint(SNEAKWAYPOINTINDEX _eWayIndex);
 	void Set_CurPatrolIndex(_uint _iIndex)
 	{
 		m_iCurWayIndex = _iIndex;
-	}
+	};
 
 public:
 	virtual HRESULT Initialize(void* _pArg) override;
@@ -41,9 +42,6 @@ private:
 	_float m_fAccTime = { 0.f };
 	_float m_fAccDistance = { 0.f };
 	_float m_fMoveDistance = {};
-	_float m_fPatrol_WayOffset = {};
-	_float m_fPatrol_Way2DOffset = {};
-	SNEAKPATROLBOUND m_tPatrol_WayBound = {};
 	_int m_iPrevDir = {};
 	_int m_iDir = {};
 	_bool m_isDelay = { false };
