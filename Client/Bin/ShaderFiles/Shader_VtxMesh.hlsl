@@ -693,7 +693,7 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_SINGLEFRESNEL();
     }
 
-    pass Background // 13
+    pass Background // 14
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_Default, 0);
@@ -703,17 +703,7 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_BACKGROUND();
     }
 
-    pass NoiseFresnel // 14
-    {
-        SetRasterizerState(RS_Default);
-        SetDepthStencilState(DSS_Default, 0);
-        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
-        VertexShader = compile vs_5_0 VS_MAIN();
-        GeometryShader = NULL;
-        PixelShader = compile ps_5_0 PS_NOISEFRESNEL();
-    }
-
-    pass TrailPass // 10
+    pass TrailPass // 15
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_None, 0);
@@ -722,6 +712,16 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_TRAIL();
+    }
+
+    pass NoiseFresnel // 16
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_NOISEFRESNEL();
     }
 }
 
