@@ -494,7 +494,7 @@ namespace Client
 
 	}
 
-	E_DIRECTION FDir_To_EDir(F_DIRECTION _eFDir)
+	E_DIRECTION To_EDirection(F_DIRECTION _eFDir)
 	{
 		switch (_eFDir)
 		{
@@ -517,31 +517,31 @@ namespace Client
 	{
 		_float fSlope = _vDir.m128_f32[1] / _vDir.m128_f32[0];
 		//2 , 1/2, -1/2, -2
-		if(2 >= fSlope &&  1/2 < fSlope)
+		if(2.f >= fSlope &&  1.f/2.f < fSlope)
 		{
 			if (_vDir.m128_f32[1] > 0)
 				return E_DIRECTION::RIGHT_UP;
 			else
 				return E_DIRECTION::LEFT_DOWN;
 		}
-		else if ((1 / 2 >= fSlope && 0 <= fSlope)
-			|| (-1 / 2 < fSlope && 0 >= fSlope))
+		else if ((1.f / 2.f >= fSlope && 0.f <= fSlope)
+			|| (-1.f / 2.f < fSlope && 0.f >= fSlope))
 		{
-			if (_vDir.m128_f32[0] > 0)
+			if (_vDir.m128_f32[0] > 0.f)
 				return E_DIRECTION::RIGHT;
 			else
 				return E_DIRECTION::LEFT;
 		}
-		else if (-1 / 2 >= fSlope && -2 < fSlope)
+		else if (-1.f / 2.f >= fSlope && -2.f < fSlope)
 		{
 			if (_vDir.m128_f32[0] > 0)
 				return E_DIRECTION::RIGHT_DOWN;
 			else
 				return E_DIRECTION::LEFT_UP;
 		}
-		else if(-2 >= fSlope || 2 < fSlope)
+		else if(-2.f >= fSlope || 2.f < fSlope)
 		{
-			if (_vDir.m128_f32[1] > 0)
+			if (_vDir.m128_f32[1] > 0.f)
 				return E_DIRECTION::UP;
 			else
 				return E_DIRECTION::DOWN;
@@ -576,7 +576,7 @@ namespace Client
 		}
 	}
 
-	F_DIRECTION EDir_To_FDir(E_DIRECTION _eEDir)
+	F_DIRECTION To_FDirection(E_DIRECTION _eEDir)
 	{
 		switch (_eEDir)
 		{
@@ -597,7 +597,7 @@ namespace Client
 		}
 	}
 
-	T_DIRECTION EDir_To_TDirection(E_DIRECTION _eEDir)
+	T_DIRECTION To_TDirection(E_DIRECTION _eEDir)
 	{
 		switch (_eEDir)
 		{

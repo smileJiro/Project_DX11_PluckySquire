@@ -33,7 +33,9 @@ public:
 	HRESULT					Ready_Layer_Effects(const _wstring& _strLayerTag);
 	HRESULT					Ready_Layer_Effects2D(const _wstring& _strLayerTag);
 	HRESULT					Ready_Layer_Slippery();
-	HRESULT					Ready_Layer_PortalLocker(const _wstring& _strLayerTag);
+	HRESULT					Ready_Layer_PortalLocker(const _wstring& _strLayerTag);	
+	HRESULT					Ready_Layer_MapGimmick(const _wstring& _strLayerTag);
+
 private:
 	class CMinigame_Sneak* m_pSneakMinigameManager = { nullptr };
 private:

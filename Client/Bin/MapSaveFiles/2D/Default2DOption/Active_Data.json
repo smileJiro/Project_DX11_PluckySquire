@@ -31,5 +31,11 @@
   },
   {
     "ActiveName": "ActiveType_Model_Close_Delete"
+  },
+  {
+    "ActiveName": "ActiveType_Spike"
+  },
+  {
+    "ActiveName": "ActiveType_ActionTrigger"
   }
 ]

@@ -7,7 +7,8 @@ float4x4 g_ProjMatrix;
 float4 g_vDiffuseColor;
 
 Texture2D g_DiffuseTexture;
-
+float3 g_vBackGroundColor;
+float g_fBrightness = 1.0f;
 //SPRITE ANIMATION
 float2 g_vSpriteStartUV;
 float2 g_vSpriteEndUV;
@@ -97,6 +98,21 @@ PS_OUT PS_MAIN(PS_IN In)
     
     Out.vColor = g_DiffuseTexture.SampleLevel(LinearSampler, In.vTexcoord, 0);
 
+    if (Out.vColor.a < 0.01f)
+        discard;
+    
+    return Out;
+}
+
+PS_OUT PS_BACKGROUND(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+    
+    float4 vColor = g_DiffuseTexture.SampleLevel(LinearSampler, In.vTexcoord, 0);
+    vColor.rgb *= g_vBackGroundColor;
+    vColor.rgb += 0.25f;
+    Out.vColor = vColor;
+    
     if (Out.vColor.a < 0.01f)
         discard;
     
@@ -318,4 +334,15 @@ technique11 DefaultTechnique
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_RATIO_BOTTOM_UP();
     }
+
+    pass BackGroundPass //0
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_BACKGROUND();
+    }
+
 }

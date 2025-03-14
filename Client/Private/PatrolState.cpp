@@ -134,11 +134,11 @@ void CPatrolState::State_Update(_float _fTimeDelta)
 		Determine_Direction(_fTimeDelta);
 	}
 	
-	//if(true == m_isBound)
-	//{
-	//	//다음 위치가 구역을 벗어나는지 체크 후 벗어나면 정지 후 반대방향으로 진행
-	//	Check_Bound(_fTimeDelta);
-	//}
+	if(true == m_isBound)
+	{
+		//다음 위치가 구역을 벗어나는지 체크 후 벗어나면 정지 후 반대방향으로 진행
+		Check_Bound(_fTimeDelta);
+	}
 
 	//이동
 	PatrolMove(_fTimeDelta, m_iDir);
@@ -202,7 +202,7 @@ void CPatrolState::PatrolMove(_float _fTimeDelta, _int _iDir)
 		if (true == m_isTurn)
 		{
 			Set_PatrolDirection(_iDir);
-			m_pOwner->Set_2D_Direction(m_eDir);
+			m_pOwner->Set_2DDirection(m_eDir);
 
 			m_isTurn = false;
 			m_isMove = true;
@@ -215,7 +215,7 @@ void CPatrolState::PatrolMove(_float _fTimeDelta, _int _iDir)
 			switch (m_eDir)
 			{
 			case Client::F_DIRECTION::LEFT:
-				m_pOwner->Get_ControllerTransform()->Go_Right(_fTimeDelta);
+				m_pOwner->Get_ControllerTransform()->Go_Left(_fTimeDelta);
 				break;
 
 			case Client::F_DIRECTION::RIGHT:
@@ -243,7 +243,7 @@ void CPatrolState::PatrolMove(_float _fTimeDelta, _int _iDir)
 	if (true == m_isMove)
 	{
 		m_fAccDistance += m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec() * _fTimeDelta;
-		if (m_fMoveDistance <= m_fAccDistance)
+		if (m_fMoveDistance <= m_fAccDistance || true == m_pOwner->IsContactToBlock())
 		{
 			m_fAccDistance = 0.f;
 			m_isTurn = false;
@@ -417,7 +417,14 @@ void CPatrolState::Check_Bound(_float _fTimeDelta)
 {
 	//_float3 vPos;
 	//다음 위치가 공중이거나 장애물이 있을 때 막기
-	_bool isOut = m_pOwner->Check_InAir_Next(_fTimeDelta);
+	_bool isOut;
+
+	if (COORDINATE_3D == m_pOwner->Get_CurCoord())
+		isOut= m_pOwner->Check_InAir_Next(_fTimeDelta) && m_pOwner->Check_Block(_fTimeDelta);
+	else if (COORDINATE_2D == m_pOwner->Get_CurCoord())
+	{
+		isOut = m_pOwner->Check_Block(_fTimeDelta);
+	}
 	//델타타임으로 다음 위치 예상해서 막기
 	//XMStoreFloat3(&vPos, m_pOwner->Get_FinalPosition() + Set_PatrolDirection(m_iDir) * m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec() * _fTimeDelta);
 	////나갔을 때 반대방향으로

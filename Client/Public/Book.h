@@ -98,6 +98,7 @@ public :
 	void					PageAction_Call_PlayerEvent();
 	BOOK_PAGE_ACTION		Get_ActionType() { return m_eCurAction; }
 	_bool					Get_PlayerAround() { return m_isPlayerAround; }
+	_bool					Get_PlayerAbove() { return m_isPlayerAbove; }
 
 	_bool					Is_DuringAnimation();
 

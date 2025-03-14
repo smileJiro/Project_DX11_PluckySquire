@@ -202,20 +202,20 @@ void CZippy::Change_Animation()
         case Client::MONSTER_STATE::CHASE:
             if (true == m_isElectric)
             {
-                if (F_DIRECTION::UP == m_e2DDirection)
+                if (E_DIRECTION::UP == Get_2DDirection())
                     eAnim = ELEC_UP;
-                else if (F_DIRECTION::DOWN == m_e2DDirection)
+                else if (E_DIRECTION::DOWN == Get_2DDirection())
                     eAnim = ELEC_DOWN;
-                else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
+                else if (E_DIRECTION::RIGHT == Get_2DDirection() || E_DIRECTION::LEFT == Get_2DDirection())
                     eAnim = ELEC_RIGHT;
             }
             else if (false == m_isElectric)
             {
-                if (F_DIRECTION::UP == m_e2DDirection)
+                if (E_DIRECTION::UP == Get_2DDirection())
                     eAnim = IDLE_UP;
-                else if (F_DIRECTION::DOWN == m_e2DDirection)
+                else if (E_DIRECTION::DOWN == Get_2DDirection())
                     eAnim = IDLE_DOWN;
-                else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
+                else if (E_DIRECTION::RIGHT == Get_2DDirection() || E_DIRECTION::LEFT == Get_2DDirection())
                     eAnim = IDLE_RIGHT;
             }
 			break;
@@ -234,20 +234,20 @@ void CZippy::Change_Animation()
             switch (iNum)
             {
             case 1:
-                if (F_DIRECTION::UP == m_e2DDirection)
+                if (E_DIRECTION::UP == Get_2DDirection())
                     eAnim = ELEC_IN_UP;
-                else if (F_DIRECTION::DOWN == m_e2DDirection)
+                else if (E_DIRECTION::DOWN == Get_2DDirection())
                     eAnim = ELEC_IN_DOWN;
-                else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
+                else if (E_DIRECTION::RIGHT == Get_2DDirection() || E_DIRECTION::LEFT == Get_2DDirection())
                     eAnim = ELEC_IN_RIGHT;
                 m_isElectric = true;
                 break;
             case 2:
-                if (F_DIRECTION::UP == m_e2DDirection)
+                if (E_DIRECTION::UP == Get_2DDirection())
                     eAnim = DASH_IN_UP;
-                else if (F_DIRECTION::DOWN == m_e2DDirection)
+                else if (E_DIRECTION::DOWN == Get_2DDirection())
                     eAnim = DASH_IN_DOWN;
-                else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
+                else if (E_DIRECTION::RIGHT == Get_2DDirection() || E_DIRECTION::LEFT == Get_2DDirection())
                     eAnim = DASH_IN_RIGHT;
                 break;
 
@@ -258,20 +258,20 @@ void CZippy::Change_Animation()
         break;
 
 		case Client::MONSTER_STATE::HIT:
-			if (F_DIRECTION::UP == m_e2DDirection)
+			if (E_DIRECTION::UP == Get_2DDirection())
 				eAnim = HIT_UP;
-			else if (F_DIRECTION::DOWN == m_e2DDirection)
+			else if (E_DIRECTION::DOWN == Get_2DDirection())
 				eAnim = HIT_DOWN;
-			else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
+			else if (E_DIRECTION::RIGHT == Get_2DDirection() || E_DIRECTION::LEFT == Get_2DDirection())
 				eAnim = HIT_RIGHT;
 			break;
 
 		case Client::MONSTER_STATE::DEAD:
-			if (F_DIRECTION::UP == m_e2DDirection)
+			if (E_DIRECTION::UP == Get_2DDirection())
 				eAnim = DIE_UP;
-			else if (F_DIRECTION::DOWN == m_e2DDirection)
+			else if (E_DIRECTION::DOWN == Get_2DDirection())
 				eAnim = DIE_DOWN;
-			else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
+			else if (E_DIRECTION::RIGHT == Get_2DDirection() || E_DIRECTION::LEFT == Get_2DDirection())
 				eAnim = DIE_RIGHT;
 			break;
 		default:
@@ -379,21 +379,21 @@ void CZippy::Attack_End()
     CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
     if (true == m_isDash)
     {
-        if (F_DIRECTION::UP == m_e2DDirection)
+        if (E_DIRECTION::UP == Get_2DDirection())
             pModelObject->Switch_Animation(DASH_OUT_UP);
-        else if (F_DIRECTION::DOWN == m_e2DDirection)
+        else if (E_DIRECTION::DOWN == Get_2DDirection())
             pModelObject->Switch_Animation(DASH_OUT_DOWN);
-        else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
+        else if (E_DIRECTION::RIGHT == Get_2DDirection() || E_DIRECTION::LEFT == Get_2DDirection())
             pModelObject->Switch_Animation(DASH_OUT_RIGHT);
     }
 
     if (true == m_isElectric)
     {
-        if (F_DIRECTION::UP == m_e2DDirection)
+        if (E_DIRECTION::UP == Get_2DDirection())
             pModelObject->Switch_Animation(ELEC_OUT_UP);
-        else if (F_DIRECTION::DOWN == m_e2DDirection)
+        else if (E_DIRECTION::DOWN == Get_2DDirection())
             pModelObject->Switch_Animation(ELEC_OUT_DOWN);
-        else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
+        else if (E_DIRECTION::RIGHT == Get_2DDirection() || E_DIRECTION::LEFT == Get_2DDirection())
             pModelObject->Switch_Animation(ELEC_OUT_RIGHT);
     }
     

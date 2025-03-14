@@ -21,6 +21,9 @@
 /* Camera */
 #include "Camera_CutScene.h"
 
+#include "Npc_Humgrump.h"
+#include "Npc_MoonBeard.h"
+
 CGameEventExecuter_C6::CGameEventExecuter_C6(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CGameEventExecuter(_pDevice, _pContext)
 {
@@ -758,20 +761,28 @@ void CGameEventExecuter_C6::Chapter6_Humgrump_Revolt(_float _fTimeDelta)
 	if (Step_Check(STEP_0))
 	{
 		if (Is_Start()) {
-			/*CPlayer* pPlayer = Get_Player();
-			cout << "한 번이다" << endl;
+			CPlayer* pPlayer = Get_Player();
+
 			AUTOMOVE_COMMAND tCommand = {};
 			tCommand.eType = AUTOMOVE_TYPE::MOVE_TO;
 			tCommand.iAnimIndex = (_uint)CPlayer::ANIM_STATE_2D::PLAYER_RUN_SWORD_UP;
-			tCommand.vTarget = XMVectorSet(0.f, -405.f, 0.0f, 1.f);
-			tCommand.fPreDelayTime = 0.f;
-			tCommand.fPostDelayTime = 0.0f;
+			tCommand.vTarget = XMVectorSet(0.f, -435.f, 0.0f, 1.f);
+			tCommand.fPreDelayTime = 0.7f;
+			tCommand.fPostDelayTime = 0.f;
 
 			pPlayer->Add_AutoMoveCommand(tCommand);
-			pPlayer->Start_AutoMove(true);*/
 
+			tCommand.eType = AUTOMOVE_TYPE::LOOK_DIRECTION;
+			tCommand.iAnimIndex = (_uint)CPlayer::ANIM_STATE_2D::PLAYER_IDLE_SWORD_UP;
+			tCommand.vTarget = XMVectorSet(0.f, 0.f, 0.0f, 1.f);
+			tCommand.fPreDelayTime = 0.0f;
+			tCommand.fPostDelayTime = 1.f;
+			pPlayer->Start_AutoMove(true);
+		}
+
+		if (m_fTimer > 0.8f) {
 			static _float4x4 matCenter = {};
-			_vector vCenter = XMVectorSet(0.f, 0.f, 0.f, 1.f);
+			_vector vCenter = XMVectorSet(0.f, -180.f, 0.f, 1.f);
 
 			memcpy(&matCenter.m[3], &vCenter, sizeof(_float4));
 
@@ -782,6 +793,28 @@ void CGameEventExecuter_C6::Chapter6_Humgrump_Revolt(_float _fTimeDelta)
 	}
 	else if (Step_Check(STEP_1)) {
 
+		CPlayer* pPlayer = Get_Player();
+
+		if (false == pPlayer->Is_AutoMoving()) {
+			pPlayer->Set_BlockPlayerInput(true);
+
+			CDialog_Manager::GetInstance()->Set_DialogId(L"Dialogue_Humgrump_Revolt");
+
+			CLayer* pLayer = m_pGameInstance->Find_Layer(m_iCurLevelID, TEXT("Layer_NPC"));
+
+			list<CGameObject*> pObjects = pLayer->Get_GameObjects();
+
+			for (auto& pObject : pObjects) {
+				CModelObject* pModel = static_cast<CModelObject*>(pObject);
+				if (TEXT("Humgrump") == pModel->Get_ModelPrototypeTag(COORDINATE_2D)) {
+					pModel->Switch_Animation(CNpc_Humgrump::CHAPTER6_TALK);
+
+					Next_Step(true);
+				}
+			}
+		}
+	}
+	else if (Step_Check(STEP_2)) {
 	}
 }
 

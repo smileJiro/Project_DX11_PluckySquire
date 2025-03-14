@@ -49,9 +49,9 @@ void CRangedAttackState::State_Update(_float _fTimeDelta)
 	}
 
 
-	if(COORDINATE_3D == m_pOwner->Get_CurCoord())
+	if (true == m_pOwner->Get_PreAttack())
 	{
-		if(true == m_pOwner->Get_PreAttack())
+		if (COORDINATE_3D == m_pOwner->Get_CurCoord())
 		{
 			_vector vDir = XMVector3Normalize(m_pTarget->Get_FinalPosition() - m_pOwner->Get_FinalPosition());
 			if (true == m_pOwner->Rotate_To_Radians(XMVectorSetY(vDir, 0.f), m_pOwner->Get_ControllerTransform()->Get_RotationPerSec()))
@@ -59,6 +59,10 @@ void CRangedAttackState::State_Update(_float _fTimeDelta)
 				m_pOwner->Stop_Rotate();
 			}
 		}
+		//else if (COORDINATE_2D == m_pOwner->Get_CurCoord())
+		//{
+		//	m_pOwner->Change_Dir();
+		//}
 	}
 
 	_float fDis = m_pOwner->Get_ControllerTransform()->Compute_Distance(m_pTarget->Get_FinalPosition());

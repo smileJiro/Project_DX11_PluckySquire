@@ -7,6 +7,7 @@ public:
 	typedef struct tagSpear_SoldierDesc : public CMonster::MONSTER_DESC
 	{
 		_bool isC6BossMode = false;
+		F_DIRECTION eDirection = F_DIRECTION::F_DIR_LAST;
 	}SPEARSOLDIER_DESC;
 
 	enum Animation
@@ -146,6 +147,10 @@ public:
 	virtual void OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
 	virtual void OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
 
+	virtual void	On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
+
+	virtual void	On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)override;
+
 public:
 	virtual void Attack() override;
 	virtual void Change_Animation() override;
@@ -153,6 +158,7 @@ public:
 
 private:
 	_bool m_isDash = { false };
+	_bool m_isJump = { false };
 	_float m_fDashDistance = { 0.f };
 	_float m_fAccDistance = { 0.f };
 	_float3 m_vDir = {};

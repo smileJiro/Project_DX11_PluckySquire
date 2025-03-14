@@ -82,7 +82,6 @@ public:
 		On_InteractionCancel(_pPlayer);
 	}
 	INTERACT_ID Get_InteractID() { return m_eInteractID; } // 인터렉트가 된 대상의 이름을 가져온다.
-	_bool Is_UIPlayerHeadUp() { return m_bUIPlayerHeadUp; }	// 유저의 머리위에 노출시킬것인가 아닌가
 protected:
 
 	//플레이어가 건드렸을 때(상호작용 버튼을 눌렀을 때) 호출됨. Charge가 시작된 경우를 의미.
@@ -93,16 +92,16 @@ protected:
 	//플레이어가 상호작용을 취소했을 때 호출.(Charge Type만 불릴듯?)
 	virtual void On_InteractionCancel(CPlayer* _pPlayer) {}
 protected:
-	_float m_fInteractTimeAcc = 0.0f;
 	//차징하는 데 걸리는 시간. 차징 타입이 아니면 0으로 두기.
 	_float m_fInteractChargeTime = 0.0f;
 
 	INTERACT_TYPE m_eInteractType = INTERACT_TYPE::NORMAL;
 	KEY m_eInteractKey = KEY::E;
-	_bool m_bInteracting = false;
 
 	INTERACT_ID m_eInteractID = INTERACT_ID::INTERACT_ID_LAST;
-	_bool m_bUIPlayerHeadUp = false;
+
+	_float m_fInteractTimeAcc = 0.0f;
+	_bool m_bInteracting = false;
 };
 
 //예시  코드 : 상호작용하면 사망하는 NPC~

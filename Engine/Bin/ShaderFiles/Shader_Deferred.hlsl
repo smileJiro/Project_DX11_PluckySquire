@@ -661,8 +661,7 @@ PS_OUT PS_MAIN_LIGHTING(PS_IN In)
     SumSSAO /= 64.f;
     SumSSAO = 1.0f - SumSSAO;
     vAmbientLighting *= pow(SumSSAO, 4);
-    
-
+ 
     //Out.vColor = float4(SumSSAO, SumSSAO, SumSSAO /*+ vEmmision*/, 1.0f);
     Out.vColor = float4(max(vAmbientLighting, 0.0f) + vDirectLighting /*+ vEmissiveColor*/, 1.0f);
     Out.vColor = clamp(Out.vColor, 0.0f, c_GlobalIBLVariable.fHDRMaxLuminance);
@@ -845,7 +844,7 @@ PS_OUT PS_AFTER_EFFECT(PS_IN In)
     vFinal.rgb = vFinal.rgb + vBloomColor.rgb;
 
     Out.vColor = vFinal;
-    
+  
         
     return Out;
 }

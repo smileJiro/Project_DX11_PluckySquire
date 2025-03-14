@@ -19,6 +19,10 @@ private:
 
 public:
 	void Set_Bound(_float3& _vPosition);
+	void Set_CurPatrolIndex(_uint _iIndex)
+	{
+		m_iCurWayIndex = _iIndex;
+	}
 
 public:
 	virtual HRESULT Initialize(void* _pArg) override;

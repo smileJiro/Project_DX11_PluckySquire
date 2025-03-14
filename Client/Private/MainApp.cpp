@@ -58,7 +58,7 @@ HRESULT CMainApp::Initialize()
 #ifdef _DEBUG
 	EngineDesc.eImportMode |= IMPORT_IMGUI | IMPORT_MESH_PICKING; // IMPORT_IMGUI | IMPORT_MESH_PICKING;NONE_IMPORT
 #elif NDEBUG
-	EngineDesc.eImportMode |= IMPORT_IMGUI; // | IMPORT_IMGUI;
+	EngineDesc.eImportMode |= IMPORT_IMGUI | IMPORT_IMGUI;
 #endif
 	
 	if (FAILED(m_pGameInstance->Initialize_Engine(EngineDesc, &m_pDevice, &m_pContext)))
@@ -314,8 +314,27 @@ HRESULT CMainApp::Ready_RenderGroup()
 	Safe_Release(pRenderGroup_Lighting);
 	pRenderGroup_Lighting = nullptr;
 
+	///* RG_3D, PR3D_AFTERLIGHTING */
+	//{
+	//	CRenderGroup_MRT::RG_MRT_DESC RG_AfterLightingDesc;
+	//	RG_AfterLightingDesc.iRenderGroupID = RENDERGROUP::RG_3D;
+	//	RG_AfterLightingDesc.iPriorityID = PRIORITY_3D::PR3D_AFTERLIGHTING;
+	//	RG_AfterLightingDesc.strMRTTag = TEXT("MRT_Lighting");
+	//	RG_AfterLightingDesc.isClear = false;
+	//	RG_AfterLightingDesc.pDSV = m_pGameInstance->Find_DSV(TEXT("Target_Lighting"));
+	//	CRenderGroup_MRT* pRenderGroup_AfterLighting = CRenderGroup_MRT::Create(m_pDevice, m_pContext, &RG_AfterLightingDesc);
+	//	if (nullptr == pRenderGroup_AfterLighting)
+	//	{
+	//		MSG_BOX("Failed Create PR3D_AFTERLIGHTING");
+	//		return E_FAIL;
+	//	}
+	//	if (FAILED(m_pGameInstance->Add_RenderGroup(pRenderGroup_AfterLighting->Get_RenderGroupID(), pRenderGroup_AfterLighting->Get_PriorityID(), pRenderGroup_AfterLighting)))
+	//		return E_FAIL;
+	//	Safe_Release(pRenderGroup_AfterLighting);
+	//	pRenderGroup_AfterLighting = nullptr;
+	//}
 
-
+	
 	/* RG_3D, PR3D_POSTPROCESSING */
 	CRenderGroup_PostProcessing::RG_POST_DESC RG_PostDesc;
 	RG_PostDesc.iBlurLevel = 2;
