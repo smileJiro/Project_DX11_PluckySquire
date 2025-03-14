@@ -441,11 +441,8 @@ void CLevel_Chapter_08::Update(_float _fTimeDelta)
 		Beetle_Desc.isSneakMode = true;
 		Beetle_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER8_BEETLE1;
 
-		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, TEXT("Layer_Monster"), &Beetle_Desc)))
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, TEXT("Layer_Sneak_Beetle"), &Beetle_Desc)))
 			return;
-
-		vPos.z -= 10.f;
-		CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Beetle_Corpse"), COORDINATE_3D, &vPos);
 	}
 
 }
@@ -1200,7 +1197,7 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 	Beetle_Desc.isSneakMode = true;
 	Beetle_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER8_BEETLE1;
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, _strLayerTag, &Beetle_Desc)))
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, TEXT("Layer_Sneak_Beetle"), &Beetle_Desc)))
 		return E_FAIL;
 
 	//CCrossBow_Soldier::MONSTER_DESC CrossBow_Soldier_Desc;

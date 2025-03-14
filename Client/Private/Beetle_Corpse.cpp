@@ -40,7 +40,7 @@ HRESULT CBeetle_Corpse::Initialize(void* _pArg)
 	ActorDesc.FreezePosition_XYZ[2] = false;
 
 	SHAPE_BOX_DESC ShapeDesc = {};
-	ShapeDesc.vHalfExtents = { 0.5f,0.2f ,0.5f };
+	ShapeDesc.vHalfExtents = { 0.5f,0.4f ,0.5f };
 	SHAPE_DATA ShapeData;
 	ShapeData.pShapeDesc = &ShapeDesc;
 	ShapeData.eShapeType = SHAPE_TYPE::BOX;
@@ -96,17 +96,13 @@ HRESULT CBeetle_Corpse::Initialize(void* _pArg)
 	Set_PlayingAnim(false);
 
 
-	m_pActorCom->Set_Mass(2.f);
+	m_pActorCom->Set_Mass(5.f);
 
     return S_OK;
 }
 
 void CBeetle_Corpse::Update(_float _fTimeDelta)
 {
-	_float4 vRotation;
-	m_pGameInstance->MatrixDecompose(nullptr, &vRotation, nullptr, Get_FinalWorldMatrix());
-
-	cout << "¾÷µ« - X : " << vRotation.x << " Y : " << vRotation.y << "Z : " << vRotation.z << endl;
 	__super::Update(_fTimeDelta);
 }
 
@@ -122,6 +118,16 @@ HRESULT CBeetle_Corpse::Render()
 		m_p2DColliderComs[1]->Render();
 #endif
 	return __super::Render();
+}
+
+void CBeetle_Corpse::Active_OnEnable()
+{
+	__super::Active_OnEnable();
+}
+
+void CBeetle_Corpse::Active_OnDisable()
+{
+	__super::Active_OnDisable();
 }
 
 

@@ -67,12 +67,16 @@ HRESULT CBeetle::Initialize(void* _pArg)
     m_fBackFlyTime = 0.5f;
 
     m_pFSM->Add_CombatState();
-    m_pFSM->Add_SneakState();
-
-	if (false == m_isSneakMode)
-        m_pFSM->Set_State((_uint)MONSTER_STATE::IDLE);
-    else
+    if(true == m_isSneakMode)
+    {
+        m_pFSM->Add_SneakState();
         m_pFSM->Set_State((_uint)MONSTER_STATE::SNEAK_IDLE);
+    }
+    else
+    {
+        m_pFSM->Set_State((_uint)MONSTER_STATE::IDLE);
+    }
+        
 
     CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
 
@@ -163,10 +167,7 @@ void CBeetle::Update(_float _fTimeDelta)
     {
         if (KEY_DOWN(KEY::NUMPAD4))
         {
-            m_isCombatMode = true;
-            m_pSneak_DetectionField->Set_Active(false);
-            Set_AnimChangeable(true);
-            m_pFSM->Change_State((_uint)MONSTER_STATE::IDLE);
+            Switch_CombatMode();
         }
     }
     __super::Update(_fTimeDelta); /* Part Object Update */
@@ -376,6 +377,14 @@ void CBeetle::Attack()
         m_isDash = true;
         Set_PreAttack(false);
     }
+}
+
+void CBeetle::Switch_CombatMode()
+{
+    m_isCombatMode = true;
+    m_pSneak_DetectionField->Set_Active(false);
+    Set_AnimChangeable(true);
+    m_pFSM->Change_State((_uint)MONSTER_STATE::IDLE);
 }
 
 void CBeetle::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)

@@ -7,6 +7,8 @@
 #include "Section_2D_PlayMap.h"
 #include "Section_Manager.h"
 #include "Player.h"
+#include "GameInstance.h"
+#include "Beetle.h"
 
 CGameEventExecuter_C8::CGameEventExecuter_C8(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CGameEventExecuter(_pDevice, _pContext)
@@ -118,6 +120,26 @@ void CGameEventExecuter_C8::Chapter8_Sword(_float _fTimeDelta)
 	if (true == Postit_Process(L"Chapter8_SKSP_Postit", L"Chapter8_Sword", 1.f, CPostit_Page::POSTIT_PAGE_POSTION_TYPE_A, false, fCamerafunc))
 	{
 		Get_Player()->Set_Mode(CPlayer::PLAYER_MODE_SWORD);
+
+
+		/* beetle ÀüÈ¯ */
+		auto pLayer = m_pGameInstance->Find_Layer(m_iCurLevelID, TEXT("Layer_Sneak_Beetle"));
+
+		if (nullptr != pLayer)
+		{
+			const auto& Objects = pLayer->Get_GameObjects();
+
+			for_each(Objects.begin(), Objects.end(), [](CGameObject* pGameObject) {
+				auto pObject = dynamic_cast<CBeetle*>(pGameObject);
+
+				if (nullptr != pObject)
+				{
+					pObject->Switch_CombatMode();
+				}
+				});
+		}
+		/**/
+
 		GameEvent_End();
 	}
 }

@@ -358,7 +358,22 @@ void CButterGrump::Attack()
     if (false == m_pGameInstance->MatrixDecompose(&vScale, &vRotation, nullptr, Get_FinalWorldMatrix()))
         return;
 
-    XMStoreFloat4(&vRotation, m_pGameInstance->Direction_To_Quaternion(XMVectorSet(0.f, 0.f, 1.f, 0.f), m_pTarget->Get_FinalPosition() - XMLoadFloat3(&vPosition)));
+
+    vUp = {0.f,1.f,0.f,0.f};
+    _vector vLook = XMVector3Normalize(m_pTarget->Get_FinalPosition() - XMLoadFloat3(&vPosition));
+    _vector vRight = XMVector3Cross(vUp, vLook);
+
+    vUp = XMVector3Cross(vLook, vRight);
+
+    _matrix matRot = XMMatrixIdentity();
+
+    matRot.r[0] = vRight;
+    matRot.r[1] = vUp;
+    matRot.r[2] = vLook;
+
+    
+    m_pGameInstance->MatrixDecompose(nullptr, &vRotation, nullptr, matRot);
+    //XMStoreFloat4(&vRotation, m_pGameInstance->Direction_To_Quaternion(XMVectorSet(0.f, 0.f, 1.f, 0.f), XMVector4Normalize(m_pTarget->Get_FinalPosition() - XMLoadFloat3(&vPosition))));
 
     switch ((BOSS_STATE)m_iState)
     {
@@ -566,8 +581,8 @@ void CButterGrump::Attack()
 
     case BOSS_STATE::WINGSLAM:
     {
-        _float4 vRot;
-        XMStoreFloat4(&vRot, m_pGameInstance->Direction_To_Quaternion(XMVectorSet(0.f, 0.f, 1.f, 0.f), m_pTarget->Get_FinalPosition() - XMLoadFloat3(&vPosition)));
+        /*_float4 vRot;
+        XMStoreFloat4(&vRot, m_pGameInstance->Direction_To_Quaternion(XMVectorSet(0.f, 0.f, 1.f, 0.f), m_pTarget->Get_FinalPosition() - XMLoadFloat3(&vPosition)));*/
         CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Boss_WingSlam"), COORDINATE_3D, &vPosition, &vRotation);
         m_isAttack = false;
         break;
@@ -575,8 +590,8 @@ void CButterGrump::Attack()
 
     case BOSS_STATE::WINGSLICE:
     {
-        _float4 vRot;
-		XMStoreFloat4(&vRot, m_pGameInstance->Direction_To_Quaternion(XMVectorSet(0.f, 0.f, 1.f, 0.f), m_pTarget->Get_FinalPosition() - XMLoadFloat3(&vPosition)));
+  //      _float4 vRot;
+		//XMStoreFloat4(&vRot, m_pGameInstance->Direction_To_Quaternion(XMVectorSet(0.f, 0.f, 1.f, 0.f), m_pTarget->Get_FinalPosition() - XMLoadFloat3(&vPosition)));
         CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Boss_WingSlice"), COORDINATE_3D, &vPosition, &vRotation);
         m_isAttack = false;
         break;

@@ -78,6 +78,8 @@ public:
     virtual void    Late_Update(_float _fTimeDelta);
     virtual HRESULT Render() override;
     _bool                       isLeftRight();
+    _bool                       is_PlayNarration() { return m_isPlayNarration;  }
+    _bool                       is_EndNarration() { return m_isNarrationEnd; }
 
 private:
     HRESULT                     LoadFromJson(const std::wstring& filePath); // 데이터 로드
