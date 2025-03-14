@@ -706,6 +706,9 @@
     <Filter Include="02.GameObjects\2DGimmik\Laser">
       <UniqueIdentifier>{98d463ca-117b-424d-b94b-e003904a3fdf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\UI\00. GamePlay\07. WorldMap">
+      <UniqueIdentifier>{1e01b687-f167-43cf-9d7d-5ea348d5a426}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -1807,6 +1810,9 @@
     <ClInclude Include="..\Public\Laser_Container.h">
       <Filter>02.GameObjects\2DGimmik\Laser</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\WorldMapNPC.h">
+      <Filter>02.GameObjects\UI\00. GamePlay\07. WorldMap</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -2894,6 +2900,9 @@
     <ClCompile Include="..\Private\DynamicCastleGate.cpp" />
     <ClCompile Include="..\Private\Laser_Container.cpp">
       <Filter>02.GameObjects\2DGimmik\Laser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\WorldMapNPC.cpp">
+      <Filter>02.GameObjects\UI\00. GamePlay\07. WorldMap</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
