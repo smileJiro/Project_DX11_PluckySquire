@@ -58,6 +58,7 @@ public:
 	void Throw(_fvector _vForce);
 public:
 	_bool Is_Carrying() { return nullptr != m_pCarrier; }
+	_bool Is_OnGround() { return m_fFloorDistance <= 0.f; }
 	HRESULT Set_Carrier(CPlayer* _pCarrier);
 	void Set_CollisionEnable(_bool _bEnable);
 	void Set_Kinematic(_bool _bKinematic);

@@ -35,10 +35,10 @@ public:
 	virtual void On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
 	virtual void On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce);
 	virtual void On_Explode();
-	virtual void On_Spawned() {};
+	virtual void On_Spawned();
 	virtual void On_Teleport() ;
 	virtual void On_LifeTimeOut();
-
+	
 	void Set_Direction(T_DIRECTION _eDirection);
 	void Set_MoveSpeed(_float _fSpeed) { m_fMoveSpeed = _fSpeed; }
 protected:

@@ -59,7 +59,7 @@
 #include "FallingRock.h"
 #include "Spawner.h"
 #include "CollapseBlock.h"
-
+#include "Portal_Cannon.h"
 
 //#include "UI.h"
 #include "UI_Manager.h"
@@ -752,6 +752,40 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Book(const _wstring& _strLayerTag)
 
 	Uimgr->Set_Book(static_cast<CBook*>(pBook));
 
+
+
+	//Chapter6_P0708
+
+
+	CPortal::PORTAL_DESC tPortalDesc = {};
+
+	tPortalDesc.iCurLevelID = (LEVEL_ID)CSection_Manager::GetInstance()->Get_SectionLeveID();
+	tPortalDesc.fTriggerRadius = 1.0f;
+	tPortalDesc.iPortalIndex = 0;
+	tPortalDesc.isFirstActive = true;
+	tPortalDesc.Build_2D_Transform(_float2{ -416.f, -121.f }, _float2{1.f,1.f});
+	CGameObject* pGameObject = nullptr;
+	m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC,
+		TEXT("Prototype_GameObject_Portal_Cannon"),
+		Desc.iCurLevelID,
+		L"Layer_Portal",
+		&pGameObject,
+		&tPortalDesc
+	);
+	if (nullptr != pGameObject)
+		CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_P0708"), pGameObject, SECTION_2D_PLAYMAP_PORTAL);
+
+
+	tPortalDesc.Build_2D_Transform(_float2{ 386, -105}, _float2{ 1.f,1.f });
+	m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC,
+		TEXT("Prototype_GameObject_Portal_Cannon"),
+		Desc.iCurLevelID,
+		L"Layer_Portal",
+		&pGameObject,
+		&tPortalDesc
+	);
+	if (nullptr != pGameObject)
+		CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_P0708"), pGameObject, SECTION_2D_PLAYMAP_PORTAL);
 
 	return S_OK;
 }

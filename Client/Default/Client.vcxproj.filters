@@ -1800,6 +1800,10 @@
     <ClInclude Include="..\Public\Chase_WayState.h">
       <Filter>03.Components\FSM\State\Chase</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_CannonPortal.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\DynamicCastleGate.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -2887,6 +2891,10 @@
     <ClCompile Include="..\Private\Chase_WayState.cpp">
       <Filter>03.Components\FSM\State\Chase</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_CannonPortal.cpp">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\DynamicCastleGate.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

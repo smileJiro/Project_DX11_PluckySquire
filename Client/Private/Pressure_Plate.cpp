@@ -2,6 +2,7 @@
 #include "Pressure_Plate.h"
 #include "GameInstance.h"
 #include "Section_Manager.h"
+#include "CarriableObject.h"
 
 CPressure_Plate::CPressure_Plate(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CModelObject(_pDevice, _pContext)

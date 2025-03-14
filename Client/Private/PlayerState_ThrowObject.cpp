@@ -19,7 +19,7 @@ void CPlayerState_ThrowObject::Enter()
 	}
 	else
 	{
-		F_DIRECTION eFDir = EDir_To_FDir(m_pOwner->Get_2DDirection());
+		F_DIRECTION eFDir = To_FDirection(m_pOwner->Get_2DDirection());
 		switch (eFDir)
 		{
 		case Client::F_DIRECTION::LEFT:

@@ -55,6 +55,8 @@ HRESULT CPlayerBomb::Initialize(void* _pArg)
 
     Switch_Animation(IDLE);
 
+   Register_OnAnimEndCallBack(bind(&CPlayerBomb::On_AnimEnd, this, placeholders::_1, placeholders::_2));
+
     return S_OK;
 }
 

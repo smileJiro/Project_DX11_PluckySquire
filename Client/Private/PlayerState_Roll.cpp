@@ -81,7 +81,7 @@ void CPlayerState_Roll::Enter()
 
     if (COORDINATE_2D == eCoord)
     {
-		F_DIRECTION eFDir = EDir_To_FDir( m_pOwner->Get_2DDirection());
+		F_DIRECTION eFDir = To_FDirection( m_pOwner->Get_2DDirection());
 		m_vDirection = EDir_To_Vector(m_pOwner->Get_2DDirection());
 		if (m_pOwner->Is_PlatformerMode())
 		{

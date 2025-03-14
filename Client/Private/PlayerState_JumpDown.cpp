@@ -92,7 +92,7 @@ void CPlayerState_JumpDown::Update(_float _fTimeDelta)
 		{
 
 			E_DIRECTION eNewDir = To_EDirection(tKeyResult.vMoveDir);
-			F_DIRECTION eFDir = EDir_To_FDir(eNewDir);
+			F_DIRECTION eFDir = To_FDirection(eNewDir);
 
 			if (m_eOldFDir != eFDir)
 			{
@@ -196,7 +196,7 @@ void CPlayerState_JumpDown::Switch_To_JumpDownAnimation()
 	
 	if (COORDINATE_2D == eCoord)
 	{
-		F_DIRECTION eDir = EDir_To_FDir(m_pOwner->Get_2DDirection());
+		F_DIRECTION eDir = To_FDirection(m_pOwner->Get_2DDirection());
 		if (m_bPlatformerMode)
 		{
 			if (F_DIRECTION::UP == eDir)
