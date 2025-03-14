@@ -53,6 +53,10 @@ float4 g_vCamPosition;
 float2 g_fStartUV;
 float2 g_fEndUV;
 
+/* Trail Data */
+float4 g_vTrailColor;
+float2 g_vTrailTime;
+
 // Vertex Shader //
 struct VS_IN
 {
@@ -432,6 +436,29 @@ PS_PLAYERDEPTHOUT PS_PLAYERDEPTH(PS_IN In)
     Out.fPlayerDepth = In.vProjPos.w / g_fFarZ;
     return Out;
 }
+
+
+struct PS_TRAIL_OUT
+{
+    float4 vDiffuse : SV_TARGET0;
+};
+
+PS_TRAIL_OUT PS_TRAIL(PS_IN In)
+{
+    PS_TRAIL_OUT Out = (PS_TRAIL_OUT) 0;
+    float fAlpha = 1.0f - g_vTrailTime.y / g_vTrailTime.x;
+    float4 FinalColor = g_vTrailColor;
+    FinalColor.rgb *= fAlpha;
+    FinalColor.a *= fAlpha;
+
+    if (FinalColor.a < 0.01f)
+        discard;
+
+    Out.vDiffuse = FinalColor;
+
+    return Out;
+}
+
 // technique : 셰이더의 기능을 구분하고 분리하기 위한 기능. 한개 이상의 pass를 포함한다.
 // pass : technique에 포함된 하위 개념으로 개별 렌더링 작업에 대한 구체적인 설정을 정의한다.
 // https://www.notion.so/15-Shader-Keyword-technique11-pass-10eb1e26c8a8807aad86fb2de6738a1a // 컨트롤 클릭
@@ -536,5 +563,15 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_SHADOWMAP();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_SHADOWMAP();
+    }
+    pass TrailPass // 10
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_None, 0);
+        SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_TRAIL();
     }
 }

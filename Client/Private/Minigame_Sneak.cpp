@@ -75,7 +75,7 @@ void CMinigame_Sneak::Update(_float _fTimeDelta)
 	if (NONE == m_eGameState)
 		return;
 
-#ifdef _DEBUG
+//#ifdef _DEBUG
 	if (KEY_PRESSING(KEY::CTRL) && KEY_DOWN(KEY::R))
 	{
 		GameOver();
@@ -90,7 +90,7 @@ void CMinigame_Sneak::Update(_float _fTimeDelta)
 		Start_Stage();
 		m_fAccTime = 0.f;
 	}
-#endif
+//#endif
 	m_fAccTime += _fTimeDelta;
 
 	switch (m_eGameState)
@@ -110,7 +110,7 @@ void CMinigame_Sneak::Update(_float _fTimeDelta)
 		if (0 <= m_iCurStage)
 		{
 			// 행동
-			if ((0.42f <= m_fAccTime && nullptr != m_pPlayer && F_DIRECTION::F_DIR_LAST != m_pPlayer->Get_InputDirection()) || 0.65f <= m_fAccTime)
+			if ((0.45f <= m_fAccTime && nullptr != m_pPlayer && F_DIRECTION::F_DIR_LAST != m_pPlayer->Get_InputDirection()) || 0.6f <= m_fAccTime)
 			{
 				// 게임 진행 먼저 판단.
 				Before_Action();
@@ -298,7 +298,7 @@ void CMinigame_Sneak::EndGame()
 	m_eGameState = NONE;
 	
 	// 페이지 전환.
-	_float3 fDefaultPos = { 42.f, -315.f,0.f };
+	_float3 fDefaultPos = { 42.f, -315.f, 0.f };
 	Event_Book_Main_Section_Change_Start(1, &fDefaultPos);
 	
 	// 모든 오브젝트 끄기.
@@ -324,7 +324,7 @@ void CMinigame_Sneak::EndGame()
 			Objects->Set_Active(false);
 	}
 
-
+	m_pGameInstance->End_BGM();
 }
 
 

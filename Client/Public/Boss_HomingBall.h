@@ -1,10 +1,15 @@
 #pragma once
 #include "Projectile_Monster.h"
 #include "Client_Defines.h"
+BEGIN(Engine)
+class CEffect_System;
+END
 
 BEGIN(Client)
 class CBoss_HomingBall final : public CProjectile_Monster
 {
+public:
+	enum PARTHOMBING {PART_EFFECT = 1, PART_HOMING_END = 2};
 //public:
 //	typedef struct tagBoss_HomingBall_Desc : public CProjectile_Monster::CONTAINEROBJ_DESC
 //	{
@@ -43,6 +48,12 @@ private:
 	_bool m_isHoming = { false };
 	_float3 m_vDir = {};
 	_float m_fMinDistance = { 0.f };
+
+private:
+	ID3D11Buffer* m_pFresnelBuffer = { nullptr };
+	ID3D11Buffer* m_pColorBuffer = { nullptr };
+	class CEffect_System* m_pEffectSystem = { nullptr };
+
 
 private:
 	virtual HRESULT					Ready_ActorDesc(void* _pArg);
