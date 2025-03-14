@@ -189,6 +189,12 @@ void CMesh::ReSet_OffsetMarix()
 }
 
 
+HRESULT CMesh::Copy_BoneMatrices(array<_float4x4, 256>* _pOutBoneMatrices)
+{
+	memcpy(_pOutBoneMatrices->data(), m_BoneMatrices, sizeof(m_BoneMatrices));
+	return S_OK;
+}
+
 HRESULT CMesh::Ready_VertexBuffer_For_NonAnim(ifstream& inFile, _fmatrix PreTransformMatrix)
 {
 	_bool isPicking = IS_IMPORT_MESHPICKING;

@@ -152,9 +152,9 @@
                 0.0,
                 1.0,
                 0.0,
+                -0.07999999821186066,
                 0.0,
-                0.0,
-                0.0,
+                -0.5,
                 1.0
             ],
             "Type": "SPRITE"
@@ -224,12 +224,12 @@
                 "ShapeLocation": {
                     "Coverage": 0.0,
                     "Position": [
+                        -0.07999999821186066,
                         0.0,
-                        0.0,
-                        0.0
+                        -0.5
                     ],
                     "Ring_Distribution": 0.0,
-                    "Ring_Radius": 0.30000001192092896,
+                    "Ring_Radius": 0.25,
                     "Rotation": [
                         90.0,
                         0.0,
@@ -302,7 +302,7 @@
                         "Float": [
                             {
                                 "Name": "Amount",
-                                "Value": 15.0
+                                "Value": 10.0
                             }
                         ],
                         "Float3": [

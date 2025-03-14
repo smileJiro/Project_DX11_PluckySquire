@@ -293,6 +293,30 @@ PS_COLOR PS_EFFECT(PS_IN In)
     return Out;
 }
 
+PS_COLOR PS_ONLYDIFFUSE(PS_IN In)
+{
+    PS_COLOR Out = (PS_COLOR) 0;
+
+    float4 vAlbedo = useAlbedoMap ? g_AlbedoTexture.Sample(LinearSampler, In.vTexcoord) : Material.Albedo;
+    float3 vNormal = useNormalMap ? Get_WorldNormal(g_NormalTexture.Sample(LinearSampler, In.vTexcoord).xyz, In.vNormal.xyz, In.vTangent.xyz, 0) : In.vNormal.xyz;
+    float4 vORMH = useORMHMap ? g_ORMHTexture.Sample(LinearSampler, In.vTexcoord) : float4(Material.AO, Material.Roughness, Material.Metallic, 1.0f);
+    if (false == useORMHMap)
+    {
+        vORMH.r = useAOMap ? g_AOTexture.Sample(LinearSampler, In.vTexcoord).r : Material.AO;
+        vORMH.g = useRoughnessMap ? g_RoughnessTexture.Sample(LinearSampler, In.vTexcoord).r : Material.Roughness;
+        vORMH.b = useMetallicMap ? g_MetallicTexture.Sample(LinearSampler, In.vTexcoord).r : Material.Metallic;
+    }
+    
+    if (vAlbedo.a < 0.01f)
+        discard;
+    
+    Out.vColor = vAlbedo * Material.MultipleAlbedo;
+    // 1,0,0
+    // 1, 0.5, 0.5 (양의 x 축)
+    // 0, 0.5, 0.5 (음의 x 축)
+    return Out;
+}
+
 
 // technique : 셰이더의 기능을 구분하고 분리하기 위한 기능. 한개 이상의 pass를 포함한다.
 // pass : technique에 포함된 하위 개념으로 개별 렌더링 작업에 대한 구체적인 설정을 정의한다.
@@ -369,6 +393,16 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_EFFECT();
+    }
+
+    pass ONLYDIFFUSE // 7
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_ONLYDIFFUSE();
     }
  
 

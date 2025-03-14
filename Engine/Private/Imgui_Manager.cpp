@@ -708,7 +708,7 @@ HRESULT CImgui_Manager::Imgui_Debug_Lights()
 		{
 			(*Selectiter)->Set_LightConstData_AndUpdateBuffer(tConstLightData);
 		};
-		if (ImGui::SliderFloat("FallOutEnd##Light", &tConstLightData.fFallOutEnd, tConstLightData.fFallOutStart, 200.f, "%.2f"))
+		if (ImGui::SliderFloat("FallOutEnd##Light", &tConstLightData.fFallOutEnd, tConstLightData.fFallOutStart, 300.f, "%.2f"))
 		{
 			(*Selectiter)->Set_LightConstData_AndUpdateBuffer(tConstLightData);
 		};

@@ -520,9 +520,6 @@
     <Filter Include="02.GameObjects\Door_2D\Door">
       <UniqueIdentifier>{2609ac0a-44e0-4916-a8b7-8fd8b53ae121}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\Pressure_Plate">
-      <UniqueIdentifier>{c84e00c4-ed90-4043-b9c1-415d594bd204}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\Door_2D\Door\Yellow">
       <UniqueIdentifier>{e970b1ce-294c-4b8d-8e20-df4106e9c253}</UniqueIdentifier>
     </Filter>
@@ -610,12 +607,6 @@
     <Filter Include="05.MiniGames\Defender">
       <UniqueIdentifier>{2764025e-f374-438b-9250-708a1326cdea}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\Room_Door">
-      <UniqueIdentifier>{f3af74e8-a0bf-4968-b73c-a84dd4becc16}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\Room_Door\Body">
-      <UniqueIdentifier>{d8713437-96d1-4389-a0bb-53ac902ee48e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="05.MiniGames\FatherGame\Object\FatherPart">
       <UniqueIdentifier>{f2a2666a-67fb-4296-b88a-0f8b032c446c}</UniqueIdentifier>
     </Filter>
@@ -699,6 +690,21 @@
     </Filter>
     <Filter Include="03.Components\FSM\State\Move">
       <UniqueIdentifier>{0956df86-2c63-44a2-bc2a-81c9181fa53a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\2DGimmik">
+      <UniqueIdentifier>{ab036ade-e749-43bf-9001-b05e6de09de8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\2DGimmik\Pressure_Plate">
+      <UniqueIdentifier>{c84e00c4-ed90-4043-b9c1-415d594bd204}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\2DGimmik\Room_Door">
+      <UniqueIdentifier>{f3af74e8-a0bf-4968-b73c-a84dd4becc16}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\2DGimmik\Room_Door\Body">
+      <UniqueIdentifier>{d8713437-96d1-4389-a0bb-53ac902ee48e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\2DGimmik\Laser">
+      <UniqueIdentifier>{98d463ca-117b-424d-b94b-e003904a3fdf}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1407,7 +1413,7 @@
       <Filter>02.GameObjects\Door_2D\Door</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Pressure_Plate.h">
-      <Filter>02.GameObjects\Pressure_Plate</Filter>
+      <Filter>02.GameObjects\2DGimmik\Pressure_Plate</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Door_Yellow.h">
       <Filter>02.GameObjects\Door_2D\Door\Yellow</Filter>
@@ -1633,10 +1639,10 @@
     </ClInclude>
     <ClInclude Include="..\Public\DefenderMonster.h" />
     <ClInclude Include="..\Public\Room_Door.h">
-      <Filter>02.GameObjects\Room_Door</Filter>
+      <Filter>02.GameObjects\2DGimmik\Room_Door</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Room_Door_Body.h">
-      <Filter>02.GameObjects\Room_Door\Body</Filter>
+      <Filter>02.GameObjects\2DGimmik\Room_Door\Body</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Simple_UI.h">
       <Filter>05.MiniGames\FatherGame\Object\Simple_UI</Filter>
@@ -1798,6 +1804,9 @@
       <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\DynamicCastleGate.h" />
+    <ClInclude Include="..\Public\Laser_Container.h">
+      <Filter>02.GameObjects\2DGimmik\Laser</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -2492,7 +2501,7 @@
       <Filter>02.GameObjects\Door_2D\Door</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Pressure_Plate.cpp">
-      <Filter>02.GameObjects\Pressure_Plate</Filter>
+      <Filter>02.GameObjects\2DGimmik\Pressure_Plate</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Door_Yellow.cpp">
       <Filter>02.GameObjects\Door_2D\Door\Yellow</Filter>
@@ -2721,10 +2730,10 @@
     </ClCompile>
     <ClCompile Include="..\Private\DefenderMonster.cpp" />
     <ClCompile Include="..\Private\Room_Door.cpp">
-      <Filter>02.GameObjects\Room_Door</Filter>
+      <Filter>02.GameObjects\2DGimmik\Room_Door</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Room_Door_Body.cpp">
-      <Filter>02.GameObjects\Room_Door\Body</Filter>
+      <Filter>02.GameObjects\2DGimmik\Room_Door\Body</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Simple_UI.cpp">
       <Filter>05.MiniGames\FatherGame\Object\Simple_UI</Filter>
@@ -2883,6 +2892,9 @@
       <Filter>03.Components\PlayerState</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\DynamicCastleGate.cpp" />
+    <ClCompile Include="..\Private\Laser_Container.cpp">
+      <Filter>02.GameObjects\2DGimmik\Laser</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

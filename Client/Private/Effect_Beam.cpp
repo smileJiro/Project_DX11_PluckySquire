@@ -71,9 +71,13 @@ void CEffect_Beam::Late_Update(_float _fTimeDelta)
 
 	__super::Late_Update(_fTimeDelta);
 
-	if (m_pStartPointBoneMatrix)
+	if (m_pStartPointBoneMatrix && m_pParentMatrices[COORDINATE_3D])
 	{
-		_matrix matWorld = XMLoadFloat4x4(m_pStartPointBoneMatrix) * XMLoadFloat4x4(&m_WorldMatrices[COORDINATE_3D]);
+		_matrix matWorld = XMLoadFloat4x4(m_pStartPointBoneMatrix);
+		
+		for (_int i = 0; i < 3; ++i)
+			matWorld.r[i] = XMVector3Normalize(matWorld.r[i]);
+		matWorld = matWorld * XMLoadFloat4x4(m_pParentMatrices[COORDINATE_3D]);
 
 		m_pBufferCom->Set_StartPosition(XMVectorSetW(matWorld.r[3], 1.f), true);
 	}

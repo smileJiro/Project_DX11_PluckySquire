@@ -139,6 +139,14 @@ HRESULT CEffectToolLoader::Loading_Level_Tool()
                 ), matPretransform))))
         return E_FAIL;
 
+    matPretransform *= XMMatrixRotationAxis(_vector{ 0,1,0,0 }, XMConvertToRadians(180));
+
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Model_buttergrump_Rig"),
+        C3DModel::Create(m_pDevice, m_pContext,
+            ("../Bin/Resources/Models/3DAnim/buttergrump_Rig/buttergrump_Rig.model"
+                ), matPretransform))))
+        return E_FAIL;
+
     matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
     matPretransform *= XMMatrixRotationAxis(_vector{ 0,1,0,0 }, XMConvertToRadians(180));
     
@@ -160,7 +168,6 @@ HRESULT CEffectToolLoader::Loading_Level_Tool()
                 ), matPretransform))))
         return E_FAIL;
 
-
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Model_Sphere"),
         C3DModel::Create(m_pDevice, m_pContext,
             ("../Bin/Resources/Models/Nonanim/etc/S_FX_CMN_Sphere_01.model"
@@ -168,20 +175,26 @@ HRESULT CEffectToolLoader::Loading_Level_Tool()
         return E_FAIL;
 
 
+    
+
 
     
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Effect_MagicHand"),
         CEffect_System::Create(m_pDevice, m_pContext, TEXT("../Bin/DataFiles/Effects/BookOut.json")))))
         return E_FAIL;
 
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Component_Texture_Diffuse"),
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Component_Texture_Diffuse"), 
         CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effects/T_FX_CMN_Noise_06.dds")))))
         return E_FAIL;
 
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Component_Texture_Distortion"),
-        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effects/T_FX_CMN_Noise_03.dds")))))
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effects/T_FX_CMN_Noise_03_90.dds")))))
         return E_FAIL;
 
+    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Component_Texture_Normal"),
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effects/T_FX_CMN_Noise_Normal_03_s.dds")))))
+        return E_FAIL;
+    
 
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
     m_isFinished = true;

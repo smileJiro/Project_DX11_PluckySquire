@@ -229,6 +229,7 @@
     <ClInclude Include="..\Public\FatherGame_Progress_PartWing.h" />
     <ClInclude Include="..\public\FatherPart_Prop.h" />
     <ClInclude Include="..\public\FresnelModelObject.h" />
+    <ClInclude Include="..\Public\Laser_Container.h" />
     <ClInclude Include="..\public\Mat.h" />
     <ClInclude Include="..\Public\MonsterJumpState.h" />
     <ClInclude Include="..\Public\MonsterMoveState.h" />
@@ -600,6 +601,7 @@
     <ClCompile Include="..\Private\FatherGame_Progress_PartWing.cpp" />
     <ClCompile Include="..\private\FatherPart_Prop.cpp" />
     <ClCompile Include="..\private\FresnelModelObject.cpp" />
+    <ClCompile Include="..\Private\Laser_Container.cpp" />
     <ClCompile Include="..\private\Mat.cpp" />
     <ClCompile Include="..\Private\MonsterJumpState.cpp" />
     <ClCompile Include="..\Private\MonsterMoveState.cpp" />
