@@ -79,6 +79,12 @@ void CDialog::Update(_float _fTimeDelta)
 	if (m_isDisplayDialogue && KEY_DOWN(KEY::B))
 	{
 		_float2 vRTSize = SECTION_MGR->Get_Section_RenderTarget_Size(Get_Dialogue(m_tDialogIndex)[0].Section);
+
+
+		
+
+
+
 		NextDialogue(vRTSize); // 다음 다이얼로그의 위치를 변경한다.
 	}
 
@@ -248,6 +254,23 @@ HRESULT CDialog::NextLevelLoadJson(_int _iNextLevel)
 	return S_OK;
 }
 
+_bool CDialog::isCurDialogTargetChange()
+{
+	if (false == m_isDisplayDialogue)
+		assert(TEXT("Not Play Dialogue"));
+
+	return Get_Dialogue(m_tDialogId)[0].isChangeTalker;
+}
+
+_uint CDialog::Get_TargetIndex()
+{
+	if (false == m_isDisplayDialogue)
+		assert(TEXT("Not Play Dialogue"));
+
+	return Get_Dialogue(m_tDialogId)[0].lines[m_iCurrentLineIndex].TerlkerIndex;
+
+}
+
 HRESULT CDialog::LoadFromJson(const std::wstring& filePath)
 {
 	if (GetFileAttributes(filePath.c_str()) == INVALID_FILE_ATTRIBUTES)
@@ -285,6 +308,11 @@ HRESULT CDialog::LoadFromJson(const std::wstring& filePath)
 			if (dialog.contains("TriggerID"))
 			{
 				dialogData.iTriggerID = dialog["TriggerID"];
+			}
+
+			if (dialog.contains("isChangeTalker") && dialog["isChangeTalker"].is_boolean())
+			{
+				dialogData.isChangeTalker = dialog["isChangeTalker"].get<_bool>();
 			}
 
 			// 대상 + 대화 + BG + 배경 + 타이핑 효과
@@ -349,7 +377,7 @@ HRESULT CDialog::LoadFromJson(const std::wstring& filePath)
 
 					if (line.contains("FontColorB") && line["FontColorB"].is_number_float())
 					{
-						dialogLine.vFontColor.y = line["FontColorB"].get<_float>();
+						dialogLine.vFontColor.z = line["FontColorB"].get<_float>();
 					}
 					// 2D인가요? // 초상화가 있나요?
 					if (line.contains("is2D") && line["is2D"].is_boolean())
@@ -361,6 +389,12 @@ HRESULT CDialog::LoadFromJson(const std::wstring& filePath)
 					{
 						dialogLine.isPortrait = line["isPortrait"].get<_bool>();
 					}
+
+					if (line.contains("TalkerIndex") && line["TalkerIndex"].is_number_integer())
+					{
+						dialogLine.TerlkerIndex = line["TalkerIndex"].get<int>();
+					}
+
 
 					if (line.contains("isLineEnter") && line["isLineEnter"].is_boolean())
 					{
@@ -423,7 +457,7 @@ HRESULT CDialog::DisplayText(_float2 _vRTSize)
 
 	_float fScaleX = _vRTSize.x / RTSIZE_BOOK2D_X;
 	_float fScaleY = _vRTSize.y / RTSIZE_BOOK2D_Y;
-	
+
 
 	// 가로가 기나요? 세로가 기나요?
 	_bool isColumn = { false };
@@ -571,7 +605,7 @@ HRESULT CDialog::DisplayText(_float2 _vRTSize)
 					return S_OK;
 				}
 
-				
+
 			}
 
 		}
@@ -654,8 +688,8 @@ HRESULT CDialog::DisplayText(_float2 _vRTSize)
 		else if (true == isColumn)
 		{
 
-			vPos.x = vTextPos2D.x - _vRTSize.x * 0.08f  / fScaleX;
-			vPos.y = vTextPos2D.y + _vRTSize.y * 0.08f  / fScaleY;
+			vPos.x = vTextPos2D.x - _vRTSize.x * 0.08f / fScaleX;
+			vPos.y = vTextPos2D.y + _vRTSize.y * 0.08f / fScaleY;
 			vTextPos2D = _float3(vPos.x, vPos.y, 0.f);
 
 
@@ -748,7 +782,7 @@ HRESULT CDialog::DisplayText(_float2 _vRTSize)
 			vTextPos2D = _float3(vPos.x, vPos.y, 0.f);
 		}
 
-		
+
 
 
 	}
@@ -767,7 +801,7 @@ HRESULT CDialog::DisplayText(_float2 _vRTSize)
 	if (isColumn == false)
 	{
 		_float2 vMidPoint = { _vRTSize.x / 2.f, _vRTSize.y / 2.f };
-		
+
 		vCalPos.x = vMidPoint.x + vTextPos2D.x;
 		vCalPos.y = vMidPoint.y - vTextPos2D.y;
 
@@ -893,6 +927,8 @@ void CDialog::NextDialogue(_float2 _RTSize)
 
 
 
+
+
 		_float2 vPos = {};
 		if (false == m_isRender)
 		{
@@ -905,6 +941,32 @@ void CDialog::NextDialogue(_float2 _RTSize)
 		if (m_iCurrentLineIndex <= Get_Dialogue(_strDialogue)[0].lines.size() - 1)
 		{
 			vOffset = _float2(Get_Dialogue(m_tDialogId)[0].lines[m_iCurrentLineIndex].vOffset.x, Get_Dialogue(m_tDialogId)[0].lines[m_iCurrentLineIndex].vOffset.y);
+
+			// 250314 :: 박상욱
+			if (true == Get_Dialogue(m_tDialogId)[0].isChangeTalker)
+			{
+				CGameObject* pGameObject = CDialog_Manager::GetInstance()->Get_DialogTarget(Get_Dialogue(m_tDialogId)[0].lines[m_iCurrentLineIndex].TerlkerIndex);
+
+				if (nullptr == pGameObject)
+					assert(TEXT("Target Not Found"));
+
+				_vector TargetPos = pGameObject->Get_ControllerTransform()->Get_State(COORDINATE_2D, CTransform::STATE_POSITION);
+
+				m_vDialoguePos = _float4(TargetPos.m128_f32[0], TargetPos.m128_f32[1], 0.f, 1.f);
+			}
+			else
+			{
+				if (true == Get_Dialogue(m_tDialogId)[0].lines[m_iCurrentLineIndex].is2D)
+				{
+					if (1 <= CDialog_Manager::GetInstance()->Get_DialogTargetCount())
+					{
+						CGameObject* pGameObject = CDialog_Manager::GetInstance()->Get_DialogTarget(0);
+						_vector TargetPos = pGameObject->Get_ControllerTransform()->Get_State(COORDINATE_2D, CTransform::STATE_POSITION);
+
+						m_vDialoguePos = _float4(TargetPos.m128_f32[0], TargetPos.m128_f32[1], 0.f, 1.f);
+					}
+				}
+			}
 		}
 
 
@@ -1241,11 +1303,13 @@ void CDialog::NextDialogue(_float2 _RTSize)
 
 			//wsprintf(m_strCurrentSection, L"");
 
+			CDialog_Manager::GetInstance()->Clear_DialogTarget();
+
 			m_isFirstRefresh = false;
 
 			// 다이얼로그 끝나고 상점을 닫기 위해 해당 다이얼로그가 상점 관련인지 확인한다.
 			isOpenPanel(_strDialogue);
-			
+
 
 
 		}
@@ -1311,6 +1375,32 @@ void CDialog::FirstCalPos(_float2 _RTSize)
 		if (m_iCurrentLineIndex <= Get_Dialogue(_strDialogue)[0].lines.size() - 1)
 		{
 			vOffset = _float2(Get_Dialogue(m_tDialogId)[0].lines[m_iCurrentLineIndex].vOffset.x, Get_Dialogue(m_tDialogId)[0].lines[m_iCurrentLineIndex].vOffset.y);
+
+
+			// 250314 :: 박상욱
+			if (true == Get_Dialogue(m_tDialogId)[0].isChangeTalker)
+			{
+				CGameObject* pGameObject = CDialog_Manager::GetInstance()->Get_DialogTarget(Get_Dialogue(m_tDialogId)[0].lines[m_iCurrentLineIndex].TerlkerIndex);
+				_vector TargetPos = pGameObject->Get_ControllerTransform()->Get_State(COORDINATE_2D, CTransform::STATE_POSITION);
+
+				m_vDialoguePos = _float4(TargetPos.m128_f32[0], TargetPos.m128_f32[1], 0.f, 1.f);
+			}
+			else
+			{
+				if (true == Get_Dialogue(m_tDialogId)[0].lines[m_iCurrentLineIndex].is2D)
+				{
+					if (1 <= CDialog_Manager::GetInstance()->Get_DialogTargetCount())
+					{
+						CGameObject* pGameObject = CDialog_Manager::GetInstance()->Get_DialogTarget(0);
+						_vector TargetPos = pGameObject->Get_ControllerTransform()->Get_State(COORDINATE_2D, CTransform::STATE_POSITION);
+
+						m_vDialoguePos = _float4(TargetPos.m128_f32[0], TargetPos.m128_f32[1], 0.f, 1.f);
+					}
+				}
+				
+			}
+
+
 		}
 
 		switch (Get_DialogueLine(_strDialogue, m_iCurrentLineIndex).location)

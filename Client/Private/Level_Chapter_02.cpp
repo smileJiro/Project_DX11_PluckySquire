@@ -1162,8 +1162,8 @@ HRESULT CLevel_Chapter_02::Ready_Layer_UI(const _wstring& _strLayerTag)
 
 	CGameObject* pGameObject;
 	
-	pDesc.fSizeX = 360.f / 2.f;
-	pDesc.fSizeY = 149.f / 2.f;
+	pDesc.fSizeX = 360.f / 3.f;
+	pDesc.fSizeY = 149.f / 3.f;
 	
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_UIObejct_Interaction_E"), pDesc.iCurLevelID, _strLayerTag, &pGameObject, &pDesc)))
 		return E_FAIL;
@@ -1237,8 +1237,8 @@ HRESULT CLevel_Chapter_02::Ready_Layer_NPC(const _wstring& _strLayerTag)
 	NPCDesc.iNumPartObjects = 3;
 	NPCDesc.iMainIndex = 0;
 	NPCDesc.iSubIndex = 0;
-	wsprintf(NPCDesc.strLocateSection, TEXT("Chapter2_P1112"));
-	NPCDesc.vPos = _float2(71.0f, -11.1f);
+	wsprintf(NPCDesc.strLocateSection, TEXT("Chapter2_P0304"));
+	NPCDesc.vPos = _float2(858.f, 38.02f);
 	wsprintf(NPCDesc.strDialogueIndex, TEXT("Store_Dialog_01"));
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_StoreNPC"), NPCDesc.iCurLevelID, _strLayerTag, &NPCDesc)))
 		return E_FAIL;
