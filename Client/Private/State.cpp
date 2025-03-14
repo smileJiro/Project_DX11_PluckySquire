@@ -3,6 +3,7 @@
 #include "State.h"
 #include "Monster.h"
 #include "FSM.h"
+#include "PlayerData_Manager.h"
 
 CState::CState()
 	: m_pGameInstance(CGameInstance::GetInstance())
@@ -20,7 +21,7 @@ HRESULT CState::Initialize(void* _pArg)
 		m_pOwner = pDesc->pOwner;
 
 	//플레이어 위치 가져오기
-	m_pTarget = m_pGameInstance->Get_GameObject_Ptr(m_iCurLevel, TEXT("Layer_Player"), 0);
+	m_pTarget = CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr();
 	if (nullptr == m_pTarget)
 	{
 	#ifdef _DEBUG
