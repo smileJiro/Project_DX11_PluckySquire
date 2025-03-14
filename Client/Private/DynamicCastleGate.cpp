@@ -54,8 +54,7 @@ HRESULT CDynamicCastleGate::Initialize(void* _pArg)
 		return E_FAIL;
 	if (FAILED(Ready_PartObjects()))
 		return E_FAIL;
-
-	//static_cast<CActor_Dynamic*>(m_pActorCom)->Set_Rotation(_vector{ 0.f,1.f,0.f }, XMConvertToRadians(180.f));
+	static_cast<CActor_Dynamic*>(m_pActorCom)->Set_Rotation(_vector{ 0.f,0.f,1.f }, XMConvertToRadians(90.f));
 	//static_cast<CActor_Dynamic*>(m_pActorCom)->Set_MassLocalPos({ 0.0f,0.5f,0.f });
 	m_pActorCom->Set_Mass(50.f);
 	return S_OK;
@@ -63,6 +62,7 @@ HRESULT CDynamicCastleGate::Initialize(void* _pArg)
 
 void CDynamicCastleGate::Late_Update(_float _fTimeDelta)
 {
+	__super::Late_Update(_fTimeDelta);
 }
 
 HRESULT CDynamicCastleGate::Render()
@@ -83,8 +83,8 @@ HRESULT CDynamicCastleGate::Ready_PartObjects()
 	tVisorDesc.iCurLevelID = m_iCurLevelID;
 	tVisorDesc.eStartCoord = COORDINATE_3D;
 	tVisorDesc.isCoordChangeEnable = false;
-	tVisorDesc.iModelPrototypeLevelID_3D = LEVEL_STATIC;
-	tVisorDesc.strModelPrototypeTag_3D = TEXT("Visor_CyberJot");
+	tVisorDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
+	tVisorDesc.strModelPrototypeTag_3D = TEXT("Castle_Gate");
 	tVisorDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
 	tVisorDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
 	tVisorDesc.iRenderGroupID_3D = RG_3D;
@@ -96,8 +96,8 @@ HRESULT CDynamicCastleGate::Ready_PartObjects()
 		MSG_BOX("CASTL_PART_DOOR Creation Failed");
 		return E_FAIL;
 	}
-	m_PartObjects[CASTL_PART_DOOR]->Set_Position({ 0.f,0.225f,-0.225f });
-	Set_PartActive(CASTL_PART_DOOR, false);
+	//m_PartObjects[CASTL_PART_DOOR]->Set_Position({ 0.f,0.225f,-0.225f });
+
 
 
 	return S_OK;
