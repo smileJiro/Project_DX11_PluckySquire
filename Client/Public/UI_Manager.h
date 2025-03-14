@@ -181,6 +181,8 @@ public:
 	_tchar*								Get_strNarrationID() { return m_strNarrationID; }
 	_bool								Get_PlayNarration() { return m_isPlayerNarration; }
 	void								Set_TurnoffPlayNarration(_bool _Turnoff) { m_isPlayerNarration = _Turnoff; }
+	_bool								is_PlayNarration();
+	_bool								is_EndNarration();
 
 	_bool								isLeft_Right();
 

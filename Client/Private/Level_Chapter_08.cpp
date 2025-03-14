@@ -43,6 +43,7 @@
 #include "Door_Yellow.h"
 #include "C08_Box.h"
 #include "Laser_Container.h"
+#include "Beetle_Corpse.h"
 
 #include "RayShape.h"
 #include "CarriableObject.h"
@@ -429,6 +430,22 @@ void CLevel_Chapter_08::Update(_float _fTimeDelta)
 			SECTION_MGR->Remove_Section(L"Chapter8_SKSP_10");
 				//});
 		}
+	}
+
+	if (KEY_DOWN(KEY::NUMPAD9))
+	{
+		_float3 vPos = {-90.f, 65.2f, 18.3f};
+
+		CBeetle::MONSTER_DESC Beetle_Desc;
+		Beetle_Desc.iCurLevelID = m_eLevelID;
+		Beetle_Desc.eStartCoord = COORDINATE_3D;
+		Beetle_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+		Beetle_Desc.tTransform3DDesc.vInitialPosition = vPos;
+		Beetle_Desc.isSneakMode = true;
+		Beetle_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER8_BEETLE1;
+
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, TEXT("Layer_Sneak_Beetle"), &Beetle_Desc)))
+			return;
 	}
 
 }
@@ -1183,7 +1200,7 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 	Beetle_Desc.isSneakMode = true;
 	Beetle_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER8_BEETLE1;
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, _strLayerTag, &Beetle_Desc)))
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, TEXT("Layer_Sneak_Beetle"), &Beetle_Desc)))
 		return E_FAIL;
 
 	//CCrossBow_Soldier::MONSTER_DESC CrossBow_Soldier_Desc;
@@ -1458,6 +1475,17 @@ HRESULT CLevel_Chapter_08::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Laser_Container"),
 		m_eLevelID, _strLayerTag, &LaserDesc)))
 		return E_FAIL;
+
+
+	Pooling_DESC Pooling_Desc;
+	Pooling_Desc.iPrototypeLevelID = m_eLevelID;
+	Pooling_Desc.strLayerTag = _strLayerTag;
+	Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Beetle_Corpse");
+
+	CBeetle_Corpse::CARRIABLE_DESC* Beetle_CorpseDesc = new CBeetle_Corpse::CARRIABLE_DESC;
+	Beetle_CorpseDesc->iCurLevelID = m_eLevelID;
+
+	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Beetle_Corpse"), Pooling_Desc, Beetle_CorpseDesc);
 
 
 
