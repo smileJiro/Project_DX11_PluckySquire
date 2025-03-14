@@ -479,9 +479,23 @@ PS_BLOOM PS_EMISSIVE(PS_IN In)
     return Out;
 }
 
-PS_BLOOM PS_SINGLEFRESNEL(PS_IN In)
+
+struct PS_ACCUM
 {
-    PS_BLOOM Out = (PS_BLOOM) 0;
+    float4 vAccumulate : SV_TARGET0;
+    float vRevealage : SV_TARGET1;
+    float4 vBright : SV_TARGET2;
+};
+
+float FUNC_WEIGHT(float fDepth, float fAlpha)
+{
+    return fAlpha * clamp(10.f / (1e-5 + pow(fDepth / 200.f, 4.f)), 1e-2, 3e3);
+}
+
+
+PS_ACCUM PS_SINGLEFRESNEL(PS_IN In)
+{
+    PS_ACCUM Out = (PS_ACCUM) 0;
     
     float3 vViewDirection = g_vCamPosition.xyz - In.vWorldPos.xyz;
     float fLength = length(vViewDirection);
@@ -490,16 +504,24 @@ PS_BLOOM PS_SINGLEFRESNEL(PS_IN In)
     float FresnelValue = Compute_Fresnel(In.vNormal.xyz, vViewDirection, OneFresnel.fBaseReflect, OneFresnel.fExp, OneFresnel.fStrength);
     
     float3 vFresnelColor = OneFresnel.vColor * FresnelValue;
-    Out.vDiffuse.xyz = lerp(vDiffuseColor.xyz, vFresnelColor.xyz, FresnelValue);
+    float fWeight = FUNC_WEIGHT(In.vProjPos.w, vDiffuseColor.a);
+    
+    float3 vOutColor = lerp(vDiffuseColor.xyz, vFresnelColor.xyz, FresnelValue);
+    Out.vAccumulate.xyz = lerp(vOutColor.xyz, vOutColor.xyz, FresnelValue);
+    Out.vAccumulate.xyz = Out.vAccumulate.rgb * vDiffuseColor.a * fWeight;
+    Out.vAccumulate.a = vDiffuseColor.a * fWeight;
+    Out.vRevealage.r = vDiffuseColor.a;
+    Out.vBright = vSubColor * fWeight;
+    //Out.vDiffuse.xyz = lerp(vDiffuseColor.xyz, vFresnelColor.xyz, FresnelValue);
     //Out.vDiffuse = (OneFresnel.vColor * FresnelValue);
-    Out.vDiffuse.w = vDiffuseColor.a;
-    Out.vBrightness = vBloomColor;
+    //Out.vDiffuse.w = vDiffuseColor.a;
+    //Out.vBrightness = vBloomColor;
     return Out;
 }
 
-PS_BLOOM PS_NOISEFRESNEL(PS_IN In)
+PS_ACCUM PS_NOISEFRESNEL(PS_IN In)
 {
-    PS_BLOOM Out = (PS_BLOOM) 0;
+    PS_ACCUM Out = (PS_ACCUM) 0;
     
     float3 vViewDirection = g_vCamPosition.xyz - In.vWorldPos.xyz;
     float fLength = length(vViewDirection);
@@ -514,13 +536,19 @@ PS_BLOOM PS_NOISEFRESNEL(PS_IN In)
     //float4 vDiffuse = g_DiffuseTexture.Sample(LinearSampler, In.vTexcoord + float2(vDistortion.x, vDistortion.y))
     
     float3 vDefaultColor = lerp(vSubColor.xyz, vDiffuseColor.xyz, vMain);
-    
+    float fWeight = FUNC_WEIGHT(In.vProjPos.w, vDiffuseColor.a);
+
+    Out.vAccumulate.xyz = lerp(vDefaultColor.xyz, vDefaultColor.xyz, FresnelValue);
+    Out.vAccumulate.xyz = Out.vAccumulate.rgb * vDiffuseColor.a * fWeight;
+    Out.vAccumulate.a = vDiffuseColor.a * fWeight;
+    Out.vRevealage.r = vDiffuseColor.a;
+    Out.vBright = vSubColor * fWeight;
     //Out.vDiffuse.xyz = lerp(vMain * vDiffuseColor.xyz, vFresnelColor.xyz, FresnelValue);
     //Out.vDiffuse.xyz = lerp(vDefaultColor.xyz, vFresnelColor.xyz, FresnelValue);
-    Out.vDiffuse.xyz = vDefaultColor.xyz + vFresnelColor.xyz * FresnelValue;
+    //Out.vDiffuse.xyz = vDefaultColor.xyz + vFresnelColor.xyz * FresnelValue;
     //Out.vDiffuse = (OneFresnel.vColor * FresnelValue);
-    Out.vDiffuse.w = vDiffuseColor.a;
-    Out.vBrightness = vBloomColor;
+    //Out.vDiffuse.w = vDiffuseColor.a;
+    //Out.vBrightness = vBloomColor;
     return Out;
 }
 
@@ -687,7 +715,7 @@ technique11 DefaultTechnique
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_Default, 0);
-        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        SetBlendState(BS_WeightAccumulate, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_SINGLEFRESNEL();
@@ -718,7 +746,7 @@ technique11 DefaultTechnique
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_Default, 0);
-        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        SetBlendState(BS_WeightAccumulate, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_NOISEFRESNEL();

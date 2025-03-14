@@ -274,7 +274,7 @@ HRESULT CBoss_HomingBall::Ready_PartObjects()
     BodyDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::NOISEFRESNEL;
 
     BodyDesc.iRenderGroupID_3D = RG_3D;
-    BodyDesc.iPriorityID_3D = PR3D_EFFECT;
+    BodyDesc.iPriorityID_3D = PR3D_PARTICLE;
 
     BodyDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
 

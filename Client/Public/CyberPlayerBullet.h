@@ -1,11 +1,17 @@
 #pragma once
 #include "ContainerObject.h"
 
+BEGIN(Engine)
+class CEffect_System;
+END
+
 BEGIN(Client)
 class CFresnelModelObject;
 class CCyberPlayerBullet :
     public CContainerObject
 {
+public:
+	enum BULLET_PART {BULLET_TRAIL = 1, BULLET_END };
 public:
 	typedef struct tagCyberPlayerProjectileDesc : public CContainerObject::CONTAINEROBJ_DESC
 	{
@@ -25,6 +31,8 @@ public:
 
 
 public:
+	virtual void Active_OnEnable() override;
+
 	virtual void OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)override;
 private:
 	CFresnelModelObject* m_pModel = nullptr;
@@ -36,6 +44,9 @@ private:
 
 	ID3D11Buffer* m_pFresnelBuffer = { nullptr };
 	ID3D11Buffer* m_pColorBuffer = { nullptr };
+
+	class CEffect_System* m_pParticleTrailEffect = { nullptr };
+
 
 public:
 	static CCyberPlayerBullet* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
