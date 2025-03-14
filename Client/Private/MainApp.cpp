@@ -33,6 +33,10 @@
 #include "RenderGroup_PostProcessing.h"
 #include "RenderGroup_PlayerDepth.h"
 
+
+#include "RenderGroup_Trail.h"
+#include "Trail_Manager.h"
+
 CMainApp::CMainApp()
 	: m_pGameInstance(CGameInstance::GetInstance())
 {
@@ -101,6 +105,8 @@ void CMainApp::Progress(_float _fTimeDelta)
 	CSection_Manager::GetInstance()->Section_AddRenderGroup_Process();
 	m_pGameInstance->Late_Update_Engine(_fTimeDelta);
 
+
+	CTrail_Manager::GetInstance()->Update(_fTimeDelta);
 
 	if (IS_IMPORT_IMGUI)
 		m_pGameInstance->End_Imgui();
@@ -403,6 +409,23 @@ HRESULT CMainApp::Ready_RenderGroup()
 		return E_FAIL;
 	Safe_Release(pRenderGroup_Blend);
 	pRenderGroup_Blend = nullptr;
+
+	/* RG_3D, PR3D_TRAIL */
+	CRenderGroup_Trail::RG_MRT_DESC RG_TrailDesc;
+	RG_TrailDesc.iRenderGroupID = RENDERGROUP::RG_3D;
+	RG_TrailDesc.iPriorityID = PRIORITY_3D::PR3D_TRAIL;
+	RG_TrailDesc.strMRTTag = TEXT("MRT_Combine");
+	RG_TrailDesc.isClear = false;
+	CRenderGroup_Trail* pRenderGroup_Trail = CRenderGroup_Trail::Create(m_pDevice, m_pContext, &RG_TrailDesc);
+	if (nullptr == pRenderGroup_Trail)
+	{
+		MSG_BOX("Failed Create PR3D_TRAIL");
+		return E_FAIL;
+	}
+	if (FAILED(m_pGameInstance->Add_RenderGroup(pRenderGroup_Trail->Get_RenderGroupID(), pRenderGroup_Trail->Get_PriorityID(), pRenderGroup_Trail)))
+		return E_FAIL;
+	Safe_Release(pRenderGroup_Trail);
+	pRenderGroup_Trail = nullptr;
 
 	/* RG_3D, PR3D_EFFECT */
 	CRenderGroup_MRT::RG_MRT_DESC RG_EffectDesc;
@@ -759,6 +782,9 @@ void CMainApp::Free()
 	CTrigger_Manager::DestroyInstance();
 	CPlayerData_Manager::DestroyInstance();
 	CEffect_Manager::DestroyInstance();
+
+	// EngineManager 
+	CTrail_Manager::DestroyInstance();
 
 	Safe_Release(m_pGameInstance);
 	Safe_Release(m_pDevice);

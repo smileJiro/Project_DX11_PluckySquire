@@ -16,6 +16,7 @@ C3DMapSkspObject::C3DMapSkspObject(const C3DMapSkspObject& _Prototype)
 
 HRESULT C3DMapSkspObject::Initialize(void* _pArg)
 {
+    m_isSksp = true;
 
     if (nullptr == _pArg)
         return E_FAIL;

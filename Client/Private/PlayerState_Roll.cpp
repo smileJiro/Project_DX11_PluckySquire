@@ -6,6 +6,7 @@
 #include "Player.h"
 #include "StateMachine.h"
 #include "Effect_Manager.h"
+#include "ModelObject.h"
 
 
 CPlayerState_Roll::CPlayerState_Roll(CPlayer* _pOwner)
@@ -147,6 +148,7 @@ void CPlayerState_Roll::Exit()
 	//if (COORDINATE_2D == m_pOwner->Get_CurCoord())
 	//	CEffect_Manager::GetInstance()->Stop_Spawn(TEXT("Zip5"), 1.f);
 
+	static_cast<CModelObject*>(m_pOwner->Get_PartObject(CPlayer::PART::PART_BODY))->Off_Trail();
 }
 
 void CPlayerState_Roll::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)

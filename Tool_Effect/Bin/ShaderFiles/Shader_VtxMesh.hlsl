@@ -42,12 +42,14 @@ cbuffer ColorBuffer : register(b3)
 {
     float4 vDiffuseColor;
     float4 vBloomColor;
+    float4 vSubColor;
 }
 
 /* 상수 테이블 */
 float4x4 g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 Texture2D g_AlbedoTexture, g_NormalTexture, g_ORMHTexture, g_MetallicTexture, g_RoughnessTexture, g_AOTexture; // PBR
-Texture2D g_DiffuseTexture, g_DistortionTexture;
+Texture2D g_DiffuseTexture, g_NoiseTexture;
+float2 g_vDiffuseScaling, g_vNoiseScaling;
 
 float g_fFarZ = 300.f;
 int g_iFlag = 0;
@@ -94,7 +96,7 @@ VS_OUT VS_MAIN(VS_IN In)
     Out.vPosition = mul(float4(In.vPosition, 1.0), matWVP);
     Out.vNormal = normalize(mul(float4(In.vNormal, 0), g_WorldMatrix));
     Out.vTexcoord = In.vTexcoord;
-    Out.vWorldPos = float4(In.vPosition, 1.f);
+    Out.vWorldPos = mul(float4(In.vPosition, 1.f), g_WorldMatrix);
     Out.vProjPos = Out.vPosition; // w 나누기를 수행하지 않은 0 ~ far 사이의 z 값이 보존되어있는 position
     Out.vTangent = In.vTangent;
     return Out;
@@ -443,20 +445,29 @@ PS_BLOOM PS_NOISEFRESNEL(PS_IN In)
     float3 vViewDirection = g_vCamPosition.xyz - In.vWorldPos.xyz;
     float fLength = length(vViewDirection);
     vViewDirection = normalize(vViewDirection);
-    
+   
     float FresnelValue = Compute_Fresnel(In.vNormal.xyz, vViewDirection, OneFresnel.fBaseReflect, OneFresnel.fExp, OneFresnel.fStrength);
     float3 vFresnelColor = OneFresnel.vColor * FresnelValue;
+   
     
-    float4 vDistortion = g_DistortionTexture.Sample(LinearSampler, float2(In.vTexcoord.x * 2.f, In.vTexcoord.y * 3.f));
-    float4 vDiffuse = g_DiffuseTexture.Sample(LinearSampler, In.vTexcoord + float2(vDistortion.x, vDistortion.y));     
+    float vDistortion = g_NoiseTexture.Sample(LinearSampler, float2(In.vTexcoord.x * g_vNoiseScaling.x, In.vTexcoord.y * g_vNoiseScaling.y));
+    //float4 vDistortion = g_NoiseTexture.Sample(LinearSampler, float2(In.vTexcoord.x, In.vTexcoord.y));
+    float vMain = g_DiffuseTexture.Sample(LinearSampler, (In.vTexcoord + float2(vDistortion, vDistortion)) * g_vDiffuseScaling);
+    //float4 vDiffuse = g_DiffuseTexture.Sample(LinearSampler, In.vTexcoord + float2(vDistortion.x, vDistortion.y))
     
+    float3 vDefaultColor = lerp(vSubColor.xyz, vDiffuseColor.xyz, vMain);    
     
-    Out.vDiffuse.xyz = lerp(vDiffuse.x * vDiffuseColor.xyz, vFresnelColor.xyz, FresnelValue);
+    //Out.vDiffuse.xyz = lerp(vMain * vDiffuseColor.xyz, vFresnelColor.xyz, FresnelValue);
+    //Out.vDiffuse.xyz = lerp(vDefaultColor.xyz, vFresnelColor.xyz, FresnelValue);
+    Out.vDiffuse.xyz = vDefaultColor.xyz + vFresnelColor.xyz * FresnelValue;
     //Out.vDiffuse = (OneFresnel.vColor * FresnelValue);
     Out.vDiffuse.w = vDiffuseColor.a;
     Out.vBrightness = vBloomColor;
     return Out;
 }
+
+
+
 
 
 technique11 DefaultTechnique
@@ -604,6 +615,7 @@ technique11 DefaultTechnique
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_NOISEFRESNEL();
     }
+
 }
 
 /* 빛이 들어와서 맞고 튕긴 반사벡터와 이 픽셀을 바라보는 시선 벡터가 이루는 각이 180일때 최대 밝기 */

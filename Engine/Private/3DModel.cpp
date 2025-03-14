@@ -287,7 +287,6 @@ HRESULT C3DModel::Render_Default(CShader* _pShader, _uint _iShaderPass)
 }
 
 
-
 HRESULT C3DModel::Bind_Matrices(CShader* _pShader, const _char* _pConstantName, _uint _iMeshIndex)
 {
 	/* 모델의 m_Bones 벡터를 넘겨 여기서 자기들이 필요한 메쉬에 접근해서 행렬을 가져오고 연산할 것임. */
@@ -351,6 +350,17 @@ HRESULT C3DModel::Bind_Material_PixelConstBuffer(_uint _iMaterialIndex, CShader*
 		return E_FAIL;
 
 	return m_Materials[_iMaterialIndex]->Bind_PixelConstBuffer(_pShader);
+}
+
+HRESULT C3DModel::Copy_BoneMatrices(_int iNumMeshIndex, array<_float4x4, 256>* _pOutBoneMatrices)
+{
+	if (m_Meshes.size() <= iNumMeshIndex)
+		return E_FAIL;
+
+	if (FAILED(m_Meshes[iNumMeshIndex]->Copy_BoneMatrices(_pOutBoneMatrices)))
+		return E_FAIL;
+
+	return S_OK;
 }
 
 _uint C3DModel::Get_MeshIndex(const _char* _szName) const

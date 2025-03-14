@@ -25,6 +25,8 @@ HRESULT CFresnelModelObject::Initialize(void* _pArg)
 
     if (FAILED(__super::Initialize(_pArg)))
         return E_FAIL;
+    if (FAILED(Ready_Components(pDesc)))
+        return E_FAIL;
 
     return S_OK;
 }
@@ -36,6 +38,14 @@ HRESULT CFresnelModelObject::Render()
         Bind_ShaderResources_WVP();
 
         m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_vCamPosition", m_pGameInstance->Get_CamPosition(), sizeof(_float4));
+        if (nullptr != m_pMainTextureCom)
+            m_pMainTextureCom->Bind_ShaderResource(m_pShaderComs[COORDINATE_3D], "g_DiffuseTexture");
+        if (nullptr != m_pNoiseTextureCom)
+            m_pNoiseTextureCom->Bind_ShaderResource(m_pShaderComs[COORDINATE_3D], "g_NoiseTexture");
+
+        m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_vNoiseScaling", &m_vNoiseScaling, sizeof(_float2));
+        m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_vDiffuseScaling", &m_vDiffuseScaling, sizeof(_float2));
+
 
         if (nullptr != m_pFresnelBuffer)
             m_pShaderComs[COORDINATE_3D]->Bind_ConstBuffer("SingleFresnel", m_pFresnelBuffer);
@@ -45,6 +55,23 @@ HRESULT CFresnelModelObject::Render()
     }
     else
         __super::Render();
+
+    return S_OK;
+}
+
+HRESULT CFresnelModelObject::Ready_Components(const FRESNEL_MODEL_DESC* _pDesc)
+{
+    if (0 != lstrcmp(_pDesc->szDiffusePrototypeTag, L""))
+    {       
+        if (FAILED(Add_Component(m_iCurLevelID, _pDesc->szDiffusePrototypeTag, TEXT("Com_Diffuse"), reinterpret_cast<CComponent**>(&m_pMainTextureCom))))
+            return E_FAIL;
+    }
+
+    if (0 != lstrcmp(_pDesc->szNoisePrototypeTag, L""))
+    {
+        if (FAILED(Add_Component(m_iCurLevelID, _pDesc->szNoisePrototypeTag, TEXT("Com_Noise"), reinterpret_cast<CComponent**>(&m_pNoiseTextureCom))))
+            return E_FAIL;
+    }
 
     return S_OK;
 }
@@ -75,6 +102,9 @@ CFresnelModelObject* CFresnelModelObject::Clone(void* _pArg)
 
 void CFresnelModelObject::Free()
 {
+    Safe_Release(m_pNoiseTextureCom);
+    Safe_Release(m_pMainTextureCom);
+
     Safe_Release(m_pFresnelBuffer);
     Safe_Release(m_pColorBuffer);
 

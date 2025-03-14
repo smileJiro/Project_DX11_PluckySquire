@@ -82,9 +82,9 @@ HRESULT CButterGrump::Initialize(void* _pArg)
     m_pBossFSM->Add_State((_uint)BOSS_STATE::HOMINGBALL);
     m_pBossFSM->Add_State((_uint)BOSS_STATE::YELLOWBALL);
     m_pBossFSM->Add_State((_uint)BOSS_STATE::PURPLEBALL);
-    m_pBossFSM->Add_State((_uint)BOSS_STATE::WINGSLAM);
-    m_pBossFSM->Add_State((_uint)BOSS_STATE::ROCKVOLLEY);
-    m_pBossFSM->Add_State((_uint)BOSS_STATE::WINGSLICE);
+    //m_pBossFSM->Add_State((_uint)BOSS_STATE::WINGSLAM);
+    //m_pBossFSM->Add_State((_uint)BOSS_STATE::ROCKVOLLEY);
+    //m_pBossFSM->Add_State((_uint)BOSS_STATE::WINGSLICE);
     m_pBossFSM->Add_State((_uint)BOSS_STATE::SHIELD);
     m_pBossFSM->Add_State((_uint)BOSS_STATE::HIT);
     m_pBossFSM->Add_State((_uint)BOSS_STATE::DEAD);
@@ -97,7 +97,7 @@ HRESULT CButterGrump::Initialize(void* _pArg)
     pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, FIREBALL_SPIT_LOOP, true);
     pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, WINGSHIELD_ROCK_VOLLEY_LOOP, true);
     pModelObject->Set_Animation(IDLE);
-
+    
     pModelObject->Register_OnAnimEndCallBack(bind(&CButterGrump::Animation_End, this, placeholders::_1, placeholders::_2));
 
     Bind_AnimEventFunc("On_Attack", bind(&CButterGrump::On_Attack, this));
@@ -281,17 +281,27 @@ void CButterGrump::Change_Animation()
 
         case BOSS_STATE::HOMINGBALL:
             if (false == Is_Phase2())
+            {
                 static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(FIREBALL_SPIT_SMALL);
+                if (nullptr != m_pHomingEffect)
+                    m_pHomingEffect->Active_Effect(true);
+            }
             else
                 static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(FIREBALL_SPIT_BIG);
+
+
             break;
 
         case BOSS_STATE::YELLOWBALL:
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(FIREBALL_SPIT_SMALL);
+            if (nullptr != m_pYellowEffect)
+                m_pYellowEffect->Active_Effect(true);
             break;
 
         case BOSS_STATE::PURPLEBALL:
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(WINGSHIELD_ROCK_VOLLEY_INTO);
+            if (nullptr != m_pPurpleEffect)
+                m_pPurpleEffect->Active_Effect(true);
             break;
 
         case BOSS_STATE::WINGSLAM:
@@ -375,7 +385,7 @@ void CButterGrump::Attack()
         _vector vUp = XMVector3Normalize(XMVector3Cross(vLook, vRight));
 
         //vScale = { 0.2f, 0.2f, 1.f };
-        vScale = { 2.f, 2.f, 10.f };
+        vScale = { 2.f, 2.f, 5.f };
 
         if(false == Is_Phase2())
         {
@@ -1141,6 +1151,54 @@ HRESULT CButterGrump::Ready_PartObjects()
 
     m_PartObjects[BOSSPART_SHIELD]->Set_SocketMatrix(COORDINATE_3D, p3DModel->Get_BoneMatrix("buttergrump_righead_nose"));
 
+
+    /* Effects */
+    CEffect_System::EFFECT_SYSTEM_DESC EffectDesc = {};
+    EffectDesc.eStartCoord = COORDINATE_3D;
+    EffectDesc.isCoordChangeEnable = false;
+    EffectDesc.iSpriteShaderLevel = LEVEL_STATIC;
+    EffectDesc.szSpriteShaderTags = L"Prototype_Component_Shader_VtxPointInstance";
+    EffectDesc.iEffectShaderLevel = LEVEL_STATIC;
+    EffectDesc.szEffectShaderTags = L"Prototype_Component_Shader_VtxMeshEffect";
+    EffectDesc.szSpriteComputeShaderTag = L"Prototype_Component_Compute_Shader_SpriteInstance";
+    
+    m_PartObjects[BOSSPART_HOMING_EFFECT] = m_pHomingEffect =
+        static_cast<CEffect_System*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_iCurLevelID, TEXT("HomingBallOut.json"), &EffectDesc));
+
+    if (nullptr != m_pHomingEffect)
+    {
+        m_pHomingEffect->Set_Active(false);
+        m_pHomingEffect->Set_ParentMatrix(COORDINATE_3D, m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D));
+        m_pHomingEffect->Set_SpawnMatrix(p3DModel->Get_BoneMatrix("buttergrump_righead_jaw_end"));
+    }
+
+    Safe_AddRef(m_pHomingEffect);
+
+
+    m_PartObjects[BOSSPART_PURPLEBALL_EFFECT] = m_pPurpleEffect =
+        static_cast<CEffect_System*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_iCurLevelID, TEXT("PurpleBallOut.json"), &EffectDesc));
+
+    if (nullptr != m_pPurpleEffect)
+    {
+        m_pPurpleEffect->Set_Active(false);
+        m_pPurpleEffect->Set_ParentMatrix(COORDINATE_3D, m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D));
+        m_pPurpleEffect->Set_SpawnMatrix(p3DModel->Get_BoneMatrix("buttergrump_righead_jaw_end"));
+    }
+
+    Safe_AddRef(m_pPurpleEffect);
+
+    m_PartObjects[BOSSPART_YELLOWBALL_EFFECT] = m_pYellowEffect =
+        static_cast<CEffect_System*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_iCurLevelID, TEXT("YellowBallOut.json"), &EffectDesc));
+
+    if (nullptr != m_pYellowEffect)
+    {
+        m_pYellowEffect->Set_Active(false);
+        m_pYellowEffect->Set_ParentMatrix(COORDINATE_3D, m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D));
+        m_pYellowEffect->Set_SpawnMatrix(p3DModel->Get_BoneMatrix("buttergrump_righead_jaw_end"));
+    }
+
+    Safe_AddRef(m_pYellowEffect);
+
     return S_OK;
 }
 
@@ -1309,5 +1367,9 @@ void CButterGrump::Free()
 {
     Safe_Release(m_pBossFSM);
     
+    Safe_Release(m_pHomingEffect);
+    Safe_Release(m_pPurpleEffect);
+    Safe_Release(m_pYellowEffect);
+
     __super::Free();
 }

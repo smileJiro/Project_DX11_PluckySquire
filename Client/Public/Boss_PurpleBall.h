@@ -30,6 +30,10 @@ public:
 	virtual void Active_OnDisable() override;
 
 private:
+	ID3D11Buffer* m_pFresnelBuffer = { nullptr };
+	ID3D11Buffer* m_pColorBuffer = { nullptr };
+
+private:
 	virtual HRESULT					Ready_ActorDesc(void* _pArg);
 	virtual HRESULT					Ready_Components();
 	virtual HRESULT					Ready_PartObjects();

@@ -444,7 +444,7 @@ HRESULT CLevel_Chapter_02::Ready_Lights()
 	m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/DirectionalTest2.json"));
 	//m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/Chapter2_Night_Main.json"));
 #elif NDEBUG
-	m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/Chapter2_Bright.json"));
+	m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/Chapter2_Bright_Sky.json"));
 #endif // _DEBUG
 
 	m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/Chapter2_Bright.json"));
@@ -1879,8 +1879,13 @@ HRESULT CLevel_Chapter_02::Map_Object_Create(_wstring _strFileName)
 					hFile);
 			if (nullptr != pGameObject)
 			{
-				if (ContainWstring(pGameObject->Get_MapObjectModelName(), L"SM_sticky_notes"))
-					strIncludeLayerTag = L"Layer_Postit";
+				if (pGameObject->Is_Sksp())
+				{
+					if (ContainWstring(pGameObject->Get_MapObjectModelName(), L"SM_sticky_notes"))
+						strIncludeLayerTag = L"Layer_Postit";
+					else
+						strIncludeLayerTag = L"Layer_MapSkspObject";
+				}
 				m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, strIncludeLayerTag.c_str(), pGameObject);
 			}
 		}

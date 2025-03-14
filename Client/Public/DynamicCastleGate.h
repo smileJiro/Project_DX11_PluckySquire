@@ -26,6 +26,11 @@ public:
 	void Collapse();
 private:
 	HRESULT Ready_PartObjects();
+
+private:
+	_float m_fGateHalfHeight = 3.f;
+	_float m_fGateHalfWidth = 2.5;
+	_float m_fGateHalfThick = 0.2f;
 public:
 	static CDynamicCastleGate* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject* Clone(void* _pArg) override;

@@ -32,6 +32,7 @@ namespace Client
 		PR3D_COMBINE =				60, // ToneMapping
 
 		PR3D_BLEND =				70,
+		PR3D_TRAIL =				72,
 
 		PR3D_EFFECT =				80,
 
@@ -139,6 +140,7 @@ namespace Client
 		BOSS_PROJECTILE =			0x200000,	//보스 패턴 파훼용 투사체
 		RAY_TRIGGER =				0x400000,	//주변 물체의 씬 쿼리를 켜는 트리거
 		BLOCKER_JUMPPASS =			0x800000,	//플레이어 점프시에 충돌을 피하는 
+		FRIEND =					0x1000000,	
 
 
 		LAST =					0x40000000 // == 2의 32승 (32개 이상의 그룹은 X) -> enum은 기본 int므로, 오버플로우 발생 여지 있음. 최대값을 30승으로 제한. 0215 박예슬

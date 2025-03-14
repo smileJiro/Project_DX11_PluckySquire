@@ -111,7 +111,8 @@ HRESULT CMagic_Hand::Ready_PartObjects()
     EffectDesc.szMeshComputeShaderTag = L"Prototype_ComputeShader_Mesh";
 
     m_PartObjects[MAGICHAND_EFFECT] = m_pEffectSystem = static_cast<CEffect_System*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_iCurLevelID, TEXT("Prototype_Effect_MagicHand"), &EffectDesc));
-    m_pEffectSystem->Set_EffectPosition(XMVectorSet(2.f, 0.4f, -17.3f, 1.f));
+    //m_pEffectSystem->Set_EffectPosition(XMVectorSet(2.f, 0.4f, -17.3f, 1.f));
+    m_pEffectSystem->Set_ParentMatrix(COORDINATE_3D, m_pControllerTransform->Get_WorldMatrix_Ptr());
     m_pEffectSystem->Set_SpawnMatrix(pMatrix);
 
     return S_OK;

@@ -3,6 +3,7 @@
 #include "ModelObject.h"
 #include "Pooling_Manager.h"
 #include "GameInstance.h"
+#include "FresnelModelObject.h"
 
 CBoss_YellowBall::CBoss_YellowBall(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CProjectile_Monster(_pDevice, _pContext)
@@ -11,11 +12,28 @@ CBoss_YellowBall::CBoss_YellowBall(ID3D11Device* _pDevice, ID3D11DeviceContext* 
 
 CBoss_YellowBall::CBoss_YellowBall(const CBoss_YellowBall& _Prototype)
 	: CProjectile_Monster(_Prototype)
+    , m_pFresnelBuffer(_Prototype.m_pFresnelBuffer)
+    , m_pColorBuffer(_Prototype.m_pColorBuffer)
 {
+    Safe_AddRef(m_pFresnelBuffer);
+    Safe_AddRef(m_pColorBuffer);
 }
-
 HRESULT CBoss_YellowBall::Initialize_Prototype()
 {
+    FRESNEL_INFO tBulletFresnelInfo = {};
+    tBulletFresnelInfo.fBaseReflect = 1.85f;
+    tBulletFresnelInfo.fExp = -0.7f;
+    tBulletFresnelInfo.vColor = { 1.f, 0.943f, 0.f, 1.f };
+    tBulletFresnelInfo.fStrength = 1.f; // ¾È¾¸.
+    m_pGameInstance->CreateConstBuffer(tBulletFresnelInfo, D3D11_USAGE_DEFAULT, &m_pFresnelBuffer);
+
+
+    COLORS_INFO tColorsInfo = {};
+    tColorsInfo.vDiffuseColor = _float4(0.81f, 0.7f, 0.15f, 1.f);
+    tColorsInfo.vBloomColor = _float4(0.32f, 0.24f, 0.14f, 1.f);
+    tColorsInfo.vSubColor = _float4(0.221f, 0.095f, 0.05f, 1.f);
+    m_pGameInstance->CreateConstBuffer(tColorsInfo, D3D11_USAGE_DEFAULT, &m_pColorBuffer);
+
 	return S_OK;
 }
 
@@ -161,7 +179,7 @@ HRESULT CBoss_YellowBall::Ready_Components()
 
 HRESULT CBoss_YellowBall::Ready_PartObjects()
 {
-    CModelObject::MODELOBJECT_DESC BodyDesc{};
+    CFresnelModelObject::FRESNEL_MODEL_DESC BodyDesc{};
 
     BodyDesc.eStartCoord = m_pControllerTransform->Get_CurCoord();
     BodyDesc.iCurLevelID = m_iCurLevelID;
@@ -170,10 +188,10 @@ HRESULT CBoss_YellowBall::Ready_PartObjects()
     BodyDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
     BodyDesc.strModelPrototypeTag_3D = TEXT("S_FX_CMN_Sphere_01");
     BodyDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
-    BodyDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
+    BodyDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::NOISEFRESNEL;
 
     BodyDesc.iRenderGroupID_3D = RG_3D;
-    BodyDesc.iPriorityID_3D = PR3D_GEOMETRY;
+    BodyDesc.iPriorityID_3D = PR3D_EFFECT;
 
     BodyDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
 
@@ -182,7 +200,14 @@ HRESULT CBoss_YellowBall::Ready_PartObjects()
     BodyDesc.tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
     BodyDesc.tTransform3DDesc.fSpeedPerSec = 10.f;
 
-    m_PartObjects[PART_BODY] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &BodyDesc));
+    BodyDesc.pFresnelBuffer = m_pFresnelBuffer;
+    BodyDesc.pColorBuffer = m_pColorBuffer;
+    BodyDesc.szDiffusePrototypeTag = L"Prototype_Component_Texture_BossProjectileMain1";
+    BodyDesc.szNoisePrototypeTag = L"Prototype_Component_Texture_BossProjectileNoise1";
+    BodyDesc.vDiffuseScaling = { 1.f, 1.f };
+    BodyDesc.vNoiseScaling = { 3.f, 2.f };
+
+    m_PartObjects[PART_BODY] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_FresnelModelObject"), &BodyDesc));
     if (nullptr == m_PartObjects[PART_BODY])
         return E_FAIL;
 
@@ -220,5 +245,8 @@ CGameObject* CBoss_YellowBall::Clone(void* _pArg)
 
 void CBoss_YellowBall::Free()
 {
+    Safe_Release(m_pFresnelBuffer);
+    Safe_Release(m_pColorBuffer);
+
     __super::Free();
 }

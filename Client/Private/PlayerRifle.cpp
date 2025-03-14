@@ -50,12 +50,10 @@ HRESULT CPlayerRifle::Initialize(void* _pArg)
 	EffectDesc.szSpriteComputeShaderTag = L"Prototype_Component_Compute_Shader_SpriteInstance";
 
 	m_pShotEffect = static_cast<CEffect_System*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_iCurLevelID, TEXT("CyberShot.json"), &EffectDesc));
-	//if (nullptr == m_pShotEffect)
-	//	return E_FAIL;
 	if (nullptr != m_pShotEffect)
 	{
 		m_pShotEffect->Set_SpawnMatrix(&m_WorldMatrices[COORDINATE_3D]);
-		m_pShotEffect->Set_Position(XMVectorSet(0.08f, 0.f, 0.5f, 1.f));
+		//m_pShotEffect->Set_Position(XMVectorSet(0.08f, 0.f, 0.5f, 1.f));
 	}
 
 	return S_OK;
@@ -73,12 +71,12 @@ void CPlayerRifle::Update(_float _fTimeDelta)
 	{
 		m_fAccEffectDelay += _fTimeDelta;
 
-		if (m_isEffect && 0.25f <= m_fAccEffectDelay)
+		if (m_isEffect && 0.1f <= m_fAccEffectDelay)
 		{
 			m_fAccEffectDelay = 0.f;
 			m_isEffect = false;
 
-			m_pShotEffect->Stop_Spawn(0.15f);
+			m_pShotEffect->Stop_Spawn(0.1f);
 		}
 
 		m_pShotEffect->Update(_fTimeDelta);
@@ -129,6 +127,7 @@ void CPlayerRifle::Shoot()
 		{
 			m_isEffect = true;
 			m_pShotEffect->Active_Effect(false);
+			m_fAccEffectDelay = 0.f;
 		}
 
 	}

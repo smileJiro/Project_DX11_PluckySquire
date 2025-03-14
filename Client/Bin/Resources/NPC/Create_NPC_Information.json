@@ -86,7 +86,7 @@
 			"strCreateSection": 3,
 			"strDialogueId": "Page_First_Dialog_01",
 			"iStartAnimation": 3,
-			"vPositionX": -153.0,
+			"vPositionX": 153.0,
 			"vPositionY": -183.0,
 			"vPositionZ": 0.0,
 			"CollisionScaleX": 20.0,
