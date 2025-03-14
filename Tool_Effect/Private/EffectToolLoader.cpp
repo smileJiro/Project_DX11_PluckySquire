@@ -170,7 +170,7 @@ HRESULT CEffectToolLoader::Loading_Level_Tool()
 
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Model_Sphere"),
         C3DModel::Create(m_pDevice, m_pContext,
-            ("../Bin/Resources/Models/Nonanim/etc/S_FX_CMN_Sphere_01.model"
+            ("../Bin/Resources/Models/Nonanim/etc/S_FX_CMN_HalfSphere_01_2.model"
                 ), matPretransform))))
         return E_FAIL;
 
@@ -184,11 +184,11 @@ HRESULT CEffectToolLoader::Loading_Level_Tool()
         return E_FAIL;
 
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Component_Texture_Diffuse"), 
-        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effects/T_FX_CMN_Noise_06.dds")))))
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effects/T_FX_CMN_Noise_10.dds")))))
         return E_FAIL;
 
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Component_Texture_Distortion"),
-        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effects/T_FX_CMN_Noise_03_90.dds")))))
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effects/T_FX_CMN_Noise_09.dds")))))
         return E_FAIL;
 
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Component_Texture_Normal"),

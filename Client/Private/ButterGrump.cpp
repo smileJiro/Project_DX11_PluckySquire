@@ -287,7 +287,11 @@ void CButterGrump::Change_Animation()
                     m_pHomingEffect->Active_Effect(true);
             }
             else
+            {
                 static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(FIREBALL_SPIT_BIG);
+                if (nullptr != m_pHomingEffect)
+                    m_pHomingEffect->Active_Effect(true);
+            }
 
 
             break;

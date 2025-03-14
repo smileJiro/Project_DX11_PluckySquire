@@ -23,9 +23,9 @@ HRESULT CTestShadingModel::Initialize(void* _pArg)
     pDesc->iModelPrototypeLevelID_3D = LEVEL_TOOL;
     pDesc->strShaderPrototypeTag_3D = L"Prototype_Component_Shader_VtxMesh";
     //pDesc.iShaderPass_3D = ;
-    pDesc->iPriorityID_3D = PR3D_EFFECT;
+    pDesc->iPriorityID_3D = PR3D_PARTICLE;
     pDesc->iRenderGroupID_3D = RG_3D;
-    pDesc->tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 5.f);
+    pDesc->tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
     //pDesc.tTransform3DDesc.fSpeedPerSec = 1.f;
 
     if (FAILED(__super::Initialize(_pArg)))
@@ -98,6 +98,10 @@ void CTestShadingModel::Update(_float _fTimeDelta)
         }
 
         if (ImGui::DragFloat4("Sub Color", (_float*)&m_tColor.vSubColor, 0.01f))
+        {
+            m_pGameInstance->UpdateConstBuffer(m_tColor, m_pColorBuffer);
+        }
+        if (ImGui::DragFloat4("Inner Color", (_float*)&m_tColor.vInnerColor, 0.01f))
         {
             m_pGameInstance->UpdateConstBuffer(m_tColor, m_pColorBuffer);
         }

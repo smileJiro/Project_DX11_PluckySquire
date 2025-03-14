@@ -40,6 +40,8 @@ cbuffer ColorBuffer : register(b2)
     float4 vDiffuseColor;
     float4 vBloomColor;
     float4 vSubColor;
+    float4 vInnerColor;
+
 }
 
 /* 상수 테이블 */
@@ -528,27 +530,30 @@ PS_ACCUM PS_NOISEFRESNEL(PS_IN In)
     vViewDirection = normalize(vViewDirection);
     
     float FresnelValue = Compute_Fresnel(In.vNormal.xyz, vViewDirection, OneFresnel.fBaseReflect, OneFresnel.fExp, OneFresnel.fStrength);
-    float3 vFresnelColor = OneFresnel.vColor * FresnelValue;
+    float4 vFresnelColor = OneFresnel.vColor * FresnelValue;
     
     float vDistortion = g_NoiseTexture.Sample(LinearSampler, float2(In.vTexcoord.x * g_vNoiseScaling.x, In.vTexcoord.y * g_vNoiseScaling.y));
-    //float4 vDistortion = g_NoiseTexture.Sample(LinearSampler, float2(In.vTexcoord.x, In.vTexcoord.y));
     float vMain = g_DiffuseTexture.Sample(LinearSampler, (In.vTexcoord + float2(vDistortion, vDistortion)) * g_vDiffuseScaling);
-    //float4 vDiffuse = g_DiffuseTexture.Sample(LinearSampler, In.vTexcoord + float2(vDistortion.x, vDistortion.y))
-    
-    float3 vDefaultColor = lerp(vSubColor.xyz, vDiffuseColor.xyz, vMain);
-    float fWeight = FUNC_WEIGHT(In.vProjPos.w, vDiffuseColor.a);
 
-    Out.vAccumulate.xyz = lerp(vDefaultColor.xyz, vDefaultColor.xyz, FresnelValue);
-    Out.vAccumulate.xyz = Out.vAccumulate.rgb * vDiffuseColor.a * fWeight;
-    Out.vAccumulate.a = vDiffuseColor.a * fWeight;
-    Out.vRevealage.r = vDiffuseColor.a;
-    Out.vBright = vSubColor * fWeight;
+    
+    float4 vDefaultColor = lerp(vSubColor, vDiffuseColor, vMain);
+    float fWeight = FUNC_WEIGHT(In.vProjPos.w, vDiffuseColor.a);
+    float4 vOutColor = lerp(vDefaultColor, vFresnelColor, FresnelValue);
+
+    vOutColor.xyz = vOutColor.xyz * vOutColor.a + vInnerColor.xyz * (1.f - vOutColor.a);
+    
     //Out.vDiffuse.xyz = lerp(vMain * vDiffuseColor.xyz, vFresnelColor.xyz, FresnelValue);
     //Out.vDiffuse.xyz = lerp(vDefaultColor.xyz, vFresnelColor.xyz, FresnelValue);
     //Out.vDiffuse.xyz = vDefaultColor.xyz + vFresnelColor.xyz * FresnelValue;
-    //Out.vDiffuse = (OneFresnel.vColor * FresnelValue);
+    ////Out.vDiffuse = (OneFresnel.vColor * FresnelValue);
     //Out.vDiffuse.w = vDiffuseColor.a;
     //Out.vBrightness = vBloomColor;
+    
+    Out.vAccumulate.xyz = vOutColor.rgb * vOutColor.a * fWeight;
+    Out.vAccumulate.a = vOutColor.a * fWeight;
+    Out.vRevealage.r = vOutColor.a;
+    Out.vBright = vBloomColor * fWeight;
+    
     return Out;
 }
 
