@@ -462,7 +462,7 @@ void CCharacter::Set_2DDirection(E_DIRECTION _eEDir)
 
 void CCharacter::Set_2DDirection(F_DIRECTION _eEDir)
 {
-	Set_2DDirection( FDir_To_EDir(_eEDir));
+	Set_2DDirection( To_EDirection(_eEDir));
 }
 
 
@@ -631,13 +631,12 @@ _vector CCharacter::StepAssist(_fvector _vVelocity,_float _fTimeDelta)
 
 void CCharacter::Move(_fvector _vVelocity, _float _fTimeDelta)
 {
-
+    _vector vVeclocity = XMVectorSetW(_vVelocity, 0.f); /** m_tStat[COORDINATE_3D].fMoveSpeed*/  /** fDot*/;
 
     if (COORDINATE_3D == Get_CurCoord())
     {
         m_v3DTargetDirection = XMVector4Normalize(_vVelocity);
         CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
-        _vector vVeclocity = _vVelocity /** m_tStat[COORDINATE_3D].fMoveSpeed*/  /** fDot*/;
 
         vVeclocity = XMVectorSetY(vVeclocity, XMVectorGetY(pDynamicActor->Get_LinearVelocity()));
 
@@ -655,7 +654,7 @@ void CCharacter::Move(_fvector _vVelocity, _float _fTimeDelta)
     }
     else
     {
-        m_pControllerTransform->Go_Direction(_vVelocity, XMVectorGetX(XMVector3Length(_vVelocity)), _fTimeDelta);
+        m_pControllerTransform->Go_Direction(vVeclocity, XMVectorGetX(XMVector3Length(vVeclocity)), _fTimeDelta);
 
         if (m_bScrollingMode)
         {
@@ -707,7 +706,7 @@ _bool CCharacter::Move_To(_fvector _vPosition, _float _fTimeDelta)
 		return true;
 	}
 	_float fMoveSpeed = m_pControllerTransform->Get_SpeedPerSec();
-	_vector vDir = XMVector3Normalize( _vPosition - vCurrentPos);
+	_vector vDir = XMVector3Normalize( XMVectorSetW( _vPosition - vCurrentPos,0.f));
 
     Move(vDir * fMoveSpeed, _fTimeDelta);
     return false;
@@ -866,7 +865,7 @@ _bool CCharacter::Process_AutoMove(_float _fTimeDelta)
 _bool CCharacter::Process_AutoMove_MoveTo(const AUTOMOVE_COMMAND& _pCommand, _float _fTimeDelta)
 {
     _vector vPosition = Get_FinalPosition();
-    _vector vDir = XMVector3Normalize(_pCommand.vTarget - vPosition);
+    _vector vDir = XMVector3Normalize(XMVectorSetW( _pCommand.vTarget - vPosition,0.f));
 
     COORDINATE eCoord = Get_CurCoord();
     if (COORDINATE_2D == eCoord)
@@ -877,7 +876,7 @@ _bool CCharacter::Process_AutoMove_MoveTo(const AUTOMOVE_COMMAND& _pCommand, _fl
     {
         Rotate_To_Radians(vDir, m_pControllerTransform->Get_RotationPerSec());
     }
-    _bool _bResult = Move_To(_pCommand.vTarget, _fTimeDelta);
+    _bool _bResult = Move_To(XMVectorSetW(_pCommand.vTarget,1.f), _fTimeDelta);
     if (_bResult)
         Stop_Move();
     return _bResult;

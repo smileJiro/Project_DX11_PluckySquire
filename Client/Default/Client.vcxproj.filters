@@ -1770,6 +1770,10 @@
     <ClInclude Include="..\public\Sneak_SentryTroop.h">
       <Filter>05.MiniGames\Minigame_Sneak</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_CannonPortal.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\DynamicCastleGate.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -2833,6 +2837,10 @@
     <ClCompile Include="..\private\Sneak_SentryTroop.cpp">
       <Filter>05.MiniGames\Minigame_Sneak</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_CannonPortal.cpp">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\DynamicCastleGate.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

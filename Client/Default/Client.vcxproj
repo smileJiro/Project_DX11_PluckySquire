@@ -218,6 +218,7 @@
     <ClInclude Include="..\Public\DefenderCapsule.h" />
     <ClInclude Include="..\Public\DefenderMedShip.h" />
     <ClInclude Include="..\Public\DefenderPerson.h" />
+    <ClInclude Include="..\Public\DynamicCastleGate.h" />
     <ClInclude Include="..\Public\EvictedSword.h" />
     <ClInclude Include="..\Public\FatherGame_Progress_MakeFather.h" />
     <ClInclude Include="..\Public\FatherGame_Progress_PartBody.h" />
@@ -227,6 +228,7 @@
     <ClInclude Include="..\public\FresnelModelObject.h" />
     <ClInclude Include="..\public\Mat.h" />
     <ClInclude Include="..\public\Mug_Alien.h" />
+    <ClInclude Include="..\Public\PlayerState_CannonPortal.h" />
     <ClInclude Include="..\Public\PlayerState_RetriveSword.h" />
     <ClInclude Include="..\public\PortalLocker_LayerCount.h" />
     <ClInclude Include="..\Public\Projectile_SketchSpace_UFO.h" />
@@ -581,6 +583,7 @@
     <ClCompile Include="..\Private\DefenderCapsule.cpp" />
     <ClCompile Include="..\Private\DefenderMedShip.cpp" />
     <ClCompile Include="..\Private\DefenderPerson.cpp" />
+    <ClCompile Include="..\Private\DynamicCastleGate.cpp" />
     <ClCompile Include="..\Private\EvictedSword.cpp" />
     <ClCompile Include="..\Private\FatherGame_Progress_MakeFather.cpp" />
     <ClCompile Include="..\Private\FatherGame_Progress_PartBody.cpp" />
@@ -590,6 +593,7 @@
     <ClCompile Include="..\private\FresnelModelObject.cpp" />
     <ClCompile Include="..\private\Mat.cpp" />
     <ClCompile Include="..\private\Mug_Alien.cpp" />
+    <ClCompile Include="..\Private\PlayerState_CannonPortal.cpp" />
     <ClCompile Include="..\Private\PlayerState_RetriveSword.cpp" />
     <ClCompile Include="..\private\PortalLocker_LayerCount.cpp" />
     <ClCompile Include="..\Private\Projectile_SketchSpace_UFO.cpp" />

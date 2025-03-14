@@ -125,6 +125,7 @@
 #include "Rubboink_Tiny.h"
 #include "MudPit.h"
 #include "Zipline.h"
+#include "DynamicCastleGate.h"
 #include "DefenderPlayer.h"
 #include "DefenderPlayerProjectile.h"
 #include "DefenderSpawner.h"
@@ -634,6 +635,7 @@ HRESULT CLoader::Loading_Level_Static()
 		CPortalLocker::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 	
+
 	/* For. Prototype_GameObject_Effect2D */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Effect2D"),
 		CEffect2D::Create(m_pDevice, m_pContext))))
@@ -1426,7 +1428,9 @@ HRESULT CLoader::Loading_Level_Chapter_4(LEVEL_ID _eLoadLevelID)
 		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Zipline"),
 			CZipline::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
-
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_DynamicCastleGate"),
+			CDynamicCastleGate::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
 		if (FAILED(m_pGameInstance->Load_Json_InLevel(TEXT("../Bin/DataFiles/Monsters/Chapter4_Monsters_2D.json"), TEXT("Chapter4_Monsters_2D"), _eLoadLevelID)))
 			return E_FAIL;
 		

@@ -34,7 +34,7 @@ void CPlayerState_ExitPortal::Update(_float _fTimeDelta)
 		{
 			E_DIRECTION eEDIr = To_EDirection(m_pOwner->Get_LookDirection());
 			m_pOwner->Set_2DDirection(eEDIr);
-			F_DIRECTION eFDir = EDir_To_FDir(eEDIr);
+			F_DIRECTION eFDir = To_FDirection(eEDIr);
 			switch (eFDir)
 			{
 			case Client::F_DIRECTION::LEFT:
@@ -115,12 +115,8 @@ void CPlayerState_ExitPortal::Shoot_Player3D()
 		vImpulse = { -1.f,0.f,0.f ,0.f };
 		break;
 	case Engine::NORMAL_DIRECTION::POSITIVE_Y:
-		vImpulse = { 0.f,1.f,0.f ,0.f };
-
-		break;
 	case Engine::NORMAL_DIRECTION::NEGATIVE_Y:
-		vImpulse = { 0.f,-1.f,0.f ,0.f };
-
+		vImpulse = { 0.f,1.f,0.f ,0.f };
 		break;
 	case Engine::NORMAL_DIRECTION::POSITIVE_Z:
 		vImpulse = { 0.f,0.f,1.f,0.f };
@@ -162,7 +158,7 @@ void CPlayerState_ExitPortal::Shoot_Player3D()
 			vCamLook.m128_f32[2] /= vCamLook.m128_f32[2];
 		}
 		//2D상태일 때 플레이어의 3D좌표계방향 구하기
-		_vector vNewLookDIr = FDir_To_Vector(EDir_To_FDir(m_pOwner->Get_2DDirection()));
+		_vector vNewLookDIr = FDir_To_Vector(To_FDirection(m_pOwner->Get_2DDirection()));
 		vNewLookDIr = XMVectorSetZ(vNewLookDIr, XMVectorGetY(vNewLookDIr));
 		vNewLookDIr = XMVectorSetY(vNewLookDIr, 0.f);
 

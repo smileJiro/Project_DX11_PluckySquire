@@ -33,6 +33,7 @@
 #include "JumpPad.h"
 #include "Zipline.h"
 #include "Door_Red.h"
+#include "DynamicCastleGate.h"
 #include "Postit_Page.h"
 
 #include "RayShape.h"
@@ -1409,6 +1410,15 @@ HRESULT CLevel_Chapter_04::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 		m_eLevelID, _strLayerTag, &ZipDesc)))
 		return E_FAIL;
 
+
+	//Castle Gate
+		//임시로 주사위 만들어 봄.
+	CDynamicCastleGate::CONTAINEROBJ_DESC tGateDesc{};
+	tGateDesc.eStartCoord = COORDINATE_3D;
+	tGateDesc.iCurLevelID = m_eLevelID;
+	tGateDesc.tTransform3DDesc.vInitialPosition = _float3(0.f, 0.f, 0.f);
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_DynamicCastleGate"), m_eLevelID, TEXT("Layer_Dynamics"), &tGateDesc)))
+		return E_FAIL;
 	return S_OK;
 }
 

@@ -117,6 +117,8 @@ void CMiniGame_Defender::Set_GameState(DEFENDER_PROGRESS_STATE _eState)
     case Client::CMiniGame_Defender::DEFENDER_PROG_ENTERED:
     {
 		m_pPlayer->Set_BlockPlayerInput(true);
+        m_pPlayer->Set_Position(m_vStart_Position);
+		m_pPlayer->Set_2DDirection(E_DIRECTION::RIGHT);
         CPortal* pTargetPortal = static_cast<CPortal_Default*>(static_cast<CSection_2D_PlayMap*>(CSection_Manager::GetInstance()->Find_Section(m_strSectionName))->Get_Portal(0));
         if (pTargetPortal)
             pTargetPortal->Set_Active(false);
