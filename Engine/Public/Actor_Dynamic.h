@@ -41,6 +41,7 @@ public:
 
 	virtual void				Add_Force(const _float3& _vForce);// ÀÏ¹İÀûÀÎ Èû
 	virtual void				Add_Impulse(const _float3& _vForce); // °­ÇÑ Èû
+	virtual void				Add_Torque(const _float3& _vTorque); // °­ÇÑ Èû
 
 
 	virtual void				Set_ActorOffsetMatrix(_fmatrix _ActorOffsetMatrix) override;

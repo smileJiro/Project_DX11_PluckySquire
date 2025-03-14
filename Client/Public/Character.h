@@ -13,13 +13,13 @@ enum class AUTOMOVE_TYPE
 {
 	//임의의 지점까지 이동하기
 	MOVE_TO,
-	//특정 방향으로 이동하기
-	MOVE_TOWARD,
 	//보는 방향만 바꾸기
 	LOOK_DIRECTION,
-	//애니메이션만 바꾸기
+	//특정 방향으로 이동하기(미구현)
+	MOVE_TOWARD,
+	//애니메이션만 바꾸기 (미구현)
 	CHANGE_ANIMATION,
-	//그냥 대기하기
+	//그냥 대기하기 (미구현)
 	WAIT,
 	LAST
 };

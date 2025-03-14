@@ -19,7 +19,8 @@ private:
 	
 	_bool			m_isDisPlayDialogue = { false };
 	CNPC*			m_pNPC = { nullptr };
-
+	
+	vector<CGameObject*>	m_DialogTargets;
 	
 public:
 	_bool								Get_DisPlayDialogue() { return m_pDialogue->Get_DisPlayDialogue(); }
@@ -28,9 +29,26 @@ public:
 	void								Set_DialogId(const _tchar* _id, const _tchar* _strCurSection = nullptr, _bool _DisplayDialogue = true, _bool _DisPlayPortrait = true);
 	CDialog*							Get_Dialog() { return m_pDialogue; }
 
+	void								Set_DialogTarget(CGameObject* _Target)
+	{
+		m_DialogTargets.push_back(_Target);
+		Safe_AddRef(_Target);
+	}
+	CGameObject*						Get_DialogTarget(_uint _index) { return m_DialogTargets[_index]; }
+	_uint								Get_DialogTargetCount() { return (_uint)m_DialogTargets.size(); }
+	void								Clear_DialogTarget();
+
 	void								Set_Dialog(CDialog* _pDialog) { m_pDialogue = _pDialog; Safe_AddRef(_pDialog);}
-	void								Set_NPC(CNPC* _npc) { m_pNPC = _npc; Safe_AddRef(_npc); }
-	void								Set_ActionChange(_int _AnimIndex) { m_pNPC->Set_SocialNpcAnimationIndex(_AnimIndex); }
+	//void								Set_NPC(CNPC* _npc) { m_pNPC = _npc; Safe_AddRef(_npc); }
+	void								Set_NPC(CGameObject* _Target)
+	{ 
+		m_DialogTargets.push_back(_Target);
+		Safe_AddRef(_Target);
+	}
+
+	//void								Set_ActionChange(_int _AnimIndex) { m_pNPC->Set_SocialNpcAnimationIndex(_AnimIndex); }
+
+	void								Set_ActionChange(_int _AnimIndex);
 
 	void								Set_DialogEnd();
 	void								Set_DialoguePos(_float3 _vPos) { m_pDialogue->Set_DialoguePos(_vPos); }

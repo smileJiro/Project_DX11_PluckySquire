@@ -2049,7 +2049,7 @@
 		},
 		{
 			"id": "Store_Dialog_01",
-			"Section": "Chapter2_P0304",
+			"Section": "Chapter2_P1112",
 			"lines": [
 				{
 					"Portrait": 2,
@@ -2367,115 +2367,7 @@
 					"Green": 0,
 					"Blue": 0
 				}
-			]
-		},
-		{
-			"id": "Dialog_TalkerChange_Test_01",
-			"Section": "Chapter2_P1112",
-			"isChangeTalker": true,
-			"lines": [
-				{
-					"Portrait": 0,
-					"Talker": "TEST",
-					"BG": 13,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": true,
-					"TalkerIndex": 0,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "0번 대상자이에요",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 1,
-					"Talker": "TEST",
-					"BG": 2,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": true,
-					"TalkerIndex": 1,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "1번 대상자이에요",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 1,
-					"Talker": "TEST",
-					"BG": 2,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": true,
-					"TalkerIndex": 1,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "1번 대상자이에요",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 1,
-					"Talker": "TEST",
-					"BG": 2,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": true,
-					"TalkerIndex": 0,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "0번 대상자이에요",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 1,
-					"Talker": "TEST",
-					"BG": 2,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": true,
-					"TalkerIndex": 0,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "0번 대상자이에요",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 1,
-					"Talker": "TEST",
-					"BG": 2,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": true,
-					"TalkerIndex": 1,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "1번 대상자이에요",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				}
+				
 			]
 		}
 	]

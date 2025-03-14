@@ -5,6 +5,7 @@
 #include "Section_Manager.h"
 #include "Dialog_Manager.h"
 #include "Player.h"
+#include "Shop_Manager.h"
 
 
 
@@ -159,7 +160,10 @@ void CInteraction_E::Late_Update(_float _fTimeDelta)
 	
 		// 무조건 플레이어 머리 위에만 띄운다로 스펙 변경 됨.
 	
+
 		Cal_PlayerHighPos(pGameObejct);
+		Render_InteractionE();
+		
 	}
 }
 
@@ -168,22 +172,17 @@ void CInteraction_E::Late_Update(_float _fTimeDelta)
 HRESULT CInteraction_E::Render()
 {
 
+	
+
 	if (COORDINATE_2D == Uimgr->Get_Player()->Get_CurCoord())
 	{
 
 	}
 
-	// 다이얼로그 중일땐 랜더 끄기
-	if (true == CDialog_Manager::GetInstance()->Get_DisPlayDialogue())
+
+	if (false == m_isDisplayInteractionE)
 		return S_OK;
 
-	// 인터렉션 진행 중일 때 랜더 끄기
-
-	IInteractable* pInteractableObject = Uimgr->Get_Player()->Get_InteractableObject();
-	if (nullptr == pInteractableObject)
-		return S_OK;
-
-	
 
 
 	if (true == m_isRender /* && COORDINATE_2D == Uimgr->Get_Player()->Get_CurCoord()*/)
@@ -428,7 +427,14 @@ void CInteraction_E::Cal_PlayerHighPos(CGameObject* _pGameObject)
 		//	m_preSectionName = TEXT(" ");
 		//	m_isDeleteRender = true;
 		//}
+
+
+		
 	}
+
+	if (false == m_isDisplayInteractionE)
+		m_isDisplayInteractionE = true;
+
 }
 
 void CInteraction_E::Cal_ObjectPos(CGameObject* _pGameObject)
@@ -650,4 +656,21 @@ void CInteraction_E::Display_Text(_float3 _vPos, _float2 _vRTSize, IInteractable
 			m_pGameInstance->Render_Font(TEXT("Font18"), m_strDisplayText.c_str(), _float2(vTextPos.x, vTextPos.y - g_iWinSizeY / 80.f), XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f));
 	}
 
+}
+
+void CInteraction_E::Render_InteractionE()
+{
+	// 다이얼로그 중일땐 랜더 끄기
+	if (true == CDialog_Manager::GetInstance()->Get_DisPlayDialogue())
+		m_isDisplayInteractionE = false;
+
+	// 인터렉션 진행 중일 때 랜더 끄기
+	IInteractable* pInteractableObject = Uimgr->Get_Player()->Get_InteractableObject();
+	if (nullptr == pInteractableObject)
+		m_isDisplayInteractionE = false;
+
+	// 상점 진행 중일 때 랜더 끄기
+	if (true == CShop_Manager::GetInstance()->Get_isOpenShop())
+		m_isDisplayInteractionE = false;
+								
 }
