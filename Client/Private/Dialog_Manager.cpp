@@ -61,6 +61,52 @@ void CDialog_Manager::Set_DialogId(const _tchar* _id, const _tchar* _strCurSecti
 	m_pDialogue->Set_DisplayPortraitRender(_DisPlayPortrait);
 }
 
+void CDialog_Manager::Clear_DialogTarget()
+{
+	for (int i = 0; i < m_DialogTargets.size(); ++i)
+	{
+		Safe_Release(m_DialogTargets[i]);
+	}
+	m_DialogTargets.clear();
+}
+
+void CDialog_Manager::Set_ActionChange(_int _AnimIndex)
+{
+	// 현재 다이얼로그를 알아야한다.
+	// 현재 다이얼로그의 talkerchange가 있는지 알아야한다.
+	// 현재 다이얼로그 라인에 target을 알아야한다.
+
+	// 해당 타겟의 애니메이션을 변경시킨다.
+
+	// 타겟 변경이 없을경우 (일반적인 경우)
+	if (false == m_pDialogue->isCurDialogTargetChange())
+	{
+		CNPC* pNPC = dynamic_cast<CNPC*>(m_DialogTargets[0]);
+
+		if (nullptr == pNPC)
+			assert(TEXT("DialogMGR pNPC"));
+
+		pNPC->Set_SocialNpcAnimationIndex(_AnimIndex);
+
+
+
+
+	}
+	else
+	{
+		_int targetIndex = m_pDialogue->Get_TargetIndex();
+
+		CNPC* pNPC = dynamic_cast<CNPC*>(m_DialogTargets[targetIndex]);
+
+		if (nullptr == pNPC)
+			assert(TEXT("TARGET NPC NOT FOUND"));
+
+		pNPC->Set_SocialNpcAnimationIndex(_AnimIndex);
+	}
+
+
+}
+
 void CDialog_Manager::Set_DialogEnd()
 {
 	m_pDialogue->Set_strCurSection(L"");
@@ -100,6 +146,12 @@ HRESULT CDialog_Manager::Level_Exit(_int iCurLevelID, _int _iChangeLevelID, _int
 		m_pNPC = nullptr;
 	}
 
+	for (int i = 0; i < m_DialogTargets.size(); ++i)
+	{
+		Safe_Release(m_DialogTargets[i]);
+	}
+	m_DialogTargets.clear();
+
 
 	return S_OK;
 }
@@ -123,6 +175,13 @@ HRESULT CDialog_Manager::Level_Enter(_int _iChangeLevelID)
 
 void CDialog_Manager::Free()
 {
+	for (int i = 0; i < m_DialogTargets.size(); ++i)
+	{
+		Safe_Release(m_DialogTargets[i]);
+	}
+	m_DialogTargets.clear();
+
+
 	Safe_Release(m_pGameInstance);
 	Safe_Release(m_pDialogue);
 	Safe_Release(m_pNPC);
