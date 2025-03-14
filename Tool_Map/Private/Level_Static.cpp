@@ -13,11 +13,11 @@ HRESULT CLevel_Static::Initialize()
 {
 	CBackGround::BACKGROUND_DESC Desc = {};
 
-	Desc.strTextureComponentTag = L"Prototype_Component_Texture_MapTool_Logo";
-	CGameObject* pGameObject = nullptr;
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BackGround"),
-		LEVEL_STATIC, L"Layer_Background", &pGameObject, &Desc)))
-		return E_FAIL;
+	//Desc.strTextureComponentTag = L"Prototype_Component_Texture_MapTool_Logo";
+	//CGameObject* pGameObject = nullptr;
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BackGround"),
+	//	LEVEL_STATIC, L"Layer_Background", &pGameObject, &Desc)))
+	//	return E_FAIL;
 	m_pGameInstance->Set_DebugRender(false);
 
 
