@@ -40,6 +40,7 @@
 #include "Postit_Page.h"
 #include "Door_Yellow.h"
 #include "C08_Box.h"
+#include "Beetle_Corpse.h"
 
 #include "RayShape.h"
 #include "CarriableObject.h"
@@ -425,6 +426,25 @@ void CLevel_Chapter_08::Update(_float _fTimeDelta)
 			SECTION_MGR->Remove_Section(L"Chapter8_SKSP_10");
 				//});
 		}
+	}
+
+	if (KEY_DOWN(KEY::NUMPAD9))
+	{
+		_float3 vPos = {-90.f, 65.2f, 18.3f};
+
+		CBeetle::MONSTER_DESC Beetle_Desc;
+		Beetle_Desc.iCurLevelID = m_eLevelID;
+		Beetle_Desc.eStartCoord = COORDINATE_3D;
+		Beetle_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+		Beetle_Desc.tTransform3DDesc.vInitialPosition = vPos;
+		Beetle_Desc.isSneakMode = true;
+		Beetle_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER8_BEETLE1;
+
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, TEXT("Layer_Monster"), &Beetle_Desc)))
+			return;
+
+		vPos.z -= 10.f;
+		CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Beetle_Corpse"), COORDINATE_3D, &vPos);
 	}
 
 }
@@ -1466,7 +1486,17 @@ HRESULT CLevel_Chapter_08::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 		m_eLevelID, _strLayerTag, &CarriDesc)))
 		return E_FAIL;
 
-		
+
+
+	Pooling_DESC Pooling_Desc;
+	Pooling_Desc.iPrototypeLevelID = m_eLevelID;
+	Pooling_Desc.strLayerTag = _strLayerTag;
+	Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Beetle_Corpse");
+
+	CBeetle_Corpse::CARRIABLE_DESC* Beetle_CorpseDesc = new CBeetle_Corpse::CARRIABLE_DESC;
+	Beetle_CorpseDesc->iCurLevelID = m_eLevelID;
+
+	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Beetle_Corpse"), Pooling_Desc, Beetle_CorpseDesc);
 
 	return S_OK;
 }

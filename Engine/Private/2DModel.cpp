@@ -248,6 +248,17 @@ void C2DModel::Set_Animation(_uint _iIdx, _bool _bReverse)
 	m_iCurAnimIdx = _iIdx;
 }
 
+void C2DModel::Set_Progress(_uint _iIdx, _float _fProgress, _bool _bReverse)
+{
+	_int iSize = m_Animation2Ds.size() - 1;
+	if (iSize < (_int)_iIdx)
+	{
+		cout << "애니메이션 인덱스가 범위를 벗어났습니다." << endl;
+		return;
+	}
+	m_Animation2Ds[_iIdx]->Set_Progress(_fProgress, _bReverse);
+}
+
 void C2DModel::Switch_Animation(_uint _iIdx, _bool _bReverse)
 {
 	_int iTemp = (_int)m_Animation2Ds.size() - 1;

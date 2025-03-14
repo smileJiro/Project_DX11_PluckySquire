@@ -544,6 +544,11 @@ void CModelObject::Set_ReverseAnimation(_bool _bReverse)
 	m_pControllerModel->Get_Model(Get_CurCoord())->Switch_Reverse(_bReverse);
 }
 
+void CModelObject::Set_Progress(COORDINATE _eCoord, _uint _iIdx, _float _fProgress, _bool _bReverse)
+{
+    m_pControllerModel->Get_Model(Get_CurCoord())->Set_Progress(_iIdx, _fProgress, _bReverse);
+}
+
 _bool CModelObject::Is_DuringAnimation()
 {
     return m_pControllerModel->Get_Model(Get_CurCoord())->Is_DuringAnimation();

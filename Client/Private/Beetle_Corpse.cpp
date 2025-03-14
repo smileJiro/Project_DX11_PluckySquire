@@ -20,9 +20,9 @@ HRESULT CBeetle_Corpse::Initialize(void* _pArg)
 	Beetle_CorpseModelDesc->eStartCoord = COORDINATE_3D;
 	Beetle_CorpseModelDesc->eCrriableObjId = CARRIABLE_OBJ_ID::BEETLE_CORPSE;
 	Beetle_CorpseModelDesc->vHeadUpRoolPitchYaw3D = { 0.f,0.f,0.f };
-	Beetle_CorpseModelDesc->vHeadUpOffset3D = { 0.f,1.8f,0.f };
+	Beetle_CorpseModelDesc->vHeadUpOffset3D = { 0.f,1.5f,0.f };
 	Beetle_CorpseModelDesc->isCoordChangeEnable = false;
-	Beetle_CorpseModelDesc->iModelPrototypeLevelID_3D = Beetle_CorpseModelDesc->iCurLevelID;
+	Beetle_CorpseModelDesc->iModelPrototypeLevelID_3D = LEVEL_STATIC;
 	Beetle_CorpseModelDesc->strModelPrototypeTag_3D = TEXT("beetle_01");
 	Beetle_CorpseModelDesc->strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxAnimMesh");
 	Beetle_CorpseModelDesc->iRenderGroupID_3D = RG_3D;
@@ -48,7 +48,7 @@ HRESULT CBeetle_Corpse::Initialize(void* _pArg)
 	ShapeData.isTrigger = false;
 	ShapeData.FilterData.MyGroup = OBJECT_GROUP::DYNAMIC_OBJECT;
 	ShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::DYNAMIC_OBJECT | OBJECT_GROUP::PLAYER;
-	XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(0.0f, 0.f, 0.f));
+	XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(0.0f, ShapeDesc.vHalfExtents.y, 0.f));
 	ActorDesc.ShapeDatas.push_back(ShapeData);
 
 	SHAPE_SPHERE_DESC ShapeDesc2 = {};
@@ -71,30 +71,42 @@ HRESULT CBeetle_Corpse::Initialize(void* _pArg)
 	if (FAILED(__super::Initialize(Beetle_CorpseModelDesc)))
 		return E_FAIL;
 
-	// 2D 충돌용 콜라이더 추가.
-	m_p2DColliderComs.resize(2);
-	//static_cast<CCollider_Circle*> (m_p2DColliderComs[1])->Set_Radius();
-	CCollider_Circle::COLLIDER_CIRCLE_DESC CircleDesc = {};
+	//// 2D 충돌용 콜라이더 추가.
+	//m_p2DColliderComs.resize(2);
+	////static_cast<CCollider_Circle*> (m_p2DColliderComs[1])->Set_Radius();
+	//CCollider_Circle::COLLIDER_CIRCLE_DESC CircleDesc = {};
 
-	CircleDesc.pOwner = this;
-	CircleDesc.fRadius = 20.f;
-	_float3 vScale = m_pControllerTransform->Get_Transform(COORDINATE_2D)->Get_Scale();
-	CircleDesc.vScale = { 1.f / vScale.x, 1.f / vScale.y };
-	CircleDesc.vOffsetPosition = { 0.f, 0.f };
-	CircleDesc.isBlock = false;
-	CircleDesc.isTrigger = true;
-	CircleDesc.iCollisionGroupID = OBJECT_GROUP::GIMMICK_OBJECT;
+	//CircleDesc.pOwner = this;
+	//CircleDesc.fRadius = 20.f;
+	//_float3 vScale = m_pControllerTransform->Get_Transform(COORDINATE_2D)->Get_Scale();
+	//CircleDesc.vScale = { 1.f / vScale.x, 1.f / vScale.y };
+	//CircleDesc.vOffsetPosition = { 0.f, 0.f };
+	//CircleDesc.isBlock = false;
+	//CircleDesc.isTrigger = true;
+	//CircleDesc.iCollisionGroupID = OBJECT_GROUP::GIMMICK_OBJECT;
 
-	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
-		TEXT("Com_Body2DCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[1]), &CircleDesc)))
-		return E_FAIL;
+	//if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
+	//	TEXT("Com_Body2DCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[1]), &CircleDesc)))
+	//	return E_FAIL;
 
+
+	Set_Animation(7);
+	Set_Progress(COORDINATE_3D, 7, 1.f);
+	//m_pControllerModel->Play_Animation(0.f);
+	Set_PlayingAnim(false);
+
+
+	m_pActorCom->Set_Mass(2.f);
 
     return S_OK;
 }
 
 void CBeetle_Corpse::Update(_float _fTimeDelta)
 {
+	_float4 vRotation;
+	m_pGameInstance->MatrixDecompose(nullptr, &vRotation, nullptr, Get_FinalWorldMatrix());
+
+	cout << "업뎃 - X : " << vRotation.x << " Y : " << vRotation.y << "Z : " << vRotation.z << endl;
 	__super::Update(_fTimeDelta);
 }
 

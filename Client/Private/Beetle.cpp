@@ -5,6 +5,7 @@
 #include "ModelObject.h"
 #include "DetectionField.h"
 #include "Sneak_DetectionField.h"
+#include "Pooling_Manager.h"
 
 CBeetle::CBeetle(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : CMonster(_pDevice, _pContext)
@@ -40,7 +41,7 @@ HRESULT CBeetle::Initialize(void* _pArg)
     pDesc->fCoolTime = 2.f;
 
     pDesc->_tStat.iMaxHP = 5;
-    pDesc->_tStat.iHP = 5;
+    pDesc->_tStat.iHP = 1;
     pDesc->_tStat.iDamg = 1;
 
     if (FAILED(Ready_ActorDesc(pDesc)))
@@ -349,7 +350,16 @@ void CBeetle::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
         break;
 
     case DIE:
+    {
         Monster_Death();
+        _float3 vPos;
+        _float4 vRotation;
+        m_pGameInstance->MatrixDecompose(nullptr, &vRotation, &vPos, Get_FinalWorldMatrix());
+		
+        cout << "»ý¼º - X : " << vRotation.x << " Y : " << vRotation.y << "Z : " << vRotation.z << endl;
+        //XMStoreFloat4(&vRotation, XMQuaternionMultiply(XMQuaternionRotationAxis(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(45.f)), XMLoadFloat4(&vRotation)));
+        CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Beetle_Corpse"), COORDINATE_3D, &vPos, &vRotation);
+    }
         break;
 
     default:

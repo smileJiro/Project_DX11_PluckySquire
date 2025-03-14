@@ -1804,6 +1804,9 @@
       <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\DynamicCastleGate.h" />
+    <ClInclude Include="..\Public\Beetle_Corpse.h">
+      <Filter>02.GameObjects\Interact\Carriable</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -2895,6 +2898,9 @@
       <Filter>03.Components\PlayerState</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\DynamicCastleGate.cpp" />
+    <ClCompile Include="..\Private\Beetle_Corpse.cpp">
+      <Filter>02.GameObjects\Interact\Carriable</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
