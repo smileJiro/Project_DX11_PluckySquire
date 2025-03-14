@@ -39,6 +39,7 @@ public:
 	void	Set_Sneak_InvestigatePos(_fvector _vPosition);
 	void	Set_Sneak_AwarePos(_fvector _vPosition);
 	void	Set_Sneak_Patrol_Index(_uint _iIndex);
+	void	Set_Patrol_Way_Index(_uint _iIndex);
 	void Set_SideScroll_PatrolBound();
 
 	_bool Has_State(MONSTER_STATE _eState)
@@ -61,6 +62,7 @@ public:
 	virtual HRESULT Set_State(_uint _iState);
 
 	HRESULT Add_SneakState();
+	HRESULT Add_CombatState();	//잠입 모드에서 전투 모드로 전환됐을 시 상태 프리셋
 	HRESULT Add_Chase_NoneAttackState();
 	HRESULT Add_Neutral_State(_bool _isJump=false);
 	HRESULT Add_FlyUnit_State();

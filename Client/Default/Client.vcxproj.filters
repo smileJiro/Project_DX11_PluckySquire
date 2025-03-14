@@ -1803,12 +1803,21 @@
     <ClInclude Include="..\Public\Patrol_WayState.h">
       <Filter>03.Components\FSM\State\Patrol</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Back_WayState.h">
+      <Filter>03.Components\FSM\State\Patrol</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Chase_WayState.h">
+      <Filter>03.Components\FSM\State\Chase</Filter>
+    </ClInclude>
     <ClInclude Include="..\Public\PlayerState_CannonPortal.h">
       <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\DynamicCastleGate.h" />
     <ClInclude Include="..\Public\Laser_Container.h">
       <Filter>02.GameObjects\2DGimmik\Laser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Beetle_Corpse.h">
+      <Filter>02.GameObjects\Interact\Carriable</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\WorldMapNPC.h">
       <Filter>02.GameObjects\UI\00. GamePlay\07. WorldMap</Filter>
@@ -2894,12 +2903,21 @@
     <ClCompile Include="..\Private\Patrol_WayState.cpp">
       <Filter>03.Components\FSM\State\Patrol</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Back_WayState.cpp">
+      <Filter>03.Components\FSM\State\Patrol</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Chase_WayState.cpp">
+      <Filter>03.Components\FSM\State\Chase</Filter>
+    </ClCompile>
     <ClCompile Include="..\Private\PlayerState_CannonPortal.cpp">
       <Filter>03.Components\PlayerState</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\DynamicCastleGate.cpp" />
     <ClCompile Include="..\Private\Laser_Container.cpp">
       <Filter>02.GameObjects\2DGimmik\Laser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Beetle_Corpse.cpp">
+      <Filter>02.GameObjects\Interact\Carriable</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\WorldMapNPC.cpp">
       <Filter>02.GameObjects\UI\00. GamePlay\07. WorldMap</Filter>

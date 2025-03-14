@@ -5,6 +5,7 @@
 #include "ModelObject.h"
 #include "DetectionField.h"
 #include "Sneak_DetectionField.h"
+#include "Pooling_Manager.h"
 
 CBeetle::CBeetle(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : CMonster(_pDevice, _pContext)
@@ -37,9 +38,12 @@ HRESULT CBeetle::Initialize(void* _pArg)
     pDesc->fFOVX = 60.f;
     pDesc->fFOVY = 30.f;
 
-    pDesc->isSneakMode = true;
+    pDesc->fCoolTime = 2.f;
 
-    /* Create Test Actor (Desc를 채우는 함수니까. __super::Initialize() 전에 위치해야함. )*/
+    pDesc->_tStat.iMaxHP = 5;
+    pDesc->_tStat.iHP = 1;
+    pDesc->_tStat.iDamg = 1;
+
     if (FAILED(Ready_ActorDesc(pDesc)))
         return E_FAIL;
 
@@ -52,13 +56,17 @@ HRESULT CBeetle::Initialize(void* _pArg)
     if (FAILED(Ready_PartObjects()))
         return E_FAIL;
 
-    m_pFSM->Add_State((_uint)MONSTER_STATE::IDLE);
-    m_pFSM->Add_State((_uint)MONSTER_STATE::PATROL);
-    m_pFSM->Add_State((_uint)MONSTER_STATE::ALERT);
-    m_pFSM->Add_State((_uint)MONSTER_STATE::STANDBY);
-    m_pFSM->Add_State((_uint)MONSTER_STATE::CHASE);
-    m_pFSM->Add_State((_uint)MONSTER_STATE::ATTACK);
+    //m_pFSM->Add_State((_uint)MONSTER_STATE::IDLE);
+    //m_pFSM->Add_State((_uint)MONSTER_STATE::PATROL);
+    //m_pFSM->Add_State((_uint)MONSTER_STATE::ALERT);
+    //m_pFSM->Add_State((_uint)MONSTER_STATE::STANDBY);
+    //m_pFSM->Add_State((_uint)MONSTER_STATE::CHASE);
+    //m_pFSM->Add_State((_uint)MONSTER_STATE::ATTACK);
 
+    m_fDashDistance = 10.f;
+    m_fBackFlyTime = 0.5f;
+
+    m_pFSM->Add_CombatState();
     m_pFSM->Add_SneakState();
 
 	if (false == m_isSneakMode)
@@ -90,16 +98,73 @@ HRESULT CBeetle::Initialize(void* _pArg)
 
 void CBeetle::Priority_Update(_float _fTimeDelta)
 {
+    if (true == IsCool())
+    {
+        m_fAccTime += _fTimeDelta;
+        if (m_fCoolTime <= m_fAccTime)
+        {
+            CoolTime_Off();
+        }
+    }
+    //if (true == m_isBackFly)
+    //{
+    //    m_fAccTime += _fTimeDelta;
+    //    if (m_fBackFlyTime <= m_fAccTime)
+    //    {
+    //        m_fAccTime = 0.f;
+    //    }
+    //}
 
     __super::Priority_Update(_fTimeDelta); /* Part Object Priority_Update */
 }
 
 void CBeetle::Update(_float _fTimeDelta)
 {
+    if (true == m_isDead)
+    {
+        m_isDash = false;
+    }
+
+
+    if (true == m_isBackFly)
+    {
+        _vector vBack = -1.f * XMVector3Normalize(Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK));
+		vBack = XMVectorSetY(vBack, 0.5f);
+        Get_ActorCom()->Set_LinearVelocity(XMVector3Normalize(vBack), Get_ControllerTransform()->Get_SpeedPerSec());
+
+        m_isBackFly = false;
+    }
+    if ((_uint)FLY_TAKEOFF == static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_CurrentAnimIndex())
+    {
+		if (0.1f >= XMVectorGetY(static_cast<CActor_Dynamic*>(Get_ActorCom())->Get_LinearVelocity()))
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(FLYLAND);
+    }
+
+
+    if (true == m_isDash)
+    {
+        _float fSpeed = Get_ControllerTransform()->Get_SpeedPerSec() * 2.f;
+        m_vDir.y = 0;
+        Get_ActorCom()->Set_LinearVelocity(XMVector3Normalize(XMLoadFloat3(&m_vDir)), fSpeed);
+        m_fAccDistance += fSpeed * _fTimeDelta;
+
+        if (m_fDashDistance <= m_fAccDistance || true == IsContactToTarget())
+        {
+            Stop_Move();
+            m_isDash = false;
+            m_fAccDistance = 0.f;
+            CoolTime_On();
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(ATTACKRECOVERY);
+        }
+    }
+
+
     if(KEY_PRESSING(KEY::CTRL))
     {
         if (KEY_DOWN(KEY::NUMPAD4))
         {
+            m_isCombatMode = true;
+            m_pSneak_DetectionField->Set_Active(false);
             Set_AnimChangeable(true);
             m_pFSM->Change_State((_uint)MONSTER_STATE::IDLE);
         }
@@ -120,7 +185,8 @@ HRESULT CBeetle::Render()
     if (COORDINATE_3D == Get_CurCoord())
     {
         m_pDetectionField->Render();
-        m_pSneak_DetectionField->Render();
+        if(false == m_isCombatMode)
+            m_pSneak_DetectionField->Render();
     }
 #endif // _DEBUG
 
@@ -143,6 +209,10 @@ void CBeetle::Change_Animation()
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(RUN);
             break;
 
+        case MONSTER_STATE::BACK:
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(RUN);
+            break;
+
         case MONSTER_STATE::ALERT:
             m_pGameInstance->Start_SFX(_wstring(L"A_sfx_beetle_alert-") + to_wstring(rand() % 5), 50.f);
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(ALERT);
@@ -152,8 +222,23 @@ void CBeetle::Change_Animation()
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(RUN);
             break;
 
+        case MONSTER_STATE::STANDBY:
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(IDLE);
+            break;
+
         case MONSTER_STATE::ATTACK:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(ATTACKSTRIKE);
+            m_pGameInstance->Start_SFX(_wstring(L"A_sfx_beetle_attack-") + to_wstring(rand() % 4), 50.f);
+            //static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(ATTACKSTRIKE);
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(FLY_TAKEOFF);
+            m_isBackFly = true;
+            break;
+
+        case MONSTER_STATE::HIT:
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(DAMAGE);
+            break;
+
+        case MONSTER_STATE::DEAD:
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(DIE);
             break;
 
          //잠입의 경우 idle 애니메이션 랜덤 재생
@@ -192,6 +277,7 @@ void CBeetle::Change_Animation()
             break;
 
         case MONSTER_STATE::SNEAK_ALERT:
+            m_pGameInstance->Start_SFX(_wstring(L"A_sfx_beetle_alert-") + to_wstring(rand() % 5), 50.f);
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(ALERT);
             break;
 
@@ -233,12 +319,26 @@ void CBeetle::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
         Set_AnimChangeable(true);
         break;
         
-    case ATTACKSTRIKE:
-        pModelObject->Switch_Animation(ATTACKRECOVERY);
+    case FLY_TAKEOFF:
+        static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(FLYLAND);
+        m_isBackFly = false;
         break;
 
+    case FLYLAND:
+        static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(CONCERED_ATTACKREADY);
+        break;
+
+    case CONCERED_ATTACKREADY:
+        static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(ATTACKSTRIKE);
+        Attack();
+        break;
+
+    //case ATTACKSTRIKE:
+    //    pModelObject->Switch_Animation(ATTACKRECOVERY);
+    //    break;
+
     case ATTACKRECOVERY:
-        pModelObject->Switch_Animation(ATTACKSTRIKE);
+        Set_AnimChangeable(true);
         break;
 
     case PAUSE2:
@@ -249,8 +349,32 @@ void CBeetle::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
         Set_AnimChangeable(true);
         break;
 
+    case DIE:
+    {
+        Monster_Death();
+        _float3 vPos;
+        _float4 vRotation;
+        m_pGameInstance->MatrixDecompose(nullptr, &vRotation, &vPos, Get_FinalWorldMatrix());
+		
+        cout << "생성 - X : " << vRotation.x << " Y : " << vRotation.y << "Z : " << vRotation.z << endl;
+        //XMStoreFloat4(&vRotation, XMQuaternionMultiply(XMQuaternionRotationAxis(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(45.f)), XMLoadFloat4(&vRotation)));
+        CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Beetle_Corpse"), COORDINATE_3D, &vPos, &vRotation);
+    }
+        break;
+
     default:
         break;
+    }
+}
+
+void CBeetle::Attack()
+{
+    if (false == m_isDash)
+    {
+        Stop_Rotate();
+        XMStoreFloat3(&m_vDir, Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK));
+        m_isDash = true;
+        Set_PreAttack(false);
     }
 }
 
@@ -258,6 +382,11 @@ void CBeetle::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, con
 {
     if (false == m_isSneakMode)
         __super::OnContact_Enter(_My, _Other, _ContactPointDatas);
+
+    if (OBJECT_GROUP::PLAYER & _Other.pActorUserData->iObjectGroup)
+    {
+        m_isContactToTarget = true;
+    }
 }
 
 void CBeetle::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
@@ -266,6 +395,15 @@ void CBeetle::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, cons
 
 void CBeetle::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
 {
+    if (OBJECT_GROUP::PLAYER & _Other.pActorUserData->iObjectGroup)
+    {
+        m_isContactToTarget = false;
+    }
+}
+
+void CBeetle::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
+{
+    __super::On_Hit(_pHitter, _iDamg, _vForce);
 }
 
 HRESULT CBeetle::Ready_ActorDesc(void* _pArg)
