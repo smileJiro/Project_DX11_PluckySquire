@@ -72,7 +72,7 @@ HRESULT CNpc_MoonBeard::Render()
 void CNpc_MoonBeard::Set_Opposite_Side()
 {
 	_vector vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
-	Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, -1.f * XMVectorAbs(vRight));
+	Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, -1.f * vRight);
 	vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
 }
 

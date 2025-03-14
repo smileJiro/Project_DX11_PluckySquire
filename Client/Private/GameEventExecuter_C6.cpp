@@ -82,11 +82,14 @@ void CGameEventExecuter_C6::Update(_float _fTimeDelta)
 		case Client::CTrigger_Manager::CHAPTER6_HUMGRUMP_REVOLT:
 			Chapter6_Humgrump_Revolt(_fTimeDelta);
 			break;
+		case Client::CTrigger_Manager::CHAPTER6_CHANGE_BOOK_TO_GREATE_HUMGRUMP:
+			Chapter6_Change_Book_To_Greate_Humgrump(_fTimeDelta);
+			break;
 		default:
 			break;
 		}
 	}
-	
+
 }
 
 void CGameEventExecuter_C6::Late_Update(_float _fTimeDelta)
@@ -160,7 +163,7 @@ void CGameEventExecuter_C6::Chapter6_FatherGame_Progress_Start_Clear(_float _fTi
 		{
 
 			CPortal* pTargetPortal = static_cast<CPortal_Default*>(static_cast<CSection_2D_PlayMap*>(CSection_Manager::GetInstance()->Find_Section(TEXT("Chapter6_SKSP_01")))->Get_Portal(0));
-			if(nullptr == pTargetPortal)
+			if (nullptr == pTargetPortal)
 			{
 				/* 플레이어 인풋락 해제 */
 				pPlayer->Set_BlockPlayerInput(false);
@@ -248,7 +251,7 @@ void CGameEventExecuter_C6::Chapter6_FatherGame_Progress_ZetPack_Clear(_float _f
 	else if (Step_Check(STEP_2)) // 2. 찌릿이 대화 + 페이드 아웃
 	{
 		if (Is_Start())
-		{		
+		{
 			/* 5. 다이얼로그 재생. */
 			_int iDialogueIndex = pZetPack_Child->Get_DialogueIndex();
 			_wstring strDialogueTag = TEXT("ZetPack_Child_");
@@ -261,7 +264,7 @@ void CGameEventExecuter_C6::Chapter6_FatherGame_Progress_ZetPack_Clear(_float _f
 		if (false == CDialog_Manager::GetInstance()->Get_DisPlayDialogue())
 		{
 			static bool isFirst = false;
-			if(false == isFirst)
+			if (false == isFirst)
 			{
 				isFirst = true;
 				CCamera_Manager::GetInstance()->Start_FadeOut(0.5f);
@@ -294,7 +297,7 @@ void CGameEventExecuter_C6::Chapter6_FatherGame_Progress_ZetPack_Clear(_float _f
 
 			/* 5. Change Camera Arm */
 			CCamera_Manager::GetInstance()->Start_Turn_ArmVector(eCamType, 0.0f, XMVector3Normalize(XMVectorSet(0.0f, 0.25f, -1.0f, 0.0f)), RATIO_TYPE::LERP);
-			
+
 			/* 6. FadeIn */
 			CCamera_Manager::GetInstance()->Start_FadeIn();
 
@@ -558,7 +561,7 @@ void CGameEventExecuter_C6::Chapter6_FatherGame_Progress_Fatherpart_2(_float _fT
 
 	if (Step_Check(STEP_0))
 	{
-		if (Is_Start()) 
+		if (Is_Start())
 		{
 			/* 1. Save Reset ArmData */
 			CCamera_Manager::GetInstance()->Set_ResetData(eCamType);
@@ -625,7 +628,7 @@ void CGameEventExecuter_C6::Chapter6_FatherGame_Progress_Fatherpart_2(_float _fT
 			CCamera_Manager::GetInstance()->Change_CameraTarget(&m_TargetWorldMatrix, fTime);
 
 			/* At Offset */
-			CCamera_Manager::GetInstance()->Start_Changing_AtOffset(eCamType, 1.0f, XMVectorSet(0.0f,0.0f,0.0f,1.0f), RATIO_TYPE::EASE_IN);
+			CCamera_Manager::GetInstance()->Start_Changing_AtOffset(eCamType, 1.0f, XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f), RATIO_TYPE::EASE_IN);
 			/* 4. Change Camera Length */
 			CCamera_Manager::GetInstance()->Start_Changing_ArmLength(eCamType, fTime, 8.0f, RATIO_TYPE::EASE_IN);
 
@@ -633,8 +636,6 @@ void CGameEventExecuter_C6::Chapter6_FatherGame_Progress_Fatherpart_2(_float _fT
 			_vector vNegativeZ = { 0.0f, 0.0f, -1.0f, 0.0f };
 			vNegativeZ = XMVector3TransformNormal(vNegativeZ, XMMatrixRotationY(PI * -0.18f) * XMMatrixRotationX(XMConvertToRadians(5.f)));
 			CCamera_Manager::GetInstance()->Start_Turn_ArmVector(eCamType, fTime, XMVector3Normalize(vNegativeZ), RATIO_TYPE::LERP);
-
-			
 		}
 		Next_Step_Over(2.0f);
 	}
@@ -761,6 +762,7 @@ void CGameEventExecuter_C6::Chapter6_Humgrump_Revolt(_float _fTimeDelta)
 	if (Step_Check(STEP_0))
 	{
 		if (Is_Start()) {
+			/* 플레이어 자동 이동 */
 			CPlayer* pPlayer = Get_Player();
 
 			AUTOMOVE_COMMAND tCommand = {};
@@ -777,9 +779,13 @@ void CGameEventExecuter_C6::Chapter6_Humgrump_Revolt(_float _fTimeDelta)
 			tCommand.vTarget = XMVectorSet(0.f, 0.f, 0.0f, 1.f);
 			tCommand.fPreDelayTime = 0.0f;
 			tCommand.fPostDelayTime = 1.f;
+
+			pPlayer->Add_AutoMoveCommand(tCommand);
+
 			pPlayer->Start_AutoMove(true);
 		}
-
+		
+		/* 중앙으로 카메라 Target 변경 */
 		if (m_fTimer > 0.8f) {
 			static _float4x4 matCenter = {};
 			_vector vCenter = XMVectorSet(0.f, -180.f, 0.f, 1.f);
@@ -798,21 +804,27 @@ void CGameEventExecuter_C6::Chapter6_Humgrump_Revolt(_float _fTimeDelta)
 		if (false == pPlayer->Is_AutoMoving()) {
 			pPlayer->Set_BlockPlayerInput(true);
 
-			CDialog_Manager::GetInstance()->Set_DialogId(L"Dialogue_Humgrump_Revolt");
+			CDialog_Manager::GetInstance()->Set_DialogId(L"Dialogue_Before_Humgrump_Revolt");
 
 			CLayer* pLayer = m_pGameInstance->Find_Layer(m_iCurLevelID, TEXT("Layer_NPC"));
 
 			list<CGameObject*> pObjects = pLayer->Get_GameObjects();
 
 			for (auto& pObject : pObjects) {
-				CModelObject* pModel = static_cast<CModelObject*>(pObject);
+				CModelObject* pModel = dynamic_cast<CModelObject*>(pObject);
+
+				if (nullptr == pModel)
+					continue;
+
 				if (TEXT("Humgrump") == pModel->Get_ModelPrototypeTag(COORDINATE_2D)) {
 					pModel->Switch_Animation(CNpc_Humgrump::CHAPTER6_TALK);
 					CDialog_Manager::GetInstance()->Set_NPC(pModel);
+					m_pTargetObject = pObject;
 				}
 
 				if (TEXT("MoonBeard") == pModel->Get_ModelPrototypeTag(COORDINATE_2D)) {
 					CDialog_Manager::GetInstance()->Set_NPC(pModel);
+					m_pTargetObject_Second = pObject;
 				}
 			}
 
@@ -820,7 +832,243 @@ void CGameEventExecuter_C6::Chapter6_Humgrump_Revolt(_float _fTimeDelta)
 		}
 	}
 	else if (Step_Check(STEP_2)) {
+
+		if (4 == CDialog_Manager::GetInstance()->Get_CurrentLineIndex()) {
+
+			if (Is_Start()) {
+				static_cast<CModelObject*>(m_pTargetObject)->Switch_Animation(CNpc_Humgrump::CHAPTER6_IDLE);
+				static_cast<CModelObject*>(m_pTargetObject_Second)->Switch_Animation(CNpc_MoonBeard::CHAPTER6_GIVE_IT_AREST);
+			}
+		}
+
+		if (5 == CDialog_Manager::GetInstance()->Get_CurrentLineIndex()) {
+			static_cast<CModelObject*>(m_pTargetObject_Second)->Switch_Animation(CNpc_MoonBeard::CHAPTER6_GIVE_IT_AREST_IDLE);
+			Next_Step(true);
+		}
 	}
+	else if (Step_Check(STEP_3)) {
+		if (7 == CDialog_Manager::GetInstance()->Get_CurrentLineIndex() && 0 == m_iSubStep) {
+
+			// 1. 험그럼프 손가락 올리기 전
+			static_cast<CModelObject*>(m_pTargetObject)->Switch_Animation(CNpc_Humgrump::CHAPTER6_TALK_STAND);
+
+			// 2. Cage 생성
+			CGameObject* pObject = nullptr;
+
+			CModelObject::MODELOBJECT_DESC Desc = {};
+			Desc.tTransform2DDesc.vInitialPosition = _float3(0.f, 710.0f, 0.f);
+			Desc.iCurLevelID = m_iCurLevelID;
+			Desc.eStartCoord = COORDINATE_2D;
+			Desc.isCoordChangeEnable = false;
+			Desc.strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
+			Desc.iShaderPass_2D = (_uint)PASS_VTXPOSTEX::SPRITE2D;
+			Desc.tTransform2DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+
+			Desc.iModelPrototypeLevelID_2D = LEVEL_CHAPTER_6;
+			Desc.strModelPrototypeTag_2D = TEXT("Cage");
+
+			/* 첫 번째 Cage */
+			m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"),
+				m_iCurLevelID, TEXT("Layer_MovingObject"), &pObject, &Desc);
+
+			CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_P1314"), pObject, SECTION_2D_PLAYMAP_EFFECT);
+
+			/* 두 번째 Cage */
+			Desc.tTransform2DDesc.vInitialPosition = _float3(563.87f, 1037.0f, 0.f);
+
+			m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"),
+				m_iCurLevelID, TEXT("Layer_MovingObject"), &pObject, &Desc);
+
+			CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_P1314"), pObject, SECTION_2D_PLAYMAP_EFFECT);
+
+			m_iSubStep++;
+		}
+		else if (1 == m_iSubStep) {
+			if (false == CDialog_Manager::GetInstance()->Get_DisPlayDialogue()) {
+
+				// 3. 험그럼프 손가락 올리기
+				if (m_fTimer >= 0.4f) {
+					if (Is_Start()) {
+						static_cast<CModelObject*>(m_pTargetObject)->Switch_Animation(CNpc_Humgrump::CHAPTER6_FINGER_RAISE);
+
+						m_iSubStep++;
+					}
+				}
+			}
+		}
+		else if (2 == m_iSubStep) {
+			// 4. 두 번쨰 다이얼로그 시작
+			if (m_fTimer >= 0.6f) {
+				CDialog_Manager::GetInstance()->Set_DialogId(L"Dialogue_Humgrump_Revolt");
+				CDialog_Manager::GetInstance()->Set_NPC(m_pTargetObject);
+
+				m_iSubStep++;
+			}
+		}
+		else if (3 == m_iSubStep) {
+			if (false == static_cast<CModelObject*>(m_pTargetObject)->Is_DuringAnimation()) {
+				static_cast<CModelObject*>(m_pTargetObject)->Switch_Animation(CNpc_Humgrump::CHAPTER6_FINGER_TALK);
+			}
+
+			// 3. 험그럼프 손가락 내리기
+			if (false == CDialog_Manager::GetInstance()->Get_DisPlayDialogue()) {
+				static_cast<CModelObject*>(m_pTargetObject)->Switch_Animation(CNpc_Humgrump::CHAPTER6_FINGER_DOWN);
+				Next_Step(true);
+			}
+		}
+	}
+	else if (Step_Check(STEP_4)) {
+
+		static _float fPreIncrease = {};
+		static _float2 fTime = { 0.8f, 0.f };
+
+		if (m_fTimer >= 0.2f) {
+
+			// 4. Cage 떨어뜨리기
+			_float fRatio = m_pGameInstance->Calculate_Ratio(&fTime, _fTimeDelta, EASE_IN);
+			_float fIncrease = m_pGameInstance->Lerp(0.f, 1150.f, fRatio);
+
+			// 5. 달수염 놀라기
+			if (fRatio >= 0.9f) {
+				if (Is_Start())
+					static_cast<CModelObject*>(m_pTargetObject_Second)->Switch_Animation(CNpc_MoonBeard::CHAPTER6_SURPRISED);
+			}
+
+			if (fRatio >= (1.f - EPSILON)) {
+
+				CCamera_Manager::GetInstance()->Start_Shake_ByTime(CCamera_Manager::TARGET_2D, 0.3f, 0.02f);
+				Next_Step(true);
+			}
+
+			_float fValue = fIncrease - fPreIncrease;
+			fPreIncrease = fIncrease;
+
+
+			CLayer* pLayer = m_pGameInstance->Find_Layer(m_iCurLevelID, TEXT("Layer_MovingObject"));
+
+			list<CGameObject*> pObjects = pLayer->Get_GameObjects();
+
+			for (auto& pObject : pObjects) {
+				_vector vPos = pObject->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION);
+				vPos = XMVectorSetY(vPos, XMVectorGetY(vPos) - fValue);
+				pObject->Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, vPos);
+			}
+		}
+	}
+	else if (Step_Check(STEP_5)) {
+
+		// 6. 달수염 뒤돌기
+		if (m_fTimer >= 0.3f) {
+			if (Is_Start()) {
+				static_cast<CModelObject*>(m_pTargetObject_Second)->Switch_Animation(CNpc_MoonBeard::CHAPTER6_SURPRISED_TURN);
+				static_cast<CNpc_MoonBeard*>(m_pTargetObject_Second)->Set_Opposite_Side();
+			}
+		}
+
+		// 7. 험그럼프 Windup 시작
+		if (false == static_cast<CModelObject*>(m_pTargetObject_Second)->Is_DuringAnimation()) {
+			static_cast<CModelObject*>(m_pTargetObject_Second)->Switch_Animation(CNpc_MoonBeard::CHAPTER6_SURPRISED_IDLE);
+			static_cast<CModelObject*>(m_pTargetObject)->Switch_Animation(CNpc_Humgrump::CHAPTER6_WINDUP);
+			Next_Step(true);
+		}
+
+	}
+	else if (Step_Check(STEP_6)) {
+		if (false == static_cast<CModelObject*>(m_pTargetObject)->Is_DuringAnimation()) {
+			// 8. 험그럼프 Beam, Beam 이펙트 시작, 진동
+			static_cast<CModelObject*>(m_pTargetObject)->Switch_Animation(CNpc_Humgrump::CHAPTER6_BEAM);
+
+			CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("Beam"), TEXT("Chapter6_P1314"), XMMatrixTranslation(70.f, -105.07f, 0.f), 0.f, 0, true, 2.5f, SECTION_2D_PLAYMAP_OBJECT);
+			CCamera_Manager::GetInstance()->Start_Shake_ByTime(CCamera_Manager::TARGET_2D, 2.5f, 0.02f);
+
+			Next_Step(true);
+		}
+
+	}
+	else if (Step_Check(STEP_7)) {
+
+		if (m_fTimer >= 0.2f) {
+			if (Is_Start())
+				static_cast<CModelObject*>(m_pTargetObject_Second)->Switch_Animation(CNpc_MoonBeard::CHAPTER6_ZAP_INTO);
+		}
+
+		if (false == static_cast<CModelObject*>(m_pTargetObject_Second)->Is_DuringAnimation()) {
+			static_cast<CModelObject*>(m_pTargetObject_Second)->Switch_Animation(CNpc_MoonBeard::CHAPTER6_ZAP_IDLE);
+
+			Next_Step(true);
+		}
+	}
+	else if (Step_Check(STEP_8)) {
+		
+		// 8.5. 바이올렛이 소리치기
+		if (0 == m_iSubStep) {
+
+			m_iSubStep++;
+		}
+		
+		if (m_fTimer >= 2.5f) {
+			if (Is_Start()) {
+				// 9. 험그럼프 Beam 끝, 할배 죽기 시작
+				static_cast<CModelObject*>(m_pTargetObject)->Switch_Animation(CNpc_Humgrump::CHAPTER6_BEAM_END);
+				static_cast<CModelObject*>(m_pTargetObject_Second)->Switch_Animation(CNpc_MoonBeard::CHAPTER6_ZAP_DEATH);
+			}
+		}
+
+		if (false == static_cast<CModelObject*>(m_pTargetObject)->Is_DuringAnimation()) {
+			static_cast<CModelObject*>(m_pTargetObject)->Switch_Animation(CNpc_Humgrump::CHAPTER6_TRANSFORM_IDLE);
+
+			Next_Step(true);
+		}
+	}
+	else if (Step_Check(STEP_9)) {
+		if (m_fTimer >= 4.f) {
+			static_cast<CModelObject*>(m_pTargetObject)->Switch_Animation(CNpc_Humgrump::CHAPTER6_TRANSFORM_TURN);
+
+			Next_Step(true);
+		}
+	}
+	// 10. 험그럼프로 줌인, 마지막 대사 말하기
+	else if (Step_Check(STEP_10)) {
+		if (false == static_cast<CModelObject*>(m_pTargetObject)->Is_DuringAnimation()) {
+			static_cast<CModelObject*>(m_pTargetObject)->Switch_Animation(CNpc_Humgrump::CHAPTER6_TRANSFORM_TURN_TALK);
+			CDialog_Manager::GetInstance()->Set_DialogId(L"Dialogue_After_Humgrump_Revolt");
+			CDialog_Manager::GetInstance()->Set_NPC(m_pTargetObject);
+			CCamera_Manager::GetInstance()->Change_CameraTarget(m_pTargetObject, 0.5f);
+			CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Decrease(CCamera_Manager::TARGET_2D, 0.5f, 4.f, EASE_IN_OUT);
+			Next_Step(true);
+		}
+	}
+	// 11. 험그럼프 웃기
+	else if (Step_Check(STEP_11)) {
+		if (false == CDialog_Manager::GetInstance()->Get_DisPlayDialogue()) {
+			if (Is_Start())
+				static_cast<CModelObject*>(m_pTargetObject)->Switch_Animation(CNpc_Humgrump::CHAPTER6_TRANSFORM_LAUGH_INTO);
+		}
+
+		if (false == static_cast<CModelObject*>(m_pTargetObject)->Is_DuringAnimation()) {
+			static_cast<CModelObject*>(m_pTargetObject)->Switch_Animation(CNpc_Humgrump::CHAPTER6_TRANSFORM_LAUGH_IDLE);
+
+			CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("Humgrump_Ha"), TEXT("Chapter6_P1314"), XMMatrixTranslation(-271.54, -73.07f, 0.f), 0.f, 1, true, 10.5f, SECTION_2D_PLAYMAP_EFFECT);
+			CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("Humgrump_Ha"), TEXT("Chapter6_P1314"), XMMatrixTranslation(-211.54, -53.07f, 0.f), 0.5f, 1, true, 10.5f, SECTION_2D_PLAYMAP_EFFECT);
+			CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("Humgrump_Ha"), TEXT("Chapter6_P1314"), XMMatrixTranslation(-151.54, -73.07f, 0.f), 1.f, 1, true, 10.5f, SECTION_2D_PLAYMAP_EFFECT);
+			Next_Step(true);
+		}
+	}
+	// 12. 일정 시간 후 책장 넘기면서 나레이션 재생 시작, 험그럼프 책으로 바뀌는 이벤트 트리거 실행
+	else if (Step_Check(STEP_12)) {
+		if (m_fTimer >= 3.5f) {
+			_float3 fDefaultPos = {};
+
+			Event_Book_Main_Section_Change_Start(1, &fDefaultPos);
+			CTrigger_Manager::GetInstance()->Register_TriggerEvent(TEXT("Chapter6_Change_Book_To_Greate_Humgrump"), 0);
+			GameEvent_End();
+		}
+	}
+}
+
+void CGameEventExecuter_C6::Chapter6_Change_Book_To_Greate_Humgrump(_float _fTimeDelta)
+{
+
 }
 
 

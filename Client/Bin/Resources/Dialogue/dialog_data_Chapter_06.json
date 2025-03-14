@@ -3039,7 +3039,7 @@
 			]
 		},
 		{
-			"id": "Dialogue_Humgrump_Revolt",
+			"id": "Dialogue_Before_Humgrump_Revolt",
 			"Section": "Chapter6_P1314",
 			"isChangeTalker": true,
 			"lines": [
@@ -3050,6 +3050,8 @@
 					"location": 1,
 					"is2D": true,
 					"isPortrait": false,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
 					"TalkerIndex": 0,
 					"FontColorR": 255.0,
 					"FontColorG": 255.0,
@@ -3070,6 +3072,8 @@
 					"location": 1,
 					"is2D": true,
 					"isPortrait": false,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
 					"TalkerIndex": 0,
 					"FontColorR": 255.0,
 					"FontColorG": 255.0,
@@ -3091,6 +3095,8 @@
 					"is2D": true,
 					"isPortrait": false,
 					"isLineEnter": true,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
 					"TalkerIndex": 0,
 					"FontColorR": 255.0,
 					"FontColorG": 255.0,
@@ -3112,6 +3118,8 @@
 					"is2D": true,
 					"isPortrait": false,
 					"isLineEnter": true,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
 					"TalkerIndex": 0,
 					"FontColorR": 255.0,
 					"FontColorG": 255.0,
@@ -3131,7 +3139,9 @@
 					"BG": 0,
 					"location": 1,
 					"is2D": true,
-					"isPortrait": true,
+					"isPortrait": false,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
 					"TalkerIndex": 1,
 					"animation": {
 						"duration": 1000,
@@ -3148,7 +3158,9 @@
 					"BG": 0,
 					"location": 1,
 					"is2D": true,
-					"isPortrait": true,
+					"isPortrait": false,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
 					"TalkerIndex": 1,
 					"animation": {
 						"duration": 1000,
@@ -3165,24 +3177,9 @@
 					"BG": 0,
 					"location": 1,
 					"is2D": true,
-					"isPortrait": true,
-					"TalkerIndex": 1,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "나가서 운동 좀 해. 예전엔 탁구도 쳤잖아.",
-					"Red": 161,
-					"Green": 210,
-					"Blue": 234
-				},
-				{
-					"Portrait": 7,
-					"Talker": "달수염",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": true,
+					"isPortrait": false,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
 					"TalkerIndex": 1,
 					"animation": {
 						"duration": 1000,
@@ -3201,6 +3198,8 @@
 					"is2D": true,
 					"isPortrait": false,
 					"isLineEnter": true,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
 					"TalkerIndex": 0,
 					"FontColorR": 255.0,
 					"FontColorG": 255.0,
@@ -3222,6 +3221,8 @@
 					"is2D": true,
 					"isPortrait": false,
 					"isLineEnter": true,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
 					"TalkerIndex": 0,
 					"FontColorR": 255.0,
 					"FontColorG": 255.0,
@@ -3243,6 +3244,8 @@
 					"is2D": true,
 					"isPortrait": false,
 					"isLineEnter": true,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
 					"TalkerIndex": 0,
 					"FontColorR": 255.0,
 					"FontColorG": 255.0,
@@ -3255,7 +3258,14 @@
 					"Red": 10,
 					"Green": 10,
 					"Blue": 10
-				},
+				}
+			]
+		},
+		{
+			"id": "Dialogue_Humgrump_Revolt",
+			"Section": "Chapter6_P1314",
+			"isChangeTalker": true,
+			"lines": [
 				{
 					"Portrait": 0,
 					"Talker": "험그럼프",
@@ -3264,6 +3274,8 @@
 					"is2D": true,
 					"isPortrait": false,
 					"isLineEnter": true,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
 					"TalkerIndex": 0,
 					"FontColorR": 255.0,
 					"FontColorG": 255.0,
@@ -3285,6 +3297,8 @@
 					"is2D": true,
 					"isPortrait": false,
 					"isLineEnter": true,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
 					"TalkerIndex": 0,
 					"FontColorR": 255.0,
 					"FontColorG": 255.0,
@@ -3293,10 +3307,64 @@
 						"duration": 1000,
 						"speed": 500
 					},
-					"text": "승기를 잡는 거야",
+					"text": "승기를 잡는 거야.",
 					"Red": 10,
 					"Green": 10,
 					"Blue": 10
+				}
+			]
+		},
+		{
+			"id": "Dialogue_After_Humgrump_Revolt",
+			"Section": "Chapter6_P1314",
+			"isChangeTalker": true,
+			"lines": [
+				{
+					"Portrait": 0,
+					"Talker": "험그럼프",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
+					"TalkerIndex": 0,
+					"FontColorR": 255.0,
+					"FontColorG": 255.0,
+					"FontColorB": 0.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "이번 게임은... 험그럼프의 승리다!",
+					"Red": 10,
+					"Green": 10,
+					"Blue": 10
+				}
+			]
+		},
+		{
+			"id": "Dialogue_Scream_Violet",
+			"Section": "Chapter6_P1314",
+			"lines": [
+				{
+					"Portrait": 0,
+					"Talker": "바이올렛",
+					"BG": 13,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "                           안 돼!!!!!!",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
 				}
 			]
 		}

@@ -61,6 +61,10 @@ protected:
 		STEP_9,
 		STEP_10,
 		STEP_11,
+		STEP_12,
+		STEP_13,
+		STEP_14,
+		STEP_15,
 		STEP_LAST
 	};
 public :
@@ -168,6 +172,7 @@ protected:
 	//임시 데이터들 ...
 	_bool			m_isPlag = { false };
 	CGameObject*	m_pTargetObject = nullptr;
+	CGameObject*	m_pTargetObject_Second = nullptr;
 	CPostit_Page*	m_pPostitPage = nullptr;
 	_int			m_iEventExcuterAction = -1;
 
