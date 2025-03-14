@@ -31,7 +31,7 @@ public:
 	virtual void			Update(_float _fTimeDelta) override;
 	virtual void			Late_Update(_float _fTimeDelta) override;
 
-#ifdef NDEBUG
+#ifdef _DEBUG
 
 	virtual HRESULT			Render();
 	virtual HRESULT			Render(_float2 _fRenderTargetSize);
@@ -61,7 +61,7 @@ public:
 	void						Set_CollisionGroupID(_uint _iGroupID) { m_iCollisionGroupID = _iGroupID; }
 	void						Set_Offset(_float2 _vOffset) { m_vOffsetPosition = _vOffset; }
 	void						Set_Block(_bool _isBlock) { m_isBlock = _isBlock; }
-#ifdef NDEBUG
+#ifdef _DEBUG
 	void					Set_DebugColor(const _float4& _vDebugColor) { m_vDebugColor = _vDebugColor; }
 #endif // _DEBUG
 
@@ -83,7 +83,7 @@ protected:
 	_float2					m_vScale = {};
 
 
-#ifdef NDEBUG
+#ifdef _DEBUG
 protected:
 	PrimitiveBatch<VertexPositionColor>*	m_pBatch = nullptr;
 	BasicEffect*							m_pEffect = nullptr;

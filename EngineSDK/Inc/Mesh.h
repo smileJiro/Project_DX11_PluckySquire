@@ -20,6 +20,9 @@ public:
 public:
 	HRESULT Bind_BoneMatrices(class CShader* _pShader, const _char* _pConstantName, const vector<CBone*>& _Bones);
 	void ReSet_OffsetMarix();
+
+	/* Trail Ãß°¡ ÅÂ¿õ */
+	HRESULT Copy_BoneMatrices(array<_float4x4, 256>* _pOutBoneMatrices);
 public:
 	virtual HRESULT Ready_VertexBuffer_For_NonAnim(ifstream& _inFile, _fmatrix _PreTransformMatrix);
 	virtual HRESULT Ready_VertexBuffer_For_Anim(ifstream& _inFile,  C3DModel* _pModel);

@@ -2,7 +2,8 @@
 #include "RenderGroup.h"
 
 BEGIN(Engine)
-
+class CShader;
+class CVIBuffer_Rect;
 class ENGINE_DLL CRenderGroup_MRT : public CRenderGroup
 {
 public:
