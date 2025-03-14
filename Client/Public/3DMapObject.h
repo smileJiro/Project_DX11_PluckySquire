@@ -40,10 +40,13 @@ public:
 																																									// 서브스레드를 쓰는 경우, Const Buffer를 Unmap하는 행위가 스레드 언세이프하므로, 추후에 해줘야함. 
 	virtual void					Set_MaterialConstBuffer_Albedo(_uint _iMaterialIndex, Engine::C3DModel::COLOR_SHADER_MODE _eColorMode, _float4 _fAlbedoColor, _bool _isUpdate = true);
 	virtual void					Update_ConstBuffer();
+
+	_bool							Is_Sksp() { return m_isSksp; }
 protected:
 	_uint							m_iDiffuseIndex = 0;
 
 	_bool							m_isCulling = true;
+	_bool							m_isSksp = false;
 
 public:
 	virtual void			Free() override;

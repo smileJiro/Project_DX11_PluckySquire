@@ -40,6 +40,7 @@
 #include "Postit_Page.h"
 #include "Door_Yellow.h"
 #include "C08_Box.h"
+#include "Laser_Container.h"
 
 #include "RayShape.h"
 #include "CarriableObject.h"
@@ -1429,7 +1430,7 @@ HRESULT CLevel_Chapter_08::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 	Desc.isHorizontal = true;
 	Desc.eSize = CDoor_2D::MED;
 	Desc.eInitialState = CDoor_2D::CLOSED;
-	Desc.vPressurePlatePos = _float3(-280.5f, 586.f, 0.f);
+	Desc.vPressurePlatePos = _float3(-280.5f, 686.f, 0.f);
 	Desc.strSectionTag = L"Chapter8_SKSP_02";
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorYellow"),
 		m_eLevelID, _strLayerTag, &Desc)))
@@ -1439,7 +1440,7 @@ HRESULT CLevel_Chapter_08::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 	CCarriableObject::CARRIABLE_DESC CarriDesc = {};
 
 	CarriDesc.iCurLevelID = m_eLevelID;
-	CarriDesc.Build_2D_Transform({ -279.f,572.f });
+	CarriDesc.Build_2D_Transform({ -279.f,686.f });
 	CarriDesc.strInitialSectionTag = L"Chapter8_SKSP_02";
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_C08Box"),
 		m_eLevelID, _strLayerTag, &CarriDesc)))
@@ -1460,13 +1461,23 @@ HRESULT CLevel_Chapter_08::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 	CarriDesc = {};
 
 	CarriDesc.iCurLevelID = m_eLevelID;
-	CarriDesc.Build_2D_Transform({ -1050.f, 180.f});
+	CarriDesc.Build_2D_Transform({ -230.f, 180.f});
 	CarriDesc.strInitialSectionTag = L"Chapter8_SKSP_02";
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_C08Box"),
 		m_eLevelID, _strLayerTag, &CarriDesc)))
 		return E_FAIL;
 
-		
+	CLaser_Container::LASER_DESC LaserDesc = {};
+
+	LaserDesc.iCurLevelID = m_eLevelID;
+	LaserDesc.fStartPos = {-370.f,-1066.f};
+	LaserDesc.fEndPos = {-370.f,-1426.f};
+	LaserDesc.fMoveSpeed = 500.f;
+	LaserDesc.eDir = F_DIRECTION::RIGHT;
+	LaserDesc.strInitSectionTag = L"Chapter8_SKSP_02";
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Laser_Container"),
+		m_eLevelID, _strLayerTag, &LaserDesc)))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -1524,8 +1535,13 @@ HRESULT CLevel_Chapter_08::Map_Object_Create(_wstring _strFileName)
 					hFile);
 			if (nullptr != pGameObject)
 			{
-				if (ContainWstring(pGameObject->Get_MapObjectModelName(), L"SM_sticky_notes"))
-					strIncludeLayerTag = L"Layer_Postit";
+				if (pGameObject->Is_Sksp())
+				{
+					if (ContainWstring(pGameObject->Get_MapObjectModelName(), L"SM_sticky_notes"))
+						strIncludeLayerTag = L"Layer_Postit";
+					else
+						strIncludeLayerTag = L"Layer_MapSkspObject";
+				}
 				m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, strIncludeLayerTag.c_str(), pGameObject);
 			}
 		}

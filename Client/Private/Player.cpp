@@ -2336,7 +2336,6 @@ void CPlayer::Key_Input(_float _fTimeDelta)
     }
     if (KEY_DOWN(KEY::F3))
     {
-
         _int iCurCoord = (_int)Get_CurCoord();
         (_int)iCurCoord ^= 1;
         _float3 vNewPos = _float3(0.0f, 0.0f, 0.0f);
