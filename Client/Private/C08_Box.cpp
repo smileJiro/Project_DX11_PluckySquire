@@ -95,6 +95,8 @@ HRESULT CC08_Box::Initialize(void* _pArg)
 		TEXT("Com_Body2DCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[1]), &CircleDesc)))
 		return E_FAIL;
 
+	for (auto pCollider : m_p2DColliderComs)
+		pCollider->Set_Active(true);
 
 	return S_OK;
 }
@@ -116,6 +118,18 @@ HRESULT CC08_Box::Render()
 		m_p2DColliderComs[1]->Render();
 #endif
 	return __super::Render();
+}
+
+void CC08_Box::On_PickUpStart(CPlayer* _pPalyer, _fmatrix _matPlayerOffset)
+{
+	for (auto pCollider : m_p2DColliderComs)
+		pCollider->Set_Active(false);
+}
+
+void CC08_Box::On_Land()
+{
+	for (auto pCollider : m_p2DColliderComs)
+		pCollider->Set_Active(true);
 }
 
 

@@ -298,7 +298,7 @@ void CActor_Dynamic::Add_Impulse(const _float3& _vForce)
 
 void CActor_Dynamic::Add_Torque(const _float3& _vTorque)
 {
-	static_cast<PxRigidDynamic*>(m_pActor)->addTorque(PxVec3(_vTorque.x, _vTorque.y, _vTorque.z), PxForceMode::eIMPULSE, m_isActive);
+	static_cast<PxRigidDynamic*>(m_pActor)->addTorque(PxVec3(_vTorque.x, _vTorque.y, _vTorque.z), PxForceMode::eFORCE, m_isActive);
 }
 
 

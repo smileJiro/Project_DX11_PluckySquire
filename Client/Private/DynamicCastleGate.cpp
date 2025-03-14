@@ -78,17 +78,18 @@ HRESULT CDynamicCastleGate::Render()
 void CDynamicCastleGate::OnContact_Modify(const COLL_INFO& _0, const COLL_INFO& _1, CModifiableContacts& _ModifiableContacts, _bool _bIm0)
 {
 }
-
+        
 void CDynamicCastleGate::Collapse()
 {
 	CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
 	pDynamicActor->Update(0);
 	pDynamicActor->Set_Dynamic();
-	_vector vForcDir= { 0.f,0.f,-1.f };
-	_float fForce = 100.f;
+	_vector vForcDir= { 1.f,0.f,0.f };
+	_float fForce = 10.f;
 	_vector vForce = vForcDir * fForce;
 	_vector vTorque = XMVector3Cross(vForce,{ 0.f,2.5f,0.f });
-	pDynamicActor->Add_Torque(vTorque);
+	_float3 vTor; XMStoreFloat3(&vTor, vTorque);
+	pDynamicActor->Add_Torque(vTor);
 }
 
 HRESULT CDynamicCastleGate::Ready_PartObjects()
