@@ -201,6 +201,8 @@ HRESULT CLevel_Chapter_08::Initialize(LEVEL_ID _eLevelID)
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::BLOCKER);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_PROJECTILE, OBJECT_GROUP::WORD_GAME);
 
+	/* 발판 - 기믹오브젝트, 2D에 해당하는 오브젝트 (주사위, 등.. )*/
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MAPOBJECT, OBJECT_GROUP::GIMMICK_OBJECT);
 
 	/* 돌덩이 */
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER_PROJECTILE, OBJECT_GROUP::BLOCKER);
@@ -1446,13 +1448,34 @@ HRESULT CLevel_Chapter_08::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 	CCarriableObject::CARRIABLE_DESC CarriDesc = {};
 
 	CarriDesc.iCurLevelID = m_eLevelID;
-	CarriDesc.Build_2D_Transform({ -5.f,800.f });
+	CarriDesc.Build_2D_Transform({ -279.f,572.f });
 	CarriDesc.strInitialSectionTag = L"Chapter8_SKSP_02";
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_C08Box"),
 		m_eLevelID, _strLayerTag, &CarriDesc)))
 		return E_FAIL;
 
+	
+	CarriDesc = {};
 
+	CarriDesc.iCurLevelID = m_eLevelID;
+	CarriDesc.Build_2D_Transform({ -230.f, -1377.f });
+	CarriDesc.strInitialSectionTag = L"Chapter8_SKSP_02";
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_C08Box"),
+		m_eLevelID, _strLayerTag, &CarriDesc)))
+		return E_FAIL;
+
+		
+	
+	CarriDesc = {};
+
+	CarriDesc.iCurLevelID = m_eLevelID;
+	CarriDesc.Build_2D_Transform({ -1050.f, 180.f});
+	CarriDesc.strInitialSectionTag = L"Chapter8_SKSP_02";
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_C08Box"),
+		m_eLevelID, _strLayerTag, &CarriDesc)))
+		return E_FAIL;
+
+		
 
 	return S_OK;
 }

@@ -273,7 +273,8 @@ _float CCarriableObject::Get_Distance(COORDINATE _eCoord, CPlayer* _pUser)
 
 void CCarriableObject::PickUpStart(CPlayer* _pPalyer, _fmatrix _matPlayerOffset)
 {
-	Set_Kinematic(true);
+	if(nullptr != m_pActorCom)
+		Set_Kinematic(true);
 
 	Set_Carrier(_pPalyer);
 	Set_ParentMatrix(COORDINATE_3D, _pPalyer->Get_ControllerTransform()->Get_WorldMatrix_Ptr(COORDINATE_3D));

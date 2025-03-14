@@ -21,21 +21,22 @@ HRESULT CC08_Box::Initialize(void* _pArg)
 	C08_BoxModelDesc->eCrriableObjId = CARRIABLE_OBJ_ID::DIEC;
 	C08_BoxModelDesc->vHeadUpRoolPitchYaw3D = { 0.f,0.f,0.f };
 	C08_BoxModelDesc->vHeadUpOffset3D = { 0.f,1.8f,0.f };
+	C08_BoxModelDesc->fHeadUpHeight2D = 80.f;
 	C08_BoxModelDesc->isCoordChangeEnable = false;
 	//C08_BoxModelDesc->iModelPrototypeLevelID_3D = C08_BoxModelDesc->iCurLevelID;
 	C08_BoxModelDesc->iModelPrototypeLevelID_2D = C08_BoxModelDesc->iCurLevelID;
 	C08_BoxModelDesc->strModelPrototypeTag_2D = TEXT("SKSP_carry_block_Sprite");
-	//C08_BoxModelDesc->strModelPrototypeTag_3D = TEXT("dice_01");
-	//C08_BoxModelDesc->strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
+	C08_BoxModelDesc->strModelPrototypeTag_3D = TEXT("Wooden_Cube");
+	C08_BoxModelDesc->strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
 	C08_BoxModelDesc->strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
 	//C08_BoxModelDesc->tTransform2DDesc.vInitialPosition = _float3(0.0f, 1.0f, 0.f);
 	//C08_BoxModelDesc->tTransform2DDesc.vInitialScaling = _float3(200.f, 200.f, 200.f);
 	C08_BoxModelDesc->iRenderGroupID_3D = RG_3D;
 	C08_BoxModelDesc->iPriorityID_3D = PR3D_GEOMETRY;
-	//C08_BoxModelDesc->tTransform3DDesc.vInitialPosition = _float3(0.0f, 1.0f, -10.f);
-	//C08_BoxModelDesc->tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	C08_BoxModelDesc->tTransform3DDesc.vInitialPosition = _float3(0.0f, 1.0f, -10.f);
+	C08_BoxModelDesc->tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 
-	/*CActor::ACTOR_DESC ActorDesc = {};
+	CActor::ACTOR_DESC ActorDesc = {};
 	ActorDesc.pOwner = this;
 	ActorDesc.FreezeRotation_XYZ[0] = false;
 	ActorDesc.FreezeRotation_XYZ[1] = false;
@@ -72,7 +73,7 @@ HRESULT CC08_Box::Initialize(void* _pArg)
 	ActorDesc.tFilterData.MyGroup = OBJECT_GROUP::DYNAMIC_OBJECT;
 	ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::BLOCKER | OBJECT_GROUP::PLAYER;
 	C08_BoxModelDesc->pActorDesc = &ActorDesc;
-	C08_BoxModelDesc->eActorType = ACTOR_TYPE::DYNAMIC;*/
+	C08_BoxModelDesc->eActorType = ACTOR_TYPE::DYNAMIC;
 	if (FAILED(__super::Initialize(C08_BoxModelDesc)))
 		return E_FAIL;
 
