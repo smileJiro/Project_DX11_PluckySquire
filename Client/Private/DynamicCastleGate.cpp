@@ -84,7 +84,7 @@ HRESULT CDynamicCastleGate::Initialize(void* _pArg)
 
 void CDynamicCastleGate::Update(_float _fTimeDelta)
 {
-	if (KEY_DOWN(KEY::B))
+	if (KEY_DOWN(KEY::I))
 		Collapse();
 	__super::Update(_fTimeDelta);
 }
@@ -168,12 +168,13 @@ HRESULT CDynamicCastleGate::Ready_PartObjects()
 	list<CGameObject*> Objs = pLayer->Get_GameObjects();
 	for (auto& pObj : Objs)
 	{
-		C3DMapSkspObject* pSksp = dynamic_cast<C3DMapSkspObject*>(pObj);
+		C3DMapSkspObject* pSksp = static_cast<C3DMapSkspObject*>(pObj);
 		if(nullptr == pSksp) 
 			continue;
 		if (pSksp->Get_RenderSectionTag() == TEXT("Chapter4_SKSP_04"))
 		{
 			Add_PartObject(pSksp);
+			Safe_AddRef(pSksp);
 			pSksp->Set_ParentMatrix(COORDINATE_3D, m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D));
 			pSksp->Set_Position(_vector{ 0.f,0.f,0.f });
 		}
