@@ -6,6 +6,7 @@
 #include "GameInstance.h"
 #include "Effect_Manager.h"
 #include "FresnelModelObject.h"
+#include "Trail_Manager.h"
 
 CCyberPlayerBullet::CCyberPlayerBullet(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CContainerObject(_pDevice, _pContext)

@@ -6,6 +6,7 @@
 #include "Player.h"
 #include "StateMachine.h"
 #include "Effect_Manager.h"
+#include "ModelObject.h"
 
 
 CPlayerState_Roll::CPlayerState_Roll(CPlayer* _pOwner)
@@ -81,7 +82,7 @@ void CPlayerState_Roll::Enter()
 
     if (COORDINATE_2D == eCoord)
     {
-		F_DIRECTION eFDir = EDir_To_FDir( m_pOwner->Get_2DDirection());
+		F_DIRECTION eFDir = To_FDirection( m_pOwner->Get_2DDirection());
 		m_vDirection = EDir_To_Vector(m_pOwner->Get_2DDirection());
 		if (m_pOwner->Is_PlatformerMode())
 		{
@@ -147,6 +148,7 @@ void CPlayerState_Roll::Exit()
 	//if (COORDINATE_2D == m_pOwner->Get_CurCoord())
 	//	CEffect_Manager::GetInstance()->Stop_Spawn(TEXT("Zip5"), 1.f);
 
+	static_cast<CModelObject*>(m_pOwner->Get_PartObject(CPlayer::PART::PART_BODY))->Off_Trail();
 }
 
 void CPlayerState_Roll::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)

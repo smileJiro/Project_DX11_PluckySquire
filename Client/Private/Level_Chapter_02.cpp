@@ -69,6 +69,7 @@
 #include "Loader.h"
 
 #include "PlayerItem.h"
+#include "BackGroundObject.h"
 
 CLevel_Chapter_02::CLevel_Chapter_02(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: 
@@ -161,11 +162,11 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 		assert(nullptr);
 	}
 
-	if (FAILED(Ready_Layer_Domino(TEXT("Layer_FallingRock"))))
-	{
-		MSG_BOX(" Failed Ready_Layer_Domino (Level_Chapter_02::Initialize)");
-		assert(nullptr);
-	}
+	//if (FAILED(Ready_Layer_Domino(TEXT("Layer_FallingRock"))))
+	//{
+	//	MSG_BOX(" Failed Ready_Layer_Domino (Level_Chapter_02::Initialize)");
+	//	assert(nullptr);
+	//}
 	//도시락
 	if (FAILED(Ready_Layer_LunchBox(TEXT("Layer_LunchBox"))))
 	{
@@ -188,11 +189,11 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 		MSG_BOX(" Failed Ready_Layer_MagicHand (Level_Chapter_02::Initialize)");
 		assert(nullptr);
 	}
-	if (FAILED(Ready_Layer_Draggable(TEXT("Layer_Draggable"))))
-	{
-		MSG_BOX(" Failed REady_Layer_Draggable (Level_Chapter_02::Initialize)");
-		assert(nullptr);
-	}
+	//if (FAILED(Ready_Layer_Draggable(TEXT("Layer_Draggable"))))
+	//{
+	//	MSG_BOX(" Failed REady_Layer_Draggable (Level_Chapter_02::Initialize)");
+	//	assert(nullptr);
+	//}
 	if (FAILED(Ready_Layer_MapGimmick(TEXT("Layer_MapGimmick"))))
 	{
 		MSG_BOX(" Failed Ready_Layer_MapGimmick (Level_Chapter_02::Initialize)");
@@ -202,6 +203,18 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 	{
 		MSG_BOX(" Failed Ready_Layer_RoomDoor (Level_Chapter_02::Initialize)");
 		assert(nullptr);
+	}
+	
+	{ // BackGround Test
+		m_pBackGroundObject;
+		CBackGroundObject::BACKGROUNDOBJ_DESC Desc;
+		Desc.iCurLevelID = LEVEL_CHAPTER_2;
+		Desc.isCoordChangeEnable = false;
+		Desc.strTexturePrototypeTag = TEXT("Prototype_Component_Texture_BackGround_Chapter2_Main");
+		Desc.Build_3D_Transform(_float3(-20.0f, 90.0f, 150.0f), _float3(400.f, 400.f,10.f));
+
+		if(FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BackGroundObject"), LEVEL_CHAPTER_2, TEXT("Layer_BackGround"), &Desc)))
+			return E_FAIL;
 	}
 
 	///* Pooling Test */
@@ -290,6 +303,9 @@ void CLevel_Chapter_02::Update(_float _fTimeDelta)
 		//_wstring wsSectionKey = CSection_Manager::GetInstance()->Get_Cur_Section_Key();
 		//CSection* pSection = CSection_Manager::GetInstance()->Find_Section(wsSectionKey);
 		//CTrigger_Manager::GetInstance()->Create_TriggerObject(LEVEL_STATIC, LEVEL_CHAPTER_2, &DescA, pSection);
+
+		CModelObject* pBook = static_cast<CModelObject*>(m_pGameInstance->Get_GameObject_Ptr(m_eLevelID, TEXT("Layer_Book"), 0));
+		pBook->Switch_Animation(CBook::ANIM_ACTION_CLOSEBYHAND);
 	}
 
 	Uimgr->UI_Update();
@@ -329,7 +345,7 @@ void CLevel_Chapter_02::Update(_float _fTimeDelta)
 		CCamera_Manager::GetInstance()->Change_CameraType(iCurCameraType);
 	}
 
-	if (KEY_DOWN(KEY::Z))
+	if (KEY_DOWN(KEY::NUM1))
 	{
 		CUI_Manager::STAMP eStamp;
 		eStamp = CUI_Manager::GetInstance()->Get_StampIndex();
@@ -428,11 +444,11 @@ HRESULT CLevel_Chapter_02::Ready_Lights()
 	m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/DirectionalTest2.json"));
 	//m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/Chapter2_Night_Main.json"));
 #elif NDEBUG
-	m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/Chapter2_Bright.json"));
+	m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/Chapter2_Bright_Sky.json"));
 #endif // _DEBUG
 
-	m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/Chapter2_Night_Main.json"));
-	m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/Chapter2_Night_Main.json"));
+	m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/Chapter2_Bright.json"));
+	//m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/Chapter2_Night_Main.json"));
 
 	//CONST_LIGHT LightDesc{};
 	//
@@ -801,11 +817,15 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Book(const _wstring& _strLayerTag)
 {
 	//TODO :: SAMPLE
 	CBook::BOOK_DESC Desc = {};
+	CGameObject* pBook = nullptr;
 	Desc.iCurLevelID = m_eLevelID;
-
+	
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Book"),
-		m_eLevelID, L"Layer_Book", &Desc)))
+		m_eLevelID, L"Layer_Book", &pBook, &Desc)))
 		return E_FAIL;
+
+
+	Uimgr->Set_Book(static_cast<CBook*>(pBook));
 
 	return S_OK;
 }
@@ -829,35 +849,53 @@ HRESULT CLevel_Chapter_02::Ready_Layer_UI(const _wstring& _strLayerTag)
 #pragma endregion PickBubble UI
 
 #pragma region STAMP UI
-	//pDesc.fX = g_iWinSizeX / 20.f;
-	//pDesc.fY = g_iWinSizeY - g_iWinSizeY / 10.f;
-	//
-	//// 원래 크기
-	//pDesc.fSizeX = 96.f;
-	//pDesc.fSizeY = 148.f;
-	//
-	////작게  크기
-	////pDesc.fSizeX = 48.f;
-	////pDesc.fSizeY = 74.f;
-	//
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_StopStamp"), m_eLevelID, _strLayerTag, &pDesc)))
-	//	return E_FAIL;
-	//
-	//pDesc.fX = g_iWinSizeX / 7.5f;
-	//pDesc.fY = g_iWinSizeY - g_iWinSizeY / 10.f;
-	//pDesc.fSizeX = 72.f;
-	//pDesc.fSizeY = 111.f;
-	//
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_BombStamp"), m_eLevelID, _strLayerTag, &pDesc)))
-	//	return E_FAIL;
-	//
-	//pDesc.fX = g_iWinSizeX / 10.8f;
-	//pDesc.fY = g_iWinSizeY - g_iWinSizeY / 20.f;
-	//pDesc.fSizeX = 42.f;
-	//pDesc.fSizeY = 27.f;
-	//
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_ArrowForStamp"), m_eLevelID, _strLayerTag, &pDesc)))
-	//	return E_FAIL;
+	pDesc.fX = g_iWinSizeX / 20.f;
+	pDesc.fY = g_iWinSizeY - g_iWinSizeY / 6.f;
+
+	// 원래 크기
+	pDesc.fSizeX = 72.f;
+	pDesc.fSizeY = 111.f;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_StopStamp"), m_eLevelID, _strLayerTag, &pDesc)))
+		return E_FAIL;
+
+
+	pDesc.fX = g_iWinSizeX / 7.5f;
+	pDesc.fY = g_iWinSizeY - g_iWinSizeY / 6.f;
+	pDesc.fSizeX = 99.f;
+	pDesc.fSizeY = 153.f;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_BombStamp"), m_eLevelID, _strLayerTag, &pDesc)))
+		return E_FAIL;
+
+
+	pDesc.fX = g_iWinSizeX / 10.8f;
+	pDesc.fY = g_iWinSizeY - g_iWinSizeY / 8.f;
+	pDesc.fSizeX = 42.f;
+	pDesc.fSizeY = 27.f;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_ArrowForStamp"), m_eLevelID, _strLayerTag, &pDesc)))
+		return E_FAIL;
+
+
+
+	// -------------------------------------- //
+	pDesc.fX = g_iWinSizeX - g_iWinSizeX / 10.8f;
+	pDesc.fY = g_iWinSizeY - g_iWinSizeY / 20.f;
+	pDesc.fSizeX = 72.f;
+	pDesc.fSizeY = 72.f;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_StampKey_Q"), m_eLevelID, _strLayerTag, &pDesc)))
+		return E_FAIL;
+
+
+	pDesc.fX = g_iWinSizeX / 18.f;
+	pDesc.fY = g_iWinSizeY - g_iWinSizeY / 20.f;
+	pDesc.fSizeX = 72.f;
+	pDesc.fSizeY = 72.f;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_StampKey_1"), m_eLevelID, _strLayerTag, &pDesc)))
+		return E_FAIL;
 #pragma endregion STAMP UI
 
 #pragma region InterAction UI
@@ -1124,8 +1162,8 @@ HRESULT CLevel_Chapter_02::Ready_Layer_UI(const _wstring& _strLayerTag)
 
 	CGameObject* pGameObject;
 	
-	pDesc.fSizeX = 360.f / 2.f;
-	pDesc.fSizeY = 149.f / 2.f;
+	pDesc.fSizeX = 360.f / 3.f;
+	pDesc.fSizeY = 149.f / 3.f;
 	
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_UIObejct_Interaction_E"), pDesc.iCurLevelID, _strLayerTag, &pGameObject, &pDesc)))
 		return E_FAIL;
@@ -1199,8 +1237,8 @@ HRESULT CLevel_Chapter_02::Ready_Layer_NPC(const _wstring& _strLayerTag)
 	NPCDesc.iNumPartObjects = 3;
 	NPCDesc.iMainIndex = 0;
 	NPCDesc.iSubIndex = 0;
-	wsprintf(NPCDesc.strLocateSection, TEXT("Chapter2_P1112"));
-	NPCDesc.vPos = _float2(71.0f, -11.1f);
+	wsprintf(NPCDesc.strLocateSection, TEXT("Chapter2_P0304"));
+	NPCDesc.vPos = _float2(858.f, 38.02f);
 	wsprintf(NPCDesc.strDialogueIndex, TEXT("Store_Dialog_01"));
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_StoreNPC"), NPCDesc.iCurLevelID, _strLayerTag, &NPCDesc)))
 		return E_FAIL;
@@ -1243,8 +1281,8 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Monster()
 	if (FAILED(Ready_Layer_Monster_2D()))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_Monster_3D()))
-		return E_FAIL;
+	//if (FAILED(Ready_Layer_Monster_3D()))
+	//	return E_FAIL;
 
 	return S_OK;
 }
@@ -1579,6 +1617,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Effects2D(const _wstring& _strLayerTag)
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("bushburst_leaves2"), m_eLevelID, 3);
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("bushburst_dust1"), m_eLevelID, 3);
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("bushburst_dust2"), m_eLevelID, 3);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Barrel_Break"), LEVEL_STATIC, 3);
 
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Death_Burst"), LEVEL_STATIC, 3);
 

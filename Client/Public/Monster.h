@@ -69,20 +69,30 @@ public:
 		return m_isAnimChangeable;
 	}
 
-	void Set_2D_Direction(F_DIRECTION _eDir);
-	F_DIRECTION Get_2DDirection() 
-	{ 
-		return m_e2DDirection; 
-	}
+	//void Set_2D_Direction(F_DIRECTION _eDir);
+	//F_DIRECTION Get_2DDirection() 
+	//{ 
+	//	return m_e2DDirection; 
+	//}
 
 	void Set_SneakMode(_bool _isSneak)
 	{
 		m_isSneakMode = _isSneak;
 	}
 
-	_bool Get_SneakMode()
+	_bool Is_SneakMode()
 	{
 		return m_isSneakMode;
+	}
+
+	void Set_CombatMode(_bool _isCombat)
+	{
+		m_isCombatMode = _isCombat;
+	}
+
+	_bool Is_CombatMode()
+	{
+		return m_isCombatMode;
 	}
 
 	_bool IsDelay() 
@@ -96,6 +106,10 @@ public:
 	_bool IsContactToTarget()
 	{
 		return m_isContactToTarget;
+	}
+	_bool IsContactToBlock()
+	{
+		return m_isContact_Block;
 	}
 
 	void Set_PreAttack(_bool _isPreAttack)
@@ -168,7 +182,7 @@ public:
 public:
 	virtual void				Change_Animation() {};
 	virtual HRESULT				Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr) override;
-	void						Change_Dir();
+	void						Change_Dir(_bool _isOnChange = true);
 	_bool						IsTarget_In_Detection();
 	_bool						IsTarget_In_Sneak_Detection();
 	_float						Restrict_2DRangeAttack_Angle(_float _fDegrees);
@@ -247,14 +261,15 @@ protected:
 
 	//잠입 모드
 	_bool m_isSneakMode = { false };
+	//잠입 모드 해제 후 전투모드
+	_bool m_isCombatMode = { false };
 
 	//장애물 탐지
 	SNEAKWAYPOINTINDEX m_eWayIndex;
 
-	_bool m_isDetect_Block = { false };
-	_uint m_iDetect_Block_Count = { 0 };
+	_bool m_isContact_Block = { false };
 
-	F_DIRECTION m_e2DDirection = { F_DIRECTION::F_DIR_LAST };
+	//F_DIRECTION m_e2DDirection = { F_DIRECTION::F_DIR_LAST };
 
 public:
 	HRESULT Cleanup_DeadReferences() override;

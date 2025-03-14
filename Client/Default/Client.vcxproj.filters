@@ -499,9 +499,6 @@
     <Filter Include="02.GameObjects\UI\00. GamePlay\03. InterAction\02. Interaction_E">
       <UniqueIdentifier>{2aab60c7-a543-45be-93ec-270840324c3a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="NewFilter1">
-      <UniqueIdentifier>{ce7fbcc7-0a2a-4ec8-a33f-ed2f8c2ad06f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Interface">
       <UniqueIdentifier>{a6abd73e-7852-42b2-91b9-1145a5d597bd}</UniqueIdentifier>
     </Filter>
@@ -679,9 +676,6 @@
     <Filter Include="02.GameObjects\UI\00. GamePlay\01. Stamp\03. StampKeyCommand">
       <UniqueIdentifier>{115a7848-fee5-4ccf-a075-7eecfd6d3d8a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\UI\00. GamePlay\01. Stamp\03. StampKeyCommand\00. StampKey_Q">
-      <UniqueIdentifier>{ce0696e3-d547-4a38-92c8-f2701e53d999}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\UI\00. GamePlay\01. Stamp\03. StampKeyCommand\01. StampKey_1">
       <UniqueIdentifier>{e9af5f88-52ae-4f9c-af2d-98a9d8a39c52}</UniqueIdentifier>
     </Filter>
@@ -693,6 +687,30 @@
     </Filter>
     <Filter Include="05.MiniGames\Minigame_Sneak\Tile\Trap">
       <UniqueIdentifier>{60ba1fac-436c-4f94-bf84-e2e833d8a327}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UI\00. GamePlay\03. InterAction\03. Interaction_Key">
+      <UniqueIdentifier>{1f3066a6-8b75-432c-bf2e-33079187947e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\BackGround">
+      <UniqueIdentifier>{ad43be9a-1a9c-4caf-ab24-79dd37331218}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Components\FSM\State\Move">
+      <UniqueIdentifier>{0956df86-2c63-44a2-bc2a-81c9181fa53a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Friend">
+      <UniqueIdentifier>{f22dd0df-58eb-456a-8b3c-4bdb31d6e673}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Friend\Violet">
+      <UniqueIdentifier>{4ec912c5-2a27-47fb-bc12-34482d4e8efe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Friend\Thrash">
+      <UniqueIdentifier>{0c3a6753-0d55-46eb-a471-5867673e2d81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Friend\Body">
+      <UniqueIdentifier>{81cacdc2-e92a-4b6f-a8df-9b7c58bf5e08}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Friend\Friend_Controller">
+      <UniqueIdentifier>{4a4e0a71-0c02-4160-bb68-a19ee76bdbbd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1762,14 +1780,46 @@
     <ClInclude Include="..\Public\StampKey_1.h">
       <Filter>02.GameObjects\UI\00. GamePlay\01. Stamp\03. StampKeyCommand\01. StampKey_1</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\StampKey_Q.h">
-      <Filter>02.GameObjects\UI\00. GamePlay\01. Stamp\03. StampKeyCommand\00. StampKey_Q</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\EvictedSword.h" />
     <ClInclude Include="..\Public\PlayerState_RetriveSword.h" />
     <ClInclude Include="..\public\Sneak_SentryTroop.h">
       <Filter>05.MiniGames\Minigame_Sneak</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Interaction_Key.h">
+      <Filter>02.GameObjects\UI\00. GamePlay\03. InterAction\03. Interaction_Key</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\BackGroundObject.h">
+      <Filter>02.GameObjects\BackGround</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterJumpState.h">
+      <Filter>03.Components\FSM\State\Move</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterMoveState.h">
+      <Filter>03.Components\FSM\State\Move</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\C6_IdleState.h">
+      <Filter>03.Components\FSM\State\Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\C08_Box.h">
+      <Filter>02.GameObjects\Interact\Carriable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Patrol_WayState.h">
+      <Filter>03.Components\FSM\State\Patrol</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_CannonPortal.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\DynamicCastleGate.h" />
+    <ClInclude Include="..\public\Friend.h">
+      <Filter>02.GameObjects\Friend</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Friend_Thrash.h">
+      <Filter>02.GameObjects\Friend\Thrash</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\FriendBody.h">
+      <Filter>02.GameObjects\Friend\Body</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Friend_Controller.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -2825,14 +2875,46 @@
     <ClCompile Include="..\Private\StampKey_1.cpp">
       <Filter>02.GameObjects\UI\00. GamePlay\01. Stamp\03. StampKeyCommand\01. StampKey_1</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\StampKey_Q.cpp">
-      <Filter>02.GameObjects\UI\00. GamePlay\01. Stamp\03. StampKeyCommand\00. StampKey_Q</Filter>
+    <ClCompile Include="..\Private\Interaction_Key.cpp">
+      <Filter>02.GameObjects\UI\00. GamePlay\03. InterAction\03. Interaction_Key</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\EvictedSword.cpp" />
     <ClCompile Include="..\Private\PlayerState_RetriveSword.cpp" />
     <ClCompile Include="..\private\Sneak_SentryTroop.cpp">
       <Filter>05.MiniGames\Minigame_Sneak</Filter>
     </ClCompile>
+    <ClCompile Include="..\private\BackGroundObject.cpp">
+      <Filter>02.GameObjects\BackGround</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterMoveState.cpp">
+      <Filter>03.Components\FSM\State\Move</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterJumpState.cpp">
+      <Filter>03.Components\FSM\State\Move</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\C6_IdleState.cpp">
+      <Filter>03.Components\FSM\State\Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\C08_Box.cpp">
+      <Filter>02.GameObjects\Interact\Carriable</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Patrol_WayState.cpp">
+      <Filter>03.Components\FSM\State\Patrol</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_CannonPortal.cpp">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\DynamicCastleGate.cpp" />
+    <ClCompile Include="..\private\Friend.cpp">
+      <Filter>02.GameObjects\Friend</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Friend_Thrash.cpp">
+      <Filter>02.GameObjects\Friend\Thrash</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\FriendBody.cpp">
+      <Filter>02.GameObjects\Friend\Body</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Friend_Controller.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

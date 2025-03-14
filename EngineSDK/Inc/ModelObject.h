@@ -80,8 +80,8 @@ public:
 	virtual HRESULT	Render_WorldPosMap(const _wstring& _strCopyRTTag, const _wstring& _strSectionTag);
 	virtual HRESULT	Render() override;
 	virtual HRESULT Render_Shadow(_float4x4* _pViewMatrix, _float4x4* _pProjMatrix);
-	virtual HRESULT			Render_PlayerDepth();
-	virtual HRESULT				Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr) override;
+	virtual HRESULT	Render_PlayerDepth();
+	virtual HRESULT	Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr) override;
 
 public:
 	_bool Is_PickingCursor_Model(_float2 _fCursorPos, _float& _fDst);
@@ -155,10 +155,33 @@ protected:
 protected:
 	SPRITE2D_FADEALPHA_STATE m_eFadeAlphaState = SPRITE2D_FADEALPHA_STATE::FADEALPHA_DEFAULT;
 	_float2					m_vFadeAlpha = { 1.0f, 1.0f };
+	
+public: /* Trail */
+	void					Update_Trail(_int _iTrailID, _float _fTimeDelta);
+	virtual HRESULT			Render_Trail();
+public:
+	void					On_Trail() { m_isTrail = true; }
+	void					On_Trail(_float _fTrailCreateTime, _float _fTrailDuration, const _float4& _vTrailColor)
+	{
+		m_vTrailCreateTime.x = _fTrailCreateTime;
+		m_fTrailDuration = _fTrailDuration;
+		m_vTrailColor = _vTrailColor;
+		m_isTrail = true;
+	}
+	void					Off_Trail() { m_isTrail = false; }
+	void					Set_TrailCreateTime(_float _fTrailCreateTime) { m_vTrailCreateTime.x = _fTrailCreateTime; }
+	void					Set_TrailDuration(_float _fTrailDuration) { m_fTrailDuration = _fTrailDuration; }
+	void					Set_TrailColor(const _float4& _vTrailColor) { m_vTrailColor = _vTrailColor; }
+
+protected:
+	_int					m_iTrailID = -1; /* 트레일이 필요하다면 id를 제공받아야한다. */
+	_bool					m_isTrail = false;
+	_float2					m_vTrailCreateTime = { 0.01f, 0.0f };
+	_float					m_fTrailDuration = 0.3f;
+	_float4					m_vTrailColor = { 0.0f, 0.909f, 1.0f, 1.0f };
 
 protected:
 	virtual HRESULT			Bind_ShaderResources_WVP();
-
 
 protected:
 	HRESULT					Ready_Components(MODELOBJECT_DESC* _pDesc);

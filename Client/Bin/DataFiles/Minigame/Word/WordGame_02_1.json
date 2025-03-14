@@ -4,6 +4,7 @@
     "Word_Object_List": [
       {
         "Word_Object_Tag": "BoomBox",
+        "Object_Override" :  1,
         "Position": [
           651.0,
           103.0

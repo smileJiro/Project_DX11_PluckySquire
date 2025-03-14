@@ -2,6 +2,7 @@
 #include "Dialogue.h"
 #include "NPC.h"
 #include "Npc_OnlySocial.h"
+#include "NPC_Social.h"
 
 
 
@@ -17,6 +18,7 @@ private:
 private:
 	CNPC* m_pNPC = { nullptr };
 	CNPC_OnlySocial* m_pOnlyNpc = { nullptr };
+	vector<CNPC_Social*> m_pNpcSocials;
 	CGameInstance* m_pGameInstance = { nullptr };
 
 
@@ -26,6 +28,13 @@ public:
 
 	void								Set_NPC(CNPC* _npc) { m_pNPC = _npc; Safe_AddRef(_npc); }
 	void								Set_OnlyNpc(CNPC_OnlySocial* _npc) { m_pOnlyNpc = _npc; Safe_AddRef(_npc); }
+	void								SocialNpc_PushBack(CNPC_Social* _SocialNpc) 
+	{ 
+		m_pNpcSocials.push_back(_SocialNpc); 
+		Safe_AddRef(_SocialNpc); 
+	}
+	CNPC_Social*						Find_SocialNPC(wstring _NPCName);
+
 
 public:
 	HRESULT								Level_Exit(_int iCurLevelID, _int _iChangeLevelID, _int _iNextChangeLevelID);

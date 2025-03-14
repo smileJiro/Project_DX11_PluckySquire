@@ -13,6 +13,7 @@ HRESULT CSneak_PatrolState::Initialize(void* _pArg)
 {
 	SNEAKSTATEDESC* pDesc = static_cast<SNEAKSTATEDESC*>(_pArg);
 	m_fAlertRange = pDesc->fAlertRange;
+	m_fAttackRange = pDesc->fAttackRange;
 
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
@@ -67,7 +68,7 @@ void CSneak_PatrolState::State_Enter()
 	m_isToWay = false;
 	m_isTurn = false;
 	m_isMove = false;
-	//cout << "Patrol" << endl;
+	cout << "Patrol" << endl;
 }
 
 void CSneak_PatrolState::State_Update(_float _fTimeDelta)
@@ -90,6 +91,12 @@ void CSneak_PatrolState::State_Update(_float _fTimeDelta)
 			{
 				m_pOwner->Stop_Rotate();
 				m_pOwner->Stop_Move();
+
+				_vector vDir = XMVectorSetY(m_pTarget->Get_FinalPosition() - m_pOwner->Get_FinalPosition(), 0.f);
+				_float fDis = XMVectorGetX(XMVector3Length((vDir)));
+				//공격 범위 안일 경우 바로 공격으로 전환
+				if (fDis <= Get_CurCoordRange(MONSTER_STATE::ATTACK))
+					Event_ChangeMonsterState(MONSTER_STATE::ATTACK, m_pFSM);
 				return;
 			}
 
@@ -260,7 +267,7 @@ void CSneak_PatrolState::Determine_Direction()
 	if (COORDINATE::COORDINATE_LAST == m_pOwner->Get_CurCoord())
 		return;
 
-	//이동 이후 회전없는 경우
+	//이동 하는 경우
 	if (true == m_isMoveOnly || true == m_isMoveRotate)
 	{
 		//다음 웨이 포인트로 넘어감.
@@ -268,8 +275,16 @@ void CSneak_PatrolState::Determine_Direction()
 		{
 			++m_iCurWayIndex;
 
-			if (m_PatrolWays.size() - 1 == m_iCurWayIndex)
-				m_isBack = true;
+			if(false == m_isPatrolCycle)
+			{
+				if (m_PatrolWays.size() - 1 == m_iCurWayIndex)
+					m_isBack = true;
+			}
+			else
+			{
+				if (m_PatrolWays.size() == m_iCurWayIndex)
+					m_iCurWayIndex = 0;
+			}
 
 			//예외처리
 			if (m_PatrolWays.size() - 1 < m_iCurWayIndex)

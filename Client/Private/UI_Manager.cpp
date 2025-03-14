@@ -244,8 +244,9 @@ void CUI_Manager::UI_Update()
 
 	if (nullptr != pShopManager->Get_Shop())
 	{
-		if (TEXT("Chapter2_P1112") == SECTION_MGR->Get_Cur_Section_Key() ||
-			TEXT("Chapter5_P0102") == SECTION_MGR->Get_Cur_Section_Key())
+		if (TEXT("Chapter2_P0304") == SECTION_MGR->Get_Cur_Section_Key() ||
+			TEXT("Chapter5_P0102") == SECTION_MGR->Get_Cur_Section_Key() ||
+			TEXT("Chapter4_P0506") == SECTION_MGR->Get_Cur_Section_Key())
 		{
 			if (false == pShopManager->Get_Shop()->CBase::Is_Active())
 			{
@@ -256,7 +257,7 @@ void CUI_Manager::UI_Update()
 
 	if (nullptr != pShopManager->Get_Shop())
 	{
-		if (TEXT("Chapter2_P1112") == SECTION_MGR->Get_Cur_Section_Key() ||
+		if (TEXT("Chapter2_P0304") == SECTION_MGR->Get_Cur_Section_Key() ||
 			TEXT("Chapter5_P0102") == SECTION_MGR->Get_Cur_Section_Key() ||
 			TEXT("Chapter4_P0506") == SECTION_MGR->Get_Cur_Section_Key())
 		{
@@ -355,6 +356,12 @@ HRESULT CUI_Manager::Level_Exit(_int iCurLevelID, _int _iChangeLevelID, _int _iN
 		m_pInteractionHeart = nullptr;
 	}
 
+	if (nullptr != m_pBook)
+	{
+		Safe_Release(m_pBook);
+		m_pBook = nullptr;
+	}
+
 
 	return S_OK;
 
@@ -388,6 +395,7 @@ void CUI_Manager::Free()
 	Safe_Release(m_pPlayer);
 	Safe_Release(m_pDiagloue);
 	Safe_Release(m_pInteractionE);
+	Safe_Release(m_pBook);
 
 	for (auto iter : m_pSettingPanels)
 	{
@@ -424,6 +432,7 @@ void CUI_Manager::Free()
 	Safe_Release(m_pNarration);
 
 	Safe_Release(m_pInteractionHeart);
+
 
 	__super::Free();
 }

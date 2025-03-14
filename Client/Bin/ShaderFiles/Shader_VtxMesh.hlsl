@@ -56,9 +56,15 @@ int g_iRenderFlag = 0;
 float4 g_vCamPosition;
 float4 g_vDefaultDiffuseColor;
 float4 g_vColor, g_vSubColor;
+float3 g_vBackGroundColor;
+float g_fBrightness;
 
 float2 g_fStartUV;
 float2 g_fEndUV;
+
+/* Trail Data */
+float4 g_vTrailColor;
+float2 g_vTrailTime;
 
 /* 구조체 */
 struct VS_IN
@@ -237,7 +243,7 @@ PS_OUT PS_MAIN(PS_IN In)
         vORMH.b = useMetallicMap ? g_MetallicTexture.Sample(LinearSampler, In.vTexcoord).r : Material.Metallic;
     }
     
-   if (vAlbedo.a < 0.1f)
+   if (vAlbedo.a < 0.01f)
        discard;
     
     Out.vDiffuse = vAlbedo * Material.MultipleAlbedo;
@@ -259,6 +265,29 @@ PS_OUT PS_MAIN(PS_IN In)
     Out.vDepth = float4(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / g_fFarZ, fRenderFlag, 1.0f);
     float3 vEmissiveColor = Material.EmissiveColor * fEmissive;
     Out.vEtc = float4(vEmissiveColor, fSpecular);
+    
+    return Out;
+}
+
+PS_OUT PS_BACKGROUND(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+    float4 vAlbedo = g_AlbedoTexture.Sample(LinearSampler, In.vTexcoord);
+    float3 vNormal = In.vNormal.xyz;
+    float4 vORMH = float4(0.2f, 0.5f, 0.0f, 0.0f);
+    float fSpecular = 0.0f;
+    float fEmissive = 0.0f;
+
+    if (vAlbedo.a < 0.1f)
+        discard;
+    
+    Out.vDiffuse = float4((vAlbedo.rgb * g_vBackGroundColor) * g_fBrightness, 1.0f);
+    Out.vNormal = float4(vNormal.xyz * 0.5f + 0.5f, 1.f);
+    Out.vORMH = vORMH;
+    Out.vDepth = float4(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / g_fFarZ, 0.0f, 1.0f);
+    float3 vEmissiveColor = float3(0.0f,0.0f,0.0f);
+    Out.vEtc = float4(vEmissiveColor, fSpecular);
+    
     
     return Out;
 }
@@ -495,6 +524,27 @@ PS_BLOOM PS_NOISEFRESNEL(PS_IN In)
     return Out;
 }
 
+struct PS_TRAIL_OUT
+{
+    float4 vDiffuse : SV_TARGET0;
+};
+
+PS_TRAIL_OUT PS_TRAIL(PS_IN In)
+{
+    PS_TRAIL_OUT Out = (PS_TRAIL_OUT) 0;
+    float fAlpha = 1.0f - g_vTrailTime.y / g_vTrailTime.x;
+    float4 FinalColor = g_vTrailColor;
+    FinalColor.rgb *= fAlpha;
+    FinalColor.a *= fAlpha;
+
+    if (FinalColor.a < 0.01f)
+        discard;
+
+    Out.vDiffuse = FinalColor;
+
+    return Out;
+}
+
 technique11 DefaultTechnique
 {
     pass DefaultPass // 0
@@ -643,6 +693,16 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_SINGLEFRESNEL();
     }
 
+    pass Background // 13
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_BACKGROUND();
+    }
+
     pass NoiseFresnel // 14
     {
         SetRasterizerState(RS_Default);
@@ -653,6 +713,16 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_NOISEFRESNEL();
     }
 
+    pass TrailPass // 10
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_None, 0);
+        SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_TRAIL();
+    }
 }
 
 /* 빛이 들어와서 맞고 튕긴 반사벡터와 이 픽셀을 바라보는 시선 벡터가 이루는 각이 180일때 최대 밝기 */

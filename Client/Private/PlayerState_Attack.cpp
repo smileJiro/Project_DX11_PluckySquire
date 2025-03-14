@@ -61,7 +61,7 @@ void CPlayerState_Attack::Update(_float _fTimeDelta)
                     {
  
                         E_DIRECTION eNewDir = To_EDirection(tKeyResult.vMoveDir);
-                        F_DIRECTION eFDir = EDir_To_FDir(eNewDir);
+                        F_DIRECTION eFDir = To_FDirection(eNewDir);
                         m_pOwner->Set_2DDirection(To_EDirection(tKeyResult.vDir));
                     }
 
@@ -128,7 +128,7 @@ void CPlayerState_Attack::Switch_To_AttackAnimation(_uint iComboCount)
 
     if (COORDINATE_2D == eCoord)
     {
-        F_DIRECTION eFDIr = EDir_To_FDir( m_pOwner->Get_2DDirection());
+        F_DIRECTION eFDIr = To_FDirection( m_pOwner->Get_2DDirection());
         switch (eFDIr)
         {
         case Client::F_DIRECTION::LEFT:

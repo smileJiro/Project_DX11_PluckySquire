@@ -1042,6 +1042,7 @@
 					"location": 0,
 					"is2D": false,
 					"isPortrait": false,
+					"isLineEnter": true,
 					"animation": {
 						"duration": 1000,
 						"speed": 350
@@ -1058,6 +1059,7 @@
 					"location": 0,
 					"is2D": false,
 					"isPortrait": false,
+					"isLineEnter": true,
 					"animation": {
 						"duration": 1000,
 						"speed": 350
@@ -1079,7 +1081,7 @@
 						"duration": 1000,
 						"speed": 350
 					},
-					"text": "혹시 폐가 안 된다면...\n 이 도시락 뚜껑 좀 열어 주실 수 있을까요?",
+					"text": "혹시 폐가 안 된다면...\n이 도시락 뚜껑 좀 열어 주실 수 있을까요?",
 					"Red": 0,
 					"Green": 0,
 					"Blue": 0
@@ -1095,6 +1097,7 @@
 					"BG": 7,
 					"location": 0,
 					"is2D": false,
+					"isLineEnter": true,
 					"isPortrait": false,
 					"animation": {
 						"duration": 1000,
@@ -1111,6 +1114,7 @@
 					"BG": 7,
 					"location": 0,
 					"is2D": false,
+					"isLineEnter": true,
 					"isPortrait": false,
 					"animation": {
 						"duration": 1000,
@@ -1127,6 +1131,7 @@
 					"BG": 7,
 					"location": 0,
 					"is2D": false,
+					"isLineEnter": true,
 					"isPortrait": false,
 					"animation": {
 						"duration": 1000,
@@ -1183,7 +1188,7 @@
 						"duration": 1000,
 						"speed": 350
 					},
-					"text": "책으로 다시 들어갈 방법을 찾아야 돼요...\n 그게 가장 급선무에요...",
+					"text": "책으로 다시 들어갈 방법을 찾아야 돼요...\n그게 가장 급선무에요...",
 					"Red": 0,
 					"Green": 0,
 					"Blue": 0
@@ -1195,6 +1200,7 @@
 					"location": 0,
 					"is2D": false,
 					"isPortrait": false,
+					"isLineEnter": true,
 					"animation": {
 						"duration": 1000,
 						"speed": 350
@@ -1216,7 +1222,7 @@
 						"duration": 1000,
 						"speed": 350
 					},
-					"text": "아 참! 이 책상 위에는 아주 재밌는 물건들이 있어요...\n 책 속으로 돌아가는 데 도움이 될 만한 것도 있겠죠.",
+					"text": "아 참! 이 책상 위에는 아주 재밌는 물건들이 있어요...\n책 속으로 돌아가는 데 도움이 될 만한 것도 있겠죠.",
 					"Red": 0,
 					"Green": 0,
 					"Blue": 0
@@ -1228,6 +1234,7 @@
 					"location": 0,
 					"is2D": false,
 					"isPortrait": false,
+					"isLineEnter": true,
 					"animation": {
 						"duration": 1000,
 						"speed": 350
@@ -1249,6 +1256,7 @@
 					"location": 0,
 					"is2D": false,
 					"isPortrait": false,
+					"isLineEnter": true,
 					"animation": {
 						"duration": 1000,
 						"speed": 350
@@ -1337,6 +1345,7 @@
 					"location": 0,
 					"is2D": false,
 					"isPortrait": false,
+					"isLineEnter": true,
 					"animation": {
 						"duration": 1000,
 						"speed": 350
@@ -1352,6 +1361,7 @@
 					"BG": 7,
 					"location": 0,
 					"is2D": false,
+					"isLineEnter": true,
 					"isPortrait": false,
 					"animation": {
 						"duration": 1000,
@@ -1368,6 +1378,7 @@
 					"BG": 7,
 					"location": 0,
 					"is2D": false,
+					"isLineEnter": true,
 					"isPortrait": false,
 					"animation": {
 						"duration": 1000,
@@ -1384,6 +1395,7 @@
 					"BG": 7,
 					"location": 0,
 					"is2D": false,
+					"isLineEnter": true,
 					"isPortrait": false,
 					"animation": {
 						"duration": 1000,
@@ -1400,6 +1412,7 @@
 					"BG": 7,
 					"location": 0,
 					"is2D": false,
+					"isLineEnter": true,
 					"isPortrait": false,
 					"animation": {
 						"duration": 1000,
@@ -1416,6 +1429,7 @@
 					"BG": 7,
 					"location": 0,
 					"is2D": false,
+					"isLineEnter": true,
 					"isPortrait": false,
 					"animation": {
 						"duration": 1000,
@@ -1470,12 +1484,13 @@
 					"BG": 7,
 					"location": 0,
 					"is2D": false,
+					"isLineEnter": true,
 					"isPortrait": false,
 					"animation": {
 						"duration": 1000,
 						"speed": 350
 					},
-					"text": "이 방에 사는 남자애인데, 당신이 살던 이야기책의 주인이기도 하죠.",
+					"text": "이 방에 사는 남자애인데,\n당신이 살던 이야기책의 주인이기도 하죠.",
 					"Red": 0,
 					"Green": 0,
 					"Blue": 0
@@ -1487,11 +1502,12 @@
 					"location": 0,
 					"is2D": false,
 					"isPortrait": false,
+					"isLineEnter": true,
 					"animation": {
 						"duration": 1000,
 						"speed": 350
 					},
-					"text": "봐서 알겠지만, 샘은 당신과 당신의 모험에 깊은 애정을 가지고 있어요.",
+					"text": "봐서 알겠지만, 샘은 당신과 당신의 모험에\n깊은 애정을 가지고 있어요.",
 					"Red": 0,
 					"Green": 0,
 					"Blue": 0
@@ -1519,6 +1535,7 @@
 					"BG": 7,
 					"location": 0,
 					"is2D": false,
+					"isLineEnter": true,
 					"isPortrait": false,
 					"animation": {
 						"duration": 1000,
@@ -1535,6 +1552,7 @@
 					"BG": 7,
 					"location": 0,
 					"is2D": false,
+					"isLineEnter": true,
 					"isPortrait": false,
 					"animation": {
 						"duration": 1000,
@@ -1551,13 +1569,13 @@
 					"BG": 7,
 					"location": 0,
 					"is2D": false,
-					"isPortrait": false,
 					"isLineEnter": true,
+					"isPortrait": false,
 					"animation": {
 						"duration": 1000,
 						"speed": 350
 					},
-					"text": "저트에게 필요한 물건이 바로 이 스케치북\n너머에 있어요.",
+					"text": "저트에게 필요한 물건이 바로\n이 스케치북 너머에 있어요.",
 					"Red": 0,
 					"Green": 0,
 					"Blue": 0
@@ -1568,6 +1586,7 @@
 					"BG": 7,
 					"location": 0,
 					"is2D": false,
+					"isLineEnter": true,
 					"isPortrait": false,
 					"animation": {
 						"duration": 1000,
@@ -1589,6 +1608,7 @@
 					"BG": 7,
 					"location": 0,
 					"is2D": false,
+					"isLineEnter": true,
 					"isPortrait": false,
 					"animation": {
 						"duration": 1000,
@@ -1605,6 +1625,7 @@
 					"BG": 7,
 					"location": 0,
 					"is2D": false,
+					"isLineEnter": true,
 					"isPortrait": false,
 					"animation": {
 						"duration": 1000,
@@ -1621,6 +1642,7 @@
 					"BG": 7,
 					"location": 0,
 					"is2D": false,
+					"isLineEnter": true,
 					"isPortrait": false,
 					"animation": {
 						"duration": 1000,
@@ -1671,6 +1693,7 @@
 					"BG": 7,
 					"location": 0,
 					"is2D": false,
+					"isLineEnter": true,
 					"isPortrait": false,
 					"animation": {
 						"duration": 1000,
@@ -1704,6 +1727,7 @@
 					"BG": 7,
 					"location": 0,
 					"is2D": false,
+					"isLineEnter": true,
 					"isPortrait": false,
 					"animation": {
 						"duration": 1000,
@@ -1720,6 +1744,7 @@
 					"BG": 7,
 					"location": 0,
 					"is2D": false,
+					"isLineEnter": true,
 					"isPortrait": false,
 					"animation": {
 						"duration": 1000,
@@ -1736,6 +1761,7 @@
 					"BG": 7,
 					"location": 0,
 					"is2D": false,
+					"isLineEnter": true,
 					"isPortrait": false,
 					"animation": {
 						"duration": 1000,
@@ -1769,6 +1795,7 @@
 					"BG": 7,
 					"location": 0,
 					"is2D": false,
+					"isLineEnter": true,
 					"isPortrait": false,
 					"animation": {
 						"duration": 1000,
@@ -1790,12 +1817,13 @@
 					"BG": 7,
 					"location": 0,
 					"is2D": false,
+					"isLineEnter": true,
 					"isPortrait": false,
 					"animation": {
 						"duration": 1000,
 						"speed": 350
 					},
-					"text": "샘이 만든 이야기책은 아이들 사이에서 굉장한 인기를 끌게 돼요...",
+					"text": "미래에 샘이 만든 이야기책은 아이들 사이에서 굉장한 인기를 끌게 돼요...",
 					"Red": 0,
 					"Green": 0,
 					"Blue": 0
@@ -1823,6 +1851,7 @@
 					"BG": 7,
 					"location": 0,
 					"is2D": false,
+					"isLineEnter": true,
 					"isPortrait": false,
 					"animation": {
 						"duration": 1000,
@@ -1883,6 +1912,7 @@
 					"BG": 7,
 					"location": 0,
 					"is2D": false,
+					"isLineEnter": true,
 					"isPortrait": false,
 					"animation": {
 						"duration": 1000,
@@ -1899,6 +1929,7 @@
 					"BG": 7,
 					"location": 0,
 					"is2D": false,
+					"isLineEnter": true,
 					"isPortrait": false,
 					"animation": {
 						"duration": 1000,
@@ -1966,6 +1997,7 @@
 					"BG": 7,
 					"location": 0,
 					"is2D": false,
+					"isLineEnter": true,
 					"isPortrait": false,
 					"animation": {
 						"duration": 1000,
@@ -2017,7 +2049,7 @@
 		},
 		{
 			"id": "Store_Dialog_01",
-			"Section": "Chapter2_P1112",
+			"Section": "Chapter2_P0304",
 			"lines": [
 				{
 					"Portrait": 2,
@@ -2069,6 +2101,380 @@
 					"Red": 255,
 					"Green": 224,
 					"Blue": 136
+				}
+			]
+		},
+		{
+			"id": "Dialogue_Into_HumgrumCastle",
+			"Section": "Chapter2_P1314",
+			"lines": [
+				{
+					"Portrait": 0,
+					"Talker": "바이올렛",
+					"BG": 13,
+					"location": 7,
+					"is2D": true,
+					"isPortrait": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "저트!",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 1,
+					"Talker": "스래쉬",
+					"BG": 2,
+					"location": 4,
+					"is2D": true,
+					"isPortrait": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "야!",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 0,
+					"Talker": "바이올렛",
+					"BG": 13,
+					"location": 7,
+					"is2D": true,
+					"isPortrait": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "너 무사하구나!!",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 1,
+					"Talker": "스래쉬",
+					"BG": 2,
+					"location": 4,
+					"is2D": true,
+					"isPortrait": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "잠깐... 너 유령 아니지? 응?",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 0,
+					"Talker": "바이올렛",
+					"BG": 13,
+					"location": 7,
+					"is2D": true,
+					"isLineEnter": true,
+					"isPortrait": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "당연히 아니지! \n 저 얼굴을 보라고. 평소처럼 몰캉몰캉하잖아.",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 0,
+					"Talker": "바이올렛",
+					"BG": 13,
+					"location": 7,
+					"is2D": true,
+					"isPortrait": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "그나저나 너 어디에 있다가 지금 온 거야!",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 1,
+					"Talker": "스래쉬",
+					"BG": 2,
+					"location": 4,
+					"is2D": true,
+					"isPortrait": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "그래, 시간이 없어!",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 1,
+					"Talker": "스래쉬",
+					"BG": 2,
+					"location": 4,
+					"is2D": true,
+					"isPortrait": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "우린 빨리 수도에 있는 크로마 여왕 폐하를 만나러 가야 한다고.",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 0,
+					"Talker": "바이올렛",
+					"BG": 13,
+					"location": 7,
+					"is2D": true,
+					"isPortrait": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "맞아. 얼른 검부터 줍자, 저트!",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				}
+			]
+		},
+		{
+			"id": "Dialog_Offset_Test_01",
+			"Section": "Chapter1_P0506",
+			"lines": [
+				{
+					"Portrait": 0,
+					"Talker": "TEST",
+					"BG": 13,
+					"location": 1,
+					"OffsetX": 0.0,
+					"OffsetY": 0.0,
+					"is2D": true,
+					"isPortrait": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "Location이 1, 오프셋이 +0, +0 이에요",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 1,
+					"Talker": "TEST",
+					"BG": 2,
+					"location": 1,
+					"OffsetX": 10.0,
+					"OffsetY": 10.0,
+					"is2D": true,
+					"isPortrait": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "Location이 1, 오프셋이 +10, +10 이에요",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 1,
+					"Talker": "TEST",
+					"BG": 2,
+					"location": 1,
+					"OffsetX": 30.0,
+					"OffsetY": 30.0,
+					"is2D": true,
+					"isPortrait": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "Location이 1, 오프셋이 +30, +30 이에요",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 1,
+					"Talker": "TEST",
+					"BG": 2,
+					"location": 1,
+					"OffsetX": 50.0,
+					"OffsetY": 50.0,
+					"is2D": true,
+					"isPortrait": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "Location이 1, 오프셋이 +50, +50 이에요",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 1,
+					"Talker": "TEST",
+					"BG": 2,
+					"location": 1,
+					"OffsetX": 100.0,
+					"OffsetY": 100.0,
+					"is2D": true,
+					"isPortrait": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "Location이 1, 오프셋이 +100, +100 이에요",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 1,
+					"Talker": "TEST",
+					"BG": 2,
+					"location": 1,
+					"OffsetX": -100.0,
+					"OffsetY": -100.0,
+					"is2D": true,
+					"isPortrait": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "Location이 1, 오프셋이 -100, -100 이에요",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				}
+			]
+		},
+		{
+			"id": "Dialog_TalkerChange_Test_01",
+			"Section": "Chapter2_P1112",
+			"isChangeTalker": true,
+			"lines": [
+				{
+					"Portrait": 0,
+					"Talker": "TEST",
+					"BG": 13,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": true,
+					"TalkerIndex": 0,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "0번 대상자이에요",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 1,
+					"Talker": "TEST",
+					"BG": 2,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": true,
+					"TalkerIndex": 1,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "1번 대상자이에요",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 1,
+					"Talker": "TEST",
+					"BG": 2,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": true,
+					"TalkerIndex": 1,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "1번 대상자이에요",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 1,
+					"Talker": "TEST",
+					"BG": 2,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": true,
+					"TalkerIndex": 0,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "0번 대상자이에요",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 1,
+					"Talker": "TEST",
+					"BG": 2,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": true,
+					"TalkerIndex": 0,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "0번 대상자이에요",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 1,
+					"Talker": "TEST",
+					"BG": 2,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": true,
+					"TalkerIndex": 1,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "1번 대상자이에요",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
 				}
 			]
 		}

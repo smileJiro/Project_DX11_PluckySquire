@@ -58,7 +58,7 @@ void CPlayerState_SpinAttack::Enter()
 	m_eCoord= m_pOwner->Get_CurCoord();
 	m_fSpinMoveSpeed = m_pOwner->Get_MoveSpeed(m_eCoord);
 	m_iSpinAttackLevel = (_int)m_pOwner->Get_SpinAttackLevel();
-	m_eFDir = EDir_To_FDir(m_pOwner->Get_2DDirection());
+	m_eFDir = To_FDirection(m_pOwner->Get_2DDirection());
 	Set_SpinState(SPIN_CHARGING);
 
 	m_pGameInstance->Start_SFX(_wstring(L"A_sfx_jot_vocal_spin_powerup-") + to_wstring(rand() % 5), 50.f);
@@ -127,7 +127,7 @@ void CPlayerState_SpinAttack::Set_SpinState(SPIN_STATE _eNewState)
 			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_SPIN_ATTACK_INTO_GT);
 		else
 		{
-			F_DIRECTION m_eFDir = EDir_To_FDir(m_pOwner->Get_2DDirection());
+			F_DIRECTION m_eFDir = To_FDirection(m_pOwner->Get_2DDirection());
 			switch (m_eFDir)
 			{
 			case Client::F_DIRECTION::LEFT:

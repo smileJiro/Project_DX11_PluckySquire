@@ -15,6 +15,7 @@ class CPlayerState_TurnBook :
 		TILT_LToR,
 		CLOSED_RIGHT ,
 		TILT_RToL,
+		OPEN_BOOK,
 		TURN_STATE_LAST ,
 	};
 	enum BOOK_TRANSFORM
@@ -50,6 +51,7 @@ private:
 		case Client::CPlayerState_TurnBook::CLOSED_RIGHT:
 			return BOOK_TRANSFORM::TRANSFORM_RIGHT;
 		case Client::CPlayerState_TurnBook::IDLE:
+		case Client::CPlayerState_TurnBook::OPEN_BOOK:
 			return BOOK_TRANSFORM::TRANSFORM_CENTER;
 		default:
 			return BOOK_TRANSFORM::TRANSFORM_LAST;

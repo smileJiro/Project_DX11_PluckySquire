@@ -7,6 +7,8 @@
 #include "UI_Manager.h"
 #include "StateMachine.h"
 #include "Npc_OnlySocial.h"
+#include "NPC_Social.h"
+#include "NPC_Manager.h"
 
 
 
@@ -87,6 +89,11 @@ HRESULT CNPC_OnlySocial::NextLevelLoadJson(_int _iNextLevel)
 	else if (5 == _iNextLevel)
 	{
 		if (FAILED(LoadFromJson(TEXT("../Bin/Resources/NPC/Create_NPC_Information_Chapter6.json"))))
+			return E_FAIL;
+	}
+	else if (6 == _iNextLevel)
+	{
+		if (FAILED(LoadFromJson(TEXT("../Bin/Resources/NPC/Create_NPC_Information_Chapter8.json"))))
 			return E_FAIL;
 	}
 
@@ -233,14 +240,17 @@ HRESULT CNPC_OnlySocial::LoadFromJson(const std::wstring& filePath)
 			}
 
 
-
+			if (SocialNPC.contains("strNPCName") && SocialNPC["strNPCName"].is_string())
+			{
+				tOnlySocial.strNPCName = StringToWstring(SocialNPC["strNPCName"].get<_string>());
+			}
 
 			if (SocialNPC.contains("strSectionid") && SocialNPC["strSectionid"].is_string())
 			{
 				tOnlySocial.strSectionid = StringToWstring(SocialNPC["strSectionid"].get<_string>());
 			}
 
-
+			CGameObject* pGameObject;
 			tOnlySocial.iCurLevelID = tOnlySocial.strCreateSection;
 			tOnlySocial.tTransform2DDesc.vInitialPosition = _float3(0.f, 0.f, 0.f);
 			tOnlySocial.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
@@ -248,8 +258,12 @@ HRESULT CNPC_OnlySocial::LoadFromJson(const std::wstring& filePath)
 			tOnlySocial.iSubIndex = 0;
 			wsprintf(tOnlySocial.strDialogueIndex, (tOnlySocial.strDialogueId).c_str());
 			//tOnlySocial.strDialogueIndex = tOnlySocial.strDialogueId;
-			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(tOnlySocial.iCurLevelID, TEXT("Prototype_GameObject_NPC_Social"), tOnlySocial.iCurLevelID, TEXT("Layer_SocialNPC"), &tOnlySocial)))
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(tOnlySocial.iCurLevelID, TEXT("Prototype_GameObject_NPC_Social"), tOnlySocial.iCurLevelID, TEXT("Layer_SocialNPC"), &pGameObject, &tOnlySocial)))
 				return E_FAIL;
+
+
+			CNPC_Manager::GetInstance()->SocialNpc_PushBack(static_cast<CNPC_Social*>(pGameObject));
+
 		}
 	}
 

@@ -325,6 +325,18 @@
     <Filter Include="01.Utility\03.Objects\Camera\CameraPivot">
       <UniqueIdentifier>{7ccb863f-8ab5-4f40-95a3-2c2ed66b520c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\04.Components\VIBuffer\Mesh">
+      <UniqueIdentifier>{8ed332ed-5872-4ca4-bf51-3dd926afd161}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\15.TrailInstance">
+      <UniqueIdentifier>{5be6de2f-39b7-430c-8404-6e69b4670fa8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\15.TrailInstance\Manager">
+      <UniqueIdentifier>{04d911a4-6b71-4f9e-be43-42187eecf458}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\14.RenderGroup\RenderGroup_Trail">
+      <UniqueIdentifier>{7f80e6c8-495d-41ed-ab61-6eff7f32b3cf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Engine_Defines.h">
@@ -666,6 +678,18 @@
     <ClInclude Include="..\Public\CameraPivot.h">
       <Filter>01.Utility\03.Objects\Camera\CameraPivot</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\VIBuffer_Mesh.h">
+      <Filter>01.Utility\04.Components\VIBuffer\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\TrailInstance.h">
+      <Filter>01.Utility\15.TrailInstance</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Trail_Manager.h">
+      <Filter>01.Utility\15.TrailInstance\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\RenderGroup_Trail.h">
+      <Filter>01.Utility\14.RenderGroup\RenderGroup_Trail</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -994,6 +1018,18 @@
     </ClCompile>
     <ClCompile Include="..\Private\CameraPivot.cpp">
       <Filter>01.Utility\03.Objects\Camera\CameraPivot</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\VIBuffer_Mesh.cpp">
+      <Filter>01.Utility\04.Components\VIBuffer\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\TrailInstance.cpp">
+      <Filter>01.Utility\15.TrailInstance</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Trail_Manager.cpp">
+      <Filter>01.Utility\15.TrailInstance\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\RenderGroup_Trail.cpp">
+      <Filter>01.Utility\14.RenderGroup\RenderGroup_Trail</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

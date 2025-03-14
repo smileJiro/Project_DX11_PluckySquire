@@ -8,6 +8,7 @@
 #include "Narration.h"
 #include "Interaction_E.h"
 #include "Interaction_Heart.h"
+#include "Book.h"
 
 
 
@@ -24,7 +25,7 @@ private:
 
 private:
 	CGameInstance* m_pGameInstance;
-	STAMP								m_eStampIndex = { STAMP_STOP };
+	STAMP								m_eStampIndex = { STAMP_END };
 	CPlayer* m_pPlayer = { nullptr };
 	CDialog* m_pDiagloue = { nullptr };
 	CInteraction_E* m_pInteractionE = { nullptr };
@@ -38,9 +39,10 @@ private:
 	vector<CShopItemBG*>				m_pShopItemBGs;
 	vector<vector<CShopItemBG*>>		m_ShopItems;
 	vector<CLogo_Props*>				m_LogoProps;
+	CBook*								m_pBook = { nullptr };
 
 	// 0π¯ -> ∆¯≈∫, 1π¯ -> ∏ÿ√Á!
-	_bool								m_PlayerStampHaves[2] = { false, false };
+	_bool								m_PlayerStampHaves[2] = { true, true };
 
 	CNarration*							m_pNarration = { nullptr };
 	_tchar								m_strNarrationID[MAX_PATH];
@@ -92,6 +94,15 @@ public:
 	void								Set_InterActionHeart(CInteraction_Heart* _interactionHeart) { m_pInteractionHeart = _interactionHeart; Safe_AddRef(_interactionHeart); }
 	STAMP								Get_StampIndex() { return m_eStampIndex; }
 	void								Set_StampIndex(STAMP _Stamp) { m_eStampIndex = _Stamp; }
+
+	void								Set_Book(CBook* _pBook) { m_pBook = _pBook; Safe_AddRef(_pBook); }
+	CBook* Get_Book()
+	{
+		if (nullptr == m_pBook)
+			assert(m_pBook);
+
+		return m_pBook;
+	}
 
 	void								Set_StampHave(_uint _index, _bool _isHave) { m_PlayerStampHaves[_index] = _isHave; }
 	_bool								Get_StampHave(_uint _index) { return m_PlayerStampHaves[_index]; }

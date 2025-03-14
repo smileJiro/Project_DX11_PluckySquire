@@ -20,6 +20,8 @@
 #include "2DMapActionObject.h"
 #include "Postit_Page.h"
 #include "CarriableObject.h"
+#include "Section_2D_PlayMap.h"
+#include "DraggableObject.h"
 
 #include "Zippy.h"
 #include "Room_Door.h"
@@ -101,6 +103,12 @@ void CGameEventExecuter_C2::Update(_float _fTimeDelta)
 			break;
 		case Client::CTrigger_Manager::CHAPTER2_STORYSEQUENCE:
 			Chapter2_StorySequence(_fTimeDelta);
+			break;
+		case Client::CTrigger_Manager::CHAPTER2_AFTER_OPENING_BOOK:
+			Chapter2_After_Opening_Book(_fTimeDelta);
+			break;
+		case Client::CTrigger_Manager::CHAPTER2_GOING_TO_ARTIA:
+			Chapter2_Goint_To_Artia(_fTimeDelta);
 			break;
 		default:
 			break;
@@ -535,17 +543,20 @@ void CGameEventExecuter_C2::Chapter2_Humgrump(_float _fTimeDelta)
 		}
 		if (m_fTimer > 1.2f && 2 == m_iSubStep)
 		{
+
+			LEVEL_ID eCurLevelID = (LEVEL_ID)m_pGameInstance->Get_CurLevelID();
+
 			m_iSubStep++;
-			//임시로 주사위 만들어 봄.
+			//주사위
 			CCarriableObject::CARRIABLE_DESC tCarriableDesc{};
 			tCarriableDesc.eStartCoord = COORDINATE_3D;
 			tCarriableDesc.iCurLevelID = m_pGameInstance->Get_CurLevelID();
 			tCarriableDesc.tTransform3DDesc.vInitialPosition = _float3(15.f, 6.8f, 21.5f);
-			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_pGameInstance->Get_CurLevelID(), TEXT("Prototype_GameObject_Dice"), m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Domino"), &tCarriableDesc)))
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eCurLevelID, TEXT("Prototype_GameObject_Dice"), eCurLevelID, TEXT("Layer_Domino"), &tCarriableDesc)))
 				return;
 			CModelObject::MODELOBJECT_DESC tModelDesc{};
 			tModelDesc.eStartCoord = COORDINATE_3D;
-			tModelDesc.iCurLevelID = m_pGameInstance->Get_CurLevelID();
+			tModelDesc.iCurLevelID = eCurLevelID;
 			_float fDominoXPosition = 14.47f;
 			_float fDominoYPosition = 1.31f;
 			_float fDominoZPosition = 24.3f;
@@ -554,25 +565,26 @@ void CGameEventExecuter_C2::Chapter2_Humgrump(_float _fTimeDelta)
 			tModelDesc.tTransform3DDesc.vInitialScaling = _float3(1.5f, 1.5f, 1.5f);
 
 			tModelDesc.strModelPrototypeTag_3D = TEXT("Domino_4");
-			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_pGameInstance->Get_CurLevelID(), TEXT("Prototype_GameObject_Domino"), m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Domino"), &tModelDesc)))
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eCurLevelID, TEXT("Prototype_GameObject_Domino"), eCurLevelID, TEXT("Layer_Domino"), &tModelDesc)))
 				return;
 			tModelDesc.tTransform3DDesc.vInitialPosition.x += fDominoXPositionStep;
 			tModelDesc.strModelPrototypeTag_3D = TEXT("Domino_2");
-			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_pGameInstance->Get_CurLevelID(), TEXT("Prototype_GameObject_Domino"), m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Domino"), &tModelDesc)))
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eCurLevelID, TEXT("Prototype_GameObject_Domino"), eCurLevelID, TEXT("Layer_Domino"), &tModelDesc)))
 				return;
 			tModelDesc.tTransform3DDesc.vInitialPosition.x += fDominoXPositionStep;
 			tModelDesc.tTransform3DDesc.vInitialPosition.y += 0.001f;
 			tModelDesc.strModelPrototypeTag_3D = TEXT("Domino_3");
-			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_pGameInstance->Get_CurLevelID(), TEXT("Prototype_GameObject_Domino"), m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Domino"), &tModelDesc)))
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eCurLevelID, TEXT("Prototype_GameObject_Domino"), eCurLevelID, TEXT("Layer_Domino"), &tModelDesc)))
 				return;
 			tModelDesc.tTransform3DDesc.vInitialPosition.x += fDominoXPositionStep;
 			tModelDesc.strModelPrototypeTag_3D = TEXT("Domino_1");
-			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_pGameInstance->Get_CurLevelID(), TEXT("Prototype_GameObject_Domino"), m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Domino"), &tModelDesc)))
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eCurLevelID, TEXT("Prototype_GameObject_Domino"), eCurLevelID, TEXT("Layer_Domino"), &tModelDesc)))
 				return;
 
+			// 도미노
 			//2번째 도미노
 			tCarriableDesc.tTransform3DDesc.vInitialPosition = _float3(48.13f, 2.61f, -5.02f);
-			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_pGameInstance->Get_CurLevelID(), TEXT("Prototype_GameObject_Dice"), m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Domino"), &tCarriableDesc)))
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eCurLevelID, TEXT("Prototype_GameObject_Dice"), eCurLevelID, TEXT("Layer_Domino"), &tCarriableDesc)))
 				return;
 
 			fDominoXPosition = 64.5f;
@@ -581,14 +593,29 @@ void CGameEventExecuter_C2::Chapter2_Humgrump(_float _fTimeDelta)
 			fDominoXPositionStep = -3.5f;
 			tModelDesc.tTransform3DDesc.vInitialPosition = _float3(fDominoXPosition, fDominoYPosition, fDominoZPosition);
 			tModelDesc.strModelPrototypeTag_3D = TEXT("Domino_1");
-			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_pGameInstance->Get_CurLevelID(), TEXT("Prototype_GameObject_Domino"), m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Domino"), &tModelDesc)))
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eCurLevelID, TEXT("Prototype_GameObject_Domino"), eCurLevelID, TEXT("Layer_Domino"), &tModelDesc)))
 				return;
 
 
 			tModelDesc.tTransform3DDesc.vInitialPosition.x += fDominoXPositionStep;
 			tModelDesc.strModelPrototypeTag_3D = TEXT("Domino_3");
-			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_pGameInstance->Get_CurLevelID(), TEXT("Prototype_GameObject_Domino"), m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Domino"), &tModelDesc)))
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eCurLevelID, TEXT("Prototype_GameObject_Domino"), eCurLevelID, TEXT("Layer_Domino"), &tModelDesc)))
 				return;
+
+
+			CDraggableObject::DRAGGABLE_DESC tDraggableDesc = {};
+			tDraggableDesc.iModelPrototypeLevelID_3D = eCurLevelID;
+			tDraggableDesc.iCurLevelID = eCurLevelID;
+			tDraggableDesc.strModelPrototypeTag_3D = TEXT("SM_Plastic_Block_04");
+			tDraggableDesc.eStartCoord = COORDINATE_3D;
+			tDraggableDesc.vBoxHalfExtents = { 1.02f,1.02f,1.02f };
+			tDraggableDesc.vBoxOffset = { 0.f,tDraggableDesc.vBoxHalfExtents.y,0.f };
+			tDraggableDesc.tTransform3DDesc.vInitialPosition = { -47.f, 5.82f, 15.f };
+
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DraggableObject"),
+				eCurLevelID, TEXT("Layer_Draggable"), &tDraggableDesc)))
+				return ;
+
 		}
 
 
@@ -596,25 +623,35 @@ void CGameEventExecuter_C2::Chapter2_Humgrump(_float _fTimeDelta)
 
 		if (COORDINATE_3D == pPlayer->Get_CurCoord())
 		{
-			/*CCamera_Target* pCamera = static_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET));
-			pCamera->Set_CameraMode(CCamera_Target::MOVE_TO_CUSTOMARM);
-
-			ARM_DATA tData = {};
-			tData.fMoveTimeAxisRight = { 3.f, 0.f };
-			tData.fRotationPerSecAxisRight = { XMConvertToRadians(-15.f), XMConvertToRadians(-1.f) };
-			tData.iRotationRatioType = EASE_IN_OUT;
-			tData.fLength = 20.f;
-			tData.fLengthTime = { 3.f, 0.f };
-			tData.iLengthRatioType = EASE_OUT;
-
-			pCamera->Add_CustomArm(tData);
-
-			pCamera->Start_Changing_AtOffset(3.f, XMVectorSet(0.f, 4.f, 0.f, 0.f), EASE_IN_OUT);*/
-
 			CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::CUTSCENE);
 			CCamera_Manager::GetInstance()->Set_NextCutSceneData(TEXT("CutScene_Humgrump"));
 
 			Next_Step(true);
+		}
+	}
+	else if (Step_Check(STEP_1)) {
+
+		if (m_fTimer >= 13.f) {
+			// Portal Active 켜기
+			CSection* pSection = CSection_Manager::GetInstance()->Find_Section(TEXT("Chapter2_P1314"));
+			static_cast<CSection_2D_PlayMap*>(pSection)->Set_PortalActive(true);
+
+			// Event Trigger 생성
+			CTriggerObject::TRIGGEROBJECT_DESC Desc = {};
+			Desc.vHalfExtents = { 10.f, 10.f, 0.f };
+			Desc.iTriggerType = (_uint)TRIGGER_TYPE::EVENT_TRIGGER;
+			Desc.szEventTag = TEXT("Chapter2_After_Opening_Book");
+			Desc.eConditionType = CTriggerObject::TRIGGER_ENTER;
+			Desc.isReusable = false; // 한 번 하고 삭제할 때
+			Desc.eStartCoord = COORDINATE_2D;
+			Desc.tTransform2DDesc.vInitialPosition = { 70.f, 130.f, 0.f };
+
+			CTrigger_Manager::GetInstance()->Create_TriggerObject(LEVEL_STATIC, LEVEL_CHAPTER_2, &Desc, pSection);
+			
+			// 기존 NPC 삭제
+
+			// 스레쉬와 바이올렛 생성
+
 
 			GameEvent_End();
 		}
@@ -1339,6 +1376,36 @@ void CGameEventExecuter_C2::Chapter2_StorySequence(_float _fTimeDelta)
 		GameEvent_End();
 	}
 		
+}
+
+void CGameEventExecuter_C2::Chapter2_After_Opening_Book(_float _fTimeDelta)
+{
+	m_fTimer += _fTimeDelta;
+
+	if (Step_Check(STEP_0)) {
+		if (m_fTimer >= 2.f) {
+			// Player Lock
+			CPlayer* pPlayer = Get_Player();
+			pPlayer->Set_BlockPlayerInput(true);
+
+			// 검 줍자는 대화 시작
+			CDialog_Manager::GetInstance()->Set_DialogId(L"Dialogue_Into_HumgrumCastle");
+			Next_Step(true);
+		}
+	}
+	if (Step_Check(STEP_1)) {
+
+		if (false == CDialog_Manager::GetInstance()->Get_DisPlayDialogue()) {
+			CPlayer* pPlayer = Get_Player();
+			pPlayer->Set_BlockPlayerInput(false);
+
+			GameEvent_End();
+		}
+	}
+}
+
+void CGameEventExecuter_C2::Chapter2_Goint_To_Artia(_float _fTimeDelta)
+{
 }
 
 

@@ -25,7 +25,7 @@ HRESULT CDefenderSpawner::Initialize(void* _pArg)
 {
 	m_pSection_Manager = CSection_Manager::GetInstance();
 	m_pPoolMgr = CPooling_Manager::GetInstance();
-
+	m_vSectionSize = m_pSection_Manager->Get_Section_RenderTarget_Size(m_strSectionName);
 	DEFENDER_SPAWNER_DESC* pDesc = static_cast<DEFENDER_SPAWNER_DESC*>(_pArg);
 	m_strSectionName = pDesc->strSectionName;
 	m_strPoolTag = pDesc->strPoolTag;
@@ -101,8 +101,9 @@ void CDefenderSpawner::Delete_Pool()
 void CDefenderSpawner::Spawn_Single(T_DIRECTION _eDirection, _vector _vPos,_float _fMoveSpeed)
 {
 
-	_float3 vPos; XMStoreFloat3(&vPos, _vPos);
+	_float3 vPos; XMStoreFloat3(&vPos, (_vPos));
 	CDefenderMonster* pMonster = nullptr;
+
 	m_pPoolMgr->Create_Object(m_strPoolTag,
 		COORDINATE_2D,
 		(CGameObject**)&pMonster,
@@ -197,6 +198,21 @@ void CDefenderSpawner::Spawn_Random(SPAWN_DESC& _tDesc)
 	_float fRandomY = (_float)rand() / (_float)RAND_MAX * fRandomRange - fRandomRange * 0.5f;
 	vPosition1 += _vector{fRandomX, fRandomY, 0.f };
 	Spawn_Single(_tDesc.eDirection, vPosition1, _tDesc.fMoveSpeed);
+}
+
+_vector CDefenderSpawner::Get_ScrolledPos(_vector _vPos)
+{
+	_float fDefaultWitdh = (m_vSectionSize.x * 0.5f);
+
+	if (-fDefaultWitdh > _vPos.m128_f32[0])
+	{
+		_vPos = XMVectorSetX(_vPos, _vPos.m128_f32[0] + m_vSectionSize.x);
+	}
+	if (fDefaultWitdh < _vPos.m128_f32[0])
+	{
+		_vPos = XMVectorSetX(_vPos, _vPos.m128_f32[0] - m_vSectionSize.x);
+	}
+	return _vPos;
 }
 
 

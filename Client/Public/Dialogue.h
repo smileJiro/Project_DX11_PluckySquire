@@ -63,26 +63,29 @@ public:
     struct DialogLine
     {
 
-        wstring Talker;  // 말하는 놈 : 이름 및 초상화를 설정하자.
-        wstring text;     // 대화 내용
-        _int   BG;     // 배경
-        _int Red;
-        _int Green;
-        _int Blue;
+		wstring         Talker;  // 말하는 놈 : 이름 및 초상화를 설정하자.
+		wstring         text;     // 대화 내용
+		_int            BG;     // 배경
+		_int            Red;
+		_int            Green;
+		_int            Blue;
 
-        _bool is2D;
-        _bool isPortrait;
-        _bool isLineEnter = { false };
-        _int  iAnimationIndex = { -1 };
+        _bool           is2D;
+        _bool           isPortrait;
+        _bool           isLineEnter = { false };
+        _int            iAnimationIndex = { -1 };
 
-        _float3 vFontColor = _float3(0.f, 0.f, 0.f);
+        _float2         vOffset = { _float2(0.f, 0.f) };
+
+        _float3         vFontColor = _float3(0.f, 0.f, 0.f);
         
-        LOC  location = LOC_MIDHIGH;    // 위치 설정
-        PORTRAITNAME portrait = PORTRAITNAME_DEFAULT;
-        Animation animation;   // 애니메이션 정보
+        LOC             location = LOC_MIDHIGH;    // 위치 설정
+        PORTRAITNAME    portrait = PORTRAITNAME_DEFAULT;
+        _int            TerlkerIndex = { 0 };
+        Animation       animation;   // 애니메이션 정보
 
-        _bool     isDefender = { false };
-        wstring Section;
+        _bool           isDefender = { false };
+        wstring         Section;
     };
 
     struct DialogData
@@ -91,6 +94,7 @@ public:
         wstring wstrTriggerTag;
         wstring id;                     // 다이얼로그 ID
         wstring Section;                // 노출되어야할 섹션
+        _bool isChangeTalker = { false };
         vector<DialogLine> lines;       // 대화 내용 목록
     };
 
@@ -107,11 +111,19 @@ public:
     virtual HRESULT Render() override;
 
 public:
-    CPortrait* Get_Portrait() { return m_pPortrait; }
-    void       Set_Portrait(CPortrait* _Portrait) { m_pPortrait = _Portrait; Safe_AddRef(_Portrait); }
-    void       UpdateDialogueLine();
+	CPortrait*  Get_Portrait() { return m_pPortrait; }
+	void        Set_Portrait(CPortrait* _Portrait) { m_pPortrait = _Portrait; Safe_AddRef(_Portrait); }
+	void        UpdateDialogueLine();
     HRESULT     NextLevelLoadJson(_int _iNextLevel);
-    _bool     Get_isLastDialogLine() { return m_isLastDialogLine; }
+    _bool       Get_isLastDialogLine() { return m_isLastDialogLine; }
+    _bool       isCurDialogTargetChange();
+    _uint       Get_TargetIndex();
+
+
+
+	vector<CDialog::DialogData>			Get_Dialogue(const _wstring& _id);
+    CDialog::DialogLine					Get_DialogueLine(const _wstring& _id, _int _LineIndex);
+	
 
 private:
    
@@ -125,8 +137,7 @@ private:
     void        isCloseDialogueForTalket(_tchar* _DialogId);
 
     // 추후 수정해야한다. 주소를 받던가
-    vector<CDialog::DialogData>			Get_Dialogue(const _wstring& _id);
-    CDialog::DialogLine					Get_DialogueLine(const _wstring& _id, _int _LineIndex);
+
 
 
     /* UI_manager에서 이동*/

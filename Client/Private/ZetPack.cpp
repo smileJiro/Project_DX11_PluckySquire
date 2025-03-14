@@ -5,6 +5,7 @@
 #include "Actor_Dynamic.h"
 #include "Effect_Manager.h"
 #include "Section_Manager.h"
+#include "Trail_Manager.h"
 
 
 CZetPack::CZetPack(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -62,6 +63,9 @@ HRESULT CZetPack::Initialize(void* _pArg)
         m_pCyberZipEffect->Set_SpawnMatrix(&m_WorldMatrices[COORDINATE_3D]);
         m_pCyberZipEffect->Set_Position(XMVectorSet(0.f, -0.4f, 0.f, 1.f));
     }
+
+    m_iTrailID = CTrail_Manager::GetInstance()->Create_TrailID();
+
 	return S_OK;
 }
 
@@ -73,6 +77,7 @@ void CZetPack::Priority_Update(_float _fTimeDelta)
 
 void CZetPack::Update(_float _fTimeDelta)
 {
+    Update_Trail(m_iTrailID, _fTimeDelta);
 
 	__super::Update(_fTimeDelta);
 
@@ -82,7 +87,6 @@ void CZetPack::Update(_float _fTimeDelta)
 
 void CZetPack::Late_Update(_float _fTimeDelta)
 {
-    __super::Late_Update(_fTimeDelta);
     if (m_bPropel)
     {
         _float fPlayerUpForce = m_pPlayer->Get_UpForce();
@@ -96,9 +100,12 @@ void CZetPack::Late_Update(_float _fTimeDelta)
         Switch_State(ZET_STATE::STATE_IDLE);
     }
 
-
     if (STATE_CYBER == m_eState && COORDINATE_3D == Get_CurCoord() && nullptr != m_pCyberZipEffect)
         m_pCyberZipEffect->Late_Update(_fTimeDelta);
+
+    Register_RenderGroup(m_iRenderGroupID_3D, PR3D_TRAIL); // TRAIL;
+
+    __super::Late_Update(_fTimeDelta);
 }
 
 HRESULT CZetPack::Render()
