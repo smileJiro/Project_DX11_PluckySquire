@@ -195,6 +195,8 @@
     <ClInclude Include="..\Public\BombableBox.h" />
     <ClInclude Include="..\Public\BombableObject.h" />
     <ClInclude Include="..\Public\BombStamp.h" />
+    <ClInclude Include="..\Public\BombSwitch.h" />
+    <ClInclude Include="..\Public\BombSwitchStopper.h" />
     <ClInclude Include="..\Public\BossDeadState.h" />
     <ClInclude Include="..\Public\BossHitState.h" />
     <ClInclude Include="..\Public\BossMoveState.h" />
@@ -566,6 +568,8 @@
     <ClCompile Include="..\Private\BombableBox.cpp" />
     <ClCompile Include="..\Private\BombableObject.cpp" />
     <ClCompile Include="..\Private\BombStamp.cpp" />
+    <ClCompile Include="..\Private\BombSwitch.cpp" />
+    <ClCompile Include="..\Private\BombSwitchStopper.cpp" />
     <ClCompile Include="..\Private\BossDeadState.cpp" />
     <ClCompile Include="..\Private\BossHitState.cpp" />
     <ClCompile Include="..\Private\BossMoveState.cpp" />

@@ -1807,6 +1807,8 @@
     <ClInclude Include="..\Public\Laser_Container.h">
       <Filter>02.GameObjects\2DGimmik\Laser</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\BombSwitch.h" />
+    <ClInclude Include="..\Public\BombSwitchStopper.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -2895,6 +2897,8 @@
     <ClCompile Include="..\Private\Laser_Container.cpp">
       <Filter>02.GameObjects\2DGimmik\Laser</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\BombSwitch.cpp" />
+    <ClCompile Include="..\Private\BombSwitchStopper.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
