@@ -1347,38 +1347,6 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Effects2D(const _wstring& _strLayerTag)
 	return S_OK;
 }
 
-HRESULT CLevel_Chapter_08::Ready_Layer_Slippery()
-{
-	CSection_Manager* pSectionMgr = CSection_Manager::GetInstance();
-
-	CModelObject::MODELOBJECT_DESC tModelDesc = {};
-	tModelDesc.iCurLevelID = m_eLevelID;
-	CMudPit* pMudpit = static_cast<CMudPit*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_eLevelID, TEXT("Prototype_GameObject_MudPit"), &tModelDesc));
-	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Layer_Slippery"), pMudpit);
-	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter5_P0102"), pMudpit, SECTION_2D_PLAYMAP_OBJECT);
-
-
-	CRubboink_Tiny::TINY_DESC  tSlipperyDesc{};
-	tSlipperyDesc.pMudPit = pMudpit;
-	tSlipperyDesc.iCurLevelID = m_eLevelID;
-	tSlipperyDesc.iImpactCollisionFilter = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::BLOCKER;
-
-	CSlipperyObject* pSlippery = static_cast<CSlipperyObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_eLevelID, TEXT("Prototype_GameObject_Rubboink_Tiny"), &tSlipperyDesc));
-	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Layer_Slippery"), pSlippery);
-	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter5_P0102"), pSlippery, SECTION_2D_PLAYMAP_OBJECT);
-
-
-	//TMP
-	CTiltSwapPusher::TILTSWAPPUSHER_DESC tTiltSwapPusherDesc{};
-	tTiltSwapPusherDesc.eLookDirection = F_DIRECTION::LEFT;
-	tTiltSwapPusherDesc.iCurLevelID = m_eLevelID;
-	tTiltSwapPusherDesc.tTransform2DDesc.vInitialPosition = _float3(1530.f, 515.f, 0.f);
-	CTiltSwapPusher* pTSP = static_cast<CTiltSwapPusher*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_eLevelID, TEXT("Prototype_GameObject_TiltSwapPusher"), &tTiltSwapPusherDesc));
-	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Layer_Slippery"), pTSP);
-	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter5_P0102"), pTSP, SECTION_2D_PLAYMAP_OBJECT);
-
-	return S_OK;
-}
 
 HRESULT CLevel_Chapter_08::Ready_Layer_PortalLocker(const _wstring& _strLayerTag)
 {
@@ -1487,6 +1455,31 @@ HRESULT CLevel_Chapter_08::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Laser_Container"),
 		m_eLevelID, _strLayerTag, &LaserDesc)))
 		return E_FAIL;
+
+
+
+
+	//Chapter8_P2122 Á¾ÇÕ ±â¹Í ¸Ê
+	CSection_Manager* pSectionMgr = CSection_Manager::GetInstance();
+
+	CTiltSwapPusher::TILTSWAPPUSHER_DESC tTiltSwapPusherDesc{};
+	tTiltSwapPusherDesc.eLookDirection = F_DIRECTION::RIGHT;
+	tTiltSwapPusherDesc.iCurLevelID = m_eLevelID;
+	tTiltSwapPusherDesc.tTransform2DDesc.vInitialPosition = _float3(-420.f, -390.f, 0.f);
+	CTiltSwapPusher* pTSP1 = static_cast<CTiltSwapPusher*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_eLevelID, TEXT("Prototype_GameObject_TiltSwapPusher"), &tTiltSwapPusherDesc));
+	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Layer_Slippery"), pTSP1);
+	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter8_P2122"), pTSP1, SECTION_2D_PLAYMAP_OBJECT);
+	tTiltSwapPusherDesc.eLookDirection = F_DIRECTION::LEFT;
+	tTiltSwapPusherDesc.tTransform2DDesc.vInitialPosition = _float3(480.f, -390.f, 0.f);
+	CTiltSwapPusher* pTSP2 = static_cast<CTiltSwapPusher*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_eLevelID, TEXT("Prototype_GameObject_TiltSwapPusher"), &tTiltSwapPusherDesc));
+	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Layer_Slippery"), pTSP2);
+	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter8_P2122"), pTSP2, SECTION_2D_PLAYMAP_OBJECT);
+	tTiltSwapPusherDesc.eLookDirection = F_DIRECTION::DOWN;
+	tTiltSwapPusherDesc.tTransform2DDesc.vInitialPosition = _float3(-175.f, -135.f, 0.f);
+	CTiltSwapPusher* pTSP3 = static_cast<CTiltSwapPusher*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_eLevelID, TEXT("Prototype_GameObject_TiltSwapPusher"), &tTiltSwapPusherDesc));
+	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Layer_Slippery"), pTSP3);
+	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter8_P2122"), pTSP3, SECTION_2D_PLAYMAP_OBJECT);
+
 
 	return S_OK;
 }

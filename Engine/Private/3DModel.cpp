@@ -333,7 +333,7 @@ _bool C3DModel::Play_Animation(_float fTimeDelta, _bool bReverse)
 		}
 		if (m_Animations[m_iCurrentAnimIndex]->Update_AnimTransition(m_Bones, fTimeDelta, m_mapAnimTransLeftFrame, bReverse))
 			m_iPrevAnimIndex = m_iCurrentAnimIndex;
-		m_bDuringAnimation = true;
+		m_bDuringAnimation = false;
 	}
 
 
