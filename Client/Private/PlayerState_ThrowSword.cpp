@@ -33,7 +33,7 @@ void CPlayerState_ThrowSword::Enter()
 	{
 	case Engine::COORDINATE_2D:
 	{
-		F_DIRECTION eDir = EDir_To_FDir(m_pOwner->Get_2DDirection());
+		F_DIRECTION eDir = To_FDirection(m_pOwner->Get_2DDirection());
 		if (m_pOwner->Is_PlatformerMode())
 		{
 			if (F_DIRECTION::UP == eDir)
@@ -82,7 +82,7 @@ void CPlayerState_ThrowSword::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
     }
 	else
 	{
-		F_DIRECTION eDir = EDir_To_FDir(m_pOwner->Get_2DDirection());
+		F_DIRECTION eDir = To_FDirection(m_pOwner->Get_2DDirection());
 		if (m_pOwner->Is_PlatformerMode())
 		{
 			if (F_DIRECTION::UP == eDir)

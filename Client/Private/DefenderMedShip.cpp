@@ -148,8 +148,7 @@ void CDefenderMedShip::On_Explode()
 
 void CDefenderMedShip::On_Spawned()
 {
-	m_bSpawned = true;
-	m_PartObjects[PART_BODY]->Set_Active(true);
+	__super::On_Spawned();
 }
 
 

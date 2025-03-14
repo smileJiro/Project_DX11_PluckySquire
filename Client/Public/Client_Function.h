@@ -56,12 +56,12 @@ namespace Client
 	std::string WstringToString(const std::wstring& wstr); 
 	std::string MatrixToString(_float4x4 vMatrix);
 	F_DIRECTION To_FDirection(_vector _vDir, COORDINATE _eCoord = COORDINATE_2D);
-	_vector FDir_To_Vector(F_DIRECTION _eFDir);
-	E_DIRECTION FDir_To_EDir(F_DIRECTION _eFDir);
+	F_DIRECTION To_FDirection(E_DIRECTION _eEDir);
+	E_DIRECTION To_EDirection(F_DIRECTION _eFDir);
 	E_DIRECTION To_EDirection(_vector _vDir);
+	T_DIRECTION To_TDirection(E_DIRECTION _eEDir);
+	_vector FDir_To_Vector(F_DIRECTION _eFDir);
 	_vector EDir_To_Vector(E_DIRECTION _eFDir);
-	F_DIRECTION EDir_To_FDir(E_DIRECTION _eEDir);
-	T_DIRECTION EDir_To_TDirection(E_DIRECTION _eEDir);
 
 	
 

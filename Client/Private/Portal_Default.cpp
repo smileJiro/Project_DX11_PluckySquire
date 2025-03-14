@@ -44,7 +44,6 @@ HRESULT CPortal_Default::Initialize(void* _pArg)
     m_fInteractChargeTime = 0.6f;
     m_eInteractType = INTERACT_TYPE::CHARGE;
     m_eInteractID = INTERACT_ID::PORTAL;
-    m_bUIPlayerHeadUp = true;
 
 
 

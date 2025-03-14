@@ -34,6 +34,7 @@
 #include "PlayerState_TransformIn.h"
 #include "PlayerState_CyberIdle.h"
 #include "PlayerState_RetriveSword.h"
+#include "PlayerState_CannonPortal.h"
 #include "Actor_Dynamic.h"
 #include "PlayerSword.h"    
 #include "PlayerBody.h"
@@ -1559,7 +1560,10 @@ _bool CPlayer::Check_ReplaceInteractObject(IInteractable* _pObj)
 void CPlayer::Start_Portal(CPortal* _pPortal)
 {
 	m_pInteractableObject = _pPortal;
-    Set_State(START_PORTAL);
+    if (CPortal::PORTAL_CANNON == _pPortal->Get_PortalType())
+        Set_State(START_CANNON_PORTAL);
+    else
+        Set_State(START_PORTAL);
 }
 
 void CPlayer::JumpTo_Portal(CPortal* _pPortal)
@@ -1785,7 +1789,7 @@ _vector CPlayer::Get_LookDirection()
 {
 	COORDINATE eCoord = Get_CurCoord();
     if (COORDINATE_2D == eCoord)
-        return FDir_To_Vector(EDir_To_FDir( m_e2DDirection_E));
+        return FDir_To_Vector(To_FDirection( m_e2DDirection_E));
     else
         return XMVector4Normalize( m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
 }
@@ -1793,7 +1797,7 @@ _vector CPlayer::Get_LookDirection()
 _vector CPlayer::Get_LookDirection(COORDINATE _eCoord)
 {
     if (COORDINATE_2D == _eCoord)
-        return FDir_To_Vector(EDir_To_FDir(m_e2DDirection_E));
+        return FDir_To_Vector(To_FDirection(m_e2DDirection_E));
     else
         return XMVector4Normalize(m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
 }
@@ -1974,6 +1978,9 @@ void CPlayer::Set_State(STATE _eState)
         break;
     case Client::CPlayer::RETRIVE_SWORD:
         m_pStateMachine->Transition_To(new CPlayerState_RetriveSword(this));
+        break;
+    case Client::CPlayer::START_CANNON_PORTAL:
+        m_pStateMachine->Transition_To(new CPlayerState_CannonPortal(this));
         break;
     case Client::CPlayer::STATE_LAST:
         break;
@@ -2171,7 +2178,7 @@ void CPlayer::Start_Attack(ATTACK_TYPE _eAttackType)
 	if (COORDINATE_2D == Get_CurCoord())
 	{
         m_pAttack2DTriggerCom->Set_Active(true);
-        F_DIRECTION eFDir = EDir_To_FDir(m_e2DDirection_E);
+        F_DIRECTION eFDir = To_FDirection(m_e2DDirection_E);
         const ATTACK_TRIGGER_DESC& tDsc = m_f2DAttackTriggerDesc[m_eCurAttackType][(_uint)eFDir];
         CCollider_AABB* pAttackTrigger =static_cast<CCollider_AABB*>(m_pAttack2DTriggerCom);
         pAttackTrigger->Set_Extents(tDsc.vExtents);
@@ -2383,8 +2390,8 @@ void CPlayer::Key_Input(_float _fTimeDelta)
             //static_cast<CActor_Dynamic*>(Get_ActorCom())->Start_ParabolicTo(_vector{ 6.99342966, 5.58722591, 21.8827782 }, XMConvertToRadians(45.f), 9.81f * 3.0f);
             //¡÷ªÁ¿ß 2 (48.73f, 2.61f, -5.02f);
             //static_cast<CActor_Dynamic*>(Get_ActorCom())->Start_ParabolicTo(_vector{ 48.73f, 2.61f, -5.02f }, XMConvertToRadians(45.f), 9.81f * 3.0f);
-            //static_cast<CActor_Dynamic*>(Get_ActorCom())->Start_ParabolicTo(_vector{ 15.f, 10.f, 21.8827782 }, XMConvertToRadians(45.f), 9.81f * 3.0f);
-
+            //static_cast<CActor_Dynamic*>(Get_ActorCowm())->Start_ParabolicTo(_vector{ 15.f, 10.f, 21.8827782 }, XMConvertToRadians(45.f), 9.81f * 3.0f);
+        
        // }
         //static_cast<CModelObject*>(m_PartObjects[PART_BODY])->To_NextAnimation();
         //_vector vPalyerPos = Get_FinalPosition();
@@ -2405,7 +2412,15 @@ void CPlayer::Key_Input(_float _fTimeDelta)
         //Add_AutoMoveCommand(tCommand);
 
         //Start_AutoMove(true);
-		Set_State(EVICT);
+		//Set_State(EVICT);
+		AUTOMOVE_COMMAND tCommand{};
+		tCommand.eType = AUTOMOVE_TYPE::MOVE_TO;
+		tCommand.iAnimIndex = (_uint)CPlayer::ANIM_STATE_2D::PLAYER_RUN_RIGHT;
+		tCommand.fPreDelayTime = 0.5f;
+		tCommand.vTarget = { 0.f, 0.f, 0.f };
+		tCommand.fPostDelayTime = 0.5f;
+		Add_AutoMoveCommand(tCommand);
+        Start_AutoMove(true);
     }
     if (m_pActorCom->Is_Kinematic())
     {

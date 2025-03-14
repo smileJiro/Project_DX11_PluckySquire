@@ -83,6 +83,8 @@ private:
 	void Spawn_Arrow(SPAWN_DESC& _tDesc);
 	void Spawn_Vertical(SPAWN_DESC& _tDesc, _bool _bUp);
 	void Spawn_Random(SPAWN_DESC& _tDesc);
+
+	_vector Get_ScrolledPos(_vector _vPos);
 private:
 	CSection_Manager* m_pSection_Manager = nullptr;
 	class CPooling_Manager* m_pPoolMgr = nullptr;
@@ -90,7 +92,7 @@ private:
 	CDefenderPlayer* m_pPlayer = nullptr;
 
 	_uint m_iDotSequenceCount = 6;
-
+	_float2 m_vSectionSize = {};
 	//Que
 	list<SPAWN_DESC> m_SpawnList = {};
 public:

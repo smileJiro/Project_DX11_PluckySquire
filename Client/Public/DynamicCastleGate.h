@@ -1,0 +1,33 @@
+#pragma once
+#include "ContainerObject.h"
+
+BEGIN(Client)
+class CDynamicCastleGate :
+    public CContainerObject
+{
+public:
+	enum CASTLEDOOR_PARTS
+	{
+		CASTL_PART_DOOR,
+		CASTL_PART_SKSP,
+		CASTL_PART_LAST
+	};
+protected:
+	explicit CDynamicCastleGate(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
+	explicit CDynamicCastleGate(const CDynamicCastleGate& _Prototype);
+	virtual ~CDynamicCastleGate() = default;
+public:
+	HRESULT Initialize(void* _pArg);
+	virtual void			Late_Update(_float _fTimeDelta) override;
+	virtual HRESULT			Render() override;
+
+	virtual void OnContact_Modify(const COLL_INFO& _0, const COLL_INFO& _1, CModifiableContacts& _ModifiableContacts, _bool _bIm0)override;
+private:
+	HRESULT Ready_PartObjects();
+public:
+	static CDynamicCastleGate* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
+	virtual CGameObject* Clone(void* _pArg) override;
+	virtual void			Free() override;
+};
+
+END

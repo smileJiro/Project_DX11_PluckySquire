@@ -82,6 +82,9 @@ public :
 
 	NORMAL_DIRECTION		Get_PortalNormal();
 
+	PORTAL_TYPE				Get_PortalType() { return m_ePortalType; }
+
+protected:
 	PORTAL_TYPE				m_ePortalType = PORTAL_LAST;
 
 	CCollider*				m_pColliderCom = { nullptr };
