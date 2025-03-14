@@ -227,6 +227,8 @@
     <ClInclude Include="..\public\FresnelModelObject.h" />
     <ClInclude Include="..\public\Mat.h" />
     <ClInclude Include="..\public\Mug_Alien.h" />
+    <ClInclude Include="..\Public\Npc_Humgrump.h" />
+    <ClInclude Include="..\Public\Npc_MoonBeard.h" />
     <ClInclude Include="..\Public\PlayerState_RetriveSword.h" />
     <ClInclude Include="..\public\PortalLocker_LayerCount.h" />
     <ClInclude Include="..\Public\Projectile_SketchSpace_UFO.h" />
@@ -590,6 +592,8 @@
     <ClCompile Include="..\private\FresnelModelObject.cpp" />
     <ClCompile Include="..\private\Mat.cpp" />
     <ClCompile Include="..\private\Mug_Alien.cpp" />
+    <ClCompile Include="..\Private\Npc_Humgrump.cpp" />
+    <ClCompile Include="..\Private\Npc_MoonBeard.cpp" />
     <ClCompile Include="..\Private\PlayerState_RetriveSword.cpp" />
     <ClCompile Include="..\private\PortalLocker_LayerCount.cpp" />
     <ClCompile Include="..\Private\Projectile_SketchSpace_UFO.cpp" />

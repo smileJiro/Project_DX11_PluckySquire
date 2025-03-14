@@ -694,6 +694,12 @@
     <Filter Include="02.GameObjects\UI\00. GamePlay\03. InterAction\03. Interaction_Key">
       <UniqueIdentifier>{1f3066a6-8b75-432c-bf2e-33079187947e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\NPC\98. Humgrump">
+      <UniqueIdentifier>{8806f7cd-ad0e-45e1-a5c2-2b02ee7357f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\NPC\97. MoonBeard">
+      <UniqueIdentifier>{f3ca77d5-a33f-4a88-9273-1a97bbddf748}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -1770,6 +1776,12 @@
     <ClInclude Include="..\public\Sneak_SentryTroop.h">
       <Filter>05.MiniGames\Minigame_Sneak</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Npc_Humgrump.h">
+      <Filter>02.GameObjects\NPC\98. Humgrump</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Npc_MoonBeard.h">
+      <Filter>02.GameObjects\NPC\97. MoonBeard</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -2832,6 +2844,12 @@
     <ClCompile Include="..\Private\PlayerState_RetriveSword.cpp" />
     <ClCompile Include="..\private\Sneak_SentryTroop.cpp">
       <Filter>05.MiniGames\Minigame_Sneak</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Npc_Humgrump.cpp">
+      <Filter>02.GameObjects\NPC\98. Humgrump</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Npc_MoonBeard.cpp">
+      <Filter>02.GameObjects\NPC\97. MoonBeard</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

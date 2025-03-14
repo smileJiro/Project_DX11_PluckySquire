@@ -69,7 +69,7 @@ private:
 	void							Chapter2_StorySequence(_float _fTimeDelta);
 
 	void							Chapter2_After_Opening_Book(_float _fTimeDelta);
-	void							Chapter2_Goint_To_Artia(_float _fTimeDelta);
+	void							Chapter2_Going_To_Artia(_float _fTimeDelta);
 
 public:
 	static CGameEventExecuter_C2* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

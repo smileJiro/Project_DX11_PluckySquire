@@ -76,6 +76,9 @@ void CGameEventExecuter_C6::Update(_float _fTimeDelta)
 		case Client::CTrigger_Manager::CHAPTER6_FATHERGAME_PROGRESS_FATHERPART_3:
 			Chapter6_FatherGame_Progress_Fatherpart_3(_fTimeDelta);
 			break;
+		case Client::CTrigger_Manager::CHAPTER6_HUMGRUMP_REVOLT:
+			Chapter6_Humgrump_Revolt(_fTimeDelta);
+			break;
 		default:
 			break;
 		}
@@ -746,6 +749,40 @@ void CGameEventExecuter_C6::Chapter6_FatherGame_Progress_Fatherpart_3(_float _fT
 		GameEvent_End();
 	}
 
+}
+
+void CGameEventExecuter_C6::Chapter6_Humgrump_Revolt(_float _fTimeDelta)
+{
+	m_fTimer += _fTimeDelta;
+
+	if (Step_Check(STEP_0))
+	{
+		if (Is_Start()) {
+			/*CPlayer* pPlayer = Get_Player();
+			cout << "한 번이다" << endl;
+			AUTOMOVE_COMMAND tCommand = {};
+			tCommand.eType = AUTOMOVE_TYPE::MOVE_TO;
+			tCommand.iAnimIndex = (_uint)CPlayer::ANIM_STATE_2D::PLAYER_RUN_SWORD_UP;
+			tCommand.vTarget = XMVectorSet(0.f, -405.f, 0.0f, 1.f);
+			tCommand.fPreDelayTime = 0.f;
+			tCommand.fPostDelayTime = 0.0f;
+
+			pPlayer->Add_AutoMoveCommand(tCommand);
+			pPlayer->Start_AutoMove(true);*/
+
+			static _float4x4 matCenter = {};
+			_vector vCenter = XMVectorSet(0.f, 0.f, 0.f, 1.f);
+
+			memcpy(&matCenter.m[3], &vCenter, sizeof(_float4));
+
+			CCamera_Manager::GetInstance()->Change_CameraTarget(&matCenter, 0.5f);
+
+			Next_Step(true);
+		}
+	}
+	else if (Step_Check(STEP_1)) {
+
+	}
 }
 
 

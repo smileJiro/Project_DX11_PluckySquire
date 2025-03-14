@@ -2333,14 +2333,14 @@
 					"Portrait": 1,
 					"Talker": "",
 					"BG": 24,
-					"location": 4,
+					"location": 1,
 					"is2D": true,
 					"isPortrait": false,
 					"animation": {
 						"duration": 1000,
 						"speed": 500
 					},
-					"text": "                     모잼!!!",
+					"text": "                                      모잼!!!",
 					"Red": 0,
 					"Green": 0,
 					"Blue": 0

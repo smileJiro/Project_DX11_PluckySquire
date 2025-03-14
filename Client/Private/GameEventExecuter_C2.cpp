@@ -108,7 +108,7 @@ void CGameEventExecuter_C2::Update(_float _fTimeDelta)
 			Chapter2_After_Opening_Book(_fTimeDelta);
 			break;
 		case Client::CTrigger_Manager::CHAPTER2_GOING_TO_ARTIA:
-			Chapter2_Goint_To_Artia(_fTimeDelta);
+			Chapter2_Going_To_Artia(_fTimeDelta);
 			break;
 		default:
 			break;
@@ -1402,7 +1402,7 @@ void CGameEventExecuter_C2::Chapter2_After_Opening_Book(_float _fTimeDelta)
 	}
 }
 
-void CGameEventExecuter_C2::Chapter2_Goint_To_Artia(_float _fTimeDelta)
+void CGameEventExecuter_C2::Chapter2_Going_To_Artia(_float _fTimeDelta)
 {
 	m_fTimer += _fTimeDelta;
 

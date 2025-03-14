@@ -1303,47 +1303,47 @@ pair<ARM_DATA*, SUB_DATA*>* CCamera_2D::Find_ArmData(_wstring _wszArmTag)
 void CCamera_2D::Key_Input(_float _fTimeDelta)
 {
 #pragma region RB 카메라 Arm 회전
-	_long		MouseMove = {};
-	_vector		fRotation = {};
+	//_long		MouseMove = {};
+	//_vector		fRotation = {};
 
-	if (KEY_PRESSING(KEY::CTRL)) {
-		if (MOUSE_PRESSING(MOUSE_KEY::RB)) {
-			if (MouseMove = MOUSE_MOVE(MOUSE_AXIS::Y))
-			{
-				fRotation = XMVectorSetX(fRotation, MouseMove * _fTimeDelta * -0.3f);
-			}
+	//if (KEY_PRESSING(KEY::CTRL)) {
+	//	if (MOUSE_PRESSING(MOUSE_KEY::RB)) {
+	//		if (MouseMove = MOUSE_MOVE(MOUSE_AXIS::Y))
+	//		{
+	//			fRotation = XMVectorSetX(fRotation, MouseMove * _fTimeDelta * -0.3f);
+	//		}
 
-			m_pCurArm->Set_Rotation(fRotation);
-		}
-	}
-	else if (KEY_PRESSING(KEY::TAB)) {
+	//		m_pCurArm->Set_Rotation(fRotation);
+	//	}
+	//}
+	//else if (KEY_PRESSING(KEY::TAB)) {
 
-		//if (KEY_PRESSING(KEY::LSHIFT))
-		//	return;
-		if (MOUSE_PRESSING(MOUSE_KEY::RB)) {
-			if (MouseMove = MOUSE_MOVE(MOUSE_AXIS::X))
-			{
-				fRotation = XMVectorSetY(fRotation, MouseMove * _fTimeDelta * 0.3f);
+	//	//if (KEY_PRESSING(KEY::LSHIFT))
+	//	//	return;
+	//	if (MOUSE_PRESSING(MOUSE_KEY::RB)) {
+	//		if (MouseMove = MOUSE_MOVE(MOUSE_AXIS::X))
+	//		{
+	//			fRotation = XMVectorSetY(fRotation, MouseMove * _fTimeDelta * 0.3f);
 
-			}
-		}
+	//		}
+	//	}
 
-		m_pCurArm->Set_Rotation(fRotation);
-	}
-	else if (MOUSE_PRESSING(MOUSE_KEY::RB)) {
+	//	m_pCurArm->Set_Rotation(fRotation);
+	//}
+	//else if (MOUSE_PRESSING(MOUSE_KEY::RB)) {
 
-		if (MouseMove = MOUSE_MOVE(MOUSE_AXIS::X))
-		{
-			fRotation = XMVectorSetY(fRotation, MouseMove * _fTimeDelta * 0.3f);
+	//	if (MouseMove = MOUSE_MOVE(MOUSE_AXIS::X))
+	//	{
+	//		fRotation = XMVectorSetY(fRotation, MouseMove * _fTimeDelta * 0.3f);
 
-		}
-		if (MouseMove = MOUSE_MOVE(MOUSE_AXIS::Y))
-		{
-			fRotation = XMVectorSetX(fRotation, MouseMove * _fTimeDelta * -0.3f);
-		}
+	//	}
+	//	if (MouseMove = MOUSE_MOVE(MOUSE_AXIS::Y))
+	//	{
+	//		fRotation = XMVectorSetX(fRotation, MouseMove * _fTimeDelta * -0.3f);
+	//	}
 
-		m_pCurArm->Set_Rotation(fRotation);
-	}
+	//	m_pCurArm->Set_Rotation(fRotation);
+	//}
 #pragma endregion
 	
 #pragma region ImGui 프레임 떨어졌을 때 쓰는 거

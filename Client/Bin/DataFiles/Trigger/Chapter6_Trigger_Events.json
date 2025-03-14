@@ -93,5 +93,15 @@
         "Is_Sequence": false
       }
     ]
+  },
+  {
+    "Trigger_EventTag": "Chapter6_Humgrump_Revolt",
+    "Actions": [
+      {
+        "ActionTag": "Create_EventExecuter",
+        "EventTag": "Chapter6_Humgrump_Revolt",
+        "Is_Sequence": true
+      }
+    ]
   }
 ]
