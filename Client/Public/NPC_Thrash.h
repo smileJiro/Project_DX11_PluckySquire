@@ -1,9 +1,6 @@
 #pragma once
 #include "Npc_Companion.h"
 
-
-
-
 BEGIN(Client)
 class CNPC_Thrash final : public CNPC_Companion
 {

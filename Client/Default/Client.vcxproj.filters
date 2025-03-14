@@ -499,9 +499,6 @@
     <Filter Include="02.GameObjects\UI\00. GamePlay\03. InterAction\02. Interaction_E">
       <UniqueIdentifier>{2aab60c7-a543-45be-93ec-270840324c3a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="NewFilter1">
-      <UniqueIdentifier>{ce7fbcc7-0a2a-4ec8-a33f-ed2f8c2ad06f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Interface">
       <UniqueIdentifier>{a6abd73e-7852-42b2-91b9-1145a5d597bd}</UniqueIdentifier>
     </Filter>
@@ -699,6 +696,21 @@
     </Filter>
     <Filter Include="03.Components\FSM\State\Move">
       <UniqueIdentifier>{0956df86-2c63-44a2-bc2a-81c9181fa53a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Friend">
+      <UniqueIdentifier>{f22dd0df-58eb-456a-8b3c-4bdb31d6e673}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Friend\Violet">
+      <UniqueIdentifier>{4ec912c5-2a27-47fb-bc12-34482d4e8efe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Friend\Thrash">
+      <UniqueIdentifier>{0c3a6753-0d55-46eb-a471-5867673e2d81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Friend\Body">
+      <UniqueIdentifier>{81cacdc2-e92a-4b6f-a8df-9b7c58bf5e08}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Friend\Friend_Controller">
+      <UniqueIdentifier>{4a4e0a71-0c02-4160-bb68-a19ee76bdbbd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1798,6 +1810,16 @@
       <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\DynamicCastleGate.h" />
+    <ClInclude Include="..\public\Friend.h">
+      <Filter>02.GameObjects\Friend</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Friend_Thrash.h">
+      <Filter>02.GameObjects\Friend\Thrash</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\FriendBody.h">
+      <Filter>02.GameObjects\Friend\Body</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Friend_Controller.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -2883,6 +2905,16 @@
       <Filter>03.Components\PlayerState</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\DynamicCastleGate.cpp" />
+    <ClCompile Include="..\private\Friend.cpp">
+      <Filter>02.GameObjects\Friend</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Friend_Thrash.cpp">
+      <Filter>02.GameObjects\Friend\Thrash</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\FriendBody.cpp">
+      <Filter>02.GameObjects\Friend\Body</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Friend_Controller.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

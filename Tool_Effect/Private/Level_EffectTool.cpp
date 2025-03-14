@@ -253,8 +253,25 @@ HRESULT CLevel_EffectTool::Ready_Layer_Model(const _wstring& _strLayerTag)
 	pOut->Set_Active(false);
 	m_ModelObjects.push_back(pOut);
 
+	Desc.eStartCoord = COORDINATE_3D;
+	Desc.iCurLevelID = LEVEL_TOOL;
+	Desc.iModelPrototypeLevelID_3D = LEVEL_TOOL;
+	Desc.strModelPrototypeTag_3D = L"Prototype_Model_buttergrump_Rig";
+	Desc.strShaderPrototypeTag_3D = L"Prototype_Component_Shader_VtxAnimMesh";
+	Desc.iShaderPass_3D = 7;
+	Desc.iPriorityID_3D = PR3D_EFFECT;
+	Desc.iRenderGroupID_3D = RG_3D;
+	Desc.tTransform3DDesc.fSpeedPerSec = 1.f;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_ModelObject"),
+		LEVEL_TOOL, _strLayerTag, reinterpret_cast<CGameObject**>(&pOut), &Desc)))
+		return E_FAIL;
+
+	pOut->Set_Active(false);
+	m_ModelObjects.push_back(pOut);
 
 
+	
 	Desc.eStartCoord = COORDINATE_3D;
 	Desc.iCurLevelID = LEVEL_TOOL;
 	Desc.iModelPrototypeLevelID_3D = LEVEL_TOOL;
@@ -272,6 +289,8 @@ HRESULT CLevel_EffectTool::Ready_Layer_Model(const _wstring& _strLayerTag)
 
 	pOut->Set_Active(false);
 	m_ModelObjects.push_back(pOut);
+
+	
 
 	Desc.eStartCoord = COORDINATE_3D;
 	Desc.iCurLevelID = LEVEL_TOOL;
@@ -340,7 +359,7 @@ HRESULT CLevel_EffectTool::Ready_Layer_ShadingModel(const _wstring& _strLayerTag
 		LEVEL_TOOL, _strLayerTag, reinterpret_cast<CGameObject**>(&pOut), &Desc)))
 		return E_FAIL;
 
-	//pOut->Set_Active(false);
+	pOut->Set_Active(false);
 
 	return S_OK;
 }

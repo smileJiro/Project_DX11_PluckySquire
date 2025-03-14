@@ -471,7 +471,7 @@ HRESULT CPlayer::Ready_PartObjects()
     TURNBOOKEFFECT_DESC.iCurLevelID = m_iCurLevelID;
     TURNBOOKEFFECT_DESC.isCoordChangeEnable = false;
     TURNBOOKEFFECT_DESC.eStartCoord = COORDINATE_3D;  
-    TURNBOOKEFFECT_DESC.pBodyMatrix = m_pControllerTransform->Get_WorldMatrix_Ptr();
+    TURNBOOKEFFECT_DESC.pBodyMatrix = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
 
     if (nullptr != m_pBody)
     {
