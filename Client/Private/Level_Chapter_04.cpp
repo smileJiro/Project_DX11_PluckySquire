@@ -1449,7 +1449,6 @@ HRESULT CLevel_Chapter_04::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 
 
 	//Castle Gate
-		//임시로 주사위 만들어 봄.
 	CDynamicCastleGate::CONTAINEROBJ_DESC tGateDesc{};
 	tGateDesc.eStartCoord = COORDINATE_3D;
 	tGateDesc.iCurLevelID = m_eLevelID;

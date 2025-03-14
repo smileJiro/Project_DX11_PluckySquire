@@ -28,9 +28,9 @@ HRESULT CDynamicCastleGate::Initialize(void* _pArg)
 	pDesc->pActorDesc = &ActorDesc;
 	ActorDesc.pOwner = this;
 	ActorDesc.tFilterData.MyGroup = OBJECT_GROUP::DYNAMIC_OBJECT;
-	ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::BLOCKER | OBJECT_GROUP::PLAYER;
+	ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::DYNAMIC_OBJECT | OBJECT_GROUP::PLAYER;
 
-	XMStoreFloat4x4(&ActorDesc.ActorOffsetMatrix, XMMatrixTranslation(0.0f, 0.f, 0.f));
+	//XMStoreFloat4x4(&ActorDesc.ActorOffsetMatrix, XMMatrixTranslation(0.0f, 3.f, 0.f));
 	ActorDesc.FreezeRotation_XYZ[0] = false;
 	ActorDesc.FreezeRotation_XYZ[1] = false;
 	ActorDesc.FreezeRotation_XYZ[2] = false;
@@ -39,11 +39,11 @@ HRESULT CDynamicCastleGate::Initialize(void* _pArg)
 	ActorDesc.FreezePosition_XYZ[2] = false;
 
 	SHAPE_BOX_DESC ShapeDesc = {};
-	ShapeDesc.vHalfExtents = { 0.18f,2.45f ,1.15f };
+	ShapeDesc.vHalfExtents = { 2.5f,5.f ,0.25f };
 	SHAPE_DATA ShapeData;
 	ShapeData.pShapeDesc = &ShapeDesc;
 	ShapeData.eShapeType = SHAPE_TYPE::BOX;
-	ShapeData.eMaterial = ACTOR_MATERIAL::DOMINO;
+	ShapeData.eMaterial = ACTOR_MATERIAL::BOUNCY;
 	ShapeData.isTrigger = false;
 	ShapeData.FilterData.MyGroup = OBJECT_GROUP::DYNAMIC_OBJECT;
 	ShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::DYNAMIC_OBJECT | OBJECT_GROUP::PLAYER;
@@ -55,14 +55,19 @@ HRESULT CDynamicCastleGate::Initialize(void* _pArg)
 	if (FAILED(Ready_PartObjects()))
 		return E_FAIL;
 
-	//static_cast<CActor_Dynamic*>(m_pActorCom)->Set_Rotation(_vector{ 0.f,1.f,0.f }, XMConvertToRadians(180.f));
-	//static_cast<CActor_Dynamic*>(m_pActorCom)->Set_MassLocalPos({ 0.0f,0.5f,0.f });
-	m_pActorCom->Set_Mass(50.f);
+	//static_cast<CActor_Dynamic*>(m_pActorCom)->Set_Rotation(_vector{ 0.f,1.f,0.f }, XMConvertToRadians(90.f));
+	static_cast<CActor_Dynamic*>(m_pActorCom)->Set_MassLocalPos({ 0.0f,3.f,0.f });
+	//m_pActorCom->Set_Mass(50.f);
+
+
 	return S_OK;
 }
 
-void CDynamicCastleGate::Late_Update(_float _fTimeDelta)
+void CDynamicCastleGate::Update(_float _fTimeDelta)
 {
+	if (KEY_DOWN(KEY::B))
+		Collapse();
+	__super::Update(_fTimeDelta);
 }
 
 HRESULT CDynamicCastleGate::Render()
@@ -73,32 +78,45 @@ HRESULT CDynamicCastleGate::Render()
 void CDynamicCastleGate::OnContact_Modify(const COLL_INFO& _0, const COLL_INFO& _1, CModifiableContacts& _ModifiableContacts, _bool _bIm0)
 {
 }
+        
+void CDynamicCastleGate::Collapse()
+{
+	CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
+	pDynamicActor->Update(0);
+	pDynamicActor->Set_Dynamic();
+	_vector vForcDir= { 1.f,0.f,0.f };
+	_float fForce = 10.f;
+	_vector vForce = vForcDir * fForce;
+	_vector vTorque = XMVector3Cross(vForce,{ 0.f,2.5f,0.f });
+	_float3 vTor; XMStoreFloat3(&vTor, vTorque);
+	pDynamicActor->Add_Torque(vTor);
+}
 
 HRESULT CDynamicCastleGate::Ready_PartObjects()
 {
+	//GATE
+	CModelObject::MODELOBJECT_DESC tGateModelDesc{};
 
-	//VISOR
-	CModelObject::MODELOBJECT_DESC tVisorDesc{};
-
-	tVisorDesc.iCurLevelID = m_iCurLevelID;
-	tVisorDesc.eStartCoord = COORDINATE_3D;
-	tVisorDesc.isCoordChangeEnable = false;
-	tVisorDesc.iModelPrototypeLevelID_3D = LEVEL_STATIC;
-	tVisorDesc.strModelPrototypeTag_3D = TEXT("Visor_CyberJot");
-	tVisorDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
-	tVisorDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
-	tVisorDesc.iRenderGroupID_3D = RG_3D;
-	tVisorDesc.iPriorityID_3D = PR3D_GEOMETRY;
-	tVisorDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
-	m_PartObjects[CASTL_PART_DOOR] = static_cast<CModelObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &tVisorDesc));
-	if (nullptr == m_PartObjects[CASTL_PART_DOOR])
+	tGateModelDesc.iCurLevelID = m_iCurLevelID;
+	tGateModelDesc.eStartCoord = COORDINATE_3D;
+	tGateModelDesc.isCoordChangeEnable = false;
+	tGateModelDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
+	tGateModelDesc.strModelPrototypeTag_3D = TEXT("Castle_Gate");
+	tGateModelDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
+	tGateModelDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
+	tGateModelDesc.iRenderGroupID_3D = RG_3D;
+	tGateModelDesc.iPriorityID_3D = PR3D_GEOMETRY;
+	tGateModelDesc.tTransform3DDesc.vInitialRotation = {};
+	tGateModelDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
+	m_PartObjects[CASTL_PART_GATE] = static_cast<CModelObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &tGateModelDesc));
+	if (nullptr == m_PartObjects[CASTL_PART_GATE])
 	{
 		MSG_BOX("CASTL_PART_DOOR Creation Failed");
 		return E_FAIL;
 	}
-	m_PartObjects[CASTL_PART_DOOR]->Set_Position({ 0.f,0.225f,-0.225f });
-	Set_PartActive(CASTL_PART_DOOR, false);
-
+	//m_PartObjects[CASTL_PART_DOOR]->Set_Position({ 0.f,0.225f,-0.225f });
+	m_PartObjects[CASTL_PART_GATE]->Get_ControllerTransform()->Rotation(XMConvertToRadians(-90.f), _vector{ 1.f,0.f,0.f,0.f });
+	
 
 	return S_OK;
 }
