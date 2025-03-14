@@ -108,6 +108,7 @@ private:
 
 
 
+
 public:
 	/* TEST ¿ëµµ */
 	_int									Get_ItemCount() { return m_iItemCount; }

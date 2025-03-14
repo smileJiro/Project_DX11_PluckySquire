@@ -149,6 +149,7 @@
 #include "Pip_Player.h"
 #include "Sneak_Troop.h"
 #include "Sneak_SentryTroop.h"
+#include "C08_Box.h"
 
 /* For. Monster */
 #include "Beetle.h"
@@ -1098,11 +1099,12 @@ HRESULT CLoader::Loading_Level_Chapter_2(LEVEL_ID _eLoadLevelID)
 
 		/* For. Prototype_Component_Texture_BackGround_Chapter2_Main */
 		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_Component_Texture_BackGround_Chapter2_Main"),
-			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/BackGround/Chapter2_Main.dds"), 1, true))));
-
+			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/BackGround/Chapter2_Main.dds"), 1, true))))
+		return E_FAIL;
 		/* For. Prototype_Component_Texture_BackGround_Chapter2_RedHouse */
 		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_Component_Texture_BackGround_Chapter2_RedHouse"),
-			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/BackGround/Chapter2_RedHouse.dds"), 1, true))));
+			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/BackGround/Chapter2_RedHouse.dds"), 1, true))))
+		return E_FAIL;
 
 	#pragma endregion
 
@@ -1860,6 +1862,10 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Boss_CyberPlayerBullet"),
 		CCyberPlayerBullet::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_C08Box"),
+		CC08_Box::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 #pragma endregion
 

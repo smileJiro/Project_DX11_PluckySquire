@@ -193,6 +193,7 @@ HRESULT CDefenderPlayer::Render()
 	if (FAILED(__super::Render()))
 		return E_FAIL;
 
+	return S_OK;
 }
 
 void CDefenderPlayer::Set_Direction(T_DIRECTION _eTDir)

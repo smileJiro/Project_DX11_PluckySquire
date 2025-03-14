@@ -13,7 +13,7 @@
 					"isPortrait": true,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "아, 저트 왔구나!",
 					"Red": 161,
@@ -29,7 +29,7 @@
 					"isPortrait": true,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "이 사운드 어떠냐, 저트?!",
 					"Red": 161,
@@ -45,7 +45,7 @@
 					"isPortrait": true,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "불륨을 좀 올려도 되겠어...!",
 					"Red": 161,
@@ -61,7 +61,7 @@
 					"isPortrait": true,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "간단한 부탁 하나만 하자꾸나...",
 					"Red": 161,
@@ -77,7 +77,7 @@
 					"isPortrait": true,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "밀랍!!, 밀랍이 많이 필요해",
 					"Red": 161,
@@ -93,7 +93,7 @@
 					"isPortrait": true,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "음반을 더 많이 찍어야 하거든?!",
 					"Red": 161,
@@ -109,7 +109,7 @@
 					"isPortrait": true,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "벌꿀 봉우리에 있는 꿀벌 베니한테서",
 					"Red": 161,
@@ -125,7 +125,7 @@
 					"isPortrait": true,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "밀랍 좀 얻어다 주렴.",
 					"Red": 161,
@@ -149,7 +149,7 @@
 					"isPortrait": true,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "여긴 어쩐 일이야? 밀랍이 필요한거야?",
 					"Red": 255,
@@ -165,7 +165,7 @@
 					"isPortrait": true,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "자, 여기 밀랍이야, 친구.",
 					"Red": 255,
@@ -181,7 +181,7 @@
 					"isPortrait": true,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "마법사 할배한테 안부 전해 줘.",
 					"Red": 255,
@@ -208,7 +208,7 @@
 					"FontColorB": 255.0,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "아!",
 					"Red": 10,
@@ -227,7 +227,7 @@
 					"FontColorB": 255.0,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "용감한 견습 기사께서 오셨군.",
 					"Red": 10,
@@ -246,7 +246,7 @@
 					"FontColorB": 255.0,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "기다리고 있었다!",
 					"Red": 10,
@@ -265,7 +265,7 @@
 					"FontColorB": 255.0,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "이렇게 책의 탑까지 찾아와 주다니 매우 기쁘군.",
 					"Red": 10,
@@ -284,7 +284,7 @@
 					"FontColorB": 255.0,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "이 험그럼프가 여기서 뭘 하고 있는지 궁금하겠지?",
 					"Red": 10,
@@ -303,7 +303,7 @@
 					"FontColorB": 255.0,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "이 오래된 탑에 오면",
 					"Red": 10,
@@ -322,7 +322,7 @@
 					"FontColorB": 255.0,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "뭔가 재밌는게 있을 거라는 예감이 들었거든.",
 					"Red": 10,
@@ -341,7 +341,7 @@
 					"FontColorB": 255.0,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "그런데 정말로 재밌는게 있긴 있더군...",
 					"Red": 10,
@@ -360,7 +360,7 @@
 					"FontColorB": 255.0,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "어떤 책 말이야!",
 					"Red": 10,
@@ -379,7 +379,7 @@
 					"FontColorB": 255.0,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "아주 비밀스러운 방에 숨겨져 있었지...",
 					"Red": 10,
@@ -398,7 +398,7 @@
 					"FontColorB": 255.0,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "왜냐면 이건 아주... 뭐랄까... 특별한.. 책이거든.",
 					"Red": 10,
@@ -417,7 +417,7 @@
 					"FontColorB": 255.0,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "이 아주 특별한 책의 제목은 바로...",
 					"Red": 10,
@@ -436,7 +436,7 @@
 					"FontColorB": 255.0,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "견습 기사 모험기다!!",
 					"Red": 10,
@@ -455,7 +455,7 @@
 					"FontColorB": 255.0,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "그래, 그 책이다. 네 녀석의 이야기지.",
 					"Red": 10,
@@ -474,7 +474,7 @@
 					"FontColorB": 255.0,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "이 몸, 그리고 이 한심한 나라의 백성들도 등장하고..",
 					"Red": 10,
@@ -493,7 +493,7 @@
 					"FontColorB": 255.0,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "우리가 살아온 이야기, 그 자체인 거다.",
 					"Red": 10,
@@ -512,7 +512,7 @@
 					"FontColorB": 255.0,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "그런데 말이다, 사실 우리가 사는 이 모조 왕국은",
 					"Red": 10,
@@ -531,7 +531,7 @@
 					"FontColorB": 255.0,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "... 이야기 책의 배경일 뿐이었어!",
 					"Red": 10,
@@ -550,7 +550,7 @@
 					"FontColorB": 255.0,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "못 믿겠다고? 장담하지... 사실이다.",
 					"Red": 10,
@@ -569,7 +569,7 @@
 					"FontColorB": 255.0,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "그리고 내 손에 있는건 그 이야기책의 사본이지.",
 					"Red": 10,
@@ -588,7 +588,7 @@
 					"FontColorB": 255.0,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "책 속의 책이라고 해야하나?",
 					"Red": 10,
@@ -607,7 +607,7 @@
 					"FontColorB": 255.0,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "내용도 읽어 봤다... 아주 재밌더군.",
 					"Red": 10,
@@ -626,7 +626,7 @@
 					"FontColorB": 255.0,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "네가 그 꼬마 마녀와 함께 왕국을 탐험하고...",
 					"Red": 10,
@@ -645,7 +645,7 @@
 					"FontColorB": 255.0,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "산악 트롤과 만나 이 몸이 있는 이곳까지의 이야기지.",
 					"Red": 10,
@@ -664,7 +664,7 @@
 					"FontColorB": 255.0,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "나는 지금부터 일어날 일을 미리 읽었다.",
 					"Red": 10,
@@ -683,7 +683,7 @@
 					"FontColorB": 255.0,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "우리는 곧 싸울 거다. 바로 여기, 탑 꼭대기에서.",
 					"Red": 10,
@@ -707,7 +707,7 @@
 					"iAnimationIndex": 7,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "안녕하세요, 견습 기사님!",
 					"Red": 213,
@@ -724,7 +724,7 @@
 					"iAnimationIndex": 7,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "책의 탑으로 가시는 건가요?",
 					"Red": 213,
@@ -741,7 +741,7 @@
 					"iAnimationIndex": 7,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "부디 주의하시길! 암흑의 마법사가 탑을 점령했답니다...",
 					"Red": 213,
@@ -758,7 +758,7 @@
 					"iAnimationIndex": 7,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "그자의 마법이 무시무시한 재앙을 불러왔죠!",
 					"Red": 213,
@@ -775,7 +775,7 @@
 					"iAnimationIndex": 7,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "그러니 꼭 조심하세요!",
 					"Red": 213,
@@ -797,7 +797,7 @@
 					"isPortrait": true,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "우와아아아! 어서와 저트!",
 					"Red": 0,
@@ -813,7 +813,7 @@
 					"isPortrait": true,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "오래만엔 보니 엄청 반갑다! 있잖아...",
 					"Red": 161,
@@ -829,7 +829,7 @@
 					"isPortrait": true,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "방금 일어난일 험그럼프가 만든게 분명해!",
 					"Red": 161,
@@ -845,7 +845,7 @@
 					"isPortrait": true,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "그런데 이번에 쓴 마법은 뭔가 특이해...",
 					"Red": 161,
@@ -861,7 +861,7 @@
 					"isPortrait": true,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "마법서에선 험그럼프는 책의 탑에 있다고 해.",
 					"Red": 161,
@@ -877,7 +877,7 @@
 					"isPortrait": true,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "얼른 거기로 가서 이상한 일을 하지 못하게 막자!",
 					"Red": 161,
@@ -893,7 +893,7 @@
 					"isPortrait": true,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "우리 용감한 견습 기사가 싸우는 모습을 보게 되다니..",
 					"Red": 161,
@@ -909,7 +909,7 @@
 					"isPortrait": true,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "나 너무 신나...!",
 					"Red": 161,
@@ -925,7 +925,7 @@
 					"isPortrait": true,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "이얍! 맛이 어떠냐! 그럼 앞장서, 저트!",
 					"Red": 161,
@@ -947,7 +947,7 @@
 					"isPortrait": true,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "너희 잘 내려오더라!",
 					"Red": 0,
@@ -963,7 +963,7 @@
 					"isPortrait": true,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "리듬이 아주 괜찮더라고.",
 					"Red": 0,
@@ -985,7 +985,7 @@
 					"isPortrait": true,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "저 바위좀 봐... 공중에서 사라지고 있어!",
 					"Red": 0,
@@ -1001,7 +1001,7 @@
 					"isPortrait": true,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "완전 이상한데...",
 					"Red": 0,
@@ -1023,7 +1023,7 @@
 					"isPortrait": false,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "배고파요...",
 					"Red": 0,
@@ -1045,7 +1045,7 @@
 					"isLineEnter": true,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "어... 저기요?",
 					"Red": 0,
@@ -1062,7 +1062,7 @@
 					"isLineEnter": true,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "밖에 누구 없어요?",
 					"Red": 0,
@@ -1079,7 +1079,7 @@
 					"isLineEnter": true,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "혹시 폐가 안 된다면...\n이 도시락 뚜껑 좀 열어 주실 수 있을까요?",
 					"Red": 0,
@@ -1101,7 +1101,7 @@
 					"isPortrait": false,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "저트, 절 기억하시나요? 책 속에서 만났잖아요.",
 					"Red": 0,
@@ -1118,7 +1118,7 @@
 					"isPortrait": false,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "사실 저는 모조 왕국 출신이 아니에요.",
 					"Red": 0,
@@ -1135,7 +1135,7 @@
 					"isPortrait": false,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "저 같은 책벌레는 이 책 저 책을 돌아다니며 살거든요.",
 					"Red": 0,
@@ -1152,7 +1152,7 @@
 					"isLineEnter": true,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "하지만 당신은 책에 나오는 캐릭터에요...\n이렇게 나와 있으면 안 된다고요.",
 					"Red": 0,
@@ -1169,7 +1169,7 @@
 					"isLineEnter": true,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "험그럼프의 마법 때문에 책에서 이 책상으로\n추방된 거죠?",
 					"Red": 0,
@@ -1186,7 +1186,7 @@
 					"isLineEnter": true,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "책으로 다시 들어갈 방법을 찾아야 돼요...\n그게 가장 급선무에요...",
 					"Red": 0,
@@ -1203,7 +1203,7 @@
 					"isLineEnter": true,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "다른 말로 하면, 그게 중요하다는 거죠!",
 					"Red": 0,
@@ -1220,7 +1220,7 @@
 					"isLineEnter": true,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "아 참! 이 책상 위에는 아주 재밌는 물건들이 있어요...\n책 속으로 돌아가는 데 도움이 될 만한 것도 있겠죠.",
 					"Red": 0,
@@ -1237,7 +1237,7 @@
 					"isLineEnter": true,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "저 모퉁이를 왼쪽으로 돌아가서 한번 찾아보세요!",
 					"Red": 0,
@@ -1259,7 +1259,7 @@
 					"isLineEnter": true,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "잘하고 있어요, 견습 기사님!",
 					"Red": 0,
@@ -1276,7 +1276,7 @@
 					"isLineEnter": true,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "여기서 더 가면 원래 세계로 돌아가는 데\n도움이 될 물건이 있어요.",
 					"Red": 0,
@@ -1293,7 +1293,7 @@
 					"isLineEnter": true,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "하지만 가는 길에 징그럽게 기어다니는\n콜레옵테라를 만날지도 몰라요...",
 					"Red": 0,
@@ -1310,7 +1310,7 @@
 					"isLineEnter": true,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "그러니까 딱정벌레 말이에요!\n샘이 애완동물로 기르거든요...",
 					"Red": 0,
@@ -1326,7 +1326,7 @@
 					"isPortrait": false,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "조심해요, 저트! 먹히지 말고요!",
 					"Red": 0,
@@ -1348,7 +1348,7 @@
 					"isLineEnter": true,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "저트!",
 					"Red": 0,
@@ -1365,7 +1365,7 @@
 					"isPortrait": false,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "무사하군요!",
 					"Red": 0,
@@ -1382,7 +1382,7 @@
 					"isPortrait": false,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "이제야 마음이 놓이네요...",
 					"Red": 0,
@@ -1399,7 +1399,7 @@
 					"isPortrait": false,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "역시 용감한 견습 기사답게 거침이 없어요!",
 					"Red": 0,
@@ -1416,7 +1416,7 @@
 					"isPortrait": false,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "말이 나와서 말인데... 이렇게 나온 김에...",
 					"Red": 0,
@@ -1433,7 +1433,7 @@
 					"isPortrait": false,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "꼭 봐 주었으면 하는 게 있어요.",
 					"Red": 0,
@@ -1455,7 +1455,7 @@
 					"isLineEnter": true,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "이 그림은 저트를 그린 거에요...\n지금 봐도 당신을 똑 닮았네요.",
 					"Red": 0,
@@ -1471,7 +1471,7 @@
 					"isPortrait": false,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "여기 있는 그림은 전부 샘이라는 아이가 그린 거에요.",
 					"Red": 0,
@@ -1488,7 +1488,7 @@
 					"isPortrait": false,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "이 방에 사는 남자애인데,\n당신이 살던 이야기책의 주인이기도 하죠.",
 					"Red": 0,
@@ -1505,7 +1505,7 @@
 					"isLineEnter": true,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "봐서 알겠지만, 샘은 당신과 당신의 모험에\n깊은 애정을 가지고 있어요.",
 					"Red": 0,
@@ -1522,7 +1522,7 @@
 					"isLineEnter": true,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "당신이 이걸 보게 돼서 정말 기뻐요...\n샘한테 당신이 얼마나 소중한지 알게 됐으니까.",
 					"Red": 0,
@@ -1539,7 +1539,7 @@
 					"isPortrait": false,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "하지만 이제 더 이상 지체할 시간이 없어요.",
 					"Red": 0,
@@ -1556,7 +1556,7 @@
 					"isPortrait": false,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "책으로 돌아가는 여정도 이제 절정에 다다랐어요.",
 					"Red": 0,
@@ -1573,7 +1573,7 @@
 					"isPortrait": false,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "저트에게 필요한 물건이 바로\n이 스케치북 너머에 있어요.",
 					"Red": 0,
@@ -1590,7 +1590,7 @@
 					"isPortrait": false,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "얼른 서두르세요!",
 					"Red": 0,
@@ -1612,7 +1612,7 @@
 					"isPortrait": false,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "건틀릿을 찾았군요!",
 					"Red": 0,
@@ -1629,7 +1629,7 @@
 					"isPortrait": false,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "아주 잘했어요!",
 					"Red": 0,
@@ -1646,7 +1646,7 @@
 					"isPortrait": false,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "이제 얼른 책 속으로 돌아가세요!",
 					"Red": 0,
@@ -1663,7 +1663,7 @@
 					"isLineEnter": true,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "곧 알게 되겠지만, 이 건틀릿이 집으로 돌아갈 수 있게\n도와줄 거에요.",
 					"Red": 0,
@@ -1680,7 +1680,7 @@
 					"isLineEnter": true,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "아, 이 책상을 떠나기 전에 해 줄 말이 있어요.\n아주 중요한 이야기랍니다...",
 					"Red": 0,
@@ -1697,7 +1697,7 @@
 					"isPortrait": false,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "험그럼프를 조심해요!",
 					"Red": 0,
@@ -1714,7 +1714,7 @@
 					"isLineEnter": true,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "당신의 이야기를 뺏어서 자기 이야기로 만들려고 해요.\n그 전에 반드시 막아야 돼요!",
 					"Red": 0,
@@ -1731,7 +1731,7 @@
 					"isPortrait": false,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "그건 그 책 속에서 살아가는 존재들뿐만 아니라...",
 					"Red": 0,
@@ -1748,7 +1748,7 @@
 					"isPortrait": false,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "그 책을 읽고 감명을 받을 수많은 어린이를 위한 일이기도 해요.",
 					"Red": 0,
@@ -1765,7 +1765,7 @@
 					"isPortrait": false,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "샘도 그런 아이 중 하나고요.",
 					"Red": 0,
@@ -1782,7 +1782,7 @@
 					"isLineEnter": true,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "사실 우리 책벌레는...\n미래를 볼 수 있답니다.",
 					"Red": 0,
@@ -1799,7 +1799,7 @@
 					"isPortrait": false,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "샘은 커서 글을 쓰고 그림을 그리는 작가가 될 거예요.",
 					"Red": 0,
@@ -1821,7 +1821,7 @@
 					"isPortrait": false,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "미래에 샘이 만든 이야기책은 아이들 사이에서 굉장한 인기를 끌게 돼요...",
 					"Red": 0,
@@ -1838,7 +1838,7 @@
 					"isLineEnter": true,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "관련 상품도 엄청나게 팔리고,\n각종 유명 브랜드와의 콜라보는 말할 것도 없죠!",
 					"Red": 0,
@@ -1855,7 +1855,7 @@
 					"isPortrait": false,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "샘의 책을 읽고 많은 아이들이 감명을 받을 거에요.",
 					"Red": 0,
@@ -1872,7 +1872,7 @@
 					"isLineEnter": true,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "다만, 이건 모두 샘이 실제로\n그런 책을 썼을 때 이야기죠.",
 					"Red": 0,
@@ -1894,7 +1894,7 @@
 					"isLineEnter": true,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "험그럼프가 당신의 책을 지배하게 된다면\n이야기는 점점 형편없어질 거예요.",
 					"Red": 0,
@@ -1916,7 +1916,7 @@
 					"isPortrait": false,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "이야기가 형편없는 책은 책장에 방치되죠.",
 					"Red": 0,
@@ -1933,7 +1933,7 @@
 					"isPortrait": false,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "아무도 읽지 않을 테니까요.",
 					"Red": 0,
@@ -1950,7 +1950,7 @@
 					"isLineEnter": true,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "그런 책은 생명력을 잃고,\n그 누구한테도 감명을 주지 못하게 돼요.",
 					"Red": 0,
@@ -1967,7 +1967,7 @@
 					"isLineEnter": true,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "당신의 이야기도 샘한테 감명을 주지 못할 거고...\n그렇게 되면...",
 					"Red": 0,
@@ -1984,7 +1984,7 @@
 					"isLineEnter": true,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "샘이 앞으로 어떻게 될지 누가 알겠어요?\n반드시 막아야 돼요, 저트!",
 					"Red": 0,
@@ -2001,7 +2001,7 @@
 					"isPortrait": false,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "얼른 돌아가서 험그럼프를 막아 주세요!",
 					"Red": 0,
@@ -2022,7 +2022,7 @@
 					"isPortrait": false,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "저트가 넘기기 건틀릿을 찾았습니다!",
 					"Red": 0,
@@ -2038,7 +2038,7 @@
 					"isPortrait": false,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "이제 이야기 책을 조종할 수 있습니다!",
 					"Red": 161,
@@ -2049,7 +2049,7 @@
 		},
 		{
 			"id": "Store_Dialog_01",
-			"Section": "Chapter2_P0304",
+			"Section": "Chapter2_P1112",
 			"lines": [
 				{
 					"Portrait": 2,
@@ -2061,7 +2061,7 @@
 					"iAnimationIndex": 3,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "안녕하세요, 용감한 견습 기사님!",
 					"Red": 255,
@@ -2078,7 +2078,7 @@
 					"iAnimationIndex": 9,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "여기는 책의 탑에 입구에요. 험그럼프는 맨 꼭대기에 있어요.",
 					"Red": 255,
@@ -2095,7 +2095,7 @@
 					"iAnimationIndex": 9,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "험그럼프가 이상한 책을 들고 있더라구요, 조심하세요!",
 					"Red": 255,
@@ -2117,7 +2117,7 @@
 					"isPortrait": true,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "저트!",
 					"Red": 0,
@@ -2133,7 +2133,7 @@
 					"isPortrait": true,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "야!",
 					"Red": 0,
@@ -2149,7 +2149,7 @@
 					"isPortrait": true,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "너 무사하구나!!",
 					"Red": 0,
@@ -2165,7 +2165,7 @@
 					"isPortrait": true,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "잠깐... 너 유령 아니지? 응?",
 					"Red": 0,
@@ -2182,7 +2182,7 @@
 					"isPortrait": true,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "당연히 아니지! \n 저 얼굴을 보라고. 평소처럼 몰캉몰캉하잖아.",
 					"Red": 0,
@@ -2198,7 +2198,7 @@
 					"isPortrait": true,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "그나저나 너 어디에 있다가 지금 온 거야!",
 					"Red": 0,
@@ -2214,7 +2214,7 @@
 					"isPortrait": true,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "그래, 시간이 없어!",
 					"Red": 0,
@@ -2230,7 +2230,7 @@
 					"isPortrait": true,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
 					"text": "우린 빨리 수도에 있는 크로마 여왕 폐하를 만나러 가야 한다고.",
 					"Red": 0,
@@ -2246,101 +2246,9 @@
 					"isPortrait": true,
 					"animation": {
 						"duration": 1000,
-						"speed": 500
+						"speed": 350
 					},
-					"text": "맞아. 얼른 검부터 뽑자, 저트!",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				}
-			]
-		},
-		{
-			"id": "Dialogue_After_Drawing_On_Sword",
-			"Section": "Chapter2_P1314",
-			"lines": [
-				{
-					"Portrait": 1,
-					"Talker": "스래쉬",
-					"BG": 2,
-					"location": 4,
-					"is2D": true,
-					"isPortrait": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "좋아, 저트!",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 0,
-					"Talker": "바이올렛",
-					"BG": 13,
-					"location": 7,
-					"is2D": true,
-					"isPortrait": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "역시 너라면 뽑을 수 있을 줄 알았어!",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 0,
-					"Talker": "바이올렛",
-					"BG": 13,
-					"location": 7,
-					"is2D": true,
-					"isPortrait": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "이제 여왕님이 계신 아르티아로 가자.",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 1,
-					"Talker": "스래쉬",
-					"BG": 2,
-					"location": 4,
-					"is2D": true,
-					"isPortrait": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "그렇다면 우선...",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				}
-			]
-		},
-		{
-			"id": "Dialogue_Mojam",
-			"Section": "Chapter2_P1314",
-			"lines": [
-				{
-					"Portrait": 1,
-					"Talker": "",
-					"BG": 24,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": false,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "                                      모잼!!!",
+					"text": "맞아. 얼른 검부터 줍자, 저트!",
 					"Red": 0,
 					"Green": 0,
 					"Blue": 0
@@ -2459,115 +2367,7 @@
 					"Green": 0,
 					"Blue": 0
 				}
-			]
-		},
-		{
-			"id": "Dialog_TalkerChange_Test_01",
-			"Section": "Chapter2_P1112",
-			"isChangeTalker": true,
-			"lines": [
-				{
-					"Portrait": 0,
-					"Talker": "TEST",
-					"BG": 13,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": true,
-					"TalkerIndex": 0,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "0번 대상자이에요",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 1,
-					"Talker": "TEST",
-					"BG": 2,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": true,
-					"TalkerIndex": 1,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "1번 대상자이에요",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 1,
-					"Talker": "TEST",
-					"BG": 2,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": true,
-					"TalkerIndex": 1,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "1번 대상자이에요",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 1,
-					"Talker": "TEST",
-					"BG": 2,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": true,
-					"TalkerIndex": 0,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "0번 대상자이에요",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 1,
-					"Talker": "TEST",
-					"BG": 2,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": true,
-					"TalkerIndex": 0,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "0번 대상자이에요",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 1,
-					"Talker": "TEST",
-					"BG": 2,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": true,
-					"TalkerIndex": 1,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "1번 대상자이에요",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				}
+				
 			]
 		}
 	]

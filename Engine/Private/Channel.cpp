@@ -62,7 +62,7 @@ KEYFRAME CChannel::Get_Frame(_float fTrackPos, _uint* pOutCurrentKeyFrameIdx, _b
 	}
 	else
 	{
-		if (*pOutCurrentKeyFrameIdx >= ((_int)m_KeyFrames.size() - 1))
+		if ((_int)*pOutCurrentKeyFrameIdx >= ((_int)m_KeyFrames.size() - 1))
 			return m_KeyFrames[*pOutCurrentKeyFrameIdx];
 		_float fRatio = (fTrackPos - m_KeyFrames[*pOutCurrentKeyFrameIdx].fTrackPosition) /
 			(m_KeyFrames[*pOutCurrentKeyFrameIdx + 1].fTrackPosition - m_KeyFrames[*pOutCurrentKeyFrameIdx].fTrackPosition);

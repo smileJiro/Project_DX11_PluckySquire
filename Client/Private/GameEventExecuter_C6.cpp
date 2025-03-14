@@ -808,10 +808,15 @@ void CGameEventExecuter_C6::Chapter6_Humgrump_Revolt(_float _fTimeDelta)
 				CModelObject* pModel = static_cast<CModelObject*>(pObject);
 				if (TEXT("Humgrump") == pModel->Get_ModelPrototypeTag(COORDINATE_2D)) {
 					pModel->Switch_Animation(CNpc_Humgrump::CHAPTER6_TALK);
+					CDialog_Manager::GetInstance()->Set_NPC(pModel);
+				}
 
-					Next_Step(true);
+				if (TEXT("MoonBeard") == pModel->Get_ModelPrototypeTag(COORDINATE_2D)) {
+					CDialog_Manager::GetInstance()->Set_NPC(pModel);
 				}
 			}
+
+			Next_Step(true);
 		}
 	}
 	else if (Step_Check(STEP_2)) {

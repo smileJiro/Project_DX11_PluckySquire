@@ -39,6 +39,7 @@
 #include "MudPit.h"
 #include "Postit_Page.h"
 #include "Door_Yellow.h"
+#include "C08_Box.h"
 
 #include "RayShape.h"
 #include "CarriableObject.h"
@@ -200,6 +201,8 @@ HRESULT CLevel_Chapter_08::Initialize(LEVEL_ID _eLevelID)
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::BLOCKER);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_PROJECTILE, OBJECT_GROUP::WORD_GAME);
 
+	/* 발판 - 기믹오브젝트, 2D에 해당하는 오브젝트 (주사위, 등.. )*/
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MAPOBJECT, OBJECT_GROUP::GIMMICK_OBJECT);
 
 	/* 돌덩이 */
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER_PROJECTILE, OBJECT_GROUP::BLOCKER);
@@ -816,15 +819,15 @@ HRESULT CLevel_Chapter_08::Ready_Layer_UI(const _wstring& _strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Interaction_Book"), m_eLevelID, _strLayerTag, &pDesc)))
 		return E_FAIL;
 
-	CGameObject* pGameObject;
+	CGameObject* pInteractionE;
 
 	pDesc.fSizeX = 360.f / 3.f;
 	pDesc.fSizeY = 149.f / 3.f;
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_UIObejct_Interaction_E"), pDesc.iCurLevelID, _strLayerTag, &pGameObject, &pDesc)))
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_UIObejct_Interaction_E"), pDesc.iCurLevelID, _strLayerTag, &pInteractionE, &pDesc)))
 		return E_FAIL;
 
-	Uimgr->Set_InterActionE(static_cast<CInteraction_E*>(pGameObject));
+	Uimgr->Set_InterActionE(static_cast<CInteraction_E*>(pInteractionE));
 
 
 #pragma endregion InterAction UI
@@ -1077,15 +1080,6 @@ HRESULT CLevel_Chapter_08::Ready_Layer_UI(const _wstring& _strLayerTag)
 		return E_FAIL;
 
 	Uimgr->Set_InterActionHeart(static_cast<CInteraction_Heart*>(pHeartObject));
-
-
-	CGameObject* pInteractionE;
-
-
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Narration"), pDesc.iCurLevelID, _strLayerTag, &pInteractionE, &pDesc)))
-		return E_FAIL;
-
-	Uimgr->Set_Narration(static_cast<CNarration*>(pInteractionE));
 
 	return S_OK;
 }
@@ -1437,10 +1431,42 @@ HRESULT CLevel_Chapter_08::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 	Desc.eInitialState = CDoor_2D::CLOSED;
 	Desc.vPressurePlatePos = _float3(-280.5f, 586.f, 0.f);
 	Desc.strSectionTag = L"Chapter8_SKSP_02";
-
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorYellow"),
 		m_eLevelID, _strLayerTag, &Desc)))
 		return E_FAIL;
+	
+
+	CCarriableObject::CARRIABLE_DESC CarriDesc = {};
+
+	CarriDesc.iCurLevelID = m_eLevelID;
+	CarriDesc.Build_2D_Transform({ -279.f,572.f });
+	CarriDesc.strInitialSectionTag = L"Chapter8_SKSP_02";
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_C08Box"),
+		m_eLevelID, _strLayerTag, &CarriDesc)))
+		return E_FAIL;
+
+	
+	CarriDesc = {};
+
+	CarriDesc.iCurLevelID = m_eLevelID;
+	CarriDesc.Build_2D_Transform({ -230.f, -1377.f });
+	CarriDesc.strInitialSectionTag = L"Chapter8_SKSP_02";
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_C08Box"),
+		m_eLevelID, _strLayerTag, &CarriDesc)))
+		return E_FAIL;
+
+		
+	
+	CarriDesc = {};
+
+	CarriDesc.iCurLevelID = m_eLevelID;
+	CarriDesc.Build_2D_Transform({ -1050.f, 180.f});
+	CarriDesc.strInitialSectionTag = L"Chapter8_SKSP_02";
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_C08Box"),
+		m_eLevelID, _strLayerTag, &CarriDesc)))
+		return E_FAIL;
+
+		
 
 	return S_OK;
 }
