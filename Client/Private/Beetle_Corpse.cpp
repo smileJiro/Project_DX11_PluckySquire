@@ -40,7 +40,7 @@ HRESULT CBeetle_Corpse::Initialize(void* _pArg)
 	ActorDesc.FreezePosition_XYZ[2] = false;
 
 	SHAPE_BOX_DESC ShapeDesc = {};
-	ShapeDesc.vHalfExtents = { 0.5f,0.2f ,0.5f };
+	ShapeDesc.vHalfExtents = { 0.5f,0.4f ,0.5f };
 	SHAPE_DATA ShapeData;
 	ShapeData.pShapeDesc = &ShapeDesc;
 	ShapeData.eShapeType = SHAPE_TYPE::BOX;
@@ -96,7 +96,7 @@ HRESULT CBeetle_Corpse::Initialize(void* _pArg)
 	Set_PlayingAnim(false);
 
 
-	m_pActorCom->Set_Mass(2.f);
+	m_pActorCom->Set_Mass(5.f);
 
     return S_OK;
 }
