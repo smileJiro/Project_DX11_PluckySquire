@@ -103,10 +103,6 @@ HRESULT CBeetle_Corpse::Initialize(void* _pArg)
 
 void CBeetle_Corpse::Update(_float _fTimeDelta)
 {
-	_float4 vRotation;
-	m_pGameInstance->MatrixDecompose(nullptr, &vRotation, nullptr, Get_FinalWorldMatrix());
-
-	cout << "¾÷µ« - X : " << vRotation.x << " Y : " << vRotation.y << "Z : " << vRotation.z << endl;
 	__super::Update(_fTimeDelta);
 }
 
@@ -122,6 +118,16 @@ HRESULT CBeetle_Corpse::Render()
 		m_p2DColliderComs[1]->Render();
 #endif
 	return __super::Render();
+}
+
+void CBeetle_Corpse::Active_OnEnable()
+{
+	__super::Active_OnEnable();
+}
+
+void CBeetle_Corpse::Active_OnDisable()
+{
+	__super::Active_OnDisable();
 }
 
 
