@@ -134,7 +134,7 @@ void CNeutral_PatrolState::PatrolMove(_float _fTimeDelta, _int _iDir)
 
 		if (true == m_isTurn)
 		{
-			m_pOwner->Set_2D_Direction(m_eDir);
+			m_pOwner->Set_2DDirection(m_eDir);
 
 			m_isTurn = false;
 			m_isMove = true;
@@ -147,7 +147,7 @@ void CNeutral_PatrolState::PatrolMove(_float _fTimeDelta, _int _iDir)
 			switch (m_eDir)
 			{
 			case Client::F_DIRECTION::LEFT:
-				m_pOwner->Get_ControllerTransform()->Go_Right(_fTimeDelta);
+				m_pOwner->Get_ControllerTransform()->Go_Left(_fTimeDelta);
 				break;
 
 			case Client::F_DIRECTION::RIGHT:

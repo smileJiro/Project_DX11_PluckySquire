@@ -20,7 +20,7 @@ HRESULT CPalmDecal::Initialize(void* _pArg)
 {
 	m_pSectionMgr = CSection_Manager::GetInstance();
     m_eInteractID = INTERACT_ID::PALMDECAL;
-    m_eInteractKey = KEY::Q;
+    m_eInteractKey = KEY::E;
 
     CModelObject::MODELOBJECT_DESC* pBodyDesc = static_cast<CModelObject::MODELOBJECT_DESC*>(_pArg);
 

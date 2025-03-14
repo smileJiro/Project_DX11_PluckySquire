@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "StopStamp_UI.h"
 #include "GameInstance.h"
+#include "Book.h"
+#include "Player.h"
 
 
 
@@ -32,7 +34,7 @@ HRESULT CStopStamp_UI::Initialize(void* _pArg)
 
 
 
-	m_ePreStamp = CUI_Manager::GetInstance()->Get_StampIndex();
+	//m_ePreStamp = CUI_Manager::GetInstance()->Get_StampIndex();
 
 	return S_OK;
 }
@@ -50,38 +52,33 @@ void CStopStamp_UI::Update(_float _fTimeDelta)
 
 
 	if (m_isActive == false)
-	{
-		if (true == m_isBig || true == m_isSmall)
-		{
-			if (true == m_isBig)
-			{
-				m_fSizeX = 96.f;
-				m_fSizeY = 148.f;
-				m_pControllerTransform->Set_Scale(m_fSizeX, m_fSizeY, 1.f);
-
-				m_isBig = false;
-			}
-			
-			if (true == m_isSmall)
-			{
-				m_fSizeX = 72.f;
-				m_fSizeY = 111.f;
-				m_pControllerTransform->Set_Scale(m_fSizeX, m_fSizeY, 1.f);
-
-				m_isSmall = false;
-			}
-		}
-
 		return;
-	}
-		
-	
+
+	// 둘다 있으면 체인지 스탬프 준비하고
 	if (true == pUIManager->Get_StampHave(0) &&
 		true == pUIManager->Get_StampHave(1))
 	{
 		ChangeStamp(_fTimeDelta);
 	}
-	
+
+	// 밤만 가지고 있으면 밤 도장 위치를 조정해주자.
+	else if (true == pUIManager->Get_StampHave(1) &&
+		false == pUIManager->Get_StampHave(0))
+	{
+		if (false == m_isFirstPositionAdjusted)
+		{
+			_float2 vPos;
+			// 크기 및 위치 조정
+			vPos.x = g_iWinSizeX - g_iWinSizeX / 12.f;
+			vPos.y = g_iWinSizeY - g_iWinSizeY / 6.f;
+
+			m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(vPos.x - g_iWinSizeX * 0.5f, -vPos.y + g_iWinSizeY * 0.5f, 0.f, 1.f));
+
+			m_pControllerTransform->Set_Scale(96.f, 148.f, 1.f);
+
+			//m_isFirstPositionAdjusted = true;
+		}
+	}
 
 }
 
@@ -90,7 +87,14 @@ void CStopStamp_UI::Late_Update(_float _fTimeDelta)
 	if (false == Uimgr->GetInstance()->Get_StampHave(1))
 		return;
 
-	__super::Late_Update(_fTimeDelta);
+
+	CBook* pBook = Uimgr->Get_Book();
+
+	if (nullptr == pBook)
+		assert(pBook);
+
+	if (true == pBook->Get_PlayerAbove())
+		__super::Late_Update(_fTimeDelta);
 }
 
 HRESULT CStopStamp_UI::Render()
@@ -123,67 +127,202 @@ HRESULT CStopStamp_UI::Render()
 
 void CStopStamp_UI::ChangeStamp(_float _fTimeDelta)
 {
-	CUI_Manager::STAMP eStamp;
-	eStamp = CUI_Manager::GetInstance()->Get_StampIndex();
+	//CUI_Manager::STAMP eStamp;
+	//eStamp = CUI_Manager::GetInstance()->Get_StampIndex();
 
-	if (m_ePreStamp != eStamp && false == m_isScaling)
+
+	CPlayer* pPlayer = Uimgr->Get_Player();
+	if (nullptr == pPlayer)
 	{
-		if (eStamp == CUI_Manager::STAMP_BOMB)
-		{
-			//위치 변경이 필요한가요?
-			m_fX = g_iWinSizeX / 7.5f;
-			m_fY = g_iWinSizeY - g_iWinSizeY / 10.f;
-
-			m_isSmall = true;
-			m_isScaling = true;
-		}
-		else if (eStamp == CUI_Manager::STAMP_STOP)
-		{
-			//위치 변경이 필요한가요?
-			m_fX = g_iWinSizeX / 7.5f;
-			m_fY = g_iWinSizeY - g_iWinSizeY / 10.f;
-
-			m_isBig = true;
-			m_isScaling = true;
-		}
-		m_ePreStamp = eStamp;
+		assert(pPlayer);
 	}
 
 
-	if (true == m_isBig || true == m_isSmall)
+	CPlayer::PLAYER_PART ePlayerPart = pPlayer->Get_CurrentStampType();
+
+	if (CPlayer::PLAYER_PART::PLAYER_PART_STOP_STMAP == ePlayerPart ||
+		CPlayer::PLAYER_PART::PLAYER_PART_BOMB_STMAP == ePlayerPart)
 	{
-		if (true == m_isBig)
+		if (m_ePreStamp != ePlayerPart && false == m_isScaling)
 		{
-			if (m_fSizeX <= 96.f)
+			if (ePlayerPart == CPlayer::PLAYER_PART::PLAYER_PART_STOP_STMAP)
 			{
-				m_fSizeX += _fTimeDelta * 100.f;
-				m_fSizeY += (_fTimeDelta * 1.54f) * 100.f;
+				//위치 변경이 필요한가요?
+				m_fX = g_iWinSizeX / 7.5f;
+				m_fY = g_iWinSizeY - g_iWinSizeY / 10.f;
 
-				m_pControllerTransform->Set_Scale(m_fSizeX, m_fSizeY, 1.f);
+				m_isBig = true;
+				m_isScaling = true;
 			}
-			else
+			else if (ePlayerPart == CPlayer::PLAYER_PART::PLAYER_PART_BOMB_STMAP)
 			{
-				m_isBig = false;
-				m_isScaling = false;
+				//위치 변경이 필요한가요?
+				m_fX = g_iWinSizeX / 7.5f;
+				m_fY = g_iWinSizeY - g_iWinSizeY / 10.f;
+
+				m_isSmall = true;
+				m_isScaling = true;
 			}
-				
+			m_ePreStamp = ePlayerPart;
 		}
-		else if (true == m_isSmall)
-		{
-			if (m_fSizeX > 72.f)
-			{
-				m_fSizeX -= _fTimeDelta * 100.f;
-				m_fSizeY -= (_fTimeDelta * 1.54f) * 100.f;
 
-				m_pControllerTransform->Set_Scale(m_fSizeX, m_fSizeY, 1.f);
-			}
-			else
+
+		if (true == m_isBig || true == m_isSmall)
+		{
+			if (true == m_isBig)
 			{
-				m_isSmall = false;
-				m_isScaling = false;
-			}	
+				if (m_fSizeX <= 96.f)
+				{
+					m_fSizeX += _fTimeDelta * 100.f;
+					m_fSizeY += (_fTimeDelta * 1.54f) * 100.f;
+
+					m_pControllerTransform->Set_Scale(m_fSizeX, m_fSizeY, 1.f);
+				}
+				else
+				{
+					m_isBig = false;
+					m_isScaling = false;
+				}
+
+			}
+			else if (true == m_isSmall)
+			{
+				if (m_fSizeX > 72.f)
+				{
+					m_fSizeX -= _fTimeDelta * 100.f;
+					m_fSizeY -= (_fTimeDelta * 1.54f) * 100.f;
+
+					m_pControllerTransform->Set_Scale(m_fSizeX, m_fSizeY, 1.f);
+				}
+				else
+				{
+					m_isSmall = false;
+					m_isScaling = false;
+				}
+			}
 		}
 	}
+
+	//if (m_ePreStamp != eStamp && false == m_isScaling)
+	//{
+	//	if (eStamp == CUI_Manager::STAMP_STOP)
+	//	{
+	//		//위치 변경이 필요한가요?
+	//		m_fX = g_iWinSizeX / 7.5f;
+	//		m_fY = g_iWinSizeY - g_iWinSizeY / 10.f;
+	//
+	//		m_isBig = true;
+	//		m_isScaling = true;
+	//	}
+	//	else if (eStamp == CUI_Manager::STAMP_BOMB)
+	//	{
+	//		//위치 변경이 필요한가요?
+	//		m_fX = g_iWinSizeX / 7.5f;
+	//		m_fY = g_iWinSizeY - g_iWinSizeY / 10.f;
+	//
+	//		m_isSmall = true;
+	//		m_isScaling = true;
+	//	}
+	//	m_ePreStamp = eStamp;
+	//}
+	//
+	//
+	//if (true == m_isBig || true == m_isSmall)
+	//{
+	//	if (true == m_isBig)
+	//	{
+	//		if (m_fSizeX <= 96.f)
+	//		{
+	//			m_fSizeX += _fTimeDelta * 100.f;
+	//			m_fSizeY += (_fTimeDelta * 1.54f) * 100.f;
+	//
+	//			m_pControllerTransform->Set_Scale(m_fSizeX, m_fSizeY, 1.f);
+	//		}
+	//		else
+	//		{
+	//			m_isBig = false;
+	//			m_isScaling = false;
+	//		}
+	//
+	//	}
+	//	else if (true == m_isSmall)
+	//	{
+	//		if (m_fSizeX > 72.f)
+	//		{
+	//			m_fSizeX -= _fTimeDelta * 100.f;
+	//			m_fSizeY -= (_fTimeDelta * 1.54f) * 100.f;
+	//
+	//			m_pControllerTransform->Set_Scale(m_fSizeX, m_fSizeY, 1.f);
+	//		}
+	//		else
+	//		{
+	//			m_isSmall = false;
+	//			m_isScaling = false;
+	//		}
+	//	}
+	//}
+
+	//CUI_Manager::STAMP eStamp;
+	//eStamp = CUI_Manager::GetInstance()->Get_StampIndex();
+	//
+	//if (m_ePreStamp != eStamp && false == m_isScaling)
+	//{
+	//	if (eStamp == CUI_Manager::STAMP_BOMB)
+	//	{
+	//		//위치 변경이 필요한가요?
+	//		m_fX = g_iWinSizeX / 7.5f;
+	//		m_fY = g_iWinSizeY - g_iWinSizeY / 10.f;
+	//
+	//		m_isSmall = true;
+	//		m_isScaling = true;
+	//	}
+	//	else if (eStamp == CUI_Manager::STAMP_STOP)
+	//	{
+	//		//위치 변경이 필요한가요?
+	//		m_fX = g_iWinSizeX / 7.5f;
+	//		m_fY = g_iWinSizeY - g_iWinSizeY / 10.f;
+	//
+	//		m_isBig = true;
+	//		m_isScaling = true;
+	//	}
+	//	m_ePreStamp = eStamp;
+	//}
+	//
+	//
+	//if (true == m_isBig || true == m_isSmall)
+	//{
+	//	if (true == m_isBig)
+	//	{
+	//		if (m_fSizeX <= 96.f)
+	//		{
+	//			m_fSizeX += _fTimeDelta * 100.f;
+	//			m_fSizeY += (_fTimeDelta * 1.54f) * 100.f;
+	//
+	//			m_pControllerTransform->Set_Scale(m_fSizeX, m_fSizeY, 1.f);
+	//		}
+	//		else
+	//		{
+	//			m_isBig = false;
+	//			m_isScaling = false;
+	//		}
+	//			
+	//	}
+	//	else if (true == m_isSmall)
+	//	{
+	//		if (m_fSizeX > 72.f)
+	//		{
+	//			m_fSizeX -= _fTimeDelta * 100.f;
+	//			m_fSizeY -= (_fTimeDelta * 1.54f) * 100.f;
+	//
+	//			m_pControllerTransform->Set_Scale(m_fSizeX, m_fSizeY, 1.f);
+	//		}
+	//		else
+	//		{
+	//			m_isSmall = false;
+	//			m_isScaling = false;
+	//		}	
+	//	}
+	//}
 
 	
 }

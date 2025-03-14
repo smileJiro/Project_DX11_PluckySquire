@@ -189,6 +189,7 @@
     <ClInclude Include="..\Public\2DMapObject.h" />
     <ClInclude Include="..\Public\2DMapWordObject.h" />
     <ClInclude Include="..\public\3DMapEmissiveObject.h" />
+    <ClInclude Include="..\public\BackGroundObject.h" />
     <ClInclude Include="..\Public\Bomb.h" />
     <ClInclude Include="..\Public\Bombable.h" />
     <ClInclude Include="..\Public\BombableBox.h" />
@@ -211,6 +212,8 @@
     <ClInclude Include="..\Public\ButterGrump_RightEye.h" />
     <ClInclude Include="..\Public\ButterGrump_Shield.h" />
     <ClInclude Include="..\Public\ButterGrump_Tongue.h" />
+    <ClInclude Include="..\Public\C08_Box.h" />
+    <ClInclude Include="..\Public\C6_IdleState.h" />
     <ClInclude Include="..\public\Candle.h" />
     <ClInclude Include="..\Public\CandleGame.h" />
     <ClInclude Include="..\public\Candle_Body.h" />
@@ -227,7 +230,10 @@
     <ClInclude Include="..\public\FatherPart_Prop.h" />
     <ClInclude Include="..\public\FresnelModelObject.h" />
     <ClInclude Include="..\public\Mat.h" />
+    <ClInclude Include="..\Public\MonsterJumpState.h" />
+    <ClInclude Include="..\Public\MonsterMoveState.h" />
     <ClInclude Include="..\public\Mug_Alien.h" />
+    <ClInclude Include="..\Public\Patrol_WayState.h" />
     <ClInclude Include="..\Public\PlayerState_CannonPortal.h" />
     <ClInclude Include="..\Public\PlayerState_RetriveSword.h" />
     <ClInclude Include="..\public\PortalLocker_LayerCount.h" />
@@ -299,7 +305,7 @@
     <ClInclude Include="..\public\Sneak_Troop.h" />
     <ClInclude Include="..\Public\JellyKing.h" />
     <ClInclude Include="..\Public\StampKey_1.h" />
-    <ClInclude Include="..\Public\StampKey_Q.h" />
+    <ClInclude Include="..\Public\Interaction_Key.h" />
     <ClInclude Include="..\public\TurnBookEffect.h" />
     <ClInclude Include="..\public\ZetPack_Child.h" />
     <ClInclude Include="..\Public\ZetPack_Father.h" />
@@ -553,6 +559,7 @@
     <ClCompile Include="..\Private\2DMapObject.cpp" />
     <ClCompile Include="..\Private\2DMapWordObject.cpp" />
     <ClCompile Include="..\private\3DMapEmissiveObject.cpp" />
+    <ClCompile Include="..\private\BackGroundObject.cpp" />
     <ClCompile Include="..\Private\Bomb.cpp" />
     <ClCompile Include="..\Private\Bombable.cpp" />
     <ClCompile Include="..\Private\BombableBox.cpp" />
@@ -575,6 +582,8 @@
     <ClCompile Include="..\Private\ButterGrump_RightEye.cpp" />
     <ClCompile Include="..\Private\ButterGrump_Shield.cpp" />
     <ClCompile Include="..\Private\ButterGrump_Tongue.cpp" />
+    <ClCompile Include="..\Private\C08_Box.cpp" />
+    <ClCompile Include="..\Private\C6_IdleState.cpp" />
     <ClCompile Include="..\private\Candle.cpp" />
     <ClCompile Include="..\Private\CandleGame.cpp" />
     <ClCompile Include="..\private\Candle_Body.cpp" />
@@ -592,7 +601,10 @@
     <ClCompile Include="..\private\FatherPart_Prop.cpp" />
     <ClCompile Include="..\private\FresnelModelObject.cpp" />
     <ClCompile Include="..\private\Mat.cpp" />
+    <ClCompile Include="..\Private\MonsterJumpState.cpp" />
+    <ClCompile Include="..\Private\MonsterMoveState.cpp" />
     <ClCompile Include="..\private\Mug_Alien.cpp" />
+    <ClCompile Include="..\Private\Patrol_WayState.cpp" />
     <ClCompile Include="..\Private\PlayerState_CannonPortal.cpp" />
     <ClCompile Include="..\Private\PlayerState_RetriveSword.cpp" />
     <ClCompile Include="..\private\PortalLocker_LayerCount.cpp" />
@@ -661,7 +673,7 @@
     <ClCompile Include="..\private\Sneak_Troop.cpp" />
     <ClCompile Include="..\Private\JellyKing.cpp" />
     <ClCompile Include="..\Private\StampKey_1.cpp" />
-    <ClCompile Include="..\Private\StampKey_Q.cpp" />
+    <ClCompile Include="..\Private\Interaction_Key.cpp" />
     <ClCompile Include="..\private\TurnBookEffect.cpp" />
     <ClCompile Include="..\private\ZetPack_Child.cpp" />
     <ClCompile Include="..\Private\ZetPack_Father.cpp" />

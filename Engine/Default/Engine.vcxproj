@@ -302,6 +302,7 @@ call UpdateLib.bat</Command>
     <ClInclude Include="..\Public\VIBuffer.h" />
     <ClInclude Include="..\public\VIBuffer_Cell.h" />
     <ClInclude Include="..\public\VIBuffer_Cube.h" />
+    <ClInclude Include="..\Public\VIBuffer_Mesh.h" />
     <ClInclude Include="..\Public\VIBuffer_PxDebug.h" />
     <ClInclude Include="..\public\VIBuffer_Instance.h" />
     <ClInclude Include="..\Public\VIBuffer_Mesh_Particle.h" />
@@ -417,6 +418,7 @@ call UpdateLib.bat</Command>
     <ClCompile Include="..\Private\VIBuffer.cpp" />
     <ClCompile Include="..\private\VIBuffer_Cell.cpp" />
     <ClCompile Include="..\private\VIBuffer_Cube.cpp" />
+    <ClCompile Include="..\Private\VIBuffer_Mesh.cpp" />
     <ClCompile Include="..\Private\VIBuffer_PxDebug.cpp" />
     <ClCompile Include="..\private\VIBuffer_Instance.cpp" />
     <ClCompile Include="..\Private\VIBuffer_Mesh_Particle.cpp" />

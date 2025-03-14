@@ -532,19 +532,7 @@ void CPlayer::Enter_Section(const _wstring _strIncludeSectionName)
     /* еб©У : */
     __super::Enter_Section(_strIncludeSectionName);
     if (Is_CarryingObject())
-    {
-        _int eCoord = m_pCarryingObject->Get_CurCoord();
-        eCoord ^= 1;
-        m_pCarryingObject->Change_Coordinate((COORDINATE)eCoord);
-        if (COORDINATE_2D == eCoord)
-        {
-            CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(m_strSectionName, m_pCarryingObject);
-        }
-        else
-        {
-            CSection_Manager::GetInstance()->Remove_GameObject_FromSectionLayer(m_strSectionName, m_pCarryingObject);
-        }
-    }
+            CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(_strIncludeSectionName, m_pCarryingObject);
     
 
 
@@ -579,20 +567,7 @@ void CPlayer::Exit_Section(const _wstring _strIncludeSectionName)
 {
     __super::Exit_Section(_strIncludeSectionName);
     if (Is_CarryingObject())
-    {
-        _int eCoord =  m_pCarryingObject->Get_CurCoord();
-        eCoord ^= 1;
-        m_pCarryingObject->Change_Coordinate((COORDINATE)eCoord);
-        if (COORDINATE_2D == eCoord)
-        {
-            CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(m_strSectionName, m_pCarryingObject);
-        }
-        else
-        {
-            CSection_Manager::GetInstance()->Remove_GameObject_FromSectionLayer(m_strSectionName, m_pCarryingObject);
-        }
-
-    }
+            CSection_Manager::GetInstance()->Remove_GameObject_FromSectionLayer(_strIncludeSectionName, m_pCarryingObject);
     if (Is_ZetPackMode())
         Equip_Part(PLAYER_PART_ZETPACK);
 }
@@ -1127,6 +1102,14 @@ void CPlayer::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
 
 HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition)
 {
+
+    if (Is_CarryingObject())
+    {
+        _int eCoord = m_pCarryingObject->Get_CurCoord();
+        eCoord ^= 1;
+        m_pCarryingObject->Change_Coordinate((COORDINATE)eCoord);
+    }
+
     if (FAILED(__super::Change_Coordinate(_eCoordinate, _pNewPosition)))
         return E_FAIL;
     m_pInteractableObject = nullptr;
@@ -2470,7 +2453,8 @@ void CPlayer::Key_Input(_float _fTimeDelta)
             //m_pActorCom->Set_GlobalPose(_float3(23.5f, 20.56f, 22.5f));
             //m_pActorCom->Set_GlobalPose(_float3(42.f, 8.6f, 20.f));
             //m_pActorCom->Set_GlobalPose(_float3(40.f, 0.35f, -7.f));
-            m_pActorCom->Set_GlobalPose(_float3(18.36f, 21.58f, 1.11f));
+            //m_pActorCom->Set_GlobalPose(_float3(18.36f, 21.58f, 1.11f));
+            m_pActorCom->Set_GlobalPose(_float3(14.6f, 11.11f, -2.9f));
         }
     }
     //if (KEY_DOWN(KEY::J))

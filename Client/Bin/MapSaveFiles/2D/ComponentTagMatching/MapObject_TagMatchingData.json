@@ -2131,7 +2131,7 @@
   "ColliderPropertis": {
    "ColliderInfo": {
     "Collider_Extent": {
-     "X": 57.0,
+     "X": 841.0,
      "Y": 57.0
     },
     "Collider_Offset_Pos": {
@@ -4421,16 +4421,32 @@
    "ColliderType": 0
   },
   "ModelType": 1,
-  "SearchTag": "Barrel",
+  "SearchTag": "barrel",
   "Sorting": false,
-  "TextureName": "C08_Barrel"
+  "TextureName": "C08_barrel"
  },
  {
-  "Active": false,
-  "BackGround": false,
-  "Collider": false,
+  "Active": true,
+  "ActivePropertis": {
+   "ActiveType": 11
+  },
+  "BackGround": true,
+  "Collider": true,
+  "ColliderPropertis": {
+   "ColliderInfo": {
+    "Collider_Extent": {
+     "X": 255.0,
+     "Y": 250.0
+    },
+    "Collider_Offset_Pos": {
+     "X": 0.0,
+     "Y": 0.0
+    }
+   },
+   "ColliderType": 1
+  },
   "ModelType": 1,
-  "SearchTag": "SpikeTrap",
+  "SearchTag": "C08_Spike",
   "Sorting": false,
   "TextureName": "C08_Spike"
  },

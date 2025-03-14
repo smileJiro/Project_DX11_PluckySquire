@@ -15,6 +15,7 @@
 #include "Detonator.h"
 #include "SlipperyObject.h"
 #include "Effect_Manager.h"
+#include "Section_2D_PlayMap.h"
 
 CBook::CBook(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CModelObject(_pDevice, _pContext)
@@ -576,6 +577,23 @@ void CBook::PageAction_End(COORDINATE _eCoord, _uint iAnimIdx)
 		Set_Animation(0);
 		m_eCurAction = ACTION_LAST;
 	}
+
+	if (2== iAnimIdx)
+	{
+		_wstring strCurSectionKey = SECTION_MGR->Get_Cur_Section_Key();
+	
+		auto pSection = SECTION_MGR->Find_Section(strCurSectionKey);
+
+
+		if (pSection != nullptr)
+		{
+			CSection_2D_PlayMap* pPlaySection = static_cast<CSection_2D_PlayMap*>(pSection);
+			pPlaySection->Set_PortalActive(true);
+		}
+
+
+	}
+
 #pragma endregion
 }
 

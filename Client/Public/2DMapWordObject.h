@@ -3,13 +3,13 @@
 
 BEGIN(Engine)
 class C2DModel;
-
 END
 
 BEGIN(Client)
 
-class C2DMapWordObject final : public C2DMapObject
+class C2DMapWordObject : public C2DMapObject
 {
+protected:
 	enum WORD_ACTION_TYPE
 	{
 		IMAGE_CHANGE,			//0
@@ -38,7 +38,7 @@ public :
 		json WordObjectJson;
 
 	}WORD_OBJECT_DESC;
-private:
+protected:
 	C2DMapWordObject(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	C2DMapWordObject(const C2DMapWordObject& _Prototype);
 	virtual ~C2DMapWordObject() = default;
@@ -57,13 +57,14 @@ public:
 	const WORD_ACTION*				Find_Action(_uint _iControllerIndex, _uint _iContainerIndex, _uint _iWordIndex);
 	virtual void					Action_Process(_float _fTimeDelta);
 	
-	
+	virtual void					On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
 	virtual void					Active_OnEnable();
 	virtual void					Active_OnDisable();
+	void							MapWordObject_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx);
 
 
 
-private :
+protected :
 	_wstring				m_strWordObjectTag;
 	_uint					m_iModelIndex = 0 ;
 	vector <_wstring>		m_ModelNames;

@@ -23,8 +23,11 @@ void CPlayerState_TurnBook::Update(_float _fTimeDelta)
 
 	if (tKeyResult.bInputStates[PLAYER_INPUT_TURNBOOK_END])
 	{
-		m_pBook->Set_PlayingAnim(true);
-		m_pBook->Switch_Animation(CBook::IDLE);
+		if (CBook::ANIM_ACTION_CLOSEBYHAND != iBookAnim) {
+			m_pBook->Switch_Animation(CBook::IDLE);
+			m_pBook->Set_PlayingAnim(true);
+		}
+			
 		m_pOwner->Set_State(CPlayer::IDLE);
 		return;
 	}
@@ -33,7 +36,11 @@ void CPlayerState_TurnBook::Update(_float _fTimeDelta)
 	{
 		m_fTiltIdleTimeAcc += _fTimeDelta;
 		
-		if (tKeyResult.bInputStates[PLAYER_INPUT_TURNBOOK_LEFT])
+		if (CBook::ANIM_ACTION_CLOSEBYHAND == iBookAnim &&
+			tKeyResult.bInputStates[PLAYER_INPUT_TURNBOOK_LEFT]) {
+			Set_State(BOOK_STATE::OPEN_BOOK);
+		}
+		else if (tKeyResult.bInputStates[PLAYER_INPUT_TURNBOOK_LEFT])
 			Set_State(BOOK_STATE::TURN_LEFT);
 		else if (tKeyResult.bInputStates[PLAYER_INPUT_TURNBOOK_RIGHT])
 			Set_State(BOOK_STATE::TURN_RIGHT);
@@ -75,12 +82,6 @@ void CPlayerState_TurnBook::Update(_float _fTimeDelta)
 		{
 			if (tKeyResult.bInputStates[PLAYER_INPUT_TURNBOOK_LEFT])
 			{
-				if (CBook::ANIM_ACTION_CLOSEBYHAND == m_pBook->Get_CurrentAnimIndex()) {
-					m_pBook->Set_Animation(CBook::OPEN_TO_FLAT);
-					Set_State(TURN_LEFT);
-					return;
-				}
-
 				Event_Book_Main_Section_Change_Start(1, &vDefaultPos);
 				Set_State(TURN_LEFT);
 			}
@@ -164,6 +165,11 @@ void CPlayerState_TurnBook::Update(_float _fTimeDelta)
 				//기울이는 중에 완전히 덮히면?
 				if (false == m_pBook->Is_DuringAnimation())
 					Set_State(CLOSED_LEFT);
+			}
+		}
+		else if (OPEN_BOOK == m_eBookState) {
+			if (false == m_pBook->Is_DuringAnimation()) {
+				Set_State(IDLE);
 			}
 		}
 		//아무 입력도 없으면?
@@ -269,9 +275,23 @@ void CPlayerState_TurnBook::On_StateChange(BOOK_STATE _eNewState)
 	//===================가운데=========================
 	case Client::CPlayerState_TurnBook::TRANSFORM_CENTER:
 	{
-		m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_TURN_MID);
-		m_pBook->Switch_Animation(CBook::IDLE);
-		m_fTiltIdleTimeAcc = 0.f;
+		switch (_eNewState)
+		{
+		case Client::CPlayerState_TurnBook::OPEN_BOOK:
+		{
+			m_pBook->Set_ReverseAnimation(false);
+			m_pBook->Switch_Animation(CBook::OPEN_TO_FLAT);
+		}
+			break;
+		default:
+		{
+			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_TURN_MID);
+			m_pBook->Switch_Animation(CBook::IDLE);
+			m_fTiltIdleTimeAcc = 0.f;
+		}
+			break;
+		}
+		
 		break;
 	}
 	default:

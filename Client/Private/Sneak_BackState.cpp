@@ -51,7 +51,7 @@ void CSneak_BackState::State_Enter()
 	m_isTurn = false;
 	m_isMove = false;
 	m_isPathFind = true;
-	//cout << "Back" << endl;
+	cout << "Back" << endl;
 }
 
 void CSneak_BackState::State_Update(_float _fTimeDelta)
@@ -90,6 +90,13 @@ void CSneak_BackState::State_Update(_float _fTimeDelta)
 			{
 				m_pOwner->Stop_Rotate();
 				m_pOwner->Stop_Move();
+
+				_vector vDir = XMVectorSetY(m_pTarget->Get_FinalPosition() - m_pOwner->Get_FinalPosition(), 0.f);
+				_float fDis = XMVectorGetX(XMVector3Length((vDir)));
+				//공격 범위 안일 경우 바로 공격으로 전환
+				if (fDis <= Get_CurCoordRange(MONSTER_STATE::ATTACK))
+					Event_ChangeMonsterState(MONSTER_STATE::ATTACK, m_pFSM);
+
 				return;
 			}
 
@@ -182,6 +189,7 @@ void CSneak_BackState::Sneak_BackMove(_float _fTimeDelta, _int _iDir)
 
 				if (m_Ways.size() <= m_iCurWayIndex)
 				{
+					m_pFSM->Set_Sneak_Patrol_Index(m_iDestPatrolIndex);
 					Event_ChangeMonsterState(MONSTER_STATE::SNEAK_IDLE, m_pFSM);
 				}
 			}
@@ -195,6 +203,7 @@ void CSneak_BackState::Sneak_BackMove(_float _fTimeDelta, _int _iDir)
 				m_isTurn = false;
 				m_isMove = false;
 				m_isOnWay = false;
+				m_pFSM->Set_Sneak_Patrol_Index(m_iDestPatrolIndex);
 				Event_ChangeMonsterState(MONSTER_STATE::SNEAK_IDLE, m_pFSM);
 			}
 		}
@@ -388,6 +397,7 @@ void CSneak_BackState::Determine_BackDirection(_float3* _vDirection)
 		{
 			XMStoreFloat3(&vDest, vPositionToPointDis);
 			iDestIndex = m_PatrolWays[Index];
+			m_iDestPatrolIndex = Index;
 		}
 	}
 
@@ -472,6 +482,7 @@ void CSneak_BackState::Determine_BackDirection(_float3* _vDirection)
 			if (iStartIndex != m_PatrolWays[i])
 			{
 				iDestIndex = m_PatrolWays[i];
+				m_iDestPatrolIndex = i;
 				break;
 			}
 		}

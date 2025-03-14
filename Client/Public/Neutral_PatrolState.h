@@ -4,7 +4,7 @@
 BEGIN(Client)
 
 
-//어느정도 거리와 방향이 정해진 순찰 상태
+//공격 안하는 순찰 상태
 class CNeutral_PatrolState final : public CState
 {
 public:

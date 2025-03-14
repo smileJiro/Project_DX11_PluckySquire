@@ -13,7 +13,7 @@
 #include "2DMapObject.h"
 #include "Book.h"
 #include "Sample_Skechspace.h"
-#include "BackGround.h"
+//#include "BackGround.h"
 #include "2DModel.h"
 #include "2DTrigger_Sample.h"
 

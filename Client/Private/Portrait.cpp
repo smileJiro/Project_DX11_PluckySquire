@@ -17,6 +17,8 @@ CPortrait::CPortrait(const CPortrait& _Prototype)
 
 HRESULT CPortrait::Initialize_Prototype()
 {
+	
+
 	return S_OK;
 }
 
@@ -50,16 +52,25 @@ HRESULT CPortrait::Initialize(void* _pArg)
 	return S_OK;
 }
 
+void CPortrait::Priority_Update(_float _fTimeDelta)
+{
+	
+}
+
 
 void CPortrait::Update(_float _fTimeDelta)
 {
-	if (m_isPortraitRender)
-	{
-		_float2 RTSize = _float2(RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y);
-		ChangePosition(m_isPortraitRender, RTSize);
-	}
+	//if (m_isPortraitRender)
+	//{
+	//	_float2 RTSize = _float2(RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y);
+	//	ChangePosition(m_isPortraitRender, RTSize);
+	//}
 	
-
+	//if (m_isPortraitRender)
+	//{
+	//	_float2 RTSize = _float2(RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y);
+	//	ChangePosition(m_isPortraitRender, RTSize);
+	//}
 
 }
 
@@ -78,7 +89,11 @@ void CPortrait::Late_Update(_float _fTimeDelta)
 			m_isAddSectionRender = true;
 		}
 		
-		
+		if (m_isPortraitRender)
+		{
+			_float2 RTSize = _float2(RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y);
+			ChangePosition(m_isPortraitRender, RTSize);
+		}
 		
 
 	}

@@ -39,9 +39,11 @@ public:
 	_float4x4* Get_ProjMatrix() { return &m_ProjMatrix; }
 	CRenderTarget* Get_ShadowRenderTarget() { return m_pShadowRenderTarget; }
 	_int Get_ShadowLightID() const { return m_iShadowLightID; }
+	_float Get_DirectionalLightLength() const { return m_fDirectionalLightLength; }
 	_bool Is_ShadowLight() const { return m_tLightConstData.isShadow; }
 	_bool Is_NotClear() const { return m_isNotClear; }
 	// Set
+	void Set_DirectionalLightLength(_float _fDirectionalLength) { m_fDirectionalLightLength = _fDirectionalLength; }
 	HRESULT Set_LightConstData_AndUpdateBuffer(const CONST_LIGHT& _LightConstData);
 	HRESULT Update_LightConstBuffer();
 	void Set_Shadow(_bool _isShadow);
@@ -65,6 +67,8 @@ protected: /* Shadow */
 	_float4x4				m_ViewMatrix = {};
 	CRenderTarget*			m_pShadowRenderTarget = nullptr;
 
+protected:
+	_float					m_fDirectionalLightLength = 70.f;
 protected:
 	_bool					m_isNotClear = false; // Clear_Load 호출 시 삭제되지 않는 
 
