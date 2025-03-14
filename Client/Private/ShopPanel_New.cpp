@@ -57,6 +57,10 @@ void CShopPanel_New::Update(_float _fTimeDelta)
 		//Update_KeyInput(_fTimeDelta, iIndex);
 		ChangeState_Panel(_fTimeDelta, Uimgr->Get_DialogueFinishShopPanel());
 		m_isOpenPanel = true;
+
+		CPlayer* pPlayer = Uimgr->Get_Player();
+		assert(pPlayer);
+		pPlayer->Set_BlockPlayerInput(true);
 	}
 
 	// 해당 인덱스를 체크해서 true로한다.
@@ -349,6 +353,10 @@ void CShopPanel_New::Update_KeyInput(_float _fTimeDelta)
 		pShopManager->OpenClose_Shop();
 		//ChangeState_Panel(_fTimeDelta, Uimgr->Get_DialogueFinishShopPanel());
 		m_isOpenPanel = false;
+
+		CPlayer* pPlayer = Uimgr->Get_Player();
+		assert(pPlayer);
+		pPlayer->Set_BlockPlayerInput(false);
 	}
 
 }

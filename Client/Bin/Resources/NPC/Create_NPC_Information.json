@@ -84,7 +84,7 @@
 			"strAnimaionName": "Postit_Page",
 			"strNPCName": "PostitPage",
 			"strCreateSection": 3,
-			"strDialogueId": "Dialog_TalkerChange_Test_01",
+			"strDialogueId": "Page_First_Dialog_01",
 			"iStartAnimation": 3,
 			"vPositionX": -153.0,
 			"vPositionY": -183.0,

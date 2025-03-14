@@ -41,6 +41,7 @@ private:
 	void					Cal_ObjectPos(CGameObject* _pGameObject);
 	void					Cal_DisplayPos(_float2 _vRTSize, CGameObject* _pGameObject);
 	void					Display_Text(_float3 _vPos, _float2 _vRTSize, IInteractable* _pGameObject);
+	void					Render_InteractionE();
 
 private:
 	wstring					m_strIntaractName;
@@ -57,6 +58,9 @@ private:
 	_bool					m_isDeleteRender = { false };
 
 	COORDINATE				m_ePrePlayerCoord = { COORDINATE_LAST };
+
+
+	_bool					m_isDisplayInteractionE = { true };
 
 private: /* ÅÂ¿õ Ãß°¡ */
 	_float4					m_vInteractionColor = { 45.f / 255.f, 210.f / 255.f, 56.f / 255.f, 1.0f };

@@ -35,7 +35,7 @@ public:
 		Safe_AddRef(_Target);
 	}
 	CGameObject*						Get_DialogTarget(_uint _index) { return m_DialogTargets[_index]; }
-	_uint								Get_DialogTargetCount() { return m_DialogTargets.size(); }
+	_uint								Get_DialogTargetCount() { return (_uint)m_DialogTargets.size(); }
 	void								Clear_DialogTarget();
 
 	void								Set_Dialog(CDialog* _pDialog) { m_pDialogue = _pDialog; Safe_AddRef(_pDialog);}
