@@ -23,9 +23,14 @@ HRESULT CDynamicCastleGate::Initialize(void* _pArg)
 	pDesc->iNumPartObjects = CASTL_PART_LAST;
 	pDesc->isCoordChangeEnable = false;
 
+	pDesc->eActorType = ACTOR_TYPE::KINEMATIC;
 	CActor::ACTOR_DESC ActorDesc;
+	pDesc->pActorDesc = &ActorDesc;
 	ActorDesc.pOwner = this;
-	XMStoreFloat4x4(&ActorDesc.ActorOffsetMatrix, XMMatrixTranslation(0.0f, 3.f, 0.f));
+	ActorDesc.tFilterData.MyGroup = OBJECT_GROUP::DYNAMIC_OBJECT;
+	ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::BLOCKER | OBJECT_GROUP::PLAYER;
+
+	XMStoreFloat4x4(&ActorDesc.ActorOffsetMatrix, XMMatrixTranslation(0.0f, 0.f, 0.f));
 	ActorDesc.FreezeRotation_XYZ[0] = false;
 	ActorDesc.FreezeRotation_XYZ[1] = false;
 	ActorDesc.FreezeRotation_XYZ[2] = false;
@@ -40,6 +45,8 @@ HRESULT CDynamicCastleGate::Initialize(void* _pArg)
 	ShapeData.eShapeType = SHAPE_TYPE::BOX;
 	ShapeData.eMaterial = ACTOR_MATERIAL::DOMINO;
 	ShapeData.isTrigger = false;
+	ShapeData.FilterData.MyGroup = OBJECT_GROUP::DYNAMIC_OBJECT;
+	ShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::DYNAMIC_OBJECT | OBJECT_GROUP::PLAYER;
 	XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(0.0f, ShapeDesc.vHalfExtents.y + 0.01f, 0.f));
 	ActorDesc.ShapeDatas.push_back(ShapeData);
 
@@ -98,14 +105,31 @@ HRESULT CDynamicCastleGate::Ready_PartObjects()
 
 CDynamicCastleGate* CDynamicCastleGate::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
-	return nullptr;
+	CDynamicCastleGate* pInstance = new CDynamicCastleGate(_pDevice, _pContext);
+
+	if (FAILED(pInstance->Initialize_Prototype()))
+	{
+		MSG_BOX("Failed to Created : DynamicCastleGate");
+		Safe_Release(pInstance);
+	}
+
+	return pInstance;
 }
 
 CGameObject* CDynamicCastleGate::Clone(void* _pArg)
 {
-	return nullptr;
+	CDynamicCastleGate* pInstance = new CDynamicCastleGate(*this);
+
+	if (FAILED(pInstance->Initialize(_pArg)))
+	{
+		MSG_BOX("Failed to Cloned : DynamicCastleGate");
+		Safe_Release(pInstance);
+	}
+
+	return pInstance;
 }
 
 void CDynamicCastleGate::Free()
 {
+	__super::Free();
 }
