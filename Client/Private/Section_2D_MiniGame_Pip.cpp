@@ -53,7 +53,7 @@ HRESULT CSection_2D_MiniGame_Pip::Ready_Objects(void* _pDesc)
 
 		CSneak_Default_Tile::SNEAK_TILEDESC TileDesc = {};
 		CSneak_Tile* pTileOut = { nullptr };
-		_int iStageSize = pjsonTileInfo->size();
+		_int iStageSize = (_uint)pjsonTileInfo->size();
 		vector<vector<CSneak_Tile*>> StageTiles;
 
 		for (_int i = 0; i < iStageSize; ++i)
@@ -172,7 +172,7 @@ HRESULT CSection_2D_MiniGame_Pip::Ready_Objects(void* _pDesc)
 
 		CSneak_MapObject::FLIPOBJECT_DESC ObjDesc = {};
 		CSneak_MapObject* pObjectOut = { nullptr };
-		_int iStageSize = pjsonObjectsInfo->size();
+		_int iStageSize = (_uint)pjsonObjectsInfo->size();
 		vector<vector<CSneak_MapObject*>> StageObjects;
 
 		for (_int i = 0; i < iStageSize; ++i)
@@ -234,7 +234,7 @@ HRESULT CSection_2D_MiniGame_Pip::Ready_Objects(void* _pDesc)
 
 		CSneak_InteractObject::SNEAK_INTERACTOBJECT_DESC InteractDesc = {};
 		CSneak_InteractObject* pInteractOut = { nullptr };
-		_int iStageSize = pjsonInteractsInfo->size();
+		_int iStageSize = (_uint)pjsonInteractsInfo->size();
 		vector<vector<CSneak_InteractObject*>> InteractObjects;
 
 		for (_int i = 0; i < iStageSize; ++i)
@@ -539,7 +539,7 @@ HRESULT CSection_2D_MiniGame_Pip::Ready_Objects(void* _pDesc)
 
 		CSneak_Troop::SNEAK_TROOP_DESC TroopDesc = {};
 		CSneak_Troop* pTroopOut = { nullptr };
-		_int iStageSize = pjsonTroopInfo->size();
+		_int iStageSize = (_uint)pjsonTroopInfo->size();
 		vector<vector<CSneak_Troop*>> StageTroops;
 
 		for (_int i = 0; i < iStageSize; ++i)

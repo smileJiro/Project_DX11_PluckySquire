@@ -192,7 +192,7 @@ _bool CAnimation2D::Play_Animation(_float _fTimeDelta, _bool _bReverse)
 	}
 
 	if ((_bReverse && m_iCurrentFrame <= 0)
-		|| (false == _bReverse && (_int)m_iCurrentFrame >= (m_iFrameCount)))
+		|| (false == _bReverse && (_int)m_iCurrentFrame >= (_int)(m_iFrameCount)))
 	{
 		//루프면 처음으로
 		if (m_bLoop)

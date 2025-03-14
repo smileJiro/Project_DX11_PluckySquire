@@ -216,10 +216,10 @@ HRESULT CLoader::Loading_Level_Static()
         CMapObject::Create(m_pDevice, m_pContext))))
         return E_FAIL;
     
-    /* For. Prototype_GameObject_BackGround */
-    if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_BackGround"),
-        CBackGround::Create(m_pDevice, m_pContext))))
-        return E_FAIL;
+    ///* For. Prototype_GameObject_BackGround */
+    //if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_BackGround"),
+    //    CBackGround::Create(m_pDevice, m_pContext))))
+    //    return E_FAIL;
 
     lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
     m_isFinished = true;

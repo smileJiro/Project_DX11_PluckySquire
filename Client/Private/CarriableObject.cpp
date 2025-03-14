@@ -45,8 +45,10 @@ HRESULT CCarriableObject::Initialize(void* _pArg)
     pDesc->iRenderGroupID_3D = RG_3D;
     pDesc->iPriorityID_3D = PR3D_GEOMETRY;
 	pDesc->iObjectGroupID = OBJECT_GROUP::INTERACTION_OBEJCT;
-
+	if (nullptr != pDesc->pActorDesc)
+	{
 	pDesc->pActorDesc->pOwner = this;
+	}
     if (FAILED(__super::Initialize(pDesc)))
         return E_FAIL;
 	//ActorObject에서 옮겨옴.
@@ -70,8 +72,8 @@ HRESULT CCarriableObject::Initialize(void* _pArg)
         return E_FAIL;
 	m_pBody2DColliderCom = m_p2DColliderComs[0];
 	Safe_AddRef(m_pBody2DColliderCom);
-
-	m_pActorCom->Set_Mass(1.5f);
+	if (nullptr != m_pActorCom)
+		m_pActorCom->Set_Mass(1.5f);
 
 	/* 2D 시작일 경우, Section에 추가. */
 	if (COORDINATE_2D == pDesc->eStartCoord)
