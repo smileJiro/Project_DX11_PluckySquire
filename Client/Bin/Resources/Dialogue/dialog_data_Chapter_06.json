@@ -2922,6 +2922,121 @@
 					"Blue": 234
 				}
 			]
+		},
+		{
+			"id": "Dialog_Offset_Test_01",
+			"Section": "Chapter5_P0102",
+			"lines": [
+				{
+					"Portrait": 0,
+					"Talker": "TEST",
+					"BG": 13,
+					"location": 1,
+					"OffsetX": -100.0,
+					"OffsetY": 100.0,
+					"is2D": true,
+					"isPortrait": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "Location이 1, 오프셋이 -100, +100 이에요",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 1,
+					"Talker": "TEST",
+					"BG": 2,
+					"location": 1,
+					"OffsetX": 10.0,
+					"OffsetY": 10.0,
+					"is2D": true,
+					"isPortrait": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "Location이 1, 오프셋이 +10, +10 이에요",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 1,
+					"Talker": "TEST",
+					"BG": 2,
+					"location": 1,
+					"OffsetX": 30.0,
+					"OffsetY": 30.0,
+					"is2D": true,
+					"isPortrait": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "Location이 1, 오프셋이 +30, +30 이에요",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 1,
+					"Talker": "TEST",
+					"BG": 2,
+					"location": 1,
+					"OffsetX": 50.0,
+					"OffsetY": 50.0,
+					"is2D": true,
+					"isPortrait": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "Location이 1, 오프셋이 +50, +50 이에요",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 1,
+					"Talker": "TEST",
+					"BG": 2,
+					"location": 1,
+					"OffsetX": 100.0,
+					"OffsetY": 100.0,
+					"is2D": true,
+					"isPortrait": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "Location이 1, 오프셋이 +100, +100 이에요",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 1,
+					"Talker": "TEST",
+					"BG": 2,
+					"location": 1,
+					"OffsetX": -100.0,
+					"OffsetY": -100.0,
+					"is2D": true,
+					"isPortrait": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "Location이 1, 오프셋이 -100, -100 이에요",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				}
+				
+			]
 		}
 	]
 }

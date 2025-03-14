@@ -55,7 +55,18 @@ void CSneak_AwareState::State_Update(_float _fTimeDelta)
 
 		//몬스터 인식 범위 안에 들어오면 인식상태로 전환
 		if (true == Check_Target3D(true))
+		{
+			m_pOwner->Stop_Rotate();
+			m_pOwner->Stop_Move();
+
+			_vector vDir = XMVectorSetY(m_pTarget->Get_FinalPosition() - m_pOwner->Get_FinalPosition(), 0.f);
+			_float fDis = XMVectorGetX(XMVector3Length((vDir)));
+			//공격 범위 안일 경우 바로 공격으로 전환
+			if (fDis <= Get_CurCoordRange(MONSTER_STATE::ATTACK))
+				Event_ChangeMonsterState(MONSTER_STATE::ATTACK, m_pFSM);
+
 			return;
+		}
 		//if (m_isConvert == true)
 		//{
 		//	Event_ChangeMonsterState(MONSTER_STATE::SNEAK_INVESTIGATE, m_pFSM);

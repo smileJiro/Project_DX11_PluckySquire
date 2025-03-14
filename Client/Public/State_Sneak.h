@@ -71,6 +71,7 @@ protected:
 
 	vector<_uint> m_PatrolWays = {};
 	vector<_float3> m_PatrolDirections = {};
+	_bool m_isPatrolCycle = { false };
 
 	_uint m_iCurWayIndex = 0;
 	_bool m_isOnWay = false;

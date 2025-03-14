@@ -94,6 +94,23 @@
 			"isInteractable": true,
 			"isDialog": true,
 			"is2D": true
+		},
+		{
+			"strSectionid": "Chapter1_P0506",
+			"strAnimaionName": "Postit_Page",
+			"strNPCName": "PostitPage",
+			"strCreateSection": 3,
+			"strDialogueId": "Dialog_Offset_Test_01",
+			"iStartAnimation": 3,
+			"vPositionX": 0.0,
+			"vPositionY": 0.0,
+			"vPositionZ": 0.0,
+			"CollisionScaleX": 20.0,
+			"CollisionScaleY": 20.0,
+			"isInteractable": true,
+			"isDialog": true,
+			"is2D": true
 		}
+		
 	]
 }

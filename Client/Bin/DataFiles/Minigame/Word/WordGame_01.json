@@ -99,6 +99,38 @@
         ]
       },
       {
+        "Word_Object_Tag": "bridge",
+        "Position": [
+          -1520.0,
+          -132.0
+        ],
+        "Scale": [
+          1.0,
+          1.0
+        ],
+        "Image_Tag_List": [
+          {
+            "ImagePath": "C04_0506_bridge_01_png"
+          }
+        ],
+        "Word_Action_List": [
+          {
+            "Controller_Index": 4,
+            "Container_Index": 0,
+            "Word_Type": 0,
+            "Action_Type": 1,
+            "Param": true
+          },
+          {
+            "Controller_Index": 4,
+            "Container_Index": 0,
+            "Word_Type": 5,
+            "Action_Type": 1,
+            "Param": false
+          }
+        ]
+      },
+      {
         "Word_Object_Tag": "water_04",
         "Position": [
           1508.0,
@@ -108,12 +140,12 @@
           1.0,
           1.0
         ],
-		  "Collider_Info": {
+        "Collider_Info": {
           "Collider_Extent": [
             180.0,
             100.0
           ],
-		"Collider_Offset": [
+          "Collider_Offset": [
             0.0,
             0.0
           ]
@@ -138,7 +170,7 @@
             "Action_Type": 6,
             "Param": false
           },
-		  {
+          {
             "Controller_Index": 4,
             "Container_Index": 0,
             "Word_Type": 0,
@@ -154,6 +186,7 @@
           }
         ]
       },
+
       {
         "Word_Object_Tag": "door",
         "Position": [
@@ -169,7 +202,7 @@
             150.0,
             100.0
           ],
-		"Collider_Offset": [
+          "Collider_Offset": [
             0.0,
             100.0
           ]
@@ -242,7 +275,7 @@
             200.0,
             100.0
           ],
-		"Collider_Offset": [
+          "Collider_Offset": [
             0.0,
             100.0
           ]
@@ -283,7 +316,7 @@
           }
         ]
       },
-	        {
+      {
         "Word_Object_Tag": "tinyfrog",
         "Position": [
           -420.0,
@@ -298,36 +331,36 @@
             "ImagePath": "tinyfrog"
           }
         ],
-            "Word_Action_List": [
-              {
-                "Controller_Index": 2,
-                "Container_Index": 0,
-                "Word_Type": 0,
-                "Action_Type": 2,
-                "Param": 2
-              },
-              {
-                "Controller_Index": 2,
-                "Container_Index": 0,
-                "Word_Type": 1,
-                "Action_Type": 2,
-                "Param": 0
-              },
-              {
-                "Controller_Index": 2,
-                "Container_Index": 0,
-                "Word_Type": 2,
-                "Action_Type": 2,
-                "Param": 4
-              },
-              {
-                "Controller_Index": 2,
-                "Container_Index": 0,
-                "Word_Type": 5,
-                "Action_Type": 2,
-                "Param": 1
-              }
-            ]
+        "Word_Action_List": [
+          {
+            "Controller_Index": 2,
+            "Container_Index": 0,
+            "Word_Type": 0,
+            "Action_Type": 2,
+            "Param": 2
+          },
+          {
+            "Controller_Index": 2,
+            "Container_Index": 0,
+            "Word_Type": 1,
+            "Action_Type": 2,
+            "Param": 0
+          },
+          {
+            "Controller_Index": 2,
+            "Container_Index": 0,
+            "Word_Type": 2,
+            "Action_Type": 2,
+            "Param": 4
+          },
+          {
+            "Controller_Index": 2,
+            "Container_Index": 0,
+            "Word_Type": 5,
+            "Action_Type": 2,
+            "Param": 1
+          }
+        ]
       }
     ]
   },

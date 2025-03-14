@@ -24,6 +24,7 @@ public:
 		_float fDelayTime;
 		_float fCoolTime;
 		_int iCurLevel;
+		MONSTER_STATE eMoveNextState;
 		CMonster* pOwner = nullptr;
 	}STATEDESC;
 

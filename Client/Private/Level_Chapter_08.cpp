@@ -38,7 +38,8 @@
 #include "TiltSwapPusher.h"
 #include "MudPit.h"
 #include "Postit_Page.h"
-
+#include "Door_Yellow.h"
+#include "C08_Box.h"
 
 #include "RayShape.h"
 #include "CarriableObject.h"
@@ -166,7 +167,11 @@ HRESULT CLevel_Chapter_08::Initialize(LEVEL_ID _eLevelID)
 		MSG_BOX(" Failed Ready_Layer_PortalLocker (Level_Chapter_08::Initialize)");
 		assert(nullptr);
 	}
-	
+	if (FAILED(Ready_Layer_MapGimmick(TEXT("Layer_MapGimmick"))))
+	{
+		MSG_BOX(" Failed Ready_Layer_MapGimmick (Level_Chapter_02::Initialize)");
+		assert(nullptr);
+	}
 	/* Collision Check Matrix */
 	// 그룹필터 추가 >> 중복해서 넣어도 돼 내부적으로 걸러줌 알아서 
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::MONSTER);
@@ -196,6 +201,8 @@ HRESULT CLevel_Chapter_08::Initialize(LEVEL_ID _eLevelID)
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::BLOCKER);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_PROJECTILE, OBJECT_GROUP::WORD_GAME);
 
+	/* 발판 - 기믹오브젝트, 2D에 해당하는 오브젝트 (주사위, 등.. )*/
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MAPOBJECT, OBJECT_GROUP::GIMMICK_OBJECT);
 
 	/* 돌덩이 */
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER_PROJECTILE, OBJECT_GROUP::BLOCKER);
@@ -812,15 +819,15 @@ HRESULT CLevel_Chapter_08::Ready_Layer_UI(const _wstring& _strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Interaction_Book"), m_eLevelID, _strLayerTag, &pDesc)))
 		return E_FAIL;
 
-	CGameObject* pGameObject;
+	CGameObject* pInteractionE;
 
 	pDesc.fSizeX = 360.f / 3.f;
 	pDesc.fSizeY = 149.f / 3.f;
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_UIObejct_Interaction_E"), pDesc.iCurLevelID, _strLayerTag, &pGameObject, &pDesc)))
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_UIObejct_Interaction_E"), pDesc.iCurLevelID, _strLayerTag, &pInteractionE, &pDesc)))
 		return E_FAIL;
 
-	Uimgr->Set_InterActionE(static_cast<CInteraction_E*>(pGameObject));
+	Uimgr->Set_InterActionE(static_cast<CInteraction_E*>(pInteractionE));
 
 
 #pragma endregion InterAction UI
@@ -1074,15 +1081,6 @@ HRESULT CLevel_Chapter_08::Ready_Layer_UI(const _wstring& _strLayerTag)
 
 	Uimgr->Set_InterActionHeart(static_cast<CInteraction_Heart*>(pHeartObject));
 
-
-	CGameObject* pInteractionE;
-
-
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Narration"), pDesc.iCurLevelID, _strLayerTag, &pInteractionE, &pDesc)))
-		return E_FAIL;
-
-	Uimgr->Set_Narration(static_cast<CNarration*>(pInteractionE));
-
 	return S_OK;
 }
 
@@ -1162,6 +1160,19 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Spear_Soldier"), m_eLevelID, _strLayerTag, &Spear_Soldier_Desc)))
 		return E_FAIL;
 
+
+
+	CBeetle::MONSTER_DESC Beetle_Desc;
+	Beetle_Desc.iCurLevelID = m_eLevelID;
+	Beetle_Desc.eStartCoord = COORDINATE_3D;
+	Beetle_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(15.f, 11.1f, 3.4f);
+	Beetle_Desc.isSneakMode = true;
+	Beetle_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER8_BEETLE1;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, _strLayerTag, &Beetle_Desc)))
+		return E_FAIL;
+
 	//CCrossBow_Soldier::MONSTER_DESC CrossBow_Soldier_Desc;
 	//CrossBow_Soldier_Desc.iCurLevelID = m_eLevelID;
 	//CrossBow_Soldier_Desc.eStartCoord = COORDINATE_3D;
@@ -1179,8 +1190,6 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 
 	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Bomb_Soldier"), m_eLevelID, _strLayerTag, &Bomb_Soldier_Desc)))
 	//	return E_FAIL;
-
-
 
 	//CButterGrump::MONSTER_DESC Boss_Desc;
 	//Boss_Desc.iCurLevelID = m_eLevelID;
@@ -1305,6 +1314,7 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Effects2D(const _wstring& _strLayerTag)
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("bushburst_leaves2"), m_eLevelID, 3);
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("bushburst_dust1"), m_eLevelID, 3);
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("bushburst_dust2"), m_eLevelID, 3);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Barrel_Break"), LEVEL_STATIC, 3);
 
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Death_Burst"), LEVEL_STATIC, 3);
 
@@ -1383,6 +1393,80 @@ HRESULT CLevel_Chapter_08::Ready_Layer_PortalLocker(const _wstring& _strLayerTag
 
 	}/* PortalLocker_LayerCount 1 */
 
+
+	return S_OK;
+}
+
+HRESULT CLevel_Chapter_08::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
+{
+	CDoor_Yellow::DOOR_YELLOW_DESC Desc = {};
+	Desc.tTransform2DDesc.vInitialPosition = _float3(265.f, 306.8f, 0.f);
+	Desc.iCurLevelID = m_eLevelID;
+	Desc.isHorizontal = true;
+	Desc.eSize = CDoor_2D::MED;
+	Desc.eInitialState = CDoor_2D::CLOSED;
+	Desc.vPressurePlatePos = _float3(243.5, -113.f, 0.f);
+	Desc.strSectionTag = L"Chapter8_SKSP_02";
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorYellow"),
+		m_eLevelID, _strLayerTag, &Desc)))
+		return E_FAIL;
+
+	Desc.tTransform2DDesc.vInitialPosition = _float3(260.f, -716.8f, 0.f);
+	Desc.iCurLevelID = m_eLevelID;
+	Desc.isHorizontal = true;
+	Desc.eSize = CDoor_2D::MED;
+	Desc.eInitialState = CDoor_2D::CLOSED;
+	Desc.vPressurePlatePos = _float3(-30.5f, -786.f, 0.f);
+	Desc.strSectionTag = L"Chapter8_SKSP_02";
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorYellow"),
+		m_eLevelID, _strLayerTag, &Desc)))
+		return E_FAIL;
+	
+	Desc.tTransform2DDesc.vInitialPosition = _float3(-5.f, 1086.f, 0.f);
+	Desc.iCurLevelID = m_eLevelID;
+	Desc.isHorizontal = true;
+	Desc.eSize = CDoor_2D::MED;
+	Desc.eInitialState = CDoor_2D::CLOSED;
+	Desc.vPressurePlatePos = _float3(-280.5f, 586.f, 0.f);
+	Desc.strSectionTag = L"Chapter8_SKSP_02";
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorYellow"),
+		m_eLevelID, _strLayerTag, &Desc)))
+		return E_FAIL;
+	
+
+	CCarriableObject::CARRIABLE_DESC CarriDesc = {};
+
+	CarriDesc.iCurLevelID = m_eLevelID;
+	CarriDesc.Build_2D_Transform({ -279.f,572.f });
+	CarriDesc.strInitialSectionTag = L"Chapter8_SKSP_02";
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_C08Box"),
+		m_eLevelID, _strLayerTag, &CarriDesc)))
+		return E_FAIL;
+
+	
+	CarriDesc = {};
+
+	CarriDesc.iCurLevelID = m_eLevelID;
+	CarriDesc.Build_2D_Transform({ -230.f, -1377.f });
+	CarriDesc.strInitialSectionTag = L"Chapter8_SKSP_02";
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_C08Box"),
+		m_eLevelID, _strLayerTag, &CarriDesc)))
+		return E_FAIL;
+
+		
+	
+	CarriDesc = {};
+
+	CarriDesc.iCurLevelID = m_eLevelID;
+	CarriDesc.Build_2D_Transform({ -1050.f, 180.f});
+	CarriDesc.strInitialSectionTag = L"Chapter8_SKSP_02";
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_C08Box"),
+		m_eLevelID, _strLayerTag, &CarriDesc)))
+		return E_FAIL;
+
+		
 
 	return S_OK;
 }

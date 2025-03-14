@@ -96,7 +96,14 @@ void CBeetle::Priority_Update(_float _fTimeDelta)
 
 void CBeetle::Update(_float _fTimeDelta)
 {
-
+    if(KEY_PRESSING(KEY::CTRL))
+    {
+        if (KEY_DOWN(KEY::NUMPAD4))
+        {
+            Set_AnimChangeable(true);
+            m_pFSM->Change_State((_uint)MONSTER_STATE::IDLE);
+        }
+    }
     __super::Update(_fTimeDelta); /* Part Object Update */
 }
 

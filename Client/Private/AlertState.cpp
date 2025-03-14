@@ -32,7 +32,10 @@ void CAlertState::State_Enter()
 	}
 
 	if (nullptr != m_pOwner && nullptr != m_pTarget)
-		m_pOwner->Change_Dir();
+	{
+		if (COORDINATE_2D == m_pOwner->Get_CurCoord())
+			m_pOwner->Change_Dir();
+	}
 }
 
 void CAlertState::State_Update(_float _fTimeDelta)

@@ -63,7 +63,7 @@ void CSneak_SentryTroop::Action_Scout()
 	_int iPrev = m_iDetectCount;
 	if (m_iDetectCount <= m_iMaxDetectCount * 0.25f)
 	{
-		m_iDetectCount = m_iMaxDetectCount * 0.5f;
+		m_iDetectCount = (_int)((_float)m_iMaxDetectCount * 0.5f);
 	}
 	else if (m_iDetectCount <= m_iMaxDetectCount * 0.5f)
 	{
@@ -71,7 +71,7 @@ void CSneak_SentryTroop::Action_Scout()
 	}
 	else
 	{
-		m_iDetectCount = m_iMaxDetectCount * 0.25f;
+		m_iDetectCount = (_int)((_float)m_iMaxDetectCount * 0.25f);
 	}
 	
 	if (nullptr != m_pSneakGameManager)
@@ -99,7 +99,7 @@ void CSneak_SentryTroop::GameStart()
 
 	Switch_Animation_ByState();
 
-	m_iDetectCount = m_iMaxDetectCount * 0.25f;
+	m_iDetectCount = (_int)((_float)m_iMaxDetectCount * 0.25f);
 
 	for (_int i = 0; i < m_iDetectCount; ++i)
 		m_pDetected[i] = -1;

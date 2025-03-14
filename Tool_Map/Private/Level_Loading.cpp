@@ -41,10 +41,10 @@ HRESULT CLevel_Loading::Initialize(LEVEL_ID _eNextLevelID, CImguiLogger* _pLogge
         break;
     }
 
-    if (isLoadingBackground)
-    if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BackGround"),
-        LEVEL_LOADING, L"Layer_Background", &Desc)))
-        return E_FAIL;
+    //if (isLoadingBackground)
+    //if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BackGround"),
+    //    LEVEL_LOADING, L"Layer_Background", &Desc)))
+    //    return E_FAIL;
 
 
 

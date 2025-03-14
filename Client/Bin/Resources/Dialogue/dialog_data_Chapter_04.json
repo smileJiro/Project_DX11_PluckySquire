@@ -10,6 +10,7 @@
           "BG": 0,
           "location": 1,
           "is2D": true,
+          "isLineEnter": true,
           "isPortrait": true,
           "animation": {
             "duration": 1000,
@@ -26,6 +27,7 @@
           "BG": 2,
           "location": 0,
           "is2D": true,
+          "isLineEnter": true,
           "isPortrait": true,
           "animation": {
             "duration": 1000,
@@ -93,6 +95,7 @@
           "BG": 0,
           "location": 1,
           "is2D": true,
+          "isLineEnter": true,
           "isPortrait": true,
           "animation": {
             "duration": 1000,
@@ -109,6 +112,7 @@
           "BG": 0,
           "location": 1,
           "is2D": true,
+          "isLineEnter": true,
           "isPortrait": true,
           "animation": {
             "duration": 1000,
@@ -125,6 +129,7 @@
           "BG": 0,
           "location": 1,
           "is2D": true,
+          "isLineEnter": true,
           "isPortrait": true,
           "animation": {
             "duration": 1000,
@@ -141,6 +146,7 @@
           "BG": 0,
           "location": 1,
           "is2D": true,
+          "isLineEnter": true,
           "isPortrait": true,
           "animation": {
             "duration": 1000,
@@ -157,6 +163,7 @@
           "BG": 2,
           "location": 0,
           "is2D": true,
+          "isLineEnter": true,
           "isPortrait": true,
           "animation": {
             "duration": 1000,
@@ -190,6 +197,7 @@
           "BG": 13,
           "location": 0,
           "is2D": true,
+          "isLineEnter": true,
           "isPortrait": true,
           "animation": {
             "duration": 1000,
@@ -246,6 +254,7 @@
           "BG": 13,
           "location": 5,
           "is2D": true,
+          "isLineEnter": true,
           "isPortrait": true,
           "animation": {
             "duration": 1000,
@@ -333,6 +342,7 @@
           "BG": 13,
           "location": 1,
           "is2D": true,
+          "isLineEnter": true,
           "isPortrait": true,
           "animation": {
             "duration": 1000,
@@ -428,6 +438,7 @@
           "BG": 2,
           "location": 1,
           "is2D": true,
+          "isLineEnter": true,
           "isPortrait": true,
           "animation": {
             "duration": 1000,

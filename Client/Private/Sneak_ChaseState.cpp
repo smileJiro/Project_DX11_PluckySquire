@@ -33,6 +33,7 @@ void CSneak_ChaseState::State_Enter()
 	m_isRenew = true;
 	m_isOnWay = false;
 	m_fAccTime = 0.f;
+	cout << "Chase" << endl;
 }
 
 void CSneak_ChaseState::State_Update(_float _fTimeDelta)

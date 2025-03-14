@@ -10,7 +10,6 @@ CPlayerState_StartPortal::CPlayerState_StartPortal(CPlayer* _pOwner)
 
 void CPlayerState_StartPortal::Update(_float _fTimeDelta)
 {
-	PLAYER_INPUT_RESULT tKeyResult = m_pOwner->Player_KeyInput();
 	COORDINATE eCoord = m_pOwner->Get_CurCoord();
 	//Interact 키가 안눌리면 취소해야 함.
 	INTERACT_RESULT eResult =  m_pOwner->Try_Interact(_fTimeDelta);
@@ -72,10 +71,11 @@ void CPlayerState_StartPortal::Enter()
 		{
 			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_CYBERJOTLITE_BOOKEXIT_DOWN);
 		}
+	
 		else
 		{
 			F_DIRECTION eFDir = To_FDirection(vDir);
-			E_DIRECTION eEDIr = FDir_To_EDir(eFDir);
+			E_DIRECTION eEDIr = To_EDirection(eFDir);
 			m_pOwner->Set_2DDirection(eEDIr);
 			switch (eFDir)
 			{

@@ -99,14 +99,24 @@ void CDefenderMonster::On_Explode()
 {
 }
 
+void CDefenderMonster::On_Spawned()
+{
+	m_bSpawned = true;
+	m_PartObjects[PART_BODY]->Set_Active(true);
+	m_pBodyCollider->Set_Active(true);
+}
+
 void CDefenderMonster::On_Teleport()
 {
 	m_bSpawned = false;
+	m_pBodyCollider->Set_Active(false);
 	m_PartObjects[PART_BODY]->Set_Active(false);
 	if (m_pTeleportFX)
 		Safe_Release(m_pTeleportFX);
+	_matrix mat = Get_FinalWorldMatrix();
+	mat.r[3] = Get_ScrolledPosition(mat.r[3]);
 	CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("DefTeleport"), Get_Include_Section_Name()
-		, Get_FinalWorldMatrix(), 0.f
+		, mat, 0.f
 		, m_iFXTeleportInIdx, false, 0.f, SECTION_2D_PLAYMAP_EFFECT, (CGameObject**)&m_pTeleportFX);
 	Safe_AddRef(m_pTeleportFX);
 	static_cast<C2DModel*>(m_pTeleportFX->Get_Model(COORDINATE_2D))->Get_Animation(m_iFXTeleportInIdx)->Reset();
@@ -114,8 +124,10 @@ void CDefenderMonster::On_Teleport()
 
 void CDefenderMonster::On_LifeTimeOut()
 {
+	_matrix mat = Get_FinalWorldMatrix();
+	mat.r[3] = Get_ScrolledPosition(mat.r[3]);
 	CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("DefTeleport"), Get_Include_Section_Name()
-		, Get_FinalWorldMatrix(), 0.f
+		, mat, 0.f
 		, m_iFXTeleportOutIdx, false, 0.f, SECTION_2D_PLAYMAP_EFFECT);
 }
 

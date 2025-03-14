@@ -14,7 +14,7 @@ void CPlayerState_JumpAttack::Update(_float _fTimeDelta)
 {
 	COORDINATE eCoord = m_pOwner->Get_CurCoord();
 	_float fUpForce = m_pOwner->Get_UpForce();
-	F_DIRECTION eDir = EDir_To_FDir(m_pOwner->Get_2DDirection());
+	F_DIRECTION eDir = To_FDirection(m_pOwner->Get_2DDirection());
 	PLAYER_INPUT_RESULT tKeyResult = m_pOwner->Player_KeyInput();
 	_bool bGround = m_pOwner->Is_OnGround();
 	//떨어지기 시작
@@ -150,7 +150,7 @@ void CPlayerState_JumpAttack::Update(_float _fTimeDelta)
 				m_pOwner->Move(XMVector3Normalize(tKeyResult.vMoveDir) * m_fAirRunSpeed2D, _fTimeDelta);
 
 				E_DIRECTION eNewDir = To_EDirection(tKeyResult.vMoveDir);
-				F_DIRECTION eFDir = EDir_To_FDir(eNewDir);
+				F_DIRECTION eFDir = To_FDirection(eNewDir);
 				if (m_eOldFDir != eFDir)
 				{
 					m_pOwner->Set_2DDirection(To_EDirection(tKeyResult.vDir));
@@ -167,7 +167,7 @@ void CPlayerState_JumpAttack::Enter()
 	if (COORDINATE_2D == eCoord)
 	{
 		m_fAirRunSpeed2D = m_pOwner->Get_AirRunSpeed2D();
-		F_DIRECTION eDir = EDir_To_FDir(m_pOwner->Get_2DDirection());
+		F_DIRECTION eDir = To_FDirection(m_pOwner->Get_2DDirection());
 		switch (eDir)
 		{
 		case Client::F_DIRECTION::LEFT:
