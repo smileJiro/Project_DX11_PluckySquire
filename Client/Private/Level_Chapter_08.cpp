@@ -39,6 +39,7 @@
 #include "MudPit.h"
 #include "Postit_Page.h"
 #include "Door_Yellow.h"
+#include "C08_Box.h"
 
 #include "RayShape.h"
 #include "CarriableObject.h"
@@ -1437,10 +1438,21 @@ HRESULT CLevel_Chapter_08::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 	Desc.eInitialState = CDoor_2D::CLOSED;
 	Desc.vPressurePlatePos = _float3(-280.5f, 586.f, 0.f);
 	Desc.strSectionTag = L"Chapter8_SKSP_02";
-
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorYellow"),
 		m_eLevelID, _strLayerTag, &Desc)))
 		return E_FAIL;
+	
+
+	CCarriableObject::CARRIABLE_DESC CarriDesc = {};
+
+	CarriDesc.iCurLevelID = m_eLevelID;
+	CarriDesc.Build_2D_Transform({ -5.f,800.f });
+	CarriDesc.strInitialSectionTag = L"Chapter8_SKSP_02";
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_C08Box"),
+		m_eLevelID, _strLayerTag, &CarriDesc)))
+		return E_FAIL;
+
+
 
 	return S_OK;
 }
