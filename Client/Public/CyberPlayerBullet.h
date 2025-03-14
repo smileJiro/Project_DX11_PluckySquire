@@ -32,7 +32,7 @@ private:
 	_float m_fLifeTime = 10.f;
 	_float m_fLifeTimeAcc = 0.f;
 	_int m_iDamg = 1;
-	_float m_fSpeed = 30.f;
+	_float m_fSpeed = 60.f;
 
 	ID3D11Buffer* m_pFresnelBuffer = { nullptr };
 	ID3D11Buffer* m_pColorBuffer = { nullptr };

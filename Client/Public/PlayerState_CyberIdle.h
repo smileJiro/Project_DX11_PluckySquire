@@ -31,7 +31,7 @@ public:
 private:
     CActor_Dynamic* m_pDynamicActor = nullptr;
     _bool m_bRifleTriggered = false;
-    _float m_f3DCyberFlySpeed = 5.f;
+    _float m_f3DCyberFlySpeed = 7.f;
 
 	VELOCITY_STATE m_eVelocityState = VELOCITY_LAST;
 

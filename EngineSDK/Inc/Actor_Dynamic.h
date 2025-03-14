@@ -38,6 +38,8 @@ public:
 	virtual void				Set_LinearDamping(_float _fValue);
 	virtual void				Set_AngularDamping(_float _fValue);
 	void						Set_Gravity(_bool _isGravity);
+	void						Freeze_Rotation(_bool _bFreezeX, _bool _bFreezeY, _bool _bFreezeZ);
+	void						Freeze_Position(_bool _bFreezeX, _bool _bFreezeY, _bool _bFreezeZ);
 
 	virtual void				Add_Force(const _float3& _vForce);// ÀÏ¹ÝÀûÀÎ Èû
 	virtual void				Add_Impulse(const _float3& _vForce); // °­ÇÑ Èû

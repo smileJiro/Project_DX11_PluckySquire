@@ -46,7 +46,7 @@ public :
 	virtual void					Late_Update(_float _fTimeDelta) override;
 	virtual HRESULT					Render() override;
 	virtual HRESULT					Render_WorldPosMap(const _wstring& _strCopyRTTag, const _wstring& _strSectionTag) override;
-
+	_wstring						Get_RenderSectionTag() { return m_strRenderSectionTag; }
 
 private :
 	void					Change_RenderState(RT_RENDERSTATE _eRenderState, _bool _isMapped);

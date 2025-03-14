@@ -205,6 +205,7 @@ void CActor::Set_ShapeMyFilterGroup(_uint _iShapeIdx, _uint _iFIlterGroup)
 
 
 
+
 HRESULT CActor::Ready_Actor(ACTOR_DESC* _pActorDesc)
 {
 	PxPhysics* pPhysic = m_pGameInstance->Get_Physics();
