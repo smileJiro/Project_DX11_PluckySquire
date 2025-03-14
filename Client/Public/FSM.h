@@ -23,6 +23,7 @@ public:
 		CMonster* pOwner;
 		SNEAKWAYPOINTINDEX eWayIndex = SNEAKWAYPOINTINDEX::LAST;
 		SIDESCROLL_PATROLBOUND eSideScroll_Bound = SIDESCROLL_PATROLBOUND::LAST;
+		MONSTER_STATE eMoveNextState = { MONSTER_STATE::LAST };
 		_int iCurLevel;
 	}FSMDESC;
 
@@ -37,6 +38,7 @@ public:
 	void Set_Sneak_StopTime(_float _fStopTime);
 	void	Set_Sneak_InvestigatePos(_fvector _vPosition);
 	void	Set_Sneak_AwarePos(_fvector _vPosition);
+	void	Set_Sneak_Patrol_Index(_uint _iIndex);
 	void Set_SideScroll_PatrolBound();
 
 	_bool Has_State(MONSTER_STATE _eState)
@@ -62,6 +64,7 @@ public:
 	HRESULT Add_Chase_NoneAttackState();
 	HRESULT Add_Neutral_State(_bool _isJump=false);
 	HRESULT Add_FlyUnit_State();
+	HRESULT Add_C6_State();
 
 protected:
 	CState* m_pCurState = { nullptr };
@@ -84,6 +87,7 @@ private:
 	_float	m_fCoolTime = {};
 	SNEAKWAYPOINTINDEX m_eWayIndex;
 	SIDESCROLL_PATROLBOUND m_eSideScroll_Bound;
+	MONSTER_STATE m_eMoveNextState;
 
 public:
 	HRESULT CleanUp();

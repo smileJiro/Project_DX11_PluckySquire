@@ -370,7 +370,7 @@ void CGameEventExecuter_C4::Chapter4_3D_Out_01(_float _fTimeDelta)
 			//	EASE_IN_OUT);
 		}
 
-		Next_Step_Over(0.5f);
+		Next_Step_Over(1.f);
 	}
 	// 여기 바이올렛 추가되면 애니메이션 추가.
 	else if (Step_Check(STEP_3))
@@ -405,7 +405,7 @@ void CGameEventExecuter_C4::Chapter4_3D_Out_01(_float _fTimeDelta)
 			tDraggableDesc.eStartCoord = COORDINATE_3D;
 			tDraggableDesc.vBoxHalfExtents = { 1.02f,1.02f,1.02f };
 			tDraggableDesc.vBoxOffset = { 0.f,tDraggableDesc.vBoxHalfExtents.y,0.f };
-			tDraggableDesc.tTransform3DDesc.vInitialPosition = { -47.f, 5.82f, 15.f };
+			tDraggableDesc.tTransform3DDesc.vInitialPosition = { 40.f, 5.82f, 15.f };
 
 			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DraggableObject"),
 				m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Draggable"), &tDraggableDesc)))
@@ -469,17 +469,6 @@ void CGameEventExecuter_C4::Chapter4_3D_Out_01(_float _fTimeDelta)
 	}
 	else if (Step_Check(STEP_4))
 	{
-		// 대화 2 재생
-		if (Is_Start())
-		{
-			CDialog_Manager::GetInstance()->Set_DialogId(L"Chapter4_3D_Out_01_Dialog_02");
-			Event_ChangeMapObject(LEVEL_CHAPTER_4, L"Chapter_04_Play_Desk.mchc", L"Layer_MapObject");
-		}
-		else
-			Next_Step(!CDialog_Manager::GetInstance()->Get_DisPlayDialogue());
-	}
-	else if (Step_Check(STEP_5))
-	{
 		if (Is_Start())
 		{
 			// 카메라 원복
@@ -489,6 +478,18 @@ void CGameEventExecuter_C4::Chapter4_3D_Out_01(_float _fTimeDelta)
 			CCamera_Manager::GetInstance()->Start_ResetArm_To_SettingPoint(CCamera_Manager::TARGET_2D, 1.f);
 		}
 		Next_Step_Over(1.f);
+		}
+	else if (Step_Check(STEP_5))
+	{
+		// 대화 2 재생
+		if (Is_Start())
+		{	
+		
+			CDialog_Manager::GetInstance()->Set_DialogId(L"Chapter4_3D_Out_01_Dialog_02");
+			Event_ChangeMapObject(LEVEL_CHAPTER_4, L"Chapter_04_Play_Desk.mchc", L"Layer_MapObject");
+		}
+		else
+			Next_Step(!CDialog_Manager::GetInstance()->Get_DisPlayDialogue());
 	}
 	else
 	{

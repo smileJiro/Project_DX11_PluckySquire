@@ -20,8 +20,20 @@ public :
 		ACTIVE_TYPE_ACTIONANIM,
 		ACTIVE_TYPE_SKSP_HUMGRUMP,
 		ACTIVE_TYPE_MODEL_CLOSE_DELETE,
+		ACTIVE_TYPE_SPIKE,
 		ACTIVE_TYPE_LAST
 	};
+
+private :
+	enum MAPOBJ_2D_ACTIONOBJ_SPKIE_PATTERN
+	{
+		SPKIE_IDLE_DOWN,
+		SPKIE_DOWN,
+		SPKIE_UP,
+		SPKIE_IDLE_UP,
+		SPKIE_PATTERN_END
+	};
+
 private:
 	C2DMapActionObject(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	C2DMapActionObject(const C2DMapActionObject& _Prototype);
@@ -46,6 +58,12 @@ public:
 	virtual void					On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject) override;
 	virtual void					On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject) override;
 
+
+
+private :
+	void							Spike_Pattern_UpdateProcess(_float _fTimeDelta);
+	void							Spike_Pattern_EndProcess();
+
 private:
 	MAPOBJ_2D_ACTION_TYPE			m_eType;
 
@@ -53,6 +71,8 @@ private:
 	_bool							m_isAction = false;
 	_float							m_fAlpha = 1.f;
 	_float							m_fFadeOutSecond = 0.3f;
+	_float							m_fAccTime = 0.f;
+	_uint							m_eCurPattern;
 public:
 	static C2DMapActionObject*	Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject*		Clone(void* _pArg) override;

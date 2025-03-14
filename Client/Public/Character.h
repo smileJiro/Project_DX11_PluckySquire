@@ -136,13 +136,16 @@ public:
 	E_DIRECTION Get_2DDirection() { return m_e2DDirection_E; }
 	//SET
 	void Set_ScrollingMode(_bool _bScrollingMode);
-	virtual void Set_2DDirection(E_DIRECTION _eEDir);
-	virtual void Set_2DDirection(F_DIRECTION _eEDir);
+	virtual void Set_2DDirection(E_DIRECTION _eEDir, _bool _isOnChange = true);
+	virtual void Set_2DDirection(F_DIRECTION _eFDir, _bool _isOnChange = true);
 
 	
 protected:
 	_float Measure_FloorDistance();
 	_vector StepAssist(_fvector _vVelocity, _float _fTimeDelta);
+
+public:
+	void Go_Straight_F_Dir(_float _fTimeDelta);
 
 //AUTO MOVE
 public:

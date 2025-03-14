@@ -128,6 +128,7 @@
 #include "Rubboink_Tiny.h"
 #include "MudPit.h"
 #include "Zipline.h"
+#include "DynamicCastleGate.h"
 #include "DefenderPlayer.h"
 #include "DefenderPlayerProjectile.h"
 #include "DefenderSpawner.h"
@@ -145,6 +146,7 @@
 #include "Pip_Player.h"
 #include "Sneak_Troop.h"
 #include "Sneak_SentryTroop.h"
+#include "C08_Box.h"
 
 /* For. Monster */
 #include "Beetle.h"
@@ -373,6 +375,9 @@ HRESULT CLoader::Loading_Level_Static()
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_SoldierAttackAnimEvent"),
 		CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DAnim/Static/Monster/humgrump_troop_Rig_GT/SoldierAttack.animevt"))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_SoldierAttack2DAnimEvent"),
+		CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DAnim/Static/Monster/Spear_Soldier/Spear_Soldier2d_Attack.animevt"))))
 		return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_FSM"),
@@ -655,6 +660,7 @@ HRESULT CLoader::Loading_Level_Static()
 		CPortalLocker::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 	
+
 	/* For. Prototype_GameObject_Effect2D */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Effect2D"),
 		CEffect2D::Create(m_pDevice, m_pContext))))
@@ -1086,11 +1092,12 @@ HRESULT CLoader::Loading_Level_Chapter_2(LEVEL_ID _eLoadLevelID)
 
 		/* For. Prototype_Component_Texture_BackGround_Chapter2_Main */
 		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_Component_Texture_BackGround_Chapter2_Main"),
-			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/BackGround/Chapter2_Main.dds"), 1, true))));
-
+			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/BackGround/Chapter2_Main.dds"), 1, true))))
+		return E_FAIL;
 		/* For. Prototype_Component_Texture_BackGround_Chapter2_RedHouse */
 		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_Component_Texture_BackGround_Chapter2_RedHouse"),
-			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/BackGround/Chapter2_RedHouse.dds"), 1, true))));
+			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/BackGround/Chapter2_RedHouse.dds"), 1, true))))
+		return E_FAIL;
 
 	#pragma endregion
 
@@ -1461,7 +1468,9 @@ HRESULT CLoader::Loading_Level_Chapter_4(LEVEL_ID _eLoadLevelID)
 		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Zipline"),
 			CZipline::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
-
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_DynamicCastleGate"),
+			CDynamicCastleGate::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
 		if (FAILED(m_pGameInstance->Load_Json_InLevel(TEXT("../Bin/DataFiles/Monsters/Chapter4_Monsters_2D.json"), TEXT("Chapter4_Monsters_2D"), _eLoadLevelID)))
 			return E_FAIL;
 		
@@ -1842,6 +1851,10 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Boss_CyberPlayerBullet"),
 		CCyberPlayerBullet::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_C08Box"),
+		CC08_Box::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 #pragma endregion
 

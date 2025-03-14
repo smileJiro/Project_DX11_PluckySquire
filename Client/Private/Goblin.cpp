@@ -131,7 +131,7 @@ HRESULT CGoblin::Initialize(void* _pArg)
         pModelObject->Set_Animation(Animation::IDLE);
     else if (COORDINATE_2D == Get_CurCoord())
     {
-        Set_2D_Direction(F_DIRECTION::DOWN);
+        Set_2DDirection(F_DIRECTION::DOWN);
         pModelObject->Set_Animation(Animation2D::IDLE_DOWN);
     }
 
@@ -263,61 +263,61 @@ void CGoblin::Change_Animation()
             switch (MONSTER_STATE(m_iState))
             {
             case Client::MONSTER_STATE::IDLE:
-                if (F_DIRECTION::UP == m_e2DDirection)
+                if (E_DIRECTION::UP == Get_2DDirection())
                     eAnim = IDLE_UP;
-                else if (F_DIRECTION::DOWN == m_e2DDirection)
+                else if (E_DIRECTION::DOWN == Get_2DDirection())
                     eAnim = IDLE_DOWN;
-                else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
+                else if (E_DIRECTION::RIGHT == Get_2DDirection() || E_DIRECTION::LEFT == Get_2DDirection())
                     eAnim = IDLE_RIGHT;
                 break;
             case Client::MONSTER_STATE::PATROL:
-                if (F_DIRECTION::UP == m_e2DDirection)
+                if (E_DIRECTION::UP == Get_2DDirection())
                     eAnim = PATROL_UP;
-                else if (F_DIRECTION::DOWN == m_e2DDirection)
+                else if (E_DIRECTION::DOWN == Get_2DDirection())
                     eAnim = PATROL_DOWN;
-                else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
+                else if (E_DIRECTION::RIGHT == Get_2DDirection() || E_DIRECTION::LEFT == Get_2DDirection())
                     eAnim = PATROL_RIGHT;
                 break;
             case Client::MONSTER_STATE::ALERT:
-                if (F_DIRECTION::UP == m_e2DDirection)
+                if (E_DIRECTION::UP == Get_2DDirection())
                     eAnim = ALERT_UP;
-                else if (F_DIRECTION::DOWN == m_e2DDirection)
+                else if (E_DIRECTION::DOWN == Get_2DDirection())
                     eAnim = ALERT_DOWN;
-                else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
+                else if (E_DIRECTION::RIGHT == Get_2DDirection() || E_DIRECTION::LEFT == Get_2DDirection())
                     eAnim = ALERT_RIGHT;
 
                 m_pGameInstance->Start_SFX(_wstring(L"A_sfx_goblin_alert_") + to_wstring(rand() % 8), 30.f);
                 break;
             case Client::MONSTER_STATE::STANDBY:
-                if (F_DIRECTION::UP == m_e2DDirection)
+                if (E_DIRECTION::UP == Get_2DDirection())
                     eAnim = IDLE_UP;
-                else if (F_DIRECTION::DOWN == m_e2DDirection)
+                else if (E_DIRECTION::DOWN == Get_2DDirection())
                     eAnim = IDLE_DOWN;
-                else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
+                else if (E_DIRECTION::RIGHT == Get_2DDirection() || E_DIRECTION::LEFT == Get_2DDirection())
                     eAnim = IDLE_RIGHT;
                 break;
             case Client::MONSTER_STATE::CHASE:
-                if (F_DIRECTION::UP == m_e2DDirection)
+                if (E_DIRECTION::UP == Get_2DDirection())
                     eAnim = CHASE_UP;
-                else if (F_DIRECTION::DOWN == m_e2DDirection)
+                else if (E_DIRECTION::DOWN == Get_2DDirection())
                     eAnim = CHASE_DOWN;
-                else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
+                else if (E_DIRECTION::RIGHT == Get_2DDirection() || E_DIRECTION::LEFT == Get_2DDirection())
                     eAnim = CHASE_RIGHT;
                 break;
             case Client::MONSTER_STATE::HIT:
-                if (F_DIRECTION::UP == m_e2DDirection)
+                if (E_DIRECTION::UP == Get_2DDirection())
                     eAnim = HIT_UP;
-                else if (F_DIRECTION::DOWN == m_e2DDirection)
+                else if (E_DIRECTION::DOWN == Get_2DDirection())
                     eAnim = HIT_DOWN;
-                else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
+                else if (E_DIRECTION::RIGHT == Get_2DDirection() || E_DIRECTION::LEFT == Get_2DDirection())
                     eAnim = HIT_RIGHT;
                 break;
             case Client::MONSTER_STATE::DEAD:
-                if (F_DIRECTION::UP == m_e2DDirection)
+                if (E_DIRECTION::UP == Get_2DDirection())
                     eAnim = DEATH_UP;
-                else if (F_DIRECTION::DOWN == m_e2DDirection)
+                else if (E_DIRECTION::DOWN == Get_2DDirection())
                     eAnim = DEATH_DOWN;
-                else if (F_DIRECTION::RIGHT == m_e2DDirection || F_DIRECTION::LEFT == m_e2DDirection)
+                else if (E_DIRECTION::RIGHT == Get_2DDirection() || E_DIRECTION::LEFT == Get_2DDirection())
                     eAnim = DEATH_RIGHT;
                 m_pGameInstance->Start_SFX(_wstring(L"A_sfx_goblin_die_") + to_wstring(rand() % 5), 50.f);                
                 break;

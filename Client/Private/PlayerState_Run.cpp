@@ -40,7 +40,7 @@ void CPlayerState_Run::Update(_float _fTimeDelta)
 			if (COORDINATE_2D == eCoord)
 			{
 				E_DIRECTION eNewDir = To_EDirection(tKeyResult.vMoveDir);
-				F_DIRECTION eFDir = EDir_To_FDir(eNewDir);
+				F_DIRECTION eFDir = To_FDirection(eNewDir);
 				m_pOwner->Set_2DDirection(To_EDirection(tKeyResult.vDir));
 
 				if (m_eOldFDir != eFDir)

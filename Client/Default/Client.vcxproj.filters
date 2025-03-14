@@ -697,6 +697,9 @@
     <Filter Include="02.GameObjects\BackGround">
       <UniqueIdentifier>{ad43be9a-1a9c-4caf-ab24-79dd37331218}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03.Components\FSM\State\Move">
+      <UniqueIdentifier>{0956df86-2c63-44a2-bc2a-81c9181fa53a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -1776,6 +1779,25 @@
     <ClInclude Include="..\public\BackGroundObject.h">
       <Filter>02.GameObjects\BackGround</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\MonsterJumpState.h">
+      <Filter>03.Components\FSM\State\Move</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterMoveState.h">
+      <Filter>03.Components\FSM\State\Move</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\C6_IdleState.h">
+      <Filter>03.Components\FSM\State\Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\C08_Box.h">
+      <Filter>02.GameObjects\Interact\Carriable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Patrol_WayState.h">
+      <Filter>03.Components\FSM\State\Patrol</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_CannonPortal.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\DynamicCastleGate.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -2842,6 +2864,25 @@
     <ClCompile Include="..\private\BackGroundObject.cpp">
       <Filter>02.GameObjects\BackGround</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\MonsterMoveState.cpp">
+      <Filter>03.Components\FSM\State\Move</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterJumpState.cpp">
+      <Filter>03.Components\FSM\State\Move</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\C6_IdleState.cpp">
+      <Filter>03.Components\FSM\State\Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\C08_Box.cpp">
+      <Filter>02.GameObjects\Interact\Carriable</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Patrol_WayState.cpp">
+      <Filter>03.Components\FSM\State\Patrol</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_CannonPortal.cpp">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\DynamicCastleGate.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

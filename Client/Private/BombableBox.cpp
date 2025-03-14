@@ -129,8 +129,10 @@ HRESULT CBombableBox::Render()
 {
 #ifdef _DEBUG
     if (m_p2DColliderComs[0]->Is_Active())
+        m_p2DColliderComs[0]->Render();
 #endif // _DEBUG
     return __super::Render();
+   
 }
 
 void CBombableBox::Set_State(STATE _eState)
