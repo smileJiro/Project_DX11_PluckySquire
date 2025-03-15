@@ -721,6 +721,9 @@
     <Filter Include="02.GameObjects\Friend\Controller">
       <UniqueIdentifier>{9a0aa463-c77f-4b7e-8ca3-002ef0cc5dd6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Friend\Pip">
+      <UniqueIdentifier>{c71ac69c-4cf0-4807-9497-38d1a0f591e7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -1854,6 +1857,12 @@
     <ClInclude Include="..\Public\WorldMapNPC.h" />
     <ClInclude Include="..\Public\BigPressurePlate.h" />
     <ClInclude Include="..\Public\TiltSwapCrate.h" />
+    <ClInclude Include="..\Public\PlayerState_Mojam.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Friend_Pip.h">
+      <Filter>02.GameObjects\Friend\Pip</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -2974,6 +2983,12 @@
     <ClCompile Include="..\Private\WorldMapNPC.cpp" />
     <ClCompile Include="..\Private\BigPressurePlate.cpp" />
     <ClCompile Include="..\Private\TiltSwapCrate.cpp" />
+    <ClCompile Include="..\Private\PlayerState_Mojam.cpp">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Friend_Pip.cpp">
+      <Filter>02.GameObjects\Friend\Pip</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

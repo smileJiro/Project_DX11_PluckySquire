@@ -23,23 +23,25 @@ HRESULT CTestShadingModel::Initialize(void* _pArg)
     pDesc->iModelPrototypeLevelID_3D = LEVEL_TOOL;
     pDesc->strShaderPrototypeTag_3D = L"Prototype_Component_Shader_VtxMesh";
     //pDesc.iShaderPass_3D = ;
-    pDesc->iPriorityID_3D = PR3D_EFFECT;
+    pDesc->iPriorityID_3D = PR3D_PARTICLE;
     pDesc->iRenderGroupID_3D = RG_3D;
-    pDesc->tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 5.f);
+    pDesc->tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
     //pDesc.tTransform3DDesc.fSpeedPerSec = 1.f;
 
     if (FAILED(__super::Initialize(_pArg)))
         return E_FAIL;
 
-    m_tFresnel.vColor = _float4(0.107f, 0.909f, 1.f, 1.f);
-    m_tFresnel.fExp = 1.5f;
-    m_tFresnel.fBaseReflect = 0.0f;
+    m_tFresnel.vColor = _float4(1.f, 1.f, 1.f, 1.f);
+    m_tFresnel.fExp = 1.99f;
+    m_tFresnel.fBaseReflect = 0.19f;
     m_tFresnel.fStrength = 1.0f;
 
     m_pGameInstance->CreateConstBuffer(m_tFresnel, D3D11_USAGE_DYNAMIC, &m_pFresnelsBuffer);
 
-    m_tColor.vDiffuseColor = _float4(1.f, 1.f, 1.f, 1.f);
-    m_tColor.vBloomColor = _float4(1.f, 1.f, 1.f, 1.f);
+    m_tColor.vDiffuseColor = _float4(0.25, 0.4f, 0.68f, 1.4f);
+    m_tColor.vBloomColor = _float4(0.12f, 0.22f, 0.39f, 0.42f);
+    m_tColor.vSubColor = _float4(0.8f, 0.8f, 0.8f, 0.05f);
+    m_tColor.vInnerColor = _float4(0.7f, 0.7f, 0.7f, 1.f);
 
     m_pGameInstance->CreateConstBuffer(m_tColor, D3D11_USAGE_DYNAMIC, &m_pColorBuffer);
 
@@ -101,6 +103,10 @@ void CTestShadingModel::Update(_float _fTimeDelta)
         {
             m_pGameInstance->UpdateConstBuffer(m_tColor, m_pColorBuffer);
         }
+        if (ImGui::DragFloat4("Inner Color", (_float*)&m_tColor.vInnerColor, 0.01f))
+        {
+            m_pGameInstance->UpdateConstBuffer(m_tColor, m_pColorBuffer);
+        }
 
 
         ImGui::TreePop();
@@ -115,6 +121,8 @@ void CTestShadingModel::Update(_float _fTimeDelta)
     }
 
     ImGui::End();
+
+    m_fTime += _fTimeDelta;
 
     __super::Update(_fTimeDelta);
 }
@@ -136,8 +144,15 @@ HRESULT CTestShadingModel::Render()
         m_pMainTextureCom->Bind_ShaderResource(m_pShaderComs[COORDINATE_3D], "g_DiffuseTexture");
     if (nullptr != m_pNoiseTextureCom)
         m_pNoiseTextureCom->Bind_ShaderResource(m_pShaderComs[COORDINATE_3D], "g_NoiseTexture");
+        
+    _float4 vLook;
+    XMStoreFloat4(&vLook, m_pGameInstance->Get_TransformInverseMatrix(CPipeLine::D3DTS_VIEW).r[2]);
+    if (FAILED(m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_vLook", &vLook, sizeof(_float4))))
+        return E_FAIL;
 
-
+    m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_fTime", &m_fTime, sizeof(_float));
+    m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_vNoiseScaling", &m_vNoiseScaling, sizeof(_float2));
+    
     m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_vNoiseScaling", &m_vNoiseScaling, sizeof(_float2));
     m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_vDiffuseScaling", &m_vDiffuseScaling, sizeof(_float2));
 

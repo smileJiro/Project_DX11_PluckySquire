@@ -444,16 +444,31 @@ void CLevel_Chapter_08::Update(_float _fTimeDelta)
 	{
 		_float3 vPos = {-90.f, 65.2f, 18.3f};
 
-		CBeetle::MONSTER_DESC Beetle_Desc;
-		Beetle_Desc.iCurLevelID = m_eLevelID;
-		Beetle_Desc.eStartCoord = COORDINATE_3D;
-		Beetle_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-		Beetle_Desc.tTransform3DDesc.vInitialPosition = vPos;
-		Beetle_Desc.isSneakMode = true;
-		Beetle_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER8_BEETLE1;
+		//CBeetle::MONSTER_DESC Beetle_Desc;
+		//Beetle_Desc.iCurLevelID = m_eLevelID;
+		//Beetle_Desc.eStartCoord = COORDINATE_3D;
+		//Beetle_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+		//Beetle_Desc.tTransform3DDesc.vInitialPosition = vPos;
+		//Beetle_Desc.isSneakMode = true;
+		//Beetle_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER8_BEETLE1;
 
-		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, TEXT("Layer_Sneak_Beetle"), &Beetle_Desc)))
-			return;
+		//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, TEXT("Layer_Sneak_Beetle"), &Beetle_Desc)))
+		//	return;
+
+		//CBeetle::MONSTER_DESC Beetle_Desc;
+		//Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(-6.5f, 18.5f, 44.5f);
+		//Beetle_Desc.isSneakMode = false;
+		//Beetle_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER8_BEETLE_FINAL_1;
+
+		//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, TEXT("Layer_Sneak_Beetle"), &Beetle_Desc)))
+		//	return;
+
+		//Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(-13.5f, 18.3f, 46.5f);
+		//Beetle_Desc.isSneakMode = false;
+		//Beetle_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER8_BEETLE_FINAL_2;
+
+		//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, TEXT("Layer_Sneak_Beetle"), &Beetle_Desc)))
+		//	return;
 	}
 
 }
@@ -545,7 +560,7 @@ HRESULT CLevel_Chapter_08::Ready_Layer_MainTable(const _wstring& _strLayerTag)
 	
 	Desc = {};
 	Desc.isOverride = true;
-	Desc.tTransform3DDesc.vInitialPosition = _float3(0.0f, 17.25f, 47.f);
+	Desc.tTransform3DDesc.vInitialPosition = _float3(0.0f, 17.5f, 47.f);
 	Desc.vHalfExtents = { 60.f, 1.f, 12.f };
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_MainTable"),
@@ -1511,6 +1526,18 @@ HRESULT CLevel_Chapter_08::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 		return E_FAIL;
 
 	LaserDesc.iCurLevelID = m_eLevelID;
+	LaserDesc.fStartPos = { 4.29f,-29.38f };
+	LaserDesc.fEndPos = { 4.29f, -373.f };
+	LaserDesc.fMoveSpeed = 200.f;
+	LaserDesc.eDir = F_DIRECTION::LEFT;
+	LaserDesc.isPressurePlate = true;
+	LaserDesc.fPressurePlatePos = _float2(-120.29f, -286.f);
+	LaserDesc.strInitSectionTag = L"Chapter8_SKSP_03";
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Laser_Container"),
+		m_eLevelID, _strLayerTag, &LaserDesc)))
+		return E_FAIL;
+	
+	LaserDesc.iCurLevelID = m_eLevelID;
 	LaserDesc.fStartPos = { -410.19f,1027.82f };
 	LaserDesc.fEndPos = { -410.19f,574.48f };
 	LaserDesc.fMoveSpeed = 200.f;
@@ -1533,7 +1560,23 @@ HRESULT CLevel_Chapter_08::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 
 	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Beetle_Corpse"), Pooling_Desc, Beetle_CorpseDesc);
 
+	CDraggableObject::DRAGGABLE_DESC tDraggableDesc = {};
+	tDraggableDesc.iModelPrototypeLevelID_2D = LEVEL_STATIC;
+	tDraggableDesc.isCoordChangeEnable = false;
+	tDraggableDesc.iCurLevelID = m_eLevelID;
+	tDraggableDesc.strModelPrototypeTag_2D = TEXT("SKSP_push_block_Sprite");
+	tDraggableDesc.eStartCoord = COORDINATE_2D;
+	tDraggableDesc.strInitSectionTag = L"Chapter8_SKSP_03";
+	tDraggableDesc.Build_2D_Transform({ -480.f,62.95f });
+	tDraggableDesc.vBoxHalfExtents = { 23.f,25.f,1.f };
+	tDraggableDesc.vBoxOffset = { 0.f,17.f,0.f };
+	//tDraggableDesc.tTransform3DDesc.vInitialPosition = { -47.f, 5.82f, 15.f };
 
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DraggableObject"),
+		m_eLevelID, _strLayerTag, &tDraggableDesc)))
+		return E_FAIL;
+
+	return S_OK;
 
 
 	//Chapter8_P2122 Á¾ÇÕ ±â¹Í ¸Ê

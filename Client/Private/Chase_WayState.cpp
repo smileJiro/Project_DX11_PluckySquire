@@ -91,7 +91,7 @@ void CChase_WayState::State_Update(_float _fTimeDelta)
 			Determine_NextDirection(m_pTarget->Get_FinalPosition(), &m_vDir);
 
 		//예외처리
-		if (XMVector3Equal(XMLoadFloat3(&m_vDir), XMVectorZero()))
+		if (XMVector3NearEqual(XMLoadFloat3(&m_vDir), XMVectorZero(), XMVectorReplicate(0.1f)))
 		{
 			m_pOwner->Stop_Rotate();
 			m_pOwner->Stop_Move();

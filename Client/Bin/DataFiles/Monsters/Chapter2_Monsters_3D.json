@@ -2,7 +2,7 @@
     "3D": [
         {
             "MonsterTag": "Prototype_GameObject_Beetle",
-            "LayerTag": "Layer_Monster",
+            "LayerTag": "Layer_Sneak_Beetle",
             "SneakMode": true,
             "SneakWayPointIndex": "SNEAKWAYPOINTINDEX_CHAPTER2_1",
             "Position": [
@@ -18,7 +18,7 @@
         },
         {
             "MonsterTag": "Prototype_GameObject_Beetle",
-            "LayerTag": "Layer_Monster",
+            "LayerTag": "Layer_Sneak_Beetle",
             "SneakMode": true,
             "SneakWayPointIndex": "SNEAKWAYPOINTINDEX_CHAPTER2_2",
             "Position": [
@@ -34,9 +34,9 @@
         },
         {
             "MonsterTag": "Prototype_GameObject_Beetle",
-            "LayerTag": "Layer_Monster",
+            "LayerTag": "Layer_Sneak_Beetle",
             "SneakMode": true,
-            "SneakWayPointIndex": "SNEAKWAYPOINTINDEX_CHAPTER2_2",
+            "SneakWayPointIndex": "SNEAKWAYPOINTINDEX_CHAPTER2_2_2",
             "Position": [
                 39.5,
                 0.35,
@@ -50,9 +50,9 @@
         },
         {
             "MonsterTag": "Prototype_GameObject_Beetle",
-            "LayerTag": "Layer_Monster",
+            "LayerTag": "Layer_Sneak_Beetle",
             "SneakMode": true,
-            "SneakWayPointIndex": "SNEAKWAYPOINTINDEX_CHAPTER2_2",
+            "SneakWayPointIndex": "SNEAKWAYPOINTINDEX_CHAPTER2_3",
             "Position": [
                 46.0, 
                 0.35,

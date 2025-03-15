@@ -28,6 +28,8 @@ void CMeleeAttackState::State_Enter()
 {
 	m_pOwner->Set_AnimChangeable(false);
 	m_pOwner->Set_PreAttack(true);
+
+	cout << "Attack" << endl;
 }
 
 void CMeleeAttackState::State_Update(_float _fTimeDelta)

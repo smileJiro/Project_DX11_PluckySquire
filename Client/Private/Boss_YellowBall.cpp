@@ -21,17 +21,18 @@ CBoss_YellowBall::CBoss_YellowBall(const CBoss_YellowBall& _Prototype)
 HRESULT CBoss_YellowBall::Initialize_Prototype()
 {
     FRESNEL_INFO tBulletFresnelInfo = {};
-    tBulletFresnelInfo.fBaseReflect = 1.85f;
-    tBulletFresnelInfo.fExp = -0.7f;
-    tBulletFresnelInfo.vColor = { 1.f, 0.943f, 0.f, 1.f };
+    tBulletFresnelInfo.fBaseReflect = 0.4f;
+    tBulletFresnelInfo.fExp = 0.77f;
+    tBulletFresnelInfo.vColor = { 0.93f, 0.843f, 0.14f, 1.23f };
     tBulletFresnelInfo.fStrength = 1.f; // ¾È¾¸.
     m_pGameInstance->CreateConstBuffer(tBulletFresnelInfo, D3D11_USAGE_DEFAULT, &m_pFresnelBuffer);
 
 
     COLORS_INFO tColorsInfo = {};
-    tColorsInfo.vDiffuseColor = _float4(0.81f, 0.7f, 0.15f, 1.f);
-    tColorsInfo.vBloomColor = _float4(0.32f, 0.24f, 0.14f, 1.f);
-    tColorsInfo.vSubColor = _float4(0.221f, 0.095f, 0.05f, 1.f);
+    tColorsInfo.vDiffuseColor = _float4(0.81f, 0.38f, 0.15f, 1.f);
+    tColorsInfo.vBloomColor = _float4(0.4f, 0.3f, 0.12f, 0.57f);
+    tColorsInfo.vSubColor = _float4(0.121f, 0.115f, 0.12f, 1.f);
+    tColorsInfo.vInnerColor = _float4(0.28f, 0.21f, 0.73f, 1.f);
     m_pGameInstance->CreateConstBuffer(tColorsInfo, D3D11_USAGE_DEFAULT, &m_pColorBuffer);
 
 	return S_OK;
@@ -191,7 +192,7 @@ HRESULT CBoss_YellowBall::Ready_PartObjects()
     BodyDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::NOISEFRESNEL;
 
     BodyDesc.iRenderGroupID_3D = RG_3D;
-    BodyDesc.iPriorityID_3D = PR3D_EFFECT;
+    BodyDesc.iPriorityID_3D = PR3D_PARTICLE;
 
     BodyDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
 

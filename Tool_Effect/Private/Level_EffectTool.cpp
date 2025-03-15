@@ -359,7 +359,7 @@ HRESULT CLevel_EffectTool::Ready_Layer_ShadingModel(const _wstring& _strLayerTag
 		LEVEL_TOOL, _strLayerTag, reinterpret_cast<CGameObject**>(&pOut), &Desc)))
 		return E_FAIL;
 
-	pOut->Set_Active(false);
+	//pOut->Set_Active(false);
 
 	return S_OK;
 }

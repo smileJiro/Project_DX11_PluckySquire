@@ -236,6 +236,7 @@
     <ClInclude Include="..\public\FatherPart_Prop.h" />
     <ClInclude Include="..\public\FresnelModelObject.h" />
     <ClInclude Include="..\Public\FriendBody.h" />
+    <ClInclude Include="..\Public\Friend_Pip.h" />
     <ClInclude Include="..\Public\Laser_Beam.h" />
     <ClInclude Include="..\Public\Laser_Container.h" />
     <ClInclude Include="..\public\Friend.h" />
@@ -248,6 +249,7 @@
     <ClInclude Include="..\public\Mug_Alien.h" />
     <ClInclude Include="..\Public\Patrol_WayState.h" />
     <ClInclude Include="..\Public\PlayerState_CannonPortal.h" />
+    <ClInclude Include="..\Public\PlayerState_Mojam.h" />
     <ClInclude Include="..\Public\PlayerState_RetriveSword.h" />
     <ClInclude Include="..\public\PortalLocker_LayerCount.h" />
     <ClInclude Include="..\Public\Projectile_SketchSpace_UFO.h" />
@@ -622,6 +624,7 @@
     <ClCompile Include="..\private\FatherPart_Prop.cpp" />
     <ClCompile Include="..\private\FresnelModelObject.cpp" />
     <ClCompile Include="..\Private\FriendBody.cpp" />
+    <ClCompile Include="..\Private\Friend_Pip.cpp" />
     <ClCompile Include="..\Private\Laser_Beam.cpp" />
     <ClCompile Include="..\Private\Laser_Container.cpp" />
     <ClCompile Include="..\private\Friend.cpp" />
@@ -634,6 +637,7 @@
     <ClCompile Include="..\private\Mug_Alien.cpp" />
     <ClCompile Include="..\Private\Patrol_WayState.cpp" />
     <ClCompile Include="..\Private\PlayerState_CannonPortal.cpp" />
+    <ClCompile Include="..\Private\PlayerState_Mojam.cpp" />
     <ClCompile Include="..\Private\PlayerState_RetriveSword.cpp" />
     <ClCompile Include="..\private\PortalLocker_LayerCount.cpp" />
     <ClCompile Include="..\Private\Projectile_SketchSpace_UFO.cpp" />

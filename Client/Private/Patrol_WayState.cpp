@@ -136,6 +136,7 @@ void CPatrol_WayState::Patrol_WayMove(_float _fTimeDelta, _int _iDir)
 
 	if (true == m_isMoveOnly)
 	{
+		_vector v = static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Get_AngularVelocity();
 		//È¸Àü
 		if (true == m_isTurn && false == m_isMove)
 		{

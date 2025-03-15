@@ -362,10 +362,13 @@ _bool CCharacter::Rotate_To_Radians(_fvector _vDirection, _float _fSpeed)
     }
     else
     {
-        _vector vAxis = XMVector3Normalize(XMVector3Cross(vLook, vDirection));
-        if (XMVector3Equal(vAxis, XMVectorZero()))
+        _vector vAxis = XMVector3Cross(vLook, vDirection);
+        //if (XMVector3Equal(vAxis, XMVectorZero()))
+        //    vAxis = XMVectorSet(0, 1, 0, 0);
+        if (XMVector3NearEqual(vAxis, XMVectorZero(), XMVectorReplicate(0.1f)))
             vAxis = XMVectorSet(0, 1, 0, 0);
-        pDynamicActor->Set_AngularVelocity(vAxis * _fSpeed);
+
+        pDynamicActor->Set_AngularVelocity(XMVector3Normalize(vAxis)*_fSpeed);
         return false;
     }
 }
@@ -561,7 +564,17 @@ _vector CCharacter::StepAssist(_fvector _vVelocity,_float _fTimeDelta)
         if (PxGeometryType::eCAPSULE == eGeomType)
         {
 			 PxCapsuleGeometry& pxCapsule = pxGeomHolder.capsule();
-            vOrigin.y += (vPredictMove.m128_f32[1] + m_fStepHeightThreshold + pxCapsule.halfHeight + pxCapsule.radius);
+
+            //캡슐의 경우 y축 아니면 z축 회전하므로 y축 회전했을 때를 따로 처리
+            if (1.f == m_matQueryShapeOffset._22)
+            {
+                vOrigin.y += (vPredictMove.m128_f32[1] + m_fStepHeightThreshold + pxCapsule.radius);
+            }
+            //기본을 z축 기준 90도 회전으로 생각
+            else
+            {
+                vOrigin.y += (vPredictMove.m128_f32[1] + m_fStepHeightThreshold + pxCapsule.halfHeight + pxCapsule.radius);
+            }
 		}
 		else if (PxGeometryType::eBOX == eGeomType)
 		{

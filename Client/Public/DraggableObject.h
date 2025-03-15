@@ -12,6 +12,7 @@ public:
 	{
 		_float3 vBoxHalfExtents = { 0.f,0.f,0.f };
 		_float3 vBoxOffset = { 0.f,0.f,0.f };
+		_wstring strInitSectionTag;
 	}DRAGGABLE_DESC;
 protected:
 	explicit CDraggableObject(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
@@ -21,6 +22,7 @@ protected:
 	HRESULT Initialize(void* _pArg);
 	virtual void Update(_float _fTimeDelta) override;
 	virtual void Late_Update(_float _fTimeDelta) override;
+	virtual HRESULT	Render() override;
 	virtual void OnContact_Modify(const COLL_INFO& _0, const COLL_INFO& _1, CModifiableContacts& _ModifiableContacts, _bool _bIm0)override;
 	virtual void OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
 	virtual void OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
@@ -28,6 +30,10 @@ protected:
 	virtual void OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)override;
 	virtual void OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)override;
 	virtual void OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)override;
+
+	virtual void						On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject);
+	virtual void						On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject);
+	virtual void						On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject);
 
 public:
 	void Interact(CPlayer* _pUser) override;

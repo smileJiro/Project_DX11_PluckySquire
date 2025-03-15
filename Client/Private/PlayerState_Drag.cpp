@@ -19,17 +19,25 @@ void CPlayerState_Drag::Update(_float _fTimeDelta)
 		m_pOwner->Set_State(CPlayer::IDLE);
 		return;
 	}
-	CActor_Dynamic* pDraggableDynamic = dynamic_cast<CActor_Dynamic*>(m_pDraggableObject->Get_ActorCom());
-	CActor_Dynamic* pOwnerDynamic = dynamic_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom());
-	if (pDraggableDynamic->Get_LinearVelocity().m128_f32[1] < -0.1f
-		|| pOwnerDynamic->Get_LinearVelocity().m128_f32[1] < -0.1f)
-	{
-		m_pOwner->Set_State(CPlayer::IDLE);
-		return;
-	}
+
 	COORDINATE eCoord = m_pOwner->Get_CurCoord();
+
+	if (COORDINATE_3D == eCoord)
+	{
+		CActor_Dynamic* pDraggableDynamic = dynamic_cast<CActor_Dynamic*>(m_pDraggableObject->Get_ActorCom());
+		CActor_Dynamic* pOwnerDynamic = dynamic_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom());
+		if (pDraggableDynamic->Get_LinearVelocity().m128_f32[1] < -0.1f
+			|| pOwnerDynamic->Get_LinearVelocity().m128_f32[1] < -0.1f)
+		{
+			m_pOwner->Set_State(CPlayer::IDLE);
+			return;
+		}
+		m_pOwner->Stop_Rotate();
+
+	}
+
+
 	INTERACT_RESULT eResult = m_pOwner->Try_Interact(_fTimeDelta);
-	m_pOwner->Stop_Rotate();
 	//HOLDING 중. 계속 E 키 누름.
 	if (INTERACT_RESULT::SUCCESS == eResult)
 	{
@@ -52,7 +60,7 @@ void CPlayerState_Drag::Update(_float _fTimeDelta)
 			}
 			m_pOwner->Set_PlayingAnim(true);
 			
-			//m_pOwner->Move(XMVector3Normalize(tKeyResult.vMoveDir) * m_fDragMoveSpeed, _fTimeDelta);
+			m_pOwner->Move(XMVector3Normalize(tKeyResult.vMoveDir) * m_fDragMoveSpeed, _fTimeDelta);
 			m_pDraggableObject->Move(XMVector3Normalize(tKeyResult.vMoveDir) * m_fDragMoveSpeed, _fTimeDelta);
 
 			if (COORDINATE_3D == eCoord)
@@ -112,9 +120,14 @@ void CPlayerState_Drag::Enter()
 
 void CPlayerState_Drag::Exit()
 {
-	CActor_Dynamic* pDraggableDynamic = dynamic_cast<CActor_Dynamic*>(m_pDraggableObject->Get_ActorCom());
-	pDraggableDynamic->Delete_Shape(m_iAdditionalShapeIndex);
-	//m_pOwner->Set_Kinematic(false);
+	COORDINATE eCoord = m_pOwner->Get_CurCoord();
+
+	if (COORDINATE_3D == eCoord)
+	{
+		CActor_Dynamic* pDraggableDynamic = dynamic_cast<CActor_Dynamic*>(m_pDraggableObject->Get_ActorCom());
+		pDraggableDynamic->Delete_Shape(m_iAdditionalShapeIndex);
+		//m_pOwner->Set_Kinematic(false);
+	}
 	m_pOwner->Set_PlayingAnim(true);
 }
 

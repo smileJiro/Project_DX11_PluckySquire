@@ -6,6 +6,8 @@
         "../Bin/DataFiles/FX/Level8/HomingBallDust.json",
         "../Bin/DataFiles/FX/Level8/HomingBallOut.json",
         "../Bin/DataFiles/FX/Level8/PurpleBallOut.json",
-        "../Bin/DataFiles/FX/Level8/YellowBallOut.json"
+        "../Bin/DataFiles/FX/Level8/YellowBallOut.json",
+        "../Bin/DataFiles/FX/Level8/BulletTrail.json",
+        "../Bin/DataFiles/FX/Level8/ShieldEnv.json"
     ]
 }
