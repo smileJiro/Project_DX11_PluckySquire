@@ -236,7 +236,10 @@
 #include "Effect_Beam.h"
 #include "TurnBookEffect.h"
 
-
+/* For. Friend */
+#include "Friend_Thrash.h"
+#include "Friend_Violet.h"
+#include "FriendBody.h"
 
 
 
@@ -640,6 +643,21 @@ HRESULT CLoader::Loading_Level_Static()
 
 	lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
 
+	/* For. Prototype_GameObject_Friend_Thrash */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Friend_Thrash"),
+		CFriend_Thrash::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For. Prototype_GameObject_Friend_Violet */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Friend_Violet"),
+		CFriend_Violet::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	
+	/* For. Prototype_GameObject_FriendBody */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_FriendBody"),
+		CFriendBody::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	
 	/* For. Prototype_GameObject_BackGroundObject */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_BackGroundObject"),
 		CBackGroundObject::Create(m_pDevice, m_pContext))))

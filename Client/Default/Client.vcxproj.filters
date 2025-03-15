@@ -1819,7 +1819,12 @@
     <ClInclude Include="..\public\FriendBody.h">
       <Filter>02.GameObjects\Friend\Body</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\Friend_Controller.h" />
+    <ClInclude Include="..\public\Friend_Controller.h">
+      <Filter>02.GameObjects\Friend\Friend_Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Friend_Violet.h">
+      <Filter>02.GameObjects\Friend\Violet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -2914,7 +2919,12 @@
     <ClCompile Include="..\private\FriendBody.cpp">
       <Filter>02.GameObjects\Friend\Body</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\Friend_Controller.cpp" />
+    <ClCompile Include="..\private\Friend_Controller.cpp">
+      <Filter>02.GameObjects\Friend\Friend_Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Friend_Violet.cpp">
+      <Filter>02.GameObjects\Friend\Violet</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

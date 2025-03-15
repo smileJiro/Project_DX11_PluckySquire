@@ -232,6 +232,7 @@
     <ClInclude Include="..\public\Friend.h" />
     <ClInclude Include="..\public\Friend_Controller.h" />
     <ClInclude Include="..\public\Friend_Thrash.h" />
+    <ClInclude Include="..\Public\Friend_Violet.h" />
     <ClInclude Include="..\public\Mat.h" />
     <ClInclude Include="..\Public\MonsterJumpState.h" />
     <ClInclude Include="..\Public\MonsterMoveState.h" />
@@ -607,6 +608,7 @@
     <ClCompile Include="..\private\Friend.cpp" />
     <ClCompile Include="..\private\Friend_Controller.cpp" />
     <ClCompile Include="..\private\Friend_Thrash.cpp" />
+    <ClCompile Include="..\Private\Friend_Violet.cpp" />
     <ClCompile Include="..\private\Mat.cpp" />
     <ClCompile Include="..\Private\MonsterJumpState.cpp" />
     <ClCompile Include="..\Private\MonsterMoveState.cpp" />

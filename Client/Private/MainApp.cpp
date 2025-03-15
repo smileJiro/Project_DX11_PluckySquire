@@ -18,6 +18,7 @@
 #include "PlayerData_Manager.h"
 #include "Effect_Manager.h"
 #include "Effect2D_Manager.h"
+#include "Friend_Controller.h"
 
 
 #include "RenderGroup_MRT.h"
@@ -105,6 +106,16 @@ void CMainApp::Progress(_float _fTimeDelta)
 	CSection_Manager::GetInstance()->Section_AddRenderGroup_Process();
 	m_pGameInstance->Late_Update_Engine(_fTimeDelta);
 
+	if (KEY_DOWN(KEY::K))
+	{
+		CFriend_Controller::GetInstance()->Start_Train();
+
+	}
+	if (KEY_DOWN(KEY::J))
+	{
+		CFriend_Controller::GetInstance()->End_Train();
+
+	}
 
 	CTrail_Manager::GetInstance()->Update(_fTimeDelta);
 
@@ -197,6 +208,8 @@ HRESULT CMainApp::Initialize_Client_Manager()
 	if (FAILED(CPlayerData_Manager::GetInstance()->Initialize(m_pDevice, m_pContext)))
 		return E_FAIL;
 	if (FAILED(CEffect2D_Manager::GetInstance()->Initialize(m_pDevice, m_pContext)))
+		return E_FAIL;
+	if (FAILED(CFriend_Controller::GetInstance()->Initialize(m_pDevice, m_pContext)))
 		return E_FAIL;
 
 	return S_OK;
@@ -782,6 +795,7 @@ void CMainApp::Free()
 	CTrigger_Manager::DestroyInstance();
 	CPlayerData_Manager::DestroyInstance();
 	CEffect_Manager::DestroyInstance();
+	CFriend_Controller::DestroyInstance();
 
 	// EngineManager 
 	CTrail_Manager::DestroyInstance();

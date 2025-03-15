@@ -22,6 +22,11 @@ HRESULT CHitState::Initialize(void* _pArg)
 
 void CHitState::State_Enter()
 {
+	if (0 >= m_pOwner->Get_Stat().iHP)
+	{
+		m_pFSM->Change_State((_uint)MONSTER_STATE::DEAD);
+		return;
+	}
 	m_pOwner->Set_AnimChangeable(false);
 }
 

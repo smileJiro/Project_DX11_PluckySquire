@@ -1102,7 +1102,6 @@ void CPlayer::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
 
 HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition)
 {
-
     if (Is_CarryingObject())
     {
         _int eCoord = m_pCarryingObject->Get_CurCoord();
