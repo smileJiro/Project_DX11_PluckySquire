@@ -225,7 +225,7 @@ void CWorldMapNPC::Progress(_float _fTimeDelta)
 	{
 		if (false == m_isChangeCameraTarget)
 		{
-			CCamera_Manager::GetInstance()->Change_CameraTarget(this);
+			//CCamera_Manager::GetInstance()->Change_CameraTarget(this);
 			m_isChangeCameraTarget = true;
 		}
 			

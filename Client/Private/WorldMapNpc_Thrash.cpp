@@ -48,7 +48,6 @@ HRESULT CWorldMapNpc_Thrash::Initialize(void* _pArg)
 
 
 	m_pParent = pDesc->pParent;
-	Safe_AddRef(m_pParent);
 	pDesc->pParentMatrices[COORDINATE_2D] = m_pParent->Get_ControllerTransform()->Get_WorldMatrix_Ptr(COORDINATE_2D);
 
 	
@@ -228,7 +227,6 @@ CGameObject* CWorldMapNpc_Thrash::Clone(void* _pArg)
 
 void CWorldMapNpc_Thrash::Free()
 {
-	Safe_Release(m_pParent);
 	__super::Free();
 }
 
