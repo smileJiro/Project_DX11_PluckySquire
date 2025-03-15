@@ -38,6 +38,7 @@
 #include "TiltSwapPusher.h"
 #include "BombSwitch.h"
 #include "BombSwitchStopper.h"
+#include "BigPressurePlate.h"
 #include "MudPit.h"
 #include "Postit_Page.h"
 #include "Door_Yellow.h"
@@ -191,6 +192,7 @@ HRESULT CLevel_Chapter_08::Initialize(LEVEL_ID _eLevelID)
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_TRIGGER, OBJECT_GROUP::WORD_GAME);
 	//m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::PORTAL);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_TRIGGER, OBJECT_GROUP::INTERACTION_OBEJCT); //3 8
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_TRIGGER, OBJECT_GROUP::GIMMICK_OBJECT); //3 8
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::INTERACTION_OBEJCT, OBJECT_GROUP::WORD_GAME);
 
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::RAY_TRIGGER, OBJECT_GROUP::BLOCKER);
@@ -1557,7 +1559,6 @@ HRESULT CLevel_Chapter_08::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, _strLayerTag, pBombSwitchStopper);
 	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter8_P2122"), pBombSwitchStopper, SECTION_2D_PLAYMAP_OBJECT);
 
-
 	CBombSwitch::BOMB_SWITCH_DESC tBombSwitchDesc = {};
 	tBombSwitchDesc.pReceiver = pBombSwitchStopper;
 	tBombSwitchDesc.iCurLevelID = m_eLevelID;
@@ -1565,6 +1566,14 @@ HRESULT CLevel_Chapter_08::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 	CBombSwitch* pBombSwitch = static_cast<CBombSwitch*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_eLevelID, TEXT("Prototype_GameObject_BombSwitch"), &tBombSwitchDesc));
 	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, _strLayerTag, pBombSwitch);
 	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter8_P2122"), pBombSwitch, SECTION_2D_PLAYMAP_OBJECT);
+
+
+	CBigPressurePlate::MODELOBJECT_DESC tBigPressurePlateDesc = {};
+	tBigPressurePlateDesc.iCurLevelID = m_eLevelID;
+	tBigPressurePlateDesc.tTransform2DDesc.vInitialPosition = _float3(-180.f, 1195.f, 0.f);
+	CBigPressurePlate* pBigPressurePlate = static_cast<CBigPressurePlate*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_eLevelID, TEXT("Prototype_GameObject_BigPressurePlate"), &tBigPressurePlateDesc));
+	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, _strLayerTag, pBigPressurePlate);
+	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter8_P2122"), pBigPressurePlate, SECTION_2D_PLAYMAP_BACKGROUND);
 
 	return S_OK;
 }

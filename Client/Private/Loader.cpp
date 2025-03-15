@@ -100,6 +100,7 @@
 #include "Bomb.h"
 #include "BombableBox.h"
 #include "TiltSwapPusher.h"
+#include "BigPressurePlate.h"
 #include "BombSwitch.h"
 #include "BombSwitchStopper.h"
 #include "Key.h"
@@ -1896,7 +1897,9 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_TiltSwapPusher"),
 		CTiltSwapPusher::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
-
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_BigPressurePlate"),
+		CBigPressurePlate::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_BombSwitch"),
 		CBombSwitch::Create(m_pDevice, m_pContext))))
