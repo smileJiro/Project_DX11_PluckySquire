@@ -1,30 +1,30 @@
 #include "stdafx.h"
-#include "Friend_Thrash.h"
+#include "Friend_Violet.h"
 #include "GameInstance.h"
 
-CFriend_Thrash::CFriend_Thrash(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
+CFriend_Violet::CFriend_Violet(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     :CFriend(_pDevice, _pContext)
 {
 }
 
-CFriend_Thrash::CFriend_Thrash(const CFriend& _Prototype)
+CFriend_Violet::CFriend_Violet(const CFriend& _Prototype)
     :CFriend(_Prototype)
 {
 }
 
-HRESULT CFriend_Thrash::Initialize_Prototype()
+HRESULT CFriend_Violet::Initialize_Prototype()
 {
     return S_OK;
 }
 
-HRESULT CFriend_Thrash::Initialize(void* _pArg)
+HRESULT CFriend_Violet::Initialize(void* _pArg)
 {
-	FRIEND_THRASH_DESC* pDesc = static_cast<FRIEND_THRASH_DESC*>(_pArg);
+	FRIEND_VIOLET_DESC* pDesc = static_cast<FRIEND_VIOLET_DESC*>(_pArg);
 
 	// Add
-	pDesc->strPartBodyModelTag = TEXT("Thrash");
+	pDesc->strPartBodyModelTag = TEXT("Violet");
 	pDesc->iModelTagLevelID = LEVEL_STATIC;
-	pDesc->strDialogueTag = TEXT("Friend_Thrash_");
+	pDesc->strDialogueTag = TEXT("Friend_Violet_");
 
 
 
@@ -34,7 +34,7 @@ HRESULT CFriend_Thrash::Initialize(void* _pArg)
     return S_OK;
 }
 
-void CFriend_Thrash::Change_AnimIndex_CurDirection()
+void CFriend_Violet::Change_AnimIndex_CurDirection()
 {
 	_vector vRightVector = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
 	switch (m_eCurState)
@@ -44,18 +44,18 @@ void CFriend_Thrash::Change_AnimIndex_CurDirection()
 		switch (m_eDirection)
 		{
 		case Client::CFriend::DIR_DOWN:
-			Switch_PartAnim(PART_BODY, ANIM::THRASH_IDLE_DOWN, true);
-			m_eCurAnimIndex = ANIM::THRASH_IDLE_DOWN;
+			Switch_PartAnim(PART_BODY, ANIM::VIOLET_IDLE_DOWN, true);
+			m_eCurAnimIndex = ANIM::VIOLET_IDLE_DOWN;
 			break;
 		case Client::CFriend::DIR_RIGHT:
-			Switch_PartAnim(PART_BODY, ANIM::THRASH_IDLE_RIGHT, true);
+			Switch_PartAnim(PART_BODY, ANIM::VIOLET_IDLE_RIGHT, true);
 			Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, XMVectorAbs(vRightVector));
 			break;
 		case Client::CFriend::DIR_UP:
-			Switch_PartAnim(PART_BODY, ANIM::THRASH_IDLE_UP, true);
+			Switch_PartAnim(PART_BODY, ANIM::VIOLET_IDLE_UP, true);
 			break;
 		case Client::CFriend::DIR_LEFT:
-			Switch_PartAnim(PART_BODY, ANIM::THRASH_IDLE_RIGHT, true);
+			Switch_PartAnim(PART_BODY, ANIM::VIOLET_IDLE_RIGHT, true);
 			Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, -XMVectorAbs(vRightVector));
 			break;
 		}
@@ -66,17 +66,17 @@ void CFriend_Thrash::Change_AnimIndex_CurDirection()
 		switch (m_eDirection)
 		{
 		case Client::CFriend::DIR_DOWN:
-			Switch_PartAnim(PART_BODY, ANIM::THRASH_RUN_DOWN, true);
+			Switch_PartAnim(PART_BODY, ANIM::VIOLET_RUN_DOWN, true);
 			break;
 		case Client::CFriend::DIR_RIGHT:
-			Switch_PartAnim(PART_BODY, ANIM::THRASH_RUN_RIGHT, true);
+			Switch_PartAnim(PART_BODY, ANIM::VIOLET_RUN_RIGHT, true);
 			Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, XMVectorAbs(vRightVector));
 			break;
 		case Client::CFriend::DIR_UP:
-			Switch_PartAnim(PART_BODY, ANIM::THRASH_RUN_UP, true);
+			Switch_PartAnim(PART_BODY, ANIM::VIOLET_RUN_UP, true);
 			break;
 		case Client::CFriend::DIR_LEFT:
-			Switch_PartAnim(PART_BODY, ANIM::THRASH_RUN_RIGHT, true);
+			Switch_PartAnim(PART_BODY, ANIM::VIOLET_RUN_RIGHT, true);
 			Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, -XMVectorAbs(vRightVector));
 			break;
 		}
@@ -87,17 +87,17 @@ void CFriend_Thrash::Change_AnimIndex_CurDirection()
 		switch (m_eDirection)
 		{
 		case Client::CFriend::DIR_DOWN:
-			Switch_PartAnim(PART_BODY, ANIM::THRASH_RUN_DOWN, true);
+			Switch_PartAnim(PART_BODY, ANIM::VIOLET_RUN_DOWN, true);
 			break;
 		case Client::CFriend::DIR_RIGHT:
-			Switch_PartAnim(PART_BODY, ANIM::THRASH_RUN_RIGHT, true);
+			Switch_PartAnim(PART_BODY, ANIM::VIOLET_RUN_RIGHT, true);
 			Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, XMVectorAbs(vRightVector));
 			break;
 		case Client::CFriend::DIR_UP:
-			Switch_PartAnim(PART_BODY, ANIM::THRASH_RUN_UP, true);
+			Switch_PartAnim(PART_BODY, ANIM::VIOLET_RUN_UP, true);
 			break;
 		case Client::CFriend::DIR_LEFT:
-			Switch_PartAnim(PART_BODY, ANIM::THRASH_RUN_RIGHT, true);
+			Switch_PartAnim(PART_BODY, ANIM::VIOLET_RUN_RIGHT, true);
 			Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, -XMVectorAbs(vRightVector));
 			break;
 		}
@@ -108,17 +108,17 @@ void CFriend_Thrash::Change_AnimIndex_CurDirection()
 		switch (m_eDirection)
 		{
 		case Client::CFriend::DIR_DOWN:
-			Switch_PartAnim(PART_BODY, ANIM::THRASH_ATTACK_DOWN);
+			Switch_PartAnim(PART_BODY, ANIM::VIOLET_ATTACK_DOWN);
 			break;
 		case Client::CFriend::DIR_RIGHT:
-			Switch_PartAnim(PART_BODY, ANIM::THRASH_ATTACK_RIGHT);
+			Switch_PartAnim(PART_BODY, ANIM::VIOLET_ATTACK_RIGHT);
 			Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, XMVectorAbs(vRightVector));
 			break;
 		case Client::CFriend::DIR_UP:
-			Switch_PartAnim(PART_BODY, ANIM::THRASH_ATTACK_UP);
+			Switch_PartAnim(PART_BODY, ANIM::VIOLET_ATTACK_UP);
 			break;
 		case Client::CFriend::DIR_LEFT:
-			Switch_PartAnim(PART_BODY, ANIM::THRASH_ATTACK_RIGHT);
+			Switch_PartAnim(PART_BODY, ANIM::VIOLET_ATTACK_RIGHT);
 			Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, -XMVectorAbs(vRightVector));
 			break;
 		}
@@ -129,17 +129,17 @@ void CFriend_Thrash::Change_AnimIndex_CurDirection()
 		switch (m_eDirection)
 		{
 		case Client::CFriend::DIR_DOWN:
-			Switch_PartAnim(PART_BODY, ANIM::THRASH_HIT_DOWN);
+			Switch_PartAnim(PART_BODY, ANIM::VIOLET_HIT_DOWN);
 			break;
 		case Client::CFriend::DIR_RIGHT:
-			Switch_PartAnim(PART_BODY, ANIM::THRASH_HIT_RIGHT);
+			Switch_PartAnim(PART_BODY, ANIM::VIOLET_HIT_RIGHT);
 			Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, XMVectorAbs(vRightVector));
 			break;
 		case Client::CFriend::DIR_UP:
-			Switch_PartAnim(PART_BODY, ANIM::THRASH_HIT_UP);
+			Switch_PartAnim(PART_BODY, ANIM::VIOLET_HIT_UP);
 			break;
 		case Client::CFriend::DIR_LEFT:
-			Switch_PartAnim(PART_BODY, ANIM::THRASH_HIT_RIGHT);
+			Switch_PartAnim(PART_BODY, ANIM::VIOLET_HIT_RIGHT);
 			Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, -XMVectorAbs(vRightVector));
 			break;
 		}
@@ -152,11 +152,11 @@ void CFriend_Thrash::Change_AnimIndex_CurDirection()
 	}
 }
 
-void CFriend_Thrash::Finished_DialogueAction()
+void CFriend_Violet::Finished_DialogueAction()
 {
 }
 
-void CFriend_Thrash::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
+void CFriend_Violet::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 {
 	switch (m_eCurState)
 	{
@@ -183,39 +183,39 @@ void CFriend_Thrash::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 
 }
 
-CFriend_Thrash* CFriend_Thrash::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
+CFriend_Violet* CFriend_Violet::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
-	CFriend_Thrash* pInstance = new CFriend_Thrash(_pDevice, _pContext);
+	CFriend_Violet* pInstance = new CFriend_Violet(_pDevice, _pContext);
 
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
-		MSG_BOX("Failed Create : CFriend_Thrash");
+		MSG_BOX("Failed Create : CFriend_Violet");
 		Safe_Release(pInstance);
 	}
 
 	return pInstance;
 }
 
-CGameObject* CFriend_Thrash::Clone(void* _pArg)
+CGameObject* CFriend_Violet::Clone(void* _pArg)
 {
-	CFriend_Thrash* pInstance = new CFriend_Thrash(*this);
+	CFriend_Violet* pInstance = new CFriend_Violet(*this);
 
 	if (FAILED(pInstance->Initialize(_pArg)))
 	{
-		MSG_BOX("Failed Clone : CFriend_Thrash");
+		MSG_BOX("Failed Clone : CFriend_Violet");
 		Safe_Release(pInstance);
 	}
 
 	return pInstance;
 }
 
-void CFriend_Thrash::Free()
+void CFriend_Violet::Free()
 {
 
 	__super::Free();
 }
 
-void CFriend_Thrash::Switch_AnimIndex_State()
+void CFriend_Violet::Switch_AnimIndex_State()
 {
 	switch (m_eCurState)
 	{
@@ -236,7 +236,7 @@ void CFriend_Thrash::Switch_AnimIndex_State()
 
 }
 
-void CFriend_Thrash::Switch_PartAnim(_uint _iPartIndex, _uint _iAnimIndex, _bool _isLoop)
+void CFriend_Violet::Switch_PartAnim(_uint _iPartIndex, _uint _iAnimIndex, _bool _isLoop)
 {
 	m_eCurAnimIndex = (ANIM)_iAnimIndex;
 

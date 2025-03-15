@@ -1810,6 +1810,12 @@
     <ClInclude Include="..\Public\Laser_Beam.h">
       <Filter>02.GameObjects\2DGimmik\Laser</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Friend_Controller.h">
+      <Filter>02.GameObjects\Friend\Friend_Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Friend_Violet.h">
+      <Filter>02.GameObjects\Friend\Violet</Filter>
+    </ClInclude>
     <ClInclude Include="..\Public\Back_WayState.h" />
     <ClInclude Include="..\Public\Beetle_Corpse.h" />
     <ClInclude Include="..\Public\BombSwitch.h" />
@@ -2907,6 +2913,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\Laser_Beam.cpp">
       <Filter>02.GameObjects\2DGimmik\Laser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Friend_Controller.cpp">
+      <Filter>02.GameObjects\Friend\Friend_Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Friend_Violet.cpp">
+      <Filter>02.GameObjects\Friend\Violet</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Back_WayState.cpp" />
     <ClCompile Include="..\Private\Beetle_Corpse.cpp" />

@@ -237,6 +237,10 @@
     <ClInclude Include="..\public\FresnelModelObject.h" />
     <ClInclude Include="..\Public\Laser_Beam.h" />
     <ClInclude Include="..\Public\Laser_Container.h" />
+    <ClInclude Include="..\public\Friend.h" />
+    <ClInclude Include="..\public\Friend_Controller.h" />
+    <ClInclude Include="..\public\Friend_Thrash.h" />
+    <ClInclude Include="..\Public\Friend_Violet.h" />
     <ClInclude Include="..\public\Mat.h" />
     <ClInclude Include="..\Public\MonsterJumpState.h" />
     <ClInclude Include="..\Public\MonsterMoveState.h" />
@@ -617,6 +621,10 @@
     <ClCompile Include="..\private\FresnelModelObject.cpp" />
     <ClCompile Include="..\Private\Laser_Beam.cpp" />
     <ClCompile Include="..\Private\Laser_Container.cpp" />
+    <ClCompile Include="..\private\Friend.cpp" />
+    <ClCompile Include="..\private\Friend_Controller.cpp" />
+    <ClCompile Include="..\private\Friend_Thrash.cpp" />
+    <ClCompile Include="..\Private\Friend_Violet.cpp" />
     <ClCompile Include="..\private\Mat.cpp" />
     <ClCompile Include="..\Private\MonsterJumpState.cpp" />
     <ClCompile Include="..\Private\MonsterMoveState.cpp" />
