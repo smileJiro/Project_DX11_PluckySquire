@@ -59,8 +59,6 @@ HRESULT CBombSwitchStopper::Render()
 #ifdef _DEBUG
     if (m_p2DColliderComs[0]->Is_Active())
         m_p2DColliderComs[0]->Render(SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName));
-
-
 #endif // _DEBUG
 
     return __super::Render();
@@ -73,9 +71,12 @@ void CBombSwitchStopper::On_BombSwitch(_bool _bOn)
     {
         Switch_Animation(SQUARE_MOVE_UP);
         m_p2DColliderComs[0]->Set_Active(true);
+        SECTION_MGR->Change_GameObject_LayerIndex(m_strSectionName, this, SECTION_2D_PLAYMAP_OBJECT);
     }
     else if (SQUARE_UP == Get_CurrentAnimIndex())
         Switch_Animation(SQUARE_MOVE_DOWN);
+
+
 }
 
 void CBombSwitchStopper::On_AnimEnd(COORDINATE _eCoord, _uint _iAnimIdx)
@@ -87,6 +88,7 @@ void CBombSwitchStopper::On_AnimEnd(COORDINATE _eCoord, _uint _iAnimIdx)
     else if (SQUARE_MOVE_DOWN == _iAnimIdx)
     {
         Switch_Animation(SQUARE_DOWN);
+        SECTION_MGR->Change_GameObject_LayerIndex(m_strSectionName, this, SECTION_2D_PLAYMAP_BACKGROUND);
         m_p2DColliderComs[0]->Set_Active(false);
     }
 }
