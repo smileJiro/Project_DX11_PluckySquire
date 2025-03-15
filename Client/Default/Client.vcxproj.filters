@@ -1853,6 +1853,7 @@
     <ClInclude Include="..\Public\Chase_WayState.h" />
     <ClInclude Include="..\Public\WorldMapNPC.h" />
     <ClInclude Include="..\Public\BigPressurePlate.h" />
+    <ClInclude Include="..\Public\TiltSwapCrate.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -2972,6 +2973,7 @@
     <ClCompile Include="..\Private\Chase_WayState.cpp" />
     <ClCompile Include="..\Private\WorldMapNPC.cpp" />
     <ClCompile Include="..\Private\BigPressurePlate.cpp" />
+    <ClCompile Include="..\Private\TiltSwapCrate.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

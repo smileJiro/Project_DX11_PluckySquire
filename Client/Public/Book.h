@@ -104,6 +104,8 @@ public :
 
 	void					SlideObjects_RToL();
 	void					SlideObjects_LToR();
+	void					Decalcomani_LToR();
+	void					Decalcomani_RToL();
 public:						
 	HRESULT					Execute_Action(BOOK_PAGE_ACTION _eAction, _float3 _fNextPosition);
 	void					Execute_AnimEvent(_uint _iAnimIndex);

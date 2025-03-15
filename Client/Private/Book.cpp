@@ -16,6 +16,7 @@
 #include "SlipperyObject.h"
 #include "Effect_Manager.h"
 #include "Section_2D_PlayMap.h"
+#include "TiltSwapCrate.h"
 
 CBook::CBook(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CModelObject(_pDevice, _pContext)
@@ -762,15 +763,31 @@ void CBook::SlideObjects_RToL()
 	CSection_Manager* pSectionMgr = CSection_Manager::GetInstance();
 	CSection_2D* pSection = static_cast<CSection_2D*>( CSection_Manager::GetInstance()->Find_Section(pSectionMgr->Get_Cur_Section_Key()));
 	list<CGameObject*> ObjList = pSection->Get_Section_Layer(SECTION_PLAYMAP_2D_RENDERGROUP::SECTION_2D_PLAYMAP_OBJECT)->Get_GameObjects();
-	for (auto& pObj : ObjList)
+	if (pSection->Is_Rotation())
 	{
-		if (XMVectorGetX( pObj->Get_FinalPosition()) > 0.f)
+		for (auto& pObj : ObjList)
 		{
-			CSlipperyObject* pSlippery = dynamic_cast<CSlipperyObject*>(pObj);
-			if(pSlippery)
-				pSlippery->Start_Slip(_vector{ -1.0f, 0.f,0.f },500.f);
+			if (XMVectorGetY(pObj->Get_FinalPosition()) < 0.f)
+			{
+				CSlipperyObject* pSlippery = dynamic_cast<CSlipperyObject*>(pObj);
+				if (pSlippery)
+					pSlippery->Start_Slip(_vector{ 0.f, 1.f,0.f }, 500.f);
+			}
 		}
 	}
+	else
+	{
+		for (auto& pObj : ObjList)
+		{
+			if (XMVectorGetX(pObj->Get_FinalPosition()) > 0.f)
+			{
+				CSlipperyObject* pSlippery = dynamic_cast<CSlipperyObject*>(pObj);
+				if (pSlippery)
+					pSlippery->Start_Slip(_vector{ -1.0f, 0.f,0.f }, 500.f);
+			}
+		}
+	}
+
 }
 
 void CBook::SlideObjects_LToR()
@@ -778,13 +795,84 @@ void CBook::SlideObjects_LToR()
 	CSection_Manager* pSectionMgr = CSection_Manager::GetInstance();
 	CSection_2D* pSection = static_cast<CSection_2D*>(CSection_Manager::GetInstance()->Find_Section(pSectionMgr->Get_Cur_Section_Key()));
 	list<CGameObject*> ObjList = pSection->Get_Section_Layer(SECTION_PLAYMAP_2D_RENDERGROUP::SECTION_2D_PLAYMAP_OBJECT)->Get_GameObjects();
+	if (pSection->Is_Rotation())
+	{
+		for (auto& pObj : ObjList)
+		{
+			if (XMVectorGetY(pObj->Get_FinalPosition()) > 0.f)
+			{
+				CSlipperyObject* pSlippery = dynamic_cast<CSlipperyObject*>(pObj);
+				if (pSlippery)
+					pSlippery->Start_Slip(_vector{ 0.f, -1.f,0.f }, 500.f);
+			}
+		}
+	}
+	else
+	{
+		for (auto& pObj : ObjList)
+		{
+			if (XMVectorGetX(pObj->Get_FinalPosition()) < 0.f)
+			{
+				CSlipperyObject* pSlippery = dynamic_cast<CSlipperyObject*>(pObj);
+				if (pSlippery)
+					pSlippery->Start_Slip(_vector{ 1.0f, 0.f,0.f }, 500.f);
+			}
+		}
+	}
+
+}
+
+void CBook::Decalcomani_LToR()
+{
+	CSection_Manager* pSectionMgr = CSection_Manager::GetInstance();
+	CSection_2D* pSection = static_cast<CSection_2D*>(CSection_Manager::GetInstance()->Find_Section(pSectionMgr->Get_Cur_Section_Key()));
+	list<CGameObject*> ObjList = pSection->Get_Section_Layer(SECTION_PLAYMAP_2D_RENDERGROUP::SECTION_2D_PLAYMAP_OBJECT)->Get_GameObjects();
+	_bool bRotate = pSection->Is_Rotation();
 	for (auto& pObj : ObjList)
 	{
-		if (XMVectorGetX(pObj->Get_FinalPosition()) < 0.f)
+		CTiltSwapCrate* pTiltSwapCrate = dynamic_cast<CTiltSwapCrate*>(pObj);
+		if (nullptr == pTiltSwapCrate) continue;
+		_vector vPos = pObj->Get_FinalPosition();
+		if (bRotate) 
 		{
-			CSlipperyObject* pSlippery = dynamic_cast<CSlipperyObject*>(pObj);
-			if (pSlippery)
-				pSlippery->Start_Slip(_vector{ 1.0f, 0.f,0.f },500.f);
+			if (XMVectorGetY(vPos) > 0.f)
+			{
+				pTiltSwapCrate->Stop_Slip();
+				pTiltSwapCrate->Set_Position(XMVectorSetY(vPos, -1 * vPos.m128_f32[1]));
+			}
+		}
+		else
+		{
+			if (XMVectorGetX(vPos) < 0.f)
+			{
+				pTiltSwapCrate->Stop_Slip();
+				pTiltSwapCrate->Set_Position(XMVectorSetX(vPos, -1 * vPos.m128_f32[0]));
+			}
+		}
+	}
+
+}
+
+void CBook::Decalcomani_RToL()
+{
+	CSection_Manager* pSectionMgr = CSection_Manager::GetInstance();
+	CSection_2D* pSection = static_cast<CSection_2D*>(CSection_Manager::GetInstance()->Find_Section(pSectionMgr->Get_Cur_Section_Key()));
+	list<CGameObject*> ObjList = pSection->Get_Section_Layer(SECTION_PLAYMAP_2D_RENDERGROUP::SECTION_2D_PLAYMAP_OBJECT)->Get_GameObjects();
+	_bool bRotate = pSection->Is_Rotation();
+	for (auto& pObj : ObjList)
+	{
+		CTiltSwapCrate* pTiltSwapCrate = dynamic_cast<CTiltSwapCrate*>(pObj);
+		if (nullptr == pTiltSwapCrate) continue;
+		_vector vPos = pObj->Get_FinalPosition();
+		if (bRotate)
+		{
+			if (XMVectorGetY(vPos) < 0.f)
+				pTiltSwapCrate->Set_Position(XMVectorSetY(vPos, -1 * vPos.m128_f32[1]));
+		}
+		else
+		{
+			if (XMVectorGetX(vPos) > 0.f)
+				pTiltSwapCrate->Set_Position(XMVectorSetX(vPos, -1 * vPos.m128_f32[0]));
 		}
 	}
 }

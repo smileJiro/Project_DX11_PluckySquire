@@ -100,6 +100,7 @@
 #include "Bomb.h"
 #include "BombableBox.h"
 #include "TiltSwapPusher.h"
+#include "TiltSwapCrate.h"
 #include "BigPressurePlate.h"
 #include "BombSwitch.h"
 #include "BombSwitchStopper.h"
@@ -1906,6 +1907,9 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_BombSwitchStopper"),
 		CBombSwitchStopper::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_TiltSwapCrate"),
+		CTiltSwapCrate::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Laser_Beam"),
 		CLaser_Beam::Create(m_pDevice, m_pContext))))

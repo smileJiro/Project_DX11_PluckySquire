@@ -319,6 +319,7 @@
     <ClInclude Include="..\Public\JellyKing.h" />
     <ClInclude Include="..\Public\StampKey_1.h" />
     <ClInclude Include="..\Public\Interaction_Key.h" />
+    <ClInclude Include="..\Public\TiltSwapCrate.h" />
     <ClInclude Include="..\public\TurnBookEffect.h" />
     <ClInclude Include="..\Public\WorldMapNPC.h" />
     <ClInclude Include="..\public\ZetPack_Child.h" />
@@ -701,6 +702,7 @@
     <ClCompile Include="..\Private\JellyKing.cpp" />
     <ClCompile Include="..\Private\StampKey_1.cpp" />
     <ClCompile Include="..\Private\Interaction_Key.cpp" />
+    <ClCompile Include="..\Private\TiltSwapCrate.cpp" />
     <ClCompile Include="..\private\TurnBookEffect.cpp" />
     <ClCompile Include="..\Private\WorldMapNPC.cpp" />
     <ClCompile Include="..\private\ZetPack_Child.cpp" />

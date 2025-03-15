@@ -652,6 +652,9 @@ void CGameEventExecuter_C2::Chapter2_Humgrump(_float _fTimeDelta)
 
 			// 스레쉬와 바이올렛 생성
 
+			// 책 상태 변경
+			CBook* pBook = Get_Book();
+			pBook->Switch_Animation(CBook::CLOSED_IDLE);
 
 			GameEvent_End();
 		}
