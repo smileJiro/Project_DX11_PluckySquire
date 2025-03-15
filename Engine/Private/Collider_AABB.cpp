@@ -244,22 +244,29 @@ void CCollider_AABB::Update_OwnerTransform()
     XMStoreFloat2(&m_vFinalExtents, XMLoadFloat2(&m_vExtents) * XMLoadFloat2(&m_vScale) * XMVectorSet(vOwnerScale.x, vOwnerScale.y, 0.0f, 0.0f));
 }
 
-_bool CCollider_AABB::Is_Collision_AABB(CCollider_AABB* _pOther)
-{
-    _float2 vLT = Get_LT();
-    _float2 vRB = Get_RB();
-    _float2 vOtherLT = _pOther->Get_LT();
-    _float2 vOtherRB = _pOther->Get_RB();
+_bool CCollider_AABB::Is_Collision_AABB(CCollider_AABB* _pOther)  
+{  
+   _float2 vLT = Get_LT();  
+   _float2 vRB = Get_RB();  
+   _float2 vOtherLT = _pOther->Get_LT();  
+   _float2 vOtherRB = _pOther->Get_RB();  
+   _float2 fCollisionPoint = {};  
 
-    // 가로 방향 충돌 검사
-    if (vLT.x > vOtherRB.x || vRB.x < vOtherLT.x)
-        return false;
+   // 가로 방향 충돌 검사  
+   if (vLT.x > vOtherRB.x || vRB.x < vOtherLT.x)  
+       return false;  
 
-    // 세로 방향 충돌 검사
-    if (vLT.y < vOtherRB.y || vRB.y > vOtherLT.y)
-        return false;
+   // 세로 방향 충돌 검사  
+   if (vLT.y < vOtherRB.y || vRB.y > vOtherLT.y)  
+       return false;  
 
-    return true;
+   fCollisionPoint.x = (max(vLT.x, vOtherLT.x) + min(vRB.x, vOtherRB.x)) / 2.0f;  
+   fCollisionPoint.y = (max(vRB.y, vOtherRB.y) + min(vLT.y, vOtherLT.y)) / 2.0f;  
+
+   Set_CollisionPos(fCollisionPoint);
+   _pOther->Set_CollisionPos(fCollisionPoint);
+
+   return true;  
 }
 
 _bool CCollider_AABB::Is_Collision_Circle(CCollider_Circle* _pOther)

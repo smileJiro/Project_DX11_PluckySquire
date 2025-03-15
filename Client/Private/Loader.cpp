@@ -210,6 +210,7 @@
 #include "Word.h"
 
 #include "Laser_Container.h"
+#include "Laser_Beam.h"
 
 
 // Etc
@@ -1884,6 +1885,9 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_BombSwitchStopper"),
 		CBombSwitchStopper::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Laser_Beam"),
+		CLaser_Beam::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 #pragma endregion
 
