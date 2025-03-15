@@ -2279,9 +2279,6 @@
     <ClCompile Include="..\Private\Narration_Anim.cpp">
       <Filter>02.GameObjects\UI\00. GamePlay\06. Narration\00. NarrationAnim</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\State_Sneak.cpp">
-      <Filter>03.Components\FSM\State</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\RenderGroup_AfterEffect.cpp">
       <Filter>94.RenderGroups%28Custom%29\Effect\AfterEffect</Filter>
     </ClCompile>
@@ -2988,6 +2985,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Friend_Pip.cpp">
       <Filter>02.GameObjects\Friend\Pip</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Sneak.cpp">
+      <Filter>03.Components\FSM\State</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

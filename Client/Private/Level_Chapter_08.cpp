@@ -1207,16 +1207,16 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 	CGameObject* pObject = nullptr;
 
 
-	//CSpear_Soldier::MONSTER_DESC Spear_Soldier_Desc;
-	//Spear_Soldier_Desc.iCurLevelID = m_eLevelID;
-	//Spear_Soldier_Desc.eStartCoord = COORDINATE_3D;
-	//Spear_Soldier_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-	//Spear_Soldier_Desc.tTransform3DDesc.vInitialPosition = _float3(13.f, 21.58f, 5.5f);
-	//Spear_Soldier_Desc.isSneakMode = true;
-	//Spear_Soldier_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER8_1;
+	CSpear_Soldier::MONSTER_DESC Spear_Soldier_Desc;
+	Spear_Soldier_Desc.iCurLevelID = m_eLevelID;
+	Spear_Soldier_Desc.eStartCoord = COORDINATE_3D;
+	Spear_Soldier_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	Spear_Soldier_Desc.tTransform3DDesc.vInitialPosition = _float3(13.f, 21.58f, 5.5f);
+	Spear_Soldier_Desc.isSneakMode = true;
+	Spear_Soldier_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER8_1;
 
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Spear_Soldier"), m_eLevelID, _strLayerTag, &Spear_Soldier_Desc)))
-	//	return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Spear_Soldier"), m_eLevelID, _strLayerTag, &Spear_Soldier_Desc)))
+		return E_FAIL;
 
 
 
@@ -1232,21 +1232,21 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 	//	return E_FAIL;
 
 
-	CBeetle::MONSTER_DESC Beetle_Desc;
-	Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(-6.5f, 18.5f, 44.5f);
-	Beetle_Desc.isSneakMode = false;
-	Beetle_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER8_BEETLE_FINAL_1;
+	//CBeetle::MONSTER_DESC Beetle_Desc;
+	//Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(-6.5f, 18.5f, 44.5f);
+	//Beetle_Desc.isSneakMode = false;
+	//Beetle_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER8_BEETLE_FINAL_1;
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, _strLayerTag, &Beetle_Desc)))
-		return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, _strLayerTag, &Beetle_Desc)))
+	//	return E_FAIL;
 
 
-	Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(-13.5f, 18.3f, 46.5f);
-	Beetle_Desc.isSneakMode = false;
-	Beetle_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER8_BEETLE_FINAL_2;
+	//Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(-13.5f, 18.3f, 46.5f);
+	//Beetle_Desc.isSneakMode = false;
+	//Beetle_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER8_BEETLE_FINAL_2;
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, _strLayerTag, &Beetle_Desc)))
-		return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, _strLayerTag, &Beetle_Desc)))
+	//	return E_FAIL;
 
 	//CCrossBow_Soldier::MONSTER_DESC CrossBow_Soldier_Desc;
 	//CrossBow_Soldier_Desc.iCurLevelID = m_eLevelID;
@@ -1319,8 +1319,8 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 
 
 	strLayerTag= TEXT("Layer_Monster_Door2");
-
-	CSpear_Soldier::MONSTER_DESC Spear_Soldier_Desc;
+	Spear_Soldier_Desc.isSneakMode = false;
+	//CSpear_Soldier::MONSTER_DESC Spear_Soldier_Desc;
 	Spear_Soldier_Desc.iCurLevelID = m_eLevelID;
 	Spear_Soldier_Desc.eStartCoord = COORDINATE_2D;
 	Spear_Soldier_Desc.tTransform2DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);

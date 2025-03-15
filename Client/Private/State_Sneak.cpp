@@ -167,6 +167,21 @@ HRESULT CState_Sneak::Initialize_WayPoints(SNEAKWAYPOINTINDEX _eWayIndex)
 		m_WayPoints[0].Neighbors.push_back(8);
 		break;
 
+	case Client::SNEAKWAYPOINTINDEX::CHAPTER2_BRIDGE:
+		m_WayPoints.push_back({ _float3(26.5f, 8.58f, 25.f) });
+		m_WayPoints.push_back({ _float3(29.5f, 8.58f, 28.5f) });
+
+		m_WayPoints.push_back({ _float3(29.5f, 8.6f, 31.5f) });
+		m_WayPoints.push_back({ _float3(32.5f, 8.6f, 30.5f) });
+		m_WayPoints.push_back({ _float3(31.3f, 8.6f, 27.9f) });
+
+		m_WayPoints[0].Neighbors.push_back(1);
+		m_WayPoints[1].Neighbors.push_back(0);
+		break;
+
+
+
+
 
 	case SNEAKWAYPOINTINDEX::CHAPTER8_1:
 		m_WayPoints.push_back({ _float3(13.f, 21.58f, 5.5f) });
