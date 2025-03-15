@@ -73,6 +73,7 @@
 #include "BackGroundObject.h"
 #include "Friend_Thrash.h"
 #include "Friend_Violet.h"
+#include "Friend_Pip.h"
 
 CLevel_Chapter_02::CLevel_Chapter_02(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: 
@@ -1882,33 +1883,31 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Friends(const _wstring& _strLayerTag)
 		CFriend_Controller::GetInstance()->Register_Friend(strFriendTag, static_cast<CFriend*>(pGameObject));
 		CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(strFriendTag);
 	} /* Friend_Violet */
+
+	{ /* Friend_Pip */
+		strFriendTag = L"Pip";
+		CFriend_Pip::FRIEND_DESC Desc{};
+		Desc.Build_2D_Transform(_float2(-730.f, 100.f), _float2(1.0f, 1.0f), 350.f);
+		Desc.iCurLevelID = LEVEL_CHAPTER_2;
+		Desc.eStartState = CFriend::FRIEND_IDLE;
+		Desc.eStartDirection = CFriend::DIR_RIGHT;
+		Desc.iModelTagLevelID = LEVEL_STATIC;
+		Desc.iNumDialoguesIndices = 0;
+		Desc.strFightLayerTag = TEXT("Layer_Monster");
+
+		CGameObject* pGameObject = nullptr;
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Friend_Pip"), LEVEL_CHAPTER_2, _strLayerTag, &pGameObject, &Desc)))
+			return E_FAIL;
+
+		if (FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0304"), pGameObject)))
+			return E_FAIL;
+
+		CFriend_Controller::GetInstance()->Register_Friend(strFriendTag, static_cast<CFriend*>(pGameObject));
+		CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(strFriendTag);
+	} /* Friend_Pip */
+
+
 	
-	//for (_uint i = 0; i < 5; ++i)
-	//{
-	//	{ /* Friend_Thrash */
-	//		CFriend_Thrash::FRIEND_DESC Desc{};
-	//		Desc.Build_2D_Transform(_float2(0.f, 0.f), _float2(1.0f, 1.0f), 300.f);
-	//		Desc.iCurLevelID = LEVEL_CHAPTER_2;
-	//		Desc.eStartState = CFriend::FRIEND_IDLE;
-	//		Desc.iModelTagLevelID = LEVEL_STATIC;
-	//		Desc.iNumDialoguesIndices = 0;
-	//		Desc.strFightLayerTag = TEXT("Layer_Monster");
-	//
-	//		CGameObject* pGameObject = nullptr;
-	//		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Friend_Thrash"), LEVEL_CHAPTER_2, _strLayerTag, &pGameObject, &Desc)))
-	//			return E_FAIL;
-	//
-	//		if (FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(pGameObject)))
-	//			return E_FAIL;
-	//
-	//		strFriendTag += to_wstring(iNum++);
-	//		CFriend_Controller::GetInstance()->Register_Friend(strFriendTag, static_cast<CFriend*>(pGameObject));
-	//		CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(strFriendTag);
-	//	} /* Friend_Thrash */
-	//}
-
-
-
 	return S_OK;
 }
 

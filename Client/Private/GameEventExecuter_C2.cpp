@@ -659,6 +659,10 @@ void CGameEventExecuter_C2::Chapter2_Humgrump(_float _fTimeDelta)
 			// 기존 NPC 삭제
 
 			// 스레쉬와 바이올렛 생성
+
+			// 책 상태 변경
+			CBook* pBook = Get_Book();
+			pBook->Switch_Animation(CBook::CLOSED_IDLE);
 			CFriend* pThrash = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Thrash"));
 			CFriend* pViolet = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Violet"));
 			CSection_Manager::GetInstance()->Remove_GameObject_FromSectionLayer(TEXT("Chapter2_P1112"), pThrash);

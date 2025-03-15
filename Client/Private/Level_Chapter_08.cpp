@@ -41,6 +41,7 @@
 #include "BombSwitch.h"
 #include "BombSwitchStopper.h"
 #include "BigPressurePlate.h"
+#include "TiltSwapCrate.h"
 #include "MudPit.h"
 #include "Postit_Page.h"
 #include "Door_Yellow.h"
@@ -180,7 +181,7 @@ HRESULT CLevel_Chapter_08::Initialize(LEVEL_ID _eLevelID)
 		assert(nullptr);
 	}
 	/* Collision Check Matrix */
-	// 그룹필터 추가 >> 중복해서 넣어도 돼 내부적으로 걸러줌 알아서 
+	// 그룹필터 추가 >> 중복해서 넣어도 돼 내부적으로 걸러줌 알아서 Door_Yellow
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::MONSTER);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::MONSTER_PROJECTILE);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::TRIGGER_OBJECT);
@@ -191,6 +192,8 @@ HRESULT CLevel_Chapter_08::Initialize(LEVEL_ID _eLevelID)
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::PLAYER_PROJECTILE);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::BLOCKER);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::FALLINGROCK_BASIC);
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::SLIPPERY);
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::DOOR);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_TRIGGER, OBJECT_GROUP::WORD_GAME);
 	//m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::PORTAL);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_TRIGGER, OBJECT_GROUP::INTERACTION_OBEJCT); //3 8
@@ -213,6 +216,8 @@ HRESULT CLevel_Chapter_08::Initialize(LEVEL_ID _eLevelID)
 
 	/* 발판 - 기믹오브젝트, 2D에 해당하는 오브젝트 (주사위, 등.. )*/
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MAPOBJECT, OBJECT_GROUP::GIMMICK_OBJECT);
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::BLOCKER, OBJECT_GROUP::GIMMICK_OBJECT);
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::GIMMICK_OBJECT, OBJECT_GROUP::GIMMICK_OBJECT);
 
 	/* 돌덩이 */
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER_PROJECTILE, OBJECT_GROUP::BLOCKER);
@@ -1672,6 +1677,7 @@ HRESULT CLevel_Chapter_08::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter8_P2122"), pBombSwitchStopper, SECTION_2D_PLAYMAP_OBJECT);
 
 	CBombSwitch::BOMB_SWITCH_DESC tBombSwitchDesc = {};
+	tBombSwitchDesc.eStartState = CBombSwitch::OFF;
 	tBombSwitchDesc.pReceiver = pBombSwitchStopper;
 	tBombSwitchDesc.iCurLevelID = m_eLevelID;
 	tBombSwitchDesc.tTransform2DDesc.vInitialPosition = _float3(30.f, -820.f, 0.f);
@@ -1680,12 +1686,32 @@ HRESULT CLevel_Chapter_08::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter8_P2122"), pBombSwitch, SECTION_2D_PLAYMAP_OBJECT);
 
 
+	CTiltSwapCrate::SLIPPERY_DESC tTiltSwapCrateDesc = {};
+	tTiltSwapCrateDesc.iCurLevelID = m_eLevelID;
+	tTiltSwapCrateDesc.tTransform2DDesc.vInitialPosition = _float3(245.f, 1058.f, 0.f);
+	CTiltSwapCrate* pTiltSwapCrate = static_cast<CTiltSwapCrate*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_eLevelID, TEXT("Prototype_GameObject_TiltSwapCrate"), &tTiltSwapCrateDesc));
+	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, _strLayerTag, pTiltSwapCrate);
+	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter8_P2122"), pTiltSwapCrate, SECTION_2D_PLAYMAP_OBJECT);
+
 	CBigPressurePlate::MODELOBJECT_DESC tBigPressurePlateDesc = {};
 	tBigPressurePlateDesc.iCurLevelID = m_eLevelID;
 	tBigPressurePlateDesc.tTransform2DDesc.vInitialPosition = _float3(-180.f, 1195.f, 0.f);
 	CBigPressurePlate* pBigPressurePlate = static_cast<CBigPressurePlate*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_eLevelID, TEXT("Prototype_GameObject_BigPressurePlate"), &tBigPressurePlateDesc));
-	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, _strLayerTag, pBigPressurePlate);
-	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter8_P2122"), pBigPressurePlate, SECTION_2D_PLAYMAP_BACKGROUND);
+
+	CDoor_Yellow::DOOR_YELLOW_DESC tYellowDoorDesc = {};
+	tYellowDoorDesc.pPressurePlate = pBigPressurePlate;
+	tYellowDoorDesc.tTransform2DDesc.vInitialPosition = _float3(27.f, 1350.f, 0.f);
+	tYellowDoorDesc.tTransform2DDesc.vInitialScaling = _float3(1.15f, 1.f, 0.f);
+	tYellowDoorDesc.iCurLevelID = m_eLevelID;
+	tYellowDoorDesc.isHorizontal = true;
+	tYellowDoorDesc.eSize = CDoor_2D::SMALL;
+	tYellowDoorDesc.eInitialState = CDoor_2D::CLOSED;
+	tYellowDoorDesc.vPressurePlatePos = _float3(25.f, 1350.f, 0.f);
+	tYellowDoorDesc.strSectionTag = TEXT("Chapter8_P2122");
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorYellow"),
+		m_eLevelID, _strLayerTag, &tYellowDoorDesc)))
+		return E_FAIL;
 
 	return S_OK;
 }

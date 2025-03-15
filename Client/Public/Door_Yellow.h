@@ -8,6 +8,7 @@ class CDoor_Yellow : public CDoor_2D
 public:
 	typedef struct tagDoorYellowDesc : public CDoor_2D::DOOR_2D_DESC
 	{
+		class CPressure_Plate* pPressurePlate = nullptr;
 		_float3 vPressurePlatePos = {};
 	} DOOR_YELLOW_DESC;
 

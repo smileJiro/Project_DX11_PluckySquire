@@ -23,7 +23,7 @@ void CPlayerState_TurnBook::Update(_float _fTimeDelta)
 
 	if (tKeyResult.bInputStates[PLAYER_INPUT_TURNBOOK_END])
 	{
-		if (CBook::ANIM_ACTION_CLOSEBYHAND != iBookAnim) {
+		if (CBook::CLOSED_IDLE != iBookAnim) {
 			m_pBook->Switch_Animation(CBook::IDLE);
 			m_pBook->Set_PlayingAnim(true);
 		}
@@ -36,7 +36,7 @@ void CPlayerState_TurnBook::Update(_float _fTimeDelta)
 	{
 		m_fTiltIdleTimeAcc += _fTimeDelta;
 		
-		if (CBook::ANIM_ACTION_CLOSEBYHAND == iBookAnim &&
+		if (CBook::CLOSED_IDLE == iBookAnim &&
 			tKeyResult.bInputStates[PLAYER_INPUT_TURNBOOK_LEFT]) {
 			Set_State(BOOK_STATE::OPEN_BOOK);
 		}
@@ -244,6 +244,8 @@ void CPlayerState_TurnBook::On_StateChange(BOOK_STATE _eNewState)
 			//m_pBook->Switch_Animation(CBook::BOOK_ANIMATION::CLOSE_R_TO_L);
 			break;
 		case Client::CPlayerState_TurnBook::CLOSED_LEFT:
+			m_pBook->Decalcomani_RToL();
+			break;
 		default:
 			break;
 		}
@@ -264,6 +266,8 @@ void CPlayerState_TurnBook::On_StateChange(BOOK_STATE _eNewState)
 			//m_pBook->Switch_Animation(CBook::BOOK_ANIMATION::CLOSE_L_TO_R);
 			break;
 		case Client::CPlayerState_TurnBook::CLOSED_RIGHT:
+			m_pBook->Decalcomani_LToR();
+			break;
 		default:
 			break;
 		}

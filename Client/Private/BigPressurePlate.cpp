@@ -3,12 +3,12 @@
 #include "Collider_Circle.h"
 
 CBigPressurePlate::CBigPressurePlate(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
-	:CModelObject(_pDevice, _pContext)
+	:CPressure_Plate(_pDevice, _pContext)
 {
 }
 
 CBigPressurePlate::CBigPressurePlate(const CBigPressurePlate& _Prototype)
-	:CModelObject(_Prototype)
+	:CPressure_Plate(_Prototype)
 {
 }
 
@@ -31,7 +31,7 @@ HRESULT CBigPressurePlate::Initialize(void* _pArg)
     pBodyDesc->iModelPrototypeLevelID_2D = m_iCurLevelID;
     pBodyDesc->strModelPrototypeTag_2D = TEXT("BigPressurePad");
 
-    if (FAILED(__super::Initialize(_pArg)))
+    if (FAILED(CModelObject::Initialize(_pArg)))
         return E_FAIL;
 
     m_p2DColliderComs.resize(1);
@@ -44,7 +44,7 @@ HRESULT CBigPressurePlate::Initialize(void* _pArg)
     CircleDesc.vOffsetPosition = { 0.f, 0.f };
     CircleDesc.isBlock = false;
     CircleDesc.isTrigger = true;
-    CircleDesc.iCollisionGroupID = OBJECT_GROUP::MAPOBJECT;
+    CircleDesc.iCollisionGroupID = OBJECT_GROUP::GIMMICK_OBJECT;
 
     if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
         TEXT("Com_Body2DCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &CircleDesc)))
@@ -57,13 +57,32 @@ void CBigPressurePlate::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider*
 {
     OBJECT_GROUP eGroup = (OBJECT_GROUP)_pOtherCollider->Get_CollisionGroupID();
 
-    if ( OBJECT_GROUP::GIMMICK_OBJECT == eGroup)
+    if (OBJECT_GROUP::GIMMICK_OBJECT == eGroup)
     {
-        
+        if (DOWN != m_eState && DOWN_IDLE != m_eState)
+        {
+            m_eState = DOWN;
+        }
+        ++m_iCollisionObjects;
     }
 }
 
 void CBigPressurePlate::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
+{
+    OBJECT_GROUP eGroup = (OBJECT_GROUP)_pOtherCollider->Get_CollisionGroupID();
+
+    if (OBJECT_GROUP::GIMMICK_OBJECT == eGroup)
+    {
+        --m_iCollisionObjects;
+
+        if (0 == m_iCollisionObjects)
+        {
+            m_eState = UP;
+        }
+    }
+}
+
+void CBigPressurePlate::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 {
 }
 
