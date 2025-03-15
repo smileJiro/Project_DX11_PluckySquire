@@ -219,7 +219,7 @@ VS_ROUT VS_SRV_RMAIN(uint iVertexID : SV_VertexID)
     
     float fScaleVelocity = length(Particles[iVertexID].vVelocity);
     
-    Out.vVelocity = normalize(mul(float4(Particles[iVertexID].vVelocity, 0.f), g_WorldMatrix)) * fScaleVelocity;
+    Out.vVelocity = normalize(/*mul(*/float4(Particles[iVertexID].vVelocity, 0.f)/*, g_WorldMatrix)*/) * fScaleVelocity;
     //Out.vUp = mul((Particles[iVertexID].InstancingMatrix._21_22_23_24), g_WorldMatrix) * (1.f - g_fAbsolute)
     //+ g_fAbsolute * Particles[iVertexID].InstancingMatrix._21_22_23_24;
     Out.vUp = mul(Particles[iVertexID].InstancingMatrix._21_22_23_24, g_WorldMatrix);

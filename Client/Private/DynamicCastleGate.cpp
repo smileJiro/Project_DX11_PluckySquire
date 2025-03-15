@@ -72,7 +72,7 @@ HRESULT CDynamicCastleGate::Initialize(void* _pArg)
 		return E_FAIL;
 	//static_cast<CActor_Dynamic*>(m_pActorCom)->Set_Rotation(_vector{ 0.f,1.f,0.f }, XMConvertToRadians(90.f));
 	//static_cast<CActor_Dynamic*>(m_pActorCom)->Set_MassLocalPos(m_fMassLocal);
-	m_pActorCom->Set_Mass(5.f);
+	m_pActorCom->Set_Mass(7.5f);
 
 	if (FAILED(Ready_PartObjects()))
 		return E_FAIL;

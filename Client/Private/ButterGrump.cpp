@@ -191,6 +191,8 @@ void CButterGrump::Update(_float _fTimeDelta)
     {
         m_isInvincible ^= 1;
         m_PartObjects[BOSSPART_SHIELD]->Set_Active(m_isInvincible);
+        if (nullptr != m_pShieldEffect)
+            m_pShieldEffect->Active_All(true);
     }
 
     if (KEY_PRESSING(KEY::CTRL))
@@ -287,7 +289,11 @@ void CButterGrump::Change_Animation()
                     m_pHomingEffect->Active_Effect(true);
             }
             else
+            {
                 static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(FIREBALL_SPIT_BIG);
+                if (nullptr != m_pHomingEffect)
+                    m_pHomingEffect->Active_Effect(true);
+            }
 
 
             break;
@@ -321,6 +327,8 @@ void CButterGrump::Change_Animation()
 
         case BOSS_STATE::SHIELD:
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(ROAR);
+            if (nullptr != m_pShieldEffect)
+                m_pShieldEffect->Active_All(true);
             break;
 
         case BOSS_STATE::HIT:
@@ -771,6 +779,9 @@ void CButterGrump::Shield_Break()
     Event_SetActive(m_PartObjects[BOSSPART_SHIELD], false);
     Hit();
     Event_ChangeBossState(BOSS_STATE::HIT, m_pBossFSM);
+
+    if (nullptr != m_pShieldEffect)
+        m_pShieldEffect->Stop_SpawnAll(1.f);
 }
 
 void CButterGrump::Activate_Invinciblility(_bool _isActivate)
@@ -1140,13 +1151,13 @@ HRESULT CButterGrump::Ready_PartObjects()
 
     CButterGrump_Shield::BUTTERGRUMP_SHIELD_DESC ShieldDesc{};
 
-    ShieldDesc.strModelPrototypeTag_3D = TEXT("S_FX_CMN_HalfSphere_01_2");
+    ShieldDesc.strModelPrototypeTag_3D = TEXT("S_FX_CMN_Sphere_03");
     ShieldDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
     ShieldDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
 
     ShieldDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
-    ShieldDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
-
+    ShieldDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::NOISEFRESNEL;
+    ShieldDesc.iCurLevelID = m_iCurLevelID;
     _float fScale = 30.f;
 
 	ShieldDesc.tTransform3DDesc.vInitialPosition = _float3(fScale * (0.3f), 0.0f, fScale * (-0.3f));
@@ -1156,7 +1167,7 @@ HRESULT CButterGrump::Ready_PartObjects()
     ShieldDesc.tTransform3DDesc.fSpeedPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_SpeedPerSec();
 
     ShieldDesc.iRenderGroupID_3D = RG_3D;
-    ShieldDesc.iPriorityID_3D = PR3D_GEOMETRY;
+    ShieldDesc.iPriorityID_3D = PR3D_PARTICLE;
 
     ShieldDesc.pParent = this;
 
@@ -1213,6 +1224,17 @@ HRESULT CButterGrump::Ready_PartObjects()
     }
 
     Safe_AddRef(m_pYellowEffect);
+
+    m_PartObjects[BOOSPART_SHIELD_EFFECT] = m_pShieldEffect =
+        static_cast<CEffect_System*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_iCurLevelID, TEXT("ShieldEnv.json"), &EffectDesc));
+
+    if (nullptr != m_pShieldEffect)
+    {
+        m_pShieldEffect->Set_Active(false);
+        m_pShieldEffect->Set_ParentMatrix(COORDINATE_3D, m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D));
+    }
+
+    Safe_AddRef(m_pShieldEffect);
 
     return S_OK;
 }
@@ -1385,6 +1407,7 @@ void CButterGrump::Free()
     Safe_Release(m_pHomingEffect);
     Safe_Release(m_pPurpleEffect);
     Safe_Release(m_pYellowEffect);
+    Safe_Release(m_pShieldEffect);
 
     __super::Free();
 }

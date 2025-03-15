@@ -21,7 +21,7 @@ public:
 		const _tchar* szNoisePrototypeTag = L"";
 
 	}FRESNEL_MODEL_DESC;
-private:
+protected:
 	CFresnelModelObject(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	CFresnelModelObject(const CFresnelModelObject& _Prototype);
 	virtual ~CFresnelModelObject() = default;
@@ -30,7 +30,7 @@ public:
 	virtual HRESULT Initialize(void* _pArg) override;
 	virtual HRESULT Render() override;
 
-private:
+protected:
 	ID3D11Buffer* m_pFresnelBuffer = { nullptr };
 	ID3D11Buffer* m_pColorBuffer = { nullptr };
 	class CTexture* m_pMainTextureCom = { nullptr };
@@ -43,7 +43,7 @@ private:
 
 public:
 	static CFresnelModelObject* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
-	virtual CFresnelModelObject* Clone(void* _pArg) override;
+	virtual CGameObject* Clone(void* _pArg) override;
 	virtual void Free() override;
 };
 

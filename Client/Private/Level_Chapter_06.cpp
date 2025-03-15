@@ -13,6 +13,7 @@
 #include "PlayerData_Manager.h"
 #include "Effect_Manager.h"
 #include "Effect2D_Manager.h"
+#include "DraggableObject.h"
 
 #include "CubeMap.h"
 #include "MainTable.h"
@@ -181,6 +182,12 @@ HRESULT CLevel_Chapter_06::Initialize(LEVEL_ID _eLevelID)
 	if (FAILED(Ready_Layer_Defender()))
 	{
 		MSG_BOX(" Failed Ready_Layer_Defender (Level_Chapter_06::Initialize)");
+		assert(nullptr);
+	}
+	
+	if (FAILED(Ready_Layer_MapGimmick()))
+	{
+		MSG_BOX(" Failed Ready_Layer_MapGimmick (Level_Chapter_06::Initialize)");
 		assert(nullptr);
 	}
 
@@ -734,6 +741,26 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Defender()
 	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Layer_Defender"), pPlayer);
 	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter6_SKSP_04"), pPlayer, SECTION_2D_PLAYMAP_OBJECT);
 	pPlayer->Set_Active(false);
+
+	return S_OK;
+}
+
+HRESULT CLevel_Chapter_06::Ready_Layer_MapGimmick()
+{
+	CDraggableObject::DRAGGABLE_DESC tDraggableDesc = {};
+	tDraggableDesc.iModelPrototypeLevelID_3D = LEVEL_STATIC;
+	tDraggableDesc.isCoordChangeEnable = false;
+	tDraggableDesc.iCurLevelID = m_eLevelID;
+	tDraggableDesc.strModelPrototypeTag_3D = TEXT("Moving_Block");
+	tDraggableDesc.eStartCoord = COORDINATE_3D;
+	tDraggableDesc.vBoxHalfExtents = { 3.1f,0.33f,0.99f };
+	tDraggableDesc.vBoxOffset = { 0.f,tDraggableDesc.vBoxHalfExtents.y, 0.f };
+	tDraggableDesc.tTransform3DDesc.vInitialPosition = { 74.65, 12.07f, 27.32f };
+	tDraggableDesc.tTransform3DDesc.vInitialScaling = { 1.1f,1.1f,1.1f };
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DraggableObject"),
+		m_eLevelID, L"Layer_Draggable", &tDraggableDesc)))
+		return E_FAIL;
 
 	return S_OK;
 }
