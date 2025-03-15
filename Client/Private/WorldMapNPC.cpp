@@ -60,21 +60,21 @@ HRESULT CWorldMapNPC::Initialize(void* _pArg)
 	case LEVEL_CHAPTER_2:
 	{
 		CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_Worldmap_0"), this);
-		m_iStartIndex = 0;
+		m_iStartIndex = POS_HONEYBEE;
 	}
 	break;
 
 	case LEVEL_CHAPTER_4:
 	{
 		CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter4_Worldmap_0"), this);
-		m_iStartIndex = 1;
+		m_iStartIndex = POS_TOWER;
 	}
 		break;
 
 	case LEVEL_CHAPTER_6:
 	{
 		CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_Worldmap_0"), this);
-		m_iStartIndex = 3;
+		m_iStartIndex = POS_SWAMPEND;
 	}
 	break;
 	}
@@ -189,7 +189,7 @@ HRESULT CWorldMapNPC::Ready_PartObjects()
 
 void CWorldMapNPC::Progress(_float _fTimeDelta)
 {
-	if (4 == m_iStartIndex)
+	if (POS_ATRIA == m_iStartIndex)
 	{
 		CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_Worldmap_01"), this);
 	}
@@ -258,7 +258,7 @@ void CWorldMapNPC::Progress(_float _fTimeDelta)
 
 		if (false == m_isWalkAnim)
 		{
-			if (0 == m_iStartIndex)
+			if (POS_HONEYBEE == m_iStartIndex)
 			{
 				_vector vRight = m_PartObjects[NPC_JOT]->Get_ControllerTransform()->Get_State(CTransform::STATE_RIGHT);
 				m_PartObjects[NPC_JOT]->Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, -XMVectorAbs(vRight));
@@ -292,7 +292,7 @@ void CWorldMapNPC::Progress(_float _fTimeDelta)
 	{
 		if (false == m_isArriveAnim)
 		{
-			if (1 == m_iStartIndex || 4 == m_iStartIndex)
+			if (POS_TOWER == m_iStartIndex || POS_ATRIA == m_iStartIndex)
 			{
 				static_cast<CModelObject*>(m_PartObjects[NPC_JOT])->Switch_Animation(1);
 				static_cast<CModelObject*>(m_PartObjects[NPC_THRASH])->Switch_Animation(8);
@@ -327,7 +327,10 @@ void CWorldMapNPC::Progress(_float _fTimeDelta)
 			m_isArriveAnim = false;
 			m_isUpdatePos = false;
 			m_isChangeCameraTarget = false;
-			++m_iStartIndex;
+
+			_int CurIndex = (_uint)m_iStartIndex;
+			CurIndex += 1;
+			m_iStartIndex = (MOVEPOS)CurIndex;
 
 			_vector vRight = m_PartObjects[NPC_JOT]->Get_ControllerTransform()->Get_State(CTransform::STATE_RIGHT);
 			m_PartObjects[NPC_JOT]->Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, XMVectorAbs(vRight));
