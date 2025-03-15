@@ -172,7 +172,14 @@ void CFriend_Violet::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 	case Client::CFriend::FRIEND_TALK:
 		break;
 	case Client::CFriend::FRIEND_MOJAM:
-		m_eCurState = FRIEND_IDLE;
+		if (iAnimIdx == ANIM::VIOLET_MOJAM_INTO)
+		{
+			Switch_PartAnim(PART_BODY, ANIM::VIOLET_MOJAM_MOJAM, false);
+		}
+		else if (iAnimIdx == ANIM::VIOLET_MOJAM_MOJAM)
+		{
+			m_eCurState = FRIEND_IDLE;
+		}
 		break;
 	case Client::CFriend::FRIEND_HIT:
 		m_eCurState = FRIEND_IDLE;
@@ -228,6 +235,7 @@ void CFriend_Violet::Switch_AnimIndex_State()
 		Change_AnimIndex_CurDirection();
 		break;
 	case Client::CFriend::FRIEND_MOJAM:
+		Switch_PartAnim(PART_BODY, ANIM::VIOLET_MOJAM_INTO, false);
 		break;
 
 	default:

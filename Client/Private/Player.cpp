@@ -35,6 +35,7 @@
 #include "PlayerState_CyberIdle.h"
 #include "PlayerState_RetriveSword.h"
 #include "PlayerState_CannonPortal.h"
+#include "PlayerState_Mojam.h"
 #include "Actor_Dynamic.h"
 #include "PlayerSword.h"    
 #include "PlayerBody.h"
@@ -1983,6 +1984,10 @@ void CPlayer::Set_State(STATE _eState)
 	case Client::CPlayer::START_CANNON_PORTAL:
 		m_pStateMachine->Transition_To(new CPlayerState_CannonPortal(this));
 		break;
+	case Client::CPlayer::MOJAM:
+		m_pStateMachine->Transition_To(new CPlayerState_Mojam(this));
+		break;
+		
 	case Client::CPlayer::STATE_LAST:
 		break;
 	default:

@@ -60,6 +60,7 @@ public:
 
 public:
 	virtual void			Switch_PartAnim(_uint _iPartIndex, _uint _iAnimIndex, _bool _isLoop);
+	void					Move_Position(_float2 _vTargetPosition);
 
 public:
 	// Get

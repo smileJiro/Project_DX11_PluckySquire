@@ -1853,6 +1853,9 @@
     <ClInclude Include="..\Public\Chase_WayState.h" />
     <ClInclude Include="..\Public\WorldMapNPC.h" />
     <ClInclude Include="..\Public\BigPressurePlate.h" />
+    <ClInclude Include="..\Public\PlayerState_Mojam.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -2972,6 +2975,9 @@
     <ClCompile Include="..\Private\Chase_WayState.cpp" />
     <ClCompile Include="..\Private\WorldMapNPC.cpp" />
     <ClCompile Include="..\Private\BigPressurePlate.cpp" />
+    <ClCompile Include="..\Private\PlayerState_Mojam.cpp">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
