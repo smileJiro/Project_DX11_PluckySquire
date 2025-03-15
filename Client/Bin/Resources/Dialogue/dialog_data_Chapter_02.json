@@ -2477,6 +2477,108 @@
 					"Blue": 0
 				}
 			]
+		},
+		{
+			"id": "Chapter2_FriendEvent_0",
+			"Section": "Chapter2_P0304",
+			"isChangeTalker": true,
+			"lines": [
+				{
+					"Portrait": 0,
+					"Talker": "스래쉬",
+					"TalkerIndex": 0,
+					"BG": 0,
+					"location": 0,
+					"is2D": true,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "둘 다 완전 멋지게 절벽을 내려왔어!",
+					"Red": 190,
+					"Green": 218,
+					"Blue": 186
+				},
+				{
+					"Portrait": 0,
+					"Talker": "스래쉬",
+					"TalkerIndex": 0,
+					"BG": 0,
+					"location": 0,
+					"is2D": true,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "리듬이 아주 괜찮더라고.",
+					"Red": 190,
+					"Green": 218,
+					"Blue": 186
+				},
+				{
+					"Portrait": 0,
+					"Talker": "바이올렛",
+					"TalkerIndex": 1,
+					"BG": 0,
+					"location": 0,
+					"is2D": true,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "그랬어? 내가봐도 좀 멋지기는 했어...",
+					"Red": 191,
+					"Green": 144,
+					"Blue": 224
+				},
+				{
+					"Portrait": 0,
+					"Talker": "바이올렛",
+					"TalkerIndex": 1,
+					"BG": 0,
+					"location": 0,
+					"is2D": true,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "자, 이제 내려왔으니까 얼른 책의 탑으로 가자...\n앞장서, 견습 기사!",
+					"Red": 191,
+					"Green": 144,
+					"Blue": 224
+				}
+			]
+		},
+		{
+			"id": "Mojam",
+			"Section": "Chapter2_P0304",
+			"lines": [
+				{
+					"Portrait": 0,
+					"Talker": "",
+					"BG": 24,
+					"location": 0,
+					"is2D": true,
+					"isPortrait": false,
+					"animation": {
+						"duration": 10,
+						"speed": 700000
+					},
+					"text": "                                             모잼!!!",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				}
+			]
 		}
+
 	]
 }

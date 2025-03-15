@@ -203,6 +203,13 @@ void CFriend::Switch_PartAnim(_uint _iPartIndex, _uint _iAnimIndex, _bool _isLoo
         static_cast<CModelObject*>(m_PartObjects[_iPartIndex])->Switch_Animation(_iAnimIndex);
 }
 
+void CFriend::Move_Position(_float2 _vTargetPosition)
+{
+    m_vMoveTargetPosition = _vTargetPosition;
+    m_eCurState = FRIEND_MOVE;
+    State_Change();
+}
+
 HRESULT CFriend::Mode_Enter(FRIEND_MODE _eNextMode)
 {
     switch (_eNextMode)
@@ -595,7 +602,7 @@ void CFriend::Action_State_Idle(_float _fTimeDelta)
         }
     }
 
-    _float fIdleOffset = 5.0f;
+    _float fIdleOffset = 15.0f;
     if (m_eCurMode == MODE_DEFAULT)
     {
         if (nullptr != m_pChaseTarget && COORDINATE_2D == m_pChaseTarget->Get_CurCoord())

@@ -1839,8 +1839,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_RoomDoor(const _wstring& _strLayerTag)
 
 HRESULT CLevel_Chapter_02::Ready_Layer_Friends(const _wstring& _strLayerTag)
 {
-	_wstring strFriendTag = L"Thrash_";
-	_int iNum = 0;
+	_wstring strFriendTag = L"Thrash";
 	{ /* Friend_Thrash */
 		CFriend_Thrash::FRIEND_DESC Desc{};
 		Desc.Build_2D_Transform(_float2(-580.f, 100.f), _float2(1.0f, 1.0f), 350.f);
@@ -1858,12 +1857,12 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Friends(const _wstring& _strLayerTag)
 		if (FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0304"), pGameObject)))
 			return E_FAIL;
 	
-		strFriendTag += to_wstring(iNum++);
 		CFriend_Controller::GetInstance()->Register_Friend(strFriendTag, static_cast<CFriend*>(pGameObject));
 		CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(strFriendTag);
 	} /* Friend_Thrash */
 
 	{ /* Friend_Violet */
+		strFriendTag = L"Violet";
 		CFriend_Violet::FRIEND_DESC Desc{};
 		Desc.Build_2D_Transform(_float2(-730.f, 100.f), _float2(1.0f, 1.0f), 350.f);
 		Desc.iCurLevelID = LEVEL_CHAPTER_2;
@@ -1880,9 +1879,6 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Friends(const _wstring& _strLayerTag)
 		if (FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0304"), pGameObject)))
 			return E_FAIL;
 
-		
-
-		strFriendTag += to_wstring(iNum++);
 		CFriend_Controller::GetInstance()->Register_Friend(strFriendTag, static_cast<CFriend*>(pGameObject));
 		CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(strFriendTag);
 	} /* Friend_Violet */
