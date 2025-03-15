@@ -45,6 +45,7 @@ private:
 	CTexture* m_pMainTextureCom = { nullptr };
 	CTexture* m_pNoiseTextureCom = { nullptr };
 
+	_float			m_fTime = { 0.f };
 	_float2			m_vDiffuseScaling = { 1.f, 1.f };
 	_float2			m_vNoiseScaling = { 1.f, 1.f };
 public:

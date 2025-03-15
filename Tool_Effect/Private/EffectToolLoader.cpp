@@ -168,9 +168,13 @@ HRESULT CEffectToolLoader::Loading_Level_Tool()
                 ), matPretransform))))
         return E_FAIL;
 
+    matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
+    //matPretransform *= XMMatrixRotationAxis(_vector{ 0,1,0,0 }, XMConvertToRadians(90.f));
+
+
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Model_Sphere"),
         C3DModel::Create(m_pDevice, m_pContext,
-            ("../Bin/Resources/Models/Nonanim/etc/S_FX_CMN_HalfSphere_01_2.model"
+            ("../Bin/Resources/Models/3DAnim/buttergrump_Rig/Projectiles/TennisBall_01.model"
                 ), matPretransform))))
         return E_FAIL;
 
@@ -184,11 +188,11 @@ HRESULT CEffectToolLoader::Loading_Level_Tool()
         return E_FAIL;
 
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Component_Texture_Diffuse"), 
-        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effects/T_FX_CMN_Noise_10.dds")))))
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effects/T_FX_CMN_Noise_06.dds")))))
         return E_FAIL;
 
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Component_Texture_Distortion"),
-        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effects/T_FX_CMN_Noise_09.dds")))))
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effects/T_FX_CMN_Noise_03_90.dds")))))
         return E_FAIL;
 
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Component_Texture_Normal"),

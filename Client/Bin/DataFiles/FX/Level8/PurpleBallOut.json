@@ -195,7 +195,7 @@
             "SpawnPosition": "FOLLOW_PARENT",
             "SpawnType": "SPAWN_RATE",
             "Texture": "../Bin/Resources/Textures/Effects/T_FX_CMN_Dust_01_s.dds",
-            "Time": 9.5,
+            "Time": 10.300000190734863,
             "Transform": [
                 1.0,
                 0.0,
@@ -427,7 +427,7 @@
             "SpawnPosition": "FOLLOW_PARENT",
             "SpawnType": "SPAWN_RATE",
             "Texture": "../Bin/Resources/Textures/Effects/T_FX_CMN_SmokeLoop8x8_02_D_s.dds",
-            "Time": 9.5,
+            "Time": 10.300000190734863,
             "Transform": [
                 1.0,
                 0.0,
