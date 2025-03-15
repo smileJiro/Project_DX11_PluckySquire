@@ -106,7 +106,7 @@ HRESULT CDraggableObject::Initialize(void* _pArg)
 	{
 		if (FAILED(__super::Initialize(pDesc)))
 			return E_FAIL;
-		m_p2DColliderComs.resize(2);
+		m_p2DColliderComs.resize(3);
 
 		CCollider_AABB::COLLIDER_AABB_DESC tBoxDesc = {};
 		tBoxDesc.pOwner = this;
@@ -119,6 +119,18 @@ HRESULT CDraggableObject::Initialize(void* _pArg)
 		if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
 			TEXT("Com_2DCollider_AABB"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &tBoxDesc)))
 			return E_FAIL;
+		
+		tBoxDesc = {};
+		tBoxDesc.pOwner = this;
+		tBoxDesc.vExtents = { pDesc->vBoxHalfExtents.x *2.f, pDesc->vBoxHalfExtents.y*2.f};
+		tBoxDesc.vScale = { 1.0f, 1.0f };
+		tBoxDesc.vOffsetPosition = { pDesc->vBoxOffset.x,pDesc->vBoxOffset.y };
+		tBoxDesc.isBlock = true;
+		tBoxDesc.isTrigger = false;
+		tBoxDesc.iCollisionGroupID = OBJECT_GROUP::GIMMICK_OBJECT;
+		if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
+			TEXT("Com_2DCollider_AABB2"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[1]), &tBoxDesc)))
+			return E_FAIL;
 
 		CCollider_Circle::COLLIDER_CIRCLE_DESC CircleDesc = {};
 		CircleDesc.pOwner = this;
@@ -129,15 +141,12 @@ HRESULT CDraggableObject::Initialize(void* _pArg)
 		CircleDesc.isTrigger = true;
 		CircleDesc.iCollisionGroupID = OBJECT_GROUP::INTERACTION_OBEJCT;
 		if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
-			TEXT("Com_2DCollider_Circle"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[1]), &CircleDesc)))
+			TEXT("Com_2DCollider_Circle"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[2]), &CircleDesc)))
 			return E_FAIL;
 
 		if (L"" != pDesc->strInitSectionTag)
-		{
 			if (FAILED(SECTION_MGR->Add_GameObject_ToSectionLayer(pDesc->strInitSectionTag, this)))
 				return E_FAIL;
-		
-		}
 	}
 	
 
@@ -269,12 +278,13 @@ void CDraggableObject::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _
 	{
 		m_bUserAround = false;
 		m_bUserContact = false;
-	}
-	if (m_pDragger && m_pDragger == _pOtherObject)
-	{
-		m_pDragger->Set_InteractObject(nullptr);
-		End_Interact(m_pDragger);
-		m_pDragger = nullptr;
+
+		if (m_pDragger && m_pDragger == _pOtherObject)
+		{
+			m_pDragger->Set_InteractObject(nullptr);
+			End_Interact(m_pDragger);
+			m_pDragger = nullptr;
+		}
 	}
 }
 

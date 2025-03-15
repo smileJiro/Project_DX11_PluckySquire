@@ -22,11 +22,16 @@ HRESULT CDoor_Yellow::Initialize(void* _pArg)
 
     DOOR_YELLOW_DESC* pDesc = static_cast<DOOR_YELLOW_DESC*>(_pArg);
 
+	m_isPressurePlate = pDesc->isPressurePlate;
+
     if (FAILED(__super::Initialize(_pArg)))
         return E_FAIL;
 
+    if (m_isPressurePlate)
+    {
     if (FAILED(Ready_Part(pDesc)))
         return E_FAIL;
+    }
 
     Set_AnimLoop();
     Switch_Animation_By_State();
@@ -279,4 +284,14 @@ void CDoor_Yellow::Free()
     Safe_Release(m_pPressurePlate);
 
     __super::Free();
+}
+
+void CDoor_Yellow::On_BombSwitch(_bool _bOn)
+{
+    if (_bOn)
+    {
+        m_eDoorState = OPEN;
+        Set_ReverseAnimation(false);
+        Switch_Animation_By_State();
+    }
 }
