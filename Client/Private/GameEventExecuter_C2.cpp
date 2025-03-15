@@ -612,7 +612,7 @@ void CGameEventExecuter_C2::Chapter2_Humgrump(_float _fTimeDelta)
 
 
 			CDraggableObject::DRAGGABLE_DESC tDraggableDesc = {};
-			tDraggableDesc.iModelPrototypeLevelID_3D = eCurLevelID;
+			tDraggableDesc.iModelPrototypeLevelID_3D = LEVEL_STATIC;
 			tDraggableDesc.iCurLevelID = eCurLevelID;
 			tDraggableDesc.strModelPrototypeTag_3D = TEXT("SM_Plastic_Block_04");
 			tDraggableDesc.eStartCoord = COORDINATE_3D;

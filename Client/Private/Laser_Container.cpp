@@ -165,7 +165,7 @@ void CLaser_Container::Update(_float _fTimeDelta)
 
 	if (m_IsMove)
 	{
-		if (L"Chapter8_SKSP_03" == m_strSectionName)
+		if (L"Chapter8_SKSP_09" == m_strSectionName)
 			int a = 1;
 		_vector vMyPos = Get_FinalPosition();
 		_vector vTargetPos = XMLoadFloat2(&m_fTargetPos);
@@ -540,7 +540,18 @@ void CLaser_Container::Compute_Beam(CCollider* _pMyCollider, CCollider* _pOtherC
 	break;
 	}
 
-	vLayerPosition = XMVectorSetX(vLayerPosition, fPos.x - XMVectorGetX(vContPos) + fOffset);
+	switch (m_eDir)
+	{
+	case Client::F_DIRECTION::RIGHT:
+	case Client::F_DIRECTION::LEFT:
+		vLayerPosition = XMVectorSetX(vLayerPosition, fPos.x - XMVectorGetX(vContPos) + fOffset);
+		break;
+	case Client::F_DIRECTION::DOWN:
+	case Client::F_DIRECTION::UP:
+		vLayerPosition = XMVectorSetY(vLayerPosition, fPos.y - XMVectorGetY(vContPos) + fOffset);
+		break;
+	}
+
 
 
 

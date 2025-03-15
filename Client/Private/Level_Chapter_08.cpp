@@ -54,6 +54,7 @@
 #include "CarriableObject.h"
 #include "DraggableObject.h"
 #include "Bulb.h"
+#include "Door_Red.h"
 
 
 #include "2DMapObject.h"
@@ -1620,7 +1621,7 @@ HRESULT CLevel_Chapter_08::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 		m_eLevelID, _strLayerTag, &LaserDesc)))
 		return E_FAIL;
 
-	CGameObject* pReceiverLaser = nullptr;
+	CGameObject* pReceiver = nullptr;
 
 	LaserDesc.iCurLevelID = m_eLevelID;
 	LaserDesc.fStartPos = { -302.00f, -1110.68f };
@@ -1631,15 +1632,39 @@ HRESULT CLevel_Chapter_08::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 	LaserDesc.isMove = false;
 	LaserDesc.strInitSectionTag = L"Chapter8_SKSP_05";
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Laser_Container"),
-		m_eLevelID, _strLayerTag, &pReceiverLaser ,&LaserDesc)))
+		m_eLevelID, _strLayerTag, &pReceiver ,&LaserDesc)))
 		return E_FAIL;
 
 
 	CBombSwitch::BOMB_SWITCH_DESC tBombSwitchDesc1 = {};
-	tBombSwitchDesc1.pReceiver = static_cast<CLaser_Container*>(pReceiverLaser);
+	tBombSwitchDesc1.pReceiver = static_cast<CLaser_Container*>(pReceiver);
 	tBombSwitchDesc1.iCurLevelID = m_eLevelID;
+	tBombSwitchDesc1.eStartState = CBombSwitch::ON;
 	tBombSwitchDesc1.tTransform2DDesc.vInitialPosition = _float3(-100.01f, -997.07f, 0.f);
 	CBombSwitch* pBombSwitch = static_cast<CBombSwitch*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_eLevelID, TEXT("Prototype_GameObject_BombSwitch"), &tBombSwitchDesc1));
+	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, _strLayerTag, pBombSwitch);
+	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter8_SKSP_05"), pBombSwitch, SECTION_2D_PLAYMAP_OBJECT);
+
+	
+
+	Desc.tTransform2DDesc.vInitialPosition = _float3(-153.00f, 200.00f, 0.f);
+	Desc.iCurLevelID = m_eLevelID;
+	Desc.isHorizontal = true;
+	Desc.eSize = CDoor_2D::MED;
+	Desc.eInitialState = CDoor_2D::CLOSED;
+	Desc.isPressurePlate = false;
+	Desc.strSectionTag = L"Chapter8_SKSP_05";
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorYellow"),
+		m_eLevelID, _strLayerTag, &pReceiver, &Desc)))
+		return E_FAIL;
+
+
+	tBombSwitchDesc1 = {};
+	tBombSwitchDesc1.pReceiver = static_cast<CDoor_Yellow*>(pReceiver);
+	tBombSwitchDesc1.iCurLevelID = m_eLevelID;
+	tBombSwitchDesc1.eStartState = CBombSwitch::ON;
+	tBombSwitchDesc1.tTransform2DDesc.vInitialPosition = _float3(300.00f, 170.00f, 0.f);
+	pBombSwitch = static_cast<CBombSwitch*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_eLevelID, TEXT("Prototype_GameObject_BombSwitch"), &tBombSwitchDesc1));
 	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, _strLayerTag, pBombSwitch);
 	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter8_SKSP_05"), pBombSwitch, SECTION_2D_PLAYMAP_OBJECT);
 
@@ -1682,6 +1707,72 @@ HRESULT CLevel_Chapter_08::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorYellow"),
 		m_eLevelID, _strLayerTag, &Desc2)))
+		return E_FAIL;
+
+	CDoor_Red::DOOR_RED_DESC DoorRedDesc = {};
+	DoorRedDesc.tTransform2DDesc.vInitialPosition = _float3(160.00f, -350.00f, 0.f);
+	DoorRedDesc.iCurLevelID = m_eLevelID;
+	DoorRedDesc.isHorizontal = true;
+	DoorRedDesc.eSize = CDoor_2D::MED;
+	DoorRedDesc.eInitialState = CDoor_2D::CLOSED;
+	DoorRedDesc.strSectionTag = L"Chapter8_SKSP_05";
+	DoorRedDesc.strLayerTag = L"Layer_Monster_Door1";
+
+	DoorRedDesc.fTargetDiff = 13.f;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorRed"),
+		m_eLevelID, _strLayerTag, &DoorRedDesc)))
+		return E_FAIL;
+
+	DoorRedDesc = {};
+	DoorRedDesc.tTransform2DDesc.vInitialPosition = _float3(163.00f, 780.00f, 0.f);
+	DoorRedDesc.iCurLevelID = m_eLevelID;
+	DoorRedDesc.isHorizontal = true;
+	DoorRedDesc.eSize = CDoor_2D::MED;
+	DoorRedDesc.eInitialState = CDoor_2D::CLOSED;
+	DoorRedDesc.strSectionTag = L"Chapter8_SKSP_05";
+	DoorRedDesc.strLayerTag = L"Layer_Monster_Door2";
+
+	DoorRedDesc.fTargetDiff = 13.f;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorRed"),
+		m_eLevelID, _strLayerTag, &DoorRedDesc)))
+		return E_FAIL;
+
+
+	LaserDesc.iCurLevelID = m_eLevelID;
+	LaserDesc.fStartPos = { -1298.52f ,956.33f };
+	LaserDesc.fEndPos = { -957.00f,956.33f };
+	LaserDesc.fMoveSpeed = 150.f;
+	LaserDesc.eDir = F_DIRECTION::DOWN;
+	LaserDesc.strInitSectionTag = L"Chapter8_SKSP_09";
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Laser_Container"),
+		m_eLevelID, _strLayerTag, &LaserDesc)))
+		return E_FAIL;
+	
+
+	LaserDesc.iCurLevelID = m_eLevelID;
+	LaserDesc.fStartPos = { -471.57f ,956.33f };
+	LaserDesc.fEndPos = { 165.,956.33f };
+	LaserDesc.fMoveSpeed = 150.f;
+	LaserDesc.isMove = true;
+	LaserDesc.eDir = F_DIRECTION::DOWN;
+	LaserDesc.strInitSectionTag = L"Chapter8_SKSP_09";
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Laser_Container"),
+		m_eLevelID, _strLayerTag, &LaserDesc)))
+		return E_FAIL;
+
+
+	
+	LaserDesc.iCurLevelID = m_eLevelID;
+	LaserDesc.fStartPos = { 251.f ,956.33f };
+	LaserDesc.fEndPos = { 911.f,956.33f };
+	LaserDesc.fMoveSpeed = 150.f;
+	LaserDesc.isMove = true;
+	LaserDesc.eDir = F_DIRECTION::DOWN;
+	LaserDesc.strInitSectionTag = L"Chapter8_SKSP_09";
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Laser_Container"),
+		m_eLevelID, _strLayerTag, &LaserDesc)))
 		return E_FAIL;
 
 
