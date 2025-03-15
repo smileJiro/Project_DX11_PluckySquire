@@ -30,6 +30,8 @@
 #include "Soldier_CrossBow.h"
 #include "CrossBow_Arrow.h"
 #include "Bomb.h"
+#include "Rat.h"
+#include "Zippy.h"
 #include "SlipperyObject.h"
 #include "LightningBolt.h"
 #include "ButterGrump.h"
@@ -1197,6 +1199,9 @@ HRESULT CLevel_Chapter_08::Ready_Layer_NPC(const _wstring& _strLayerTag)
 
 HRESULT CLevel_Chapter_08::Ready_Layer_Monster(const _wstring& _strLayerTag, CGameObject** _ppout)
 {
+	CGameObject* pObject = nullptr;
+
+
 	//CSpear_Soldier::MONSTER_DESC Spear_Soldier_Desc;
 	//Spear_Soldier_Desc.iCurLevelID = m_eLevelID;
 	//Spear_Soldier_Desc.eStartCoord = COORDINATE_3D;
@@ -1264,6 +1269,70 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 
 	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_ButterGrump"), m_eLevelID, TEXT("Layer_Monster"), &Boss_Desc)))
 	//	return E_FAIL;
+
+
+
+
+
+
+
+
+
+	_wstring strLayerTag = TEXT("Layer_Monster_Door1");
+
+	//¹èÄ¡
+	CRat::MONSTER_DESC Rat_Desc;
+	Rat_Desc.iCurLevelID = m_eLevelID;
+	Rat_Desc.eStartCoord = COORDINATE_2D;
+	Rat_Desc.tTransform2DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	Rat_Desc.tTransform2DDesc.vInitialPosition = _float3(30.f, -540.f, 0.f);
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Rat"), m_eLevelID, strLayerTag, &pObject, &Rat_Desc)))
+		return E_FAIL;
+
+	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter8_SKSP_05"), pObject);
+
+	Rat_Desc.tTransform2DDesc.vInitialPosition = _float3(220.f, -700.f, 0.f);
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Rat"), m_eLevelID, strLayerTag, &pObject, &Rat_Desc)))
+		return E_FAIL;
+
+	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter8_SKSP_05"), pObject);
+
+
+	CZippy::MONSTER_DESC Zippy_Desc;
+	Zippy_Desc.iCurLevelID = m_eLevelID;
+	Zippy_Desc.eStartCoord = COORDINATE_2D;
+	Zippy_Desc.tTransform2DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	Zippy_Desc.tTransform2DDesc.vInitialPosition = _float3(-120.f, -10.5f, 0.f);
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Zippy"), m_eLevelID, _strLayerTag, &pObject, &Zippy_Desc)))
+		return E_FAIL;
+
+	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter8_SKSP_05"), pObject);
+
+
+
+	strLayerTag= TEXT("Layer_Monster_Door2");
+
+	CSpear_Soldier::MONSTER_DESC Spear_Soldier_Desc;
+	Spear_Soldier_Desc.iCurLevelID = m_eLevelID;
+	Spear_Soldier_Desc.eStartCoord = COORDINATE_2D;
+	Spear_Soldier_Desc.tTransform2DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	Spear_Soldier_Desc.tTransform2DDesc.vInitialPosition = _float3(250.f, 650.5f, 0.f);
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Spear_Soldier"), m_eLevelID, strLayerTag, &pObject, &Spear_Soldier_Desc)))
+		return E_FAIL;
+
+	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter8_SKSP_05"), pObject);
+
+
+	Spear_Soldier_Desc.tTransform2DDesc.vInitialPosition = _float3(-25.f, 600.5f, 0.f);
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Spear_Soldier"), m_eLevelID, strLayerTag, &pObject, &Spear_Soldier_Desc)))
+		return E_FAIL;
+
+	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter8_SKSP_05"), pObject);
 
 	return S_OK;
 }
