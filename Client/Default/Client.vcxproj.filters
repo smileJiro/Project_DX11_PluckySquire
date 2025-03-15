@@ -1810,6 +1810,18 @@
     <ClInclude Include="..\Public\Laser_Beam.h">
       <Filter>02.GameObjects\2DGimmik\Laser</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\BombSwitch.h" />
+    <ClInclude Include="..\Public\BombSwitchStopper.h" />
+    <ClInclude Include="..\Public\WorldMapNPC.h" />
+    <ClInclude Include="..\Public\Back_WayState.h">
+      <Filter>03.Components\FSM\State\Patrol</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Beetle_Corpse.h">
+      <Filter>02.GameObjects\Interact\Carriable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Chase_WayState.h">
+      <Filter>03.Components\FSM\State\Chase</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -2900,6 +2912,18 @@
     </ClCompile>
     <ClCompile Include="..\Private\Laser_Beam.cpp">
       <Filter>02.GameObjects\2DGimmik\Laser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BombSwitch.cpp" />
+    <ClCompile Include="..\Private\BombSwitchStopper.cpp" />
+    <ClCompile Include="..\Private\WorldMapNPC.cpp" />
+    <ClCompile Include="..\Private\Back_WayState.cpp">
+      <Filter>03.Components\FSM\State\Patrol</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Beetle_Corpse.cpp">
+      <Filter>02.GameObjects\Interact\Carriable</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Chase_WayState.cpp">
+      <Filter>03.Components\FSM\State\Chase</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

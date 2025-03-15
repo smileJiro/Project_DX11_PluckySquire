@@ -41,7 +41,7 @@ HRESULT CBeetle::Initialize(void* _pArg)
     pDesc->fCoolTime = 2.f;
 
     pDesc->_tStat.iMaxHP = 5;
-    pDesc->_tStat.iHP = 1;
+    pDesc->_tStat.iHP = 5;
     pDesc->_tStat.iDamg = 1;
 
     if (FAILED(Ready_ActorDesc(pDesc)))
@@ -62,6 +62,10 @@ HRESULT CBeetle::Initialize(void* _pArg)
     //m_pFSM->Add_State((_uint)MONSTER_STATE::STANDBY);
     //m_pFSM->Add_State((_uint)MONSTER_STATE::CHASE);
     //m_pFSM->Add_State((_uint)MONSTER_STATE::ATTACK);
+
+
+    m_fStepHeightThreshold = 0.4f;
+    m_fStepSlopeThreshold = 0.6f;
 
     m_fDashDistance = 10.f;
     m_fBackFlyTime = 0.5f;
@@ -118,7 +122,6 @@ void CBeetle::Priority_Update(_float _fTimeDelta)
     //        m_fAccTime = 0.f;
     //    }
     //}
-
     __super::Priority_Update(_fTimeDelta); /* Part Object Priority_Update */
 }
 
@@ -128,7 +131,6 @@ void CBeetle::Update(_float _fTimeDelta)
     {
         m_isDash = false;
     }
-
 
     if (true == m_isBackFly)
     {
@@ -149,7 +151,8 @@ void CBeetle::Update(_float _fTimeDelta)
     {
         _float fSpeed = Get_ControllerTransform()->Get_SpeedPerSec() * 2.f;
         m_vDir.y = 0;
-        Get_ActorCom()->Set_LinearVelocity(XMVector3Normalize(XMLoadFloat3(&m_vDir)), fSpeed);
+        Move(XMVector3Normalize(XMLoadFloat3(&m_vDir) * fSpeed), _fTimeDelta);
+        //Get_ActorCom()->Set_LinearVelocity(XMVector3Normalize(XMLoadFloat3(&m_vDir)), fSpeed);
         m_fAccDistance += fSpeed * _fTimeDelta;
 
         if (m_fDashDistance <= m_fAccDistance || true == IsContactToTarget())
@@ -357,8 +360,6 @@ void CBeetle::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
         _float4 vRotation;
         m_pGameInstance->MatrixDecompose(nullptr, &vRotation, &vPos, Get_FinalWorldMatrix());
 		
-        cout << "생성 - X : " << vRotation.x << " Y : " << vRotation.y << "Z : " << vRotation.z << endl;
-        //XMStoreFloat4(&vRotation, XMQuaternionMultiply(XMQuaternionRotationAxis(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(45.f)), XMLoadFloat4(&vRotation)));
         CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Beetle_Corpse"), COORDINATE_3D, &vPos, &vRotation);
     }
         break;
@@ -446,7 +447,7 @@ HRESULT CBeetle::Ready_ActorDesc(void* _pArg)
     ShapeData->eShapeType = SHAPE_TYPE::CAPSULE;     // Shape의 형태.
     ShapeData->eMaterial = ACTOR_MATERIAL::CHARACTER_FOOT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
     ShapeData->isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
-    XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixRotationY(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, ShapeDesc->fRadius, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
+	XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixRotationY(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, ShapeDesc->fRadius - 0.1f, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
 
     /* 최종으로 결정 된 ShapeData를 PushBack */
     ActorDesc->ShapeDatas.push_back(*ShapeData);
@@ -479,7 +480,7 @@ HRESULT CBeetle::Ready_ActorDesc(void* _pArg)
 
     //닿은 물체의 씬 쿼리를 켜는 트리거
     SHAPE_BOX_DESC* RayBoxDesc = new SHAPE_BOX_DESC;
-    RayBoxDesc->vHalfExtents = { pDesc->fAlertRange * tanf(XMConvertToRadians(pDesc->fFOVX * 0.5f)) * 0.5f, 1.f, pDesc->fAlertRange * 0.5f };
+    RayBoxDesc->vHalfExtents = { pDesc->fAlertRange * tanf(XMConvertToRadians(pDesc->fFOVX * 0.5f)), 1.f, pDesc->fAlertRange };
 	//RayBoxDesc->vHalfExtents = { ShapeDesc->fRadius, 0.1f, pDesc->fAlertRange * 0.5f };
 
     /* 해당 Shape의 Flag에 대한 Data 정의 */
@@ -488,7 +489,7 @@ HRESULT CBeetle::Ready_ActorDesc(void* _pArg)
     ShapeData->eShapeType = SHAPE_TYPE::BOX;     // Shape의 형태.
     ShapeData->eMaterial = ACTOR_MATERIAL::NORESTITUTION; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
     ShapeData->isTrigger = true;                    // Trigger 알림을 받기위한 용도라면 true
-	XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixTranslation(0.f, RayBoxDesc->vHalfExtents.y, RayBoxDesc->vHalfExtents.z)); // Shape의 LocalOffset을 행렬정보로 저장.
+	XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixTranslation(0.f, RayBoxDesc->vHalfExtents.y, 0.f)); // Shape의 LocalOffset을 행렬정보로 저장.
 
     /* 최종으로 결정 된 ShapeData를 PushBack */
     ActorDesc->ShapeDatas.push_back(*ShapeData);

@@ -558,7 +558,17 @@ _vector CCharacter::StepAssist(_fvector _vVelocity,_float _fTimeDelta)
         if (PxGeometryType::eCAPSULE == eGeomType)
         {
 			 PxCapsuleGeometry& pxCapsule = pxGeomHolder.capsule();
-            vOrigin.y += (vPredictMove.m128_f32[1] + m_fStepHeightThreshold + pxCapsule.halfHeight + pxCapsule.radius);
+
+            //캡슐의 경우 y축 아니면 z축 회전하므로 y축 회전했을 때를 따로 처리
+            if (1.f == m_matQueryShapeOffset._22)
+            {
+                vOrigin.y += (vPredictMove.m128_f32[1] + m_fStepHeightThreshold + pxCapsule.radius);
+            }
+            //기본을 z축 기준 90도 회전으로 생각
+            else
+            {
+                vOrigin.y += (vPredictMove.m128_f32[1] + m_fStepHeightThreshold + pxCapsule.halfHeight + pxCapsule.radius);
+            }
 		}
 		else if (PxGeometryType::eBOX == eGeomType)
 		{
