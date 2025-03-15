@@ -203,9 +203,10 @@ void CFriend::Switch_PartAnim(_uint _iPartIndex, _uint _iAnimIndex, _bool _isLoo
         static_cast<CModelObject*>(m_PartObjects[_iPartIndex])->Switch_Animation(_iAnimIndex);
 }
 
-void CFriend::Move_Position(_float2 _vTargetPosition)
+void CFriend::Move_Position(_float2 _vTargetPosition, CFriend::DIRECTION _eEndDirection)
 {
     m_vMoveTargetPosition = _vTargetPosition;
+    m_eMoveEndDirection = _eEndDirection;
     m_eCurState = FRIEND_MOVE;
     State_Change();
 }
@@ -556,9 +557,12 @@ void CFriend::ChaseToTargetPosition(_float2 _vTargetPosition, _float _fTimeDelta
     _vector vChaseTargetPos = XMVectorSetW(XMLoadFloat2(&_vTargetPosition), 1.0f);
     static _bool isMoveArrival = false; // 도착 여부 체크.
     isMoveArrival = Move_To(vChaseTargetPos, _fTimeDelta);
-
+    Update_MoveTargetDirection(XMVectorSetW(XMLoadFloat2(&m_vMoveTargetPosition), 1.0f));
     if (true == isMoveArrival)
+    {
+        m_eDirection = m_eMoveEndDirection;
         m_eCurState = FRIEND_IDLE;
+    }
 }
 
 void CFriend::Action_State(_float _fTimeDelta)
