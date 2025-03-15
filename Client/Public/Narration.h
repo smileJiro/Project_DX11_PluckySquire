@@ -13,6 +13,15 @@ BEGIN(Client)
 class CNarration : public CUI
 {
 public:
+    enum CAMERAPOS
+    {
+        CAMERA_LEFT = 0, 
+        CAMERA_RIGHT,
+        CAMERA_MID,
+        CAMERA_LAST
+   };
+
+
 	struct TextTokens
 	{
 		_wstring    strText;
@@ -41,7 +50,7 @@ public:
         _wstring strSubSFX  = TEXT("NOT");            // 노출 시킬 서브 사운드
 		_float fscale;              // 텍스트의 크기 변경
         _bool isLeft;                // 왼쪽인가요 오른쪽인가요? 왼쪽이면 true
-        _int    iCameraPos = { 0 };
+        CAMERAPOS  iCameraPos = { CAMERA_LEFT };
         _float2 fpos;               // X의 좌표
         _float fwaitingTime;        // 완료 후 다음 나레이션까지의 대기 시간
         _float fLineHieght;         // 문장과 문장 사이의 높이
@@ -81,7 +90,7 @@ public:
     _bool                       isLeftRight();
     _bool                       is_PlayNarration() { return m_isPlayNarration;  }
     _bool                       is_EndNarration() { return m_isNarrationEnd; }
-    _int                        Get_CameraPos() { return m_iCameraPos; }
+    _int                        Get_CameraPos() { return (_int)m_iCameraPos; }
 
 private:
     HRESULT                     LoadFromJson(const std::wstring& filePath); // 데이터 로드
@@ -126,7 +135,7 @@ private:
     map<_uint, vector<CNarration_Anim*>>    m_vAnimObjectsByLine;
 
     _bool                                   m_isLeftRight; // 카메라를 위한 레프트 라이트
-    _int                                    m_iCameraPos;
+    CAMERAPOS                               m_iCameraPos = { CAMERA_LAST };
 
 protected:
     virtual HRESULT         Ready_Components() override;

@@ -56,7 +56,7 @@ HRESULT CNarration::Initialize(void* _pArg)
 	vCalScale.y = m_vOriginSize.y * RATIO_BOOK2D_Y;
 	m_isRender = false;
 	m_isLeftRight = true;
-	m_iCameraPos = 0;
+	m_iCameraPos = CAMERA_LEFT;
 
 	return S_OK;
 }
@@ -93,6 +93,8 @@ void CNarration::Update(_float _fTimeDelta)
 			m_DisPlayTextLine = 0;
 			//}
 		}
+
+		m_iCameraPos = m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].iCameraPos;
 	}
 
 	if (true == m_isStartNarration)
@@ -215,7 +217,7 @@ HRESULT CNarration::LoadFromJson(const wstring& filePath)
 						DialogueData.isLeft = line["isLeft"].get<bool>();
 
 					if (line.contains("iCameraPos") && line["iCameraPos"].is_number_integer())
-						DialogueData.iCameraPos = line["iCameraPos"].get<_int>();
+						DialogueData.iCameraPos = (CAMERAPOS)line["iCameraPos"].get<_int>();
 
 					if (line.contains("fscale") && line["fscale"].is_number_float())
 						DialogueData.fscale = line["fscale"].get<float>();
@@ -784,7 +786,7 @@ void CNarration::Update_Narration(_float _fTimeDelta)
 					m_vAnimObjectsByLine.clear();
 
 					m_isLeftRight = true;
-					m_iCameraPos = 0;
+					m_iCameraPos = CAMERA_LEFT;
 
 
 				}
@@ -1021,7 +1023,7 @@ void CNarration::StopNarration()
 	m_vAnimObjectsByLine.clear();
 
 	m_isLeftRight = true;
-	m_iCameraPos = 0;
+	m_iCameraPos = CAMERA_LEFT;
 	_float3 vPos = _float3(0.f, 0.f, 0.f);
 
 

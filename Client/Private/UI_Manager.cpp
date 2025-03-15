@@ -214,7 +214,7 @@ _int CUI_Manager::Get_NarrationCameraPos()
 	if (nullptr == m_pNarration)
 		assert(TEXT("m_pNarration == nullptr"));
 
-	return 	m_pNarration->Get_CameraPos();
+	return 	(_int)m_pNarration->Get_CameraPos();
 }
 
 _bool CUI_Manager::isLeft_Right()
