@@ -139,6 +139,14 @@ void CDynamicCastleGate::Collapse()
 	pDynamicActor->Add_Torque(vTor);
 }
 
+void CDynamicCastleGate::WorldMap_ReCapture()
+{
+	if(nullptr != m_PartObjects[CASTL_PART_SKSP])
+	{ 
+		static_cast<C3DMapSkspObject*>(m_PartObjects[CASTL_PART_SKSP])->Register_WorldCapture();
+	}
+}
+
 HRESULT CDynamicCastleGate::Ready_PartObjects()
 {
 	//GATE
@@ -179,7 +187,7 @@ HRESULT CDynamicCastleGate::Ready_PartObjects()
 			Add_PartObject(pSksp);
 			Safe_AddRef(pSksp);
 			pSksp->Set_ParentMatrix(COORDINATE_3D, m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D));
-			pSksp->Set_Position(_vector{ 0.f,0.f,0.f });
+			//pSksp->Set_Position(_vector{ 0.f,0.f,0.f });
 		}
 	}
 	return S_OK;

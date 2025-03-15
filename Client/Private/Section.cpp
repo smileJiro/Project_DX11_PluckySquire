@@ -55,6 +55,28 @@ HRESULT CSection::Add_GameObject_ToSectionLayer(CGameObject* _pGameObject, _uint
     return S_OK; 
 }
 
+HRESULT CSection::Change_GameObject_LayerIndex(CGameObject* _pGameObject, _uint _iLayerIndex)
+{
+    if (!Has_Exist_Layer(_iLayerIndex))
+        return E_FAIL;
+
+    for (_uint i = 0; i < m_iLayerGroupCount; i++)
+    {
+        auto& Objects = m_Layers[i]->Get_GameObjects();
+        auto iter = find_if(Objects.begin(), Objects.end(), [&_pGameObject](CGameObject* pGameObject) {
+            return _pGameObject->Get_GameObjectInstanceID() == pGameObject->Get_GameObjectInstanceID();
+            });
+
+        if (iter != Objects.end())
+        {
+			m_Layers[i]->Remove_GameObject(_pGameObject);
+			m_Layers[_iLayerIndex]->Add_GameObject(_pGameObject);
+			return S_OK;
+        }
+    }
+	return E_FAIL;
+}
+
 HRESULT CSection::Remove_GameObject_ToSectionLayer(CGameObject* _pGameObject)
 {
     if (nullptr == _pGameObject)

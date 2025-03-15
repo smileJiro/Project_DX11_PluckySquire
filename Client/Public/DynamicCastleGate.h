@@ -24,6 +24,9 @@ public:
 	virtual void OnContact_Modify(const COLL_INFO& _0, const COLL_INFO& _1, CModifiableContacts& _ModifiableContacts, _bool _bIm0)override;
 
 	void Collapse();
+
+	virtual void WorldMap_ReCapture();
+
 private:
 	HRESULT Ready_PartObjects();
 
