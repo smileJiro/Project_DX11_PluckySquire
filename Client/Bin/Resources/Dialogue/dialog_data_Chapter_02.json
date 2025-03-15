@@ -2479,6 +2479,28 @@
 			]
 		},
 		{
+			"id": "Mojam",
+			"Section": "Chapter2_P0304",
+			"lines": [
+				{
+					"Portrait": 0,
+					"Talker": "",
+					"BG": 24,
+					"location": 0,
+					"is2D": true,
+					"isPortrait": false,
+					"animation": {
+						"duration": 10,
+						"speed": 700000
+					},
+					"text": "                                             모잼!!!",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				}
+			]
+		},
+		{
 			"id": "Chapter2_FriendEvent_0",
 			"Section": "Chapter2_P0304",
 			"isChangeTalker": true,
@@ -2558,27 +2580,101 @@
 			]
 		},
 		{
-			"id": "Mojam",
-			"Section": "Chapter2_P0304",
+			"id": "Chapter2_FriendEvent_1",
+			"Section": "Chapter2_P1112",
+			"isChangeTalker": true,
 			"lines": [
 				{
 					"Portrait": 0,
-					"Talker": "",
-					"BG": 24,
-					"location": 0,
+					"Talker": "바이올렛",
+					"TalkerIndex": 1,
+					"BG": 0,
+					"location": 1,
 					"is2D": true,
 					"isPortrait": false,
+					"isLineEnter": true,
 					"animation": {
-						"duration": 10,
-						"speed": 700000
+						"duration": 1000,
+						"speed": 500
 					},
-					"text": "                                             모잼!!!",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
+					"text": "여기는 사방이 이상한 것 투성이야.",
+					"Red": 191,
+					"Green": 144,
+					"Blue": 224
+				},
+				{
+					"Portrait": 0,
+					"Talker": "바이올렛",
+					"TalkerIndex": 1,
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "어쨌든 다 왔어! 책의 탑이야!\n험그럼프는 아직 탑 꼭대기에 있는 것 같아.",
+					"Red": 191,
+					"Green": 144,
+					"Blue": 224
+				},
+				{
+					"Portrait": 0,
+					"Talker": "바이올렛",
+					"TalkerIndex": 1,
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "우리 용감한 견습 기사가 악당을 무찌를 차례라고!",
+					"Red": 191,
+					"Green": 144,
+					"Blue": 224
+				},
+				{
+					"Portrait": 0,
+					"Talker": "스래쉬",
+					"TalkerIndex": 0,
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "우리는 그냥 여기 있을게... 우린 가면 방해만 될 거야.\n물론 응원은 계속 할거야!",
+					"Red": 190,
+					"Green": 218,
+					"Blue": 186
+				},
+				{
+					"Portrait": 0,
+					"Talker": "바이올렛",
+					"TalkerIndex": 1,
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "여기서 응원하는 것쯤은 잘할 수 있다고!!!\n가서 한방 먹여줘!",
+					"Red": 191,
+					"Green": 144,
+					"Blue": 224
 				}
 			]
 		}
-
 	]
 }
