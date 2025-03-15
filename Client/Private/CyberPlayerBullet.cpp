@@ -137,6 +137,7 @@ HRESULT CCyberPlayerBullet::Initialize(void* _pArg)
 		m_pParticleTrailEffect->Set_SpawnMatrix(m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D));
 		m_pParticleTrailEffect->Active_All();
 	}
+	Safe_AddRef(m_pParticleTrailEffect);
 
 	return S_OK;
 }

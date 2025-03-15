@@ -224,6 +224,9 @@ HRESULT CPortal::Ready_DefaultParticle()
     if (false == m_isReady_3D)
         return E_FAIL;
 
+    Safe_Release(m_pDefaultEffect);
+    Safe_Release(m_PartObjects[PORTAL_PART_DEFAULTEFFECT]);
+
     _vector f3DPosition = Get_FinalPosition(COORDINATE_3D);
 
     // Æ÷Å» ÀÌÆåÆ® »ý¼º.
@@ -237,6 +240,7 @@ HRESULT CPortal::Ready_DefaultParticle()
     EffectDesc.iEffectShaderLevel = LEVEL_STATIC;
     EffectDesc.szEffectShaderTags = L"Prototype_Component_Shader_VtxMeshEffect";
     EffectDesc.szSpriteComputeShaderTag = L"Prototype_Component_Compute_Shader_SpriteInstance";
+
 
     m_pDefaultEffect = static_cast<CEffect_System*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Portal.json"), &EffectDesc));
     if (nullptr == m_pDefaultEffect)
@@ -293,6 +297,9 @@ HRESULT CPortal::Ready_InOutParticle()
 {
     if (false == m_isReady_3D)
         return E_FAIL;
+
+    Safe_Release(m_pInOutEffect);
+    Safe_Release(m_PartObjects[PORTAL_PART_INOUTEFFECT]);
 
     _vector f3DPosition = Get_FinalPosition(COORDINATE_3D);
 
