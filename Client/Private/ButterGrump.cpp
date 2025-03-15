@@ -1160,7 +1160,8 @@ HRESULT CButterGrump::Ready_PartObjects()
     ShieldDesc.iCurLevelID = m_iCurLevelID;
     _float fScale = 30.f;
 
-	ShieldDesc.tTransform3DDesc.vInitialPosition = _float3(fScale * (0.3f), 0.0f, fScale * (-0.3f));
+	//ShieldDesc.tTransform3DDesc.vInitialPosition = _float3(fScale * (0.3f), 0.0f, fScale * (-0.3f));
+	ShieldDesc.tTransform3DDesc.vInitialPosition = _float3(0.f, 0.0f, 0.f);
 	//ShieldDesc.tTransform3DDesc.vInitialPosition = _float3(0.f, 0.f, 0.f);
     ShieldDesc.tTransform3DDesc.vInitialScaling = _float3(fScale, fScale, fScale);
     ShieldDesc.tTransform3DDesc.fRotationPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_RotationPerSec();
