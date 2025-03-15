@@ -159,7 +159,7 @@ HRESULT CDraggableObject::Render()
 {
 	HRESULT hr = __super::Render();
 	
-
+#ifdef _DEBUG
 	if (false == m_p2DColliderComs.empty())
 	{
 		for (auto pCollider : m_p2DColliderComs)
@@ -168,6 +168,7 @@ HRESULT CDraggableObject::Render()
 				pCollider->Render(SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName));
 		}
 	}
+#endif // _DEBUG
 	return hr;
 }
 
