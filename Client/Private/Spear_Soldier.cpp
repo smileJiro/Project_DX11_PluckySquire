@@ -753,7 +753,8 @@ HRESULT CSpear_Soldier::Ready_ActorDesc(void* _pArg)
         ShapeData->eMaterial = ACTOR_MATERIAL::CHARACTER_FOOT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
         ShapeData->isTrigger = true;                    // Trigger 알림을 받기위한 용도라면 true
         ShapeData->iShapeUse = (_uint)SHAPE_USE::SHAPE_TRIGER;
-        XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, TriggerDesc->fHalfHeight + TriggerDesc->fRadius, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
+        //XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, TriggerDesc->fHalfHeight + TriggerDesc->fRadius, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
+        XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, 0.f, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
         ShapeData->FilterData.MyGroup = OBJECT_GROUP::RAY_TRIGGER;
         ShapeData->FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::DYNAMIC_OBJECT | OBJECT_GROUP::INTERACTION_OBEJCT;
 
@@ -780,7 +781,7 @@ HRESULT CSpear_Soldier::Ready_ActorDesc(void* _pArg)
         ShapeData->eMaterial = ACTOR_MATERIAL::NORESTITUTION; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
         ShapeData->isTrigger = true;                    // Trigger 알림을 받기위한 용도라면 true
         //XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixTranslation(0.f, RayBoxDesc->vHalfExtents.y, RayBoxDesc->vHalfExtents.z)); // Shape의 LocalOffset을 행렬정보로 저장.
-        XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixTranslation(0.f, RayBoxDesc->vHalfExtents.y, 0.f)); // Shape의 LocalOffset을 행렬정보로 저장.
+        XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixTranslation(0.f, 0.f, 0.f)); // Shape의 LocalOffset을 행렬정보로 저장.
 
         /* 최종으로 결정 된 ShapeData를 PushBack */
         ActorDesc->ShapeDatas.push_back(*ShapeData);

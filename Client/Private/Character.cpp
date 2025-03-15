@@ -359,10 +359,13 @@ _bool CCharacter::Rotate_To_Radians(_fvector _vDirection, _float _fSpeed)
     }
     else
     {
-        _vector vAxis = XMVector3Normalize(XMVector3Cross(vLook, vDirection));
-        if (XMVector3Equal(vAxis, XMVectorZero()))
+        _vector vAxis = XMVector3Cross(vLook, vDirection);
+        //if (XMVector3Equal(vAxis, XMVectorZero()))
+        //    vAxis = XMVectorSet(0, 1, 0, 0);
+        if (XMVector3NearEqual(vAxis, XMVectorZero(), XMVectorReplicate(0.1f)))
             vAxis = XMVectorSet(0, 1, 0, 0);
-        pDynamicActor->Set_AngularVelocity(vAxis * _fSpeed);
+
+        pDynamicActor->Set_AngularVelocity(XMVector3Normalize(vAxis)*_fSpeed);
         return false;
     }
 }

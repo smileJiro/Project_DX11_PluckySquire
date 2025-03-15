@@ -342,7 +342,8 @@ void CMonster::Move(_fvector _vForce, _float _fTimeDelta)
 		CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
 		_vector vVeclocity = _vForce;
 
-		vVeclocity = XMVectorSetY(vVeclocity, XMVectorGetY(pDynamicActor->Get_LinearVelocity()));
+		//vVeclocity = XMVectorSetY(vVeclocity, XMVectorGetY(pDynamicActor->Get_LinearVelocity()));
+		vVeclocity = XMVectorSetY(vVeclocity, 0.f);
 
 		if (pDynamicActor->Is_Dynamic())
 		{
