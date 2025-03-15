@@ -1511,21 +1511,21 @@ HRESULT CLevel_Chapter_08::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, _strLayerTag, pTSP3);
 	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter8_P2122"), pTSP3, SECTION_2D_PLAYMAP_OBJECT);
 
-	CBombSwitch::BOMB_SWITCH_DESC tBombSwitchDesc = {};
+	CBombSwitchStopper::BOMB_SWITCH_STOPPER_DESC tBombSwitchStopperDesc = {};
+	tBombSwitchStopperDesc.iCurLevelID = m_eLevelID;
+	tBombSwitchStopperDesc.tTransform2DDesc.vInitialPosition = _float3(-185.f, -1065.f, 0.f);
+	CBombSwitchStopper* pBombSwitchStopper = static_cast<CBombSwitchStopper*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_eLevelID, TEXT("Prototype_GameObject_BombSwitchStopper"), &tBombSwitchStopperDesc));
+	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, _strLayerTag, pBombSwitchStopper);
+	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter8_P2122"), pBombSwitchStopper, SECTION_2D_PLAYMAP_OBJECT);
 
+
+	CBombSwitch::BOMB_SWITCH_DESC tBombSwitchDesc = {};
+	tBombSwitchDesc.pReceiver = pBombSwitchStopper;
 	tBombSwitchDesc.iCurLevelID = m_eLevelID;
 	tBombSwitchDesc.tTransform2DDesc.vInitialPosition = _float3(30.f, -820.f, 0.f);
 	CBombSwitch* pBombSwitch = static_cast<CBombSwitch*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_eLevelID, TEXT("Prototype_GameObject_BombSwitch"), &tBombSwitchDesc));
 	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, _strLayerTag, pBombSwitch);
 	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter8_P2122"), pBombSwitch, SECTION_2D_PLAYMAP_OBJECT);
-
-	CBombSwitchStopper::BOMB_SWITCH_STOPPER_DESC tBombSwitchStopperDesc = {};
-	tBombSwitchStopperDesc.iCurLevelID = m_eLevelID;
-	tBombSwitchStopperDesc.tTransform2DDesc.vInitialPosition = _float3(-200.f, -820.f, 0.f);
-	CBombSwitchStopper* pBombSwitchStopper = static_cast<CBombSwitchStopper*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_eLevelID, TEXT("Prototype_GameObject_BombSwitchStopper"), &tBombSwitchStopperDesc));
-	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, _strLayerTag, pBombSwitchStopper);
-	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter8_P2122"), pBombSwitchStopper, SECTION_2D_PLAYMAP_OBJECT);
-
 
 	return S_OK;
 }
