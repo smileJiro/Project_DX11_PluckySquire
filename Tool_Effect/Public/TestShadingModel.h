@@ -23,6 +23,7 @@ class CTestShadingModel : public CModelObject
 		_float4 vDiffuseColor = { 1.f, 1.f, 1.f, 1.f };
 		_float4 vBloomColor = { 1.f, 1.f, 1.f, 1.f};
 		_float4	vSubColor = { 1.f, 1.f, 1.f, 1.f };
+		_float4 vInnerColor = { 1.f, 1.f, 1.f, 1.f };
 	} COLORINFOBUFFER;
 private:
 	CTestShadingModel(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
@@ -44,6 +45,7 @@ private:
 	CTexture* m_pMainTextureCom = { nullptr };
 	CTexture* m_pNoiseTextureCom = { nullptr };
 
+	_float			m_fTime = { 0.f };
 	_float2			m_vDiffuseScaling = { 1.f, 1.f };
 	_float2			m_vNoiseScaling = { 1.f, 1.f };
 public:

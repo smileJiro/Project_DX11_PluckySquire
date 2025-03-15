@@ -17,11 +17,20 @@ HRESULT CFresnelModelObject::Initialize(void* _pArg)
 {
     FRESNEL_MODEL_DESC* pDesc = static_cast<FRESNEL_MODEL_DESC*>(_pArg);
 
-    m_pFresnelBuffer = pDesc->pFresnelBuffer;
-    m_pColorBuffer = pDesc->pColorBuffer;
+    if (nullptr != pDesc->pFresnelBuffer)
+    {
+        m_pFresnelBuffer = pDesc->pFresnelBuffer;
+        Safe_AddRef(m_pFresnelBuffer);
+    }
+    if (nullptr != pDesc->pColorBuffer)
+    {
+        m_pColorBuffer = pDesc->pColorBuffer;
+        Safe_AddRef(m_pColorBuffer);
+    }
 
-    Safe_AddRef(m_pFresnelBuffer);
-    Safe_AddRef(m_pColorBuffer);
+    m_vDiffuseScaling = pDesc->vDiffuseScaling;
+    m_vNoiseScaling = pDesc->vNoiseScaling;
+
 
     if (FAILED(__super::Initialize(_pArg)))
         return E_FAIL;
@@ -45,6 +54,16 @@ HRESULT CFresnelModelObject::Render()
 
         m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_vNoiseScaling", &m_vNoiseScaling, sizeof(_float2));
         m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_vDiffuseScaling", &m_vDiffuseScaling, sizeof(_float2));
+
+        //// 아쉽지만 이렇게..
+        //if ((_uint)PASS_VTXMESH::NOISEFRESNEL_BILLBOARD == m_iShaderPasses[COORDINATE_3D])
+        //{
+        //    _float4 vLook;
+        //    XMStoreFloat4(&vLook, m_pGameInstance->Get_TransformInverseMatrix(CPipeLine::D3DTS_VIEW).r[2]);
+        //    if (FAILED(m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_vLook", &vLook, sizeof(_float4))))
+        //        return E_FAIL;
+        //}
+
 
 
         if (nullptr != m_pFresnelBuffer)
@@ -87,7 +106,7 @@ CFresnelModelObject* CFresnelModelObject::Create(ID3D11Device* _pDevice, ID3D11D
     return pInstance;
 }
 
-CFresnelModelObject* CFresnelModelObject::Clone(void* _pArg)
+CGameObject* CFresnelModelObject::Clone(void* _pArg)
 {
     CFresnelModelObject* pInstance = new CFresnelModelObject(*this);
 

@@ -15,7 +15,8 @@ class CFriend abstract : public CCharacter
 {
 public:
 	enum FRIEND_MODE { MODE_DEFAULT, MODE_FIGHT, MODE_BOSS };
-	enum FRIEND_STATE { FRIEND_IDLE, FRIEND_MOVE, FRIEND_CHASE, FRIEND_ATTACK, FRIEND_TALK, FRIEND_MOJAM, FRIEND_LAST };
+	enum FRIEND_STATE { FRIEND_IDLE, FRIEND_MOVE, FRIEND_CHASE, FRIEND_ATTACK, FRIEND_TALK, FRIEND_MOJAM, FRIEND_HIT, FRIEND_LAST };
+	enum COLLIDER_USE { COL_BODY, COL_ATTACK, COL_INTERACT, COL_LAST };
 	enum DIRECTION 
 	{
 		DIR_DOWN,
@@ -29,6 +30,7 @@ public:
 	typedef struct tagFriendDesc : CCharacter::CHARACTER_DESC
 	{
 		FRIEND_STATE eStartState = FRIEND_IDLE;
+		DIRECTION	eStartDirection = DIRECTION::DIR_DOWN;
 		_wstring	 strFightLayerTag; // 전투 대상 레이어
 		_wstring	 strDialogueTag; // 다이얼로그 태그
 		_int		 iStartDialogueIndex = -1;
@@ -51,7 +53,13 @@ public:
 	HRESULT					Render() override;
 
 public:
-	void					Switch_PartAnim(_uint _iPartIndex, _uint _iAnimIndex);
+	virtual void			On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject);
+	virtual void			On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject);
+	virtual void			On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject);
+	virtual void			On_Hit(CGameObject* _pHitter, _int _fDamg, _fvector _vForce);
+
+public:
+	virtual void			Switch_PartAnim(_uint _iPartIndex, _uint _iAnimIndex, _bool _isLoop);
 
 public:
 	// Get
@@ -64,8 +72,8 @@ public:
 			return;
 		m_eCurMode = _eMode;
 	}
-	virtual HRESULT			Mode_Enter(FRIEND_MODE _eNextMode) { return S_OK; }
-	virtual HRESULT			Mode_Exit() { return S_OK; }
+	virtual HRESULT			Mode_Enter(FRIEND_MODE _eNextMode);
+	virtual HRESULT			Mode_Exit();
 	void					Change_CurState(FRIEND_STATE _eState) { m_eCurState = _eState; State_Change(); } // 상태 강제 전환.
 
 protected:
@@ -88,11 +96,12 @@ protected: /* State_Move */
 
 protected: /* State_ Chase */
 	CGameObject*			m_pChaseTarget = nullptr;
-	_float					m_fChaseInterval = 60.f;
+	_float					m_fChaseInterval = 50.f;
+
 public:
 	void					Set_ChaseTarget(CGameObject* _pChaseTarget);
 	void					Delete_ChaseTarget() { Safe_Release(m_pChaseTarget); m_pChaseTarget = nullptr; }
-
+	void					Find_NearestTargetFromLayer();
 protected:
 	void					Update_ChaseTargetDirection();		 // Target 위치 기반으로 방향 결정. 
 	void					Update_MoveTargetDirection(_fvector _vTargetPos); // 이동 목표 위치 기반으로 방향 결정. 
@@ -100,8 +109,11 @@ protected:
 	void					ChaseToTarget(_float _fTimeDelta);
 	void					ChaseToTargetPosition(_float2 _vTargetPosition, _float _fTimeDelta);
 
-protected: /* State_Fight */
+protected: /* State_Attack */
 	_wstring				m_strFightLayerTag; // 전투 대상 레이어 태그.
+	_float2					m_vAttackCoolTime = { 2.0f, 0.0f };
+	_float					m_fAttackRangeFactor = 1.3f; // chase range의 1.3배
+	_int					m_iAttackActionCount = 0;
 public:
 	void					Set_FightLayerTag(const _wstring _strFightLayerTag) { m_strFightLayerTag = _strFightLayerTag; }
 
@@ -118,6 +130,7 @@ protected:
 	virtual void			State_Change_Attack();
 	virtual void			State_Change_Talk();
 	virtual void			State_Change_Mojam();
+	virtual void			State_Change_Hit();
 
 protected:
 	virtual void			Action_State(_float _fTimeDelta);
@@ -127,6 +140,7 @@ protected:
 	virtual void			Action_State_Attack(_float _fTimeDelta);
 	virtual void			Action_State_Talk(_float _fTimeDelta);
 	virtual void			Action_State_Mojam(_float _fTimeDelta);
+	virtual void			Action_State_Hit(_float _fTimeDelta);
 
 protected:
 	virtual void			Finished_DialogueAction() = 0;
