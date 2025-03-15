@@ -706,6 +706,24 @@
     <Filter Include="02.GameObjects\2DGimmik\Laser">
       <UniqueIdentifier>{98d463ca-117b-424d-b94b-e003904a3fdf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Friend">
+      <UniqueIdentifier>{12c60966-0aaf-46c3-be69-65087f50b58f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Friend\Body">
+      <UniqueIdentifier>{a98d64d0-1d40-49cf-a0c0-d4d55c23fac6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Friend\Thrash">
+      <UniqueIdentifier>{b4fee6b4-49f2-469d-bbe2-f2c1b83a8c5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Friend\Violet">
+      <UniqueIdentifier>{06ce55ed-a892-471d-83ba-1e6021aad8c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Friend\Controller">
+      <UniqueIdentifier>{9a0aa463-c77f-4b7e-8ca3-002ef0cc5dd6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Friend\Pip">
+      <UniqueIdentifier>{c71ac69c-4cf0-4807-9497-38d1a0f591e7}</UniqueIdentifier>
+    </Filter>
     <Filter Include="02.GameObjects\UI\00. GamePlay\07. WorldMap">
       <UniqueIdentifier>{7f6f1013-3858-4294-8e92-d06c3b9071df}</UniqueIdentifier>
     </Filter>
@@ -1827,6 +1845,41 @@
     <ClInclude Include="..\Public\BombSwitch.h" />
     <ClInclude Include="..\Public\BombSwitchStopper.h" />
     <ClInclude Include="..\Public\Chase_WayState.h" />
+    <ClInclude Include="..\Public\WorldMapNPC.h" />
+    <ClInclude Include="..\Public\FriendBody.h">
+      <Filter>02.GameObjects\Friend\Body</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Friend.h">
+      <Filter>02.GameObjects\Friend</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Friend_Controller.h">
+      <Filter>02.GameObjects\Friend\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Friend_Thrash.h">
+      <Filter>02.GameObjects\Friend\Thrash</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Friend_Violet.h">
+      <Filter>02.GameObjects\Friend\Violet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Back_WayState.h" />
+    <ClInclude Include="..\Public\Beetle_Corpse.h" />
+    <ClInclude Include="..\Public\BombSwitch.h" />
+    <ClInclude Include="..\Public\BombSwitchStopper.h" />
+    <ClInclude Include="..\Public\Chase_WayState.h" />
+    <ClInclude Include="..\Public\WorldMapNPC.h" />
+    <ClInclude Include="..\Public\BigPressurePlate.h" />
+    <ClInclude Include="..\Public\TiltSwapCrate.h" />
+    <ClInclude Include="..\Public\PlayerState_Mojam.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Friend_Pip.h">
+      <Filter>02.GameObjects\Friend\Pip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Back_WayState.h" />
+    <ClInclude Include="..\Public\Beetle_Corpse.h" />
+    <ClInclude Include="..\Public\BombSwitch.h" />
+    <ClInclude Include="..\Public\BombSwitchStopper.h" />
+    <ClInclude Include="..\Public\Chase_WayState.h" />
     <ClInclude Include="..\Public\WorldMapNPC.h">
       <Filter>02.GameObjects\UI\00. GamePlay\07. WorldMap</Filter>
     </ClInclude>
@@ -2929,6 +2982,41 @@
     </ClCompile>
     <ClCompile Include="..\Private\Laser_Beam.cpp">
       <Filter>02.GameObjects\2DGimmik\Laser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Back_WayState.cpp" />
+    <ClCompile Include="..\Private\Beetle_Corpse.cpp" />
+    <ClCompile Include="..\Private\BombSwitch.cpp" />
+    <ClCompile Include="..\Private\BombSwitchStopper.cpp" />
+    <ClCompile Include="..\Private\Chase_WayState.cpp" />
+    <ClCompile Include="..\Private\WorldMapNPC.cpp" />
+    <ClCompile Include="..\Private\FriendBody.cpp">
+      <Filter>02.GameObjects\Friend\Body</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Friend.cpp">
+      <Filter>02.GameObjects\Friend</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Friend_Controller.cpp">
+      <Filter>02.GameObjects\Friend\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Friend_Thrash.cpp">
+      <Filter>02.GameObjects\Friend\Thrash</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Friend_Violet.cpp">
+      <Filter>02.GameObjects\Friend\Violet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Back_WayState.cpp" />
+    <ClCompile Include="..\Private\Beetle_Corpse.cpp" />
+    <ClCompile Include="..\Private\BombSwitch.cpp" />
+    <ClCompile Include="..\Private\BombSwitchStopper.cpp" />
+    <ClCompile Include="..\Private\Chase_WayState.cpp" />
+    <ClCompile Include="..\Private\WorldMapNPC.cpp" />
+    <ClCompile Include="..\Private\BigPressurePlate.cpp" />
+    <ClCompile Include="..\Private\TiltSwapCrate.cpp" />
+    <ClCompile Include="..\Private\PlayerState_Mojam.cpp">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Friend_Pip.cpp">
+      <Filter>02.GameObjects\Friend\Pip</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Back_WayState.cpp" />
     <ClCompile Include="..\Private\Beetle_Corpse.cpp" />

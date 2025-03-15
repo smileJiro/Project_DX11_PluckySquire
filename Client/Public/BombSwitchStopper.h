@@ -7,7 +7,17 @@ class CBombSwitchStopper :
 	public CModelObject, public IBombSwitchReceiver
 {
 public:
-
+	enum ANIM_STATE
+	{
+		RECT_DOWN,
+		RECT_MOVE_DOWN,
+		RECT_MOVE_UP,
+		RECT_UP,
+		SQUARE_DOWN,
+		SQUARE_MOVE_DOWN,
+		SQUARE_MOVE_UP,
+		SQUARE_UP,
+	};
 public:
 	typedef struct tagBombSwitchStopperDesc : public CModelObject::MODELOBJECT_DESC
 	{
@@ -20,9 +30,10 @@ public:
 
 public:
 	virtual HRESULT Initialize(void* _pArg) override;
-
+	virtual HRESULT Render() override;
 public:
 	virtual void On_BombSwitch(_bool _bOn) override;
+	void On_AnimEnd(COORDINATE _eCoord, _uint _iAnimIdx);
 private:
 
 public:

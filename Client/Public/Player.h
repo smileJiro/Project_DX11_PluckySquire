@@ -158,6 +158,7 @@ public:
 		CYBER_DASH,
 		CYBER_HIT,
 		RETRIVE_SWORD,
+		MOJAM,
 		
 		STATE_LAST
 	};

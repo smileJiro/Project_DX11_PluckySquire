@@ -51,13 +51,13 @@
                 },
                 "Scale": {
                     "Arg1": [
+                        1.2999999523162842,
                         2.0,
-                        3.0,
                         1.0
                     ],
                     "Arg2": [
+                        1.2999999523162842,
                         2.0,
-                        3.0,
                         1.0
                     ],
                     "SetType": "RANDOMLINEAR"
@@ -70,7 +70,7 @@
                         0.0
                     ],
                     "Ring_Distribution": 0.0,
-                    "Ring_Radius": 1.5,
+                    "Ring_Radius": 1.0,
                     "Rotation": [
                         90.0,
                         0.0,
@@ -286,7 +286,7 @@
                         0.0
                     ],
                     "Ring_Distribution": 0.0,
-                    "Ring_Radius": 1.0,
+                    "Ring_Radius": 0.5,
                     "Rotation": [
                         90.0,
                         0.0,

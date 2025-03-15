@@ -43,6 +43,7 @@ cbuffer ColorBuffer : register(b3)
     float4 vDiffuseColor;
     float4 vBloomColor;
     float4 vSubColor;
+    float4 vInnerColor;
 }
 
 /* 상수 테이블 */
@@ -54,12 +55,13 @@ float2 g_vDiffuseScaling, g_vNoiseScaling;
 float g_fFarZ = 300.f;
 int g_iFlag = 0;
 
-float4 g_vCamPosition;
+float4 g_vCamPosition, g_vLook;
 float4 g_vDefaultDiffuseColor;
 
 float2 g_fStartUV;
 float2 g_fEndUV;
 float4 g_vColor, g_vSubColor;
+float g_fTime;
 
 /* 구조체 */
 struct VS_IN
@@ -101,6 +103,35 @@ VS_OUT VS_MAIN(VS_IN In)
     Out.vTangent = In.vTangent;
     return Out;
 }
+
+VS_OUT VS_BILLBOARD(VS_IN In)
+{
+    VS_OUT Out = (VS_OUT) 0;
+    
+    matrix matWV, matWVP;
+
+    vector vLookDir = normalize(g_vLook);
+    float3 vRightDir = normalize(cross(float3(0.f, 1.0f, 0.f), vLookDir.xyz));
+    float3 vUpDir = normalize(cross(vLookDir.xyz, vRightDir));
+
+    float4x4 NewWorld = g_WorldMatrix;
+    
+    NewWorld[0] = length(g_WorldMatrix[0]) * float4(vRightDir, 0.f);
+    NewWorld[1] = length(g_WorldMatrix[1]) * float4(vUpDir, 0.f);
+    NewWorld[2] = length(g_WorldMatrix[2]) * float4(vLookDir.xyz, 0.f);
+    NewWorld[3] = g_WorldMatrix[3];
+    
+    matWV = mul(NewWorld, g_ViewMatrix);
+    matWVP = mul(matWV, g_ProjMatrix);
+    
+    Out.vPosition = mul(float4(In.vPosition, 1.0), matWVP);
+    Out.vPosition = mul(float4(In.vPosition, 1.0), matWVP);
+    Out.vTexcoord = In.vTexcoord;
+    Out.vProjPos = Out.vPosition;
+    return Out;
+    
+}
+
 
 VS_SHADOW_OUT VS_SHADOWMAP(VS_IN In)
 {
@@ -420,9 +451,96 @@ PS_BLOOM PS_EMISSIVE(PS_IN In)
     return Out;
 }
 
-PS_BLOOM PS_SINGLEFRESNEL(PS_IN In)
+struct PS_ACCUM
 {
-    PS_BLOOM Out = (PS_BLOOM) 0;
+    float4 vAccumulate : SV_TARGET0;
+    float vRevealage : SV_TARGET1;
+    float4 vBright : SV_TARGET2;
+};
+
+float FUNC_WEIGHT(float fDepth, float fAlpha)
+{
+    return fAlpha * clamp(10.f / (1e-5 + pow(fDepth / 200.f, 4.f)), 1e-2, 3e3);
+}
+
+float3 RGBtoHSV(float3 vColor)
+{
+    float maxC = max(vColor.r, max(vColor.g, vColor.b));
+    float minC = min(vColor.r, min(vColor.g, vColor.b));
+    float delta = maxC - minC;
+
+    float h = 0;
+    if (delta > 0)
+    {
+        if (maxC == vColor.r)
+            h = fmod(((vColor.g - vColor.b) / delta), 6);
+        else if (maxC == vColor.g)
+            h = ((vColor.b - vColor.r) / delta) + 2;
+        else
+            h = ((vColor.r - vColor.g) / delta) + 4;
+    }
+    h = (h < 0 ? h + 6 : h) / 6; // Normalize to [0,1]
+
+    float s = (maxC == 0) ? 0 : delta / maxC;
+    float v = maxC;
+
+    return float3(h, s, v);
+}
+
+// HSV → RGB 변환
+float3 HSVtoRGB(float3 vHsv)
+{
+    float h = vHsv.x * 6;
+    float s = vHsv.y;
+    float v = vHsv.z;
+
+    int i = (int) floor(h);
+    float f = h - i;
+    float p = v * (1 - s);
+    float q = v * (1 - s * f);
+    float t = v * (1 - s * (1 - f));
+
+    float3 rgb;
+    if (i == 0)
+        rgb = float3(v, t, p);
+    else if (i == 1)
+        rgb = float3(q, v, p);
+    else if (i == 2)
+        rgb = float3(p, v, t);
+    else if (i == 3)
+        rgb = float3(p, q, v);
+    else if (i == 4)
+        rgb = float3(t, p, v);
+    else
+        rgb = float3(v, p, q);
+
+    return rgb;
+}
+
+// HSV 보간 함수
+float3 HSVLerp(float3 colorA, float3 colorB, float t)
+{
+    float3 hsvA = RGBtoHSV(colorA);
+    float3 hsvB = RGBtoHSV(colorB);
+
+    // Hue는 각도 개념이라 보간 시 회전 방향 고려
+    if (abs(hsvA.x - hsvB.x) > 0.5)
+    {
+        if (hsvA.x > hsvB.x)
+            hsvB.x += 1.0;
+        else
+            hsvA.x += 1.0;
+    }
+
+    float3 hsvLerp = lerp(hsvA, hsvB, t);
+    hsvLerp.x = fmod(hsvLerp.x, 1.0); // Normalize Hue
+
+    return HSVtoRGB(hsvLerp);
+}
+
+PS_ACCUM PS_SINGLEFRESNEL(PS_IN In)
+{
+    PS_ACCUM Out = (PS_ACCUM) 0;
     
     float3 vViewDirection = g_vCamPosition.xyz - In.vWorldPos.xyz;
     float fLength = length(vViewDirection);
@@ -431,23 +549,32 @@ PS_BLOOM PS_SINGLEFRESNEL(PS_IN In)
     float FresnelValue = Compute_Fresnel(In.vNormal.xyz, vViewDirection, OneFresnel.fBaseReflect, OneFresnel.fExp, OneFresnel.fStrength);
     
     float3 vFresnelColor = OneFresnel.vColor * FresnelValue;
-    Out.vDiffuse.xyz = lerp(vDiffuseColor.xyz, vFresnelColor.xyz, FresnelValue);
-    //Out.vDiffuse = (OneFresnel.vColor * FresnelValue);
-    Out.vDiffuse.w = vDiffuseColor.a;
-    Out.vBrightness = vBloomColor;
+    float fWeight = FUNC_WEIGHT(In.vProjPos.w, vDiffuseColor.a);
+
+    //Out.vDiffuse.xyz = lerp(vDiffuseColor.xyz, vFresnelColor.xyz, FresnelValue);
+    ////Out.vDiffuse = (OneFresnel.vColor * FresnelValue);
+    //Out.vDiffuse.w = vDiffuseColor.a;
+    //Out.vBrightness = vBloomColor;
+    float3 vOutColor = lerp(vDiffuseColor.xyz, vFresnelColor.xyz, FresnelValue);
+
+    Out.vAccumulate.xyz = vOutColor.rgb * vDiffuseColor.a * fWeight;
+    Out.vAccumulate.a = vDiffuseColor.a * fWeight;
+    Out.vRevealage.r = vDiffuseColor.a;
+    Out.vBright = vSubColor * fWeight;
+    
     return Out;
 }
 
-PS_BLOOM PS_NOISEFRESNEL(PS_IN In)
+PS_ACCUM PS_NOISEFRESNEL(PS_IN In)
 {
-    PS_BLOOM Out = (PS_BLOOM) 0;
+    PS_ACCUM Out = (PS_ACCUM) 0;
     
     float3 vViewDirection = g_vCamPosition.xyz - In.vWorldPos.xyz;
     float fLength = length(vViewDirection);
     vViewDirection = normalize(vViewDirection);
    
     float FresnelValue = Compute_Fresnel(In.vNormal.xyz, vViewDirection, OneFresnel.fBaseReflect, OneFresnel.fExp, OneFresnel.fStrength);
-    float3 vFresnelColor = OneFresnel.vColor * FresnelValue;
+    float4 vFresnelColor = OneFresnel.vColor * FresnelValue;
    
     
     float vDistortion = g_NoiseTexture.Sample(LinearSampler, float2(In.vTexcoord.x * g_vNoiseScaling.x, In.vTexcoord.y * g_vNoiseScaling.y));
@@ -455,18 +582,64 @@ PS_BLOOM PS_NOISEFRESNEL(PS_IN In)
     float vMain = g_DiffuseTexture.Sample(LinearSampler, (In.vTexcoord + float2(vDistortion, vDistortion)) * g_vDiffuseScaling);
     //float4 vDiffuse = g_DiffuseTexture.Sample(LinearSampler, In.vTexcoord + float2(vDistortion.x, vDistortion.y))
     
-    float3 vDefaultColor = lerp(vSubColor.xyz, vDiffuseColor.xyz, vMain);    
+    float4 vDefaultColor;
+    //vDefaultColor = lerp(vSubColor, vDiffuseColor, vMain);
+    vDefaultColor.a = lerp(vSubColor.a, vDiffuseColor.a, vMain);
+    vDefaultColor.xyz = HSVLerp(vSubColor.xyz, vDiffuseColor.xyz, vMain);
+    
+    float fWeight = FUNC_WEIGHT(In.vProjPos.w, vDefaultColor.a);
+    
+    float4 vOutColor;
+    //vOutColor = lerp(vDefaultColor, vFresnelColor, FresnelValue);
+    vOutColor.xyz = vDefaultColor.xyz * vDefaultColor.a + vInnerColor.xyz * (1.f - vDefaultColor.a);
+    vOutColor.a = vDefaultColor.a;
+    //vOutColor = lerp(vOutColor, vFresnelColor, FresnelValue);
+    vOutColor.xyz = HSVLerp(vOutColor.xyz, vFresnelColor.xyz, FresnelValue);
+    vOutColor.a = lerp(vOutColor.a, vFresnelColor.a, FresnelValue);
+    //vOutColor.xyz = vOutColor.xyz * vOutColor.a + vInnerColor.xyz * (1.f - vOutColor.a);
     
     //Out.vDiffuse.xyz = lerp(vMain * vDiffuseColor.xyz, vFresnelColor.xyz, FresnelValue);
     //Out.vDiffuse.xyz = lerp(vDefaultColor.xyz, vFresnelColor.xyz, FresnelValue);
-    Out.vDiffuse.xyz = vDefaultColor.xyz + vFresnelColor.xyz * FresnelValue;
-    //Out.vDiffuse = (OneFresnel.vColor * FresnelValue);
-    Out.vDiffuse.w = vDiffuseColor.a;
-    Out.vBrightness = vBloomColor;
+    //Out.vDiffuse.xyz = vDefaultColor.xyz + vFresnelColor.xyz * FresnelValue;
+    ////Out.vDiffuse = (OneFresnel.vColor * FresnelValue);
+    //Out.vDiffuse.w = vDiffuseColor.a;
+    //Out.vBrightness = vBloomColor;
+    
+    Out.vAccumulate.xyz = vOutColor.rgb * vOutColor.a * fWeight;
+    Out.vAccumulate.a = vOutColor.a * fWeight;
+    Out.vRevealage.r = vOutColor.a;
+    Out.vBright = vBloomColor * fWeight;
+    
     return Out;
 }
+struct COLOR
+{
+    float4 vColor : SV_TARGET0;
+};
 
+COLOR PS_ONLYDIFFUSE(PS_IN In)
+{
+    COLOR Out = (COLOR) 0;
 
+    float4 vAlbedo = useAlbedoMap ? g_AlbedoTexture.Sample(LinearSampler, In.vTexcoord) : Material.Albedo;
+    float3 vNormal = useNormalMap ? Get_WorldNormal(g_NormalTexture.Sample(LinearSampler, In.vTexcoord).xyz, In.vNormal.xyz, In.vTangent.xyz, 0) : In.vNormal.xyz;
+    float4 vORMH = useORMHMap ? g_ORMHTexture.Sample(LinearSampler, In.vTexcoord) : float4(Material.AO, Material.Roughness, Material.Metallic, 1.0f);
+    if (false == useORMHMap)
+    {
+        vORMH.r = useAOMap ? g_AOTexture.Sample(LinearSampler, In.vTexcoord).r : Material.AO;
+        vORMH.g = useRoughnessMap ? g_RoughnessTexture.Sample(LinearSampler, In.vTexcoord).r : Material.Roughness;
+        vORMH.b = useMetallicMap ? g_MetallicTexture.Sample(LinearSampler, In.vTexcoord).r : Material.Metallic;
+    }
+    
+    if (vAlbedo.a < 0.01f)
+        discard;
+    
+    Out.vColor = vAlbedo * Material.MultipleAlbedo;
+    // 1,0,0
+    // 1, 0.5, 0.5 (양의 x 축)
+    // 0, 0.5, 0.5 (음의 x 축)
+    return Out;
+}
 
 
 
@@ -600,7 +773,7 @@ technique11 DefaultTechnique
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_Default, 0);
-        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        SetBlendState(BS_WeightAccumulate, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_SINGLEFRESNEL();
@@ -610,10 +783,31 @@ technique11 DefaultTechnique
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_Default, 0);
-        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        SetBlendState(BS_WeightAccumulate, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_NOISEFRESNEL();
+    }
+
+    pass BillboardNoiseFresnel // 14
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_WeightAccumulate, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        VertexShader = compile vs_5_0 VS_BILLBOARD();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_NOISEFRESNEL();
+    }
+
+
+    pass ONLYDIFFUSE // 15
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_ONLYDIFFUSE();
     }
 
 }

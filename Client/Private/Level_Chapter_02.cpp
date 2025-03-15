@@ -13,6 +13,7 @@
 #include "PlayerData_Manager.h"
 #include "Effect_Manager.h"
 #include "Effect2D_Manager.h"
+#include "Friend_Controller.h"
 
 #include "CubeMap.h"
 #include "MainTable.h"
@@ -71,6 +72,9 @@
 
 #include "PlayerItem.h"
 #include "BackGroundObject.h"
+#include "Friend_Thrash.h"
+#include "Friend_Violet.h"
+#include "Friend_Pip.h"
 
 CLevel_Chapter_02::CLevel_Chapter_02(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: 
@@ -205,7 +209,11 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 		MSG_BOX(" Failed Ready_Layer_RoomDoor (Level_Chapter_02::Initialize)");
 		assert(nullptr);
 	}
-	
+	if (FAILED(Ready_Layer_Friends(TEXT("Layer_Friend"))))
+	{
+		MSG_BOX(" Failed Ready_Layer_Friends (Level_Chapter_02::Initialize)");
+		assert(nullptr);
+	}
 	{ // BackGround Test
 		m_pBackGroundObject;
 		CBackGroundObject::BACKGROUNDOBJ_DESC Desc;
@@ -239,6 +247,7 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::BLOCKER);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::BLOCKER_JUMPPASS);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::FALLINGROCK_BASIC);
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::FRIEND);
 	//m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::PORTAL);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_TRIGGER, OBJECT_GROUP::INTERACTION_OBEJCT); //3 8
 	/* 플레이어 - 문 */
@@ -256,6 +265,7 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::PLAYER_PROJECTILE);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::INTERACTION_OBEJCT);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::BLOCKER);
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::FRIEND);
 
 	/* 돌덩이 */
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER_PROJECTILE, OBJECT_GROUP::BLOCKER);
@@ -1363,6 +1373,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Monster_2D()
 
 	wstring strLayerTag = TEXT("Layer_Monster");
 
+
 	CGoblin_SideScroller::SIDESCROLLDESC Goblin_SideScroller_Desc;
 	Goblin_SideScroller_Desc.iCurLevelID = m_eLevelID;
 	Goblin_SideScroller_Desc.eStartCoord = COORDINATE_2D;
@@ -1511,6 +1522,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Monster_3D()
 				return E_FAIL;
 		}
 	}
+
 	return S_OK;
 }
 
@@ -1788,7 +1800,8 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Hand(const _wstring& _strLayerTag)
 HRESULT CLevel_Chapter_02::Ready_Layer_Draggable(const _wstring& _strLayerTag)
 {
 	CDraggableObject::DRAGGABLE_DESC tDraggableDesc = {};
-	tDraggableDesc.iModelPrototypeLevelID_3D = m_eLevelID;
+	tDraggableDesc.iModelPrototypeLevelID_3D = LEVEL_STATIC;
+	tDraggableDesc.isCoordChangeEnable = false;
 	tDraggableDesc.iCurLevelID = m_eLevelID;
 	tDraggableDesc.strModelPrototypeTag_3D = TEXT("SM_Plastic_Block_04");
 	tDraggableDesc.eStartCoord = COORDINATE_3D;
@@ -1830,6 +1843,79 @@ HRESULT CLevel_Chapter_02::Ready_Layer_RoomDoor(const _wstring& _strLayerTag)
 		m_eLevelID, _strLayerTag, &Desc)))
 		return E_FAIL;
 
+	return S_OK;
+}
+
+HRESULT CLevel_Chapter_02::Ready_Layer_Friends(const _wstring& _strLayerTag)
+{
+	_wstring strFriendTag = L"Thrash";
+	{ /* Friend_Thrash */
+		CFriend_Thrash::FRIEND_DESC Desc{};
+		Desc.Build_2D_Transform(_float2(-580.f, 100.f), _float2(1.0f, 1.0f), 350.f);
+		Desc.iCurLevelID = LEVEL_CHAPTER_2;
+		Desc.eStartState = CFriend::FRIEND_IDLE;
+		Desc.eStartDirection = CFriend::DIR_LEFT;
+		Desc.iModelTagLevelID = LEVEL_STATIC;
+		Desc.iNumDialoguesIndices = 0;
+		Desc.strFightLayerTag = TEXT("Layer_Monster");
+		
+		CGameObject* pGameObject = nullptr;
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Friend_Thrash"), LEVEL_CHAPTER_2, _strLayerTag, &pGameObject, &Desc)))
+			return E_FAIL;
+	
+		if (FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0304"), pGameObject)))
+			return E_FAIL;
+	
+		CFriend_Controller::GetInstance()->Register_Friend(strFriendTag, static_cast<CFriend*>(pGameObject));
+		CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(strFriendTag);
+	} /* Friend_Thrash */
+
+	{ /* Friend_Violet */
+		strFriendTag = L"Violet";
+		CFriend_Violet::FRIEND_DESC Desc{};
+		Desc.Build_2D_Transform(_float2(-730.f, 100.f), _float2(1.0f, 1.0f), 350.f);
+		Desc.iCurLevelID = LEVEL_CHAPTER_2;
+		Desc.eStartState = CFriend::FRIEND_IDLE;
+		Desc.eStartDirection = CFriend::DIR_RIGHT;
+		Desc.iModelTagLevelID = LEVEL_STATIC;
+		Desc.iNumDialoguesIndices = 0;
+		Desc.strFightLayerTag = TEXT("Layer_Monster");
+
+		CGameObject* pGameObject = nullptr;
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Friend_Violet"), LEVEL_CHAPTER_2, _strLayerTag, &pGameObject, &Desc)))
+			return E_FAIL;
+
+		if (FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0304"), pGameObject)))
+			return E_FAIL;
+
+		CFriend_Controller::GetInstance()->Register_Friend(strFriendTag, static_cast<CFriend*>(pGameObject));
+		CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(strFriendTag);
+	} /* Friend_Violet */
+
+	{ /* Friend_Pip */
+		strFriendTag = L"Pip";
+		CFriend_Pip::FRIEND_DESC Desc{};
+		Desc.Build_2D_Transform(_float2(-730.f, 100.f), _float2(1.0f, 1.0f), 350.f);
+		Desc.iCurLevelID = LEVEL_CHAPTER_2;
+		Desc.eStartState = CFriend::FRIEND_IDLE;
+		Desc.eStartDirection = CFriend::DIR_RIGHT;
+		Desc.iModelTagLevelID = LEVEL_STATIC;
+		Desc.iNumDialoguesIndices = 0;
+		Desc.strFightLayerTag = TEXT("Layer_Monster");
+
+		CGameObject* pGameObject = nullptr;
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Friend_Pip"), LEVEL_CHAPTER_2, _strLayerTag, &pGameObject, &Desc)))
+			return E_FAIL;
+
+		if (FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0304"), pGameObject)))
+			return E_FAIL;
+
+		CFriend_Controller::GetInstance()->Register_Friend(strFriendTag, static_cast<CFriend*>(pGameObject));
+		CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(strFriendTag);
+	} /* Friend_Pip */
+
+
+	
 	return S_OK;
 }
 

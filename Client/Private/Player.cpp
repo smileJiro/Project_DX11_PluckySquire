@@ -35,6 +35,7 @@
 #include "PlayerState_CyberIdle.h"
 #include "PlayerState_RetriveSword.h"
 #include "PlayerState_CannonPortal.h"
+#include "PlayerState_Mojam.h"
 #include "Actor_Dynamic.h"
 #include "PlayerSword.h"    
 #include "PlayerBody.h"
@@ -1983,6 +1984,10 @@ void CPlayer::Set_State(STATE _eState)
 	case Client::CPlayer::START_CANNON_PORTAL:
 		m_pStateMachine->Transition_To(new CPlayerState_CannonPortal(this));
 		break;
+	case Client::CPlayer::MOJAM:
+		m_pStateMachine->Transition_To(new CPlayerState_Mojam(this));
+		break;
+		
 	case Client::CPlayer::STATE_LAST:
 		break;
 	default:
@@ -2454,10 +2459,12 @@ void CPlayer::Key_Input(_float _fTimeDelta)
             //m_pActorCom->Set_GlobalPose(_float3(42.f, 8.6f, 20.f));
             //m_pActorCom->Set_GlobalPose(_float3(40.f, 0.35f, -7.f));
 
+
+			m_pActorCom->Set_GlobalPose(_float3(48.f, 24.1f, -1.7f));
             //m_pActorCom->Set_GlobalPose(_float3(18.36f, 21.58f, 1.11f));
             //m_pActorCom->Set_GlobalPose(_float3(14.6f, 11.11f, -2.9f));
             //m_pActorCom->Set_GlobalPose(_float3(18.5f, 18.2f, 40.f));
-            m_pActorCom->Set_GlobalPose(_float3(0.f, 20.f, 47.f));
+            //m_pActorCom->Set_GlobalPose(_float3(0.f, 20.f, 47.f));
         }
     }
     //if (KEY_DOWN(KEY::J))

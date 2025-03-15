@@ -52,7 +52,7 @@ public:
 	};
 
 	enum BOSSPART {BOSSPART_BODY, BOSSPART_LEFTEYE, BOSSPART_RIGHTEYE, BOSSPART_TONGUE, BOSSPART_SHIELD,
-		BOSSPART_HOMING_EFFECT, BOSSPART_PURPLEBALL_EFFECT, BOSSPART_YELLOWBALL_EFFECT,
+		BOSSPART_HOMING_EFFECT, BOSSPART_PURPLEBALL_EFFECT, BOSSPART_YELLOWBALL_EFFECT, BOOSPART_SHIELD_EFFECT,
 		BOSSPART_END};
 
 	//enum BOSS_SHAPE_USE
@@ -190,6 +190,7 @@ private:
 	class CEffect_System* m_pHomingEffect = { nullptr };
 	class CEffect_System* m_pPurpleEffect = { nullptr };
 	class CEffect_System* m_pYellowEffect = { nullptr };
+	class CEffect_System* m_pShieldEffect = { nullptr };
 
 public:
 	static CButterGrump* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

@@ -111,15 +111,17 @@ void CPlayerBomb::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 void CPlayerBomb::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
 
-    if (OBJECT_GROUP::MONSTER == _pOtherCollider->Get_CollisionGroupID())
+    if (OBJECT_GROUP::MONSTER == _pOtherCollider->Get_CollisionGroupID()
+        || OBJECT_GROUP::GIMMICK_OBJECT == _pOtherCollider->Get_CollisionGroupID())
     {
         if (m_AttckedObjects.find(_pOtherObject) != m_AttckedObjects.end())
             return;
 
-        CCharacter* pCharacter = dynamic_cast<CCharacter*>(_pOtherObject);
-        _vector vKnockBackDir = XMVectorSetW(XMVectorSetZ( XMVector3Normalize( Get_FinalPosition() - pCharacter->Get_FinalPosition()),0.f),0.f);
+       // CCharacter* pCharacter = dynamic_cast<CCharacter*>(_pOtherObject);
+        _vector vKnockBackDir = XMVectorSetW(XMVectorSetZ( XMVector3Normalize( Get_FinalPosition() - _pOtherObject->Get_FinalPosition()),0.f),0.f);
         _vector vKnockBackForce = vKnockBackDir * m_f2DKnockBackPower;
-        Event_Hit(this, pCharacter, m_iAttackDamg, vKnockBackForce);
+        _pOtherObject->On_Hit(this, m_iAttackDamg, vKnockBackForce);
+
 
         m_AttckedObjects.insert(_pOtherObject);
     }

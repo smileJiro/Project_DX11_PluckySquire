@@ -97,7 +97,6 @@ _bool CState::Check_Target3D(_bool _isSneak)
 
 	if (m_pOwner->IsTarget_In_Detection())
 	{
-		//------Å×½ºÆ®
 		_float3 vPos; XMStoreFloat3(&vPos, m_pOwner->Get_FinalPosition());
 		vPos.y += 1.f;
 		_vector vTargetDir = XMVectorSetY(m_pTarget->Get_FinalPosition() - XMLoadFloat3(&vPos), 0.f);

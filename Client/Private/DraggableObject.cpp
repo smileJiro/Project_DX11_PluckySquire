@@ -4,6 +4,7 @@
 #include "Collider_Circle.h"
 #include "Collider_AABB.h"
 #include "Actor_Dynamic.h"
+#include "Section_Manager.h"
 
 CDraggableObject::CDraggableObject(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CModelObject(_pDevice, _pContext)
@@ -23,7 +24,6 @@ HRESULT CDraggableObject::Initialize(void* _pArg)
 
 	pDesc->iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
 	pDesc->iShaderPass_2D = (_uint)PASS_VTXPOSTEX::SPRITE2D;
-	pDesc->isCoordChangeEnable = false;
 	pDesc->iRenderGroupID_3D = RG_3D;
 	pDesc->iPriorityID_3D = PR3D_GEOMETRY;
 	pDesc->iObjectGroupID = OBJECT_GROUP::INTERACTION_OBEJCT;
@@ -101,8 +101,11 @@ HRESULT CDraggableObject::Initialize(void* _pArg)
 		//m_pActorCom->Set_Mass(30.5f);
 		return S_OK;
 	}
-	else
+	
+	if (COORDINATE_2D == pDesc->eStartCoord)
 	{
+		if (FAILED(__super::Initialize(pDesc)))
+			return E_FAIL;
 		m_p2DColliderComs.resize(2);
 
 		CCollider_AABB::COLLIDER_AABB_DESC tBoxDesc = {};
@@ -113,28 +116,29 @@ HRESULT CDraggableObject::Initialize(void* _pArg)
 		tBoxDesc.isBlock = true;
 		tBoxDesc.isTrigger = false;
 		tBoxDesc.iCollisionGroupID = OBJECT_GROUP::BLOCKER;
-		if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AAABB"),
-			TEXT("Com_2DCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &tBoxDesc)))
+		if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
+			TEXT("Com_2DCollider_AABB"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &tBoxDesc)))
 			return E_FAIL;
 
 		CCollider_Circle::COLLIDER_CIRCLE_DESC CircleDesc = {};
 		CircleDesc.pOwner = this;
-		CircleDesc.fRadius = 0.33f;
+		CircleDesc.fRadius = pDesc->vBoxHalfExtents.x * 4.f;
 		CircleDesc.vScale = { 1.0f, 1.0f };
-		CircleDesc.vOffsetPosition = { 0.f, 0.f };
+		CircleDesc.vOffsetPosition = { pDesc->vBoxOffset.x,pDesc->vBoxOffset.y };
 		CircleDesc.isBlock = false;
 		CircleDesc.isTrigger = true;
 		CircleDesc.iCollisionGroupID = OBJECT_GROUP::INTERACTION_OBEJCT;
 		if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
-			TEXT("Com_2DCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[1]), &CircleDesc)))
+			TEXT("Com_2DCollider_Circle"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[1]), &CircleDesc)))
 			return E_FAIL;
 
-
-		if (FAILED(__super::Initialize(pDesc)))
-			return E_FAIL;
+		if (L"" != pDesc->strInitSectionTag)
+		{
+			if (FAILED(SECTION_MGR->Add_GameObject_ToSectionLayer(pDesc->strInitSectionTag, this)))
+				return E_FAIL;
+		
+		}
 	}
-
-
 	
 
 
@@ -151,25 +155,42 @@ void CDraggableObject::Late_Update(_float _fTimeDelta)
 	__super::Late_Update(_fTimeDelta);
 }
 
+HRESULT CDraggableObject::Render()
+{
+	HRESULT hr = __super::Render();
+	
+#ifdef _DEBUG
+	if (false == m_p2DColliderComs.empty())
+	{
+		for (auto pCollider : m_p2DColliderComs)
+		{
+			if (nullptr != pCollider)
+				pCollider->Render(SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName));
+		}
+	}
+#endif // _DEBUG
+	return hr;
+}
+
 void CDraggableObject::OnContact_Modify(const COLL_INFO& _0, const COLL_INFO& _1, CModifiableContacts& _ModifiableContacts, _bool _bIm0)
 {
 	OBJECT_GROUP eOtherGroup = (OBJECT_GROUP)(_bIm0 ? _1.pActorUserData->iObjectGroup : _0.pActorUserData->iObjectGroup);
 	if (OBJECT_GROUP::PLAYER & eOtherGroup)
 	{
-
+		if (_bIm0)
+		{
+			_ModifiableContacts.Set_InvMassScale0(0.1f); // Reduce mass effect on actor0
+			_ModifiableContacts.Set_InvInertiaScale0(0.1f); // Reduce rotation effect on actor0
+		}
+		else
+		{
+			_ModifiableContacts.Set_InvMassScale1(0.1f); // Reduce mass effect on actor1
+			_ModifiableContacts.Set_InvInertiaScale1(0.1f); // Reduce rotation effect on actor1
+		}
 		_uint iContactCount = _ModifiableContacts.Get_ContactCount();
 		for (_uint i = 0; i < iContactCount; i++)
 		{
-			if (Is_Interacting())
-				_ModifiableContacts.Ignore(i);
-			else
-			{
-				_ModifiableContacts.Set_Restitution(i, 0);
-				if (_bIm0)
-					_ModifiableContacts.Set_InvMassScale0(0.f);
-				else
-					_ModifiableContacts.Set_InvMassScale1(0.f);
-			}
+			_ModifiableContacts.Set_Restitution(i, 0);
 		}
 	}
 }
@@ -228,6 +249,35 @@ void CDraggableObject::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Ot
 	}
 }
 
+void CDraggableObject::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
+{
+	if (OBJECT_GROUP::PLAYER == _pOtherCollider->Get_CollisionGroupID() && OBJECT_GROUP::BLOCKER == _pMyCollider->Get_CollisionGroupID())
+	{
+		m_bUserAround = true;
+		m_bUserContact = true;
+	}
+}
+
+void CDraggableObject::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
+{
+}
+
+void CDraggableObject::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
+{
+	if (OBJECT_GROUP::PLAYER == _pOtherCollider->Get_CollisionGroupID() &&
+		(OBJECT_GROUP::INTERACTION_OBEJCT == _pMyCollider->Get_CollisionGroupID()))
+	{
+		m_bUserAround = false;
+		m_bUserContact = false;
+	}
+	if (m_pDragger && m_pDragger == _pOtherObject)
+	{
+		m_pDragger->Set_InteractObject(nullptr);
+		End_Interact(m_pDragger);
+		m_pDragger = nullptr;
+	}
+}
+
 void CDraggableObject::Interact(CPlayer* _pUser)
 {
 
@@ -244,7 +294,8 @@ _bool CDraggableObject::Is_Interactable(CPlayer* _pUser)
 	//-> m_pDragger가 있으면 무적권 가능. 
 	//플레이어가 이제 관심없어지면 m_pDragger를 nullptr로 만들어줘야 함.
 
-
+	if (!(m_bUserAround && m_bUserContact))
+		int a = 1;
 
 	return m_bUserAround && m_bUserContact;
 }
@@ -269,10 +320,11 @@ void CDraggableObject::On_InteractionEnd(CPlayer* _pPlayer)
 
 void CDraggableObject::Move(_fvector _vForce, _float _fTimeDelta)
 {
-	ACTOR_TYPE eActorType = Get_ActorType();
 
 	if (COORDINATE_3D == Get_CurCoord())
 	{
+		ACTOR_TYPE eActorType = Get_ActorType();
+
 		CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
 		_vector vVeclocity = _vForce /** m_tStat[COORDINATE_3D].fMoveSpeed*/  /** fDot*/;
 

@@ -71,6 +71,8 @@ HRESULT CTrigger_Manager::Mapping_ExecuterTag()
 	m_EventExecuterTags[CHAPTER2_STORYSEQUENCE] = L"Chapter2_StorySequence";
 	m_EventExecuterTags[CHAPTER2_AFTER_OPENING_BOOK] = L"Chapter2_After_Opening_Book";
 	m_EventExecuterTags[CHAPTER2_GOING_TO_ARTIA] = L"Chapter2_Going_To_Artia";
+	m_EventExecuterTags[CHAPTER2_FRIENDEVENT_0] = L"Chapter2_FriendEvent_0";
+	m_EventExecuterTags[CHAPTER2_FRIENDEVENT_1] = L"Chapter2_FriendEvent_1";
 
 	m_EventExecuterTags[CHAPTER4_3D_OUT_01] = L"Chapter4_3D_Out_01";
 	m_EventExecuterTags[CHAPTER4_3D_OUT_02] = L"Chapter4_3D_Out_02";
@@ -78,6 +80,7 @@ HRESULT CTrigger_Manager::Mapping_ExecuterTag()
 	m_EventExecuterTags[CHAPTER4_INTRO_POSTIT_SEQUENCE] = L"Chapter4_Intro_Postit_Sequence";
 	m_EventExecuterTags[CHAPTER4_RIDE_ZIPLINE] = L"Chapter4_Ride_Zipline";
 	m_EventExecuterTags[CHAPTER4_EVENT_FLAG] = L"Chapter4_Event_Flag";
+	m_EventExecuterTags[CHAPTER4_GATEEVENT] = L"Chapter4_GateEvent";
 	m_EventExecuterTags[CHAPTER4_STORYSEQUENCE] = L"Chapter4_StorySequence";
 
 	m_EventExecuterTags[CHAPTER6_FATHERGAME_PROGRESS_START_CLEAR] = L"Chapter6_FatherGame_Progress_Start_Clear";

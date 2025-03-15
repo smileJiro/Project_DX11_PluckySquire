@@ -6,20 +6,39 @@
 #include "Section_Manager.h"
 #include "ButterGrump.h"
 
+
 CButterGrump_Shield::CButterGrump_Shield(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
-    :CModelObject(_pDevice, _pContext)
+    :CFresnelModelObject(_pDevice, _pContext)
 {
 }
 
 
 CButterGrump_Shield::CButterGrump_Shield(const CButterGrump_Shield& _Prototype)
-    :CModelObject(_Prototype)
+    :CFresnelModelObject(_Prototype)
 {
-
+    m_pFresnelBuffer = _Prototype.m_pFresnelBuffer;
+    Safe_AddRef(m_pFresnelBuffer);
+    m_pColorBuffer = _Prototype.m_pColorBuffer;
+    Safe_AddRef(m_pColorBuffer);
 }
 
 HRESULT CButterGrump_Shield::Initialize_Prototype()
 {
+    FRESNEL_INFO tBulletFresnelInfo = {};
+    tBulletFresnelInfo.fBaseReflect = 0.19f;
+    tBulletFresnelInfo.fExp = 1.99f;
+    tBulletFresnelInfo.vColor = { 1.f, 1.f, 1.f, 2.f };
+    tBulletFresnelInfo.fStrength = 1.f; // ¾È¾¸.
+    m_pGameInstance->CreateConstBuffer(tBulletFresnelInfo, D3D11_USAGE_DEFAULT, &m_pFresnelBuffer);
+
+
+    COLORS_INFO tColorsInfo = {};
+    tColorsInfo.vDiffuseColor = _float4(0.25f, 0.4f, 0.8f, 0.15f);
+    tColorsInfo.vBloomColor = _float4(0.12f, 0.22f, 0.5f, 0.69f);
+    tColorsInfo.vSubColor = _float4(0.8f, 0.8f, 0.8f, 0.05f);
+    tColorsInfo.vInnerColor = _float4(0.38f, 0.41f, 1.f, 1.f);
+
+    m_pGameInstance->CreateConstBuffer(tColorsInfo, D3D11_USAGE_DEFAULT, &m_pColorBuffer);
     return S_OK;
 }
 
@@ -31,6 +50,9 @@ HRESULT CButterGrump_Shield::Initialize(void* _pArg)
     pDesc->isCoordChangeEnable = false;
     pDesc->eStartCoord = COORDINATE_3D;
     pDesc->iObjectGroupID = OBJECT_GROUP::BOSS;
+
+    pDesc->szDiffusePrototypeTag = L"Prototype_Component_Texture_BossShieldMain";
+    pDesc->szNoisePrototypeTag = L"Prototype_Component_Texture_BossShieldNoise";
 
     m_pParent = pDesc->pParent;
 
@@ -52,6 +74,10 @@ HRESULT CButterGrump_Shield::Initialize(void* _pArg)
 
     static_cast<C3DModel*>(Get_Model(COORDINATE_3D))->Set_MaterialConstBuffer_Albedo(0, _float4(1.f, 1.f, 1.f, 1.f), true);
     //static_cast<C3DModel*>(Get_Model(COORDINATE_3D))->Set_MaterialConstBuffer_Albedo(0, _float4(1.f, 1.f, 1.f, 0.5f), true);
+
+    m_vDiffuseScaling = _float2(0.f, 1.f);
+    m_vNoiseScaling = _float2(1.f, 3.f);
+
 
     return S_OK;
 }

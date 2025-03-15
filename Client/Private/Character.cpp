@@ -227,6 +227,9 @@ void CCharacter::Enter_Section(const _wstring _strIncludeSectionName)
 
 _bool CCharacter::Is_Dynamic()
 {
+    if (nullptr == m_pActorCom)
+        return false;
+
     return  m_pActorCom && static_cast<CActor_Dynamic*>(m_pActorCom)->Is_Dynamic();
 }
 
@@ -359,10 +362,13 @@ _bool CCharacter::Rotate_To_Radians(_fvector _vDirection, _float _fSpeed)
     }
     else
     {
-        _vector vAxis = XMVector3Normalize(XMVector3Cross(vLook, vDirection));
-        if (XMVector3Equal(vAxis, XMVectorZero()))
+        _vector vAxis = XMVector3Cross(vLook, vDirection);
+        //if (XMVector3Equal(vAxis, XMVectorZero()))
+        //    vAxis = XMVectorSet(0, 1, 0, 0);
+        if (XMVector3NearEqual(vAxis, XMVectorZero(), XMVectorReplicate(0.1f)))
             vAxis = XMVectorSet(0, 1, 0, 0);
-        pDynamicActor->Set_AngularVelocity(vAxis * _fSpeed);
+
+        pDynamicActor->Set_AngularVelocity(XMVector3Normalize(vAxis)*_fSpeed);
         return false;
     }
 }
@@ -558,7 +564,17 @@ _vector CCharacter::StepAssist(_fvector _vVelocity,_float _fTimeDelta)
         if (PxGeometryType::eCAPSULE == eGeomType)
         {
 			 PxCapsuleGeometry& pxCapsule = pxGeomHolder.capsule();
-            vOrigin.y += (vPredictMove.m128_f32[1] + m_fStepHeightThreshold + pxCapsule.halfHeight + pxCapsule.radius);
+
+            //캡슐의 경우 y축 아니면 z축 회전하므로 y축 회전했을 때를 따로 처리
+            if (1.f == m_matQueryShapeOffset._22)
+            {
+                vOrigin.y += (vPredictMove.m128_f32[1] + m_fStepHeightThreshold + pxCapsule.radius);
+            }
+            //기본을 z축 기준 90도 회전으로 생각
+            else
+            {
+                vOrigin.y += (vPredictMove.m128_f32[1] + m_fStepHeightThreshold + pxCapsule.halfHeight + pxCapsule.radius);
+            }
 		}
 		else if (PxGeometryType::eBOX == eGeomType)
 		{
@@ -718,23 +734,24 @@ _bool CCharacter::Move_To_3D(_fvector _vPosition, _float _fEpsilon, _bool _Freez
 // -> 이동
 //만약 첫 번째 프레임이면? 이전 프레임의 위치가 없을 것.
 // ->일단 이동하고, 
-_bool CCharacter::Move_To(_fvector _vPosition, _float _fTimeDelta)
+_bool CCharacter::Move_To(_fvector _vPosition, _float _fTimeDelta, _float fInterval)
 {
     COORDINATE eCoord = Get_CurCoord();
 	_vector vCurrentPos = Get_FinalPosition();
 	_float fEpsilon = COORDINATE_2D == eCoord ? 10.f : 0.3f;
-	if (Check_Arrival(_vPosition, fEpsilon))
+
+    _float fMoveSpeed = m_pControllerTransform->Get_SpeedPerSec();
+    _vector vDir = XMVector3Normalize(XMVectorSetW(_vPosition - vCurrentPos, 0.f));
+	if (Check_Arrival(_vPosition, fEpsilon + fInterval))
 	{
         if(Is_Dynamic())
         {
-			_float3 vPos; XMStoreFloat3(&vPos, _vPosition);
+			_float3 vPos; XMStoreFloat3(&vPos, _vPosition + (-vDir * fInterval));
             m_pActorCom->Set_GlobalPose(vPos);
         }
-		Set_Position(_vPosition);
+		Set_Position(_vPosition + (-vDir * fInterval));
 		return true;
 	}
-	_float fMoveSpeed = m_pControllerTransform->Get_SpeedPerSec();
-	_vector vDir = XMVector3Normalize( XMVectorSetW( _vPosition - vCurrentPos,0.f));
 
     Move(vDir * fMoveSpeed, _fTimeDelta);
     return false;

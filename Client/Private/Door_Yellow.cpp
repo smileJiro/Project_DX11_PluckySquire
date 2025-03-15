@@ -21,7 +21,7 @@ HRESULT CDoor_Yellow::Initialize(void* _pArg)
         return E_FAIL;
 
     DOOR_YELLOW_DESC* pDesc = static_cast<DOOR_YELLOW_DESC*>(_pArg);
-
+	m_pPressurePlate = pDesc->pPressurePlate;
     if (FAILED(__super::Initialize(_pArg)))
         return E_FAIL;
 
@@ -135,6 +135,8 @@ void CDoor_Yellow::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 
 HRESULT CDoor_Yellow::Ready_Part(const DOOR_YELLOW_DESC* _pDesc)
 {
+	if (m_pPressurePlate)
+		return S_OK;
     CModelObject::MODELOBJECT_DESC Desc = {};
 
     Desc.tTransform2DDesc.vInitialPosition = _pDesc->vPressurePlatePos;

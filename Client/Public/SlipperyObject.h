@@ -23,10 +23,12 @@ public:
 
 public:
 	virtual void On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
+	virtual void On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
 
 
 public:
 	void Start_Slip(_fvector _vDirection, _float _fPower);
+	void Stop_Slip() { m_bSlip = false; }
 private:
 	virtual void On_StartSlip(_vector _vDirection, _float _fPowerMag = 1.f) {};
 	virtual void On_Impact(CGameObject* _pOtherObject) {};

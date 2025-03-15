@@ -14,8 +14,8 @@ protected:
     C2DModel(const C2DModel& _Prototype);
     virtual ~C2DModel() = default;
 public:
-    virtual HRESULT			Initialize_Prototype(const _char* _szModel2DFilePath, _uint _iLevelIdx , _bool _bNoJson = false);
-    virtual HRESULT			Initialize_Prototype(const _char* _szModel2DFilePath , _bool _bNoJson = false);
+    virtual HRESULT			Initialize_Prototype(const _char* _szModel2DFilePath, _uint _iLevelIdx , _bool _bNoJson = false, _bool _isSRGBTexture = true);
+    virtual HRESULT			Initialize_Prototype(const _char* _szModel2DFilePath , _bool _bNoJson = false, _bool _isSRGBTexture = true);
     HRESULT			        Initialize(void* _pDesc);
 
     virtual HRESULT			Render(CShader* _Shader, _uint _iShaderPass)override;
@@ -49,7 +49,7 @@ public:
 #endif // _DEBUG
 
 private:
-    CTexture* Load_Texture(filesystem::path _path, _uint _iLevelIdx);
+    CTexture* Load_Texture(filesystem::path _path, _uint _iLevelIdx, _bool _isSRGBTexture = true);
 
 
 
@@ -63,8 +63,8 @@ protected:
 
 	_uint m_iCurAnimIdx = 0;
 public:
-    static C2DModel* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _char* pModelFilePath, _uint _iLevelIdx, _bool _bNoJson = false);
-    static C2DModel* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _char* pModelFilePath,_bool _bNoJson = false);
+    static C2DModel* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _char* pModelFilePath, _uint _iLevelIdx, _bool _bNoJson = false, _bool _isSRGBTexture = true);
+    static C2DModel* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _char* pModelFilePath,_bool _bNoJson = false, _bool _isSRGBTexture = true);
    
     virtual CComponent* Clone(void* _pArg) override;
     virtual void Free() override;

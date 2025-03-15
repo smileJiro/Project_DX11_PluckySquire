@@ -109,7 +109,7 @@ public:
 
 	virtual void Move(_fvector _vVelocity, _float _fTimeDelta);
 	_bool Move_To_3D(_fvector _vPosition, _float _fEpsilon = 0.5f, _bool _FreezeY = true);
-	_bool Move_To(_fvector _vPosition, _float _fTimeDelta);
+	_bool Move_To(_fvector _vPosition, _float _fTimeDelta, _float fInterval = 0.0f);
 	_bool Check_Arrival(_fvector _vPosition, _float _fEpsilon = 0.5f);
 	_bool Check_Arrival(_fvector _vPrevPosition, _fvector _vNextPosition, _fvector _vTargetPosition);
 	//캐릭터 기준 _vDir 방향을 바라보게 하는 함수. Y축으로만 회전함.
@@ -172,7 +172,7 @@ protected:
 	_float m_fKnockBackForce = {};
 	_float m_fKnockBackAccTime = {};
 
-	_float m_fStepSlopeThreshold = 0.45f;
+	_float m_fStepSlopeThreshold = 0.7f;
 	_float m_fStepHeightThreshold = 0.15f;
 	_bool	m_isKnockBack = {};
 	_bool m_bOnGround = false;

@@ -406,7 +406,9 @@ void CState_Sneak::Determine_NextDirection(_fvector& _vDestination, _float3* _vD
 			&& false == m_pGameInstance->RayCast_Nearest_GroupFilter(vRightPos, vRightRayDirection, XMVectorGetX(XMVector3Length(XMVectorSetY(_vDestination - XMLoadFloat3(&vRightPos), 0.f))), OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE))
 		{
 			vResult = _vDestination - m_pOwner->Get_FinalPosition();
-			XMStoreFloat3(_vDirection, XMVector3Normalize(XMVectorSetY(vResult, 0.f)));
+			if (0.01f >= XMVectorGetY(vResult))
+				XMVectorSetY(vResult, 0.f);
+			XMStoreFloat3(_vDirection, XMVector3Normalize(vResult));
 			return;
 		}
 		//타겟 방향이 막혀있으면 웨이포인트 이동
