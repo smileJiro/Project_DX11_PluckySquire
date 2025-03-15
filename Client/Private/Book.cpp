@@ -811,19 +811,31 @@ void CBook::Execute_AnimEvent(_uint _iAnimIndex)
 HRESULT CBook::Convert_Position_3DTo2D(_fvector _v3DPos, _vector* _pOutPosition)
 {
 	CSection_Manager* pSectionManager = CSection_Manager::GetInstance();
-	_float2 vRenderTargetSize = pSectionManager->Get_Section_RenderTarget_Size(pSectionManager->Get_Cur_Section_Key());
+	wstring strSectionKey = pSectionManager->Get_Cur_Section_Key();
+	CSection_2D* pSection = static_cast<CSection_2D*>( pSectionManager->Find_Section(strSectionKey));
 	_float3	vBookWorldMin = pSectionManager->Get_BookMinWorldPos();
 	_float3	vBookWorldMax = pSectionManager->Get_BookMaxWorldPos();
-	_float2 vRatio = { (XMVectorGetX(_v3DPos) - vBookWorldMin.x) / (vBookWorldMax.x - vBookWorldMin.x)
-	, (XMVectorGetZ(_v3DPos) - vBookWorldMin.z) / (vBookWorldMax.z - vBookWorldMin.z) };
+	_float2 vRatio;
+	if (pSection->Is_Rotation())
+	{
+		vRatio =  { (XMVectorGetZ(_v3DPos) - vBookWorldMin.z) / (vBookWorldMax.z - vBookWorldMin.z),
+		 (vBookWorldMax.x - XMVectorGetX(_v3DPos)) / (vBookWorldMax.x - vBookWorldMin.x) };
+	}
+	else
+	{
+		vRatio = { (XMVectorGetX(_v3DPos) - vBookWorldMin.x) / (vBookWorldMax.x - vBookWorldMin.x)
+		, (XMVectorGetZ(_v3DPos) - vBookWorldMin.z) / (vBookWorldMax.z - vBookWorldMin.z) };
 
+	}
 	if (-0.f > vRatio.x || 1.f < vRatio.x
 		|| -0.f > vRatio.y || 1.f < vRatio.y)
 		return E_FAIL;
 	// 2D 좌표계로 변환
 
+	_float2 vRenderTargetSize = pSectionManager->Get_Section_RenderTarget_Size(strSectionKey);
+
 	*_pOutPosition = { vRatio.x * vRenderTargetSize.x - vRenderTargetSize.x * 0.5f,
-		 vRatio.y * vRenderTargetSize.y - vRenderTargetSize.y * 0.5f };
+			vRatio.y * vRenderTargetSize.y - vRenderTargetSize.y * 0.5f };
 	return S_OK;
 }
 

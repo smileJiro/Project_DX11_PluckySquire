@@ -100,6 +100,9 @@
 #include "Bomb.h"
 #include "BombableBox.h"
 #include "TiltSwapPusher.h"
+#include "BigPressurePlate.h"
+#include "BombSwitch.h"
+#include "BombSwitchStopper.h"
 #include "Key.h"
 #include "Beetle_Corpse.h"
 
@@ -208,6 +211,7 @@
 #include "Word.h"
 
 #include "Laser_Container.h"
+#include "Laser_Beam.h"
 
 
 // Etc
@@ -238,7 +242,10 @@
 #include "Effect_Beam.h"
 #include "TurnBookEffect.h"
 
-
+/* For. Friend */
+#include "Friend_Thrash.h"
+#include "Friend_Violet.h"
+#include "FriendBody.h"
 
 
 
@@ -642,6 +649,21 @@ HRESULT CLoader::Loading_Level_Static()
 
 	lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
 
+	/* For. Prototype_GameObject_Friend_Thrash */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Friend_Thrash"),
+		CFriend_Thrash::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For. Prototype_GameObject_Friend_Violet */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Friend_Violet"),
+		CFriend_Violet::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	
+	/* For. Prototype_GameObject_FriendBody */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_FriendBody"),
+		CFriendBody::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	
 	/* For. Prototype_GameObject_BackGroundObject */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_BackGroundObject"),
 		CBackGroundObject::Create(m_pDevice, m_pContext))))
@@ -1621,9 +1643,6 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 			CRubboink_Tiny::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
-		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_TiltSwapPusher"),
-			CTiltSwapPusher::Create(m_pDevice, m_pContext))))
-			return E_FAIL;
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_Minigame_Defender"),
 			CMiniGame_Defender::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
@@ -1881,6 +1900,23 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Beetle_Corpse"),
 		CBeetle_Corpse::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_TiltSwapPusher"),
+		CTiltSwapPusher::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_BigPressurePlate"),
+		CBigPressurePlate::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_BombSwitch"),
+		CBombSwitch::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_BombSwitchStopper"),
+		CBombSwitchStopper::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Laser_Beam"),
+		CLaser_Beam::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 #pragma endregion
 

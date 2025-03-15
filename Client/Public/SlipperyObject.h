@@ -1,10 +1,10 @@
 #pragma once
 #include "ContainerObject.h"
-
+#include "Stoppable.h"
 
 BEGIN(Client)
 class CSlipperyObject :
-    public CContainerObject
+	public CContainerObject, public IStoppable
 {
 public:
 	typedef struct tagSlipperyDesc :public CContainerObject::CONTAINEROBJ_DESC

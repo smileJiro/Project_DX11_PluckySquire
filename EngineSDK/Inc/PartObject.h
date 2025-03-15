@@ -27,6 +27,7 @@ public:
 	virtual HRESULT			Render() override;
 
 public:
+	_vector					Get_OffsetPosition() { return __super::Get_FinalPosition(); }; // PartObject는 최종 매트릭스에서 위치값 추출해서 리턴.
 	_vector					Get_FinalPosition() const override; // PartObject는 최종 매트릭스에서 위치값 추출해서 리턴.
 	virtual _vector			Get_FinalPosition(COORDINATE _eCoord) const override;
 

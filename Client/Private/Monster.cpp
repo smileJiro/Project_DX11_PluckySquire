@@ -196,14 +196,22 @@ void CMonster::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
 
 void CMonster::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-	if (OBJECT_GROUP::PLAYER & _pOtherCollider->Get_CollisionGroupID())
+	OBJECT_GROUP eOtherGroupID = (OBJECT_GROUP)_pOtherCollider->Get_CollisionGroupID();
+	COLLIDER2D_USE eOtherColUse = (COLLIDER2D_USE)_pOtherCollider->Get_ColliderUse();
+	if (OBJECT_GROUP::PLAYER & eOtherGroupID)
 	{
 		if (nullptr == m_pTarget)
 			m_pTarget = CPlayerData_Manager::GetInstance()->Get_CurrentPlayer_Ptr();
 		Event_Hit(this, static_cast<CCharacter*>(_pOtherObject), Get_Stat().iDamg, XMVector3Normalize(m_pTarget->Get_FinalPosition() - Get_FinalPosition()), 300.f);
 	}
 
-	if (OBJECT_GROUP::BLOCKER & _pOtherCollider->Get_CollisionGroupID())
+	if (OBJECT_GROUP::FRIEND & eOtherGroupID)
+	{
+		if(COLLIDER2D_USE::COLLIDER2D_BODY == eOtherColUse)
+			Event_Hit(this, static_cast<CCharacter*>(_pOtherObject), Get_Stat().iDamg, XMVector3Normalize(_pOtherObject->Get_FinalPosition() - Get_FinalPosition()), 300.f);
+	}
+
+	if (OBJECT_GROUP::BLOCKER & eOtherGroupID)
 	{
 		m_isContact_Block = true;
 	}
@@ -227,21 +235,23 @@ void CMonster::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
 		return;
 
 	m_tStat.iHP -= _iDamg;
-	if (m_tStat.iHP < 0)
-	{
-		m_tStat.iHP = 0;
-	}
+#ifdef _DEBUG
 	cout << m_tStat.iHP << endl;
+#endif // _DEBUG
+
 	if (0 >= m_tStat.iHP)
 	{
-		Set_AnimChangeable(true);
-		if (0 < m_p2DColliderComs.size())
+		if (0 == m_tStat.iHP)
 		{
-			m_p2DColliderComs[0]->Set_Active(false);
+			Set_AnimChangeable(true);
+			if (0 < m_p2DColliderComs.size())
+			{
+				m_p2DColliderComs[0]->Set_Active(false);
+			}
+
+			Event_ChangeMonsterState(MONSTER_STATE::DEAD, m_pFSM);
 		}
 
-
-		Event_ChangeMonsterState(MONSTER_STATE::DEAD, m_pFSM);
 	}
 	else
 	{
