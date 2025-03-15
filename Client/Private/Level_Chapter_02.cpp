@@ -65,6 +65,7 @@
 #include "NPC_Manager.h"
 #include "ShopPanel_New.h"
 #include "Shop_Manager.h"
+#include "WorldMapNPC.h"
 
 #include "NPC.h"
 #include "Loader.h"
@@ -1254,6 +1255,13 @@ HRESULT CLevel_Chapter_02::Ready_Layer_NPC(const _wstring& _strLayerTag)
 		return E_FAIL;
 
 
+	CWorldMapNPC::CHARACTER_DESC Desc;
+	Desc.iCurLevelID = m_eLevelID;
+	//Desc.tTransform3DDesc.vInitialPosition = { -3.f, 0.35f, -19.3f };   // TODO ::임시 위치
+	Desc.eStartCoord = COORDINATE_2D;
+	Desc.tTransform2DDesc.vInitialPosition = { 0.f, 0.f, 0.f };   // TODO ::임시 위치
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_WorldMapNpc"), m_eLevelID, _strLayerTag, &Desc)))
 
 
 
@@ -1843,7 +1851,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Friends(const _wstring& _strLayerTag)
 	_wstring strFriendTag = L"Thrash";
 	{ /* Friend_Thrash */
 		CFriend_Thrash::FRIEND_DESC Desc{};
-		Desc.Build_2D_Transform(_float2(-580.f, 100.f), _float2(1.0f, 1.0f), 350.f);
+		Desc.Build_2D_Transform(_float2(-580.f, 100.f), _float2(1.0f, 1.0f), 450.f);
 		Desc.iCurLevelID = LEVEL_CHAPTER_2;
 		Desc.eStartState = CFriend::FRIEND_IDLE;
 		Desc.eStartDirection = CFriend::DIR_LEFT;
@@ -1859,13 +1867,13 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Friends(const _wstring& _strLayerTag)
 			return E_FAIL;
 	
 		CFriend_Controller::GetInstance()->Register_Friend(strFriendTag, static_cast<CFriend*>(pGameObject));
-		CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(strFriendTag);
+		//CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(strFriendTag);
 	} /* Friend_Thrash */
 
 	{ /* Friend_Violet */
 		strFriendTag = L"Violet";
 		CFriend_Violet::FRIEND_DESC Desc{};
-		Desc.Build_2D_Transform(_float2(-730.f, 100.f), _float2(1.0f, 1.0f), 350.f);
+		Desc.Build_2D_Transform(_float2(-730.f, 100.f), _float2(1.0f, 1.0f), 450.f);
 		Desc.iCurLevelID = LEVEL_CHAPTER_2;
 		Desc.eStartState = CFriend::FRIEND_IDLE;
 		Desc.eStartDirection = CFriend::DIR_RIGHT;
@@ -1881,16 +1889,16 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Friends(const _wstring& _strLayerTag)
 			return E_FAIL;
 
 		CFriend_Controller::GetInstance()->Register_Friend(strFriendTag, static_cast<CFriend*>(pGameObject));
-		CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(strFriendTag);
+		//CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(strFriendTag);
 	} /* Friend_Violet */
 
 	{ /* Friend_Pip */
 		strFriendTag = L"Pip";
 		CFriend_Pip::FRIEND_DESC Desc{};
-		Desc.Build_2D_Transform(_float2(-730.f, 100.f), _float2(1.0f, 1.0f), 350.f);
+		Desc.Build_2D_Transform(_float2(-990.f, 20.f), _float2(1.0f, 1.0f), 450.f);
 		Desc.iCurLevelID = LEVEL_CHAPTER_2;
 		Desc.eStartState = CFriend::FRIEND_IDLE;
-		Desc.eStartDirection = CFriend::DIR_RIGHT;
+		Desc.eStartDirection = CFriend::DIR_DOWN;
 		Desc.iModelTagLevelID = LEVEL_STATIC;
 		Desc.iNumDialoguesIndices = 0;
 		Desc.strFightLayerTag = TEXT("Layer_Monster");
@@ -1899,11 +1907,11 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Friends(const _wstring& _strLayerTag)
 		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Friend_Pip"), LEVEL_CHAPTER_2, _strLayerTag, &pGameObject, &Desc)))
 			return E_FAIL;
 
-		if (FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P0304"), pGameObject)))
+		if (FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter1_P0708"), pGameObject)))
 			return E_FAIL;
 
 		CFriend_Controller::GetInstance()->Register_Friend(strFriendTag, static_cast<CFriend*>(pGameObject));
-		CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(strFriendTag);
+		//CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(strFriendTag);
 	} /* Friend_Pip */
 
 

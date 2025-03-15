@@ -324,6 +324,9 @@
     <ClInclude Include="..\Public\TiltSwapCrate.h" />
     <ClInclude Include="..\public\TurnBookEffect.h" />
     <ClInclude Include="..\Public\WorldMapNPC.h" />
+    <ClInclude Include="..\Public\WorldMapNpc_Jot.h" />
+    <ClInclude Include="..\Public\WorldMapNpc_Thrash.h" />
+    <ClInclude Include="..\Public\WorldMapNpc_Violet.h" />
     <ClInclude Include="..\public\ZetPack_Child.h" />
     <ClInclude Include="..\Public\ZetPack_Father.h" />
     <ClInclude Include="..\Public\Zipline.h" />
@@ -709,6 +712,9 @@
     <ClCompile Include="..\Private\TiltSwapCrate.cpp" />
     <ClCompile Include="..\private\TurnBookEffect.cpp" />
     <ClCompile Include="..\Private\WorldMapNPC.cpp" />
+    <ClCompile Include="..\Private\WorldMapNpc_Jot.cpp" />
+    <ClCompile Include="..\Private\WorldMapNpc_Thrash.cpp" />
+    <ClCompile Include="..\Private\WorldMapNpc_Violet.cpp" />
     <ClCompile Include="..\private\ZetPack_Child.cpp" />
     <ClCompile Include="..\Private\ZetPack_Father.cpp" />
     <ClCompile Include="..\Private\Zipline.cpp" />

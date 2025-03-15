@@ -1,11 +1,12 @@
 #pragma once
 #include "ContainerObject.h"
 #include "Client_Defines.h"
+#include "BombSwitch.h"
 
 BEGIN(Client)
 class CPressure_Plate;
 
-class CLaser_Container final : public CContainerObject
+class CLaser_Container final : public CContainerObject, public IBombSwitchReceiver
 {
 public:
 	typedef struct tagProjectile_Monster_Desc : public CContainerObject::CONTAINEROBJ_DESC
@@ -118,5 +119,8 @@ public:
 	static CLaser_Container* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject*	Clone(void* _pArg);
 	virtual void			Free() override;
+
+	// IBombSwitchReceiver을(를) 통해 상속됨
+	void On_BombSwitch(_bool _bOn) override;
 };
 END

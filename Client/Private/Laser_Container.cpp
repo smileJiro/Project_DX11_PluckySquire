@@ -165,11 +165,13 @@ void CLaser_Container::Update(_float _fTimeDelta)
 
 	if (m_IsMove)
 	{
+		if (L"Chapter8_SKSP_09" == m_strSectionName)
+			int a = 1;
 		_vector vMyPos = Get_FinalPosition();
 		_vector vTargetPos = XMLoadFloat2(&m_fTargetPos);
 		m_pControllerTransform->Go_Direction(XMVectorSetW(XMVector2Normalize((vTargetPos - vMyPos)), 0.f), _fTimeDelta);
 
-		if (1.f > m_pControllerTransform->Compute_Distance(vTargetPos))
+		if (XMVectorGetX(XMVector2Length(vTargetPos - vMyPos)) < 2.0f)
 		{
 			m_BackMove = !m_BackMove;
 			if (m_BackMove)
@@ -538,7 +540,18 @@ void CLaser_Container::Compute_Beam(CCollider* _pMyCollider, CCollider* _pOtherC
 	break;
 	}
 
-	vLayerPosition = XMVectorSetX(vLayerPosition, fPos.x - XMVectorGetX(vContPos) + fOffset);
+	switch (m_eDir)
+	{
+	case Client::F_DIRECTION::RIGHT:
+	case Client::F_DIRECTION::LEFT:
+		vLayerPosition = XMVectorSetX(vLayerPosition, fPos.x - XMVectorGetX(vContPos) + fOffset);
+		break;
+	case Client::F_DIRECTION::DOWN:
+	case Client::F_DIRECTION::UP:
+		vLayerPosition = XMVectorSetY(vLayerPosition, fPos.y - XMVectorGetY(vContPos) + fOffset);
+		break;
+	}
+
 
 
 
@@ -620,4 +633,20 @@ void CLaser_Container::Free()
 	Safe_Release(m_pBeamCollider);
 	Safe_Release(m_pPressurePlate);
 	__super::Free();
+}
+
+void CLaser_Container::On_BombSwitch(_bool _bOn)
+{
+	if (true != _bOn)
+	{
+		// sd
+		Set_BeamOn(false);
+		//Set_Move(false);
+	}
+	else 
+	{
+		//Set_BeamOn(true);
+		//Set_Move(true);
+		//se
+	}
 }
