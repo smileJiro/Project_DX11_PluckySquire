@@ -1967,8 +1967,13 @@ HRESULT CLevel_Chapter_02::Map_Object_Create(_wstring _strFileName)
 					hFile);
 			if (nullptr != pGameObject)
 			{
-				if (ContainWstring(pGameObject->Get_MapObjectModelName(), L"SM_sticky_notes"))
-					strIncludeLayerTag = L"Layer_Postit";
+				if (pGameObject->Is_Sksp())
+				{
+					if (ContainWstring(pGameObject->Get_MapObjectModelName(), L"SM_sticky_notes"))
+						strIncludeLayerTag = L"Layer_Postit";
+					else
+						strIncludeLayerTag = L"Layer_MapSkspObject";
+				}
 				m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, strIncludeLayerTag.c_str(), pGameObject);
 			}
 		}

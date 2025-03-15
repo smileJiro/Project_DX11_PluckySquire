@@ -24,8 +24,16 @@ public:
 	virtual void OnContact_Modify(const COLL_INFO& _0, const COLL_INFO& _1, CModifiableContacts& _ModifiableContacts, _bool _bIm0)override;
 
 	void Collapse();
+
+	virtual void WorldMap_ReCapture();
+
 private:
 	HRESULT Ready_PartObjects();
+
+private:
+	_float m_fGateHalfHeight = 3.f;
+	_float m_fGateHalfWidth = 2.5;
+	_float m_fGateHalfThick = 0.2f;
 public:
 	static CDynamicCastleGate* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject* Clone(void* _pArg) override;

@@ -1119,9 +1119,13 @@ HRESULT CEvent_Manager::Map_Object_Create(const _wstring& _strFileName, _uint _i
 
 			if (nullptr != pGameObject)
 			{
-
-				if (ContainWstring(pGameObject->Get_MapObjectModelName(), L"SM_sticky_notes"))
-					strIncludeLayerTag = L"Layer_Postit";
+				if (pGameObject->Is_Sksp())
+				{
+					if (ContainWstring(pGameObject->Get_MapObjectModelName(), L"SM_sticky_notes"))
+						strIncludeLayerTag = L"Layer_Postit";
+					else
+						strIncludeLayerTag = L"Layer_MapSkspObject";
+				}
 				m_pGameInstance->Add_GameObject_ToLayer(_iCurLevelID, strIncludeLayerTag.c_str(), pGameObject);
 
 				//m_pGameInstance->Add_GameObject_ToLayer(_iCurLevelID, wstrLayerTag.c_str(), pGameObject);

@@ -276,6 +276,7 @@ CGameObject* CZetPack::Clone(void* _pArg)
 void CZetPack::Free()
 {
     Safe_Release(m_pTargetLight); // 순환참조로 인해플레이어쪽에서만 Ref 카운트 관리.
+    Safe_Release(m_pCyberZipEffect);
 
     __super::Free();
 }

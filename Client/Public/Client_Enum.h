@@ -205,6 +205,7 @@ namespace Client
 		ATTACK,
 		MOVE,
 		JUMP,
+		BACK,
 		HIT,
 		DEAD,
 		SNEAK_IDLE,
@@ -291,6 +292,8 @@ namespace Client
 		CHAPTER2_3,
 		CHAPTER8_1,
 		CHAPTER8_BEETLE1,
+		CHAPTER8_BEETLE_FINAL_1,
+		CHAPTER8_BEETLE_FINAL_2,
 		LAST
 	};
 

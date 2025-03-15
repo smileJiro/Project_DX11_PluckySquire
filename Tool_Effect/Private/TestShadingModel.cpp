@@ -25,6 +25,7 @@ HRESULT CTestShadingModel::Initialize(void* _pArg)
     //pDesc.iShaderPass_3D = ;
     pDesc->iPriorityID_3D = PR3D_EFFECT;
     pDesc->iRenderGroupID_3D = RG_3D;
+    pDesc->tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 5.f);
     //pDesc.tTransform3DDesc.fSpeedPerSec = 1.f;
 
     if (FAILED(__super::Initialize(_pArg)))
@@ -50,6 +51,7 @@ HRESULT CTestShadingModel::Initialize(void* _pArg)
     if (FAILED(Add_Component(LEVEL_TOOL, TEXT("Prototype_Component_Texture_Distortion"),
         TEXT("Com_TextureDistortion"), reinterpret_cast<CComponent**>(&m_pNoiseTextureCom))))
         return E_FAIL;
+
 
     return S_OK;
 }
@@ -95,8 +97,21 @@ void CTestShadingModel::Update(_float _fTimeDelta)
             m_pGameInstance->UpdateConstBuffer(m_tColor, m_pColorBuffer);
         }
 
+        if (ImGui::DragFloat4("Sub Color", (_float*)&m_tColor.vSubColor, 0.01f))
+        {
+            m_pGameInstance->UpdateConstBuffer(m_tColor, m_pColorBuffer);
+        }
+
 
         ImGui::TreePop();
+    }
+
+    if (ImGui::TreeNode("Texture Scaling"))
+    {
+        ImGui::DragFloat2("Diffuse", (_float*)&m_vDiffuseScaling, 0.01f);
+        ImGui::DragFloat2("Noise", (_float*)&m_vNoiseScaling, 0.01f);
+        ImGui::TreePop();
+
     }
 
     ImGui::End();
@@ -114,16 +129,20 @@ HRESULT CTestShadingModel::Render()
     //__super::Render();
     Bind_ShaderResources_WVP();
 
-    _float4 vColor = { 1.f, 1.f, 1.f, 1.f };
     //_float4 vSubColor = { 0.1f, 0.7f, 0.9f, 1.f };
     //m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_vColor", &vColor, sizeof(_float4));
     //m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_vSubColor", &vSubColor, sizeof(_float4));
+    if (nullptr != m_pMainTextureCom)
+        m_pMainTextureCom->Bind_ShaderResource(m_pShaderComs[COORDINATE_3D], "g_DiffuseTexture");
+    if (nullptr != m_pNoiseTextureCom)
+        m_pNoiseTextureCom->Bind_ShaderResource(m_pShaderComs[COORDINATE_3D], "g_NoiseTexture");
 
-    m_pMainTextureCom->Bind_ShaderResource(m_pShaderComs[COORDINATE_3D], "g_DiffuseTexture");
-    m_pMainTextureCom->Bind_ShaderResource(m_pShaderComs[COORDINATE_3D], "g_DistortionTexture");
-    
+
+    m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_vNoiseScaling", &m_vNoiseScaling, sizeof(_float2));
+    m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_vDiffuseScaling", &m_vDiffuseScaling, sizeof(_float2));
 
     m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_vCamPosition", m_pGameInstance->Get_CamPosition(), sizeof(_float4));
+
     m_pShaderComs[COORDINATE_3D]->Bind_ConstBuffer("SingleFresnel", m_pFresnelsBuffer);
     m_pShaderComs[COORDINATE_3D]->Bind_ConstBuffer("ColorBuffer", m_pColorBuffer);
     m_pControllerModel->Render_Default(m_pShaderComs[COORDINATE_3D], m_iShaderPasses[COORDINATE_3D]);

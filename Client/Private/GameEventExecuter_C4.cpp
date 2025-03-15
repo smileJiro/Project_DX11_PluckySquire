@@ -13,6 +13,7 @@
 #include "2DMapActionObject.h"
 #include "Monster.h"
 #include "DraggableObject.h"
+#include "DynamicCastleGate.h"
 
 CGameEventExecuter_C4::CGameEventExecuter_C4(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CGameEventExecuter(_pDevice, _pContext)
@@ -67,6 +68,9 @@ void CGameEventExecuter_C4::Update(_float _fTimeDelta)
 			break;
 		case Client::CTrigger_Manager::CHAPTER4_EVENT_FLAG:
 			Chapter4_Event_Flag(_fTimeDelta);
+			break;
+		case Client::CTrigger_Manager::CHAPTER4_GATEEVENT:
+			Chapter4_GateEvent(_fTimeDelta);
 			break;
 		case Client::CTrigger_Manager::CHAPTER4_STORYSEQUENCE:
 			Chapter4_StorySequence(_fTimeDelta);
@@ -253,6 +257,87 @@ void CGameEventExecuter_C4::Chapter4_Event_Flag(_float _fTimeDelta)
 			CCamera_Manager::GetInstance()->Start_FadeIn(0.3f);
 			CCamera_Manager::GetInstance()->Set_FadeRatio(CCamera_Manager::CUTSCENE, 1.f, true);
 			Next_Step(true);
+		}
+	}
+	else
+		GameEvent_End();
+}
+
+void CGameEventExecuter_C4::Chapter4_GateEvent(_float _fTimeDelta)
+{
+	m_fTimer += _fTimeDelta;
+	if (Step_Check(STEP_0))
+	{
+		if (Is_Start())
+		{
+			CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Increase(CCamera_Manager::TARGET_2D,
+				1.f,5.f, EASE_IN_OUT);
+			CPlayer* pPlayer = Get_Player();
+			
+			if(nullptr != pPlayer)
+				pPlayer->Set_BlockPlayerInput(true);
+			
+		}
+		Next_Step_Over(1.f);
+	}
+	else if (Step_Check(STEP_1))
+	{
+		if (Is_Start())
+		{
+			auto pLayer = m_pGameInstance->Find_Layer(m_pGameInstance->Get_CurLevelID(), L"Layer_MapGimmick");
+			if (nullptr != pLayer)
+			{
+				auto GameObjects = pLayer->Get_GameObjects();
+
+				auto iter = find_if(GameObjects.begin(), GameObjects.end(), [](CGameObject* _pObj) {
+					return nullptr != dynamic_cast<CDynamicCastleGate*>(_pObj);
+					});
+				if (GameObjects.end() != iter)
+				{
+					CDynamicCastleGate* pGate = static_cast<CDynamicCastleGate*>(*iter);
+					m_pTargetObject = pGate;
+					pGate->Collapse();
+				}
+			}
+		}
+		Next_Step_Over(2.8f);
+
+	}
+	else if (Step_Check(STEP_2))
+	{
+		if (Is_Start())
+		{
+			CPlayer* pPlayer = Get_Player();
+			pPlayer->Set_Position({ 0.f, 0.f, 0.f });
+
+			if (nullptr != m_pTargetObject)
+				static_cast<CDynamicCastleGate*>(m_pTargetObject)->WorldMap_ReCapture();
+
+		}
+		Next_Step_Over(0.3f);
+	}
+	else if (Step_Check(STEP_3))
+	{
+		if (Is_Start())
+		{
+			CPlayer* pPlayer = Get_Player();
+			pPlayer->Set_Position({ 0.f, 0.f, 0.f });
+
+			static_cast<CSection_2D_PlayMap*>(SECTION_MGR->Find_Section(L"Chapter4_SKSP_04"))->Set_PortalActive(true);
+
+		}
+		Next_Step(true);
+	}	
+	else if (Step_Check(STEP_4))
+	{
+		if (Is_Start())
+		{
+			CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Decrease(CCamera_Manager::TARGET_2D,
+				1.f, 5.f, EASE_IN_OUT);
+			CPlayer* pPlayer = Get_Player();
+
+			if (nullptr != pPlayer)
+				pPlayer->Set_BlockPlayerInput(false);
 		}
 	}
 	else

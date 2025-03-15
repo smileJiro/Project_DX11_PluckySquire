@@ -333,7 +333,7 @@ _bool C3DModel::Play_Animation(_float fTimeDelta, _bool bReverse)
 		}
 		if (m_Animations[m_iCurrentAnimIndex]->Update_AnimTransition(m_Bones, fTimeDelta, m_mapAnimTransLeftFrame, bReverse))
 			m_iPrevAnimIndex = m_iCurrentAnimIndex;
-		m_bDuringAnimation = true;
+		m_bDuringAnimation = false;
 	}
 
 
@@ -510,6 +510,17 @@ void C3DModel::Set_AnimationTransitionTime(_uint iIdx, _float _fTime)
 		return;
 	}
 	m_Animations[iIdx]->Set_AnimTransitionTime(_fTime);
+}
+
+void C3DModel::Set_Progress(_uint _iIdx, _float _fProgress, _bool _bReverse)
+{
+	_int iSize = m_Animations.size() - 1;
+	if (iSize < (_int)_iIdx)
+	{
+		cout << "애니메이션 인덱스가 범위를 벗어났습니다." << endl;
+		return;
+	}
+	m_Animations[_iIdx]->Set_Progress(_fProgress, _bReverse);
 }
 
 

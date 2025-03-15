@@ -56,6 +56,7 @@ HRESULT CNarration::Initialize(void* _pArg)
 	vCalScale.y = m_vOriginSize.y * RATIO_BOOK2D_Y;
 	m_isRender = false;
 	m_isLeftRight = true;
+	m_iCameraPos = CAMERA_LEFT;
 
 	return S_OK;
 }
@@ -92,6 +93,8 @@ void CNarration::Update(_float _fTimeDelta)
 			m_DisPlayTextLine = 0;
 			//}
 		}
+
+		m_iCameraPos = m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].iCameraPos;
 	}
 
 	if (true == m_isStartNarration)
@@ -213,13 +216,16 @@ HRESULT CNarration::LoadFromJson(const wstring& filePath)
 					if (line.contains("isLeft") && line["isLeft"].is_boolean())
 						DialogueData.isLeft = line["isLeft"].get<bool>();
 
+					if (line.contains("iCameraPos") && line["iCameraPos"].is_number_integer())
+						DialogueData.iCameraPos = (CAMERAPOS)line["iCameraPos"].get<_int>();
+
 					if (line.contains("fscale") && line["fscale"].is_number_float())
 						DialogueData.fscale = line["fscale"].get<float>();
 
-					if (line.contains("isLeft") && line["isLeft"].is_boolean())
-					{
-						DialogueData.isLeft = line["isLeft"].get<_bool>();
-					}
+					//if (line.contains("isLeft") && line["isLeft"].is_boolean())
+					//{
+					//	DialogueData.isLeft = line["isLeft"].get<_bool>();
+					//}
 
 					if (line.contains("fposX") && line["fposX"].is_number_float())
 						DialogueData.fpos.x = line["fposX"].get<float>();
@@ -578,6 +584,7 @@ void CNarration::Update_Narration(_float _fTimeDelta)
 				if (nullptr == m_pCurrentAnimObj[i])
 				{
 					m_isLeftRight = true;
+					m_iCameraPos = m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].iCameraPos;
 					GetAnimationObjectForLine(m_iCurrentLine);
 
 				}
@@ -620,6 +627,7 @@ void CNarration::Update_Narration(_float _fTimeDelta)
 					m_bAnimationStarted = false;
 					GetAnimationObjectForLine(m_iCurrentLine, 0);
 					m_isLeftRight = m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].isLeft;
+					m_iCameraPos = m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].iCameraPos;
 				}
 
 				// 이 나레이션에서 장을 넘겨야하면 넘기자. isfinishedthisLine은 다음장으로 넘긴다.
@@ -656,6 +664,8 @@ void CNarration::Update_Narration(_float _fTimeDelta)
 
 						// TODO :: 테스트용도
 						m_DisPlayTextLine = m_iCurrentLine;
+
+						m_iCameraPos = m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].iCameraPos;
 
 						_float3 vPos = _float3(0.f, 0.f, 1.f);
 						if (true == m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].isDirTurn)
@@ -704,6 +714,7 @@ void CNarration::Update_Narration(_float _fTimeDelta)
 				{
 					GetAnimationObjectForLine(m_iCurrentLine, 0);
 					m_isLeftRight = m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].isLeft;
+					m_iCameraPos = m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].iCameraPos;
 				}
 			}
 			else // 나레이션 내에 다음 라인이 없나요?
@@ -775,6 +786,7 @@ void CNarration::Update_Narration(_float _fTimeDelta)
 					m_vAnimObjectsByLine.clear();
 
 					m_isLeftRight = true;
+					m_iCameraPos = CAMERA_LEFT;
 
 
 				}
@@ -788,12 +800,13 @@ void CNarration::Update_Narration(_float _fTimeDelta)
 					m_fDelayTimer = 0.f;
 					m_fTextAlpha = 0.f;
 					m_bAnimationStarted = false;
-					m_isNarrationEnd = true;
+					m_isNarrationEnd = false;
 
 
 					//m_vAnimObjectsByLine.erase(m_iCurrentLine);
 					GetAnimationObjectForLine(m_iCurrentLine, 0);
 					m_isLeftRight = m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].isLeft;
+					m_iCameraPos = m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].iCameraPos;
 
 					// 그런데 그 라인이 다음으로 넘기는 라인인가요?
 					if (true == m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].isFinishedThisLine)
@@ -1010,6 +1023,7 @@ void CNarration::StopNarration()
 	m_vAnimObjectsByLine.clear();
 
 	m_isLeftRight = true;
+	m_iCameraPos = CAMERA_LEFT;
 	_float3 vPos = _float3(0.f, 0.f, 0.f);
 
 

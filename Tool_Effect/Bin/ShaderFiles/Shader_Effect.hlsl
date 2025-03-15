@@ -444,6 +444,18 @@ technique11 DefaultTechnique
         ComputeShader = NULL;
     }
 
+    pass SUBCOLORBLOOM_DISSOLVE_BILLBOARD // 7
+    {
+        SetRasterizerState(RS_Cull_None);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_BILLBOARD();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_SUBCOLORDISSOLVE();
+        ComputeShader = NULL;
+    }
+
 }
 
 /* Blended weight */

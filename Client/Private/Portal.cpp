@@ -90,6 +90,18 @@ HRESULT CPortal::Render()
 
 HRESULT CPortal::Setup_3D_Postion()
 {
+    if (nullptr != m_pActorCom)
+    {
+        auto iter = m_Components.find(L"Com_Actor");
+        if (iter != m_Components.end())
+        {
+            Safe_Release(iter->second);
+            m_Components.erase(iter);
+        }
+        Safe_Release(m_pActorCom);
+    
+    }
+
     _vector f2DPosition = Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION);
 
     // 월드맵이 설정됐으니, 포지션 설정.

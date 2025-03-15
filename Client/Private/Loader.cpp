@@ -100,7 +100,10 @@
 #include "Bomb.h"
 #include "BombableBox.h"
 #include "TiltSwapPusher.h"
+#include "BombSwitch.h"
+#include "BombSwitchStopper.h"
 #include "Key.h"
+#include "Beetle_Corpse.h"
 
 
 #include "2DModel.h"
@@ -206,6 +209,8 @@
 #include "Portal_Cannon.h"
 #include "Word.h"
 
+#include "Laser_Container.h"
+#include "Laser_Beam.h"
 
 
 // Etc
@@ -1637,9 +1642,6 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 			CRubboink_Tiny::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
-		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_TiltSwapPusher"),
-			CTiltSwapPusher::Create(m_pDevice, m_pContext))))
-			return E_FAIL;
 		if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_Minigame_Defender"),
 			CMiniGame_Defender::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
@@ -1762,8 +1764,16 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 
 	#pragma region Chapter 8 - Component Load
 	
-		lstrcpy(m_szLoadingText, TEXT("컴포넌트를 로딩중입니다."));
+	lstrcpy(m_szLoadingText, TEXT("컴포넌트를 로딩중입니다."));
 	
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_Component_Texture_BossProjectileMain1"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effects/T_FX_CMN_Noise_06.dds")))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_Component_Texture_BossProjectileNoise1"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effects/T_FX_CMN_Noise_03_90.dds"), 1))))
+		return E_FAIL;
+
 	
 	#pragma endregion
 	
@@ -1873,6 +1883,29 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_C08Box"),
 		CC08_Box::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Laser_Container"),
+		CLaser_Container::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Beetle_Corpse"),
+		CBeetle_Corpse::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_TiltSwapPusher"),
+		CTiltSwapPusher::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_BombSwitch"),
+		CBombSwitch::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_BombSwitchStopper"),
+		CBombSwitchStopper::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Laser_Beam"),
+		CLaser_Beam::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 #pragma endregion
 

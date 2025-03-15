@@ -260,11 +260,11 @@
                         0.0
                     ],
                     "Arg2": [
-                        0.0,
+                        360.0,
                         0.0,
                         0.0
                     ],
-                    "SetType": "UNSET"
+                    "SetType": "RANDOMRANGE"
                 },
                 "Scale": {
                     "Arg1": [
@@ -395,7 +395,7 @@
                 }
             ],
             "Pooling": "KILL",
-            "ShaderPass": "SUBCOLOR_BLOOM",
+            "ShaderPass": "ROTATION_BILLBOARD_SUBBLOOM",
             "SpawnPosition": "ABSOLUTE_WORLD",
             "SpawnType": "SPAWN_RATE",
             "Texture": "../Bin/Resources/Textures/Effects/T_FX_CMN_Star_01.dds",

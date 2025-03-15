@@ -27,5 +27,6 @@ namespace Client
 	{
 		_float4 vDiffuseColor = { 1.f, 1.f, 1.f, 1.f };
 		_float4 vBloomColor = { 1.f, 1.f ,1.f, 1.f };
+		_float4 vSubColor = { 1.f, 1.f, 1.f, 1.f };
 	} COLORS_INFO;
 }

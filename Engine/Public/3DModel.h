@@ -72,6 +72,7 @@ public:
 	virtual void			Set_AnimationLoop(_uint iIdx, _bool bIsLoop)override;
 	virtual void			Set_Animation(_uint iIdx, _bool _bReverse = false)override;
 	void					Set_AnimationTransitionTime(_uint iIdx, _float _fTime);
+	virtual void		Set_Progress(_uint _iIdx, _float _fProgress, _bool _bReverse) override;
 	virtual void			Switch_Animation(_uint iIdx, _bool _bReverse = false)override;
 	virtual void			Switch_Reverse(_uint iIdx, _bool _bReverse = false) override;
 	virtual void			To_NextAnimation() override;
