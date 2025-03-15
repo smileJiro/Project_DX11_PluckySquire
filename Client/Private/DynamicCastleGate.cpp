@@ -139,6 +139,14 @@ void CDynamicCastleGate::Collapse()
 	pDynamicActor->Add_Torque(vTor);
 }
 
+void CDynamicCastleGate::WorldMap_ReCapture()
+{
+	if(nullptr != m_PartObjects[CASTL_PART_SKSP])
+	{ 
+		static_cast<C3DMapSkspObject*>(m_PartObjects[CASTL_PART_SKSP])->Register_WorldCapture();
+	}
+}
+
 HRESULT CDynamicCastleGate::Ready_PartObjects()
 {
 	//GATE

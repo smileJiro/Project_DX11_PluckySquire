@@ -339,7 +339,11 @@ HRESULT CLaser_Container::Ready_Components(LASER_DESC* _pDesc)
 	{
 		m_pSizeTriggerCollider = m_p2DColliderComs[0];
 		Safe_AddRef(m_pSizeTriggerCollider);
+
+#ifdef _DEBUG
 		m_pSizeTriggerCollider->Set_DebugColor({ 1.f,0.f,0.f,1.f });
+
+#endif // DEBUG
 	}
 	/* Beam Collider */
 	AABBDesc.vExtents = vSizeExtent;

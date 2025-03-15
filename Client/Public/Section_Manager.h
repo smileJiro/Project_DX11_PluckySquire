@@ -49,6 +49,7 @@ public:
 	/// <param name="_strSectionTag">섹션 키</param>
 	/// <param name="_pGameObject">오브젝트</param>
 	HRESULT							Add_GameObject_ToSectionLayer(const _wstring& _strSectionTag, CGameObject* _pGameObject, _uint _iLayerIndex = SECTION_2D_PLAYMAP_OBJECT);
+	HRESULT							Change_GameObject_LayerIndex(const _wstring& _strSectionTag, CGameObject* _pGameObject, _uint _iLayerIndex = SECTION_2D_PLAYMAP_OBJECT);
 
 	/// <summary>
 	/// 섹션 키로 해당 섹션에 해당 오브젝트를 제거한다.

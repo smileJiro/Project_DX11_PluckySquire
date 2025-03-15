@@ -101,7 +101,9 @@ public:
 	// 2. Decrease -> _fDecreaseValue만큼 Length를 줄인다
 	// 3. Increase -> _fIncreaseValue만큼 Length를 늘린다
 	void				Start_Changing_ArmLength(CAMERA_TYPE _eCameraType, _float _fLengthTime, _float _fLength, _uint _iRatioType);
+	// 줄임
 	void				Start_Changing_ArmLength_Decrease(CAMERA_TYPE _eCameraType, _float _fLengthTime, _float _fDecreaseValue, _uint _iRatioType);
+	// 늘림
 	void				Start_Changing_ArmLength_Increase(CAMERA_TYPE _eCameraType, _float _fLengthTime, _float _fIncreaseValue, _uint _iRatioType);
 
 	// Camera 원복
