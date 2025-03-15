@@ -53,6 +53,14 @@ float4 g_vCamPosition;
 float2 g_fStartUV;
 float2 g_fEndUV;
 
+/* Trail Data */
+float4 g_vTrailColor;
+float2 g_vTrailTime;
+
+/* Texture Blending */
+Texture2D g_BlendingTexture;
+float g_fBlendingRatio;
+
 // Vertex Shader //
 struct VS_IN
 {
@@ -432,6 +440,66 @@ PS_PLAYERDEPTHOUT PS_PLAYERDEPTH(PS_IN In)
     Out.fPlayerDepth = In.vProjPos.w / g_fFarZ;
     return Out;
 }
+
+
+struct PS_TRAIL_OUT
+{
+    float4 vDiffuse : SV_TARGET0;
+};
+
+PS_TRAIL_OUT PS_TRAIL(PS_IN In)
+{
+    PS_TRAIL_OUT Out = (PS_TRAIL_OUT) 0;
+    float fAlpha = 1.0f - g_vTrailTime.y / g_vTrailTime.x;
+    float4 FinalColor = g_vTrailColor;
+    FinalColor.rgb *= fAlpha;
+    FinalColor.a *= fAlpha;
+
+    if (FinalColor.a < 0.01f)
+        discard;
+
+    Out.vDiffuse = FinalColor;
+
+    return Out;
+}
+
+PS_OUT PS_MAIN_TEXTUREBLENDING(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+
+    // 조명에 대한 방향벡터를 뒤집은 후, 노말벡터와의 내적을 통해,
+    // shade 값을 구한다. 여기에 Ambient color 역시 더한다. 
+    float4 vAlbedo = useAlbedoMap ? g_AlbedoTexture.SampleLevel(LinearSampler, In.vTexcoord, 0.0f) : Material.Albedo;
+    float3 vNormal = useNormalMap ? Get_WorldNormal(g_NormalTexture.Sample(LinearSampler, In.vTexcoord).xyz, In.vNormal.xyz, In.vTangent.xyz, 0) : In.vNormal.xyz;
+    float4 vORMH = useORMHMap ? g_ORMHTexture.Sample(LinearSampler, In.vTexcoord) : float4(Material.AO, Material.Roughness, Material.Metallic, 1.0f);
+    float fSpecular = useSpecularMap ? g_SpecularTexture.Sample(LinearSampler, In.vTexcoord).r : 0.0f;
+    float fEmissive = useEmissiveMap ? g_EmissiveTexture.Sample(LinearSampler, In.vTexcoord).r : Material.Emissive;
+    
+    if (false == useORMHMap)
+    {
+        vORMH.r = useAOMap ? g_AOTexture.Sample(LinearSampler, In.vTexcoord).r : Material.AO;
+        vORMH.g = useRoughnessMap ? g_RoughnessTexture.Sample(LinearSampler, In.vTexcoord).r : Material.Roughness;
+        vORMH.b = useMetallicMap ? g_MetallicTexture.Sample(LinearSampler, In.vTexcoord).r : Material.Metallic;
+    }
+    
+    /* Blending할 텍스처 샘플링 */
+    float4 vBlendingAlbedo = g_BlendingTexture.SampleLevel(LinearSampler, In.vTexcoord, 0.0f);
+    vAlbedo = lerp(vAlbedo, vBlendingAlbedo, g_fBlendingRatio); // Ratio 0 -> 1
+    
+    Out.vDiffuse = vAlbedo * Material.MultipleAlbedo;
+    // 1,0,0 
+    // 1, 0.5, 0.5 (양의 x 축)
+    // 0, 0.5, 0.5 (음의 x 축)
+    Out.vNormal = float4(vNormal.xyz * 0.5f + 0.5f, 1.f);
+    Out.vORMH = vORMH;
+    Out.vDepth = float4(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / g_fFarZ, 0.0f, 1.0f);
+    
+    float3 vEmissiveColor = Material.EmissiveColor * fEmissive;
+    Out.vEtc = float4(vEmissiveColor, fSpecular /**/);
+    
+    return Out;
+}
+
 // technique : 셰이더의 기능을 구분하고 분리하기 위한 기능. 한개 이상의 pass를 포함한다.
 // pass : technique에 포함된 하위 개념으로 개별 렌더링 작업에 대한 구체적인 설정을 정의한다.
 // https://www.notion.so/15-Shader-Keyword-technique11-pass-10eb1e26c8a8807aad86fb2de6738a1a // 컨트롤 클릭
@@ -536,5 +604,26 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_SHADOWMAP();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_SHADOWMAP();
+    }
+    pass TrailPass // 10
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_None, 0);
+        SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_TRAIL();
+    }
+
+    pass TextureBlendingPass // 11 -> Book에서 사용
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN_RENDERTARGET_UV();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN_TEXTUREBLENDING();
     }
 }

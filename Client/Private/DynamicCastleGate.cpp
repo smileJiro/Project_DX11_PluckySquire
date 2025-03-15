@@ -3,6 +3,8 @@
 #include "ModelObject.h"
 #include "Actor_Dynamic.h"
 #include "GameInstance.h"
+#include "Layer.h"
+#include "3DMapSkspObject.h"
 
 CDynamicCastleGate::CDynamicCastleGate(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CContainerObject(_pDevice, _pContext)
@@ -30,34 +32,51 @@ HRESULT CDynamicCastleGate::Initialize(void* _pArg)
 	ActorDesc.tFilterData.MyGroup = OBJECT_GROUP::DYNAMIC_OBJECT;
 	ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::DYNAMIC_OBJECT | OBJECT_GROUP::PLAYER;
 
-	//XMStoreFloat4x4(&ActorDesc.ActorOffsetMatrix, XMMatrixTranslation(0.0f, 3.f, 0.f));
+	//XMStoreFloat4x4(&ActorDesc.ActorOffsetMatrix, XMMatrixTranslation(0.0f, -m_fGateHalfHeight, 0.f));
 	ActorDesc.FreezeRotation_XYZ[0] = false;
-	ActorDesc.FreezeRotation_XYZ[1] = false;
-	ActorDesc.FreezeRotation_XYZ[2] = false;
-	ActorDesc.FreezePosition_XYZ[0] = false;
+	ActorDesc.FreezeRotation_XYZ[1] = true;
+	ActorDesc.FreezeRotation_XYZ[2] = true;
+	ActorDesc.FreezePosition_XYZ[0] = true;
 	ActorDesc.FreezePosition_XYZ[1] = false;
 	ActorDesc.FreezePosition_XYZ[2] = false;
 
 	SHAPE_BOX_DESC ShapeDesc = {};
-	ShapeDesc.vHalfExtents = { 2.5f,5.f ,0.25f };
+	ShapeDesc.vHalfExtents = { m_fGateHalfWidth,m_fGateHalfHeight,m_fGateHalfThick };
 	SHAPE_DATA ShapeData;
 	ShapeData.pShapeDesc = &ShapeDesc;
 	ShapeData.eShapeType = SHAPE_TYPE::BOX;
-	ShapeData.eMaterial = ACTOR_MATERIAL::BOUNCY;
+	ShapeData.eMaterial = ACTOR_MATERIAL::CASTLE_GATE;
 	ShapeData.isTrigger = false;
 	ShapeData.FilterData.MyGroup = OBJECT_GROUP::DYNAMIC_OBJECT;
-	ShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::DYNAMIC_OBJECT | OBJECT_GROUP::PLAYER;
-	XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(0.0f, ShapeDesc.vHalfExtents.y + 0.01f, 0.f));
+	ShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::DYNAMIC_OBJECT|OBJECT_GROUP::PLAYER;
+	ShapeData.iShapeUse = (_uint)SHAPE_USE::SHAPE_BODY;
+	XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(0.0f, m_fGateHalfHeight, 0.f));
 	ActorDesc.ShapeDatas.push_back(ShapeData);
+
+
+	//중점 확인용 구
+	SHAPE_BOX_DESC BOXDesc2 = {};
+	BOXDesc2.vHalfExtents={ m_fGateHalfWidth*0.25f, m_fGateHalfHeight *0.25f, m_fGateHalfThick};
+	SHAPE_DATA ShapeData2 = {};
+	ShapeData2.pShapeDesc = &BOXDesc2;
+	ShapeData2.eShapeType = SHAPE_TYPE::BOX;
+	ShapeData2.eMaterial = ACTOR_MATERIAL::BOUNCY;
+	ShapeData2.iShapeUse = (_uint)SHAPE_USE::SHAPE_FOOT;
+	ShapeData2.isTrigger = false;
+	XMStoreFloat4x4(&ShapeData2.LocalOffsetMatrix, XMMatrixTranslation(0, m_fGateHalfHeight, 0));
+	ShapeData2.FilterData.MyGroup = OBJECT_GROUP::DYNAMIC_OBJECT;
+	ShapeData2.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::DYNAMIC_OBJECT;
+	ActorDesc.ShapeDatas.push_back(ShapeData2);
 
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
+	//static_cast<CActor_Dynamic*>(m_pActorCom)->Set_Rotation(_vector{ 0.f,1.f,0.f }, XMConvertToRadians(90.f));
+	static_cast<CActor_Dynamic*>(m_pActorCom)->Set_MassLocalPos({ 0.0f,m_fGateHalfHeight,0.f });
+	m_pActorCom->Set_Mass(5.f);
+
 	if (FAILED(Ready_PartObjects()))
 		return E_FAIL;
-
-	//static_cast<CActor_Dynamic*>(m_pActorCom)->Set_Rotation(_vector{ 0.f,1.f,0.f }, XMConvertToRadians(90.f));
-	static_cast<CActor_Dynamic*>(m_pActorCom)->Set_MassLocalPos({ 0.0f,3.f,0.f });
-	//m_pActorCom->Set_Mass(50.f);
+	
 
 
 	return S_OK;
@@ -65,7 +84,7 @@ HRESULT CDynamicCastleGate::Initialize(void* _pArg)
 
 void CDynamicCastleGate::Update(_float _fTimeDelta)
 {
-	if (KEY_DOWN(KEY::B))
+	if (KEY_DOWN(KEY::I))
 		Collapse();
 	__super::Update(_fTimeDelta);
 }
@@ -77,15 +96,40 @@ HRESULT CDynamicCastleGate::Render()
 
 void CDynamicCastleGate::OnContact_Modify(const COLL_INFO& _0, const COLL_INFO& _1, CModifiableContacts& _ModifiableContacts, _bool _bIm0)
 {
+
+	OBJECT_GROUP eOtherGroup = (OBJECT_GROUP)(_bIm0 ? _1.pActorUserData->iObjectGroup : _0.pActorUserData->iObjectGroup);
+	if (OBJECT_GROUP::PLAYER & eOtherGroup)
+	{
+		if (_bIm0)
+		{
+			_ModifiableContacts.Set_InvMassScale0(0.f); // Reduce mass effect on actor0
+			_ModifiableContacts.Set_InvInertiaScale0(0.f); // Reduce rotation effect on actor0
+		}
+		else
+		{
+			_ModifiableContacts.Set_InvMassScale1(0.f); // Reduce mass effect on actor1
+			_ModifiableContacts.Set_InvInertiaScale1(0.f); // Reduce rotation effect on actor1
+		}
+		_uint iContactCount = _ModifiableContacts.Get_ContactCount();
+		for (_uint i = 0; i < iContactCount; i++)
+		{
+			_ModifiableContacts.Set_Restitution(i, 0);
+		}
+	}
 }
+
+
         
 void CDynamicCastleGate::Collapse()
 {
 	CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
 	pDynamicActor->Update(0);
 	pDynamicActor->Set_Dynamic();
-	_vector vForcDir= { 1.f,0.f,0.f };
-	_float fForce = 10.f;
+	pDynamicActor->Set_Gravity(true);
+	pDynamicActor->Freeze_Rotation(false,true,true);
+	pDynamicActor->Freeze_Position(true,false,false);
+	_vector vForcDir= { 0.f,0.f,1.f };
+	_float fForce = 350.f;
 	_vector vForce = vForcDir * fForce;
 	_vector vTorque = XMVector3Cross(vForce,{ 0.f,2.5f,0.f });
 	_float3 vTor; XMStoreFloat3(&vTor, vTorque);
@@ -118,6 +162,23 @@ HRESULT CDynamicCastleGate::Ready_PartObjects()
 	m_PartObjects[CASTL_PART_GATE]->Get_ControllerTransform()->Rotation(XMConvertToRadians(-90.f), _vector{ 1.f,0.f,0.f,0.f });
 	
 
+	CLayer* pLayer = m_pGameInstance->Find_Layer(m_iCurLevelID, TEXT("Layer_MapSkspObject"));
+	if (nullptr == pLayer)
+		return S_OK;
+	list<CGameObject*> Objs = pLayer->Get_GameObjects();
+	for (auto& pObj : Objs)
+	{
+		C3DMapSkspObject* pSksp = static_cast<C3DMapSkspObject*>(pObj);
+		if(nullptr == pSksp) 
+			continue;
+		if (pSksp->Get_RenderSectionTag() == TEXT("Chapter4_SKSP_04"))
+		{
+			Add_PartObject(pSksp);
+			Safe_AddRef(pSksp);
+			pSksp->Set_ParentMatrix(COORDINATE_3D, m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D));
+			pSksp->Set_Position(_vector{ 0.f,0.f,0.f });
+		}
+	}
 	return S_OK;
 }
 

@@ -471,7 +471,7 @@ HRESULT CPlayer::Ready_PartObjects()
     TURNBOOKEFFECT_DESC.iCurLevelID = m_iCurLevelID;
     TURNBOOKEFFECT_DESC.isCoordChangeEnable = false;
     TURNBOOKEFFECT_DESC.eStartCoord = COORDINATE_3D;  
-    TURNBOOKEFFECT_DESC.pBodyMatrix = m_pControllerTransform->Get_WorldMatrix_Ptr();
+    TURNBOOKEFFECT_DESC.pBodyMatrix = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
 
     if (nullptr != m_pBody)
     {
@@ -2336,7 +2336,6 @@ void CPlayer::Key_Input(_float _fTimeDelta)
     }
     if (KEY_DOWN(KEY::F3))
     {
-
         _int iCurCoord = (_int)Get_CurCoord();
         (_int)iCurCoord ^= 1;
         _float3 vNewPos = _float3(0.0f, 0.0f, 0.0f);

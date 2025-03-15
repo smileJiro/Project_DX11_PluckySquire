@@ -22,6 +22,7 @@ public:
 
 	virtual void Set_AnimationLoop(_uint iIdx, _bool bIsLoop) abstract;
 	virtual void Set_Animation(_uint iIdx, _bool _bReverse = false) abstract;
+	virtual void	Set_Progress(_uint iIdx, _float _fProgress, _bool _bReverse) abstract;
 	virtual void Switch_Animation(_uint iIdx, _bool _bReverse = false) abstract;
 	virtual void Switch_Reverse(_uint iIdx, _bool _bReverse = false) abstract;
 	virtual void Set_AnimSpeedMagnifier(_uint iAnimIndex, _float _fMag) abstract;

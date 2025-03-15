@@ -38,12 +38,15 @@ public:
 	virtual HRESULT			Render(CShader* _pShader, _uint _iShaderPass) override;
 	virtual HRESULT			Render_Shadow(CShader* _pShader, _uint _iShaderPass) override;
 	virtual HRESULT			Render_Default(CShader* _pShader, _uint _iShaderPass) override;
+
 public:
 	HRESULT					Bind_Material(CShader* _pShader, const _char* _pConstantName, _uint _iMeshIndex, aiTextureType _eTextureType, _uint _iTextureIndex = 0);
 	HRESULT					Bind_Matrices(CShader* _pShader, const _char* _pConstantName, _uint _iMeshIndex);
 	virtual _bool			Play_Animation(_float fTimeDelta, _bool bReverse = false) override;
 
 	HRESULT					Bind_Material_PixelConstBuffer(_uint _iMaterialIndex,  CShader* _pShader);
+public: /* Trail ÅÂ¿õ Ãß°¡*/
+	HRESULT					Copy_BoneMatrices(_int iNumMeshIndex, array<_float4x4, 256>* _pOutBoneMatrices);
 public:
 	// Get
 	_uint					Get_NumMeshes() const { return m_iNumMeshes; }
@@ -69,6 +72,7 @@ public:
 	virtual void			Set_AnimationLoop(_uint iIdx, _bool bIsLoop)override;
 	virtual void			Set_Animation(_uint iIdx, _bool _bReverse = false)override;
 	void					Set_AnimationTransitionTime(_uint iIdx, _float _fTime);
+	virtual void		Set_Progress(_uint _iIdx, _float _fProgress, _bool _bReverse) override;
 	virtual void			Switch_Animation(_uint iIdx, _bool _bReverse = false)override;
 	virtual void			Switch_Reverse(_uint iIdx, _bool _bReverse = false) override;
 	virtual void			To_NextAnimation() override;

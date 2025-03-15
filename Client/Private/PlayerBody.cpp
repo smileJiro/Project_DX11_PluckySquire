@@ -3,6 +3,7 @@
 #include "PlayerBody.h"
 #include "Player.h"
 #include "CarriableObject.h"
+#include "Trail_Manager.h"
 
 CPlayerBody::CPlayerBody(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CModelObject(_pDevice, _pContext)
@@ -19,11 +20,19 @@ HRESULT CPlayerBody::Initialize(void* _pArg)
 {
     PLAYER_BODY_DESC* pBodyDesc = static_cast<PLAYER_BODY_DESC*>(_pArg);
     m_pPlayer = pBodyDesc->pPlayer;
-    return __super::Initialize(_pArg);
+
+    if (FAILED(__super::Initialize(_pArg)))
+        return E_FAIL;
+
+    m_iTrailID = CTrail_Manager::GetInstance()->Create_TrailID();
+    
+    return S_OK;
 }
 
 void CPlayerBody::Update(_float _fTimeDelta)
 {
+    Update_Trail(m_iTrailID, _fTimeDelta);
+
     __super::Update(_fTimeDelta);
 }
 
@@ -32,7 +41,11 @@ void CPlayerBody::Late_Update(_float _fTimeDelta)
     if (COORDINATE_3D == Get_CurCoord())
     {
         if (false == m_isFrustumCulling)
+        {
             Register_RenderGroup(m_iRenderGroupID_3D, PR3D_PLAYERDEPTH);
+            Register_RenderGroup(m_iRenderGroupID_3D, PR3D_TRAIL); // TRAIL;
+        }
+
     }
 
 

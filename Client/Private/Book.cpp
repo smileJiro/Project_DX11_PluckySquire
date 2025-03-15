@@ -229,6 +229,8 @@ void CBook::Update(_float _fTimeDelta)
 			//if (false == Is_PlayingAnim())
 		}
 
+	// 책 커버 Blending
+	Calculate_BlendingRatio(_fTimeDelta);
 
 	__super::Update(_fTimeDelta);
 
@@ -361,6 +363,18 @@ HRESULT CBook::Render()
 
 		}
 		break;
+			case BOOK_COVER:
+			{
+				if (FAILED(pShader->Bind_RawValue("g_fBlendingRatio", &m_fBlendingRatio, sizeof(_float))))
+					return E_FAIL;
+
+				if (FAILED(pModel->Bind_Material(pShader, "g_BlendingTexture", i, aiTextureType_DIFFUSE, 1)))
+				{
+					continue;
+				}
+
+				iShaderPass = (_uint)PASS_VTXANIMMESH::TEXTUREBLENDING;
+			}
 		default:
 		{
 			_float2 fDefaultStart = { 0.f,0.f };
@@ -827,8 +841,6 @@ HRESULT CBook::Convert_Position_3DTo2D(_fvector _v3DPos, _vector* _pOutPosition)
 	return S_OK;
 }
 
-
-
 //void CBook::Calc_Page3DWorldMinMax()
 //{//1. 책의 3d 월드 상에서 Min,Max 점 얻기
 //	//2. _v3DPos가  Min, Max 안의 어떤 비율의 지점에 있는지 계산
@@ -865,6 +877,19 @@ HRESULT CBook::Convert_Position_3DTo2D(_fvector _v3DPos, _vector* _pOutPosition)
 //
 //	m_pContext->Unmap(pTexture2D, 0);
 //}
+
+void CBook::Calculate_BlendingRatio(_float _fTimeDelta)
+{
+	if (false == m_isStartBlending)
+		return;
+
+	m_fBlendingRatio = m_pGameInstance->Calculate_Ratio(&m_fBlendingTime, _fTimeDelta, LERP);
+
+	if (m_fBlendingRatio >= (1.f - EPSILON)) {
+		m_fBlendingRatio = 1.f;
+		m_isStartBlending = false;
+	}
+}
 
 CBook* CBook::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {

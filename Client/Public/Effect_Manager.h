@@ -33,7 +33,6 @@ public:
 	void					Stop_SpawnID(const _tchar* _szEffectTag, _float _fDelayTime = 5.f, _uint _iEffectID = 0);
 
 
-
 private:
 	CGameInstance*										m_pGameInstance = { nullptr };
 	multimap<const _wstring, class CEffect_System*>		m_EffectSystems;

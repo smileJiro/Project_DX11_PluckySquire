@@ -148,11 +148,11 @@ HRESULT CBackGroundObject::Bind_ShaderResources()
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", &m_pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_PROJ))))
 		return E_FAIL;
 
-	//if (FAILED(m_pShaderCom->Bind_RawValue("g_vBackGroundColor", &m_vFilterColor, sizeof(_float3))))
-	//	return E_FAIL;
+	if (FAILED(m_pShaderCom->Bind_RawValue("g_vBackGroundColor", &m_vFilterColor, sizeof(_float3))))
+		return E_FAIL;
 
-	//if (FAILED(m_pShaderCom->Bind_RawValue("g_fBrightness", &m_fBrightness, sizeof(_float))))
-	//	return E_FAIL;
+	if (FAILED(m_pShaderCom->Bind_RawValue("g_fBrightness", &m_fBrightness, sizeof(_float))))
+		return E_FAIL;
 
 	if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_AlbedoTexture", 0)))
 		return E_FAIL;

@@ -3,6 +3,7 @@
 #include "3DModel.h"
 #include "2DModel.h"
 #include "Controller_Model.h"
+#include "Trail_Manager.h"
 
 
 
@@ -486,6 +487,56 @@ HRESULT CModelObject::Ready_Components(MODELOBJECT_DESC* _pDesc)
     return S_OK;
 }
 
+void CModelObject::Update_Trail(_int _iTrailID, _float _fTimeDelta)
+{
+    /* Test */
+    if (false == m_isTrail)
+        return;
+    C3DModel* p3DModel = static_cast<C3DModel*>(m_pControllerModel->Get_Model(COORDINATE_3D));
+    if (nullptr == p3DModel)
+        return;
+
+    m_vTrailCreateTime.y += _fTimeDelta;
+    if (m_vTrailCreateTime.x <= m_vTrailCreateTime.y)
+    {
+        m_vTrailCreateTime.y = 0.0f;
+        CTrailInstance::TRAIL_DESC TrailDesc = {};
+        TrailDesc.WorldMatrix = m_WorldMatrices[COORDINATE_3D];
+        TrailDesc.fTrailTime = m_fTrailDuration;
+        TrailDesc.iNumMeshes = p3DModel->Get_NumMeshes();
+        TrailDesc.vTrailColor = m_vTrailColor;
+        TrailDesc.MeshesBoneMatrices;
+
+        for (_uint i = 0; i < TrailDesc.iNumMeshes; ++i)
+        {
+            static array<_float4x4, 256> BoneArray = {};
+            ZeroMemory(&BoneArray, sizeof BoneArray);
+            p3DModel->Copy_BoneMatrices(i, &BoneArray);
+            TrailDesc.MeshesBoneMatrices.push_back(BoneArray);
+        }
+
+        CTrail_Manager::GetInstance()->Add_Trail(_iTrailID, &TrailDesc);
+    }
+}
+
+HRESULT CModelObject::Render_Trail()
+{
+    COORDINATE eCoord = Get_CurCoord();
+    if (COORDINATE_3D != eCoord)
+        return E_FAIL;
+
+    /* World Matrix는 각각의 Trail이 바인딩할거야. */
+    if (FAILED(m_pShaderComs[eCoord]->Bind_Matrix("g_ViewMatrix", &m_pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_VIEW))))
+        return E_FAIL;
+    if (FAILED(m_pShaderComs[eCoord]->Bind_Matrix("g_ProjMatrix", &m_pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_PROJ))))
+        return E_FAIL;
+
+    if (FAILED(CTrail_Manager::GetInstance()->Render_Trails(m_iTrailID, static_cast<C3DModel*>(m_pControllerModel->Get_Model(eCoord)), m_pShaderComs[eCoord])))
+        return E_FAIL;
+
+    return S_OK;
+}
+
 HRESULT CModelObject::Bind_ShaderResources_WVP()
 {
     switch (m_pControllerTransform->Get_CurCoord())
@@ -542,6 +593,11 @@ void CModelObject::Set_ReverseAnimation(_bool _bReverse)
 { 
     m_bReverseAnimation = _bReverse; 
 	m_pControllerModel->Get_Model(Get_CurCoord())->Switch_Reverse(_bReverse);
+}
+
+void CModelObject::Set_Progress(COORDINATE _eCoord, _uint _iIdx, _float _fProgress, _bool _bReverse)
+{
+    m_pControllerModel->Get_Model(Get_CurCoord())->Set_Progress(_iIdx, _fProgress, _bReverse);
 }
 
 _bool CModelObject::Is_DuringAnimation()

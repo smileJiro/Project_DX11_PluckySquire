@@ -255,7 +255,7 @@ VS_ROUT VS_SRV_RMAIN2(uint iVertexID : SV_VertexID)
     Out.vVelocity = normalize(mul(float4(Particles[iVertexID].vVelocity, 0.f), g_WorldMatrix)) * fScaleVelocity;
     //Out.vUp = mul((Particles[iVertexID].InstancingMatrix._21_22_23_24), g_WorldMatrix) * (1.f - g_fAbsolute)
     //+ g_fAbsolute * Particles[iVertexID].InstancingMatrix._21_22_23_24;
-    Out.vUp = (Particles[iVertexID].InstancingMatrix._21_22_23_24);
+    Out.vUp = mul(Particles[iVertexID].InstancingMatrix._21_22_23_24, g_WorldMatrix);
     Out.fRandom = Particles[iVertexID].fRandom;
 
     return Out;
@@ -1147,6 +1147,19 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_SRV_RMAIN2();
         GeometryShader = compile gs_5_0 GS_NEWBILLBOARD();
         PixelShader = compile ps_5_0 PS_WEIGHT_BLENDEDSUBCOLORBLOOM();
+        ComputeShader = NULL;
+    }
+
+    pass ROT_DISSOLVE_SUBCOLORBLOOM // 13
+    {
+        SetRasterizerState(RS_Cull_None);
+        SetDepthStencilState(DSS_WriteNone, 0);
+        SetBlendState(BS_WeightAccumulate, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        //SetBlendState(BS_WeightAccumulate, float4(0.f, 0, f, 0.f, 0.f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_SRV_RMAIN2();
+        GeometryShader = compile gs_5_0 GS_NEWBILLBOARD();
+        PixelShader = compile ps_5_0 PS_WEIGHT_BLENDEDDISSOLVE_SUBBLOOM();
         ComputeShader = NULL;
     }
 

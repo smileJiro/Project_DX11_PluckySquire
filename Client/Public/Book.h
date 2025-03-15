@@ -53,6 +53,7 @@ public:
 		NEXT_LEFT = 9,
 		CUR_RIGHT = 10,
 		CUR_LEFT = 11,
+		BOOK_COVER = 13,
 		INDEX_LAST
 	};
 
@@ -109,8 +110,17 @@ public:
 	void					Execute_AnimEvent(_uint _iAnimIndex);
 	HRESULT					Convert_Position_3DTo2D(_fvector _v3DPos, _vector* _pOutPosition);
 
+	void					Start_BookCover_Blending() 
+	{ 
+		m_fBlendingRatio = 0.f; 
+		m_fBlendingTime.y = 0.f; 
+		m_isStartBlending = true; 
+	}
+	void					Set_BlendingRatio(_float _fRatio) { m_fBlendingRatio = _fRatio; }
+
 private:
 	//void					Calc_Page3DWorldMinMax();	
+
 private :
 	CAnimEventGenerator*	m_pAnimEventGenerator = { nullptr };
 	BOOK_PAGE_ACTION		m_eCurAction = ACTION_LAST;
@@ -121,8 +131,10 @@ private :
 	_bool					m_isPlayerAround= { false };
 	_bool					m_isPlayerAbove= { false };
 
-
-
+	// Book Cover Blending
+	_bool					m_isStartBlending = { false };
+	_float2					m_fBlendingTime = { 3.f, 0.f };
+	_float					m_fBlendingRatio = {};
 
 public:
 	void					Change_RenderState(RT_RENDERSTATE _eRenderState);
@@ -130,12 +142,13 @@ public:
 private: /* Render State */
 	RT_RENDERSTATE		m_eCurRenderState = RT_RENDERSTATE::RENDERSTATE_LIGHT;
 
+private:
+	void					Calculate_BlendingRatio(_float _fTimeDelta);
+
 public:
 	static CBook* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject* Clone(void* _pArg) override;
 	virtual void			Free() override;
-
-
 
 };
 

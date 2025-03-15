@@ -1,10 +1,12 @@
 #pragma once
 #include "Monster.h"
 
+BEGIN(Engine)
+class CEffect_System;
+END
 BEGIN(Client)
 
 class CFSM_Boss;
-
 class CButterGrump final : public CMonster
 {
 public:
@@ -20,7 +22,7 @@ public:
 		EXPLOSION_OUT,
 		FIREBALL_SPIT_BIG,
 		FIREBALL_SPIT_LOOP,
-		FIREBALL_SPIT_SMALL,
+		FIREBALL_SPIT_SMALL = 10,
 		IDLE,
 		IDLE_CINE,
 		RECEIVE_DAMAGE,
@@ -49,7 +51,9 @@ public:
 		LAST,
 	};
 
-	enum BOSSPART {BOSSPART_BODY, BOSSPART_LEFTEYE, BOSSPART_RIGHTEYE, BOSSPART_TONGUE, BOSSPART_SHIELD, BOSSPART_END};
+	enum BOSSPART {BOSSPART_BODY, BOSSPART_LEFTEYE, BOSSPART_RIGHTEYE, BOSSPART_TONGUE, BOSSPART_SHIELD,
+		BOSSPART_HOMING_EFFECT, BOSSPART_PURPLEBALL_EFFECT, BOSSPART_YELLOWBALL_EFFECT,
+		BOSSPART_END};
 
 	//enum BOSS_SHAPE_USE
 	//{
@@ -144,6 +148,7 @@ public:
 	virtual void	On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)override;
 	void Hit();
 
+
 private:
 	virtual	HRESULT					Ready_ActorDesc(void* _pArg);
 	virtual HRESULT					Ready_Components();
@@ -180,6 +185,11 @@ private:
 
 	//패턴 파훼용 투사체가 소환되어있는지 체크
 	_bool m_isSpawnOrb = { false };
+
+	/* Effects */
+	class CEffect_System* m_pHomingEffect = { nullptr };
+	class CEffect_System* m_pPurpleEffect = { nullptr };
+	class CEffect_System* m_pYellowEffect = { nullptr };
 
 public:
 	static CButterGrump* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

@@ -151,6 +151,7 @@ HRESULT CPooling_Manager::Create_Object(const _wstring& _strPoolingTag, COORDINA
 				pGameObject->Set_Scale(*_pScaling);
 			if (nullptr != _pRotation)
 				pGameObject->Get_ControllerTransform()->RotationQuaternionW(*_pRotation);
+
 			if (nullptr != _pPosition)
 			{
 				CActorObject* pActorObject = dynamic_cast<CActorObject*>(pGameObject);
@@ -159,7 +160,14 @@ HRESULT CPooling_Manager::Create_Object(const _wstring& _strPoolingTag, COORDINA
 					CActor* pActor = pActorObject->Get_ActorCom();
 					if (nullptr != pActor)
 					{
-						pActor->Set_GlobalPose(*_pPosition);
+						if(nullptr != _pRotation)
+						{
+							pActor->Set_GlobalPose(*_pPosition, *_pRotation);
+						}
+						else
+						{
+							pActor->Set_GlobalPose(*_pPosition);
+						}
 					}
 				}
 				pGameObject->Set_Position(XMLoadFloat3(_pPosition));

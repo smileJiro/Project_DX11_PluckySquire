@@ -18,17 +18,23 @@ HRESULT CPatrol_WayState::Initialize(void* _pArg)
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
 
-	m_fPatrol_WayOffset = 7.f;
-	m_fPatrol_Way2DOffset = m_fPatrol_WayOffset * 100.f;
+	//Initialize_WayPoints(pDesc->eWayIndex);
+	//Initialize_PatrolPoints(pDesc->eWayIndex);
+	//Initialize_PatrolDirections(pDesc->eWayIndex);
+
 	m_iPrevDir = -1;
 	m_iDir = -1;
 	//m_fDelayTime = 1.f;
 
-	Initialize_WayPoints(pDesc->eWayIndex);
-	if(false == m_pOwner->Is_Stay())
-		Initialize_PatrolPoints(pDesc->eWayIndex);
-	Initialize_PatrolDirections(pDesc->eWayIndex);
-	
+	return S_OK;
+}
+
+void CPatrol_WayState::Set_WayPoint(SNEAKWAYPOINTINDEX _eWayIndex)
+{
+	Initialize_WayPoints(_eWayIndex);
+	Initialize_PatrolPoints(_eWayIndex);
+	Initialize_PatrolDirections(_eWayIndex);
+
 	if (1 < m_PatrolWays.size())
 	{
 		if (1 < m_PatrolDirections.size())
@@ -42,23 +48,10 @@ HRESULT CPatrol_WayState::Initialize(void* _pArg)
 	}
 	else
 		m_isRotateOnly = true;
-
-
-	return S_OK;
 }
 
 void CPatrol_WayState::Set_Bound(_float3& _vPosition)
 {
-	//일단 현재 위치 기준으로 잡음
-	_vector vResult=XMLoadFloat3(&_vPosition);
-	_vector vOffset = XMVectorZero();
-	if (COORDINATE::COORDINATE_3D == m_pOwner->Get_CurCoord())
-		vOffset = XMVectorReplicate(m_fPatrol_WayOffset);
-	else if (COORDINATE::COORDINATE_2D == m_pOwner->Get_CurCoord())
-		vOffset = XMVectorReplicate(m_fPatrol_Way2DOffset);
-
-	XMStoreFloat3(&m_tPatrol_WayBound.vMin, vResult - vOffset);
-	XMStoreFloat3(&m_tPatrol_WayBound.vMax, vResult + vOffset);
 }
 
 
@@ -68,14 +61,14 @@ void CPatrol_WayState::State_Enter()
 	m_isToWay = false;
 	m_isTurn = false;
 	m_isMove = false;
-	cout << "Patrol" << endl;
+	cout << "Patrol_Way" << endl;
 }
 
 void CPatrol_WayState::State_Update(_float _fTimeDelta)
 {
 	if (nullptr == m_pOwner)
 		return;
-	//cout << "Patrol" << endl;
+
 	if (true == m_isMove)
 		m_fAccTime += _fTimeDelta;
 
@@ -87,7 +80,7 @@ void CPatrol_WayState::State_Update(_float _fTimeDelta)
 		if (m_pTarget->Get_CurCoord() == m_pOwner->Get_CurCoord())
 		{	
 			//적 발견 시 ALERT 전환
-			if (Check_Target3D(true))
+			if (Check_Target3D())
 			{
 				m_pOwner->Stop_Rotate();
 				m_pOwner->Stop_Move();
@@ -97,16 +90,6 @@ void CPatrol_WayState::State_Update(_float _fTimeDelta)
 				//공격 범위 안일 경우 바로 공격으로 전환
 				if (fDis <= Get_CurCoordRange(MONSTER_STATE::ATTACK))
 					Event_ChangeMonsterState(MONSTER_STATE::ATTACK, m_pFSM);
-				return;
-			}
-
-			//플레이어가 인식되지 않았을 경우 소리가 나면 경계로 전환 
-			if (m_pOwner->IsTarget_In_Sneak_Detection())
-			{
-				m_pOwner->Stop_Rotate();
-				m_pOwner->Stop_Move();
-				m_pFSM->Set_Sneak_AwarePos(m_pOwner->Get_FinalPosition());
-				Event_ChangeMonsterState(MONSTER_STATE::SNEAK_AWARE, m_pFSM);
 				return;
 			}
 		}
@@ -146,7 +129,7 @@ void CPatrol_WayState::Patrol_WayMove(_float _fTimeDelta, _int _iDir)
 			m_isTurn = false;
 			m_isMove = false;
 
-			Event_ChangeMonsterState(MONSTER_STATE::SNEAK_IDLE, m_pFSM);
+			Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
 		}
 	}
 
@@ -189,7 +172,7 @@ void CPatrol_WayState::Patrol_WayMove(_float _fTimeDelta, _int _iDir)
 				m_isTurn = false;
 				m_isMove = false;
 
-				Event_ChangeMonsterState(MONSTER_STATE::SNEAK_IDLE, m_pFSM);
+				Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
 			}
 		}
 	}
@@ -232,7 +215,7 @@ void CPatrol_WayState::Patrol_WayMove(_float _fTimeDelta, _int _iDir)
 					m_isTurn = false;
 					m_isMove = false;
 
-					Event_ChangeMonsterState(MONSTER_STATE::SNEAK_IDLE, m_pFSM);
+					Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
 				}
 			}
 		}
@@ -247,7 +230,7 @@ void CPatrol_WayState::Patrol_WayMove(_float _fTimeDelta, _int _iDir)
 			if (m_pOwner->Rotate_To_Radians(XMLoadFloat3(&m_vDir), m_pOwner->Get_ControllerTransform()->Get_RotationPerSec()))
 			{
 				m_pOwner->Change_Animation();
-				Event_ChangeMonsterState(MONSTER_STATE::SNEAK_IDLE, m_pFSM);
+				Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
 			}
 			else
 			{
@@ -309,12 +292,14 @@ void CPatrol_WayState::Determine_Direction()
 		}
 
 		//시간 랜덤으로 지정 (양 끝 지점만 최솟값을 크게 놓음)
-		if (0 == m_iCurWayIndex || m_PatrolWays.size() - 1 == m_iCurWayIndex)
-			m_pFSM->Set_Sneak_StopTime(m_pGameInstance->Compute_Random(2.5f, 3.f));
-		else
-		{
-			m_pFSM->Set_Sneak_StopTime(m_pGameInstance->Compute_Random(0.f, 3.f));
-		}
+		//if (0 == m_iCurWayIndex || m_PatrolWays.size() - 1 == m_iCurWayIndex)
+		//	m_pFSM->Set_Sneak_StopTime(m_pGameInstance->Compute_Random(2.5f, 3.f));
+		//else
+		//{
+		//	m_pFSM->Set_Sneak_StopTime(m_pGameInstance->Compute_Random(0.f, 3.f));
+		//}
+		// 
+		// 
 		//XMStoreFloat3(&m_vDir, XMVector3Normalize(XMVectorSetY(XMLoadFloat3(&m_WayPoints[m_PatrolWays[m_iCurWayIndex]].vPosition) - m_pOwner->Get_FinalPosition(),0.f)));
 		XMStoreFloat3(&m_vDir, XMVector3Normalize(XMLoadFloat3(&m_WayPoints[m_PatrolWays[m_iCurWayIndex]].vPosition) - m_pOwner->Get_FinalPosition()));
 		if (m_vDir.y > 0.f)
@@ -355,10 +340,10 @@ void CPatrol_WayState::Determine_Direction()
 				}
 			}
 
-			if (true == m_PatrolWays.empty())
-			{
-				m_pFSM->Set_Sneak_StopTime(m_pGameInstance->Compute_Random(2.5f, 3.f));
-			}
+			//if (true == m_PatrolWays.empty())
+			//{
+			//	m_pFSM->Set_Sneak_StopTime(m_pGameInstance->Compute_Random(2.5f, 3.f));
+			//}
 
 			m_vDir = m_PatrolDirections[m_iCurDirectionIndex];
 		}

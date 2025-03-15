@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "GameEventExecuter_C6.h"
 #include "GameInstance.h"
+
 /* Manager */
 #include "Trigger_Manager.h"
 #include "Section_Manager.h"
@@ -9,6 +10,8 @@
 #include "Camera_Manager.h"
 #include "Effect2D_Manager.h"
 #include "FatherGame.h"
+#include "UI_Manager.h"
+
 /* Section */
 #include "Section_2D_PlayMap.h"
 
@@ -20,7 +23,9 @@
 
 /* Camera */
 #include "Camera_CutScene.h"
+#include "Camera_2D.h"
 
+/* Npc */
 #include "Npc_Humgrump.h"
 #include "Npc_MoonBeard.h"
 
@@ -1068,7 +1073,78 @@ void CGameEventExecuter_C6::Chapter6_Humgrump_Revolt(_float _fTimeDelta)
 
 void CGameEventExecuter_C6::Chapter6_Change_Book_To_Greate_Humgrump(_float _fTimeDelta)
 {
+	m_fTimer += _fTimeDelta;
 
+	if (Step_Check(STEP_0)) {
+		// 1. Narration이 끝났을 때 Book으로(가운데) 타겟 변경
+		if (true == CUI_Manager::GetInstance()->is_EndNarration()) {
+
+			CGameObject* pBook = m_pGameInstance->Get_GameObject_Ptr(m_iCurLevelID, TEXT("Layer_Book"), 0);
+
+			CCamera_Manager::GetInstance()->Change_CameraTarget(pBook, 0.5f);
+			CCamera_Manager::GetInstance()->Set_NextArmData(TEXT("BookFlipping_Horizon"), 0);
+			CCamera_Manager::GetInstance()->Change_CameraMode(CCamera_2D::MOVE_TO_NEXTARM);
+
+			CCamera_2D* pCamera = static_cast<CCamera_2D*>(CCamera_Manager::GetInstance()->Get_CurrentCamera());
+			pCamera->Start_Changing_LengthValue(pCamera->Get_LengthValue(), 1.f);
+
+			Next_Step(true);
+		}
+	}
+	else if (Step_Check(STEP_1)) {
+
+		// 2. 책 덮기
+		if (m_fTimer >= 1.f && 0 == m_iSubStep) {
+			
+			CBook* pBook = static_cast<CBook*>(m_pGameInstance->Get_GameObject_Ptr(LEVEL_CHAPTER_6, TEXT("Layer_Book"), 0));
+			pBook->Set_Animation(CBook::CLOSE_L_TO_R);
+
+			m_iSubStep++;
+		}
+
+		// 2. 책 오른쪽을 바라보게 타겟 변경, Arm, Zoom, Length 조절
+		if (1 == m_iSubStep) {
+			CBook* pBook = static_cast<CBook*>(m_pGameInstance->Get_GameObject_Ptr(LEVEL_CHAPTER_6, TEXT("Layer_Book"), 0));
+			if (false == pBook->Is_DuringAnimation()) {
+				_float2 vRightBook2DPos = { 640.f, 0.f };
+				_vector vRightBookPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(TEXT("Chapter6_P1516"), vRightBook2DPos);
+
+				memcpy(&m_TargetWorldMatrix.m[3], &vRightBookPos, sizeof(_float4));
+
+				CCamera_Manager::GetInstance()->Change_CameraTarget(&m_TargetWorldMatrix, 0.8f);
+				CCamera_Manager::GetInstance()->Start_Changing_ArmLength(CCamera_Manager::TARGET_2D, 0.8f, 23.1590042, EASE_IN_OUT);
+				CCamera_Manager::GetInstance()->Start_Turn_ArmVector(CCamera_Manager::TARGET_2D, 0.8f, XMVectorSet(0.0f, 0.907808542f, -0.419384748f, 0.f), EASE_IN_OUT);
+				CCamera_Manager::GetInstance()->Start_Zoom(CCamera_Manager::TARGET_2D, 0.8f, CCamera::LEVEL_4, EASE_IN_OUT);
+
+				Next_Step(true);
+			}
+		}
+	}
+	else if (Step_Check(STEP_2)) {
+		// 3. 험그럼프 책으로 변경
+		if (m_fTimer >= 1.f) {
+			CBook* pBook = static_cast<CBook*>(m_pGameInstance->Get_GameObject_Ptr(LEVEL_CHAPTER_6, TEXT("Layer_Book"), 0));
+			pBook->Start_BookCover_Blending();
+
+			Next_Step(true);
+		}
+	}
+	else if (Step_Check(STEP_3)) {
+		// 4. CutScene Camera로 변경
+		if (m_fTimer >= 4.f) {
+			CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::CUTSCENE, true, 0.2f);
+			CCamera_Manager::GetInstance()->Set_NextCutSceneData(TEXT("Chapter6_Great_Humgrump"));
+
+			Next_Step(true);
+		}
+	}
+	else if (Step_Check(STEP_4)) {
+		// 5. Level 변경
+		if (m_fTimer >= 5.f) {
+			CTrigger_Manager::GetInstance()->Register_TriggerEvent(L"Next_Chapter_Event", 0);
+			GameEvent_End();
+		}
+	}
 }
 
 

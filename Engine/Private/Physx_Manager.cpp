@@ -661,7 +661,7 @@ HRESULT CPhysx_Manager::Initialize_Material()
 			vMaterialDesc = { 0.05f, 0.05f, 0.1f };
 			break;
 		case Engine::ACTOR_MATERIAL::BOUNCY: // 잘 튕기는
-			vMaterialDesc = { 0.3f, 0.3f, 1.0f };
+			vMaterialDesc = { 0.3f, 0.3f, 0.5f };
 			break;
 		case Engine::ACTOR_MATERIAL::STICKY: // 질퍽한
 			vMaterialDesc = { 0.8f, 0.7f, 0.1f };
@@ -680,6 +680,8 @@ HRESULT CPhysx_Manager::Initialize_Material()
 			break;			
 		case Engine::ACTOR_MATERIAL::CHARACTER_FOOT: // 캐릭터 구형 마찰
 			vMaterialDesc = { 2.f, 2.f,0.f };
+		case Engine::ACTOR_MATERIAL::CASTLE_GATE: // 성 문 
+			vMaterialDesc = { 2.f, 2.f,0.6f };
 			break;
 		default:
 			break;
