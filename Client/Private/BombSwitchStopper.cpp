@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "BombSwitchStopper.h"
 #include "Collider_Circle.h"
+#include "Collider_AABB.h"
+#include "Section_Manager.h"
 
 CBombSwitchStopper::CBombSwitchStopper(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CModelObject(_pDevice, _pContext)
@@ -36,23 +38,59 @@ HRESULT CBombSwitchStopper::Initialize(void* _pArg)
 
     m_p2DColliderComs.resize(1);
     ///* Test 2D Collider */
-    CCollider_Circle::COLLIDER_CIRCLE_DESC CircleDesc = {};
-    CircleDesc.pOwner = this;
-    CircleDesc.fRadius = 50.f;
-    CircleDesc.vScale = { 1.0f, 1.0f };
-    CircleDesc.vOffsetPosition = { 0.f, 0.f };
-    CircleDesc.isBlock = false;
-    CircleDesc.isTrigger = true;
-    CircleDesc.iCollisionGroupID = OBJECT_GROUP::MAPOBJECT;
-    if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
-        TEXT("Com_Body2DCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &CircleDesc)))
+    CCollider_AABB::COLLIDER_AABB_DESC tAABBDEsc = {};
+    tAABBDEsc.pOwner = this;
+    tAABBDEsc.vExtents = { 125.f, 150.f };
+    tAABBDEsc.vScale = { 1.0f, 1.0f };
+    tAABBDEsc.vOffsetPosition = { 0.f, tAABBDEsc.vExtents.y };
+    tAABBDEsc.isBlock = true;
+    tAABBDEsc.isTrigger = false;
+    tAABBDEsc.iCollisionGroupID = OBJECT_GROUP::MAPOBJECT;
+    if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
+        TEXT("Com_Body2DCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &tAABBDEsc)))
         return E_FAIL;
-
+    Register_OnAnimEndCallBack(bind(&CBombSwitchStopper::On_AnimEnd, this, placeholders::_1, placeholders::_2));
+    Switch_Animation(SQUARE_UP);
     return S_OK;
+}
+
+HRESULT CBombSwitchStopper::Render()
+{
+#ifdef _DEBUG
+    if (m_p2DColliderComs[0]->Is_Active())
+        m_p2DColliderComs[0]->Render(SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName));
+#endif // _DEBUG
+
+    return __super::Render();
 }
 
 void CBombSwitchStopper::On_BombSwitch(_bool _bOn)
 {
+
+    if (SQUARE_DOWN == Get_CurrentAnimIndex())
+    {
+        Switch_Animation(SQUARE_MOVE_UP);
+        m_p2DColliderComs[0]->Set_Active(true);
+        SECTION_MGR->Change_GameObject_LayerIndex(m_strSectionName, this, SECTION_2D_PLAYMAP_OBJECT);
+    }
+    else if (SQUARE_UP == Get_CurrentAnimIndex())
+        Switch_Animation(SQUARE_MOVE_DOWN);
+
+
+}
+
+void CBombSwitchStopper::On_AnimEnd(COORDINATE _eCoord, _uint _iAnimIdx)
+{
+    if (SQUARE_MOVE_UP == _iAnimIdx)
+    {
+        Switch_Animation(SQUARE_UP);
+    }
+    else if (SQUARE_MOVE_DOWN == _iAnimIdx)
+    {
+        Switch_Animation(SQUARE_DOWN);
+        SECTION_MGR->Change_GameObject_LayerIndex(m_strSectionName, this, SECTION_2D_PLAYMAP_BACKGROUND);
+        m_p2DColliderComs[0]->Set_Active(false);
+    }
 }
 
 
