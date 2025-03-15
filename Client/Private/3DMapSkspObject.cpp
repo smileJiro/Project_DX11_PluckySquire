@@ -714,7 +714,7 @@ HRESULT C3DMapSkspObject::Render_WorldPosMap(const _wstring& _strCopyRTTag, cons
     if (nullptr == pTexture)
         return E_FAIL;
 
-    if (FAILED(m_pShaderComs[COORDINATE_3D]->Bind_Matrix("g_WorldMatrix", m_pControllerTransform->Get_WorldMatrix_Ptr())))
+    if (FAILED(m_pShaderComs[COORDINATE_3D]->Bind_Matrix("g_WorldMatrix", &m_WorldMatrices[COORDINATE_3D])))
         return E_FAIL;
 
     _uint iFlag = RT_RENDER_DEAFULT;
