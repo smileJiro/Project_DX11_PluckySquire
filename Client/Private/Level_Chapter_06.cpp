@@ -83,6 +83,10 @@
 #include "CandleGame.h"
 #include "ZetPack_Child.h"
 
+// Friends
+#include "Friend_Controller.h"
+#include "Friend_Thrash.h"
+#include "Friend_Violet.h"
 
 CLevel_Chapter_06::CLevel_Chapter_06(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:
@@ -191,7 +195,11 @@ HRESULT CLevel_Chapter_06::Initialize(LEVEL_ID _eLevelID)
 		MSG_BOX(" Failed Ready_Layer_MapGimmick (Level_Chapter_06::Initialize)");
 		assert(nullptr);
 	}
-
+	if (FAILED(Ready_Layer_Friends(TEXT("Layer_Friend"))))
+	{
+		MSG_BOX(" Failed Ready_Layer_Friends (Level_Chapter_02::Initialize)");
+		assert(nullptr);
+	}
 
 	/* Collision Check Matrix */
 	// 그룹필터 추가 >> 중복해서 넣어도 돼 내부적으로 걸러줌 알아서 
@@ -702,7 +710,7 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Player(const _wstring& _strLayerTag, CGam
 	CPlayer::CHARACTER_DESC Desc;
 	Desc.iCurLevelID = m_eLevelID;
 	Desc.eStartCoord = COORDINATE_2D;
-	Desc.tTransform2DDesc.vInitialPosition = { 0.f, 400.f, 0.f };   // TODO ::임시 위치
+	Desc.tTransform2DDesc.vInitialPosition = { -22.f, -681.f, 0.f };   // TODO ::임시 위치
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_TestPlayer"), m_eLevelID, _strLayerTag, _ppOut, &Desc)))
 		return E_FAIL;
@@ -762,6 +770,55 @@ HRESULT CLevel_Chapter_06::Ready_Layer_MapGimmick()
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DraggableObject"),
 		m_eLevelID, L"Layer_Draggable", &tDraggableDesc)))
 		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Chapter_06::Ready_Layer_Friends(const _wstring& _strLayerTag)
+{
+	_wstring strFriendTag = L"Thrash";
+	{ /* Friend_Thrash */
+		CFriend_Thrash::FRIEND_DESC Desc{};
+		Desc.Build_2D_Transform(_float2(-82.f, -771.f), _float2(1.0f, 1.0f), 450.f);
+		Desc.iCurLevelID = LEVEL_CHAPTER_2;
+		Desc.eStartState = CFriend::FRIEND_IDLE;
+		Desc.eStartDirection = CFriend::DIR_UP;
+		Desc.iModelTagLevelID = LEVEL_STATIC;
+		Desc.iNumDialoguesIndices = 0;
+		Desc.strFightLayerTag = TEXT("Layer_Monster");
+
+		CGameObject* pGameObject = nullptr;
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Friend_Thrash"), LEVEL_CHAPTER_2, _strLayerTag, &pGameObject, &Desc)))
+			return E_FAIL;
+
+		if (FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter5_P0102"), pGameObject)))
+			return E_FAIL;
+
+		CFriend_Controller::GetInstance()->Register_Friend(strFriendTag, static_cast<CFriend*>(pGameObject));
+		//CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(strFriendTag);
+	} /* Friend_Thrash */
+
+	{ /* Friend_Violet */
+		strFriendTag = L"Violet";
+		CFriend_Violet::FRIEND_DESC Desc{};
+		Desc.Build_2D_Transform(_float2(42.f, -771.f), _float2(1.0f, 1.0f), 450.f);
+		Desc.iCurLevelID = LEVEL_CHAPTER_2;
+		Desc.eStartState = CFriend::FRIEND_IDLE;
+		Desc.eStartDirection = CFriend::DIR_UP;
+		Desc.iModelTagLevelID = LEVEL_STATIC;
+		Desc.iNumDialoguesIndices = 0;
+		Desc.strFightLayerTag = TEXT("Layer_Monster");
+
+		CGameObject* pGameObject = nullptr;
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Friend_Violet"), LEVEL_CHAPTER_2, _strLayerTag, &pGameObject, &Desc)))
+			return E_FAIL;
+
+		if (FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter5_P0102"), pGameObject)))
+			return E_FAIL;
+
+		CFriend_Controller::GetInstance()->Register_Friend(strFriendTag, static_cast<CFriend*>(pGameObject));
+		//CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(strFriendTag);
+	} /* Friend_Violet */
 
 	return S_OK;
 }

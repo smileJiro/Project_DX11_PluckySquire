@@ -89,6 +89,7 @@ HRESULT CTrigger_Manager::Mapping_ExecuterTag()
 	m_EventExecuterTags[CHAPTER6_FATHERGAME_PROGRESS_FATHERPART_1] = L"Chapter6_FatherGame_Progress_Fatherpart_1";
 	m_EventExecuterTags[CHAPTER6_FATHERGAME_PROGRESS_FATHERPART_2] = L"Chapter6_FatherGame_Progress_Fatherpart_2";
 	m_EventExecuterTags[CHAPTER6_FATHERGAME_PROGRESS_FATHERPART_3] = L"Chapter6_FatherGame_Progress_Fatherpart_3";
+	m_EventExecuterTags[CHAPTER6_FRIENDEVENT_0] = L"Chapter6_FriendEvent_0";
 
 
 	m_EventExecuterTags[CHAPTER8_INTRO_POSTIT_SEQUENCE] = L"Chapter8_Intro_Postit_Sequence";

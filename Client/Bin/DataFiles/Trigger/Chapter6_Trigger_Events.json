@@ -70,6 +70,16 @@
     ]
   },
   {
+    "Trigger_EventTag": "Chapter6_FriendEvent_0",
+    "Actions": [
+      {
+        "ActionTag": "Create_EventExecuter",
+        "EventTag": "Chapter6_FriendEvent_0",
+        "Is_Sequence": true
+      }
+    ]
+  },
+  {
     "Trigger_EventTag": "Get_Stop_Stamp",
     "Actions": [
       {
