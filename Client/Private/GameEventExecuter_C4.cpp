@@ -270,7 +270,7 @@ void CGameEventExecuter_C4::Chapter4_GateEvent(_float _fTimeDelta)
 	{
 		if (Is_Start())
 		{
-			CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Decrease(CCamera_Manager::TARGET_2D,
+			CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Increase(CCamera_Manager::TARGET_2D,
 				1.f,5.f, EASE_IN_OUT);
 			CPlayer* pPlayer = Get_Player();
 			
@@ -332,7 +332,7 @@ void CGameEventExecuter_C4::Chapter4_GateEvent(_float _fTimeDelta)
 	{
 		if (Is_Start())
 		{
-			CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Increase(CCamera_Manager::TARGET_2D,
+			CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Decrease(CCamera_Manager::TARGET_2D,
 				1.f, 5.f, EASE_IN_OUT);
 			CPlayer* pPlayer = Get_Player();
 
