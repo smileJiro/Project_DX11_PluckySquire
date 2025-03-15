@@ -41,7 +41,7 @@ HRESULT CBeetle::Initialize(void* _pArg)
     pDesc->fCoolTime = 2.f;
 
     pDesc->_tStat.iMaxHP = 5;
-    pDesc->_tStat.iHP = 1;
+    pDesc->_tStat.iHP = 5;
     pDesc->_tStat.iDamg = 1;
 
     if (FAILED(Ready_ActorDesc(pDesc)))
@@ -63,6 +63,9 @@ HRESULT CBeetle::Initialize(void* _pArg)
     //m_pFSM->Add_State((_uint)MONSTER_STATE::CHASE);
     //m_pFSM->Add_State((_uint)MONSTER_STATE::ATTACK);
 
+
+    m_fStepHeightThreshold = 0.3f;
+
     m_fDashDistance = 10.f;
     m_fBackFlyTime = 0.5f;
 
@@ -75,8 +78,10 @@ HRESULT CBeetle::Initialize(void* _pArg)
     else
     {
         m_pFSM->Set_State((_uint)MONSTER_STATE::IDLE);
+        m_isCombatMode = true;
     }
         
+    
 
     CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
 
@@ -129,7 +134,6 @@ void CBeetle::Update(_float _fTimeDelta)
         m_isDash = false;
     }
 
-
     if (true == m_isBackFly)
     {
         _vector vBack = -1.f * XMVector3Normalize(Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK));
@@ -149,7 +153,8 @@ void CBeetle::Update(_float _fTimeDelta)
     {
         _float fSpeed = Get_ControllerTransform()->Get_SpeedPerSec() * 2.f;
         m_vDir.y = 0;
-        Get_ActorCom()->Set_LinearVelocity(XMVector3Normalize(XMLoadFloat3(&m_vDir)), fSpeed);
+        Move(XMVector3Normalize(XMLoadFloat3(&m_vDir)) * fSpeed, _fTimeDelta);
+        //Get_ActorCom()->Set_LinearVelocity(XMVector3Normalize(XMLoadFloat3(&m_vDir)), fSpeed);
         m_fAccDistance += fSpeed * _fTimeDelta;
 
         if (m_fDashDistance <= m_fAccDistance || true == IsContactToTarget())
@@ -161,7 +166,6 @@ void CBeetle::Update(_float _fTimeDelta)
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(ATTACKRECOVERY);
         }
     }
-
 
     if(KEY_PRESSING(KEY::CTRL))
     {
@@ -175,7 +179,6 @@ void CBeetle::Update(_float _fTimeDelta)
 
 void CBeetle::Late_Update(_float _fTimeDelta)
 {
-
     __super::Late_Update(_fTimeDelta); /* Part Object Late_Update */
 }
 
@@ -350,6 +353,10 @@ void CBeetle::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
         Set_AnimChangeable(true);
         break;
 
+    case DAMAGE:
+        Set_AnimChangeable(true);
+        break;
+
     case DIE:
     {
         Monster_Death();
@@ -357,8 +364,6 @@ void CBeetle::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
         _float4 vRotation;
         m_pGameInstance->MatrixDecompose(nullptr, &vRotation, &vPos, Get_FinalWorldMatrix());
 		
-        cout << "생성 - X : " << vRotation.x << " Y : " << vRotation.y << "Z : " << vRotation.z << endl;
-        //XMStoreFloat4(&vRotation, XMQuaternionMultiply(XMQuaternionRotationAxis(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(45.f)), XMLoadFloat4(&vRotation)));
         CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Beetle_Corpse"), COORDINATE_3D, &vPos, &vRotation);
     }
         break;
@@ -381,10 +386,18 @@ void CBeetle::Attack()
 
 void CBeetle::Switch_CombatMode()
 {
-    m_isCombatMode = true;
-    m_pSneak_DetectionField->Set_Active(false);
-    Set_AnimChangeable(true);
-    m_pFSM->Change_State((_uint)MONSTER_STATE::IDLE);
+    if(true == m_isSneakMode)
+    {
+        if (false == m_isCombatMode)
+        {
+            m_isBackFly = false;
+            m_isDash = false;
+            m_isCombatMode = true;
+        }
+        m_pSneak_DetectionField->Set_Active(false);
+        Set_AnimChangeable(true);
+        m_pFSM->Change_State((_uint)MONSTER_STATE::IDLE);
+    }
 }
 
 void CBeetle::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
@@ -446,12 +459,12 @@ HRESULT CBeetle::Ready_ActorDesc(void* _pArg)
     ShapeData->eShapeType = SHAPE_TYPE::CAPSULE;     // Shape의 형태.
     ShapeData->eMaterial = ACTOR_MATERIAL::CHARACTER_FOOT; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
     ShapeData->isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
-    XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixRotationY(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, ShapeDesc->fRadius, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
+	XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixRotationY(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, ShapeDesc->fRadius, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
 
     /* 최종으로 결정 된 ShapeData를 PushBack */
     ActorDesc->ShapeDatas.push_back(*ShapeData);
 
-    m_matQueryShapeOffset = ShapeData->LocalOffsetMatrix;
+    XMStoreFloat4x4(&m_matQueryShapeOffset, XMMatrixRotationY(XMConvertToRadians(90.f)));
 
 	m_fHalfBodySize = ShapeDesc->fHalfHeight + ShapeDesc->fRadius;
 
@@ -479,7 +492,7 @@ HRESULT CBeetle::Ready_ActorDesc(void* _pArg)
 
     //닿은 물체의 씬 쿼리를 켜는 트리거
     SHAPE_BOX_DESC* RayBoxDesc = new SHAPE_BOX_DESC;
-    RayBoxDesc->vHalfExtents = { pDesc->fAlertRange * tanf(XMConvertToRadians(pDesc->fFOVX * 0.5f)) * 0.5f, 1.f, pDesc->fAlertRange * 0.5f };
+    RayBoxDesc->vHalfExtents = { pDesc->fAlertRange * tanf(XMConvertToRadians(pDesc->fFOVX * 0.5f)), 2.f, pDesc->fAlertRange };
 	//RayBoxDesc->vHalfExtents = { ShapeDesc->fRadius, 0.1f, pDesc->fAlertRange * 0.5f };
 
     /* 해당 Shape의 Flag에 대한 Data 정의 */
@@ -488,7 +501,7 @@ HRESULT CBeetle::Ready_ActorDesc(void* _pArg)
     ShapeData->eShapeType = SHAPE_TYPE::BOX;     // Shape의 형태.
     ShapeData->eMaterial = ACTOR_MATERIAL::NORESTITUTION; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
     ShapeData->isTrigger = true;                    // Trigger 알림을 받기위한 용도라면 true
-	XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixTranslation(0.f, RayBoxDesc->vHalfExtents.y, RayBoxDesc->vHalfExtents.z)); // Shape의 LocalOffset을 행렬정보로 저장.
+	XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixTranslation(0.f, 0.f, 0.f)); // Shape의 LocalOffset을 행렬정보로 저장.
 
     /* 최종으로 결정 된 ShapeData를 PushBack */
     ActorDesc->ShapeDatas.push_back(*ShapeData);

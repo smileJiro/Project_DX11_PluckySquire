@@ -1364,6 +1364,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Monster_2D()
 
 	wstring strLayerTag = TEXT("Layer_Monster");
 
+
 	CGoblin_SideScroller::SIDESCROLLDESC Goblin_SideScroller_Desc;
 	Goblin_SideScroller_Desc.iCurLevelID = m_eLevelID;
 	Goblin_SideScroller_Desc.eStartCoord = COORDINATE_2D;
@@ -1512,6 +1513,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Monster_3D()
 				return E_FAIL;
 		}
 	}
+
 	return S_OK;
 }
 
