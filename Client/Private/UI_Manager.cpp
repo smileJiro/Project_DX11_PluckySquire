@@ -209,6 +209,14 @@ _bool CUI_Manager::is_EndNarration()
 	return m_pNarration->is_EndNarration();
 }
 
+_int CUI_Manager::Get_NarrationCameraPos()
+{
+	if (nullptr == m_pNarration)
+		assert(TEXT("m_pNarration == nullptr"));
+
+	return 	m_pNarration->Get_CameraPos();
+}
+
 _bool CUI_Manager::isLeft_Right()
 {
 	assert(m_pNarration);

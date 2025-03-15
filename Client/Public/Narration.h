@@ -41,12 +41,13 @@ public:
         _wstring strSubSFX  = TEXT("NOT");            // 노출 시킬 서브 사운드
 		_float fscale;              // 텍스트의 크기 변경
         _bool isLeft;                // 왼쪽인가요 오른쪽인가요? 왼쪽이면 true
+        _int    iCameraPos = { 0 };
         _float2 fpos;               // X의 좌표
         _float fwaitingTime;        // 완료 후 다음 나레이션까지의 대기 시간
         _float fLineHieght;         // 문장과 문장 사이의 높이
         _float fFadeDuration;       // 페이드인이 완료될 때 까지의 시간
         _float fDelayNextLine;      // 페이드인이 완료 된 후 다음 라인으로 넘어가기까지의 시간
-        _bool  isDirTurn = true;           // 책장을 넘기는 방향 true는 우측, false는 좌측
+        _bool  isDirTurn = true;   // 책장을 넘기는 방향 true는 우측, false는 좌측
         _float3    fRGB = { 0.f, 0.f, 0.f };
         _bool   isFinishedThisLine = { false };
         _int    AnimationCount = { 0 };
@@ -80,6 +81,7 @@ public:
     _bool                       isLeftRight();
     _bool                       is_PlayNarration() { return m_isPlayNarration;  }
     _bool                       is_EndNarration() { return m_isNarrationEnd; }
+    _int                        Get_CameraPos() { return m_iCameraPos; }
 
 private:
     HRESULT                     LoadFromJson(const std::wstring& filePath); // 데이터 로드
@@ -124,6 +126,7 @@ private:
     map<_uint, vector<CNarration_Anim*>>    m_vAnimObjectsByLine;
 
     _bool                                   m_isLeftRight; // 카메라를 위한 레프트 라이트
+    _int                                    m_iCameraPos;
 
 protected:
     virtual HRESULT         Ready_Components() override;
