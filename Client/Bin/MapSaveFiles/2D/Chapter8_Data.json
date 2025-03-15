@@ -296,7 +296,8 @@
 			"LevelSizePixels": {
 				"X": 8448.0,
 				"Y": 6144.0
-			}
+			},
+			"Platformer": true
 		}
 	},
 	{
