@@ -691,6 +691,9 @@ HRESULT CModelObject::Imgui_Render_ObjectInfos()
         break;
     }
     ImGui::Text(strCurCoord.c_str());
+    ImGui::Text("Section Tag");
+    ImGui::SameLine();
+    ImGui::Text(L"" == m_strSectionName ? "empty" : WSTRINGTOSTRING(m_strSectionName).c_str());
 
 
     /* Coordinate Change Enable */
