@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "BombSwitch.h"
 #include "Collider_Circle.h"
+#include "Section_Manager.h"
 
 CBombSwitch::CBombSwitch(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CModelObject(_pDevice, _pContext)
@@ -39,9 +40,9 @@ HRESULT CBombSwitch::Initialize(void* _pArg)
     CCollider_Circle::COLLIDER_CIRCLE_DESC CircleDesc = {};
 
     CircleDesc.pOwner = this;
-    CircleDesc.fRadius = 50.f;
+    CircleDesc.fRadius = 30.f;
     CircleDesc.vScale = { 1.0f, 1.0f };
-    CircleDesc.vOffsetPosition = { 0.f, 0.f };
+    CircleDesc.vOffsetPosition = { 0.f, CircleDesc.fRadius};
     CircleDesc.isBlock = false;
     CircleDesc.isTrigger = true;
     CircleDesc.iCollisionGroupID = OBJECT_GROUP::GIMMICK_OBJECT;
@@ -50,17 +51,38 @@ HRESULT CBombSwitch::Initialize(void* _pArg)
         TEXT("Com_Body2DCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &CircleDesc)))
         return E_FAIL;
 
+    Set_SwitchState(pBodyDesc->eStartState);
     return S_OK;
+}
+
+HRESULT CBombSwitch::Render()
+{
+
+#ifdef _DEBUG
+    if (m_p2DColliderComs[0]->Is_Active())
+        m_p2DColliderComs[0]->Render(SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName));
+
+#endif // _DEBUG
+    return __super::Render();
 }
 
 
 
 void CBombSwitch::On_Hit(CGameObject* _pHitter, _int _fDamg, _fvector _vForce)
 {
-	m_bBombSwitchOn = !m_bBombSwitchOn;
-	Switch_Animation(m_bBombSwitchOn ? ON : OFF);
+    Set_SwitchState(OFF == m_eBombSwitchOn ? ON : OFF);
+
+
+}
+
+void CBombSwitch::Set_SwitchState(BOMB_SWITCH_STATE _eState)
+{
+	if (m_eBombSwitchOn == _eState)
+		return;
+    m_eBombSwitchOn = _eState;
     if (m_pReceiver)
-        m_pReceiver->Switch_Bomb(m_bBombSwitchOn);
+        m_pReceiver->Switch_Bomb(ON == m_eBombSwitchOn );
+    Switch_Animation(m_eBombSwitchOn);
 }
 
 CBombSwitch* CBombSwitch::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

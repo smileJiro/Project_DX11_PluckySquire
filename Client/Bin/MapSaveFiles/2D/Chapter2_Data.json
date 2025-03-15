@@ -21,6 +21,7 @@
 	},
 	{
 		"Section_Name": "Chapter1_P0506",
+
 		"Section_BackGround_Name": "Chapter1_P0506_BackGround",
 		"Section_File_Name": "Chapter1_P0506.m2chc",
 		"Section_Type": 0,
@@ -32,6 +33,7 @@
 	},
 	{
 		"Section_Name": "Chapter1_P0708",
+					"Section_Start": true,
 		"Section_BackGround_Name": "Chapter1_P0708_BackGround",
 		"Section_File_Name": "Chapter1_P0708.m2chc",
 		"Section_Type": 0,
@@ -63,6 +65,7 @@
 	},
 	{
 		"Section_Name": "Chapter2_P0102",
+		"Section_Start": true,
 		"Section_File_Name": "Chapter2_P0102.m2chc",
 		"Section_BackGround_Name": "Chapter2_P0102_BackGround",
 		"Section_Type": 0,
@@ -78,13 +81,23 @@
 				"X": 1440.0,
 				"Y": 5120.0
 			},
-			"Next_Page_Tag": "Chapter2_P0304",
+			"Next_Page_Tag": "Chapter2_Worldmap_0",
 			"Pre_Page_Tag": "Chapter1_P0708"
 		}
 	},
 	{
+		"Section_Name": "Chapter2_Worldmap_0",
+		"Section_BackGround_Name": "Worldmap",
+		"Section_Type": 1,
+		"Section_Default": 0,
+		"Section_Info": {
+			"Next_Page_Tag": "Chapter2_P0304",
+			"Pre_Page_Tag": "Chapter2_P0102"
+		}
+	},
+	{
 		"Section_Name": "Chapter2_P0304",
-		"Section_Start": true,
+	
 		"Section_File_Name": "Chapter2_P0304.m2chc",
 		"Section_BackGround_Name": "Chapter2_P0304_BackGround",
 		"Section_Type": 0,

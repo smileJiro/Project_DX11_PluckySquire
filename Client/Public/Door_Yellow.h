@@ -10,6 +10,7 @@ public:
 	typedef struct tagDoorYellowDesc : public CDoor_2D::DOOR_2D_DESC
 	{
 		_bool	isPressurePlate = true;
+		class CPressure_Plate* pPressurePlate = nullptr;
 		_float3 vPressurePlatePos = {};
 	} DOOR_YELLOW_DESC;
 

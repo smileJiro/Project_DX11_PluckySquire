@@ -660,7 +660,21 @@ void CGameEventExecuter_C2::Chapter2_Humgrump(_float _fTimeDelta)
 
 			// 스레쉬와 바이올렛 생성
 
+			// 책 상태 변경
+			CBook* pBook = Get_Book();
+			pBook->Switch_Animation(CBook::CLOSED_IDLE);
+			CFriend* pThrash = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Thrash"));
+			CFriend* pViolet = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Violet"));
+			CSection_Manager::GetInstance()->Remove_GameObject_FromSectionLayer(TEXT("Chapter2_P1112"), pThrash);
+			CSection_Manager::GetInstance()->Remove_GameObject_FromSectionLayer(TEXT("Chapter2_P1112"), pViolet);
 
+			CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P1314"), pThrash);
+			CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter2_P1314"), pViolet);
+			_vector vPortalPos = XMVectorSetW(XMLoadFloat3(&Desc.tTransform2DDesc.vInitialPosition), 1.0f);
+			pThrash->Set_Position(vPortalPos + XMVectorSet(-100.f, -100.f, 0.0f, 1.0f));
+			pThrash->Set_Direction(CFriend::DIR_RIGHT);
+			pViolet->Set_Position(vPortalPos + XMVectorSet(100.f, -100.f, 0.0f, 1.0f));
+			pViolet->Set_Direction(CFriend::DIR_LEFT);
 			GameEvent_End();
 		}
 	}
@@ -1498,83 +1512,67 @@ void CGameEventExecuter_C2::Chapter2_FriendEvent_0(_float _fTimeDelta)
 
 void CGameEventExecuter_C2::Chapter2_FriendEvent_1(_float _fTimeDelta)
 {
-//	m_fTimer += _fTimeDelta;
-//	CCamera_Manager::CAMERA_TYPE eCamType = CCamera_Manager::TARGET_2D;
-//	CPlayer* pPlayer = Get_Player();
-//	CFriend* pThrash = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Thrash"));
-//	CFriend* pViolet = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Violet"));
-//	if (nullptr == pPlayer)
-//	{
-//		GameEvent_End();
-//		return;
-//	}
-//	/* 플레이어 인풋락  */
-//
-//
-//	if (Step_Check(STEP_0))
-//	{
-//		/* 1. Save Reset ArmData */
-//		if (Is_Start())
-//		{
-//			pPlayer->Set_2DDirection(E_DIRECTION::DOWN);
-//			pPlayer->Set_BlockPlayerInput(true);
-//			CCamera_Manager::GetInstance()->Set_ResetData(eCamType);
-//			m_iDialogueIndex = 0;
-//		}
-//		Next_Step_Over(2.0f);
-//	}
-//	else if (Step_Check(STEP_1)) // 1. 다이얼로그 시작.
-//	{
-//		if (Is_Start())
-//		{
-//			// Friend 대화 시작.
-//			_wstring strDialogueTag = TEXT("Chapter2_FriendEvent_0");
-//			//strDialogueTag += to_wstring(m_iDialogueIndex);
-//			CDialog_Manager::GetInstance()->Set_DialogId(strDialogueTag.c_str());
-//			CFriend* pThrash = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Thrash"));
-//			CDialog_Manager::GetInstance()->Set_NPC(pThrash);
-//			CFriend* pViolet = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Violet"));
-//			CDialog_Manager::GetInstance()->Set_NPC(pViolet);
-//
-//		}
-//
-//		/* 6. 다이얼로그 종료 체크 */
-//		if (false == CDialog_Manager::GetInstance()->Get_DisPlayDialogue())
-//		{
-//			Next_Step(true);
-//		}
-//
-//	}
-//	else if (Step_Check(STEP_2)) // 2. 모잼
-//	{
-//		if (Is_Start())
-//		{
-//			// Friend 대화 시작.
-//			//_wstring strDialogueTag = TEXT("Mojam");
-//			////strDialogueTag += to_wstring(m_iDialogueIndex);
-//			//CDialog_Manager::GetInstance()->Set_DialogId(strDialogueTag.c_str());
-//			pPlayer->Set_State(CPlayer::MOJAM);
-//			CFriend* pThrash = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Thrash"));
-//			CFriend* pViolet = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Violet"));
-//			pThrash->Change_CurState(CFriend::FRIEND_MOJAM);
-//			pViolet->Change_CurState(CFriend::FRIEND_MOJAM);
-//
-//		}
-//
-//		/* 6. 다이얼로그 종료 체크 */
-//		if (false == CDialog_Manager::GetInstance()->Get_DisPlayDialogue() && CPlayer::STATE::IDLE == pPlayer->Get_CurrentStateID())
-//		{
-//			Next_Step(true);
-//		}
-//
-//	}
-//	else
-//	{
-//		CFriend_Controller::GetInstance()->Start_Train();
-//		CCamera_Manager::GetInstance()->Start_ResetArm_To_SettingPoint(eCamType, 1.0f);
-//		pPlayer->Set_BlockPlayerInput(false);
-//		GameEvent_End();
-//	}
+	m_fTimer += _fTimeDelta;
+	CCamera_Manager::CAMERA_TYPE eCamType = CCamera_Manager::TARGET_2D;
+	CPlayer* pPlayer = Get_Player();
+	CFriend* pThrash = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Thrash"));
+	CFriend* pViolet = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Violet"));
+	if (nullptr == pPlayer)
+	{
+		GameEvent_End();
+		return;
+	}
+	/* 플레이어 인풋락  */
+
+
+	if (Step_Check(STEP_0))
+	{
+		/* 1. Save Reset ArmData */
+		if (Is_Start())
+		{
+			pPlayer->Set_2DDirection(E_DIRECTION::UP);
+			pPlayer->Set_BlockPlayerInput(true);
+			CFriend_Controller::GetInstance()->End_Train();
+			_vector vPlayerPos = pPlayer->Get_FinalPosition();
+			_vector vThrashPos = vPlayerPos + XMVectorSet(100.f, 100.f, 0.0f, 0.0f);
+			_vector vVioletPos = vPlayerPos + XMVectorSet(-100.f, 100.f, 0.0f, 0.0f);
+			pThrash->Move_Position(_float2(XMVectorGetX(vThrashPos), XMVectorGetY(vThrashPos)), CFriend::DIR_DOWN);
+			pViolet->Move_Position(_float2(XMVectorGetX(vVioletPos), XMVectorGetY(vVioletPos)), CFriend::DIR_DOWN);
+
+			CCamera_Manager::GetInstance()->Set_ResetData(eCamType);
+			m_iDialogueIndex = 0;
+		}
+		Next_Step_Over(1.5f);
+	}
+	else if (Step_Check(STEP_1)) // 1. 다이얼로그 시작.
+	{
+		if (Is_Start())
+		{
+			// Friend 대화 시작.
+			_wstring strDialogueTag = TEXT("Chapter2_FriendEvent_1");
+			//strDialogueTag += to_wstring(m_iDialogueIndex);
+			CDialog_Manager::GetInstance()->Set_DialogId(strDialogueTag.c_str());
+
+			CFriend* pThrash = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Thrash"));
+			CDialog_Manager::GetInstance()->Set_NPC(pThrash);
+			CFriend* pViolet = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Violet"));
+			CDialog_Manager::GetInstance()->Set_NPC(pViolet);
+
+		}
+
+		/* 6. 다이얼로그 종료 체크 */
+		if (false == CDialog_Manager::GetInstance()->Get_DisPlayDialogue())
+		{
+			Next_Step(true);
+		}
+
+	}
+	else
+	{
+		CCamera_Manager::GetInstance()->Start_ResetArm_To_SettingPoint(eCamType, 1.0f);
+		pPlayer->Set_BlockPlayerInput(false);
+		GameEvent_End();
+	}
 }
 
 

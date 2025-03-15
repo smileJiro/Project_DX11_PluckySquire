@@ -236,6 +236,7 @@
     <ClInclude Include="..\public\FatherPart_Prop.h" />
     <ClInclude Include="..\public\FresnelModelObject.h" />
     <ClInclude Include="..\Public\FriendBody.h" />
+    <ClInclude Include="..\Public\Friend_Pip.h" />
     <ClInclude Include="..\Public\Laser_Beam.h" />
     <ClInclude Include="..\Public\Laser_Container.h" />
     <ClInclude Include="..\public\Friend.h" />
@@ -320,8 +321,12 @@
     <ClInclude Include="..\Public\JellyKing.h" />
     <ClInclude Include="..\Public\StampKey_1.h" />
     <ClInclude Include="..\Public\Interaction_Key.h" />
+    <ClInclude Include="..\Public\TiltSwapCrate.h" />
     <ClInclude Include="..\public\TurnBookEffect.h" />
     <ClInclude Include="..\Public\WorldMapNPC.h" />
+    <ClInclude Include="..\Public\WorldMapNpc_Jot.h" />
+    <ClInclude Include="..\Public\WorldMapNpc_Thrash.h" />
+    <ClInclude Include="..\Public\WorldMapNpc_Violet.h" />
     <ClInclude Include="..\public\ZetPack_Child.h" />
     <ClInclude Include="..\Public\ZetPack_Father.h" />
     <ClInclude Include="..\Public\Zipline.h" />
@@ -622,6 +627,7 @@
     <ClCompile Include="..\private\FatherPart_Prop.cpp" />
     <ClCompile Include="..\private\FresnelModelObject.cpp" />
     <ClCompile Include="..\Private\FriendBody.cpp" />
+    <ClCompile Include="..\Private\Friend_Pip.cpp" />
     <ClCompile Include="..\Private\Laser_Beam.cpp" />
     <ClCompile Include="..\Private\Laser_Container.cpp" />
     <ClCompile Include="..\private\Friend.cpp" />
@@ -703,8 +709,12 @@
     <ClCompile Include="..\Private\JellyKing.cpp" />
     <ClCompile Include="..\Private\StampKey_1.cpp" />
     <ClCompile Include="..\Private\Interaction_Key.cpp" />
+    <ClCompile Include="..\Private\TiltSwapCrate.cpp" />
     <ClCompile Include="..\private\TurnBookEffect.cpp" />
     <ClCompile Include="..\Private\WorldMapNPC.cpp" />
+    <ClCompile Include="..\Private\WorldMapNpc_Jot.cpp" />
+    <ClCompile Include="..\Private\WorldMapNpc_Thrash.cpp" />
+    <ClCompile Include="..\Private\WorldMapNpc_Violet.cpp" />
     <ClCompile Include="..\private\ZetPack_Child.cpp" />
     <ClCompile Include="..\Private\ZetPack_Father.cpp" />
     <ClCompile Include="..\Private\Zipline.cpp" />

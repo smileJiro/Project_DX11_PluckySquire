@@ -64,6 +64,10 @@
 #include "Narration_Anim.h"
 #include "Interaction_E.h"
 #include "Narration_New.h"
+#include "WorldMapNPC.h"
+#include "WorldMapNpc_Jot.h"
+#include "WorldMapNpc_Thrash.h"
+#include "WorldMapNpc_Violet.h"
 /* For. UI*/
 
 /* For. NPC*/
@@ -100,6 +104,7 @@
 #include "Bomb.h"
 #include "BombableBox.h"
 #include "TiltSwapPusher.h"
+#include "TiltSwapCrate.h"
 #include "BigPressurePlate.h"
 #include "BombSwitch.h"
 #include "BombSwitchStopper.h"
@@ -245,6 +250,7 @@
 /* For. Friend */
 #include "Friend_Thrash.h"
 #include "Friend_Violet.h"
+#include "Friend_Pip.h"
 #include "FriendBody.h"
 
 
@@ -596,7 +602,7 @@ HRESULT CLoader::Loading_Level_Static()
 
 	/* 개별 모델 로드 - dds 로드 */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Model2D_Bulb"),
-		C2DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DObject/Static/bulb/pickup_bulb_01.dds", LEVEL_STATIC, true))))
+		C2DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DObject/Static/bulb/pickup_bulb_01.dds", LEVEL_STATIC, true, true))))
 		return E_FAIL;
 
 
@@ -649,11 +655,16 @@ HRESULT CLoader::Loading_Level_Static()
 
 	lstrcpy(m_szLoadingText, TEXT("객체원형(을)를 로딩중입니다."));
 
+	/* For. Prototype_GameObject_Friend_Pip */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Friend_Pip"),
+		CFriend_Pip::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 	/* For. Prototype_GameObject_Friend_Thrash */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Friend_Thrash"),
 		CFriend_Thrash::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
-
+	
 	/* For. Prototype_GameObject_Friend_Violet */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Friend_Violet"),
 		CFriend_Violet::Create(m_pDevice, m_pContext))))
@@ -783,6 +794,19 @@ HRESULT CLoader::Loading_Level_Static()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_UIObejct_Interaction_E"), CInteraction_E::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_WorldMapNPC_Jot"),
+		CWorldMapNpc_Jot::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_WorldMapNPC_Thrash"),
+		CWorldMapNpc_Thrash::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_WorldMapNPC_Violet"),
+		CWorldMapNpc_Violet::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+
+
+
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"),
 		CModelObject::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
@@ -807,6 +831,7 @@ HRESULT CLoader::Loading_Level_Static()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_2DMap_WordObject"),
 		C2DMapWordObject::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+
 
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_3DMapObject"),
 		C3DMapDefaultObject::Create(m_pDevice, m_pContext))))
@@ -1075,7 +1100,7 @@ HRESULT CLoader::Loading_Level_Logo()
 #pragma region Logo - Model Load
 	lstrcpy(m_szLoadingText, TEXT("모델(을)를 로딩중입니다."));
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_Component_NPC_Pip_2DAnimation"),
-		C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Models/2DAnim/Logo/NPC/Pip/Pip.model2D"), (_uint)LEVEL_LOGO))))
+		C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Models/2DAnim/Logo/NPC/Pip/Pip.model2D"), (_uint)LEVEL_LOGO, false, false))))
 		return E_FAIL;
 #pragma endregion
 
@@ -1180,17 +1205,17 @@ HRESULT CLoader::Loading_Level_Chapter_2(LEVEL_ID _eLoadLevelID)
 
 		// 2D Model 개별 로드 - Model 경로 다름
 		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("dice_pink_03"),
-			C2DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DObject/Chapter2/dice_01/dice_pink_03.dds", _eLoadLevelID,true))))
+			C2DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DObject/Chapter2/dice_01/dice_pink_03.dds", _eLoadLevelID,true, true))))
 			return E_FAIL;
 		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("sketchspace_rabbit_carrot"),
-			C2DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DObject/Chapter2/Carrots_Carrot_01/sketchspace_rabbit_carrot.dds", _eLoadLevelID, true))))
+			C2DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DObject/Chapter2/Carrots_Carrot_01/sketchspace_rabbit_carrot.dds", _eLoadLevelID, true, true))))
 			return E_FAIL;
 		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Grape_Green"),
-			C2DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DObject/Chapter2/Grapes_Grape_01/Grape_Green.dds", _eLoadLevelID, true))))
+			C2DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DObject/Chapter2/Grapes_Grape_01/Grape_Green.dds", _eLoadLevelID, true, true))))
 			return E_FAIL;
 
 		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_Model2D_FallingRockShadow"),
-			C2DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DObject/Chapter2/FallingRockShadow/FallingRockShadow.dds", _eLoadLevelID,true))))
+			C2DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DObject/Chapter2/FallingRockShadow/FallingRockShadow.dds", _eLoadLevelID,true, true))))
 			return E_FAIL;
 	#pragma endregion
 
@@ -1334,7 +1359,7 @@ HRESULT CLoader::Loading_Level_Chapter_4(LEVEL_ID _eLoadLevelID)
 		//_matrix matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
 
 		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_Model2D_FallingRockShadow"),
-			C2DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DObject/Chapter2/FallingRockShadow/FallingRockShadow.dds", _eLoadLevelID,true))))
+			C2DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DObject/Chapter2/FallingRockShadow/FallingRockShadow.dds", _eLoadLevelID,true, true))))
 			return E_FAIL;
 	#pragma endregion
 
@@ -1914,6 +1939,9 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_BombSwitchStopper"),
 		CBombSwitchStopper::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_TiltSwapCrate"),
+		CTiltSwapCrate::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Laser_Beam"),
 		CLaser_Beam::Create(m_pDevice, m_pContext))))
@@ -2509,6 +2537,14 @@ HRESULT CLoader::UI_Object_Load(LEVEL_ID _eLevelID)
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_GameObject_PrintFloorWord"),
 		CPrintFloorWord::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+
+
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_GameObject_WorldMapNpc"),
+		CWorldMapNPC::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+
+
 	//if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_GameObject_Narration_New"),
 	//	CNarration_New::Create(m_pDevice, m_pContext))))
 	//	return E_FAIL;
