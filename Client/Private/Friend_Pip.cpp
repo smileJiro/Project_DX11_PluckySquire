@@ -26,8 +26,6 @@ HRESULT CFriend_Pip::Initialize(void* _pArg)
 	pDesc->iModelTagLevelID = LEVEL_STATIC;
 	pDesc->strDialogueTag = TEXT("Friend_Pip_");
 
-
-
     if (FAILED(__super::Initialize(_pArg)))
         return E_FAIL;
 
@@ -44,7 +42,7 @@ void CFriend_Pip::Change_AnimIndex_CurDirection()
 		switch (m_eDirection)
 		{
 		case Client::CFriend::DIR_DOWN:
-			Switch_PartAnim(PART_BODY, ANIM::PIP_IDLE_DOWN, true);
+			Switch_PartAnim(PART_BODY, ANIM::PIP_HAPPY_DOWN, true);
 			m_eCurAnimIndex = ANIM::PIP_IDLE_DOWN;
 			break;
 		case Client::CFriend::DIR_RIGHT:

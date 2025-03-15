@@ -188,5 +188,16 @@
         "Is_Sequence": true
       }
     ]
+  },
+  {
+    "Trigger_EventTag": "Chapter2_Pip_0",
+    "Actions": [
+      {
+        "ActionTag": "Create_EventExecuter",
+        "EventTag": "Chapter2_Pip_0",
+        "Is_Sequence": true
+      }
+    ]
   }
+
 ]
