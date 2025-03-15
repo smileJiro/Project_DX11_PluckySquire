@@ -227,6 +227,9 @@ void CCharacter::Enter_Section(const _wstring _strIncludeSectionName)
 
 _bool CCharacter::Is_Dynamic()
 {
+    if (nullptr == m_pActorCom)
+        return false;
+
     return static_cast<CActor_Dynamic*>(m_pActorCom)->Is_Dynamic();
 }
 
@@ -718,23 +721,24 @@ _bool CCharacter::Move_To_3D(_fvector _vPosition, _float _fEpsilon, _bool _Freez
 // -> 이동
 //만약 첫 번째 프레임이면? 이전 프레임의 위치가 없을 것.
 // ->일단 이동하고, 
-_bool CCharacter::Move_To(_fvector _vPosition, _float _fTimeDelta)
+_bool CCharacter::Move_To(_fvector _vPosition, _float _fTimeDelta, _float fInterval)
 {
     COORDINATE eCoord = Get_CurCoord();
 	_vector vCurrentPos = Get_FinalPosition();
 	_float fEpsilon = COORDINATE_2D == eCoord ? 10.f : 0.3f;
-	if (Check_Arrival(_vPosition, fEpsilon))
+
+    _float fMoveSpeed = m_pControllerTransform->Get_SpeedPerSec();
+    _vector vDir = XMVector3Normalize(XMVectorSetW(_vPosition - vCurrentPos, 0.f));
+	if (Check_Arrival(_vPosition, fEpsilon + fInterval))
 	{
         if(Is_Dynamic())
         {
-			_float3 vPos; XMStoreFloat3(&vPos, _vPosition);
+			_float3 vPos; XMStoreFloat3(&vPos, _vPosition + (-vDir * fInterval));
             m_pActorCom->Set_GlobalPose(vPos);
         }
-		Set_Position(_vPosition);
+		Set_Position(_vPosition + (-vDir * fInterval));
 		return true;
 	}
-	_float fMoveSpeed = m_pControllerTransform->Get_SpeedPerSec();
-	_vector vDir = XMVector3Normalize( XMVectorSetW( _vPosition - vCurrentPos,0.f));
 
     Move(vDir * fMoveSpeed, _fTimeDelta);
     return false;

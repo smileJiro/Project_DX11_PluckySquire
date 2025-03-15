@@ -47,7 +47,6 @@ HRESULT CZetPack::Initialize(void* _pArg)
         return E_FAIL;
 
     // CyberZip Efffect
-
     CEffect_System::EFFECT_SYSTEM_DESC EffectDesc = {};
     EffectDesc.eStartCoord = COORDINATE_3D;
     EffectDesc.isCoordChangeEnable = false;

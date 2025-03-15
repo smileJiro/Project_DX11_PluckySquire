@@ -43,7 +43,7 @@ HRESULT CCyberPlayerBullet::Initialize_Prototype()
 HRESULT CCyberPlayerBullet::Initialize(void* _pArg)
 {
 	CYBERPLAYER_PROJECTILE_DESC* pDesc = static_cast<CYBERPLAYER_PROJECTILE_DESC*>(_pArg);
-	pDesc->iNumPartObjects = 1;
+	pDesc->iNumPartObjects = BULLET_END;
 	pDesc->iObjectGroupID = OBJECT_GROUP::PLAYER_PROJECTILE;
 	m_iCurLevelID = pDesc->iCurLevelID;
 	pDesc->eStartCoord = COORDINATE_3D;
@@ -99,7 +99,7 @@ HRESULT CCyberPlayerBullet::Initialize(void* _pArg)
 	tModelDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
 	tModelDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::FRESNEL;
 	tModelDesc.iRenderGroupID_3D = RG_3D;
-	tModelDesc.iPriorityID_3D = PR3D_EFFECT;
+	tModelDesc.iPriorityID_3D = PR3D_PARTICLE;
 	tModelDesc.eStartCoord = COORDINATE_3D;
 	tModelDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
 	// 이 버퍼를 이용해서 Render 합니다.
@@ -120,6 +120,25 @@ HRESULT CCyberPlayerBullet::Initialize(void* _pArg)
 	m_vLookDIr = XMVector3Normalize( m_pControllerTransform->Get_WorldMatrix().r[2]);
 	static_cast<C3DModel*>(m_pModel->Get_Model(COORDINATE_3D))->Set_MaterialConstBuffer_UseAlbedoMap(0, false, true);
 	static_cast<C3DModel*>(m_pModel->Get_Model(COORDINATE_3D))->Set_MaterialConstBuffer_Albedo(0, _float4(0.f, 1.f, 1.f, 1.f), true);
+
+	// Trail Particle? Effect
+	CEffect_System::EFFECT_SYSTEM_DESC EffectDesc = {};
+	EffectDesc.eStartCoord = COORDINATE_3D;
+	EffectDesc.isCoordChangeEnable = false;
+	EffectDesc.iSpriteShaderLevel = LEVEL_STATIC;
+	EffectDesc.szSpriteShaderTags = L"Prototype_Component_Shader_VtxPointInstance";
+	EffectDesc.iEffectShaderLevel = LEVEL_STATIC;
+	EffectDesc.szEffectShaderTags = L"Prototype_Component_Shader_VtxMeshEffect";
+	EffectDesc.szSpriteComputeShaderTag = L"Prototype_Component_Compute_Shader_SpriteInstance";
+
+	m_PartObjects[BULLET_TRAIL] =  m_pParticleTrailEffect = static_cast<CEffect_System*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_iCurLevelID, TEXT("BulletTrail.json"), &EffectDesc));
+	if (nullptr != m_pParticleTrailEffect)
+	{
+		m_pParticleTrailEffect->Set_SpawnMatrix(m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D));
+		m_pParticleTrailEffect->Active_All();
+	}
+	Safe_AddRef(m_pParticleTrailEffect);
+
 	return S_OK;
 }
 
@@ -140,6 +159,14 @@ void CCyberPlayerBullet::Update(_float _fTimeDelta)
 	__super::Update(_fTimeDelta);
 }
 
+void CCyberPlayerBullet::Active_OnEnable()
+{
+	if (nullptr != m_pParticleTrailEffect)
+		m_pParticleTrailEffect->Active_Effect(true);
+
+	__super::Active_OnEnable();
+}
+
 void CCyberPlayerBullet::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
 {	//여긴 MONSTER 아니면 MONSTER_PROJECTILE만 충돌됨.
 	if (OBJECT_GROUP::BOSS & _Other.pActorUserData->iObjectGroup
@@ -149,6 +176,9 @@ void CCyberPlayerBullet::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& 
 		Event_DeleteObject(this);
 
 		CEffect_Manager::GetInstance()->Active_EffectPosition(TEXT("CyberBulletHit"), true, Get_FinalPosition());
+
+		if (nullptr != m_pParticleTrailEffect)
+			m_pParticleTrailEffect->Inactive_All();
 	}
 }
 
@@ -182,5 +212,6 @@ void CCyberPlayerBullet::Free()
 	Safe_Release(m_pColorBuffer);
 
 	Safe_Release(m_pModel);
+	Safe_Release(m_pParticleTrailEffect);
 	__super::Free();
 }

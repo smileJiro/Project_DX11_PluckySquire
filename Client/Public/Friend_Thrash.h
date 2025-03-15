@@ -35,9 +35,9 @@ class CFriend_Thrash final : public CFriend
 		Thrash_Happy_Into_,
 		Thrash_Happy_Loop,
 		Thrash_Happy_Out,
-		Thrash_Hit_down,
-		Thrash_Hit_right,
-		Thrash_Hit_up,
+		THRASH_HIT_DOWN,
+		THRASH_HIT_RIGHT,
+		THRASH_HIT_UP,
 		Thrash_Idle_Elevator,
 		Thrash_Idle_Floor,
 		Thrash_Idle_Peer_right,
@@ -144,6 +144,9 @@ private: /* Abstract Func */
 	void					Finished_DialogueAction() override;
 	void					On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx) override;
 	void					Switch_AnimIndex_State() override;
+
+public:
+	void					Switch_PartAnim(_uint _iPartIndex, _uint _iAnimIndex, _bool _isLoop = false) override;
 
 public:
 	ANIM					Get_CurAnimIndex() const { return m_eCurAnimIndex; }
