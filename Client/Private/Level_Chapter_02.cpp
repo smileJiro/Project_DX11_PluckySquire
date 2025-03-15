@@ -1780,7 +1780,8 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Hand(const _wstring& _strLayerTag)
 HRESULT CLevel_Chapter_02::Ready_Layer_Draggable(const _wstring& _strLayerTag)
 {
 	CDraggableObject::DRAGGABLE_DESC tDraggableDesc = {};
-	tDraggableDesc.iModelPrototypeLevelID_3D = m_eLevelID;
+	tDraggableDesc.iModelPrototypeLevelID_3D = LEVEL_STATIC;
+	tDraggableDesc.isCoordChangeEnable = false;
 	tDraggableDesc.iCurLevelID = m_eLevelID;
 	tDraggableDesc.strModelPrototypeTag_3D = TEXT("SM_Plastic_Block_04");
 	tDraggableDesc.eStartCoord = COORDINATE_3D;

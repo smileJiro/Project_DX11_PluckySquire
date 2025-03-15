@@ -8,6 +8,7 @@
 #include "Character.h"
 #include "Laser_Beam.h"
 #include "Pressure_Plate.h"
+#include "Interactable.h"
 
 CLaser_Container::CLaser_Container(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CContainerObject(_pDevice, _pContext)
@@ -52,6 +53,7 @@ HRESULT CLaser_Container::Initialize(void* _pArg)
 
 	/* 레이저 방향 설정 */
 	_vector vDir = {};
+	_float2 vStartLength = {60.f,100.f};
 	switch (m_eDir)
 	{
 	case Client::F_DIRECTION::LEFT:
@@ -73,8 +75,8 @@ HRESULT CLaser_Container::Initialize(void* _pArg)
 	XMStoreFloat2(&m_fDir, vDir);
 
 
-	XMStoreFloat2(&m_fBeamStartPos, (vDir * 60.f));
-	XMStoreFloat2(&m_fBeamEndPos, (vDir * 100.f));
+	XMStoreFloat2(&m_fBeamStartPos, (vDir * vStartLength.x));
+	XMStoreFloat2(&m_fBeamEndPos, (vDir * vStartLength.y));
 	switch (m_eDir)
 	{
 	case Client::F_DIRECTION::LEFT:
@@ -100,13 +102,32 @@ HRESULT CLaser_Container::Initialize(void* _pArg)
 
 	static_cast<CModelObject*>(m_PartObjects[PART_BEAM_START_EFFECT])->Set_Position(XMLoadFloat2(&m_fBeamStartPos));
 	static_cast<CModelObject*>(m_PartObjects[PART_BEAM_END_EFFECT])->Set_Position(XMLoadFloat2(&m_fBeamEndPos));
-	static_cast<CModelObject*>(m_PartObjects[PART_BEAM_EFFECT])->Set_Position(XMVectorLerp(XMLoadFloat2(&m_fBeamStartPos), XMLoadFloat2(&m_fBeamEndPos), 0.5f));
+
+
+	_float fMaxLength = 2781.f * (_float)RATIO_BOOK2D_X;
+
+
+	switch (m_eDir)
+	{
+	case Client::F_DIRECTION::LEFT:
+		static_cast<CModelObject*>(m_PartObjects[PART_BEAM_EFFECT])->Set_Position(XMVectorSet(fMaxLength * -1.f + m_fBeamStartPos.x, m_fBeamStartPos.y,0.f,1.f));
+		break;
+	case Client::F_DIRECTION::RIGHT:
+		static_cast<CModelObject*>(m_PartObjects[PART_BEAM_EFFECT])->Set_Position(XMVectorLerp(XMLoadFloat2(&m_fBeamStartPos), XMLoadFloat2(&m_fBeamEndPos), 0.5f));
+		break;
+	case Client::F_DIRECTION::UP:
+		break;
+	case Client::F_DIRECTION::DOWN:
+		break;
+	}
+
 
 	switch (m_eDir)
 	{
 	case Client::F_DIRECTION::LEFT:
 		static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(LASER_MACHINE_LENGTH_SIDE);
 		_vector vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
+		m_PartObjects[PART_BEAM_START_EFFECT]->Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, -1.f * XMVectorAbs(vRight));
 		m_PartObjects[PART_BODY]->Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, -1.f * XMVectorAbs(vRight));
 		break;
 	case Client::F_DIRECTION::RIGHT:
@@ -224,6 +245,12 @@ void CLaser_Container::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* 
 				m_fBeamLength = fLength;
 				Compute_Beam(_pMyCollider, _pOtherCollider, _pOtherObject);
 			}
+			else if (m_iBeamTargetIndex == _pOtherObject->Get_GameObjectInstanceID())
+			{
+				m_iBeamTargetIndex = _pOtherObject->Get_GameObjectInstanceID();
+				m_fBeamLength = fLength;
+				Compute_Beam(_pMyCollider, _pOtherCollider, _pOtherObject);
+			}
 		}
 	}
 
@@ -236,7 +263,28 @@ void CLaser_Container::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* 
 			_float fTargetX = XMVectorGetX(vPos) + m_fBeamEndPos.x;
 			// 플레이어면 걍 죽어
 			// 아니야 굳이 콜라이더를 수정하지말고 걍 체크하자?
-			if (fTargetX > XMVectorGetX(_pOtherObject->Get_FinalPosition()))
+
+			_bool isKill = false;
+
+			switch (m_eDir)
+			{
+			case Client::F_DIRECTION::LEFT:
+				isKill = fTargetX < XMVectorGetX(_pOtherObject->Get_FinalPosition());
+				break;
+			case Client::F_DIRECTION::RIGHT:
+				isKill = fTargetX > XMVectorGetX(_pOtherObject->Get_FinalPosition());
+				break;
+			case Client::F_DIRECTION::UP:
+				break;
+			case Client::F_DIRECTION::DOWN:
+				break;
+			case Client::F_DIRECTION::F_DIR_LAST:
+				break;
+			default:
+				break;
+			}
+
+			if (isKill)
 				Event_Hit(this, static_cast<CCharacter*>(_pOtherObject), 99, XMVectorZero());
 		}
 	}
@@ -252,6 +300,13 @@ void CLaser_Container::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _
 		{
 			if (_pOtherObject->Get_GameObjectInstanceID() != m_iBeamTargetIndex)
 				On_Collision2D_Enter(_pMyCollider, _pOtherCollider, _pOtherObject);
+			else
+			{
+				auto pOther = dynamic_cast<IInteractable*>(_pOtherObject);
+				if(nullptr != pOther && INTERACT_ID::DRAGGABLE == pOther->Get_InteractID())
+					On_Collision2D_Enter(_pMyCollider, _pOtherCollider, _pOtherObject);
+			}
+			
 		}
 	}
 }
@@ -463,17 +518,39 @@ void CLaser_Container::Set_BeamOn(_bool _IsBeamOn)
 
 void CLaser_Container::Compute_Beam(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
+
+	_float fMaxLength = 2781.f * (_float)RATIO_BOOK2D_X;
+
 	_vector vLayerPosition = static_cast<CPartObject*>(m_PartObjects[PART_BEAM_END_EFFECT])->Get_OffsetPosition();
 	_float2 fPos = static_cast<CCollider_AABB*>(_pMyCollider)->Get_CollisionPos();
 	_float2 fExtent = static_cast<CCollider_AABB*>(_pOtherCollider)->Get_FinalExtents();
 	_vector vContPos = Get_FinalPosition();
-	vLayerPosition = XMVectorSetX(vLayerPosition, fPos.x - XMVectorGetX(vContPos) - (fExtent.x * 0.5f));
+
+	_float fOffset = (fExtent.x * 0.8f);
+	switch (m_eDir)
+	{
+	case Client::F_DIRECTION::RIGHT:
+	case Client::F_DIRECTION::UP:
+		fOffset *= -1.f;
+	break;
+	case Client::F_DIRECTION::LEFT:
+	case Client::F_DIRECTION::DOWN:
+	break;
+	}
+
+	vLayerPosition = XMVectorSetX(vLayerPosition, fPos.x - XMVectorGetX(vContPos) + fOffset);
+
+
+
+
+
+
+
 	m_PartObjects[PART_BEAM_END_EFFECT]->Set_Position(vLayerPosition);
 	XMStoreFloat2(&m_fBeamEndPos, vLayerPosition);
 
-	_float fMaxLength = 2781.f * (_float)RATIO_BOOK2D_X;
 	
-	
+
 	_float2 fStartUV = {0.f,0.f};
 	_float2 fEndUV = {1.f,1.f};
 
