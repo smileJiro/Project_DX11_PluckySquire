@@ -74,6 +74,7 @@
 #include "ShopPanel_New.h"
 #include "NPC.h"
 #include "Loader.h"
+#include "WorldMapNPC.h"
 
 // FatherGame
 #include "FatherGame.h"
@@ -1214,6 +1215,15 @@ HRESULT CLevel_Chapter_06::Ready_Layer_NPC(const _wstring& _strLayerTag)
 	wsprintf(NPCDesc.strLocateSection, TEXT("Chapter5_P0102"));
 	wsprintf(NPCDesc.strDialogueIndex, TEXT("Store_Dialog_01"));
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_StoreNPC"), NPCDesc.iCurLevelID, _strLayerTag, &NPCDesc)))
+		return E_FAIL;
+
+	CWorldMapNPC::CHARACTER_DESC Desc;
+	Desc.iCurLevelID = m_eLevelID;
+	//Desc.tTransform3DDesc.vInitialPosition = { -3.f, 0.35f, -19.3f };   // TODO ::임시 위치
+	Desc.eStartCoord = COORDINATE_2D;
+	Desc.tTransform2DDesc.vInitialPosition = { 0.f, 0.f, 0.f };   // TODO ::임시 위치
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_WorldMapNpc"), m_eLevelID, _strLayerTag, &Desc)))
 		return E_FAIL;
 
 	return S_OK;

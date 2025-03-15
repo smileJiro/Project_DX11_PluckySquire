@@ -64,6 +64,7 @@
 #include "NPC_Manager.h"
 #include "ShopPanel_New.h"
 #include "Shop_Manager.h"
+#include "WorldMapNPC.h"
 
 #include "NPC.h"
 #include "Loader.h"
@@ -1244,6 +1245,13 @@ HRESULT CLevel_Chapter_02::Ready_Layer_NPC(const _wstring& _strLayerTag)
 		return E_FAIL;
 
 
+	CWorldMapNPC::CHARACTER_DESC Desc;
+	Desc.iCurLevelID = m_eLevelID;
+	//Desc.tTransform3DDesc.vInitialPosition = { -3.f, 0.35f, -19.3f };   // TODO ::임시 위치
+	Desc.eStartCoord = COORDINATE_2D;
+	Desc.tTransform2DDesc.vInitialPosition = { 0.f, 0.f, 0.f };   // TODO ::임시 위치
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_WorldMapNpc"), m_eLevelID, _strLayerTag, &Desc)))
 
 
 

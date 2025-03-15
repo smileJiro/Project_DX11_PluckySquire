@@ -227,7 +227,7 @@ void CCharacter::Enter_Section(const _wstring _strIncludeSectionName)
 
 _bool CCharacter::Is_Dynamic()
 {
-    return static_cast<CActor_Dynamic*>(m_pActorCom)->Is_Dynamic();
+    return  m_pActorCom && static_cast<CActor_Dynamic*>(m_pActorCom)->Is_Dynamic();
 }
 
 _bool CCharacter::Is_OnGround()

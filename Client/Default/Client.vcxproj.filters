@@ -706,6 +706,18 @@
     <Filter Include="02.GameObjects\2DGimmik\Laser">
       <UniqueIdentifier>{98d463ca-117b-424d-b94b-e003904a3fdf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\UI\00. GamePlay\07. WorldMap">
+      <UniqueIdentifier>{7f6f1013-3858-4294-8e92-d06c3b9071df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UI\00. GamePlay\07. WorldMap\00. WorldMap_Jot">
+      <UniqueIdentifier>{3da438a8-2367-4794-95b2-97fef9b076b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UI\00. GamePlay\07. WorldMap\01. WorldMap_Thrash">
+      <UniqueIdentifier>{da102e69-d5e3-4e57-87f3-7636b1783da5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UI\00. GamePlay\07. WorldMap\02. WorldMap_Violet">
+      <UniqueIdentifier>{8f472f83-664d-45af-8de3-5c5d14c40ee2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -1810,6 +1822,23 @@
     <ClInclude Include="..\Public\Laser_Beam.h">
       <Filter>02.GameObjects\2DGimmik\Laser</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Back_WayState.h" />
+    <ClInclude Include="..\Public\Beetle_Corpse.h" />
+    <ClInclude Include="..\Public\BombSwitch.h" />
+    <ClInclude Include="..\Public\BombSwitchStopper.h" />
+    <ClInclude Include="..\Public\Chase_WayState.h" />
+    <ClInclude Include="..\Public\WorldMapNPC.h">
+      <Filter>02.GameObjects\UI\00. GamePlay\07. WorldMap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\WorldMapNpc_Jot.h">
+      <Filter>02.GameObjects\UI\00. GamePlay\07. WorldMap\00. WorldMap_Jot</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\WorldMapNpc_Thrash.h">
+      <Filter>02.GameObjects\UI\00. GamePlay\07. WorldMap\01. WorldMap_Thrash</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\WorldMapNpc_Violet.h">
+      <Filter>02.GameObjects\UI\00. GamePlay\07. WorldMap\02. WorldMap_Violet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -2900,6 +2929,23 @@
     </ClCompile>
     <ClCompile Include="..\Private\Laser_Beam.cpp">
       <Filter>02.GameObjects\2DGimmik\Laser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Back_WayState.cpp" />
+    <ClCompile Include="..\Private\Beetle_Corpse.cpp" />
+    <ClCompile Include="..\Private\BombSwitch.cpp" />
+    <ClCompile Include="..\Private\BombSwitchStopper.cpp" />
+    <ClCompile Include="..\Private\Chase_WayState.cpp" />
+    <ClCompile Include="..\Private\WorldMapNPC.cpp">
+      <Filter>02.GameObjects\UI\00. GamePlay\07. WorldMap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\WorldMapNpc_Jot.cpp">
+      <Filter>02.GameObjects\UI\00. GamePlay\07. WorldMap\00. WorldMap_Jot</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\WorldMapNpc_Thrash.cpp">
+      <Filter>02.GameObjects\UI\00. GamePlay\07. WorldMap\01. WorldMap_Thrash</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\WorldMapNpc_Violet.cpp">
+      <Filter>02.GameObjects\UI\00. GamePlay\07. WorldMap\02. WorldMap_Violet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

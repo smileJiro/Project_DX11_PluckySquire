@@ -64,6 +64,10 @@
 #include "Narration_Anim.h"
 #include "Interaction_E.h"
 #include "Narration_New.h"
+#include "WorldMapNPC.h"
+#include "WorldMapNpc_Jot.h"
+#include "WorldMapNpc_Thrash.h"
+#include "WorldMapNpc_Violet.h"
 /* For. UI*/
 
 /* For. NPC*/
@@ -764,6 +768,19 @@ HRESULT CLoader::Loading_Level_Static()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_UIObejct_Interaction_E"), CInteraction_E::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_WorldMapNPC_Jot"),
+		CWorldMapNpc_Jot::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_WorldMapNPC_Thrash"),
+		CWorldMapNpc_Thrash::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_WorldMapNPC_Violet"),
+		CWorldMapNpc_Violet::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+
+
+
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"),
 		CModelObject::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
@@ -788,6 +805,7 @@ HRESULT CLoader::Loading_Level_Static()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_2DMap_WordObject"),
 		C2DMapWordObject::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+
 
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_3DMapObject"),
 		C3DMapDefaultObject::Create(m_pDevice, m_pContext))))
@@ -2479,6 +2497,14 @@ HRESULT CLoader::UI_Object_Load(LEVEL_ID _eLevelID)
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_GameObject_PrintFloorWord"),
 		CPrintFloorWord::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+
+
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_GameObject_WorldMapNpc"),
+		CWorldMapNPC::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+
+
 	//if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_GameObject_Narration_New"),
 	//	CNarration_New::Create(m_pDevice, m_pContext))))
 	//	return E_FAIL;
