@@ -310,7 +310,7 @@ void CWorldMapNPC::Progress(_float _fTimeDelta)
 			}
 		}
 
-		if (2.5f > m_fWaitTime)
+		if (3.f > m_fWaitTime)
 		{
 			m_fWaitTime += _fTimeDelta;
 		}
@@ -346,7 +346,8 @@ void CWorldMapNPC::Progress(_float _fTimeDelta)
 			if (4 == m_iStartIndex)
 			{
 				m_PartObjects[NPC_VIOLET]->Set_Render(false);
-				m_PartObjects[NPC_JOT]->Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSet(40.f, 0.f, 0.f, 1.f));
+				m_PartObjects[NPC_JOT]->Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSet(30.f, 0.f, 0.f, 1.f));
+				m_PartObjects[NPC_THRASH]->Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSet(-25.f, 0.f, 0.f, 1.f));
 			}
 		}
 	}
@@ -354,7 +355,7 @@ void CWorldMapNPC::Progress(_float _fTimeDelta)
  
 void CWorldMapNPC::Pos_Ready()
 {
-	m_PosMoves[0] = _float2(-303.0f, -90.0f);
+	m_PosMoves[0] = _float2(-243.0f, -60.0f);
 	m_PosMoves[1] = _float2(-450.f, 13.53f);
 	m_PosMoves[2] = _float2(-354.f, 86.19f);
 	m_PosMoves[3] = _float2(-110.f, -91.3f);
