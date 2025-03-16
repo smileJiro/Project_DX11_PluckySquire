@@ -62,7 +62,6 @@
 #include "2DMapObject.h"
 #include "3DMapObject.h"
 #include "FallingRock.h"
-#include "Spawner.h"
 #include "CollapseBlock.h"
 
 
