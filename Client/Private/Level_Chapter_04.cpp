@@ -1346,6 +1346,9 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Effects2D(const _wstring& _strLayerTag)
 	
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Word_HitEffect"), LEVEL_STATIC, 5);
 
+
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("health_pickup_small"), LEVEL_STATIC, 3);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("health_pickup_large"), LEVEL_STATIC, 3);
 	
 	return S_OK;
 }
@@ -1507,6 +1510,23 @@ HRESULT CLevel_Chapter_04::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 	tGateDesc.tTransform3DDesc.vInitialPosition = _float3(-46.18f, 9.99f, -1.34f);
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_DynamicCastleGate"), m_eLevelID, _strLayerTag, &tGateDesc)))
 		return E_FAIL;
+
+
+	DoorRedDesc = {};
+	DoorRedDesc.tTransform2DDesc.vInitialPosition = _float3(-1151.00f, 95.00f, 0.f);
+	DoorRedDesc.iCurLevelID = m_eLevelID;
+	DoorRedDesc.isHorizontal = false;
+	DoorRedDesc.eSize = CDoor_2D::MED;
+	DoorRedDesc.eInitialState = CDoor_2D::CLOSED;
+	DoorRedDesc.strSectionTag = L"Chapter4_P0304";
+	DoorRedDesc.strLayerTag = L"Layer_Monster_Door_Book";
+
+	DoorRedDesc.fTargetDiff = 13.f;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorRed"),
+		m_eLevelID, _strLayerTag, &DoorRedDesc)))
+		return E_FAIL;
+
 	return S_OK;
 }
 

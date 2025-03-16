@@ -51,7 +51,7 @@ public:
 private:
 	STOPPER_TYPE m_eType = RECT;
 	STOPPER_STATE m_eState = STOPPER_STATE_LAST;
-	_float2 m_vColliderSize[STOPPER_TYPE_LAST] = { {90.f, 130.f} ,{125.f, 125.f}};
+	_float2 m_vColliderSize[STOPPER_TYPE_LAST] = { {90.f, 130.f} ,{125.f, 130.f}};
 public:
 	static CBombSwitchStopper* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject* Clone(void* _pArg) override;

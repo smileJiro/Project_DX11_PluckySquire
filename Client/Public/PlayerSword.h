@@ -99,6 +99,7 @@ private:
 	SWORD_STATE m_ePastState = HANDLING;
 
 	class CPlayer* m_pPlayer = nullptr;
+	CCollider* m_pAttack2DColliderCom = nullptr;
 	CCollider* m_pBody2DColliderCom = nullptr;
 
 	// VFX

@@ -292,6 +292,72 @@ _bool CCollider_AABB::Get_CollisionPoint(CCollider* _pOther, _float2* pOutPoint)
     return true ;
 }
 
+_bool CCollider_AABB::Get_CollisionNormal(CCollider* _pOther, _float2* pOutNormal)
+{
+    _bool bCollision = Is_Collision(_pOther);
+    if (false == bCollision)
+        return false;
+
+    CCollider::TYPE eTYpe = _pOther->Get_Type();
+    _float2 vLT = Get_LT();
+    _float2 vRB = Get_RB();
+    switch (eTYpe)
+    {
+    case Engine::CCollider::CIRCLE_2D:
+    {
+        CCollider_Circle* pCircle = static_cast<CCollider_Circle*>(_pOther);
+
+        _float2 vOtherPosition = pCircle->Get_Position();
+        _float fOtherFinalRadius = pCircle->Get_FinalRadius();
+
+        // 1. Clamp를 통해 AABB에 가장 가까운 점을 찾는다.
+        _vector vClamp;
+        vClamp.m128_f32[0] = clamp(vOtherPosition.x, vLT.x, vRB.x);
+        vClamp.m128_f32[1] = clamp(vOtherPosition.y, vRB.y, vLT.y);
+        _vector vDir = XMVector2Normalize(XMLoadFloat2(&vOtherPosition) - vClamp);
+        vDir.m128_f32[2] = 0;
+        vDir.m128_f32[3] = 0;
+        pOutNormal->x = vDir.m128_f32[0];
+        pOutNormal->y = vDir.m128_f32[1];
+        break;
+    }
+    case Engine::CCollider::AABB_2D:
+    {
+        CCollider_AABB* pAABB = static_cast<CCollider_AABB*>(_pOther);
+        _float2 vOtherLT = pAABB->Get_LT();
+        _float2 vOtherRB = pAABB->Get_RB();
+
+       _float fOverlap_X = min(vRB.x, vOtherRB.x) - max(vLT.x, vOtherLT.x);
+       _float fOverlap_Y = min(vLT.y, vOtherLT.y) - max(vRB.y, vOtherRB.y);
+
+	   _vector vNormal = {};
+	   if (fOverlap_X < fOverlap_Y)
+	   {
+	        if (vLT.x < vOtherRB.x)
+                vNormal = XMVectorSet(1.0f, 0.0f, 0.0f, 0.0f);
+		    else
+			    vNormal = XMVectorSet(-1.0f, 0.0f, 0.0f, 0.0f);
+	   }
+	   else
+	   {
+		   if (vLT.y < vOtherRB.y)
+			   vNormal = XMVectorSet(0.0f, -1.0f, 0.0f, 0.0f);
+		   else
+	           vNormal = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+	   }
+
+        break;
+    }
+    case Engine::CCollider::TYPE_LAST:
+        break;
+    default:
+        break;
+    }
+
+
+    return true;
+}
+
 void CCollider_AABB::Update_OwnerTransform()
 {
     _vector vOwnerPos = m_pOwner->Get_FinalPosition(COORDINATE_2D);

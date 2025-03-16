@@ -4,6 +4,7 @@
 #include "Pooling_Manager.h"
 #include "GameInstance.h"
 #include "FresnelModelObject.h"
+#include "Effect_Manager.h"
 
 CBoss_YellowBall::CBoss_YellowBall(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CProjectile_Monster(_pDevice, _pContext)
@@ -89,6 +90,25 @@ HRESULT CBoss_YellowBall::Render()
 {
     __super::Render();
     return S_OK;
+}
+
+void CBoss_YellowBall::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
+{
+    if (OBJECT_GROUP::PLAYER & _Other.pActorUserData->iObjectGroup)
+    {
+        if ((_uint)SHAPE_USE::SHAPE_BODY == _Other.pShapeUserData->iShapeUse)
+        {
+            // ±âÁ¸
+            _vector vRepulse = 10.f * XMVector3Normalize(XMVectorSetY(_Other.pActorUserData->pOwner->Get_FinalPosition() - Get_FinalPosition(), 0.f));
+            XMVectorSetY(vRepulse, -1.f);
+            Event_Hit(this, static_cast<CCharacter*>(_Other.pActorUserData->pOwner), 1, vRepulse);
+            //Event_KnockBack(static_cast<CCharacter*>(_My.pActorUserData->pOwner), vRepulse);
+            Event_DeleteObject(this);
+            // Effect
+            CEffect_Manager::GetInstance()->Active_EffectPosition(TEXT("YellowHit"), true, m_pControllerTransform->Get_State(CTransform::STATE_POSITION));
+        }
+
+    }
 }
 
 HRESULT CBoss_YellowBall::Cleanup_DeadReferences()
