@@ -84,6 +84,7 @@
 #include "NPC_Thrash.h"
 #include "Npc_Rabbit.h"
 #include "Postit_Page.h"
+#include "Meteor.h"
 
 #include "Npc_Humgrump.h"
 #include "Npc_MoonBeard.h"
@@ -1685,6 +1686,11 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 		/* For. Prototype_GameObject_CollapseBlock */
 		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_CollapseBlock"),
 			CCollapseBlock::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+		
+		/* For. Prototype_GameObject_CollapseBlock */
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Meteor"),
+			CMeteor::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
 		/* Chapter 6 FatherGame */
