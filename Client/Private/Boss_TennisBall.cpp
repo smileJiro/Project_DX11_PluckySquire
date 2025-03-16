@@ -172,7 +172,7 @@ void CBoss_TennisBall::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _O
                 Event_DeleteObject(this);
             }
         }
-        CEffect_Manager::GetInstance()->Active_EffectPosition(TEXT("Shieldbreak"), true, m_pControllerTransform->Get_State(CTransform::STATE_POSITION));
+        CEffect_Manager::GetInstance()->Active_EffectPosition(TEXT("ShieldHit"), true, m_pControllerTransform->Get_State(CTransform::STATE_POSITION));
 
     }
 }

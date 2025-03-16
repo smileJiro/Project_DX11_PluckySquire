@@ -10,7 +10,11 @@
         "../Bin/DataFiles/FX/Level8/BulletTrail.json",
         "../Bin/DataFiles/FX/Level8/Shieldbreak.json",
         "../Bin/DataFiles/FX/Level8/ShieldEnv.json",
+        "../Bin/DataFiles/FX/Level8/ShieldHit.json",
         "../Bin/DataFiles/FX/Level8/WingSlamDust.json",
-        "../Bin/DataFiles/FX/Level8/WingSliceDust.json"
+        "../Bin/DataFiles/FX/Level8/WingSliceDust.json",
+        "../Bin/DataFiles/FX/Level8/PurpleHit.json",
+        "../Bin/DataFiles/FX/Level8/YellowHit.json",
+        "../Bin/DataFiles/FX/Level8/HomingHit.json"
     ]
 }

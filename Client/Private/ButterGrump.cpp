@@ -80,10 +80,10 @@ HRESULT CButterGrump::Initialize(void* _pArg)
     m_pBossFSM->Add_State((_uint)BOSS_STATE::TRANSITION);
     m_pBossFSM->Add_State((_uint)BOSS_STATE::IDLE);
     m_pBossFSM->Add_State((_uint)BOSS_STATE::MOVE);
-    //m_pBossFSM->Add_State((_uint)BOSS_STATE::HOMINGBALL);
-    //m_pBossFSM->Add_State((_uint)BOSS_STATE::YELLOWBALL);
-    //m_pBossFSM->Add_State((_uint)BOSS_STATE::PURPLEBALL);
-    //m_pBossFSM->Add_State((_uint)BOSS_STATE::WINGSLAM);
+    m_pBossFSM->Add_State((_uint)BOSS_STATE::HOMINGBALL);
+    m_pBossFSM->Add_State((_uint)BOSS_STATE::YELLOWBALL);
+    m_pBossFSM->Add_State((_uint)BOSS_STATE::PURPLEBALL);
+    m_pBossFSM->Add_State((_uint)BOSS_STATE::WINGSLAM);
     //m_pBossFSM->Add_State((_uint)BOSS_STATE::ROCKVOLLEY);
     m_pBossFSM->Add_State((_uint)BOSS_STATE::WINGSLICE);
     m_pBossFSM->Add_State((_uint)BOSS_STATE::SHIELD);
@@ -188,13 +188,7 @@ void CButterGrump::Update(_float _fTimeDelta)
     //    m_pBossFSM->Change_State((_uint)BOSS_STATE::SCENE);
     //}
 
-    if (KEY_DOWN(KEY::F5))
-    {
-        m_isInvincible ^= 1;
-        m_PartObjects[BOSSPART_SHIELD]->Set_Active(m_isInvincible);
-        if (nullptr != m_pShieldEffect)
-            m_pShieldEffect->Active_All(true);
-    }
+
 
     if (KEY_PRESSING(KEY::CTRL))
     {
@@ -205,7 +199,13 @@ void CButterGrump::Update(_float _fTimeDelta)
     }
 
 #endif // _DEBUG
-
+    if (KEY_DOWN(KEY::F5))
+    {
+        m_isInvincible ^= 1;
+        m_PartObjects[BOSSPART_SHIELD]->Set_Active(m_isInvincible);
+        if (nullptr != m_pShieldEffect)
+            m_pShieldEffect->Active_All(true);
+    }
 
    /* if (true == Get_PreAttack())
     {
@@ -783,6 +783,15 @@ void CButterGrump::Shield_Break()
 
     if (nullptr != m_pShieldEffect)
         m_pShieldEffect->Stop_SpawnAll(1.f);
+    
+    if (nullptr != m_pHomingEffect)
+        m_pHomingEffect->Inactive_All();
+
+    if (nullptr != m_pPurpleEffect)
+        m_pPurpleEffect->Inactive_All();
+
+    if (nullptr != m_pYellowEffect)
+        m_pYellowEffect->Inactive_All();
 }
 
 void CButterGrump::Activate_Invinciblility(_bool _isActivate)

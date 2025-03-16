@@ -47,15 +47,14 @@ void CDoor_Red::Update(_float _fTimeDelta)
     }
 #endif
 
-
+    // 문이 닫혀있을 때 판정.
     if (CLOSED == m_eDoorState)
     {
         _bool isEmpty = true;
             if (false == m_pGameInstance->Is_EmptyLayer(m_iCurLevelID, m_strLayerTag))
                 isEmpty = false;
 
-        // TEMP
-        // Target을 나로 해줘.
+        // 닫혀있을 경우, 몬스터가 다 죽었다 -> 타겟카메라를 나러 해줘!
         if (isEmpty && (false == m_isStartOpen))
         {
             // Target 설정.
@@ -74,27 +73,43 @@ void CDoor_Red::Update(_float _fTimeDelta)
                 Switch_Animation_By_State();
             }
         }
-    }
 
-    // TEMP
-    if (m_isStartOpen && CLOSED == m_eDoorState)
-    {
-        _vector v3DPosition = SECTION_MGR->Get_WorldPosition_FromWorldPosMap(m_strSectionName, 
-            _float2(XMVectorGetX(m_pControllerTransform->Get_State(CTransform::STATE_POSITION)), XMVectorGetY(m_pControllerTransform->Get_State(CTransform::STATE_POSITION))));
-
-        _vector vCamPosition = CCamera_Manager::GetInstance()->Get_CameraVector(CTransform::STATE_POSITION);
-
-        // 진짜 OPEN 시작.
-        if (XMVectorGetX(XMVector3Length(v3DPosition - vCamPosition)) < m_fTargetDiff)
+        // 타겟카메라가 나로 되고 있는데.. 카메라의 Target Position이랑 차이가 적게 나면 진짜로 OPEN!
+        if (m_isStartOpen)
         {
-            m_eDoorState = OPEN;
+            _vector v3DPosition = SECTION_MGR->Get_WorldPosition_FromWorldPosMap(m_strSectionName,
+                _float2(XMVectorGetX(m_pControllerTransform->Get_State(CTransform::STATE_POSITION)), XMVectorGetY(m_pControllerTransform->Get_State(CTransform::STATE_POSITION))));
 
-            Switch_Animation_By_State();
+            _vector vCamPosition = CCamera_Manager::GetInstance()->Get_CameraVector(CTransform::STATE_POSITION);
+
+            // 진짜 OPEN 시작.
+            if (XMVectorGetX(XMVector3Length(v3DPosition - vCamPosition)) < m_fTargetDiff)
+            {
+                m_eDoorState = OPEN;
+
+                Switch_Animation_By_State();
+            }
         }
     }
+
+    // 열려있다가 문을 여는 GameEvent를 통해서 닫히기 시작!
+    else if (CLOSE == m_eDoorState)
+    {
+    }
+
+  
    
     
     __super::Update(_fTimeDelta);
+}
+
+void CDoor_Red::Set_ClosingDoor()
+{
+    m_eDoorState = CLOSE; 
+    Switch_Animation_By_State();
+
+    if (0 < m_p2DColliderComs.size() && nullptr != m_p2DColliderComs[0])
+        m_p2DColliderComs[0]->Set_Active(true);
 }
 
 

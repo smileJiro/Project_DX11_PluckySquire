@@ -5,6 +5,7 @@
 #include "GameInstance.h"
 #include "Section_Manager.h"
 #include "ButterGrump.h"
+#include "Effect_Manager.h"
 
 
 CButterGrump_Shield::CButterGrump_Shield(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -157,6 +158,8 @@ void CButterGrump_Shield::Shield_Break(const COLL_INFO& _Other)
         {
             static_cast<CButterGrump*>(m_pParent)->Shield_Break();
         }
+
+        CEffect_Manager::GetInstance()->Active_EffectPosition(TEXT("Shieldbreak"), true, Get_FinalPosition());
     }
 }
 

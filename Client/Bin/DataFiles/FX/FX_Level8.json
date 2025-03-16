@@ -14,5 +14,21 @@
     {
         "Name": "Shieldbreak.json",
         "Count": 1
+    },
+    {
+        "Name": "ShieldHit.json",
+        "Count": 1
+    },
+    {
+        "Name": "YellowHit.json",
+        "Count": 1
+    },
+    {
+        "Name": "PurpleHit.json",
+        "Count": 1
+    },
+    {
+        "Name": "HomingHit.json",
+        "Count": 1
     }
 ]

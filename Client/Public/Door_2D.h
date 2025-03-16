@@ -94,6 +94,8 @@ public:
 	virtual HRESULT Initialize(void* _pArg) override;
 	virtual HRESULT Render() override;
 
+public:
+
 protected:
 	virtual void	Switch_Animation_By_State() = 0;
 

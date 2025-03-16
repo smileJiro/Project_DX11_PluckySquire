@@ -20,10 +20,14 @@ public:
 	virtual void	Update(_float _fTimeDelta) override;
 
 
+	void	Set_ClosingDoor();
+
+
 public:
 	void			On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx);
 
 private:
+	_bool					m_isStartClose = { false };
 	_bool					m_isStartOpen = { false };
 	_float					m_fTargetDiff = { -1.f };
 	_wstring				m_strLayerTag;
