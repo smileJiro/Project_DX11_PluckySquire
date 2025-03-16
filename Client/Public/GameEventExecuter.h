@@ -84,6 +84,8 @@ public :
 
 	virtual void					GameEvent_End();
 
+protected:
+	void							Start_Train(_float _fTimeDelta);
 #pragma region 내부 구현할때 편하게 쓰라고 만듬
 
 protected:

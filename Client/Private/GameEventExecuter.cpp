@@ -7,6 +7,7 @@
 #include "Camera_Manager.h"
 #include "Effect2D_Manager.h"
 #include "PlayerData_Manager.h"
+#include "Friend_Controller.h"
 
 #include "GameInstance.h"
 #include "Book.h"
@@ -67,6 +68,15 @@ void CGameEventExecuter::GameEvent_End()
 		CTrigger_Manager::GetInstance()->On_End(m_iEventExcuterAction);
 		Event_DeleteObject(this);
 	}
+}
+
+void CGameEventExecuter::Start_Train(_float _fTimeDelta)
+{
+	if(false == CFriend_Controller::GetInstance()->Is_Train())
+		CFriend_Controller::GetInstance()->Start_Train();
+
+	GameEvent_End();
+	int a = 0;
 }
 
 

@@ -56,7 +56,15 @@ void CLogo_BackGround::Priority_Update(_float _fTimeDelta)
 
 void CLogo_BackGround::Update(_float _fTimeDelta)
 {
-	//Check_Character_Anim();
+	if (KEY_DOWN(KEY::ENTER)) {
+		m_pBackGroundParts[LOGO_FADEUI]->Start_FadeAlphaIn(2.f);
+		m_pBackGroundParts[LOGO_FADEUI]->Set_Active(true);
+		m_isBGFadeOut = true;
+	}
+
+	Check_RenderTiming(_fTimeDelta);
+	Caculate_FadeValue(_fTimeDelta);
+	BackGround_FadeOut(_fTimeDelta);
 
 	for (auto& Part : m_pBackGroundParts) {
 		if (nullptr != Part && true == Part->Is_Active())
@@ -82,11 +90,17 @@ HRESULT CLogo_BackGround::Render()
 	if (FAILED(m_pShaderCom->Bind_RawValue("g_vColors", &m_vColor, sizeof(_float4))))
 		return E_FAIL;
 
+	_float fAlphaRatio = 1.f;
+
+	if (FAILED(m_pShaderCom->Bind_RawValue("g_fSprite2DFadeAlphaRatio", &fAlphaRatio, sizeof(_float))))
+		return E_FAIL;
+
 	__super::Render(0, PASS_VTXPOSTEX::COLOR_ALPHA);
+
+	Render_Font();
 
 	return S_OK;
 }
-
 
 HRESULT CLogo_BackGround::Ready_Components()
 {
@@ -119,11 +133,11 @@ HRESULT CLogo_BackGround::Ready_Objects()
 	Desc.strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
 	Desc.iShaderPass_2D = (_uint)PASS_VTXPOSTEX::SPRITE2D;
 
-	Desc.tTransform2DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	Desc.tTransform2DDesc.vInitialScaling = _float3(1.3f, 1.3f, 1.f);
 
 	Desc.iModelPrototypeLevelID_2D = LEVEL_STATIC;
 
-	Desc.tTransform2DDesc.vInitialPosition = _float3(0.f, 0.f, 0.f);
+	Desc.tTransform2DDesc.vInitialPosition = _float3(-210.f, 1.f, 0.f);
 	Desc.iCurLevelID = m_iCurLevelID;
 
 	switch (m_eBackGroundType) {
@@ -141,11 +155,14 @@ HRESULT CLogo_BackGround::Ready_Objects()
 
 	m_pBackGroundParts[LOGO_CHARACTER] = static_cast<CModelObject*>(pObject);
 	m_pBackGroundParts[LOGO_CHARACTER]->Register_OnAnimEndCallBack(bind(&CLogo_BackGround::On_End_Animation, this, placeholders::_1, placeholders::_2));
-	
+	Safe_AddRef(pObject);
+
 	// Logo Text 持失
 	CLogo_ColorObject::COLOROBJECT_DESC TextObjDesc = {};
 	TextObjDesc.iCurLevelID = m_iCurLevelID;
-	TextObjDesc.tTransform2DDesc.vInitialPosition = _float3(0.f, 0.f, 0.f);
+	TextObjDesc.tTransform2DDesc.vInitialPosition = _float3(-30.f, 50.f, 0.f);
+	TextObjDesc.tTransform2DDesc.vInitialScaling = _float3(g_iWinSizeX * 3.f, g_iWinSizeY, 3.2f);
+	TextObjDesc.iColorObjectType = CLogo_ColorObject::LOGO_TEXTOBJECT;
 
 	switch (m_eBackGroundType) {
 	case MAIN_JOT:
@@ -162,6 +179,49 @@ HRESULT CLogo_BackGround::Ready_Objects()
 		return E_FAIL;
 
 	m_pBackGroundParts[LOGO_TEXT_OBJECT] = static_cast<CModelObject*>(pObject);
+	pObject->Set_Active(false);
+	Safe_AddRef(pObject);
+
+	// Logo Text Button 持失
+	TextObjDesc.iCurLevelID = m_iCurLevelID;
+	TextObjDesc.tTransform2DDesc.vInitialPosition = _float3(480.f, -320.f, 1.f);
+	TextObjDesc.tTransform2DDesc.vInitialScaling = _float3(g_iWinSizeX * 0.9f, g_iWinSizeY * 0.3f, 1.f);
+	TextObjDesc.iColorObjectType = CLogo_ColorObject::LOGO_TEXTOBJECT_BUTTON;
+
+	TextObjDesc.strModelPrototypeTag_2D = TEXT("Prototype_Logo_TextObject_Button");
+	TextObjDesc.vColor = _float4(1.f, 1.f, 1.f, 1.f);
+	TextObjDesc.isBlinking = true;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Logo_ColorObject"),
+		m_iCurLevelID, TEXT("Layer_UI"), &pObject, &TextObjDesc)))
+		return E_FAIL;
+
+	m_pBackGroundParts[LOGO_TEXT_OBJECT_BUTTON] = static_cast<CModelObject*>(pObject);
+	pObject->Set_Active(false);
+	Safe_AddRef(pObject);
+
+	// Logo FadeUI 持失
+	Desc.eStartCoord = COORDINATE_2D;
+	Desc.isCoordChangeEnable = false;
+	Desc.strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
+	Desc.iShaderPass_2D = (_uint)PASS_VTXPOSTEX::COLOR_ALPHA;
+
+	Desc.tTransform2DDesc.vInitialScaling = _float3(g_iWinSizeX * 3.f, g_iWinSizeY * 3.f, 1.f);
+	Desc.tTransform2DDesc.vInitialPosition = _float3(0.f, 0.f, 0.f);
+
+	Desc.iModelPrototypeLevelID_2D = LEVEL_STATIC;
+
+	Desc.iCurLevelID = m_iCurLevelID;
+	Desc.strModelPrototypeTag_2D = TEXT("Prototype_Logo_FadeUI");
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"),
+		m_iCurLevelID, TEXT("Layer_UI"), &pObject, &Desc)))
+		return E_FAIL;
+
+	m_pBackGroundParts[LOGO_FADEUI] = static_cast<CModelObject*>(pObject);
+	pObject->Set_Active(false);
+	Safe_AddRef(pObject);
+
 	return S_OK;
 }
 
@@ -177,6 +237,60 @@ void CLogo_BackGround::On_End_Animation(COORDINATE _eCoordinate, _uint _iAnimInd
 
 		m_pBackGroundParts[LOGO_CHARACTER]->Switch_Animation(BG_CHARACTER_ANIM::LOOP);
 		m_pBackGroundParts[LOGO_TEXT_OBJECT]->Set_Active(true);
+		m_isRenderTextObject = true;
+	}
+}
+
+void CLogo_BackGround::Caculate_FadeValue(_float _fTimeDelta)
+{
+	if (false == m_isRenderFont)
+		return;
+
+	if (false == m_isEndFadeFont) {
+		_float fRatio = m_pGameInstance->Calculate_Ratio(&m_fFontFadeTime, _fTimeDelta, LERP);
+
+		if (fRatio >= (1.f - EPSILON)) {
+			fRatio = 1.f;
+			m_isEndFadeFont = true;
+			m_fFontFadeTime.y = m_fFontFadeTime.x;
+		}
+	}
+}
+
+void CLogo_BackGround::BackGround_FadeOut(_float fTimeDelta)
+{
+	if (false == m_isBGFadeOut)
+		return;
+
+	if (CModelObject::FADEALPHA_DEFAULT == m_pBackGroundParts[LOGO_FADEUI]->Get_FadeAlphaState()) {
+		m_isEndBGFadeOut = true;
+	}
+}
+
+void CLogo_BackGround::Render_Font()
+{
+	if (false == m_isRenderFont)
+		return;
+
+	_float fRatio = m_fFontFadeTime.y / m_fFontFadeTime.x;
+	
+	m_pGameInstance->Render_Font(TEXT("Font40"), TEXT("One Possible Future 薦拙"), _float2(g_iWinSizeX - (g_iWinSizeX * 0.95f), g_iWinSizeY - (g_iWinSizeY * 0.12f)), XMVectorSet(0.0f, 0.0f, 0.0f, fRatio));
+}
+
+void CLogo_BackGround::Check_RenderTiming(_float _fTimeDelta)
+{
+	if (false == m_isRenderTextObject)
+		return;
+
+	if (CModelObject::FADEALPHA_DEFAULT == m_pBackGroundParts[LOGO_TEXT_OBJECT]->Get_FadeAlphaState()
+		&& false == m_isRenderFont) {
+		m_isRenderFont = true;
+	}
+
+	if (true == m_isRenderFont && 1.f == (_float)(m_fFontFadeTime.y / m_fFontFadeTime.x)
+		&& false == m_isRenderTextObject_Button) {
+		m_pBackGroundParts[LOGO_TEXT_OBJECT_BUTTON]->Set_Active(true);
+		m_isRenderTextObject_Button = true;
 	}
 }
 
@@ -210,6 +324,10 @@ CGameObject* CLogo_BackGround::Clone(void* _pArg)
 
 void CLogo_BackGround::Free()
 {
+	for (auto& Object : m_pBackGroundParts) {
+		Safe_Release(Object);
+	}
+
 	__super::Free();
 }
 

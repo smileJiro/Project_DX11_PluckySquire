@@ -250,7 +250,9 @@ HRESULT CInteraction_E::Render()
 			Display_Text(_float3(0.f, 0.f, 0.f), RTSize, Uimgr->Get_Player()->Get_InteractableObject());
 	}
 
-
+	static _float4 vDefaultColor = { 1.0f,1.0f,1.0f,1.0f };
+	if (FAILED(m_pShaderCom->Bind_RawValue("g_vColors", &vDefaultColor, sizeof(_float4))))
+		return E_FAIL;
 	return S_OK;
 }
 

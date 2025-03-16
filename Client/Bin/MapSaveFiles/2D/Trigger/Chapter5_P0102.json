@@ -23,22 +23,23 @@
       ]
     }
   },
-    {
-        "Collider_Info": {
-            "Position": [
-                -15.0,
-                -649.0
-            ],
-            "Scale": [
-                100.0,
-                31.0
-            ]
-        },
-        "Fillter_MyGroup": 2,
-        "Fillter_OtherGroupMask": 128,
-        "Trigger_ConditionType": 0,
-        "Trigger_Coordinate": 0,
-        "Trigger_EventTag": "Chapter6_FriendEvent_0",
-        "Trigger_Type": 0
-    }
+  {
+    "Collider_Info": {
+      "Position": [
+        -15.0,
+        -649.0
+      ],
+      "Scale": [
+        100.0,
+        31.0
+      ]
+    },
+    "Trigger_Reusable": false,
+    "Fillter_MyGroup": 2,
+    "Fillter_OtherGroupMask": 128,
+    "Trigger_ConditionType": 0,
+    "Trigger_Coordinate": 0,
+    "Trigger_EventTag": "Chapter6_FriendEvent_0",
+    "Trigger_Type": 0
+  }
 ]

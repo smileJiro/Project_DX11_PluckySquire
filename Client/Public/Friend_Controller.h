@@ -31,6 +31,7 @@ public: /* Default */
 public: /* Train */
 	HRESULT							Start_Train();
 	HRESULT							End_Train();
+	_bool							Is_Train() const { return m_isTrain; }
 	HRESULT							Register_Friend_ToTrainList(const _wstring& _strFriendTag);
 	HRESULT							Erase_Friend_FromTrainList(const _wstring& _strFriendTag);
 	_wstring*						Find_Friend_FromTrainList(const _wstring& _strFriendTag);
@@ -44,7 +45,7 @@ private:
 private:
 	map<_wstring, CFriend*>			m_Friends;
 	list<_wstring>					m_TrainList;
-
+	_bool							m_isTrain = false;
 public:
 	virtual void Free() override;
 };

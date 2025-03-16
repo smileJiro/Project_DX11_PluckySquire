@@ -623,6 +623,8 @@ HRESULT CEvent_Manager::Execute_Change_Coordinate(const EVENT& _tEvent)
 
 	pActorObject->Change_Coordinate(eChangeCoord, pPosition);
 
+
+
 	delete pPosition;
 	pPosition = nullptr;
 	Safe_Release(pActorObject);
