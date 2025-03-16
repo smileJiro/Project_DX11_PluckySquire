@@ -75,7 +75,17 @@ HRESULT CBoss_WingSlam::Render()
 
 void CBoss_WingSlam::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
 {
-    __super::OnTrigger_Enter(_My, _Other);
+    if (OBJECT_GROUP::PLAYER & _Other.pActorUserData->iObjectGroup)
+    {
+        if ((_uint)SHAPE_USE::SHAPE_BODY == _Other.pShapeUserData->iShapeUse)
+        {
+            _vector vRepulse = 10.f * XMVector3Normalize(XMVectorSetY(_Other.pActorUserData->pOwner->Get_FinalPosition() - Get_FinalPosition(), 0.f));
+            XMVectorSetY(vRepulse, -1.f);
+            Event_Hit(this, static_cast<CCharacter*>(_Other.pActorUserData->pOwner), 1, vRepulse);
+            //Event_KnockBack(static_cast<CCharacter*>(_My.pActorUserData->pOwner), vRepulse);
+        }
+
+    }
 }
 
 void CBoss_WingSlam::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)

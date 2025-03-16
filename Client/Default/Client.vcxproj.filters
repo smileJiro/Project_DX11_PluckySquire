@@ -748,6 +748,15 @@
     <Filter Include="02.GameObjects\UI\03. Logo\01. Logo_Background\Logo_TextObject">
       <UniqueIdentifier>{52ed9875-8e81-4d04-9e13-332d211ae55a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Formation">
+      <UniqueIdentifier>{83983464-75f1-4dd5-92d7-5082356e58ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Formation\Manager">
+      <UniqueIdentifier>{3ebb02a8-f158-4e3b-9f03-e0461f1780e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Components\FSM\State\Formation">
+      <UniqueIdentifier>{125ca684-3bee-4cfe-8bdb-a4a29e93d71a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -1914,6 +1923,15 @@
       <Filter>02.GameObjects\UI\03. Logo\01. Logo_Background</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Logo_ColorObject.h" />
+    <ClInclude Include="..\Public\Formation_Manager.h">
+      <Filter>02.GameObjects\Formation\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Formation.h">
+      <Filter>02.GameObjects\Formation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\FormationMoveState.h">
+      <Filter>03.Components\FSM\State\Formation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -3064,6 +3082,16 @@
       <Filter>02.GameObjects\UI\03. Logo\01. Logo_Background</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Logo_ColorObject.cpp" />
+    <ClCompile Include="..\Private\State_Sneak.cpp" />
+    <ClCompile Include="..\Private\Formation_Manager.cpp">
+      <Filter>02.GameObjects\Formation\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Formation.cpp">
+      <Filter>02.GameObjects\Formation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\FormationMoveState.cpp">
+      <Filter>03.Components\FSM\State\Formation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
