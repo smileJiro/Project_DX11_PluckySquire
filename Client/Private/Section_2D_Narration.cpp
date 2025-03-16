@@ -113,6 +113,9 @@ HRESULT CSection_2D_Narration::Start_Narration()
 	
 		else if (Get_SectionName() == L"Chapter8_P1314")
 			CUI_Manager::GetInstance()->Set_PlayNarration(TEXT("CChapter8_P1314_Narration_01"));
+		
+		else if (Get_SectionName() == L"Chapter8_P2526")
+			CUI_Manager::GetInstance()->Set_PlayNarration(TEXT("CChapter8_END_Narration_01"));
 	}
 
 	return S_OK;

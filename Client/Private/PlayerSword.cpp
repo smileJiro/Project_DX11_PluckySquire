@@ -117,7 +117,7 @@ HRESULT CPlayerSword::Initialize(void* _pArg)
     //m_pActorCom-> Set_ShapeEnable(0, true);
 
        /* Test 2D Collider */
-    m_p2DColliderComs.resize(1);
+    m_p2DColliderComs.resize(2);
     CCollider_Circle::COLLIDER_CIRCLE_DESC CircleDesc = {};
     CircleDesc.pOwner = this;
     CircleDesc.fRadius = 40.f;
@@ -126,11 +126,27 @@ HRESULT CPlayerSword::Initialize(void* _pArg)
     CircleDesc.isBlock = false;
     CircleDesc.isTrigger = true;
     CircleDesc.iCollisionGroupID = OBJECT_GROUP::PLAYER_PROJECTILE;
+    CircleDesc.iColliderUse = (_uint)COLLIDER2D_USE::COLLIDER2D_ATTACK;
     if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
-        TEXT("Com_2DCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &CircleDesc)))
+        TEXT("Com_ATTACKER2DCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &CircleDesc)))
         return E_FAIL;
-	m_pBody2DColliderCom = m_p2DColliderComs[0];
-	Safe_AddRef(m_pBody2DColliderCom);
+	m_pAttack2DColliderCom = m_p2DColliderComs[0];
+	Safe_AddRef(m_pAttack2DColliderCom);
+
+    //漠 踩扁侩 个眉 面倒
+    CircleDesc.pOwner = this;
+    CircleDesc.fRadius = 20.f;
+    CircleDesc.vScale = { 1.0f, 1.0f };
+    CircleDesc.vOffsetPosition = { 0.f, 0.f };
+    CircleDesc.isBlock = false;
+    CircleDesc.isTrigger = true;
+    CircleDesc.iCollisionGroupID = OBJECT_GROUP::PLAYER_PROJECTILE;
+    CircleDesc.iColliderUse = (_uint)COLLIDER2D_USE::COLLIDER2D_BODY;
+    if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
+        TEXT("Com_BODY2DCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[1]), &CircleDesc)))
+        return E_FAIL;
+    m_pBody2DColliderCom = m_p2DColliderComs[1];
+    Safe_AddRef(m_pBody2DColliderCom);
 
     // Trail Effect 积己
     CEffect_Trail::EFFECTTRAIL_DESC SwordTrailDesc = {};
@@ -323,8 +339,8 @@ void CPlayerSword::Late_Update(_float _fTimeDelta)
 HRESULT CPlayerSword::Render()
 {
 #ifdef _DEBUG
-    if (m_pBody2DColliderCom->Is_Active())
-        m_pBody2DColliderCom->Render();
+    if (m_pAttack2DColliderCom->Is_Active())
+        m_pAttack2DColliderCom->Render();
 #endif
     if(Is_Active())
         return __super::Render();
@@ -405,79 +421,37 @@ void CPlayerSword::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOt
 
 void CPlayerSword::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-    if (OBJECT_GROUP::MONSTER == _pOtherCollider->Get_CollisionGroupID()
-        || OBJECT_GROUP::GIMMICK_OBJECT == _pOtherCollider->Get_CollisionGroupID())
-    {
-        m_pGameInstance->Start_SFX(_wstring(L"A_Sfx_Sword_Impact_Body_") + to_wstring(rand() % 3), 50.f);
-        Attack(_pOtherObject);
-    }
-    
+    _uint iMyColUse = _pMyCollider->Get_ColliderUse();
     OBJECT_GROUP eGroup = (OBJECT_GROUP)_pOtherCollider->Get_CollisionGroupID();
-    if (OBJECT_GROUP::MAPOBJECT == eGroup || OBJECT_GROUP::BLOCKER == eGroup
-        || OBJECT_GROUP::GIMMICK_OBJECT == _pOtherCollider->Get_CollisionGroupID())
+    if ((_uint)COLLIDER2D_USE::COLLIDER2D_ATTACK == iMyColUse)
     {
-        if (Is_Outing())
+        if (OBJECT_GROUP::MONSTER == eGroup
+            || OBJECT_GROUP::GIMMICK_OBJECT == eGroup)
         {
-            m_fFlyingTimeAcc = 0;
-            _float2 vColPos, vColNormal;
-            _pMyCollider->Get_CollisionPoint(_pOtherCollider, &vColPos);
-            m_vStuckPosition = XMLoadFloat2(&vColPos);
-            _pMyCollider->Get_CollisionNormal(_pOtherCollider, &vColNormal);
-            m_vStuckDirection = -XMLoadFloat2(&vColNormal);
-
-
-            Set_State(STUCK);
-
-            //_float2 vMyPos = (_pMyCollider->Get_Position());
-            //_float2 vOtherPos = (_pOtherCollider->Get_Position());
-            //if (_pOtherCollider->Is_ContainsPoint(vMyPos))
-            //{
-            //    CCollider::TYPE eType = _pOtherCollider->Get_Type();
-            //    if (CCollider::TYPE::AABB_2D == eType)
-            //    {
-            //        _float2 vLT = static_cast<CCollider_AABB*>(_pOtherCollider)->Get_LT();
-            //        _float2 vRB = static_cast<CCollider_AABB*>(_pOtherCollider)->Get_RB();
-            //        _float2 vMin = { vLT.x, vRB.y }, vMax = { vRB.x, vLT.y };
-            //        _float fDiagSlope1 = (vMax.y - vMin.y) / (vMax.x - vMin.x);
-            //        _float fDiagSlope2 = -fDiagSlope1;
-            //        _float fCollisionSlope = (vOtherPos.y - vMyPos.y) / (vOtherPos.x - vMyPos.x);
-            //        m_vStuckPosition = XMVectorClamp(XMLoadFloat2(&vMyPos), XMLoadFloat2(&vMin), XMLoadFloat2(&vMax));
-            //        m_vStuckPosition = XMVectorSetW(m_vStuckPosition, 1);
-            //        m_vStuckPosition = XMVectorSetZ(m_vStuckPosition, 0);
-            //        //谅快面倒
-            //        if (abs(fCollisionSlope) < abs(fDiagSlope1))
-            //        {
-            //            //谅
-            //            if (vMyPos.x < vOtherPos.x)
-            //                m_vStuckDirection = _vector{ 1.f,0.f,0.f,0.f };
-            //            //快
-            //            else
-            //                m_vStuckDirection = _vector{ -1.f,0.f,0.f,0.f };
-            //        }
-            //        //惑窍 面倒
-            //        else
-            //        {
-            //            //惑
-            //            if (vMyPos.y > vOtherPos.y)
-            //                m_vStuckDirection = _vector{ 0.f,-1.f,0.f,0.f };
-            //            //快
-            //            else
-            //                m_vStuckDirection = _vector{ 0.f,1.f,0.f,0.f };
-            //        }
-            //    }
-            //    else if (CCollider::TYPE::CIRCLE_2D == eType)
-            //    {
-            //        _float fRadius = static_cast<CCollider_Circle*>(_pOtherCollider)->Get_FinalRadius();
-            //        m_vStuckDirection = XMVectorSetW(XMVector3Normalize(XMLoadFloat2(&vOtherPos) - XMLoadFloat2(&vMyPos)), 0);
-            //        m_vStuckPosition = XMLoadFloat2(&vOtherPos) - m_vStuckDirection * fRadius;
-            //        m_vStuckPosition = XMVectorSetW(m_vStuckPosition, 1);
-            //        m_vStuckPosition = XMVectorSetZ(m_vStuckPosition, 0);
-            //    }
-
-
+            m_pGameInstance->Start_SFX(_wstring(L"A_Sfx_Sword_Impact_Body_") + to_wstring(rand() % 3), 50.f);
+            Attack(_pOtherObject);
         }
     }
+    else if ((_uint)COLLIDER2D_USE::COLLIDER2D_BODY == iMyColUse)
+    {
+        if (_pOtherCollider->Is_Block())
+        {
+            if (Is_Outing())
+            {
+                m_fFlyingTimeAcc = 0;
+                _float2 vColPos, vColNormal;
+                _pMyCollider->Get_CollisionPoint(_pOtherCollider, &vColPos);
+                m_vStuckPosition = XMLoadFloat2(&vColPos);
+                _pMyCollider->Get_CollisionNormal(_pOtherCollider, &vColNormal);
+                m_vStuckDirection = -XMLoadFloat2(&vColNormal);
 
+
+                Set_State(STUCK);
+            }
+        }
+
+    }
+    
 }
 
 void CPlayerSword::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
@@ -510,11 +484,11 @@ void CPlayerSword::Active_OnEnable()
     COORDINATE eCoord = Get_CurCoord();
     if (COORDINATE_2D == eCoord)
     {
-		m_pBody2DColliderCom->Set_Active(true);
+		m_pAttack2DColliderCom->Set_Active(true);
     }
     else
     {
-		m_pBody2DColliderCom->Set_Active(false);
+		m_pAttack2DColliderCom->Set_Active(false);
     }
 }
 
@@ -622,7 +596,7 @@ void CPlayerSword::On_StateChange()
         }
         else
         {
-            m_pBody2DColliderCom->Set_Active(true);
+            m_pAttack2DColliderCom->Set_Active(true);
             Switch_Animation(2);
         }
         Set_AttackEnable(true, CPlayer::ATTACK_TYPE_THKROWSWORD);
@@ -699,7 +673,7 @@ void CPlayerSword::Set_AttackEnable(_bool _bOn, CPlayer::ATTACK_TYPE _eAttackTyp
 			Safe_Release(pObj);
         m_AttckedObjects.clear();
         if (COORDINATE_2D == eCoord)
-            m_pBody2DColliderCom->Set_Active(false);
+            m_pAttack2DColliderCom->Set_Active(false);
     }
     else
     {
@@ -729,7 +703,7 @@ void CPlayerSword::Set_AttackEnable(_bool _bOn, CPlayer::ATTACK_TYPE _eAttackTyp
             m_pActorCom->Set_ShapeEnable(iShapeIdx, true);
         }
         else
-            m_pBody2DColliderCom->Set_Active(true);
+            m_pAttack2DColliderCom->Set_Active(true);
     }
 
 }
@@ -790,7 +764,7 @@ void CPlayerSword::Free()
     Safe_Release(m_pThrowTrailEffect);
     Safe_Release(m_pBeamEffect);
 
-	Safe_Release(m_pBody2DColliderCom);
+	Safe_Release(m_pAttack2DColliderCom);
     for (CGameObject* pObj : m_AttckedObjects)
     {
         Safe_Release(pObj);

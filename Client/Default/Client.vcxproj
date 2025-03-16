@@ -248,10 +248,12 @@
     <ClInclude Include="..\Public\Logo_BackGround.h" />
     <ClInclude Include="..\Public\Logo_ColorObject.h" />
     <ClInclude Include="..\public\Mat.h" />
+    <ClInclude Include="..\Public\Meteor.h" />
     <ClInclude Include="..\Public\MonsterJumpState.h" />
     <ClInclude Include="..\Public\MonsterMoveState.h" />
     <ClInclude Include="..\public\Mug_Alien.h" />
     <ClInclude Include="..\Public\Patrol_WayState.h" />
+    <ClInclude Include="..\Public\PlayerBlocker.h" />
     <ClInclude Include="..\Public\PlayerState_CannonPortal.h" />
     <ClInclude Include="..\Public\PlayerState_Mojam.h" />
     <ClInclude Include="..\Public\Npc_Humgrump.h" />
@@ -645,10 +647,12 @@
     <ClCompile Include="..\Private\Logo_BackGround.cpp" />
     <ClCompile Include="..\Private\Logo_ColorObject.cpp" />
     <ClCompile Include="..\private\Mat.cpp" />
+    <ClCompile Include="..\Private\Meteor.cpp" />
     <ClCompile Include="..\Private\MonsterJumpState.cpp" />
     <ClCompile Include="..\Private\MonsterMoveState.cpp" />
     <ClCompile Include="..\private\Mug_Alien.cpp" />
     <ClCompile Include="..\Private\Patrol_WayState.cpp" />
+    <ClCompile Include="..\Private\PlayerBlocker.cpp" />
     <ClCompile Include="..\Private\PlayerState_CannonPortal.cpp" />
     <ClCompile Include="..\Private\PlayerState_Mojam.cpp" />
     <ClCompile Include="..\Private\Npc_Humgrump.cpp" />

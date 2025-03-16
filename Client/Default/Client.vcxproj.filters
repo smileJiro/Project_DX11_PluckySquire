@@ -754,6 +754,9 @@
     <Filter Include="02.GameObjects\2DGimmik\JumpStarter">
       <UniqueIdentifier>{69f5978f-e2dc-45c9-8cbc-04e627a8897d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\2DGimmik\Meteor">
+      <UniqueIdentifier>{95ead6f3-13ed-47dc-9e67-040761dcfb04}</UniqueIdentifier>
+    </Filter>
     <Filter Include="02.GameObjects\Chapter8_P2122">
       <UniqueIdentifier>{5df4e4e5-bd2d-4b37-9acb-eefc8a5e43fe}</UniqueIdentifier>
     </Filter>
@@ -1920,6 +1923,7 @@
     <ClInclude Include="..\Public\JumpStarter.h">
       <Filter>02.GameObjects\2DGimmik\JumpStarter</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Meteor.h" />
     <ClInclude Include="..\Public\EvictedSword.h">
       <Filter>02.GameObjects</Filter>
     </ClInclude>
@@ -1947,6 +1951,7 @@
     <ClInclude Include="..\Public\PlayerState_RetriveSword.h">
       <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\PlayerBlocker.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -3095,6 +3100,7 @@
     <ClCompile Include="..\Private\JumpStarter.cpp">
       <Filter>02.GameObjects\2DGimmik\JumpStarter</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Meteor.cpp" />
     <ClCompile Include="..\Private\EvictedSword.cpp">
       <Filter>02.GameObjects</Filter>
     </ClCompile>
@@ -3122,6 +3128,7 @@
     <ClCompile Include="..\Private\PlayerState_RetriveSword.cpp">
       <Filter>03.Components\PlayerState</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\PlayerBlocker.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
