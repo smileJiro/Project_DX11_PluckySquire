@@ -6,6 +6,7 @@
 #include "GameInstance.h"
 #include "Section_Manager.h"
 #include "Camera_Manager.h"
+#include "GameInstance.h"
 
 
 
@@ -103,6 +104,8 @@ void CWorldMapNPC::Late_Update(_float _fTimeDelta)
 
 HRESULT CWorldMapNPC::Render()
 {
+	DisplayLocationName();
+
 	return S_OK;
 }
 
@@ -189,10 +192,9 @@ HRESULT CWorldMapNPC::Ready_PartObjects()
 
 void CWorldMapNPC::Progress(_float _fTimeDelta)
 {
-	if (POS_ATRIA == m_iStartIndex)
-	{
-		CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_Worldmap_01"), this);
-	}
+
+		
+
 
 	CSection_Manager* pSectionManager = CSection_Manager::GetInstance();
 
@@ -225,7 +227,6 @@ void CWorldMapNPC::Progress(_float _fTimeDelta)
 	{
 		if (false == m_isChangeCameraTarget)
 		{
-			//CCamera_Manager::GetInstance()->Change_CameraTarget(this);
 			m_isChangeCameraTarget = true;
 		}
 			
@@ -351,6 +352,7 @@ void CWorldMapNPC::Progress(_float _fTimeDelta)
 				m_PartObjects[NPC_VIOLET]->Set_Render(false);
 				m_PartObjects[NPC_JOT]->Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSet(30.f, 0.f, 0.f, 1.f));
 				m_PartObjects[NPC_THRASH]->Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSet(-25.f, 0.f, 0.f, 1.f));
+				CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_Worldmap_01"), this);
 			}
 		}
 	}
@@ -368,7 +370,6 @@ void CWorldMapNPC::Pos_Ready()
 
 void CWorldMapNPC::Change_BookOrder()
 {
-	//CSection* strCursection = SECTION_MGR->Find_Section(SECTION_MGR->Get_Cur_Section_Key());
 	wstring strPreSection = SECTION_MGR->Get_Prev_Section_Key();
 	wstring strNextSection = SECTION_MGR->Get_Next_Section_Key();
 
@@ -394,6 +395,116 @@ _float2 CWorldMapNPC::Change_PlayerPos()
 		ChangPlayerPos = _float2(-1195.f, -160.f);
 
 	return ChangPlayerPos;
+}
+
+void CWorldMapNPC::DisplayLocationName()
+{
+	_float2 vMidPoint = { RTSIZE_BOOK2D_X / 2.f, RTSIZE_BOOK2D_Y / 2.f };
+
+	_float2 vCalPos = { 0.f, 0.f };
+	_float2 vTextPos = { 0.f, 0.f };
+
+	switch (m_iStartIndex)
+	{
+	case POS_HONEYBEE:
+	{
+		DisplayHoneyBee(vMidPoint);
+	}
+	break;
+
+	case POS_TOWER:
+	{
+		DisplayHoneyBee(vMidPoint);
+		vTextPos = _float2(-272.f, 188.1f);
+		m_strLocationName = TEXT("½ÃÀÇ ´Ë");
+
+		vCalPos.x = vMidPoint.x + vTextPos.x;
+		vCalPos.y = vMidPoint.y - vTextPos.y;
+
+		m_pGameInstance->Render_Font(TEXT("Font18"), m_strLocationName.c_str(), _float2((vCalPos.x), (vCalPos.y + 25.f)), XMVectorSet(0.f, 0.f, 0.f, 1.f));
+	}
+	break;
+
+	case POS_SWAMPEND:
+	{
+		DisplayHoneyBee(vMidPoint);
+		vTextPos = _float2(-272.f, 188.1f);
+		m_strLocationName = TEXT("½ÃÀÇ ´Ë");
+
+		vCalPos.x = vMidPoint.x + vTextPos.x;
+		vCalPos.y = vMidPoint.y - vTextPos.y;
+
+		m_pGameInstance->Render_Font(TEXT("Font18"), m_strLocationName.c_str(), _float2((vCalPos.x), (vCalPos.y + 25.f)), XMVectorSet(0.f, 0.f, 0.f, 1.f));
+		vTextPos = _float2(99.1f, 70.5f);
+		m_strLocationName = TEXT("¾Æ¸£Æ¼¾Æ");
+
+		vCalPos.x = vMidPoint.x + vTextPos.x;
+		vCalPos.y = vMidPoint.y - vTextPos.y;
+
+		m_pGameInstance->Render_Font(TEXT("Font30"), m_strLocationName.c_str(), _float2((vCalPos.x), (vCalPos.y + 25.f)), XMVectorSet(0.f, 0.f, 0.f, 1.f));
+	}
+	break;
+
+	case POS_ATRIA:
+	{
+		DisplayHoneyBee(vMidPoint);
+		vTextPos = _float2(-272.f, 188.1f);
+		m_strLocationName = TEXT("½ÃÀÇ ´Ë");
+
+		vCalPos.x = vMidPoint.x + vTextPos.x;
+		vCalPos.y = vMidPoint.y - vTextPos.y;
+
+		m_pGameInstance->Render_Font(TEXT("Font18"), m_strLocationName.c_str(), _float2((vCalPos.x), (vCalPos.y + 25.f)), XMVectorSet(0.f, 0.f, 0.f, 1.f));
+		
+		vTextPos = _float2(99.1f, 70.5f);
+		m_strLocationName = TEXT("¾Æ¸£Æ¼¾Æ");
+
+		vCalPos.x = vMidPoint.x + vTextPos.x;
+		vCalPos.y = vMidPoint.y - vTextPos.y;
+
+		m_pGameInstance->Render_Font(TEXT("Font30"), m_strLocationName.c_str(), _float2((vCalPos.x), (vCalPos.y + 25.f)), XMVectorSet(0.f, 0.f, 0.f, 1.f));
+		
+		vTextPos = _float2(282.9f, -200.f);
+		m_strLocationName = TEXT("Æ®¶ó¸£±× »ê");
+
+		vCalPos.x = vMidPoint.x + vTextPos.x;
+		vCalPos.y = vMidPoint.y - vTextPos.y;
+
+		m_pGameInstance->Render_Font(TEXT("Font24"), m_strLocationName.c_str(), _float2((vCalPos.x), (vCalPos.y + 25.f)), XMVectorSet(0.f, 0.f, 0.f, 1.f));
+	}
+	break;
+
+	}
+}
+
+void CWorldMapNPC::DisplayHoneyBee(_float2 _MidPoint)
+{
+	_float2 vText = { 0.f, 0.f };
+	_float2 vCal = { 0.f, 0.f };
+
+	vText = _float2(-507.f, -206.f);
+	m_strLocationName = TEXT("¸Ô¹°½£");
+
+	vCal.x = _MidPoint.x + vText.x;
+	vCal.y = _MidPoint.y - vText.y;
+
+	m_pGameInstance->Render_Font(TEXT("Font18"), m_strLocationName.c_str(), _float2((vCal.x), (vCal.y + 25.f)), XMVectorSet(0.f, 0.f, 0.f, 1.f));
+
+	vText = _float2(-474.f, -66.f);
+	m_strLocationName = TEXT("¹ú²Ü ºÀ¿ì¸®");
+
+	vCal.x = _MidPoint.x + vText.x;
+	vCal.y = _MidPoint.y - vText.y;
+
+	m_pGameInstance->Render_Font(TEXT("Font18"), m_strLocationName.c_str(), _float2((vCal.x), (vCal.y + 25.f)), XMVectorSet(0.f, 0.f, 0.f, 1.f));
+
+	vText = _float2(-560.f, 175.9f);
+	m_strLocationName = TEXT("Ã¥ÀÇ Å¾");
+
+	vCal.x = _MidPoint.x + vText.x;
+	vCal.y = _MidPoint.y - vText.y;
+
+	m_pGameInstance->Render_Font(TEXT("Font18"), m_strLocationName.c_str(), _float2((vCal.x), (vCal.y + 25.f)), XMVectorSet(0.f, 0.f, 0.f, 1.f));
 }
 
 CWorldMapNPC* CWorldMapNPC::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
