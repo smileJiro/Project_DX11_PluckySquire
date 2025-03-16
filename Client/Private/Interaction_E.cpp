@@ -573,6 +573,10 @@ void CInteraction_E::Display_Text(_float3 _vPos, _float2 _vRTSize, IInteractable
 	case INTERACT_ID::PALMDECAL:
 		m_strDisplayText = TEXT("지우기");
 		break;
+				
+	case INTERACT_ID::JUMP:
+		m_strDisplayText = TEXT("점프");
+		break;
 
 
 
