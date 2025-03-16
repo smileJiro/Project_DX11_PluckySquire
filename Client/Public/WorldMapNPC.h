@@ -1,5 +1,5 @@
 #pragma once
-#include "ContainerObject.h"
+#include "Character.h"
 
 // 이걸 상속 받는 놈들은 함수를 사용하게한다.
 // abstract로 사용하게 한다.
@@ -27,9 +27,42 @@ class CModel;
 class CVIBuffer_Collider;
 END
 
+
+
+
 BEGIN(Client)
-class CWorldMapNPC final  : public CContainerObject
+class CWorldMapNPC final  : public CCharacter
 {
+public:
+	enum STATE
+	{
+		STATE_READY,
+		STATE_WAIT,
+		STATE_WALK,
+		STATE_ARRIVE,
+		STATE_LAST
+	};
+
+
+	enum WORLDMAP_NPC // 파트 오브젝트로 넣을 놈
+	{
+		NPC_JOT,
+		NPC_THRASH,
+		NPC_VIOLET,
+		NPC_LAST
+	};
+
+	enum MOVEPOS
+	{
+		POS_HONEYBEE = 0,
+		POS_TOWER,
+		POS_SWAMPSTART,
+		POS_SWAMPEND,
+		POS_ATRIA,
+		POS_MOUNTAIN,
+		POS_LAST
+	};
+
 
 protected:
 	explicit CWorldMapNPC(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
@@ -47,12 +80,43 @@ public:
 
 protected:
 	//virtual HRESULT			Ready_Components() override;
+	HRESULT					Ready_PartObjects();
+	
+private:
+	void					Progress(_float _fTimeDelta);
+	void					Pos_Ready();
+	void					Change_BookOrder();
+	_float2					Change_PlayerPos();
 
 public:
 	static CWorldMapNPC*		Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject*	Clone(void* _pArg);
 	virtual void			Free() override;
 	HRESULT					Cleanup_DeadReferences() override;
-};
 
+
+private:
+	_float2					m_PosMoves[POS_LAST];
+
+	MOVEPOS					m_iStartIndex = { POS_HONEYBEE };
+
+	wstring					m_strSection = { TEXT("") };
+
+	STATE					m_eState = { STATE_READY };
+	_float					m_fReadyTime = { 0.f };
+	_float					m_fWaitTime = { 0.f };
+	_float					m_fArriveWaitTime = { 0.f };
+
+	_float2					m_vArrivePos = { 0.f, 0.f };
+	_float2					m_vStartPos = { 0.f, 0.f };
+	_bool					m_isUpdatePos = { false };
+
+	_bool					m_isWalkAnim = { false };
+	_bool					m_isArriveAnim = { false };
+
+	_bool					m_isChangeCameraTarget = { false };
+
+
+
+};
 END

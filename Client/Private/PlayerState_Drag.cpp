@@ -144,7 +144,25 @@ void CPlayerState_Drag::Switch_To_PushAnimation(COORDINATE _eCoord)
 	}
 	else
 	{
-
+		F_DIRECTION eDir = To_FDirection(-m_vHoldOffset, _eCoord);
+		switch (eDir)
+		{
+		case Client::F_DIRECTION::LEFT:
+			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_PUSH_OBJECT_SS);
+			break;
+		case Client::F_DIRECTION::RIGHT:
+			m_pOwner->Set_2DDirection(F_DIRECTION::LEFT);
+			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_PUSH_OBJECT_SS);
+			break;
+		case Client::F_DIRECTION::UP:
+			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_PUSH_OBJECT_DOWN);
+			break;
+		case Client::F_DIRECTION::DOWN:
+			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_PUSH_OBJECT_UP);
+			break;
+		case Client::F_DIRECTION::F_DIR_LAST:
+			break;
+		}
 	}
 }
 
@@ -174,7 +192,40 @@ void CPlayerState_Drag::Switch_To_PullAnimation(COORDINATE _eCoord, _vector _vMo
 	}
 	else
 	{
-
+		if (To_FDirection(-m_vHoldOffset, _eCoord) == To_FDirection(_vMoveDir, _eCoord))
+		{
+			F_DIRECTION eDir = To_FDirection(_vMoveDir, _eCoord);
+			switch (eDir)
+			{
+			case Client::F_DIRECTION::LEFT:
+				m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_PULL_OBJECT_SS);
+				break;
+			case Client::F_DIRECTION::RIGHT:
+				m_pOwner->Set_2DDirection(F_DIRECTION::LEFT);
+				m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_PULL_OBJECT_SS);
+				break;
+			case Client::F_DIRECTION::UP:
+				m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_PULL_OBJECT_DOWN);
+				break;
+			case Client::F_DIRECTION::DOWN:
+				m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_PULL_OBJECT_UP);
+				break;
+			case Client::F_DIRECTION::F_DIR_LAST:
+				break;
+			}
+		}
+		else
+		{
+			//_float fCross = XMVectorGetY(XMVector3Cross(m_vHoldOffset, _vMoveDir));
+			//if (0 < fCross)
+			//{
+			//	m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_PULL_OBJECT_RIGHT);
+			//}
+			//else if (0 > fCross)
+			//{
+			//	m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_PULL_OBJECT_DOWN);
+			//}
+		}
 	}
 }
 

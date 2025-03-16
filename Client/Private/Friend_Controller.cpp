@@ -22,6 +22,22 @@ HRESULT CFriend_Controller::Initialize(ID3D11Device* _pDevice, ID3D11DeviceConte
     return S_OK;
 }
 
+HRESULT CFriend_Controller::Level_Enter()
+{
+    return S_OK;
+}
+
+HRESULT CFriend_Controller::Level_Exit(_int _iChangeLevelID, _int _iNextChangeLevelID)
+{
+    for (auto& Pair : m_Friends)
+        Safe_Release(Pair.second);
+    m_Friends.clear();
+
+    m_TrainList.clear();
+
+    return S_OK;
+}
+
 HRESULT CFriend_Controller::Register_Friend(const _wstring& _strFriendTag, CFriend* _pFriend)
 {
     if (nullptr != Find_Friend(_strFriendTag))

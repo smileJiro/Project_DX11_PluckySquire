@@ -484,7 +484,7 @@ void CGameEventExecuter_C4::Chapter4_3D_Out_01(_float _fTimeDelta)
 
 
 			CDraggableObject::DRAGGABLE_DESC tDraggableDesc = {};
-			tDraggableDesc.iModelPrototypeLevelID_3D = m_pGameInstance->Get_CurLevelID();
+			tDraggableDesc.iModelPrototypeLevelID_3D = LEVEL_STATIC;
 			tDraggableDesc.iCurLevelID = m_pGameInstance->Get_CurLevelID();
 			tDraggableDesc.strModelPrototypeTag_3D = TEXT("SM_Plastic_Block_04");
 			tDraggableDesc.eStartCoord = COORDINATE_3D;

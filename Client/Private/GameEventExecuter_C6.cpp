@@ -25,6 +25,10 @@
 #include "Camera_CutScene.h"
 #include "Camera_2D.h"
 
+/* Friend */
+#include "Friend_Controller.h"
+#include "Friend.h"
+
 /* Npc */
 #include "Npc_Humgrump.h"
 #include "Npc_MoonBeard.h"
@@ -89,6 +93,9 @@ void CGameEventExecuter_C6::Update(_float _fTimeDelta)
 			break;
 		case Client::CTrigger_Manager::CHAPTER6_CHANGE_BOOK_TO_GREATE_HUMGRUMP:
 			Chapter6_Change_Book_To_Greate_Humgrump(_fTimeDelta);
+			break;
+		case Client::CTrigger_Manager::CHAPTER6_FRIENDEVENT_0:
+			Chapter6_FriendEvent_0(_fTimeDelta);
 			break;
 		default:
 			break;
@@ -1144,6 +1151,88 @@ void CGameEventExecuter_C6::Chapter6_Change_Book_To_Greate_Humgrump(_float _fTim
 			CTrigger_Manager::GetInstance()->Register_TriggerEvent(L"Next_Chapter_Event", 0);
 			GameEvent_End();
 		}
+	}
+}
+
+void CGameEventExecuter_C6::Chapter6_FriendEvent_0(_float _fTimeDelta)
+{
+	m_fTimer += _fTimeDelta;
+	CCamera_Manager::CAMERA_TYPE eCamType = CCamera_Manager::TARGET_2D;
+	CPlayer* pPlayer = Get_Player();
+	CFriend* pThrash = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Thrash"));
+	CFriend* pViolet = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Violet"));
+	if (nullptr == pPlayer)
+	{
+		GameEvent_End();
+		return;
+	}
+	/* 플레이어 인풋락  */
+
+	if (Step_Check(STEP_0))
+	{
+		/* 1. Save Reset ArmData */
+		if (Is_Start())
+		{
+			pPlayer->Set_2DDirection(F_DIRECTION::UP);
+			pPlayer->Set_BlockPlayerInput(true);
+			CFriend_Controller::GetInstance()->End_Train();
+			_vector vPlayerPos = pPlayer->Get_FinalPosition() + XMVectorSet(0.0f, 160.f, 0.0f, 0.0f);
+			_vector vThrashPos = pThrash->Get_FinalPosition() + XMVectorSet(0.0f, 200.f, 0.0f, 0.0f);
+			_vector vVioletPos = pViolet->Get_FinalPosition() + XMVectorSet(0.0f, 200.f, 0.0f, 0.0f);
+			AUTOMOVE_COMMAND AutoMove{};
+			AutoMove.eType = AUTOMOVE_TYPE::MOVE_TO;
+			AutoMove.fPostDelayTime = 0.0f;
+			AutoMove.fPreDelayTime = 0.0f;
+			AutoMove.iAnimIndex = (_uint)CPlayer::ANIM_STATE_2D::PLAYER_RUN_UP;
+			AutoMove.vTarget = vPlayerPos;
+
+			AUTOMOVE_COMMAND AutoMove2{};
+			AutoMove2.eType = AUTOMOVE_TYPE::LOOK_DIRECTION;
+			AutoMove2.fPostDelayTime = 0.0f;
+			AutoMove2.fPreDelayTime = 0.0f;
+			AutoMove2.vTarget = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+			AutoMove2.iAnimIndex = (_uint)CPlayer::ANIM_STATE_2D::PLAYER_IDLE_UP;
+
+			pPlayer->Add_AutoMoveCommand(AutoMove);
+			pPlayer->Add_AutoMoveCommand(AutoMove2);
+			pPlayer->Start_AutoMove(true);
+			pThrash->Move_Position(_float2(XMVectorGetX(vThrashPos), XMVectorGetY(vThrashPos)), CFriend::DIR_UP);
+			pViolet->Move_Position(_float2(XMVectorGetX(vVioletPos), XMVectorGetY(vVioletPos)), CFriend::DIR_UP);
+
+			CCamera_Manager::GetInstance()->Set_ResetData(eCamType);
+			m_iDialogueIndex = 0;
+		}
+		Next_Step_Over(2.0f);
+	}
+	else if (Step_Check(STEP_1)) // 1. 다이얼로그 시작.
+	{
+		if (Is_Start())
+		{
+			// Friend 대화 시작.
+			_wstring strDialogueTag = TEXT("Chapter6_FriendEvent_0");
+			CDialog_Manager::GetInstance()->Set_DialogId(strDialogueTag.c_str());
+
+			CFriend* pThrash = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Thrash"));
+			CDialog_Manager::GetInstance()->Set_NPC(pThrash);
+			CFriend* pViolet = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Violet"));
+			CDialog_Manager::GetInstance()->Set_NPC(pViolet);
+		}
+
+		/* 6. 다이얼로그 종료 체크 */
+		if (false == CDialog_Manager::GetInstance()->Get_DisPlayDialogue())
+		{
+			Next_Step(true);
+		}
+
+	}
+	else
+	{
+		CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(TEXT("Thrash"));
+		CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(TEXT("Violet"));
+		CFriend_Controller::GetInstance()->Start_Train();
+		CCamera_Manager::GetInstance()->Start_ResetArm_To_SettingPoint(eCamType, 1.0f);
+		pPlayer->Set_BlockPlayerInput(false);
+		GameEvent_End();
 	}
 }
 

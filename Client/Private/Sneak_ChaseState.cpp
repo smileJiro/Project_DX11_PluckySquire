@@ -101,17 +101,17 @@ void CSneak_ChaseState::State_Update(_float _fTimeDelta)
 			if (m_pOwner->Rotate_To_Radians(XMLoadFloat3(&m_vDir), m_pOwner->Get_ControllerTransform()->Get_RotationPerSec()))
 			{
 				m_isMove = true;
-				m_pOwner->Change_Animation();
+				//m_pOwner->Change_Animation();
 			}
-			else
-			{
-				_bool isCW = true;
-				_float fResult = XMVectorGetY(XMVector3Cross(m_pOwner->Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK), XMLoadFloat3(&m_vDir)));
-				if (fResult < 0)
-					isCW = false;
+			//else
+			//{
+			//	_bool isCW = true;
+			//	_float fResult = XMVectorGetY(XMVector3Cross(m_pOwner->Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK), XMLoadFloat3(&m_vDir)));
+			//	if (fResult < 0)
+			//		isCW = false;
 
-				m_pOwner->Turn_Animation(isCW);
-			}
+			//	m_pOwner->Turn_Animation(isCW);
+			//}
 		}
 
 		//¿Ãµø

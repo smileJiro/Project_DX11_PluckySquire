@@ -2767,6 +2767,74 @@
 					"Blue": 224
 				}
 			]
+		},
+		{
+			"id": "Chapter2_Pip_0",
+			"Section": "Chapter1_P0708",
+			"isChangeTalker": true,
+			"lines": [
+				{
+					"Portrait": 0,
+					"Talker": "찍찍이",
+					"TalkerIndex": 0,
+					"BG": 0,
+					"location": 1,
+					"OffsetX": 100.0,
+					"OffsetY": 0.0,
+					"is2D": true,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "야호! 미니퀘스트다! 고블린은 네가 맡아줘!\n그럼 내가 밀랍을 챙길게.",
+					"Red": 238,
+					"Green": 230,
+					"Blue": 134
+				},
+				{
+					"Portrait": 0,
+					"Talker": "찍찍이",
+					"TalkerIndex": 0,
+					"BG": 0,
+					"location": 1,
+					"OffsetX": 100.0,
+					"OffsetY": 0.0,
+					"is2D": true,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "...",
+					"Red": 238,
+					"Green": 230,
+					"Blue": 134
+				},
+				{
+					"Portrait": 0,
+					"Talker": "찍찍이",
+					"TalkerIndex": 0,
+					"BG": 0,
+					"location": 1,
+					"OffsetX": 100.0,
+					"OffsetY": 0.0,
+					"is2D": true,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "뭐? 고블린이야 당연히 있지!\n어짜피 너한테는 식은 죽 먹기잖아. 안 그래?",
+					"Red": 238,
+					"Green": 230,
+					"Blue": 134
+				}
+				
+			]
 		}
 	]
 }

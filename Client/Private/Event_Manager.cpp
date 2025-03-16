@@ -40,6 +40,7 @@
 #include "3DMapObject.h"
 #include "MapObjectFactory.h"
 #include "FatherGame.h"
+#include "Friend_Controller.h"
 
 IMPLEMENT_SINGLETON(CEvent_Manager)
 
@@ -1029,6 +1030,7 @@ HRESULT CEvent_Manager::Client_Level_Enter(_int _iChangeLevelID)
 	CShop_Manager::GetInstance()->Level_Enter(_iChangeLevelID);
 	CDialog_Manager::GetInstance()->Level_Enter(_iChangeLevelID);
 	CNPC_Manager::GetInstance()->Level_Enter(_iChangeLevelID);
+	CFriend_Controller::GetInstance()->Level_Enter();
 	return S_OK;
 }
 
@@ -1048,7 +1050,7 @@ HRESULT CEvent_Manager::Client_Level_Exit(_int _iChangeLevelID, _int _iNextChang
 	CShop_Manager::GetInstance()->Level_Exit(iCurLevelID, _iChangeLevelID, _iNextChangeLevelID);
 	CDialog_Manager::GetInstance()->Level_Exit(iCurLevelID, _iChangeLevelID, _iNextChangeLevelID);
 	CNPC_Manager::GetInstance()->Level_Exit(iCurLevelID, _iChangeLevelID, _iNextChangeLevelID);
-
+	CFriend_Controller::GetInstance()->Level_Exit(_iChangeLevelID, _iNextChangeLevelID);
 	if(iCurLevelID == LEVEL_CHAPTER_6)
 		CFatherGame::GetInstance()->DestroyInstance();
 

@@ -52,6 +52,7 @@ public :
 		CHAPTER2_GOING_TO_ARTIA,		// 3D 끝나고 책 열어서 책 속으로 들어갔을 때 나오는 이벤트
 		CHAPTER2_FRIENDEVENT_0,		// 돌덩이 맵에서 처음 세명이 뭉친 타이밍
 		CHAPTER2_FRIENDEVENT_1,		// 험그럼프 책의탑 가기전에 저트버리는 타이밍.
+		CHAPTER2_PIP_0,		// 1챕터 찍찍이 처음 만나기
 
 		CHAPTER4_3D_OUT_01,			// 3D로 나가는 맵 처음 들어갔을때 이벤트
 		CHAPTER4_3D_OUT_02,			// 포탈쪽으로 갔을때의 이벤트
@@ -64,6 +65,7 @@ public :
 		//CHAPTER4_2D_IN,				// 폭탄 도장 얻고나서의 이벤트 
 
 		CHAPTER6_INTRO,				// Intro
+
 		/* Father Game Start */
 		CHAPTER6_FATHERGAME_PROGRESS_START_CLEAR,
 		CHAPTER6_FATHERGAME_PROGRESS_ZETPACK_CLEAR,
@@ -73,6 +75,10 @@ public :
 		/* Father Game End */
 		CHAPTER6_HUMGRUMP_REVOLT,	// 달수염 죽는 이벤트
 		CHAPTER6_CHANGE_BOOK_TO_GREATE_HUMGRUMP,		// 위대한 험그럼프로 책 바뀌는 이벤트
+
+		/* Friend Event */
+		CHAPTER6_FRIENDEVENT_0,
+		/* Friend Event */
 
 		CHAPTER8_INTRO_POSTIT_SEQUENCE,
 		CHAPTER8_OUTRO_POSTIT_SEQUENCE,

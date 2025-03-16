@@ -230,7 +230,7 @@ _bool CCharacter::Is_Dynamic()
     if (nullptr == m_pActorCom)
         return false;
 
-    return static_cast<CActor_Dynamic*>(m_pActorCom)->Is_Dynamic();
+    return  m_pActorCom && static_cast<CActor_Dynamic*>(m_pActorCom)->Is_Dynamic();
 }
 
 _bool CCharacter::Is_OnGround()
