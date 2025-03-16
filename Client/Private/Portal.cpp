@@ -8,6 +8,7 @@
 #include "Camera_Manager.h"
 #include "Camera_Target.h"
 #include "Camera_2D.h"
+#include "Friend_Controller.h"
 
 CPortal::CPortal(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     :CContainerObject(_pDevice, _pContext)
@@ -181,9 +182,11 @@ void CPortal::Use_Portal(CPlayer* _pUser)
     {
     case COORDINATE_2D:
         XMStoreFloat3(&vNewPos, vPos);
+
         break;
     case COORDINATE_3D:
         XMStoreFloat3(&vNewPos, v3DPos);
+
         break;
     default:
         break;

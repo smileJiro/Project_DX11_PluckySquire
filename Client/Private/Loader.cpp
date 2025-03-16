@@ -163,6 +163,7 @@
 #include "Sneak_Troop.h"
 #include "Sneak_SentryTroop.h"
 #include "C08_Box.h"
+#include "JumpStarter.h"
 
 /* For. Monster */
 #include "Beetle.h"
@@ -1438,6 +1439,10 @@ HRESULT CLoader::Loading_Level_Chapter_4(LEVEL_ID _eLoadLevelID)
 		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_2DMap_BombableBox"),
 			CBombableBox::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
+				
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_JumpStarter"),
+			CJumpStarter::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
 
 		/* UI */
 		if (FAILED(UI_Object_Load(_eLoadLevelID)))
@@ -2309,6 +2314,8 @@ HRESULT CLoader::Model_Load(LEVEL_ID _eResourceLevelID, LEVEL_ID _eLoadLevelID)
 		str3DMapProtoJsonName = L"Chapter_08_Play_Desk.json";
 		strChapterName += L"Chapter8";
 		if (FAILED(Load_Models_FromJson(_eLoadLevelID, MAP_3D_DEFAULT_PATH, L"Chapter_Boss.json", matPretransform, true)))
+			return E_FAIL;
+		if (FAILED(Load_Models_FromJson(_eLoadLevelID, MAP_3D_DEFAULT_PATH, L"Chapter8_Intro.json", matPretransform, true)))
 			return E_FAIL;
 		break;
 	case LEVEL_CAMERA_TOOL:

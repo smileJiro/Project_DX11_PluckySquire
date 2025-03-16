@@ -35,7 +35,7 @@ public:
 	
 	void			Set_CollisionPos(_float2 _fCollisionPos) { m_fCurCollisionPos = _fCollisionPos; }
 	_float2			Get_CollisionPos() { return m_fCurCollisionPos; }
-
+	virtual _bool	Get_CollisionPoint(CCollider* _pOther, _float2* pOutPoint) override;
 public:
 	void			Update_OwnerTransform() override;
 
@@ -54,7 +54,7 @@ public:
 private:
 	_float2					m_vExtents = {}; // 가로 세로 반길이
 	_float2					m_vFinalExtents = {};
-	_float2					m_fCurCollisionPos = {};
+	_float2			m_fCurCollisionPos = {};
 public:
 	static CCollider_AABB* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CComponent* Clone(void* _pArg);
