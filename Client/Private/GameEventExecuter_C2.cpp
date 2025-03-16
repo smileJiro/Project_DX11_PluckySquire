@@ -110,7 +110,7 @@ void CGameEventExecuter_C2::Update(_float _fTimeDelta)
 			Chapter2_After_Opening_Book(_fTimeDelta);
 			break;
 		case Client::CTrigger_Manager::CHAPTER2_GOING_TO_ARTIA:
-			Chapter2_Goint_To_Artia(_fTimeDelta);
+			Chapter2_Going_To_Artia(_fTimeDelta);
 			break;
 		case Client::CTrigger_Manager::CHAPTER2_FRIENDEVENT_0:
 			Chapter2_FriendEvent_0(_fTimeDelta);
@@ -118,11 +118,14 @@ void CGameEventExecuter_C2::Update(_float _fTimeDelta)
 		case Client::CTrigger_Manager::CHAPTER2_FRIENDEVENT_1:
 			Chapter2_FriendEvent_1(_fTimeDelta);
 			break;
+		case Client::CTrigger_Manager::CHAPTER2_PIP_0:
+			Chapter2_Pip_0(_fTimeDelta);
+			break;
 		default:
 			break;
 		}
 	}
-
+	
 }
 
 void CGameEventExecuter_C2::Late_Update(_float _fTimeDelta)
@@ -335,6 +338,12 @@ void CGameEventExecuter_C2::Chapter2_BookMagic(_float _fTimeDelta)
 				pPlayer->Set_GravityCompOn(false);
 				pPlayer->Set_Render(false);
 			}
+			// 태웅 추가 : 여기서 찍찍이 사망.
+			CFriend* pPip = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Pip"));
+			Event_DeleteObject(pPip);
+			CFriend_Controller::GetInstance()->Erase_Friend(TEXT("Pip"));
+			CFriend_Controller::GetInstance()->Erase_Friend_FromTrainList(TEXT("Pip"));
+			// 태웅 추가 : 여기서 찍찍이 사망.
 			m_iSubStep++;
 		}
 
@@ -612,7 +621,7 @@ void CGameEventExecuter_C2::Chapter2_Humgrump(_float _fTimeDelta)
 
 
 			CDraggableObject::DRAGGABLE_DESC tDraggableDesc = {};
-			tDraggableDesc.iModelPrototypeLevelID_3D = eCurLevelID;
+			tDraggableDesc.iModelPrototypeLevelID_3D = LEVEL_STATIC;
 			tDraggableDesc.iCurLevelID = eCurLevelID;
 			tDraggableDesc.strModelPrototypeTag_3D = TEXT("SM_Plastic_Block_04");
 			tDraggableDesc.eStartCoord = COORDINATE_3D;
@@ -640,9 +649,7 @@ void CGameEventExecuter_C2::Chapter2_Humgrump(_float _fTimeDelta)
 	else if (Step_Check(STEP_1)) {
 
 		if (m_fTimer >= 13.f) {
-			// Portal Active 켜기
 			CSection* pSection = CSection_Manager::GetInstance()->Find_Section(TEXT("Chapter2_P1314"));
-			static_cast<CSection_2D_PlayMap*>(pSection)->Set_PortalActive(true);
 
 			// Event Trigger 생성
 			CTriggerObject::TRIGGEROBJECT_DESC Desc = {};
@@ -1426,8 +1433,51 @@ void CGameEventExecuter_C2::Chapter2_After_Opening_Book(_float _fTimeDelta)
 	}
 }
 
-void CGameEventExecuter_C2::Chapter2_Goint_To_Artia(_float _fTimeDelta)
+void CGameEventExecuter_C2::Chapter2_Going_To_Artia(_float _fTimeDelta)
 {
+	m_fTimer += _fTimeDelta;
+
+	if (Step_Check(STEP_0)) {
+		if (m_fTimer >= 1.5f) {
+			// Player Lock
+			CPlayer* pPlayer = Get_Player();
+			pPlayer->Set_BlockPlayerInput(true);
+
+			// 아르티아 대화 시작
+			CDialog_Manager::GetInstance()->Set_DialogId(L"Dialogue_After_Drawing_On_Sword");
+			Next_Step(true);
+		}
+	}
+	else if (Step_Check(STEP_1)) {
+		
+		if (false == CDialog_Manager::GetInstance()->Get_DisPlayDialogue()) {
+			
+			// 모잼
+			CPlayer* pPlayer = Get_Player();
+			pPlayer->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_MOJAM_MOJAM);
+			Next_Step(true);
+		}
+	}
+	else if (Step_Check(STEP_2)) {
+
+		if (m_fTimer >= 1.5f) {
+			//PLAYER_IDLE_SWORD_DOWN
+			// 모잼 dialogue
+			CDialog_Manager::GetInstance()->Set_DialogId(L"Dialogue_Mojam");
+			Next_Step(true);
+		}
+	}
+	else if (Step_Check(STEP_3)) {
+
+		if (false == CDialog_Manager::GetInstance()->Get_DisPlayDialogue()) {
+			CPlayer* pPlayer = Get_Player();
+			pPlayer->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_IDLE_SWORD_DOWN);
+
+			// Chapter 전환
+			CTrigger_Manager::GetInstance()->Register_TriggerEvent(L"Next_Chapter_Event", 0);
+			GameEvent_End();
+		}
+	}
 }
 
 void CGameEventExecuter_C2::Chapter2_FriendEvent_0(_float _fTimeDelta)
@@ -1449,7 +1499,7 @@ void CGameEventExecuter_C2::Chapter2_FriendEvent_0(_float _fTimeDelta)
 		/* 1. Save Reset ArmData */
 		if (Is_Start())
 		{
-			pPlayer->Set_2DDirection(E_DIRECTION::DOWN);
+			pPlayer->Set_2DDirection(F_DIRECTION::DOWN);
 			pPlayer->Set_BlockPlayerInput(true);
 			CCamera_Manager::GetInstance()->Set_ResetData(eCamType);
 			m_iDialogueIndex = 0;
@@ -1491,7 +1541,8 @@ void CGameEventExecuter_C2::Chapter2_FriendEvent_0(_float _fTimeDelta)
 			CFriend* pViolet = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Violet"));
 			pThrash->Change_CurState(CFriend::FRIEND_MOJAM);
 			pViolet->Change_CurState(CFriend::FRIEND_MOJAM);
-
+			CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(TEXT("Thrash"));
+			CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(TEXT("Violet"));
 		}
 
 		/* 6. 다이얼로그 종료 체크 */
@@ -1530,7 +1581,7 @@ void CGameEventExecuter_C2::Chapter2_FriendEvent_1(_float _fTimeDelta)
 		/* 1. Save Reset ArmData */
 		if (Is_Start())
 		{
-			pPlayer->Set_2DDirection(E_DIRECTION::UP);
+			pPlayer->Set_2DDirection(F_DIRECTION::UP);
 			pPlayer->Set_BlockPlayerInput(true);
 			CFriend_Controller::GetInstance()->End_Train();
 			_vector vPlayerPos = pPlayer->Get_FinalPosition();
@@ -1557,7 +1608,6 @@ void CGameEventExecuter_C2::Chapter2_FriendEvent_1(_float _fTimeDelta)
 			CDialog_Manager::GetInstance()->Set_NPC(pThrash);
 			CFriend* pViolet = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Violet"));
 			CDialog_Manager::GetInstance()->Set_NPC(pViolet);
-
 		}
 
 		/* 6. 다이얼로그 종료 체크 */
@@ -1569,6 +1619,71 @@ void CGameEventExecuter_C2::Chapter2_FriendEvent_1(_float _fTimeDelta)
 	}
 	else
 	{
+
+		CCamera_Manager::GetInstance()->Start_ResetArm_To_SettingPoint(eCamType, 1.0f);
+		pPlayer->Set_BlockPlayerInput(false);
+		GameEvent_End();
+	}
+}
+
+void CGameEventExecuter_C2::Chapter2_Pip_0(_float _fTimeDelta)
+{
+	m_fTimer += _fTimeDelta;
+	CCamera_Manager::CAMERA_TYPE eCamType = CCamera_Manager::TARGET_2D;
+	CPlayer* pPlayer = Get_Player();
+
+	if (nullptr == pPlayer)
+	{
+		GameEvent_End();
+		return;
+	}
+	/* 플레이어 인풋락  */
+
+
+	if (Step_Check(STEP_0))
+	{
+		/* 1. Save Reset ArmData */
+		if (Is_Start())
+		{
+			pPlayer->Set_2DDirection(F_DIRECTION::UP);
+			pPlayer->Set_BlockPlayerInput(true);
+			CCamera_Manager::GetInstance()->Set_ResetData(eCamType);
+			m_iDialogueIndex = 0;
+		}
+		Next_Step_Over(0.5f);
+	}
+	else if (Step_Check(STEP_1)) // 1. 다이얼로그 시작.
+	{
+		if (Is_Start())
+		{
+			// Friend 대화 시작.
+			_wstring strDialogueTag = TEXT("Chapter2_Pip_0");
+			//strDialogueTag += to_wstring(m_iDialogueIndex);
+			CDialog_Manager::GetInstance()->Set_DialogId(strDialogueTag.c_str());
+			CFriend* pPip = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Pip"));
+			CDialog_Manager::GetInstance()->Set_NPC(pPip);
+		}
+
+		/* 6. 다이얼로그 종료 체크 */
+		if (false == CDialog_Manager::GetInstance()->Get_DisPlayDialogue())
+		{
+			Next_Step(true);
+		}
+
+	}
+	else if (Step_Check(STEP_2)) // 2. 모잼
+	{
+		if (Is_Start())
+		{
+			CFriend* pPip = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Pip"));
+			pPip->Change_CurState(CFriend::FRIEND_MOJAM);
+			CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(TEXT("Pip"));
+		}
+		Next_Step(true);
+	}
+	else
+	{
+		CFriend_Controller::GetInstance()->Start_Train();
 		CCamera_Manager::GetInstance()->Start_ResetArm_To_SettingPoint(eCamType, 1.0f);
 		pPlayer->Set_BlockPlayerInput(false);
 		GameEvent_End();

@@ -766,7 +766,7 @@ HRESULT CSpear_Soldier::Ready_ActorDesc(void* _pArg)
         m_vRayOffset.y = ShapeDesc->fRadius - 0.1f;
         m_vRayOffset.z = ShapeDesc->fRadius - 0.1f;
 
-        m_fRayHalfWidth = ShapeDesc->fRadius;
+		m_fRayHalfWidth = ShapeDesc->fRadius - 0.1f;
 
         //닿은 물체의 씬 쿼리를 켜는 트리거
         SHAPE_BOX_DESC* RayBoxDesc = new SHAPE_BOX_DESC;

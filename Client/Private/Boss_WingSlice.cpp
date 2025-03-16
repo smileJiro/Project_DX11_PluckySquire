@@ -204,7 +204,7 @@ HRESULT CBoss_WingSlice::Ready_PartObjects()
     static_cast<C3DModel*>(static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D))->Set_MaterialConstBuffer_Albedo(0, _float4(1.f, 1.f, 1.f, 1.f), true);
 
     //m_PartObjects[PART_BODY]->Get_ControllerTransform()->RotationXYZ(_float3(45.f, 0.f, -45.f));
-    m_PartObjects[PART_BODY]->Get_ControllerTransform()->RotationQuaternion(_float3(XMConvertToRadians(0.f), XMConvertToRadians(90.f),XMConvertToRadians( 0.f)));
+    m_PartObjects[PART_BODY]->Get_ControllerTransform()->RotationQuaternion(_float3(XMConvertToRadians(0.f), XMConvertToRadians(90.f),XMConvertToRadians(0.f)));
 
     return S_OK;
 }

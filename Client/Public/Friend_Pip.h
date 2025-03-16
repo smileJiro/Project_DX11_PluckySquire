@@ -5,8 +5,10 @@ class CFriend_Pip final : public CFriend
 {
 	enum ANIM
 	{
+		GameOver_Pip_Idle,
+		GameOver_Pip_Recover,
 		Pip_ButtonPush,
-		PIP_C09_MOJAM,
+		PIP_C09_MOJAM,					//Mojam
 		Pip_C09_Mojam_09_5152,
 		Pip_C09_Mojam_10_0910,
 		Pip_Jump_Fall_right_,

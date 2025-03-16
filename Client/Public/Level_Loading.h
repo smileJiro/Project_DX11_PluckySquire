@@ -24,6 +24,10 @@ private:
 	LEVEL_ID m_eNextLevelID = LEVEL_END;
 	CLoader* m_pLoader = nullptr;
 
+private:
+	HRESULT Ready_Layer_BackGround(const _wstring& strLayerTag);
+	HRESULT	Ready_Layer_UI(const _wstring& _strLayerTag);
+
 public:
 	static CLevel_Loading* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, LEVEL_ID _eNextLevelID);
 	virtual void Free() override;
