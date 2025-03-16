@@ -1,6 +1,7 @@
 [
 	{
 		"Section_Name": "Chapter4_Worldmap_0",
+				"Section_Start": true,
 		"Section_BackGround_Name": "Worldmap",
 		"Section_Type": 4,
 		"Section_Default": 0,
@@ -13,7 +14,7 @@
 
 		"Section_BackGround_Name": "Chapter4_P0102_BackGround",
 		"Section_File_Name": "Chapter4_P0102.m2chc",
-		"Section_Start": true,
+
 		"Section_Type": 0,
 		"Section_Info": {
 			"Camera_Zoom_Ratio": 2.0,

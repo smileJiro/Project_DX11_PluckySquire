@@ -108,6 +108,8 @@ HRESULT CSection_2D::Import(void* _pDesc)
 
 	switch (m_eMySectionPlayType)
 	{
+		// 250317 박상욱 (월드맵이 끝났을 시 안넘어가는 현상 관련) 월드맵 추가
+		case Client::CSection_2D::WORLDMAP:
 		case Client::CSection_2D::NARRAION:
 		case Client::CSection_2D::PLAYMAP:
 		case Client::CSection_2D::MINIGAME:
