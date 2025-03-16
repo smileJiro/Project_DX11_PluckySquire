@@ -1120,7 +1120,8 @@ HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
 		CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::TARGET_2D, true, 1.f);
 		if (nullptr != m_pAttack2DTriggerCom)
 			m_pAttack2DTriggerCom->Set_Active(false);
-	}
+
+	}		
 	else
 	{
 		CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::TARGET, true, 1.f);

@@ -97,6 +97,9 @@ void CGameEventExecuter_C6::Update(_float _fTimeDelta)
 		case Client::CTrigger_Manager::CHAPTER6_FRIENDEVENT_0:
 			Chapter6_FriendEvent_0(_fTimeDelta);
 			break;
+		case Client::CTrigger_Manager::START_TRAIN:
+			Start_Train(_fTimeDelta);
+			break;
 		default:
 			break;
 		}

@@ -8,12 +8,15 @@ class CJumpStarter :
 	public CGameObject, public IInteractable
 {
 public:
-	typedef struct tagDraggableDesc : public CGameObject::GAMEOBJECT_DESC
+	typedef struct tagJumpStarterDesc : public CGameObject::GAMEOBJECT_DESC
 	{
 		_float3 vBoxHalfExtents = { 0.f,0.f,0.f };
 		_float3 vBoxOffset = { 0.f,0.f,0.f };
 		_wstring strInitSectionTag;
-	}DRAGGABLE_DESC;
+		
+		F_DIRECTION	eJumpMoveDir = F_DIRECTION::DOWN;
+		_float2		fTargetPos = { 0.f, 150.f };
+	}JUMP_STARTER_DESC;
 protected:
 	explicit CJumpStarter(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	explicit CJumpStarter(const CJumpStarter& _Prototype);
@@ -37,11 +40,10 @@ public:
 	void				Move(_fvector _vForce, _float _fTimeDelta);
 
 private:
-	_bool m_bUserAround = false;
-	_bool m_bUserContact = false;
-	CPlayer* m_pDragger = nullptr;
-
-
+	_bool				m_isBodyContact = false;
+	_bool				m_isJump = false;
+	F_DIRECTION			m_eJumpMoveDir = F_DIRECTION::DOWN;
+	_float2				m_fTargetPos = { 0.f,100.f };
 public:
 	static CJumpStarter* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject* Clone(void* _pArg) override;

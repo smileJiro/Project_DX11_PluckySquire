@@ -36,7 +36,7 @@ HRESULT CTiltSwapCrate::Initialize(void* _pArg)
 		return E_FAIL;
 
 
-    m_p2DColliderComs.resize(2);
+    m_p2DColliderComs.resize(1);
     //
     CCollider_AABB::COLLIDER_AABB_DESC tAABBDEsc = {};
     tAABBDEsc.pOwner = this;
@@ -51,18 +51,18 @@ HRESULT CTiltSwapCrate::Initialize(void* _pArg)
         TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &tAABBDEsc)))
         return E_FAIL;
 
-	CCollider_Circle::COLLIDER_CIRCLE_DESC tCircleEsc = {};
+	/*CCollider_Circle::COLLIDER_CIRCLE_DESC tCircleEsc = {};
 	tCircleEsc.pOwner = this;
-	tCircleEsc.fRadius = 10.F;
+	tCircleEsc.fRadius = 10.f;
 	tCircleEsc.vScale = { 1.0f, 1.0f };
 	tCircleEsc.vOffsetPosition = { 0.f, 0.f};
 	tCircleEsc.isBlock = false;
 	tCircleEsc.isTrigger = true;
-	tCircleEsc.iCollisionGroupID = OBJECT_GROUP::SLIPPERY;
+	tCircleEsc.iCollisionGroupID = OBJECT_GROUP::EXPLOSION;
 	tCircleEsc.iColliderUse = (_uint)COLLIDER2D_USE::COLLIDER2D_BODY;
 	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
 		TEXT("Com_Collider2"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[1]), &tCircleEsc)))
-		return E_FAIL;
+		return E_FAIL;*/
 
 
 	return S_OK;
@@ -74,8 +74,8 @@ HRESULT CTiltSwapCrate::Render()
 #ifdef _DEBUG
 	if (m_p2DColliderComs[0]->Is_Active())
 		m_p2DColliderComs[0]->Render(SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName));
-	if (m_p2DColliderComs[1]->Is_Active())
-		m_p2DColliderComs[1]->Render(SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName));
+	//if (m_p2DColliderComs[1]->Is_Active())
+	//	m_p2DColliderComs[1]->Render(SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName));
 
 #endif // _DEBUG
 	return S_OK;

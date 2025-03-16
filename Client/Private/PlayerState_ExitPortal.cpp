@@ -8,6 +8,9 @@
 #include "Camera_Target.h"
 #include "Camera_2D.h"
 #include "Friend_Controller.h"
+#include "TriggerObject.h"
+#include "Section_Manager.h"
+#include "Trigger_Manager.h"
 
 CPlayerState_ExitPortal::CPlayerState_ExitPortal(CPlayer* _pOwner)
 	:CPlayerState(_pOwner, CPlayer::EXIT_PORTAL)
@@ -84,6 +87,29 @@ void CPlayerState_ExitPortal::Enter()
 void CPlayerState_ExitPortal::Exit()
 {
 	static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Set_ShapeEnable((_uint)SHAPE_USE::SHAPE_BODY, true);
+
+	if (COORDINATE_3D == m_pOwner->Get_CurCoord())
+	{
+		if (true == CFriend_Controller::GetInstance()->Is_Train())
+		{
+			CTriggerObject::TRIGGEROBJECT_DESC DescA = {};
+			DescA.vHalfExtents = { 25.f, 25.f, 0.f };
+			DescA.iTriggerType = (_uint)TRIGGER_TYPE::EVENT_TRIGGER;
+			DescA.szEventTag = TEXT("Start_Train");
+			DescA.eConditionType = CTriggerObject::TRIGGER_ENTER;
+			DescA.isReusable = false; // 한 번 하고 삭제할 때
+			DescA.eStartCoord = COORDINATE_2D;
+			_vector v2DPos = m_pOwner->Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION);
+			DescA.tTransform2DDesc.vInitialPosition = _float3(XMVectorGetX(v2DPos), XMVectorGetY(v2DPos), 0.0f);
+			
+			_wstring wsSectionKey = CSection_Manager::GetInstance()->Get_Cur_Section_Key();
+			CSection* pSection = CSection_Manager::GetInstance()->Find_Section(wsSectionKey);
+			CTrigger_Manager::GetInstance()->Create_TriggerObject(LEVEL_STATIC, (LEVEL_ID)m_pOwner->Get_CurLevelID(), &DescA, pSection);
+
+			CFriend_Controller::GetInstance()->End_Train();
+		}
+		
+	}
 }
 
 void CPlayerState_ExitPortal::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)

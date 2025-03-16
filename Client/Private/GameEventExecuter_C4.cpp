@@ -300,7 +300,7 @@ void CGameEventExecuter_C4::Chapter4_GateEvent(_float _fTimeDelta)
 				}
 			}
 		}
-		Next_Step_Over(2.8f);
+		Next_Step_Over(3.5f);
 
 	}
 	else if (Step_Check(STEP_2))
@@ -308,7 +308,7 @@ void CGameEventExecuter_C4::Chapter4_GateEvent(_float _fTimeDelta)
 		if (Is_Start())
 		{
 			CPlayer* pPlayer = Get_Player();
-			pPlayer->Set_Position({ 0.f, 0.f, 0.f });
+			pPlayer->Set_Position({ -133.f, -477.f, 0.f });
 
 			if (nullptr != m_pTargetObject)
 				static_cast<CDynamicCastleGate*>(m_pTargetObject)->WorldMap_ReCapture();

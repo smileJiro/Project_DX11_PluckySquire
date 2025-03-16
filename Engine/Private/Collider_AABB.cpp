@@ -159,10 +159,14 @@ void CCollider_AABB::Block_AABB(CCollider_AABB* _pOther)
     _float2 vOtherRB = _pOther->Get_RB();
 
     // 1. 침투 깊이를 계산한다.
-    _float fOverlap_X = min(m_vPosition.x + fWidth, _pOther->m_vPosition.x + fOtherWidth) - max(m_vPosition.x, _pOther->m_vPosition.x);
-    _float fOverlap_Y = min(m_vPosition.y + fHeight, _pOther->m_vPosition.y + fOtherHeight) - max(m_vPosition.y, _pOther->m_vPosition.y);
 
-    if (0.0f > fOverlap_X || 0.0f > fOverlap_Y)
+    float fOverlap_X = min(vRB.x, vOtherRB.x) - max(vLT.x, vOtherLT.x);
+    float fOverlap_Y = min(vLT.y, vOtherLT.y) - max(vRB.y, vOtherRB.y);
+
+ /*   _float fOverlap_X = min(m_vPosition.x + fWidth, _pOther->m_vPosition.x + fOtherWidth) - max(m_vPosition.x, _pOther->m_vPosition.x);
+    _float fOverlap_Y = min(m_vPosition.y + fHeight, _pOther->m_vPosition.y + fOtherHeight) - max(m_vPosition.y, _pOther->m_vPosition.y);*/
+
+    if (0.0f >= fOverlap_X || 0.0f >= fOverlap_Y)
         return;
     // 2. x, y 중 침투 깊이가 짧은 쪽(비율 기반)을 밀어낼 축으로 결정한다.
     _float fRatio_X = fOverlap_X / fOtherWidth;
@@ -184,8 +188,8 @@ void CCollider_AABB::Block_AABB(CCollider_AABB* _pOther)
     // 4. (침투 깊이 * 밀어낼 축 * 밀어낼 방향) 만큼 밀어낸다.
     _vector vOtherPos = _pOther->Get_Owner()->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION);
     _float2 vOtherFinalPos = {};
-    vOtherFinalPos.x = XMVectorGetX(vOtherPos) + fOverlap_X * vDirection.x * fSign;
-    vOtherFinalPos.y = XMVectorGetY(vOtherPos) + fOverlap_Y * vDirection.y * fSign;
+    vOtherFinalPos.x = XMVectorGetX(vOtherPos) + (fOverlap_X + 1.0f) * vDirection.x * fSign;
+    vOtherFinalPos.y = XMVectorGetY(vOtherPos) + (fOverlap_Y + 1.0f) * vDirection.y * fSign;
 
     _pOther->Get_Owner()->Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSet(vOtherFinalPos.x, vOtherFinalPos.y, 0.0f, 1.0f));
 
@@ -214,7 +218,8 @@ void CCollider_AABB::Block_Circle(CCollider_Circle* _pOther)
     if (vOtherPosition.x >= vLT.x && vOtherPosition.x <= vRB.x &&
         vOtherPosition.y >= vRB.y && vOtherPosition.y <= vLT.y)
     {
-        _float2 vDistances = {
+        _float2 vDistances = 
+        {
             min(abs(vOtherPosition.x - vLT.x), abs(vOtherPosition.x - vRB.x)), // X축 최소 거리
             min(abs(vOtherPosition.y - vRB.y), abs(vOtherPosition.y - vLT.y))  // Y축 최소 거리
         };

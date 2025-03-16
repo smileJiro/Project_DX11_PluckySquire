@@ -18,36 +18,70 @@ CJumpStarter::CJumpStarter(const CJumpStarter& _Prototype)
 
 HRESULT CJumpStarter::Initialize(void* _pArg)
 {
-	DRAGGABLE_DESC* pDesc = static_cast<DRAGGABLE_DESC*>(_pArg);
+	JUMP_STARTER_DESC* pDesc = static_cast<JUMP_STARTER_DESC*>(_pArg);
 
-	m_eInteractID = INTERACT_ID::JUMP;
+	pDesc->iObjectGroupID = OBJECT_GROUP::INTERACTION_OBEJCT;
 	pDesc->eStartCoord = COORDINATE_2D;
+	m_eInteractID = INTERACT_ID::JUMP;
 	m_eInteractKey = KEY::E;
 	m_eInteractType = INTERACT_TYPE::NORMAL;
+	m_eJumpMoveDir = pDesc->eJumpMoveDir;
+	m_fTargetPos = pDesc->fTargetPos;
+
+
+	//switch (m_eJumpMoveDir)
+	//{
+	//case Client::F_DIRECTION::LEFT:
+	//	m_fTargetPos.x *= -1.f;
+	//	break;
+	//case Client::F_DIRECTION::DOWN:
+	//	m_fTargetPos.y *= -1.f;
+	//	break;
+	//}
+
 
 
 	if (COORDINATE_2D == pDesc->eStartCoord)
 	{
 		if (FAILED(__super::Initialize(pDesc)))
 			return E_FAIL;
-		m_p2DColliderComs.resize(3);
+		m_p2DColliderComs.resize(2);
 
-		CCollider_Circle::COLLIDER_CIRCLE_DESC CircleDesc = {};
-		CircleDesc.pOwner = this;
-		CircleDesc.fRadius = 30.f;
-		CircleDesc.vScale = { 1.0f, 1.0f };
-		CircleDesc.vOffsetPosition = { pDesc->vBoxOffset.x,pDesc->vBoxOffset.y };
-		CircleDesc.isBlock = false;
-		CircleDesc.isTrigger = true;
-		CircleDesc.iCollisionGroupID = OBJECT_GROUP::INTERACTION_OBEJCT;
-		if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
-			TEXT("Com_2DCollider_Circle"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[2]), &CircleDesc)))
+		CCollider_AABB::COLLIDER_AABB_DESC tBoxDesc = {};
+		tBoxDesc.pOwner = this;
+		tBoxDesc.vExtents = { 1.f, 1.f};
+		tBoxDesc.vScale = { 1.f, 1.f };
+		tBoxDesc.vOffsetPosition = { pDesc->vBoxOffset.x, pDesc->vBoxOffset.y };
+		tBoxDesc.isBlock = true;
+		tBoxDesc.isTrigger = false;
+		tBoxDesc.iCollisionGroupID = OBJECT_GROUP::BLOCKER;
+		if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
+			TEXT("Com_2DCollider_AABB"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &tBoxDesc)))
 			return E_FAIL;
+		
+		 tBoxDesc = {};
+		tBoxDesc.pOwner = this;
+		tBoxDesc.vExtents = { 1.2f, 1.2f };
+		tBoxDesc.vScale = { 1.f, 1.f };
+		tBoxDesc.vOffsetPosition = { pDesc->vBoxOffset.x, pDesc->vBoxOffset.y };
+		tBoxDesc.isBlock = false;
+		tBoxDesc.iCollisionGroupID = OBJECT_GROUP::INTERACTION_OBEJCT;
+		if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
+			TEXT("Com_2DCollider_AABB_Trigger"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[1]), &tBoxDesc)))
+			return E_FAIL;
+
 
 		if (L"" != pDesc->strInitSectionTag)
 			if (FAILED(SECTION_MGR->Add_GameObject_ToSectionLayer(pDesc->strInitSectionTag, this)))
 				return E_FAIL;
 	}
+
+#ifdef _DEBUG
+	if (false == m_p2DColliderComs.empty() && nullptr != m_p2DColliderComs[0])
+		m_p2DColliderComs[0]->Set_DebugColor({ 1.f,1.f,0.f,1.f });
+	if (false == m_p2DColliderComs.empty() && nullptr != m_p2DColliderComs[1])
+		m_p2DColliderComs[1]->Set_DebugColor({ 1.f,0.f,1.f,1.f });
+#endif // _DEBUG
 
 
 
@@ -83,10 +117,9 @@ HRESULT CJumpStarter::Render()
 
 void CJumpStarter::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-	if (OBJECT_GROUP::PLAYER == _pOtherCollider->Get_CollisionGroupID() && OBJECT_GROUP::BLOCKER == _pMyCollider->Get_CollisionGroupID())
+	if (m_isBodyContact == false && _pMyCollider->Get_CollisionGroupID() == OBJECT_GROUP::BLOCKER)
 	{
-		m_bUserAround = true;
-		m_bUserContact = true;
+		m_isBodyContact = true;
 	}
 }
 
@@ -96,41 +129,63 @@ void CJumpStarter::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOth
 
 void CJumpStarter::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-	if (OBJECT_GROUP::PLAYER == _pOtherCollider->Get_CollisionGroupID() &&
-		(OBJECT_GROUP::INTERACTION_OBEJCT == _pMyCollider->Get_CollisionGroupID()))
+	if (m_isBodyContact == true && _pMyCollider->Get_CollisionGroupID() == OBJECT_GROUP::BLOCKER)
 	{
-		m_bUserAround = false;
-		m_bUserContact = false;
+		m_isBodyContact = false;
 
-		if (m_pDragger && m_pDragger == _pOtherObject)
-		{
-			m_pDragger->Set_InteractObject(nullptr);
-			End_Interact(m_pDragger);
-			m_pDragger = nullptr;
-		}
+	}
+	if (m_isJump && _pMyCollider->Get_CollisionGroupID() == OBJECT_GROUP::INTERACTION_OBEJCT)
+	{
+		m_p2DColliderComs[0]->Set_Active(true);
+		m_isJump = false;
 	}
 }
 
 void CJumpStarter::Interact(CPlayer* _pUser)
 {
 
+	_vector vPlayerPos = _pUser->Get_FinalPosition() + XMVectorSet(m_fTargetPos.x, m_fTargetPos.y, 0.0f, 0.0f);
+	AUTOMOVE_COMMAND AutoMove{};
+	AutoMove.eType = AUTOMOVE_TYPE::MOVE_TO;
+	AutoMove.fPostDelayTime = 0.0f;
+	AutoMove.fPreDelayTime = 0.0f;
+	AutoMove.iAnimIndex = (_uint)CPlayer::ANIM_STATE_2D::PLAYER_RUN_DOWN;
+	AutoMove.vTarget = vPlayerPos;
+	
+	m_p2DColliderComs[0]->Set_Active(false);
+	_pUser->Add_AutoMoveCommand(AutoMove);
+	_pUser->Start_AutoMove(true);
+
+	_pUser->Set_State(CPlayer::STATE::JUMP_UP);
+	m_isJump = true;
 }
 
 _bool CJumpStarter::Is_Interactable(CPlayer* _pUser)
 {
-	if (_pUser->Is_CarryingObject())
+	if (true == m_isJump)
 		return false;
-	//최초 붙잡기는 접촉해 있어야 함.
-	//최초 붙잡기인지 판단 -> m_pDragger가 없는지?
-	//접촉했는지 판단 -> m_bUserCOntact가 true?
-	//이미 붙잡혀있었으면 m_bUserCOntact는 소용 없음. 
-	//-> m_pDragger가 있으면 무적권 가능. 
-	//플레이어가 이제 관심없어지면 m_pDragger를 nullptr로 만들어줘야 함.
+	_vector vPos = Get_FinalPosition(COORDINATE_2D);
+	_vector vTargetPos = _pUser->Get_FinalPosition(COORDINATE_2D);
 
-	if (!(m_bUserAround && m_bUserContact))
-		int a = 1;
+	switch (m_eJumpMoveDir)
+	{
+	case Client::F_DIRECTION::LEFT:
+		return m_isBodyContact && XMVectorGetX(vPos) < XMVectorGetX(vTargetPos);
+		break;
+	case Client::F_DIRECTION::RIGHT:
+		return m_isBodyContact && XMVectorGetX(vPos) > XMVectorGetX(vTargetPos);
+		break;
+	case Client::F_DIRECTION::UP:
+		return m_isBodyContact && XMVectorGetY(vPos) > XMVectorGetY(vTargetPos);
+		break;
+	case Client::F_DIRECTION::DOWN:
+		return m_isBodyContact && XMVectorGetY(vPos) < XMVectorGetY(vTargetPos);
+		break;
+	default:
+		break;
+	}
 
-	return m_bUserAround && m_bUserContact;
+	return false;
 }
 
 _float CJumpStarter::Get_Distance(COORDINATE _eCoord, CPlayer* _pUser)
@@ -148,9 +203,6 @@ void CJumpStarter::On_InteractionEnd(CPlayer* _pPlayer)
 {
 }
 
-void CJumpStarter::Move(_fvector _vForce, _float _fTimeDelta)
-{
-}
 
 
 CJumpStarter* CJumpStarter::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -186,5 +238,5 @@ void CJumpStarter::Free()
 
 HRESULT CJumpStarter::Cleanup_DeadReferences()
 {
-	return E_NOTIMPL;
+	return S_OK;
 }
