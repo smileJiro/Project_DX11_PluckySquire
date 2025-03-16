@@ -24,6 +24,8 @@ private:
 	LEVEL_ID m_eNextLevelID = LEVEL_END;
 	CLoader* m_pLoader = nullptr;
 
+	class CLogo_BackGround* m_pBackGround = { nullptr };
+
 private:
 	HRESULT Ready_Layer_BackGround(const _wstring& strLayerTag);
 

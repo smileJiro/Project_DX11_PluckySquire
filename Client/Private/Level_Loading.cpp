@@ -35,7 +35,7 @@ void CLevel_Loading::Update(_float _fTimeDelta)
     if (true == m_pLoader->isFinished())
     {
         if (LEVEL_CHAPTER_8 == m_eNextLevelID) {
-            if (KEY_DOWN(KEY::ENTER)) {
+            if (nullptr != m_pBackGround && m_pBackGround->Is_EndFadeOut()) {
                 Event_LevelChange(m_eNextLevelID);
             }
         }
@@ -59,14 +59,20 @@ HRESULT CLevel_Loading::Render()
 HRESULT CLevel_Loading::Ready_Layer_BackGround(const _wstring& strLayerTag)
 {
     if (LEVEL_CHAPTER_8 == m_eNextLevelID) {
+
+        CGameObject* pObject = nullptr;
+
         CLogo_BackGround::MAIN_LOGO_DESC		Desc{};
 
         Desc.vColor = { 47.f / 255.f, 47.f / 255.f, 47.f / 255.f, 1.f };
         Desc.iBackGroundMainType = CLogo_BackGround::MAIN_HUMGRUMP;
 
         if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Logo_BackGround"),
-            LEVEL_LOADING, strLayerTag, &Desc)))
+            LEVEL_LOADING, strLayerTag, &pObject, &Desc)))
             return E_FAIL;
+
+        m_pBackGround = static_cast<CLogo_BackGround*>(pObject);
+        Safe_AddRef(pObject);
     }
 
     return S_OK;
@@ -89,5 +95,7 @@ CLevel_Loading* CLevel_Loading::Create(ID3D11Device* _pDevice, ID3D11DeviceConte
 void CLevel_Loading::Free()
 {
     Safe_Release(m_pLoader);
+    Safe_Release(m_pBackGround);
+
     __super::Free();
 }
