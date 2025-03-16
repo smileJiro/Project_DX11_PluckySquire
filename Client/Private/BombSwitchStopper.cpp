@@ -46,7 +46,7 @@ HRESULT CBombSwitchStopper::Initialize(void* _pArg)
     tAABBDEsc.vOffsetPosition = { 0.f, tAABBDEsc.vExtents.y };
     tAABBDEsc.isBlock = true;
     tAABBDEsc.isTrigger = false;
-    tAABBDEsc.iCollisionGroupID = OBJECT_GROUP::MAPOBJECT;
+    tAABBDEsc.iCollisionGroupID = OBJECT_GROUP::BLOCKER;
     if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
         TEXT("Com_Body2DCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &tAABBDEsc)))
         return E_FAIL;
@@ -57,12 +57,16 @@ HRESULT CBombSwitchStopper::Initialize(void* _pArg)
 
 HRESULT CBombSwitchStopper::Render()
 {
+    __super::Render();
 #ifdef _DEBUG
-    if (m_p2DColliderComs[0]->Is_Active())
-        m_p2DColliderComs[0]->Render(SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName));
-#endif // _DEBUG
+    for (auto& pCollider : m_p2DColliderComs)
+    {
+        if (pCollider && pCollider->Is_Active())
+            pCollider->Render(SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName));
+    }
 
-    return __super::Render();
+#endif // _DEBUG
+    return S_OK;
 }
 
 void CBombSwitchStopper::On_BombSwitch(_bool _bOn)

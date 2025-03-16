@@ -1827,7 +1827,8 @@ HRESULT CLevel_Chapter_08::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter8_P2122"), pBombSwitchStopper, SECTION_2D_PLAYMAP_OBJECT);
 	pBombSwitch->Add_Receiver(pBombSwitchStopper);
 
-	CTiltSwapCrate::SLIPPERY_DESC tTiltSwapCrateDesc = {};
+	CTiltSwapCrate::TILTSWAPCRATE_DESC tTiltSwapCrateDesc = {};
+	tTiltSwapCrateDesc.eFlipState = CTiltSwapCrate::FLIP_TOP;
 	tTiltSwapCrateDesc.iCurLevelID = m_eLevelID;
 	tTiltSwapCrateDesc.tTransform2DDesc.vInitialPosition = _float3(245.f, 1058.f, 0.f);
 	CTiltSwapCrate* pTiltSwapCrate = static_cast<CTiltSwapCrate*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_eLevelID, TEXT("Prototype_GameObject_TiltSwapCrate"), &tTiltSwapCrateDesc));

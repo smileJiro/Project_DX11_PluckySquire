@@ -262,6 +262,7 @@ _bool CCollider_Circle::Get_CollisionPoint(CCollider* _pOther, _float2* pOutPoin
     switch (eTYpe)
     {
     case Engine::CCollider::AABB_2D:
+    {
         CCollider_AABB* pAABB = static_cast<CCollider_AABB*>(_pOther);
         _float2 vOtherLT = pAABB->Get_LT();
         _float2 vOtherRB = pAABB->Get_RB();
@@ -274,6 +275,7 @@ _bool CCollider_Circle::Get_CollisionPoint(CCollider* _pOther, _float2* pOutPoin
         pOutPoint->x = clamp(vPosition.x, vOtherLT.x, vOtherRB.x);
         pOutPoint->y = clamp(vPosition.y, vOtherRB.y, vOtherLT.y);
         break;
+    }
     case Engine::CCollider::CIRCLE_2D:
     {
         CCollider_Circle* pCircle = static_cast<CCollider_Circle*>(_pOther);

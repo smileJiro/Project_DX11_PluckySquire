@@ -47,7 +47,7 @@ void CSlipperyObject::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _
 {
 	if (m_bSlip)
 	{
-		if (Is_Impact())
+		if (Is_Impact(_pOtherCollider))
 		{
 			m_bSlip = false;
 			
@@ -80,10 +80,10 @@ void CSlipperyObject::Start_Slip(_fvector _vDirection, _float _fPower)
 _bool CSlipperyObject::Is_Impact(CCollider* _pOtherCollider)
 {
 	_bool bRightGroup = m_iImpactCollisionFilter & _pOtherCollider->Get_CollisionGroupID();
-	F_DIRECTION eFSlipDir = To_FDirection(m_vSlipDirection);
-	F_DIRECTION eFCollDir = To_FDirection(_pOtherCollider->Get_Position() - m_pControllerTransform->Get_State(CTransform::STATE_POSITION));
-	
-	return bRightGroup && eFSlipDir == eFCollDir;
+	//F_DIRECTION eFSlipDir = To_FDirection(m_vSlipDirection);
+	//F_DIRECTION eFCollDir = To_FDirection(_pOtherCollider->Get_Position() - m_pControllerTransform->Get_State(CTransform::STATE_POSITION));
+	//
+	return bRightGroup ;
 }
 
 
