@@ -20,6 +20,7 @@
 #include "ButterGrump_Shield.h"
 #include "Boss_Crystal.h"
 #include "Boss_TennisBall.h"
+#include "Effect_Manager.h"
 
 CButterGrump::CButterGrump(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : CMonster(_pDevice, _pContext)
@@ -79,12 +80,12 @@ HRESULT CButterGrump::Initialize(void* _pArg)
     m_pBossFSM->Add_State((_uint)BOSS_STATE::TRANSITION);
     m_pBossFSM->Add_State((_uint)BOSS_STATE::IDLE);
     m_pBossFSM->Add_State((_uint)BOSS_STATE::MOVE);
-    m_pBossFSM->Add_State((_uint)BOSS_STATE::HOMINGBALL);
-    m_pBossFSM->Add_State((_uint)BOSS_STATE::YELLOWBALL);
-    m_pBossFSM->Add_State((_uint)BOSS_STATE::PURPLEBALL);
+    //m_pBossFSM->Add_State((_uint)BOSS_STATE::HOMINGBALL);
+    //m_pBossFSM->Add_State((_uint)BOSS_STATE::YELLOWBALL);
+    //m_pBossFSM->Add_State((_uint)BOSS_STATE::PURPLEBALL);
     //m_pBossFSM->Add_State((_uint)BOSS_STATE::WINGSLAM);
     //m_pBossFSM->Add_State((_uint)BOSS_STATE::ROCKVOLLEY);
-    //m_pBossFSM->Add_State((_uint)BOSS_STATE::WINGSLICE);
+    m_pBossFSM->Add_State((_uint)BOSS_STATE::WINGSLICE);
     m_pBossFSM->Add_State((_uint)BOSS_STATE::SHIELD);
     m_pBossFSM->Add_State((_uint)BOSS_STATE::HIT);
     m_pBossFSM->Add_State((_uint)BOSS_STATE::DEAD);

@@ -2,5 +2,17 @@
     {
         "Name": "CyberBulletHit.json",
         "Count": 15
+    },
+    {
+        "Name": "WingSliceDust.json",
+        "Count": 1
+    },
+    {
+        "Name": "WingSlamDust.json",
+        "Count": 1
+    },
+    {
+        "Name": "Shieldbreak.json",
+        "Count": 1
     }
 ]

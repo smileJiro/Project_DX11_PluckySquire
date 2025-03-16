@@ -21,6 +21,7 @@ HRESULT CEffect_Trail::Initialize(void* _pArg)
 {
     EFFECTTRAIL_DESC* pDesc = static_cast<EFFECTTRAIL_DESC*>(_pArg);
 
+
     if (nullptr == pDesc)
         return E_FAIL;
 
@@ -35,6 +36,7 @@ HRESULT CEffect_Trail::Initialize(void* _pArg)
     m_vColor = pDesc->vColor;
     m_fAddTime = pDesc->fAddTime;
     m_fTrailLifeTime = pDesc->fTrailLifeTime;
+    m_eTrailType = pDesc->eTrailType;
 
     return S_OK;
 }
@@ -43,29 +45,29 @@ void CEffect_Trail::Update(_float _fTimeDelta)
 {   
     __super::Update(_fTimeDelta);
 
-//#ifdef _DEBUGsdda
-//    ImGui::Begin("Set Trail Effect");
-//
-//    ImGui::DragFloat4("Color", (_float*)(&m_vColor), 0.01f);
-//    ImGui::DragFloat("Length", &m_fLength);
-//    ImGui::DragFloat3("Add Point", (_float*)&m_vAddPoint);
-//    ImGui::DragFloat("Add Time", &m_fAddTime);
-//    ImGui::DragFloat("Delete Time", &m_fTrailLifeTime);
-//
-//
-//    ImGui::End();
-//#endif
+#ifdef _DEBUG
+    ImGui::Begin("Set Trail Effect");
+
+    ImGui::DragFloat4("Color", (_float*)(&m_vColor), 0.01f);
+    ImGui::DragFloat("Length", &m_fLength);
+    ImGui::DragFloat3("Add Point", (_float*)&m_vAddPoint);
+    ImGui::DragFloat("Add Time", &m_fAddTime);
+    ImGui::DragFloat("Delete Time", &m_fTrailLifeTime);
+
+
+    ImGui::End();
+#endif
 
     // 추가될 정점으로 update 합니다.
     if (m_isAddUpdate)
     {
         m_fAccAddTime += _fTimeDelta;
 
-        if (m_fAddTime <= m_fAccAddTime)
+       while (m_fAddTime <= m_fAccAddTime)
         {
-            m_pBufferCom->Add_Point(&m_WorldMatrices[COORDINATE_3D], XMVectorSetW(XMLoadFloat3(&m_vAddPoint), 1.f), m_fTrailLifeTime);
+            m_pBufferCom->Add_Point(&m_WorldMatrices[COORDINATE_3D], XMVectorSetW(XMLoadFloat3(&m_vAddPoint), 1.f), m_fTrailLifeTime - (m_fAccAddTime - m_fAddTime));
 
-            m_fAccAddTime = 0.f;
+            m_fAccAddTime -= _fTimeDelta;
         }
     }
     
@@ -102,7 +104,7 @@ HRESULT CEffect_Trail::Render()
     if (FAILED(Bind_ShaderResources()))
         return E_FAIL;
 
-    if (FAILED(m_pShaderCom->Begin_NoInput(0)))
+    if (FAILED(m_pShaderCom->Begin_NoInput(m_eTrailType)))
         return E_FAIL;
 
     if (FAILED(m_pBufferCom->Bind_BufferDesc()))
@@ -142,24 +144,14 @@ HRESULT CEffect_Trail::Bind_ShaderResources()
     if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_Texture", 0)))
         return E_FAIL;
 
-    //_float4x4 matIdentity;
-    //XMStoreFloat4x4(&matIdentity, XMMatrixIdentity());
-    //if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &matIdentity)))
-    //    return E_FAIL;
-
     _uint iCount = m_pBufferCom->Get_TrailCount();
     if (FAILED(m_pShaderCom->Bind_RawValue("g_iCount", &iCount, sizeof(_uint))))
         return E_FAIL;
-
+    
     if (FAILED(m_pShaderCom->Bind_RawValue("g_fLength", &m_fLength, sizeof(_float))))
         return E_FAIL;
 
     if (FAILED(m_pShaderCom->Bind_RawValue("g_vColor", &m_vColor, sizeof(_float4))))
-        return E_FAIL;
-
-    _float4 vPosition;
-    memcpy(&vPosition, &m_WorldMatrices[COORDINATE_3D].m[3], sizeof(_float4));
-    if (FAILED(m_pShaderCom->Bind_RawValue("g_vCentral", &vPosition, sizeof(_float4))))
         return E_FAIL;
 
 
@@ -170,6 +162,20 @@ HRESULT CEffect_Trail::Bind_ShaderResources()
         return E_FAIL;
 
 
+    switch (m_eTrailType)
+    {
+    case CENTRAL_TRAIL:
+    {
+        m_pShaderCom->Bind_RawValue("g_vCentral", &m_WorldMatrices[COORDINATE_3D].m[3], sizeof(_float4));
+        break;
+    }
+    case FOLLOW_TRAIL:
+    {
+        m_pShaderCom->Bind_RawValue("g_vDir", &m_WorldMatrices[COORDINATE_3D].m[1], sizeof(_float4));
+        break;
+    }
+    }
+
     return S_OK;
 }
 
@@ -179,21 +185,13 @@ HRESULT CEffect_Trail::Ready_Components(const EFFECTTRAIL_DESC* _pDesc)
         TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
         return E_FAIL;
 
-    if (FAILED(Add_Component(LEVEL_STATIC, _pDesc->szBufferTag,
+    if (FAILED(Add_Component(_pDesc->iBufferLevel, _pDesc->szBufferTag,
         TEXT("Com_Buffer"), reinterpret_cast<CComponent**>(&m_pBufferCom))))
         return E_FAIL;
 
-    if (FAILED(Add_Component(LEVEL_STATIC, _pDesc->szTextureTag,
+    if (FAILED(Add_Component(_pDesc->iTextureLevel, _pDesc->szTextureTag,
         TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
         return E_FAIL;
-
-    //if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_SwordTrail"),
-    //    TEXT("Com_Buffer"), reinterpret_cast<CComponent**>(&m_pBufferCom))))
-    //    return E_FAIL;
-
-    //if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Trail"),
-    //    TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
-    //    return E_FAIL;
 
     return S_OK;
 }

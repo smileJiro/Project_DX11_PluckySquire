@@ -45,8 +45,6 @@ void CDoor_Red::Update(_float _fTimeDelta)
         m_eDoorState = CLOSED;
         Switch_Animation_By_State();
     }
-
-
 #endif
 
 
@@ -65,6 +63,10 @@ void CDoor_Red::Update(_float _fTimeDelta)
             {
                 CCamera_Manager::GetInstance()->Change_CameraTarget(this);
                 m_isStartOpen = true;
+                
+                //CPlayable* pPlayer = CPlayerData_Manager::GetInstance()->Get_CurrentPlayer_Ptr();
+                //if (nullptr != pPlayer)
+                //    pPlayer->Set_BlockPlayerInput(true);
             }
             else
             {
@@ -105,7 +107,13 @@ void CDoor_Red::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
         Switch_Animation_By_State();
 
         if (0.f < m_fTargetDiff)
+        {
             CCamera_Manager::GetInstance()->Change_CameraTarget(CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr());
+
+            //CPlayable* pPlayer = CPlayerData_Manager::GetInstance()->Get_CurrentPlayer_Ptr();
+            //if (nullptr != pPlayer)
+            //    pPlayer->Set_BlockPlayerInput(false);
+        }
     }
 
 }
