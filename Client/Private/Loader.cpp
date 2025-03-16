@@ -634,6 +634,14 @@ HRESULT CLoader::Loading_Level_Static()
 		C2DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Textures/Main_Logo/Main_TextObject/title_screen_tmh_KOR.dds", LEVEL_STATIC, true, false))))
 		return E_FAIL;
 
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Logo_TextObject_Button"),
+		C2DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Textures/Main_Logo/Main_TextObject/Text_Object_Button.dds", LEVEL_STATIC, true, false))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Logo_FadeUI"),
+		C2DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Textures/Main_Logo/FadeUI.dds", LEVEL_STATIC, true, false))))
+		return E_FAIL;
+
 	/* For. Prototype_Component_VIBuffer_Mesh */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Mesh"),
 		CVIBuffer_Mesh::Create(m_pDevice, m_pContext))))

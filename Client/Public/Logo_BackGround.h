@@ -30,11 +30,13 @@ public:
 
 	enum MAIN_PART
 	{
-		LOGO_CHARACTER,
 		LOGO_TEXT_OBJECT,
+		LOGO_CHARACTER,
+		LOGO_TEXT_OBJECT_BUTTON,
+		LOGO_FADEUI,
 
 		MAIN_PART_END
-	};
+	}; 
 
 	typedef struct tagMainLogoDesc : public CUIObject::UIOBJECT_DESC
 	{
@@ -56,11 +58,22 @@ public:
 	virtual void			Late_Update(_float _fTimeDelta) override;
 	virtual HRESULT			Render() override;
 
-private:
-	//_float3					m_vBackGroundColor = {};
-	_uint					m_eBackGroundType = { BACKGROUND_END };
+public:
+	_bool					Is_EndFadeOut() { return m_isEndBGFadeOut; }
 
+private:
+	_uint					m_eBackGroundType = { BACKGROUND_END };
 	class CModelObject*		m_pBackGroundParts[MAIN_PART_END] = { nullptr };
+
+	_float2					m_fFontFadeTime = { 2.f, 0.f };
+	_bool					m_isEndFadeFont = { false };
+
+	_bool					m_isRenderTextObject = { false };
+	_bool					m_isRenderFont = { false };
+	_bool					m_isRenderTextObject_Button = { false };
+
+	_bool					m_isBGFadeOut = { false };
+	_bool					m_isEndBGFadeOut = { false };
 
 protected:
 	virtual HRESULT			Ready_Components() override;
@@ -68,6 +81,11 @@ protected:
 
 private:
 	void					On_End_Animation(COORDINATE _eCoordinate, _uint _iAnimIndex);
+	void					Render_Font();
+	void					Caculate_FadeValue(_float _fTimeDelta);
+	void					BackGround_FadeOut(_float fTimeDelta);
+
+	void					Check_RenderTiming(_float _fTimeDelta);
 
 public:
 	static CLogo_BackGround* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

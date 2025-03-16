@@ -49,6 +49,7 @@
 #include "Effect2D_Manager.h"
 #include "Effect_Manager.h"
 #include "PlayerData_Manager.h"
+#include "Friend_Controller.h"
 
 #include "Collider_Fan.h"
 #include "Collider_AABB.h"
@@ -1126,6 +1127,7 @@ HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
 	{
 		CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::TARGET, true, 1.f);
 		Set_PlatformerMode(false);
+
 	}
 
 

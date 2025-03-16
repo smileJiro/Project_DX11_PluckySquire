@@ -7,6 +7,7 @@
 #include "Camera.h"
 #include "Camera_Target.h"
 #include "Camera_2D.h"
+#include "Friend_Controller.h"
 
 CPlayerState_ExitPortal::CPlayerState_ExitPortal(CPlayer* _pOwner)
 	:CPlayerState(_pOwner, CPlayer::EXIT_PORTAL)
@@ -67,7 +68,7 @@ void CPlayerState_ExitPortal::Enter()
 	assert(nullptr != m_pPortal);
 	m_ePortalNormal = m_pPortal->Get_PortalNormal();
 	m_pPortal->Use_Portal(m_pOwner);
-
+	
 
 
 }
