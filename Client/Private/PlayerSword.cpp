@@ -186,6 +186,7 @@ HRESULT CPlayerSword::Initialize(void* _pArg)
     m_pBeamEffect = static_cast<CEffect_Beam*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_EffectBeam"), &EffectBeamDesc));
     if (nullptr == m_pBeamEffect)
         return E_FAIL;
+
     return S_OK;
 }
 
@@ -679,7 +680,6 @@ void CPlayerSword::Set_AttackEnable(_bool _bOn, CPlayer::ATTACK_TYPE _eAttackTyp
        /*     if (CPlayer::ATTACK_TYPE::ATTACK_TYPE_JUMPATTACK == _eAttackType)
                 CEffect_Manager::GetInstance()->Active_EffectPosition(TEXT("SwordJumpAttack"), true, XMLoadFloat4((_float4*)&m_WorldMatrices[COORDINATE_3D].m[3]));*/
         }
-
         else 
         {
             m_pTrailEffect->Delete_Delay(0.5f);

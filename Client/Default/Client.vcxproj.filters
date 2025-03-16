@@ -748,6 +748,15 @@
     <Filter Include="02.GameObjects\UI\03. Logo\01. Logo_Background\Logo_TextObject">
       <UniqueIdentifier>{52ed9875-8e81-4d04-9e13-332d211ae55a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\UI\04. Loading">
+      <UniqueIdentifier>{8f0012da-ffb4-41da-8dfb-cb78c711a9a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\2DGimmik\JumpStarter">
+      <UniqueIdentifier>{69f5978f-e2dc-45c9-8cbc-04e627a8897d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\2DGimmik\Meteor">
+      <UniqueIdentifier>{95ead6f3-13ed-47dc-9e67-040761dcfb04}</UniqueIdentifier>
+    </Filter>
     <Filter Include="02.GameObjects\Formation">
       <UniqueIdentifier>{83983464-75f1-4dd5-92d7-5082356e58ec}</UniqueIdentifier>
     </Filter>
@@ -1923,6 +1932,13 @@
       <Filter>02.GameObjects\UI\03. Logo\01. Logo_Background</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Logo_ColorObject.h" />
+    <ClInclude Include="..\Public\Loading_Book.h">
+      <Filter>02.GameObjects\UI\04. Loading</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\JumpStarter.h">
+      <Filter>02.GameObjects\2DGimmik\JumpStarter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Meteor.h" />
     <ClInclude Include="..\Public\Formation_Manager.h">
       <Filter>02.GameObjects\Formation\Manager</Filter>
     </ClInclude>
@@ -3083,6 +3099,13 @@
     </ClCompile>
     <ClCompile Include="..\Private\Logo_ColorObject.cpp" />
     <ClCompile Include="..\Private\State_Sneak.cpp" />
+    <ClCompile Include="..\Private\Loading_Book.cpp">
+      <Filter>02.GameObjects\UI\04. Loading</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\JumpStarter.cpp">
+      <Filter>02.GameObjects\2DGimmik\JumpStarter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Meteor.cpp" />
     <ClCompile Include="..\Private\Formation_Manager.cpp">
       <Filter>02.GameObjects\Formation\Manager</Filter>
     </ClCompile>

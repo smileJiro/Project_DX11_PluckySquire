@@ -72,7 +72,7 @@ HRESULT CDynamicCastleGate::Initialize(void* _pArg)
 		return E_FAIL;
 	//static_cast<CActor_Dynamic*>(m_pActorCom)->Set_Rotation(_vector{ 0.f,1.f,0.f }, XMConvertToRadians(90.f));
 	//static_cast<CActor_Dynamic*>(m_pActorCom)->Set_MassLocalPos(m_fMassLocal);
-	m_pActorCom->Set_Mass(7.5f);
+	m_pActorCom->Set_Mass(5.f);
 
 	if (FAILED(Ready_PartObjects()))
 		return E_FAIL;
@@ -90,9 +90,9 @@ void CDynamicCastleGate::Update(_float _fTimeDelta)
 {
 #ifdef _DEBUG
 
+#endif // _DEBUG
 	if (KEY_DOWN(KEY::I))
 		Collapse();
-#endif // _DEBUG
 	Check_StateChange();
 	if (COLLAPSING == m_eCurState)
 	{
@@ -134,11 +134,11 @@ void CDynamicCastleGate::OnContact_Modify(const COLL_INFO& _0, const COLL_INFO& 
 			_ModifiableContacts.Set_InvMassScale1(0.f); // Reduce mass effect on actor1
 			_ModifiableContacts.Set_InvInertiaScale1(0.f); // Reduce rotation effect on actor1
 		}
-		_uint iContactCount = _ModifiableContacts.Get_ContactCount();
-		for (_uint i = 0; i < iContactCount; i++)
-		{
-			_ModifiableContacts.Set_Restitution(i, 0);
-		}
+	}
+	_uint iContactCount = _ModifiableContacts.Get_ContactCount();
+	for (_uint i = 0; i < iContactCount; i++)
+	{
+		_ModifiableContacts.Set_Restitution(i, 0);
 	}
 	//else if ((OBJECT_GROUP::MAPOBJECT & eOtherGroup) && SHAPE_USE::SHAPE_BODY == eMyUse)
 	//{

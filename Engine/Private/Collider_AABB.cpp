@@ -159,10 +159,14 @@ void CCollider_AABB::Block_AABB(CCollider_AABB* _pOther)
     _float2 vOtherRB = _pOther->Get_RB();
 
     // 1. 침투 깊이를 계산한다.
-    _float fOverlap_X = min(m_vPosition.x + fWidth, _pOther->m_vPosition.x + fOtherWidth) - max(m_vPosition.x, _pOther->m_vPosition.x);
-    _float fOverlap_Y = min(m_vPosition.y + fHeight, _pOther->m_vPosition.y + fOtherHeight) - max(m_vPosition.y, _pOther->m_vPosition.y);
 
-    if (0.0f > fOverlap_X || 0.0f > fOverlap_Y)
+    float fOverlap_X = min(vRB.x, vOtherRB.x) - max(vLT.x, vOtherLT.x);
+    float fOverlap_Y = min(vLT.y, vOtherLT.y) - max(vRB.y, vOtherRB.y);
+
+ /*   _float fOverlap_X = min(m_vPosition.x + fWidth, _pOther->m_vPosition.x + fOtherWidth) - max(m_vPosition.x, _pOther->m_vPosition.x);
+    _float fOverlap_Y = min(m_vPosition.y + fHeight, _pOther->m_vPosition.y + fOtherHeight) - max(m_vPosition.y, _pOther->m_vPosition.y);*/
+
+    if (0.0f >= fOverlap_X || 0.0f >= fOverlap_Y)
         return;
     // 2. x, y 중 침투 깊이가 짧은 쪽(비율 기반)을 밀어낼 축으로 결정한다.
     _float fRatio_X = fOverlap_X / fOtherWidth;
@@ -184,8 +188,8 @@ void CCollider_AABB::Block_AABB(CCollider_AABB* _pOther)
     // 4. (침투 깊이 * 밀어낼 축 * 밀어낼 방향) 만큼 밀어낸다.
     _vector vOtherPos = _pOther->Get_Owner()->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION);
     _float2 vOtherFinalPos = {};
-    vOtherFinalPos.x = XMVectorGetX(vOtherPos) + fOverlap_X * vDirection.x * fSign;
-    vOtherFinalPos.y = XMVectorGetY(vOtherPos) + fOverlap_Y * vDirection.y * fSign;
+    vOtherFinalPos.x = XMVectorGetX(vOtherPos) + (fOverlap_X + 1.0f) * vDirection.x * fSign;
+    vOtherFinalPos.y = XMVectorGetY(vOtherPos) + (fOverlap_Y + 1.0f) * vDirection.y * fSign;
 
     _pOther->Get_Owner()->Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSet(vOtherFinalPos.x, vOtherFinalPos.y, 0.0f, 1.0f));
 
@@ -214,7 +218,8 @@ void CCollider_AABB::Block_Circle(CCollider_Circle* _pOther)
     if (vOtherPosition.x >= vLT.x && vOtherPosition.x <= vRB.x &&
         vOtherPosition.y >= vRB.y && vOtherPosition.y <= vLT.y)
     {
-        _float2 vDistances = {
+        _float2 vDistances = 
+        {
             min(abs(vOtherPosition.x - vLT.x), abs(vOtherPosition.x - vRB.x)), // X축 최소 거리
             min(abs(vOtherPosition.y - vRB.y), abs(vOtherPosition.y - vLT.y))  // Y축 최소 거리
         };
@@ -235,6 +240,58 @@ void CCollider_AABB::Block_Circle(CCollider_Circle* _pOther)
 }
 
 
+_bool CCollider_AABB::Get_CollisionPoint(CCollider* _pOther, _float2* pOutPoint)
+{
+    _bool bCollision = Is_Collision(_pOther);
+	if (false == bCollision)
+		return false;
+
+    CCollider::TYPE eTYpe = _pOther->Get_Type();
+    _float2 vLT = Get_LT();
+    _float2 vRB = Get_RB();
+    switch (eTYpe)
+    {
+    case Engine::CCollider::CIRCLE_2D:
+    {
+        CCollider_Circle* pCircle = static_cast<CCollider_Circle*>(_pOther);
+
+        _float2 vOtherPosition = pCircle->Get_Position();
+        _float fOtherFinalRadius = pCircle->Get_FinalRadius();
+
+        // 1. Clamp를 통해 AABB에 가장 가까운 점을 찾는다.
+
+        pOutPoint->x = clamp(vOtherPosition.x, vLT.x, vRB.x);
+        pOutPoint->y = clamp(vOtherPosition.y, vRB.y, vLT.y);
+        break;
+    }
+    case Engine::CCollider::AABB_2D:
+    {
+		CCollider_AABB* pAABB = static_cast<CCollider_AABB*>(_pOther);
+        _float2 vOtherLT = pAABB->Get_LT();
+        _float2 vOtherRB = pAABB->Get_RB();
+
+        // 가로 방향 충돌 검사  
+        if (vLT.x > vOtherRB.x || vRB.x < vOtherLT.x)
+            return false;
+
+        // 세로 방향 충돌 검사  
+        if (vLT.y < vOtherRB.y || vRB.y > vOtherLT.y)
+            return false;
+
+        pOutPoint->x = (max(vLT.x, vOtherLT.x) + min(vRB.x, vOtherRB.x)) / 2.0f;
+        pOutPoint->y = (max(vRB.y, vOtherRB.y) + min(vLT.y, vOtherLT.y)) / 2.0f;
+        break;
+    }
+    case Engine::CCollider::TYPE_LAST:
+        break;
+    default:
+        break;
+    }
+
+
+    return true ;
+}
+
 void CCollider_AABB::Update_OwnerTransform()
 {
     _vector vOwnerPos = m_pOwner->Get_FinalPosition(COORDINATE_2D);
@@ -242,7 +299,7 @@ void CCollider_AABB::Update_OwnerTransform()
 
     _float3 vOwnerScale = m_pOwner->Get_FinalScale(COORDINATE_2D);
     XMStoreFloat2(&m_vFinalExtents, XMLoadFloat2(&m_vExtents) * XMLoadFloat2(&m_vScale) * XMVectorSet(vOwnerScale.x, vOwnerScale.y, 0.0f, 0.0f));
-}
+} 
 
 _bool CCollider_AABB::Is_Collision_AABB(CCollider_AABB* _pOther)  
 {  

@@ -92,8 +92,10 @@ void CWorldMapNPC::Priority_Update(_float _fTimeDelta)
 
 void CWorldMapNPC::Update(_float _fTimeDelta)
 {
-	__super::Update(_fTimeDelta);
 	Progress(_fTimeDelta);
+	__super::Update(_fTimeDelta);
+	
+	
 
 }
 
@@ -190,11 +192,8 @@ HRESULT CWorldMapNPC::Ready_PartObjects()
 	return S_OK;
 }
 
-void CWorldMapNPC::Progress(_float _fTimeDelta)
+HRESULT CWorldMapNPC::Progress(_float _fTimeDelta)
 {
-
-		
-
 
 	CSection_Manager* pSectionManager = CSection_Manager::GetInstance();
 
@@ -203,13 +202,8 @@ void CWorldMapNPC::Progress(_float _fTimeDelta)
 		TEXT("Chapter6_Worldmap_0") != pSectionManager->Get_Cur_Section_Key() &&
 		TEXT("Chapter6_Worldmap_01") != pSectionManager->Get_Cur_Section_Key())
 	{
-		return;
+		return S_OK;
 	}
-
-
-
-
-
 
 	if (STATE_READY == m_eState)
 	{
@@ -230,8 +224,6 @@ void CWorldMapNPC::Progress(_float _fTimeDelta)
 			m_isChangeCameraTarget = true;
 		}
 			
-
-
 		if (1.5f > m_fWaitTime)
 		{
 			m_fWaitTime += _fTimeDelta;
@@ -248,7 +240,7 @@ void CWorldMapNPC::Progress(_float _fTimeDelta)
 			if (m_iStartIndex == 6)
 			{
 				assert(TEXT("WorldMapNpc -> Out of array"));
-				return;
+				return E_FAIL;
 			}
 
 			m_vStartPos = m_PosMoves[m_iStartIndex];
@@ -356,9 +348,11 @@ void CWorldMapNPC::Progress(_float _fTimeDelta)
 			}
 		}
 	}
+
+	return S_OK;
 }
  
-void CWorldMapNPC::Pos_Ready()
+HRESULT CWorldMapNPC::Pos_Ready()
 {
 	m_PosMoves[0] = _float2(-243.0f, -60.0f);
 	m_PosMoves[1] = _float2(-450.f, 13.53f);
@@ -366,6 +360,8 @@ void CWorldMapNPC::Pos_Ready()
 	m_PosMoves[3] = _float2(-110.f, -91.3f);
 	m_PosMoves[4] = _float2(2.76f, -71.3f);
 	m_PosMoves[5] = _float2(227.6f, -162.f);
+
+	return S_OK;
 }
 
 void CWorldMapNPC::Change_BookOrder()
@@ -385,19 +381,20 @@ _float2 CWorldMapNPC::Change_PlayerPos()
 {
 	_float2 ChangPlayerPos = { 0.f, 0.f };
 
-	if (0 == m_iStartIndex)
+	if (POS_HONEYBEE == m_iStartIndex)
 		ChangPlayerPos = _float2(-687.f, 182.4f);
-	else if (1 == m_iStartIndex)
+	else if (POS_TOWER == m_iStartIndex)
 		ChangPlayerPos = _float2(-1968.f, -685.f);
-	else if (3 == m_iStartIndex)
+	else if (POS_SWAMPEND == m_iStartIndex)
 		ChangPlayerPos = _float2(-14.3f, -664.f);
-	else if (4 == m_iStartIndex)
+	else if (POS_ATRIA == m_iStartIndex)
 		ChangPlayerPos = _float2(-1195.f, -160.f);
 
 	return ChangPlayerPos;
 }
 
-void CWorldMapNPC::DisplayLocationName()
+										// 하드 코딩 //
+HRESULT CWorldMapNPC::DisplayLocationName()
 {
 	_float2 vMidPoint = { RTSIZE_BOOK2D_X / 2.f, RTSIZE_BOOK2D_Y / 2.f };
 
@@ -421,7 +418,8 @@ void CWorldMapNPC::DisplayLocationName()
 		vCalPos.x = vMidPoint.x + vTextPos.x;
 		vCalPos.y = vMidPoint.y - vTextPos.y;
 
-		m_pGameInstance->Render_Font(TEXT("Font18"), m_strLocationName.c_str(), _float2((vCalPos.x), (vCalPos.y + 25.f)), XMVectorSet(0.f, 0.f, 0.f, 1.f));
+		if (FAILED(m_pGameInstance->Render_Font(TEXT("Font18"), m_strLocationName.c_str(), _float2((vCalPos.x), (vCalPos.y + 25.f)), XMVectorSet(0.f, 0.f, 0.f, 1.f))))
+			return E_FAIL;
 	}
 	break;
 
@@ -434,14 +432,17 @@ void CWorldMapNPC::DisplayLocationName()
 		vCalPos.x = vMidPoint.x + vTextPos.x;
 		vCalPos.y = vMidPoint.y - vTextPos.y;
 
-		m_pGameInstance->Render_Font(TEXT("Font18"), m_strLocationName.c_str(), _float2((vCalPos.x), (vCalPos.y + 25.f)), XMVectorSet(0.f, 0.f, 0.f, 1.f));
+		if (FAILED(m_pGameInstance->Render_Font(TEXT("Font18"), m_strLocationName.c_str(), _float2((vCalPos.x), (vCalPos.y + 25.f)), XMVectorSet(0.f, 0.f, 0.f, 1.f))))
+			return E_FAIL;
+
 		vTextPos = _float2(99.1f, 70.5f);
 		m_strLocationName = TEXT("아르티아");
 
 		vCalPos.x = vMidPoint.x + vTextPos.x;
 		vCalPos.y = vMidPoint.y - vTextPos.y;
 
-		m_pGameInstance->Render_Font(TEXT("Font30"), m_strLocationName.c_str(), _float2((vCalPos.x), (vCalPos.y + 25.f)), XMVectorSet(0.f, 0.f, 0.f, 1.f));
+		if (FAILED(m_pGameInstance->Render_Font(TEXT("Font30"), m_strLocationName.c_str(), _float2((vCalPos.x), (vCalPos.y + 25.f)), XMVectorSet(0.f, 0.f, 0.f, 1.f))))
+			return E_FAIL;
 	}
 	break;
 
@@ -454,7 +455,8 @@ void CWorldMapNPC::DisplayLocationName()
 		vCalPos.x = vMidPoint.x + vTextPos.x;
 		vCalPos.y = vMidPoint.y - vTextPos.y;
 
-		m_pGameInstance->Render_Font(TEXT("Font18"), m_strLocationName.c_str(), _float2((vCalPos.x), (vCalPos.y + 25.f)), XMVectorSet(0.f, 0.f, 0.f, 1.f));
+		if (FAILED(m_pGameInstance->Render_Font(TEXT("Font18"), m_strLocationName.c_str(), _float2((vCalPos.x), (vCalPos.y + 25.f)), XMVectorSet(0.f, 0.f, 0.f, 1.f))))
+			return E_FAIL;
 		
 		vTextPos = _float2(99.1f, 70.5f);
 		m_strLocationName = TEXT("아르티아");
@@ -462,7 +464,8 @@ void CWorldMapNPC::DisplayLocationName()
 		vCalPos.x = vMidPoint.x + vTextPos.x;
 		vCalPos.y = vMidPoint.y - vTextPos.y;
 
-		m_pGameInstance->Render_Font(TEXT("Font30"), m_strLocationName.c_str(), _float2((vCalPos.x), (vCalPos.y + 25.f)), XMVectorSet(0.f, 0.f, 0.f, 1.f));
+		if (FAILED(m_pGameInstance->Render_Font(TEXT("Font30"), m_strLocationName.c_str(), _float2((vCalPos.x), (vCalPos.y + 25.f)), XMVectorSet(0.f, 0.f, 0.f, 1.f))))
+			return E_FAIL;
 		
 		vTextPos = _float2(282.9f, -200.f);
 		m_strLocationName = TEXT("트라르그 산");
@@ -470,14 +473,17 @@ void CWorldMapNPC::DisplayLocationName()
 		vCalPos.x = vMidPoint.x + vTextPos.x;
 		vCalPos.y = vMidPoint.y - vTextPos.y;
 
-		m_pGameInstance->Render_Font(TEXT("Font24"), m_strLocationName.c_str(), _float2((vCalPos.x), (vCalPos.y + 25.f)), XMVectorSet(0.f, 0.f, 0.f, 1.f));
+		if (FAILED(m_pGameInstance->Render_Font(TEXT("Font24"), m_strLocationName.c_str(), _float2((vCalPos.x), (vCalPos.y + 25.f)), XMVectorSet(0.f, 0.f, 0.f, 1.f))))
+			return E_FAIL;
 	}
 	break;
 
 	}
+
+	return S_OK;
 }
 
-void CWorldMapNPC::DisplayHoneyBee(_float2 _MidPoint)
+HRESULT CWorldMapNPC::DisplayHoneyBee(_float2 _MidPoint)
 {
 	_float2 vText = { 0.f, 0.f };
 	_float2 vCal = { 0.f, 0.f };
@@ -488,7 +494,8 @@ void CWorldMapNPC::DisplayHoneyBee(_float2 _MidPoint)
 	vCal.x = _MidPoint.x + vText.x;
 	vCal.y = _MidPoint.y - vText.y;
 
-	m_pGameInstance->Render_Font(TEXT("Font18"), m_strLocationName.c_str(), _float2((vCal.x), (vCal.y + 25.f)), XMVectorSet(0.f, 0.f, 0.f, 1.f));
+	if (FAILED(m_pGameInstance->Render_Font(TEXT("Font18"), m_strLocationName.c_str(), _float2((vCal.x), (vCal.y + 25.f)), XMVectorSet(0.f, 0.f, 0.f, 1.f))))
+		return E_FAIL;
 
 	vText = _float2(-474.f, -66.f);
 	m_strLocationName = TEXT("벌꿀 봉우리");
@@ -496,7 +503,8 @@ void CWorldMapNPC::DisplayHoneyBee(_float2 _MidPoint)
 	vCal.x = _MidPoint.x + vText.x;
 	vCal.y = _MidPoint.y - vText.y;
 
-	m_pGameInstance->Render_Font(TEXT("Font18"), m_strLocationName.c_str(), _float2((vCal.x), (vCal.y + 25.f)), XMVectorSet(0.f, 0.f, 0.f, 1.f));
+	if (FAILED(m_pGameInstance->Render_Font(TEXT("Font18"), m_strLocationName.c_str(), _float2((vCal.x), (vCal.y + 25.f)), XMVectorSet(0.f, 0.f, 0.f, 1.f))))
+		return E_FAIL;
 
 	vText = _float2(-560.f, 175.9f);
 	m_strLocationName = TEXT("책의 탑");
@@ -504,7 +512,10 @@ void CWorldMapNPC::DisplayHoneyBee(_float2 _MidPoint)
 	vCal.x = _MidPoint.x + vText.x;
 	vCal.y = _MidPoint.y - vText.y;
 
-	m_pGameInstance->Render_Font(TEXT("Font18"), m_strLocationName.c_str(), _float2((vCal.x), (vCal.y + 25.f)), XMVectorSet(0.f, 0.f, 0.f, 1.f));
+	if (FAILED(m_pGameInstance->Render_Font(TEXT("Font18"), m_strLocationName.c_str(), _float2((vCal.x), (vCal.y + 25.f)), XMVectorSet(0.f, 0.f, 0.f, 1.f))))
+		return E_FAIL;
+
+	return S_OK;
 }
 
 CWorldMapNPC* CWorldMapNPC::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

@@ -108,6 +108,7 @@ HRESULT CFriend_Controller::Start_Train()
         }
     }
 
+    m_isTrain = true;
 }
 
 HRESULT CFriend_Controller::End_Train()
@@ -119,7 +120,7 @@ HRESULT CFriend_Controller::End_Train()
 
         pFriend->Set_ChaseTarget(nullptr);
     }
-
+    m_isTrain = false;
     return S_OK;
 }
 

@@ -457,10 +457,10 @@ vector<CNarration_Anim*> CNarration::GetAnimationObjectForLine(const _uint iLine
 		m_pCurrentAnimObj = iter->second;
 
 		// TODO :: 누수 예상 - 박상욱
-		//for (auto& animObj : m_pCurrentAnimObj)
-		//{
-		//	Safe_AddRef(animObj);
-		//}
+		for (auto& animObj : m_pCurrentAnimObj)
+		{
+			Safe_AddRef(animObj);
+		}
 	}
 
 	// NarAnim과 동기화하여 섹션 레이어에 추가
