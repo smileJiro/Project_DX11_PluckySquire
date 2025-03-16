@@ -44,7 +44,7 @@ HRESULT CBigPressurePlate::Initialize(void* _pArg)
     CircleDesc.vOffsetPosition = { 0.f, 0.f };
     CircleDesc.isBlock = false;
     CircleDesc.isTrigger = true;
-    CircleDesc.iCollisionGroupID = OBJECT_GROUP::GIMMICK_OBJECT;
+    CircleDesc.iCollisionGroupID = OBJECT_GROUP::TRIGGER_OBJECT;
 
     if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
         TEXT("Com_Body2DCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &CircleDesc)))
@@ -57,7 +57,7 @@ void CBigPressurePlate::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider*
 {
     OBJECT_GROUP eGroup = (OBJECT_GROUP)_pOtherCollider->Get_CollisionGroupID();
 
-    if (OBJECT_GROUP::GIMMICK_OBJECT == eGroup)
+    if (OBJECT_GROUP::SLIPPERY & eGroup)
     {
         if (DOWN != m_eState && DOWN_IDLE != m_eState)
         {
@@ -71,7 +71,7 @@ void CBigPressurePlate::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* 
 {
     OBJECT_GROUP eGroup = (OBJECT_GROUP)_pOtherCollider->Get_CollisionGroupID();
 
-    if (OBJECT_GROUP::GIMMICK_OBJECT == eGroup)
+    if (OBJECT_GROUP::SLIPPERY & eGroup)
     {
         --m_iCollisionObjects;
 

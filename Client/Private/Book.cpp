@@ -851,16 +851,16 @@ void CBook::Decalcomani_LToR()
 		{
 			if (XMVectorGetY(vPos) > 0.f)
 			{
-				pTiltSwapCrate->Stop_Slip();
-				pTiltSwapCrate->Set_Position(XMVectorSetY(vPos, -1 * vPos.m128_f32[1]));
+				pTiltSwapCrate->Decalcomani(false);
+
 			}
 		}
 		else
 		{
 			if (XMVectorGetX(vPos) < 0.f)
 			{
-				pTiltSwapCrate->Stop_Slip();
-				pTiltSwapCrate->Set_Position(XMVectorSetX(vPos, -1 * vPos.m128_f32[0]));
+				pTiltSwapCrate->Decalcomani(true);
+	
 			}
 		}
 	}
@@ -881,12 +881,12 @@ void CBook::Decalcomani_RToL()
 		if (bRotate)
 		{
 			if (XMVectorGetY(vPos) < 0.f)
-				pTiltSwapCrate->Set_Position(XMVectorSetY(vPos, -1 * vPos.m128_f32[1]));
+				pTiltSwapCrate->Decalcomani(false);
 		}
 		else
 		{
 			if (XMVectorGetX(vPos) > 0.f)
-				pTiltSwapCrate->Set_Position(XMVectorSetX(vPos, -1 * vPos.m128_f32[0]));
+				pTiltSwapCrate->Decalcomani(true);
 		}
 	}
 }

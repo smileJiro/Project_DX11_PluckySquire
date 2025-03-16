@@ -43,7 +43,6 @@ public:
 	virtual _bool			Is_ContainsPoint(_float2 _vPosition) = 0;
 	virtual void			Update_OwnerTransform() = 0;
 	virtual void			Block(CCollider* _pOther) { return; }// 블록등록한 애들이 otherobject를 밀어내게 .Circle, AABB 각각 밀어내기 코드가 존재해야겠지/...
-
 public:
 	virtual _bool			Compute_NearestPoint_AABB(CCollider_AABB* _pOtherAABB, _float2* _pOutPos = nullptr, _float2* _pContactVector_NotNormalize = nullptr) { return false; }
 
@@ -57,6 +56,7 @@ public:
 	_float2					Get_Position() const { return m_vPosition; }
 	_bool					Is_Block() const { return m_isBlock; }
 	_bool					Is_Trigger() const { return m_isTrigger; }
+	virtual _bool			Get_CollisionPoint(CCollider* _pOther, _float2* pOutPoint) abstract;
 	// Set 
 	void						Set_CollisionGroupID(_uint _iGroupID) { m_iCollisionGroupID = _iGroupID; }
 	void						Set_Offset(_float2 _vOffset) { m_vOffsetPosition = _vOffset; }
