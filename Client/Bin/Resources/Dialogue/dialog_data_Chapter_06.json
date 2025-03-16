@@ -3367,6 +3367,85 @@
 					"Blue": 234
 				}
 			]
+		},
+		{
+			"id": "Chapter6_FriendEvent_0",
+			"Section": "Chapter5_P0102",
+			"isChangeTalker": true,
+			"lines": [
+				{
+					"Portrait": 0,
+					"Talker": "바이올렛",
+					"TalkerIndex": 1,
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "다 왔어! 여기가 내 고향이야!",
+					"Red": 191,
+					"Green": 144,
+					"Blue": 224
+				},
+				{
+					"Portrait": 0,
+					"Talker": "바이올렛",
+					"TalkerIndex": 1,
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "우리 엄마가 있을지도 모르니, 최대한 조용히 다니자!",
+					"Red": 191,
+					"Green": 144,
+					"Blue": 224
+				},
+				{
+					"Portrait": 0,
+					"Talker": "바이올렛",
+					"TalkerIndex": 1,
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "아르티아는 예술인들의 도시야!",
+					"Red": 191,
+					"Green": 144,
+					"Blue": 224
+				},
+				{
+					"Portrait": 0,
+					"Talker": "스래쉬",
+					"TalkerIndex": 0,
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "와 멋진도시야 바이올렛!\n어서 사람들을 만나러 가보자!",
+					"Red": 190,
+					"Green": 218,
+					"Blue": 186
+				}
+			]
 		}
 	]
 }
