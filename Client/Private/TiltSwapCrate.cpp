@@ -19,7 +19,7 @@ HRESULT CTiltSwapCrate::Initialize(void* _pArg)
     if (nullptr == _pArg)
         return E_FAIL;
 
-	CSlipperyObject::SLIPPERY_DESC* pDesc = static_cast<CSlipperyObject::SLIPPERY_DESC*>(_pArg);
+	TILTSWAPCRATE_DESC* pDesc = static_cast<TILTSWAPCRATE_DESC*>(_pArg);
 	m_iCurLevelID = pDesc->iCurLevelID;
 	pDesc->iImpactCollisionFilter = OBJECT_GROUP::BLOCKER;
 	pDesc->iNumPartObjects = 1;
@@ -36,11 +36,11 @@ HRESULT CTiltSwapCrate::Initialize(void* _pArg)
 		return E_FAIL;
 
 
-    m_p2DColliderComs.resize(2);
+    m_p2DColliderComs.resize(1);
     //
     CCollider_AABB::COLLIDER_AABB_DESC tAABBDEsc = {};
     tAABBDEsc.pOwner = this;
-    tAABBDEsc.vExtents = m_vColliderSize;
+    tAABBDEsc.vExtents = m_vColliderHalfSize;
     tAABBDEsc.vScale = { 1.0f, 1.0f };
     tAABBDEsc.vOffsetPosition = { 0.f, tAABBDEsc.vExtents.y };
     tAABBDEsc.isBlock = true;
@@ -51,20 +51,20 @@ HRESULT CTiltSwapCrate::Initialize(void* _pArg)
         TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &tAABBDEsc)))
         return E_FAIL;
 
-	CCollider_Circle::COLLIDER_CIRCLE_DESC tCircleEsc = {};
-	tCircleEsc.pOwner = this;
-	tCircleEsc.fRadius = 10.F;
-	tCircleEsc.vScale = { 1.0f, 1.0f };
-	tCircleEsc.vOffsetPosition = { 0.f, 0.f};
-	tCircleEsc.isBlock = false;
-	tCircleEsc.isTrigger = true;
-	tCircleEsc.iCollisionGroupID = OBJECT_GROUP::SLIPPERY;
-	tCircleEsc.iColliderUse = (_uint)COLLIDER2D_USE::COLLIDER2D_BODY;
-	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
-		TEXT("Com_Collider2"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[1]), &tCircleEsc)))
-		return E_FAIL;
+	//CCollider_Circle::COLLIDER_CIRCLE_DESC tCircleEsc = {};
+	//tCircleEsc.pOwner = this;
+	//tCircleEsc.fRadius = 10.f;
+	//tCircleEsc.vScale = { 1.0f, 1.0f };
+	//tCircleEsc.vOffsetPosition = { 0.f, 0.f};
+	//tCircleEsc.isBlock = false;
+	//tCircleEsc.isTrigger = true;
+	//tCircleEsc.iCollisionGroupID = OBJECT_GROUP::EXPLOSION;
+	//tCircleEsc.iColliderUse = (_uint)COLLIDER2D_USE::COLLIDER2D_BODY;
+	//if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
+	//	TEXT("Com_Collider2"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[1]), &tCircleEsc)))
+	//	return E_FAIL;
 
-
+	Set_FlipState(pDesc->eFlipState);
 	return S_OK;
 }
 
@@ -72,10 +72,11 @@ HRESULT CTiltSwapCrate::Render()
 {
 	__super::Render();
 #ifdef _DEBUG
-	if (m_p2DColliderComs[0]->Is_Active())
-		m_p2DColliderComs[0]->Render(SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName));
-	if (m_p2DColliderComs[1]->Is_Active())
-		m_p2DColliderComs[1]->Render(SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName));
+	for (auto& pCollider : m_p2DColliderComs)
+	{
+		if(pCollider && pCollider->Is_Active())
+			pCollider->Render(SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName));
+	}
 
 #endif // _DEBUG
 	return S_OK;
@@ -98,10 +99,51 @@ HRESULT CTiltSwapCrate::Ready_Parts()
 	tBodyDesc.strModelPrototypeTag_2D = TEXT("TiltSwapCrate");
 	tBodyDesc.pParentMatrices[COORDINATE_2D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_2D);
 
-	m_PartObjects[PART_BODY] = static_cast<CModelObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &tBodyDesc));
-
+	m_PartObjects[PART_BODY] = m_pBody = static_cast<CModelObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &tBodyDesc));
+	Safe_AddRef(m_pBody);
 
 	return S_OK;
+}
+
+_vector CTiltSwapCrate::Get_CenterPos()
+{
+	_vector vResult = Get_FinalPosition();
+	vResult.m128_f32[1] += m_vColliderHalfSize.y;
+	return vResult;
+}
+
+void CTiltSwapCrate::Set_Position_ByCenter(_fvector _vCenterPos)
+{
+	_vector vPos =_vCenterPos;
+	vPos.m128_f32[1] -= m_vColliderHalfSize.y;
+	Set_Position(vPos);
+}
+
+void CTiltSwapCrate::Flip()
+{
+	Set_FlipState(m_eFlipState == FLIP_BOTTOM? FLIP_TOP : FLIP_BOTTOM);
+}
+
+void CTiltSwapCrate::Set_FlipState(FLIP_STATE _eState)
+{
+	if (m_eFlipState == _eState)
+		return;
+	m_eFlipState = _eState;
+	m_pBody->Switch_Animation(m_eFlipState);
+
+}
+
+void CTiltSwapCrate::Decalcomani(_bool _bXAxis)
+{
+	Stop_Slip();
+	Flip();
+
+	_vector vPos = Get_CenterPos();
+	if (_bXAxis)
+		Set_Position_ByCenter(XMVectorSetX( vPos, XMVectorGetX(vPos) * -1.f));
+	else
+		Set_Position_ByCenter(XMVectorSetY( vPos, XMVectorGetY(vPos) * -1.f));
+
 }
 
 CTiltSwapCrate* CTiltSwapCrate::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -132,5 +174,6 @@ CGameObject* CTiltSwapCrate::Clone(void* _pArg)
 
 void CTiltSwapCrate::Free()
 {
+	Safe_Release(m_pBody);
 	__super::Free();
 }

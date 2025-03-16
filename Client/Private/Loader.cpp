@@ -163,6 +163,7 @@
 #include "Sneak_Troop.h"
 #include "Sneak_SentryTroop.h"
 #include "C08_Box.h"
+#include "JumpStarter.h"
 
 /* For. Monster */
 #include "Beetle.h"
@@ -188,6 +189,7 @@
 #include "SketchSpace_SpikeBall.h"
 #include "SketchSpace_UFO.h"
 #include "Projectile_SketchSpace_UFO.h"
+#include "Formation.h"
 
 /* For. Boss */
 #include "ButterGrump.h"
@@ -1442,6 +1444,10 @@ HRESULT CLoader::Loading_Level_Chapter_4(LEVEL_ID _eLoadLevelID)
 		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_2DMap_BombableBox"),
 			CBombableBox::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
+				
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_JumpStarter"),
+			CJumpStarter::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
 
 		/* UI */
 		if (FAILED(UI_Object_Load(_eLoadLevelID)))
@@ -1916,6 +1922,12 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 	m_pGameInstance->Load_SFX(TEXT("Chapter8_P0506"), TEXT("../Bin/Resources/Audio/FloorWord/Chapter_8/Chapter8_P0506.wav"));
 	m_pGameInstance->Load_SFX(TEXT("Chapter8_P1112"), TEXT("../Bin/Resources/Audio/FloorWord/Chapter_8/Chapter8_P1112.wav"));
 	m_pGameInstance->Load_SFX(TEXT("Chapter8_P1920"), TEXT("../Bin/Resources/Audio/FloorWord/Chapter_8/Chapter8_P1920.wav"));
+
+	m_pGameInstance->Load_SFX(TEXT("C8_End_01"), TEXT("../Bin/Resources/Audio/Narration/Chapter8/Chapter8_EndNarration_01.wav"));
+	m_pGameInstance->Load_SFX(TEXT("C8_End_02"), TEXT("../Bin/Resources/Audio/Narration/Chapter8/Chapter8_EndNarration_02.wav"));
+	m_pGameInstance->Load_SFX(TEXT("C8_End_03"), TEXT("../Bin/Resources/Audio/Narration/Chapter8/Chapter8_EndNarration_03.wav"));
+	m_pGameInstance->Load_SFX(TEXT("C8_End_04"), TEXT("../Bin/Resources/Audio/Narration/Chapter8/Chapter8_EndNarration_04.wav"));
+
 	// 나레이션 관련
 
 #pragma endregion
@@ -1926,6 +1938,10 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 
 	/* 레벨별 모델 Load */
 	if (FAILED(Model_Load(eResourceLevelID, _eLoadLevelID)))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_Model2D_End_Narration_ENDWord"),
+		C2DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DAnim/Chapter8/Narration/Chpater8_End/END.dds", _eLoadLevelID, true, true))))
 		return E_FAIL;
 
 #pragma endregion
@@ -2013,6 +2029,10 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Laser_Beam"),
 		CLaser_Beam::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Formation"),
+		CFormation::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 #pragma endregion
 
@@ -2322,6 +2342,8 @@ HRESULT CLoader::Model_Load(LEVEL_ID _eResourceLevelID, LEVEL_ID _eLoadLevelID)
 		str3DMapProtoJsonName = L"Chapter_08_Play_Desk.json";
 		strChapterName += L"Chapter8";
 		if (FAILED(Load_Models_FromJson(_eLoadLevelID, MAP_3D_DEFAULT_PATH, L"Chapter_Boss.json", matPretransform, true)))
+			return E_FAIL;
+		if (FAILED(Load_Models_FromJson(_eLoadLevelID, MAP_3D_DEFAULT_PATH, L"Chapter8_Intro.json", matPretransform, true)))
 			return E_FAIL;
 		break;
 	case LEVEL_CAMERA_TOOL:

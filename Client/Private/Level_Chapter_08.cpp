@@ -13,6 +13,7 @@
 #include "PlayerData_Manager.h"
 #include "Effect_Manager.h"
 #include "Effect2D_Manager.h"
+#include "Formation_Manager.h"
 
 #include "CubeMap.h"
 #include "MainTable.h"
@@ -22,6 +23,7 @@
 #include "Book.h"
 #include "BirdMonster.h"
 #include "Projectile_BirdMonster.h"
+#include "Formation.h"
 #include "Spear_Soldier.h"
 #include "CrossBow_Soldier.h"
 #include "Bomb_Soldier.h"
@@ -255,6 +257,7 @@ HRESULT CLevel_Chapter_08::Initialize(LEVEL_ID _eLevelID)
 	m_pGameInstance->Set_PlayerHideColor(_float3(0.8f, 0.8f, 0.8f), true);
 
 	m_pSneakMinigameManager = CMinigame_Sneak::GetInstance();
+	m_pFormation_Manager = CFormation_Manager::GetInstance();
 
 	return S_OK;
 }
@@ -262,6 +265,7 @@ HRESULT CLevel_Chapter_08::Initialize(LEVEL_ID _eLevelID)
 void CLevel_Chapter_08::Update(_float _fTimeDelta)
 {
 	m_pSneakMinigameManager->Update(_fTimeDelta);
+	m_pFormation_Manager->Update(_fTimeDelta);
 	Uimgr->UI_Update();
 
 	// 피직스 업데이트 
@@ -594,6 +598,7 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Map()
 			return E_FAIL;
 		break;
 	case Client::LEVEL_CHAPTER_8:
+		//if (FAILED(Map_Object_Create(L"Chapter8_Intro.mchc")))
 		if (FAILED(Map_Object_Create(L"Chapter_08_Play_Desk.mchc")))
 			return E_FAIL;
 		break;
@@ -1811,6 +1816,7 @@ HRESULT CLevel_Chapter_08::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 
 	CBombSwitchStopper::BOMB_SWITCH_STOPPER_DESC tBombSwitchStopperDesc = {};
 	tBombSwitchStopperDesc.eType = CBombSwitchStopper::SQUARE;
+	tBombSwitchStopperDesc.eInitialState = CBombSwitchStopper::UP;
 	tBombSwitchStopperDesc.iCurLevelID = m_eLevelID;
 	tBombSwitchStopperDesc.tTransform2DDesc.vInitialPosition = _float3(-185.f, -1065.f, 0.f);
 	CBombSwitchStopper* pBombSwitchStopper = static_cast<CBombSwitchStopper*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_eLevelID, TEXT("Prototype_GameObject_BombSwitchStopper"), &tBombSwitchStopperDesc));
@@ -1819,13 +1825,15 @@ HRESULT CLevel_Chapter_08::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 	pBombSwitch->Add_Receiver(pBombSwitchStopper);
 
 	tBombSwitchStopperDesc.eType = CBombSwitchStopper::RECT;
+	tBombSwitchStopperDesc.eInitialState = CBombSwitchStopper::DOWN;
 	tBombSwitchStopperDesc.tTransform2DDesc.vInitialPosition = _float3(286.f, -300.f, 0.f);
 	pBombSwitchStopper = static_cast<CBombSwitchStopper*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_eLevelID, TEXT("Prototype_GameObject_BombSwitchStopper"), &tBombSwitchStopperDesc));
 	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, _strLayerTag, pBombSwitchStopper);
 	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter8_P2122"), pBombSwitchStopper, SECTION_2D_PLAYMAP_OBJECT);
 	pBombSwitch->Add_Receiver(pBombSwitchStopper);
 
-	CTiltSwapCrate::SLIPPERY_DESC tTiltSwapCrateDesc = {};
+	CTiltSwapCrate::TILTSWAPCRATE_DESC tTiltSwapCrateDesc = {};
+	tTiltSwapCrateDesc.eFlipState = CTiltSwapCrate::FLIP_TOP;
 	tTiltSwapCrateDesc.iCurLevelID = m_eLevelID;
 	tTiltSwapCrateDesc.tTransform2DDesc.vInitialPosition = _float3(245.f, 1058.f, 0.f);
 	CTiltSwapCrate* pTiltSwapCrate = static_cast<CTiltSwapCrate*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_eLevelID, TEXT("Prototype_GameObject_TiltSwapCrate"), &tTiltSwapCrateDesc));
@@ -1940,6 +1948,7 @@ void CLevel_Chapter_08::Free()
 	m_pGameInstance->End_BGM();
 
 	CMinigame_Sneak::GetInstance()->DestroyInstance();
+	CFormation_Manager::GetInstance()->DestroyInstance();
 	//Safe_Release(m_pSneakMinigameManager);
 
 	__super::Free();

@@ -959,8 +959,6 @@ void CPlayer::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCol
 					m_pInteractableObject = pInteractable;
 			}
 		}
-
-
 	}
 	else if (_pMyCollider == m_pAttack2DTriggerCom
 		&& OBJECT_GROUP::MONSTER == eGroup)
@@ -1122,7 +1120,8 @@ HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
 		CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::TARGET_2D, true, 1.f);
 		if (nullptr != m_pAttack2DTriggerCom)
 			m_pAttack2DTriggerCom->Set_Active(false);
-	}
+
+	}		
 	else
 	{
 		CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::TARGET, true, 1.f);
@@ -1722,6 +1721,11 @@ _bool CPlayer::Is_AttackTriggerActive()
 _bool CPlayer::Is_DetonationMode()
 {
 	return m_pDetonator->Is_DetonationMode();
+}
+
+_bool CPlayer::Is_Invincible()
+{
+	return m_bInvincible;
 }
 
 _bool CPlayer::Is_ZetPackEquipped()

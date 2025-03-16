@@ -10,6 +10,7 @@
 #include "Pooling_Manager.h"
 #include "Section_2D_PlayMap.h"
 #include "PlayerData_Manager.h"
+#include "Formation.h"
 
 CMonster::CMonster(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CCharacter(_pDevice, _pContext)
@@ -47,6 +48,9 @@ HRESULT CMonster::Initialize(void* _pArg)
 		m_isStay = true;
 	if (true == pDesc->isSneakMode)
 		m_isSneakMode = true;
+
+	if (nullptr != pDesc->pFormation)
+		m_pFormation = pDesc->pFormation;
 
 	pDesc->_fStepHeightThreshold = 0.2f;
 	pDesc->_fStepSlopeThreshold = 0.45f;
@@ -590,6 +594,11 @@ _bool CMonster::Check_Block(_fvector _vForce, _float _fTimeDelta)
 	_float fDistance = Get_ControllerTransform()->Get_SpeedPerSec() * _fTimeDelta + m_fHalfBodySize;
 
 	return m_pGameInstance->RayCast_Nearest_GroupFilter(vOrigin, vRayDir, fDistance, OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE);
+}
+
+void CMonster::Get_Formation_Position()
+{
+	//m_pFormation->
 }
 
 //void CMonster::Set_2D_Direction(F_DIRECTION _eDir)

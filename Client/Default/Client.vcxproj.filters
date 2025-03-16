@@ -754,6 +754,18 @@
     <Filter Include="02.GameObjects\2DGimmik\JumpStarter">
       <UniqueIdentifier>{69f5978f-e2dc-45c9-8cbc-04e627a8897d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\2DGimmik\Meteor">
+      <UniqueIdentifier>{95ead6f3-13ed-47dc-9e67-040761dcfb04}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Formation">
+      <UniqueIdentifier>{83983464-75f1-4dd5-92d7-5082356e58ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Formation\Manager">
+      <UniqueIdentifier>{3ebb02a8-f158-4e3b-9f03-e0461f1780e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Components\FSM\State\Formation">
+      <UniqueIdentifier>{125ca684-3bee-4cfe-8bdb-a4a29e93d71a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -1864,11 +1876,8 @@
     <ClInclude Include="..\Public\Laser_Beam.h">
       <Filter>02.GameObjects\2DGimmik\Laser</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Back_WayState.h" />
-    <ClInclude Include="..\Public\Beetle_Corpse.h" />
     <ClInclude Include="..\Public\BombSwitch.h" />
     <ClInclude Include="..\Public\BombSwitchStopper.h" />
-    <ClInclude Include="..\Public\Chase_WayState.h" />
     <ClInclude Include="..\Public\WorldMapNPC.h" />
     <ClInclude Include="..\Public\FriendBody.h">
       <Filter>02.GameObjects\Friend\Body</Filter>
@@ -1925,6 +1934,25 @@
     </ClInclude>
     <ClInclude Include="..\Public\JumpStarter.h">
       <Filter>02.GameObjects\2DGimmik\JumpStarter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Meteor.h" />
+    <ClInclude Include="..\Public\Formation_Manager.h">
+      <Filter>02.GameObjects\Formation\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Formation.h">
+      <Filter>02.GameObjects\Formation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\FormationMoveState.h">
+      <Filter>03.Components\FSM\State\Formation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Beetle_Corpse.h">
+      <Filter>02.GameObjects\Interact\Carriable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Chase_WayState.h">
+      <Filter>03.Components\FSM\State\Chase</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Back_WayState.h">
+      <Filter>03.Components\FSM\State\Patrol</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -3020,11 +3048,8 @@
     <ClCompile Include="..\Private\Laser_Beam.cpp">
       <Filter>02.GameObjects\2DGimmik\Laser</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Back_WayState.cpp" />
-    <ClCompile Include="..\Private\Beetle_Corpse.cpp" />
     <ClCompile Include="..\Private\BombSwitch.cpp" />
     <ClCompile Include="..\Private\BombSwitchStopper.cpp" />
-    <ClCompile Include="..\Private\Chase_WayState.cpp" />
     <ClCompile Include="..\Private\WorldMapNPC.cpp" />
     <ClCompile Include="..\Private\FriendBody.cpp">
       <Filter>02.GameObjects\Friend\Body</Filter>
@@ -3082,6 +3107,25 @@
     </ClCompile>
     <ClCompile Include="..\Private\JumpStarter.cpp">
       <Filter>02.GameObjects\2DGimmik\JumpStarter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Meteor.cpp" />
+    <ClCompile Include="..\Private\Formation_Manager.cpp">
+      <Filter>02.GameObjects\Formation\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Formation.cpp">
+      <Filter>02.GameObjects\Formation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\FormationMoveState.cpp">
+      <Filter>03.Components\FSM\State\Formation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Beetle_Corpse.cpp">
+      <Filter>02.GameObjects\Interact\Carriable</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Chase_WayState.cpp">
+      <Filter>03.Components\FSM\State\Chase</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Back_WayState.cpp">
+      <Filter>03.Components\FSM\State\Patrol</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

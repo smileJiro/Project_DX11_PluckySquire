@@ -241,7 +241,7 @@ HRESULT CLevel_Chapter_06::Initialize(LEVEL_ID _eLevelID)
 	/* 돌덩이 */
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER_PROJECTILE, OBJECT_GROUP::BLOCKER);
 
-
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::FRIEND, OBJECT_GROUP::BLOCKER);
 	// 그룹필터 제거
 	// 삭제도 중복해서 해도 돼 >> 내부적으로 걸러줌. >> 가독성이 및 사용감이 더 중요해서 이렇게 처리했음
 	//m_pGameInstance->Erase_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::PLAYER);
@@ -776,6 +776,53 @@ HRESULT CLevel_Chapter_06::Ready_Layer_MapGimmick()
 		return E_FAIL;
 
 	return S_OK;
+}
+
+HRESULT CLevel_Chapter_06::Ready_Layer_Spawner()
+{
+	CFallingRock::FALLINGROCK_DESC* pFallingRockDesc = new CFallingRock::FALLINGROCK_DESC; 
+	pFallingRockDesc->eStartCoord = COORDINATE_2D;
+	pFallingRockDesc->fFallDownEndY = 900.f;
+	pFallingRockDesc->fBoundEndPosY = -400.f;
+	pFallingRockDesc->m_isChapter4 = true;
+	pFallingRockDesc->iCurLevelID = m_eLevelID;
+	pFallingRockDesc->isDeepCopyConstBuffer = false;
+	pFallingRockDesc->Build_2D_Transform(_float2(0.0f, 1500.f));
+
+	/* Pooling Desc */
+	Pooling_DESC tPooling_Desc; 
+	tPooling_Desc.eSection2DRenderGroup = SECTION_2D_PLAYMAP_OBJECT;
+	tPooling_Desc.iPrototypeLevelID = m_eLevelID;
+	tPooling_Desc.strLayerTag = TEXT("Layer_FallingRock");
+	tPooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_FallingRock");
+	tPooling_Desc.strSectionKey = TEXT("Chapter4_SKSP_07");
+
+	CSpawner::SPAWNER_DESC SpawnerDesc;
+	SpawnerDesc.pObjectCloneDesc = pFallingRockDesc;
+	SpawnerDesc.tPoolingDesc = tPooling_Desc;
+	SpawnerDesc.eCurLevelID = m_eLevelID;
+	SpawnerDesc.eGameObjectPrototypeLevelID = m_eLevelID;
+	SpawnerDesc.fSpawnCycleTime = 5.0f;
+	SpawnerDesc.iOneClycleSpawnCount = 1;
+	SpawnerDesc.vSpawnPosition = _float3(0.0f, 500.f, 0.0f);
+	SpawnerDesc.isPooling = true;
+	SpawnerDesc.strPoolingTag = TEXT("Pooling_FallingRock");
+	SpawnerDesc.ePoolingObjectStartCoord = COORDINATE_2D;
+	SpawnerDesc.strLayerTag = TEXT("Layer_FallingRock");
+
+	CGameObject* pGameObject = nullptr;
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Spawner"), m_eLevelID, L"Layer_Spawner", &pGameObject, &SpawnerDesc)))
+		return E_FAIL;
+
+	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT(""), pGameObject, SECTION_2D_PLAYMAP_TRIGGER);
+
+	pGameObject = nullptr;
+	SpawnerDesc.fSpawnCycleTime = 4.0f;
+	SpawnerDesc.vSpawnPosition = _float3(400.0f, 700.f, 0.0f);
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Spawner"), m_eLevelID, L"Layer_Spawner", &pGameObject, &SpawnerDesc)))
+		return E_FAIL;
+	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT(""), pGameObject, SECTION_2D_PLAYMAP_TRIGGER);
+
 }
 
 HRESULT CLevel_Chapter_06::Ready_Layer_Friends(const _wstring& _strLayerTag)
@@ -1796,6 +1843,7 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Effects(const _wstring& _strLayerTag)
 
 HRESULT CLevel_Chapter_06::Ready_Layer_Effects2D(const _wstring& _strLayerTag)
 {
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("meteor_explosion"), m_eLevelID, 5);
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Jump_Dust"), LEVEL_STATIC, 1);
 
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("bushburst_leaves1"), m_eLevelID, 3);
