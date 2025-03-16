@@ -16,6 +16,7 @@
 
 /* For. etc Bulb, PlayerItem*/
 #include "Blocker.h"
+#include "PlayerBlocker.h"
 #include "CubeMap.h"
 #include "MainTable.h"
 #include "FallingRock.h"
@@ -665,6 +666,10 @@ HRESULT CLoader::Loading_Level_Static()
 		CVIBuffer_Trail::Create(m_pDevice, m_pContext, 32))))
 		return E_FAIL;
 
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Trail64"),
+		CVIBuffer_Trail::Create(m_pDevice, m_pContext, 32))))
+		return E_FAIL;
+
 	/* For. Prototype_Component_Beam*/
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Beam16"),
 		CVIBuffer_Beam::Create(m_pDevice, m_pContext, 16))))
@@ -1041,7 +1046,9 @@ HRESULT CLoader::Loading_Level_Static()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Blocker2D"),
 		CBlocker::Create(m_pDevice, m_pContext, COORDINATE_2D))))
 		return E_FAIL;
-
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerBlocker2D"),
+		CPlayerBlocker::Create(m_pDevice, m_pContext, COORDINATE_2D))))
+		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorYellow"),
 		CDoor_Yellow::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
@@ -1875,7 +1882,16 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effects/T_FX_CMN_Noise_09.dds"), 1))))
 		return E_FAIL;
 
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_Component_Texture_BossWingAttack"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effects/T_FX_CMN_Mask_03.dds")))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_Component_Texture_WingSlam"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effects/T_FX_CMN_Mask_05_270.dds")))))
+		return E_FAIL;
 	
+	
+
 	#pragma endregion
 	
 	#pragma region Chapter 8 - Texture Load

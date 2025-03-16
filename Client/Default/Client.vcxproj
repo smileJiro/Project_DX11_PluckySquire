@@ -256,6 +256,7 @@
     <ClInclude Include="..\Public\MonsterMoveState.h" />
     <ClInclude Include="..\public\Mug_Alien.h" />
     <ClInclude Include="..\Public\Patrol_WayState.h" />
+    <ClInclude Include="..\Public\PlayerBlocker.h" />
     <ClInclude Include="..\Public\PlayerState_CannonPortal.h" />
     <ClInclude Include="..\Public\PlayerState_Mojam.h" />
     <ClInclude Include="..\Public\Npc_Humgrump.h" />
@@ -657,6 +658,7 @@
     <ClCompile Include="..\Private\MonsterMoveState.cpp" />
     <ClCompile Include="..\private\Mug_Alien.cpp" />
     <ClCompile Include="..\Private\Patrol_WayState.cpp" />
+    <ClCompile Include="..\Private\PlayerBlocker.cpp" />
     <ClCompile Include="..\Private\PlayerState_CannonPortal.cpp" />
     <ClCompile Include="..\Private\PlayerState_Mojam.cpp" />
     <ClCompile Include="..\Private\Npc_Humgrump.cpp" />

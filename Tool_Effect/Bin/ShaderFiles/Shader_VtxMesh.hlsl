@@ -548,19 +548,26 @@ PS_ACCUM PS_SINGLEFRESNEL(PS_IN In)
     
     float FresnelValue = Compute_Fresnel(In.vNormal.xyz, vViewDirection, OneFresnel.fBaseReflect, OneFresnel.fExp, OneFresnel.fStrength);
     
-    float3 vFresnelColor = OneFresnel.vColor * FresnelValue;
-    float fWeight = FUNC_WEIGHT(In.vProjPos.w, vDiffuseColor.a);
+    float4 vFresnelColor = OneFresnel.vColor * FresnelValue;
 
     //Out.vDiffuse.xyz = lerp(vDiffuseColor.xyz, vFresnelColor.xyz, FresnelValue);
     ////Out.vDiffuse = (OneFresnel.vColor * FresnelValue);
     //Out.vDiffuse.w = vDiffuseColor.a;
     //Out.vBrightness = vBloomColor;
-    float3 vOutColor = lerp(vDiffuseColor.xyz, vFresnelColor.xyz, FresnelValue);
+    float4 vOutColor;
+    vOutColor.a = lerp(vDiffuseColor.a, vFresnelColor.a, FresnelValue);
+    vOutColor.rgb = HSVLerp(vDiffuseColor.xyz, vFresnelColor.xyz, FresnelValue);
+    
+    vOutColor.rgb = HSVLerp(vOutColor.rgb, float3(1.f, 1.f, 1.f), g_fTime);
+    float3 vOutBloom = HSVLerp(vBloomColor.rgb, float3(1.f, 1.f, 1.f), g_fTime);
+    
+    float fWeight = FUNC_WEIGHT(In.vProjPos.w, vOutColor.a);
 
-    Out.vAccumulate.xyz = vOutColor.rgb * vDiffuseColor.a * fWeight;
-    Out.vAccumulate.a = vDiffuseColor.a * fWeight;
-    Out.vRevealage.r = vDiffuseColor.a;
-    Out.vBright = vSubColor * fWeight;
+    Out.vAccumulate.xyz = vOutColor.rgb * vOutColor.a * fWeight;
+    Out.vAccumulate.a = vOutColor.a * fWeight;
+    Out.vRevealage.r = vOutColor.a;
+    Out.vBright.xyz = vOutBloom * fWeight;
+    Out.vBright.a = vBloomColor.a * fWeight;
     
     return Out;
 }
@@ -587,7 +594,6 @@ PS_ACCUM PS_NOISEFRESNEL(PS_IN In)
     vDefaultColor.a = lerp(vSubColor.a, vDiffuseColor.a, vMain);
     vDefaultColor.xyz = HSVLerp(vSubColor.xyz, vDiffuseColor.xyz, vMain);
     
-    float fWeight = FUNC_WEIGHT(In.vProjPos.w, vDefaultColor.a);
     
     float4 vOutColor;
     //vOutColor = lerp(vDefaultColor, vFresnelColor, FresnelValue);
@@ -604,7 +610,8 @@ PS_ACCUM PS_NOISEFRESNEL(PS_IN In)
     ////Out.vDiffuse = (OneFresnel.vColor * FresnelValue);
     //Out.vDiffuse.w = vDiffuseColor.a;
     //Out.vBrightness = vBloomColor;
-    
+    float fWeight = FUNC_WEIGHT(In.vProjPos.w, vOutColor.a);
+
     Out.vAccumulate.xyz = vOutColor.rgb * vOutColor.a * fWeight;
     Out.vAccumulate.a = vOutColor.a * fWeight;
     Out.vRevealage.r = vOutColor.a;

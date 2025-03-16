@@ -112,7 +112,7 @@ VS_OUT VS_MAIN(VS_IN In)
 VS_OUT VS_BILLBOARD(VS_IN In)
 {
     VS_OUT Out = (VS_OUT) 0;
-    matrix matWV, matWVP, matVP;
+    matrix matWV, matWVP;
 
     vector vLookDir = normalize(g_vLook);
     float3 vRightDir = normalize(cross(float3(0.f, 1.0f, 0.f), vLookDir.xyz));

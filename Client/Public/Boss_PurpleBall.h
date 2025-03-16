@@ -24,6 +24,8 @@ public:
 	virtual void			Late_Update(_float _fTimeDelta) override;
 	virtual HRESULT			Render() override;
 
+	virtual void OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)override;
+
 public:
 	HRESULT Cleanup_DeadReferences() override;
 	virtual void Active_OnEnable() override;

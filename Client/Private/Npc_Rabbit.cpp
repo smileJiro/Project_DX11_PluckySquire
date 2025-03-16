@@ -379,7 +379,7 @@ HRESULT CNpc_Rabbit::Ready_Components()
 	CircleDesc.vScale = { 1.0f, 1.0f };
 	CircleDesc.vOffsetPosition = { 0.f, CircleDesc.fRadius * 0.5f };
 	CircleDesc.isBlock = false;
-	CircleDesc.isTrigger = false;
+	CircleDesc.isTrigger = true;
 	CircleDesc.iCollisionGroupID = OBJECT_GROUP::NPC_EVENT;
 	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
 		TEXT("Com_Body2DCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[1]), &CircleDesc)))
@@ -393,7 +393,7 @@ HRESULT CNpc_Rabbit::Ready_PartObjects()
 
 	CModelObject::MODELOBJECT_DESC NPCBodyDesc{};
 
-	NPCBodyDesc.eStartCoord = m_pControllerTransform->Get_CurCoord();
+	NPCBodyDesc.eStartCoord = COORDINATE_2D;
 	NPCBodyDesc.iCurLevelID = m_iCurLevelID;
 	NPCBodyDesc.isCoordChangeEnable = false;
 	NPCBodyDesc.strModelPrototypeTag_2D = TEXT("Sketch_Rabbit");

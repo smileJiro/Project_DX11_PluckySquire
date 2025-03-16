@@ -4,7 +4,7 @@
 /* 초기 좌표 상태에 대한 밸류를 가지고, 해당 밸류에 맞는 2D Collision 혹은, Static Actor를 생성해주는 클래스 */
 /* 기능. 없음 >>> 콜라이더 컴포넌트를 콜리전매니저에 던져주는 기능. */
 BEGIN(Client)
-class CBlocker final : public CPartObject
+class CBlocker : public CPartObject
 {
 public:
 	typedef struct tagBlockerDesc : public CPartObject::tagPartObjectDesc
