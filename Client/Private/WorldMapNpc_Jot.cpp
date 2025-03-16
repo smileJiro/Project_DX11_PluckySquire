@@ -74,6 +74,8 @@ HRESULT CWorldMapNpc_Jot::Render()
 	if (Is_Active())
 		return __super::Render();
 
+
+
 	return S_OK;
 }
 
