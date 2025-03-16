@@ -757,7 +757,7 @@ HRESULT CPlayer::Render()
 
 void CPlayer::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
 {
-	__super::OnContact_Enter(_My, _Other, _ContactPointDatas);
+	__super::OnContact_Enter(_My, _Other, _ContactPointDatas);	
 	m_pStateMachine->Get_CurrentState()->OnContact_Enter(_My, _Other, _ContactPointDatas);
 
 
