@@ -242,7 +242,7 @@ void CCollider_AABB::Update_OwnerTransform()
 
     _float3 vOwnerScale = m_pOwner->Get_FinalScale(COORDINATE_2D);
     XMStoreFloat2(&m_vFinalExtents, XMLoadFloat2(&m_vExtents) * XMLoadFloat2(&m_vScale) * XMVectorSet(vOwnerScale.x, vOwnerScale.y, 0.0f, 0.0f));
-}
+} 
 
 _bool CCollider_AABB::Is_Collision_AABB(CCollider_AABB* _pOther)  
 {  

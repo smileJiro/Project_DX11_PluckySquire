@@ -87,6 +87,9 @@
 #include "Friend_Controller.h"
 #include "Friend_Thrash.h"
 #include "Friend_Violet.h"
+// Npc
+#include "Npc_Humgrump.h"
+#include "Npc_MoonBeard.h"
 
 CLevel_Chapter_06::CLevel_Chapter_06(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:
@@ -222,6 +225,7 @@ HRESULT CLevel_Chapter_06::Initialize(LEVEL_ID _eLevelID)
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MAPOBJECT, OBJECT_GROUP::PLAYER_PROJECTILE);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::TRIGGER_OBJECT, OBJECT_GROUP::GIMMICK_OBJECT);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::SLIPPERY, OBJECT_GROUP::MAPOBJECT);
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::SLIPPERY, OBJECT_GROUP::TRIGGER_OBJECT);
 	//m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::SLIPPERY, OBJECT_GROUP::BLOCKER);
 
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::NPC_EVENT, OBJECT_GROUP::INTERACTION_OBEJCT); //3 8
@@ -1310,8 +1314,31 @@ HRESULT CLevel_Chapter_06::Ready_Layer_NPC(const _wstring& _strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_WorldMapNpc"), m_eLevelID, _strLayerTag, &Desc)))
 		return E_FAIL;
 
-	return S_OK;
 
+	// Humgrump
+	CNpc_Humgrump::HUMGRUMP_DESC HumgrumpDesc = {};
+	HumgrumpDesc.tTransform2DDesc.vInitialPosition = _float3(-211.54f, -163.07f, 0.03f);
+	HumgrumpDesc.iCurLevelID = m_eLevelID;
+	HumgrumpDesc.strSectionTag = TEXT("Chapter6_P1314");
+	HumgrumpDesc.iStartAnimIndex = CNpc_Humgrump::CHAPTER6_IDLE;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Npc_Humgrump"),
+		m_eLevelID, _strLayerTag, &HumgrumpDesc)))
+		return E_FAIL;
+
+	// MoonBeard
+	CNpc_MoonBeard::MOONBEARD_DESC MoonBeardDesc = {};
+	MoonBeardDesc.tTransform2DDesc.vInitialPosition = _float3(211.54f, -163.07f, 0.03f);
+	MoonBeardDesc.iCurLevelID = m_eLevelID;
+	MoonBeardDesc.strSectionTag = TEXT("Chapter6_P1314");
+	MoonBeardDesc.iStartAnimIndex = CNpc_MoonBeard::CHAPTER6_IDLE;
+	MoonBeardDesc.isOppositeSide = true;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Npc_MoonBeard"),
+		m_eLevelID, _strLayerTag, &MoonBeardDesc)))
+		return E_FAIL;
+	
+	return S_OK;
 }
 
 HRESULT CLevel_Chapter_06::Ready_Layer_Monster_2D()
@@ -1803,8 +1830,10 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Effects2D(const _wstring& _strLayerTag)
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("DefRedBullet"), LEVEL_CHAPTER_6, 10);
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("DefTeleport"), LEVEL_CHAPTER_6, 10);
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("DefPlayerHit"), LEVEL_CHAPTER_6, 1);
-
-
+	
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Beam"), LEVEL_CHAPTER_6, 1);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Humgrump_Ha"), LEVEL_CHAPTER_6, 3);
+	
 	return S_OK;
 }
 

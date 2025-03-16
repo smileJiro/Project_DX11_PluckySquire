@@ -27,9 +27,13 @@ class CModel;
 class CVIBuffer_Collider;
 END
 
+
+
+
 BEGIN(Client)
 class CWorldMapNPC final  : public CCharacter
 {
+public:
 	enum STATE
 	{
 		STATE_READY,
@@ -47,6 +51,18 @@ class CWorldMapNPC final  : public CCharacter
 		NPC_VIOLET,
 		NPC_LAST
 	};
+
+	enum MOVEPOS
+	{
+		POS_HONEYBEE = 0,
+		POS_TOWER,
+		POS_SWAMPSTART,
+		POS_SWAMPEND,
+		POS_ATRIA,
+		POS_MOUNTAIN,
+		POS_LAST
+	};
+
 
 protected:
 	explicit CWorldMapNPC(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
@@ -71,6 +87,8 @@ private:
 	void					Pos_Ready();
 	void					Change_BookOrder();
 	_float2					Change_PlayerPos();
+	void					DisplayLocationName();
+	void					DisplayHoneyBee(_float2 _MidPoint);
 
 public:
 	static CWorldMapNPC*		Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
@@ -80,9 +98,9 @@ public:
 
 
 private:
-	_float2					m_PosMoves[6];
+	_float2					m_PosMoves[POS_LAST];
 
-	_uint					m_iStartIndex = { 0 };
+	MOVEPOS					m_iStartIndex = { POS_HONEYBEE };
 
 	wstring					m_strSection = { TEXT("") };
 
@@ -99,8 +117,9 @@ private:
 	_bool					m_isArriveAnim = { false };
 
 	_bool					m_isChangeCameraTarget = { false };
+	wstring					m_strLocationName = { TEXT("") };
+
 
 
 };
-
 END

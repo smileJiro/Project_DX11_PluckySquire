@@ -110,7 +110,7 @@ void CGameEventExecuter_C2::Update(_float _fTimeDelta)
 			Chapter2_After_Opening_Book(_fTimeDelta);
 			break;
 		case Client::CTrigger_Manager::CHAPTER2_GOING_TO_ARTIA:
-			Chapter2_Goint_To_Artia(_fTimeDelta);
+			Chapter2_Going_To_Artia(_fTimeDelta);
 			break;
 		case Client::CTrigger_Manager::CHAPTER2_FRIENDEVENT_0:
 			Chapter2_FriendEvent_0(_fTimeDelta);
@@ -649,9 +649,7 @@ void CGameEventExecuter_C2::Chapter2_Humgrump(_float _fTimeDelta)
 	else if (Step_Check(STEP_1)) {
 
 		if (m_fTimer >= 13.f) {
-			// Portal Active 켜기
 			CSection* pSection = CSection_Manager::GetInstance()->Find_Section(TEXT("Chapter2_P1314"));
-			static_cast<CSection_2D_PlayMap*>(pSection)->Set_PortalActive(true);
 
 			// Event Trigger 생성
 			CTriggerObject::TRIGGEROBJECT_DESC Desc = {};
@@ -1435,8 +1433,51 @@ void CGameEventExecuter_C2::Chapter2_After_Opening_Book(_float _fTimeDelta)
 	}
 }
 
-void CGameEventExecuter_C2::Chapter2_Goint_To_Artia(_float _fTimeDelta)
+void CGameEventExecuter_C2::Chapter2_Going_To_Artia(_float _fTimeDelta)
 {
+	m_fTimer += _fTimeDelta;
+
+	if (Step_Check(STEP_0)) {
+		if (m_fTimer >= 1.5f) {
+			// Player Lock
+			CPlayer* pPlayer = Get_Player();
+			pPlayer->Set_BlockPlayerInput(true);
+
+			// 아르티아 대화 시작
+			CDialog_Manager::GetInstance()->Set_DialogId(L"Dialogue_After_Drawing_On_Sword");
+			Next_Step(true);
+		}
+	}
+	else if (Step_Check(STEP_1)) {
+		
+		if (false == CDialog_Manager::GetInstance()->Get_DisPlayDialogue()) {
+			
+			// 모잼
+			CPlayer* pPlayer = Get_Player();
+			pPlayer->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_MOJAM_MOJAM);
+			Next_Step(true);
+		}
+	}
+	else if (Step_Check(STEP_2)) {
+
+		if (m_fTimer >= 1.5f) {
+			//PLAYER_IDLE_SWORD_DOWN
+			// 모잼 dialogue
+			CDialog_Manager::GetInstance()->Set_DialogId(L"Dialogue_Mojam");
+			Next_Step(true);
+		}
+	}
+	else if (Step_Check(STEP_3)) {
+
+		if (false == CDialog_Manager::GetInstance()->Get_DisPlayDialogue()) {
+			CPlayer* pPlayer = Get_Player();
+			pPlayer->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_IDLE_SWORD_DOWN);
+
+			// Chapter 전환
+			CTrigger_Manager::GetInstance()->Register_TriggerEvent(L"Next_Chapter_Event", 0);
+			GameEvent_End();
+		}
+	}
 }
 
 void CGameEventExecuter_C2::Chapter2_FriendEvent_0(_float _fTimeDelta)

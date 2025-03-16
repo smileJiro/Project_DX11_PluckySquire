@@ -49,7 +49,7 @@ HRESULT CTiltSwapPusher::Initialize(void* _pArg)
     {
     case Client::F_DIRECTION::LEFT:
     case Client::F_DIRECTION::RIGHT:
-        fBodyXColliderSize = 90.f;
+        fBodyXColliderSize = 83.f;
         fBodyYColliderSize = 160.f;
         fBodyXColliderOffset = 25.f;
         fBodyYColliderOffset = 10.f;
@@ -124,7 +124,7 @@ HRESULT CTiltSwapPusher::Initialize(void* _pArg)
     AABBDesc2.vOffsetPosition = { fPusherXOffset, fPusherYOffset };
     AABBDesc2.isBlock = false;
     AABBDesc2.isTrigger = true;
-    AABBDesc2.iCollisionGroupID = OBJECT_GROUP::MAPOBJECT;
+    AABBDesc2.iCollisionGroupID = OBJECT_GROUP::TRIGGER_OBJECT;
     AABBDesc2.iColliderUse = (_uint)COLLIDER2D_USE::COLLIDER2D_TRIGGER;
     if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
         TEXT("Com_PushCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[1]), &AABBDesc2)))
@@ -145,7 +145,7 @@ void CTiltSwapPusher::Update(_float _fTimeDelta)
 void CTiltSwapPusher::On_Detonated()
 {
 	Set_State(STATE_EXPLODE);
-    m_p2DColliderComs[1]->Set_Active(true);
+
 }
 
 void CTiltSwapPusher::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
@@ -154,7 +154,7 @@ void CTiltSwapPusher::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 	{
 	case ANIM_EXPLODE_DOWN:
 	case ANIM_EXPLODE_RIGHT:
-        m_PushedObjects.clear();
+
         Set_State(STATE_IDLE);
 		break;
 	case ANIM_DROP_RIGHT:
@@ -207,6 +207,8 @@ void CTiltSwapPusher::Set_State(STATE _eState)
 			Switch_Animation(ANIM_IDLE_RIGHT);
 		else
 			Switch_Animation(ANIM_IDLE_DOWN);
+        m_PushedObjects.clear();
+        m_p2DColliderComs[1]->Set_Active(false);
         break;
     case Client::CTiltSwapPusher::STATE_DROP:
         if (Client::F_DIRECTION::LEFT == m_eDirection
@@ -221,6 +223,7 @@ void CTiltSwapPusher::Set_State(STATE _eState)
             Switch_Animation(ANIM_EXPLODE_RIGHT);
         else
             Switch_Animation(ANIM_EXPLODE_DOWN);
+        m_p2DColliderComs[1]->Set_Active(true);
         break;
     case Client::CTiltSwapPusher::STATE_BOMBIDLE:
         if (Client::F_DIRECTION::LEFT == m_eDirection

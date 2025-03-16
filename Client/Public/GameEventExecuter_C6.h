@@ -66,6 +66,9 @@ private:
 	void							Chapter6_FatherGame_Progress_Fatherpart_3(_float _fTimeDelta);
 	void							Chapter6_FriendEvent_0(_float _fTimeDelta);
 
+	void							Chapter6_Humgrump_Revolt(_float _fTimeDelta);
+	void							Chapter6_Change_Book_To_Greate_Humgrump(_float _fTimeDelta);
+
 private:
 
 private:

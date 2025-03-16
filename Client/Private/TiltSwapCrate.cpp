@@ -21,7 +21,7 @@ HRESULT CTiltSwapCrate::Initialize(void* _pArg)
 
 	CSlipperyObject::SLIPPERY_DESC* pDesc = static_cast<CSlipperyObject::SLIPPERY_DESC*>(_pArg);
 	m_iCurLevelID = pDesc->iCurLevelID;
-	pDesc->iImpactCollisionFilter = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::BLOCKER;
+	pDesc->iImpactCollisionFilter = OBJECT_GROUP::BLOCKER;
 	pDesc->iNumPartObjects = 1;
 	pDesc->eStartCoord = COORDINATE_2D;
 	pDesc->isCoordChangeEnable = false;
@@ -36,32 +36,49 @@ HRESULT CTiltSwapCrate::Initialize(void* _pArg)
 		return E_FAIL;
 
 
-    m_p2DColliderComs.resize(1);
-    ///* Test 2D Collider */
+    m_p2DColliderComs.resize(2);
+    //
     CCollider_AABB::COLLIDER_AABB_DESC tAABBDEsc = {};
     tAABBDEsc.pOwner = this;
-    tAABBDEsc.vExtents = { 125.f, 130.f };
+    tAABBDEsc.vExtents = m_vColliderSize;
     tAABBDEsc.vScale = { 1.0f, 1.0f };
     tAABBDEsc.vOffsetPosition = { 0.f, tAABBDEsc.vExtents.y };
     tAABBDEsc.isBlock = true;
     tAABBDEsc.isTrigger = false;
-    tAABBDEsc.iCollisionGroupID = OBJECT_GROUP::GIMMICK_OBJECT;
+    tAABBDEsc.iCollisionGroupID = OBJECT_GROUP::SLIPPERY;
+	tAABBDEsc.iColliderUse = (_uint)COLLIDER2D_USE::COLLIDER2D_BODY;
     if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
-        TEXT("Com_Body2DCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &tAABBDEsc)))
+        TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &tAABBDEsc)))
         return E_FAIL;
+
+	CCollider_Circle::COLLIDER_CIRCLE_DESC tCircleEsc = {};
+	tCircleEsc.pOwner = this;
+	tCircleEsc.fRadius = 10.F;
+	tCircleEsc.vScale = { 1.0f, 1.0f };
+	tCircleEsc.vOffsetPosition = { 0.f, 0.f};
+	tCircleEsc.isBlock = false;
+	tCircleEsc.isTrigger = true;
+	tCircleEsc.iCollisionGroupID = OBJECT_GROUP::SLIPPERY;
+	tCircleEsc.iColliderUse = (_uint)COLLIDER2D_USE::COLLIDER2D_BODY;
+	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
+		TEXT("Com_Collider2"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[1]), &tCircleEsc)))
+		return E_FAIL;
+
 
 	return S_OK;
 }
 
 HRESULT CTiltSwapCrate::Render()
 {
-
+	__super::Render();
 #ifdef _DEBUG
 	if (m_p2DColliderComs[0]->Is_Active())
 		m_p2DColliderComs[0]->Render(SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName));
+	if (m_p2DColliderComs[1]->Is_Active())
+		m_p2DColliderComs[1]->Render(SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName));
 
 #endif // _DEBUG
-	return __super::Render();
+	return S_OK;
 }
 
 

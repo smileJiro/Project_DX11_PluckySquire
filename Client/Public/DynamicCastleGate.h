@@ -45,11 +45,11 @@ private:
 	_float m_fGateHalfHeight = 2.5f;
 	_float m_fGateHalfWidth = 1.5;
 	_float m_fGateHalfThick = 0.2f;
-	_float3 m_fMassLocal = { 0.f,1.f,0.f };
+	_float3 m_fMassLocal = { 0.f,2.5f,0.f };
 	_vector m_vCollapseTorque = { 0.f,0.f,0.f };
 
 	_float m_fPushTimeAcc = 0.f;
-	_float m_fPushTime = 0.35f;
+	_float m_fPushTime = 0.6f;
 public:
 	static CDynamicCastleGate* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject* Clone(void* _pArg) override;

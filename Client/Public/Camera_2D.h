@@ -83,6 +83,7 @@ public:
 public:
 	virtual _uint				Get_CameraMode() { return m_eCameraMode; }
 	virtual INITIAL_DATA		Get_InitialData() override;
+	_float						Get_LengthValue() { return m_fLengthValue; }
 
 	void						Set_CameraMode(_uint _iCameraMode) { m_eCameraMode = (CAMERA_2D_MODE)_iCameraMode; }
 	void						Set_Current_PortalID(_uint _iPortalID) { m_iPortalID = _iPortalID; }  // Portal 들어갈 때 Data 초기화하기 
@@ -108,6 +109,8 @@ public:
 	virtual void				Change_Target(CGameObject* _pTarget, _float _fChangingTime = 1.f);
 	virtual void				Start_ResetArm_To_SettingPoint(_float _fResetTime) override;
 	virtual void				Start_Changing_ArmVector(_float _fChangingTime, _fvector _vNextArm, RATIO_TYPE _eRatioType) override;
+	
+	void						Start_Changing_LengthValue(_float _fStartLengthValue, _float _fOriginLengthValue, _float _fLengthValueTime = 0.5f);
 
 private:
 	const _float4x4*			m_pTargetWorldMatrix = { nullptr };
@@ -191,9 +194,6 @@ private:
 	void						Find_TargetPos();
 	void						Check_MagnificationType();
 	_bool						Is_Target_In_SketchSpace();
-
-private:
-	void						Start_Changing_LengthValue(_float _fStartLengthValue, _float _fOriginLengthValue, _float _fLengthValueTime = 0.5f);
 
 private:
 	pair<ARM_DATA*, SUB_DATA*>* Find_ArmData(_wstring _wszArmTag);
