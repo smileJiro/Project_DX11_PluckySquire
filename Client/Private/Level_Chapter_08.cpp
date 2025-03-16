@@ -203,9 +203,10 @@ HRESULT CLevel_Chapter_08::Initialize(LEVEL_ID _eLevelID)
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::INTERACTION_OBEJCT, OBJECT_GROUP::WORD_GAME);
 
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::RAY_TRIGGER, OBJECT_GROUP::BLOCKER);
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::RAY_TRIGGER, OBJECT_GROUP::BLOCKER_JUMPPASS);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MAPOBJECT, OBJECT_GROUP::PLAYER_PROJECTILE);
-	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::SLIPPERY, OBJECT_GROUP::MAPOBJECT);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::SLIPPERY, OBJECT_GROUP::BLOCKER);
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::SLIPPERY, OBJECT_GROUP::TRIGGER_OBJECT);
 
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::NPC_EVENT, OBJECT_GROUP::INTERACTION_OBEJCT); //3 8
 
@@ -777,7 +778,7 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Book(const _wstring& _strLayerTag)
 	CBook::BOOK_DESC Desc = {};
 	Desc.iCurLevelID = m_eLevelID;
 	Desc.isInitOverride = true;
-	Desc.tTransform3DDesc.vInitialPosition = _float3(-90.f, 64.4f, 19.0f);
+	Desc.tTransform3DDesc.vInitialPosition = _float3(-90.f, 64.7f, 19.0f);
 	Desc.tTransform3DDesc.vInitialScaling = _float3(1.0f, 1.0f, 1.0f);
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Book"),
 		m_eLevelID, L"Layer_Book", &pBook, &Desc)))
@@ -1637,7 +1638,7 @@ HRESULT CLevel_Chapter_08::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 
 
 	CBombSwitch::BOMB_SWITCH_DESC tBombSwitchDesc1 = {};
-	tBombSwitchDesc1.pReceiver = static_cast<CLaser_Container*>(pReceiver);
+	tBombSwitchDesc1.pReceivers = static_cast<CLaser_Container*>(pReceiver);
 	tBombSwitchDesc1.iCurLevelID = m_eLevelID;
 	tBombSwitchDesc1.eStartState = CBombSwitch::ON;
 	tBombSwitchDesc1.tTransform2DDesc.vInitialPosition = _float3(-100.01f, -997.07f, 0.f);
@@ -1660,7 +1661,7 @@ HRESULT CLevel_Chapter_08::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 
 
 	tBombSwitchDesc1 = {};
-	tBombSwitchDesc1.pReceiver = static_cast<CDoor_Yellow*>(pReceiver);
+	tBombSwitchDesc1.pReceivers = static_cast<CDoor_Yellow*>(pReceiver);
 	tBombSwitchDesc1.iCurLevelID = m_eLevelID;
 	tBombSwitchDesc1.eStartState = CBombSwitch::ON;
 	tBombSwitchDesc1.tTransform2DDesc.vInitialPosition = _float3(300.00f, 170.00f, 0.f);
@@ -1744,6 +1745,8 @@ HRESULT CLevel_Chapter_08::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 	LaserDesc.fStartPos = { -1298.52f ,956.33f };
 	LaserDesc.fEndPos = { -957.00f,956.33f };
 	LaserDesc.fMoveSpeed = 150.f;
+	LaserDesc.isMove = true;
+
 	LaserDesc.eDir = F_DIRECTION::DOWN;
 	LaserDesc.strInitSectionTag = L"Chapter8_SKSP_09";
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Laser_Container"),
@@ -1755,7 +1758,6 @@ HRESULT CLevel_Chapter_08::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 	LaserDesc.fStartPos = { -471.57f ,956.33f };
 	LaserDesc.fEndPos = { 165.,956.33f };
 	LaserDesc.fMoveSpeed = 150.f;
-	LaserDesc.isMove = true;
 	LaserDesc.eDir = F_DIRECTION::DOWN;
 	LaserDesc.strInitSectionTag = L"Chapter8_SKSP_09";
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Laser_Container"),
@@ -1784,7 +1786,7 @@ HRESULT CLevel_Chapter_08::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 	CTiltSwapPusher::TILTSWAPPUSHER_DESC tTiltSwapPusherDesc{};
 	tTiltSwapPusherDesc.eLookDirection = F_DIRECTION::RIGHT;
 	tTiltSwapPusherDesc.iCurLevelID = m_eLevelID;
-	tTiltSwapPusherDesc.tTransform2DDesc.vInitialPosition = _float3(-420.f, -390.f, 0.f);
+	tTiltSwapPusherDesc.tTransform2DDesc.vInitialPosition = _float3(-422.5f, -390.f, 0.f);
 	CTiltSwapPusher* pTSP1 = static_cast<CTiltSwapPusher*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_eLevelID, TEXT("Prototype_GameObject_TiltSwapPusher"), &tTiltSwapPusherDesc));
 	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, _strLayerTag, pTSP1);
 	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter8_P2122"), pTSP1, SECTION_2D_PLAYMAP_OBJECT);
@@ -1799,22 +1801,29 @@ HRESULT CLevel_Chapter_08::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, _strLayerTag, pTSP3);
 	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter8_P2122"), pTSP3, SECTION_2D_PLAYMAP_OBJECT);
 
-	CBombSwitchStopper::BOMB_SWITCH_STOPPER_DESC tBombSwitchStopperDesc = {};
-	tBombSwitchStopperDesc.iCurLevelID = m_eLevelID;
-	tBombSwitchStopperDesc.tTransform2DDesc.vInitialPosition = _float3(-185.f, -1065.f, 0.f);
-	CBombSwitchStopper* pBombSwitchStopper = static_cast<CBombSwitchStopper*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_eLevelID, TEXT("Prototype_GameObject_BombSwitchStopper"), &tBombSwitchStopperDesc));
-	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, _strLayerTag, pBombSwitchStopper);
-	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter8_P2122"), pBombSwitchStopper, SECTION_2D_PLAYMAP_OBJECT);
-
 	CBombSwitch::BOMB_SWITCH_DESC tBombSwitchDesc = {};
 	tBombSwitchDesc.eStartState = CBombSwitch::OFF;
-	tBombSwitchDesc.pReceiver = pBombSwitchStopper;
 	tBombSwitchDesc.iCurLevelID = m_eLevelID;
 	tBombSwitchDesc.tTransform2DDesc.vInitialPosition = _float3(30.f, -820.f, 0.f);
 	pBombSwitch = static_cast<CBombSwitch*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_eLevelID, TEXT("Prototype_GameObject_BombSwitch"), &tBombSwitchDesc));
 	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, _strLayerTag, pBombSwitch);
 	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter8_P2122"), pBombSwitch, SECTION_2D_PLAYMAP_OBJECT);
 
+	CBombSwitchStopper::BOMB_SWITCH_STOPPER_DESC tBombSwitchStopperDesc = {};
+	tBombSwitchStopperDesc.eType = CBombSwitchStopper::SQUARE;
+	tBombSwitchStopperDesc.iCurLevelID = m_eLevelID;
+	tBombSwitchStopperDesc.tTransform2DDesc.vInitialPosition = _float3(-185.f, -1065.f, 0.f);
+	CBombSwitchStopper* pBombSwitchStopper = static_cast<CBombSwitchStopper*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_eLevelID, TEXT("Prototype_GameObject_BombSwitchStopper"), &tBombSwitchStopperDesc));
+	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, _strLayerTag, pBombSwitchStopper);
+	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter8_P2122"), pBombSwitchStopper, SECTION_2D_PLAYMAP_OBJECT);
+	pBombSwitch->Add_Receiver(pBombSwitchStopper);
+
+	tBombSwitchStopperDesc.eType = CBombSwitchStopper::RECT;
+	tBombSwitchStopperDesc.tTransform2DDesc.vInitialPosition = _float3(-185.f, -1065.f, 0.f);
+	pBombSwitchStopper = static_cast<CBombSwitchStopper*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_eLevelID, TEXT("Prototype_GameObject_BombSwitchStopper"), &tBombSwitchStopperDesc));
+	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, _strLayerTag, pBombSwitchStopper);
+	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter8_P2122"), pBombSwitchStopper, SECTION_2D_PLAYMAP_OBJECT);
+	pBombSwitch->Add_Receiver(pBombSwitchStopper);
 
 	CTiltSwapCrate::SLIPPERY_DESC tTiltSwapCrateDesc = {};
 	tTiltSwapCrateDesc.iCurLevelID = m_eLevelID;

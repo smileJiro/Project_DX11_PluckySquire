@@ -27,6 +27,9 @@ HRESULT CLevel_Loading::Initialize(LEVEL_ID _eNextLevelID)
     if (FAILED(Ready_Layer_BackGround(TEXT("Layer_BackGround"))))
         return E_FAIL;
 
+	if (FAILED(Ready_Layer_UI(TEXT("Layer_Loading_UI"))))
+		return E_FAIL;
+
     return S_OK;
 }
 
@@ -74,6 +77,24 @@ HRESULT CLevel_Loading::Ready_Layer_BackGround(const _wstring& strLayerTag)
         m_pBackGround = static_cast<CLogo_BackGround*>(pObject);
         Safe_AddRef(pObject);
     }
+
+    return S_OK;
+}
+
+HRESULT CLevel_Loading::Ready_Layer_UI(const _wstring& _strLayerTag)
+{
+    if (LEVEL_STATIC != m_eNextLevelID && LEVEL_CHAPTER_8 != m_eNextLevelID && LEVEL_LOGO != m_eNextLevelID)
+    {
+		CUI::UIOBJDESC pDesc = {};
+		pDesc.fX = g_iWinSizeX - g_iWinSizeX / 12.f;
+		pDesc.fY = g_iWinSizeY - g_iWinSizeY / 10.f;
+		pDesc.fSizeX = 216.f / 3.f;
+		pDesc.fSizeY = 152.f / 3.f;
+
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_UIObejct_Loading_Book"), LEVEL_LOADING, _strLayerTag, &pDesc)))
+			return E_FAIL;
+    }
+
 
     return S_OK;
 }

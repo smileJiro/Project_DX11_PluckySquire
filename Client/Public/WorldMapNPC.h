@@ -87,6 +87,8 @@ private:
 	void					Pos_Ready();
 	void					Change_BookOrder();
 	_float2					Change_PlayerPos();
+	void					DisplayLocationName();
+	void					DisplayHoneyBee(_float2 _MidPoint);
 
 public:
 	static CWorldMapNPC*		Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
@@ -115,6 +117,7 @@ private:
 	_bool					m_isArriveAnim = { false };
 
 	_bool					m_isChangeCameraTarget = { false };
+	wstring					m_strLocationName = { TEXT("") };
 
 
 
