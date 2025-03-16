@@ -196,6 +196,9 @@ public:
 	_bool						Check_Block(_float _fTimeDelta);	// 다음 위치가 장애물에 막히는지 체크
 	_bool						Check_Block(_fvector _vForce, _float _fTimeDelta);	// 다음 위치가 장애물에 막히는지 체크
 
+								//비어있는 대열로 추가
+	_bool						Add_To_Formation();
+	_bool						Remove_From_Formation();
 	_bool							Get_Formation_Position(_float3* _vPosition);
 
 protected:

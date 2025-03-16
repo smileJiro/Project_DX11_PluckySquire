@@ -62,14 +62,14 @@ void CFormation_Manager::Register_Formation(CFormation* _pFormation)
 	Safe_AddRef(_pFormation);
 }
 
-_bool CFormation_Manager::Add_To_Formation(CMonster* _pMember)
+_bool CFormation_Manager::Add_To_Formation(CMonster* _pMember, CFormation** _pFormation)
 {
 	//포메이션들에 빈 위치 있는지 확인해서 넣어줌. (위치 측정 없이 일단 순서대로 탐색해서 넣어봄)
 	for (auto pFormation : m_Formations)
 	{
 		if (true == pFormation->Has_EmptySlot())
 		{
-			pFormation->Add_To_Formation(_pMember);
+			pFormation->Add_To_Formation(_pMember, _pFormation);
 			return true;
 		}
 	}
@@ -85,9 +85,15 @@ HRESULT CFormation_Manager::Ready_Chapter8_Formation()
 
 	CFormation::FORMATIONDESC FormationDesc;
 	FormationDesc.iCurLevelID = LEVEL_CHAPTER_8;
+	FormationDesc.eStartCoord = COORDINATE_3D;
+	FormationDesc.isCoordChangeEnable = false;
+	FormationDesc.tTransform3DDesc.vInitialPosition = _float3(36.f, 24.37f, 4.f);
+	FormationDesc.tTransform3DDesc.fRotationPerSec = XMConvertToRadians(360.f);
+	FormationDesc.tTransform3DDesc.fSpeedPerSec = 4.f;
+
 	FormationDesc.strMemberPrototypeTag = TEXT("Prototype_GameObject_Spear_Soldier");
 	FormationDesc.strMemberLayerTag = TEXT("Layer_Monster_Locker");
-	FormationDesc.tTransform3DDesc.vInitialPosition = _float3(36.f, 24.37f, 4.f);
+	FormationDesc.fDelayTime = 2.f;
 
 	pFormation = static_cast<CFormation*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_Formation"), &FormationDesc));
 	if (nullptr == pFormation)

@@ -36,7 +36,7 @@ public:
 	void Register_Formation(CFormation* _pFormation);
 
 	//비어있는 위치로 추가
-	_bool Add_To_Formation(CMonster* _pMember);
+	_bool Add_To_Formation(CMonster* _pMember, CFormation** _pFormation);
 
 private:
 	HRESULT Ready_Chapter8_Formation();
