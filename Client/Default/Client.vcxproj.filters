@@ -1876,11 +1876,8 @@
     <ClInclude Include="..\Public\Laser_Beam.h">
       <Filter>02.GameObjects\2DGimmik\Laser</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Back_WayState.h" />
-    <ClInclude Include="..\Public\Beetle_Corpse.h" />
     <ClInclude Include="..\Public\BombSwitch.h" />
     <ClInclude Include="..\Public\BombSwitchStopper.h" />
-    <ClInclude Include="..\Public\Chase_WayState.h" />
     <ClInclude Include="..\Public\WorldMapNPC.h" />
     <ClInclude Include="..\Public\FriendBody.h">
       <Filter>02.GameObjects\Friend\Body</Filter>
@@ -1947,6 +1944,15 @@
     </ClInclude>
     <ClInclude Include="..\Public\FormationMoveState.h">
       <Filter>03.Components\FSM\State\Formation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Beetle_Corpse.h">
+      <Filter>02.GameObjects\Interact\Carriable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Chase_WayState.h">
+      <Filter>03.Components\FSM\State\Chase</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Back_WayState.h">
+      <Filter>03.Components\FSM\State\Patrol</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -3042,11 +3048,8 @@
     <ClCompile Include="..\Private\Laser_Beam.cpp">
       <Filter>02.GameObjects\2DGimmik\Laser</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Back_WayState.cpp" />
-    <ClCompile Include="..\Private\Beetle_Corpse.cpp" />
     <ClCompile Include="..\Private\BombSwitch.cpp" />
     <ClCompile Include="..\Private\BombSwitchStopper.cpp" />
-    <ClCompile Include="..\Private\Chase_WayState.cpp" />
     <ClCompile Include="..\Private\WorldMapNPC.cpp" />
     <ClCompile Include="..\Private\FriendBody.cpp">
       <Filter>02.GameObjects\Friend\Body</Filter>
@@ -3114,6 +3117,15 @@
     </ClCompile>
     <ClCompile Include="..\Private\FormationMoveState.cpp">
       <Filter>03.Components\FSM\State\Formation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Beetle_Corpse.cpp">
+      <Filter>02.GameObjects\Interact\Carriable</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Chase_WayState.cpp">
+      <Filter>03.Components\FSM\State\Chase</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Back_WayState.cpp">
+      <Filter>03.Components\FSM\State\Patrol</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
