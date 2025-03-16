@@ -1,12 +1,12 @@
 #pragma once
-#include "ModelObject.h"
+#include "FresnelModelObject.h"
 
 BEGIN(Client)
 class CMonster;
-class CButterGrump_Shield : public CModelObject
+class CButterGrump_Shield : public CFresnelModelObject
 {
 public:
-	typedef struct tagButterGrump_ShieldDesc : public CModelObject::MODELOBJECT_DESC
+	typedef struct tagButterGrump_ShieldDesc : public CFresnelModelObject::FRESNEL_MODEL_DESC
 	{
 		class CMonster* pParent = nullptr;
 	}BUTTERGRUMP_SHIELD_DESC;

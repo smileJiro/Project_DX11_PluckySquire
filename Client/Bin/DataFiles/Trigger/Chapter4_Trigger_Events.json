@@ -93,6 +93,16 @@
         "Is_Sequence": true
       }
     ]
+  },  
+  {
+    "Trigger_EventTag": "Chapter4_GateEvent",
+    "Actions": [
+      {
+        "ActionTag": "Create_EventExecuter",
+        "EventTag": "Chapter4_GateEvent",
+        "Is_Sequence": true
+      }
+    ]
   },
   {
     "Trigger_EventTag": "Get_Bomb_Stamp",

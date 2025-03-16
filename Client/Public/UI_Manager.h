@@ -183,6 +183,7 @@ public:
 	void								Set_TurnoffPlayNarration(_bool _Turnoff) { m_isPlayerNarration = _Turnoff; }
 	_bool								is_PlayNarration();
 	_bool								is_EndNarration();
+	_int								Get_NarrationCameraPos();
 
 	_bool								isLeft_Right();
 

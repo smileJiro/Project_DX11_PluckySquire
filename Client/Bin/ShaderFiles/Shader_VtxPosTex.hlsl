@@ -12,6 +12,8 @@ float g_fBrightness = 1.0f;
 //SPRITE ANIMATION
 float2 g_vSpriteStartUV;
 float2 g_vSpriteEndUV;
+float2 g_vCutStartUV;
+float2 g_vCutEndUV;
 float g_fPixelsPerUnrealUnit;
 
 // Color
@@ -32,6 +34,14 @@ struct VS_OUT
 {
     float4 vPosition : SV_POSITION;
     float2 vTexcoord : TEXCOORD0;
+};
+
+struct VS_UVCUT_OUT
+{
+    float4 vPosition : SV_POSITION;
+    float2 vTexcoord : TEXCOORD0;
+    float2 vOriginTexcoord : TEXCOORD1;
+    
 };
 
 // Rendering PipeLine : Vertex Shader // 
@@ -69,6 +79,26 @@ Out;
 }
 
 
+VS_UVCUT_OUT VS_SPRITE2D_UVCUT(VS_IN In)
+{
+    VS_UVCUT_OUT Out = (VS_UVCUT_OUT) 0;
+    
+    Out.vOriginTexcoord = In.vTexcoord;
+    
+    matrix matWV, matWVP;
+
+    matWV = mul(g_WorldMatrix, g_ViewMatrix);
+    matWVP = mul(matWV, g_ProjMatrix);
+
+    Out.vPosition = mul(float4(In.vPosition, 1.f), matWVP);
+    
+
+    Out.vTexcoord = clamp(In.vTexcoord, g_vSpriteStartUV, g_vSpriteEndUV);
+    Out.vTexcoord = clamp(Out.vTexcoord, float2(0, 0),float2(1, 1));
+    return Out;
+}
+
+
 // (장치가 수행)Rendering PipeLine : Projection 변환 (W 나누기 연산 진행) // 
 // (장치가 수행)Rendering PipeLine : Viewport 변환 // 
 // (장치가 수행)Rendering PipeLine : Rasterization // 
@@ -78,6 +108,13 @@ struct PS_IN
 {
     float4 vPosition : SV_POSITION;
     float2 vTexcoord : TEXCOORD0;
+};
+struct PS_UVCUT_IN
+{
+    float4 vPosition : SV_POSITION;
+    float2 vTexcoord : TEXCOORD0;
+    float2 vOriginTexcoord : TEXCOORD1;
+
 };
 
 struct PS_OUT
@@ -96,8 +133,11 @@ PS_OUT PS_MAIN(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
     
-    Out.vColor = g_DiffuseTexture.SampleLevel(LinearSampler, In.vTexcoord, 0);
+    float4 vDiffuse = g_DiffuseTexture.SampleLevel(LinearSampler, In.vTexcoord, 0);
+    Out.vColor = vDiffuse * g_vColors;
 
+    Out.vColor.a *= g_fSprite2DFadeAlphaRatio;
+    
     if (Out.vColor.a < 0.01f)
         discard;
     
@@ -132,12 +172,30 @@ PS_OUT PS_SPRITE2D(PS_IN In)
     return Out;
 }
 
+PS_OUT PS_SPRITE2D_UVCUT(PS_UVCUT_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+    
+    if (In.vOriginTexcoord.x < g_vCutStartUV.x ||
+        In.vOriginTexcoord.x > g_vCutEndUV.x ||
+        In.vOriginTexcoord.y < g_vCutStartUV.y ||
+        In.vOriginTexcoord.y > g_vCutEndUV.y)
+        discard;
+    Out.vColor = g_DiffuseTexture.SampleLevel(LinearSampler, In.vTexcoord, 0);
+    
+    Out.vColor.a *= g_fSprite2DFadeAlphaRatio;
+    if (Out.vColor.a < 0.1f)
+        discard;
+    
+    return Out;
+}
+
 PS_OUT PS_COLOR(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
     
-    Out.vColor = float4(g_vColors.x, g_vColors.y, g_vColors.z, g_vColors.w);
-    
+    Out.vColor = g_vColors;
+      
     if (Out.vColor.a < 0.01f)
         discard;
     
@@ -335,7 +393,7 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_RATIO_BOTTOM_UP();
     }
 
-    pass BackGroundPass //0
+    pass BackGroundPass //10
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_Default, 0);
@@ -343,6 +401,16 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_BACKGROUND();
+    }
+
+    pass UVCutPass//11
+    {
+        SetRasterizerState(RS_Cull_None);
+        SetDepthStencilState(DSS_None, 0);
+        SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        VertexShader = compile vs_5_0 VS_SPRITE2D_UVCUT();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_SPRITE2D_UVCUT();
     }
 
 }

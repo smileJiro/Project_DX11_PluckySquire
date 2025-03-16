@@ -90,6 +90,18 @@ HRESULT CPortal::Render()
 
 HRESULT CPortal::Setup_3D_Postion()
 {
+    if (nullptr != m_pActorCom)
+    {
+        auto iter = m_Components.find(L"Com_Actor");
+        if (iter != m_Components.end())
+        {
+            Safe_Release(iter->second);
+            m_Components.erase(iter);
+        }
+        Safe_Release(m_pActorCom);
+    
+    }
+
     _vector f2DPosition = Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION);
 
     // 월드맵이 설정됐으니, 포지션 설정.
@@ -212,6 +224,9 @@ HRESULT CPortal::Ready_DefaultParticle()
     if (false == m_isReady_3D)
         return E_FAIL;
 
+    Safe_Release(m_pDefaultEffect);
+    Safe_Release(m_PartObjects[PORTAL_PART_DEFAULTEFFECT]);
+
     _vector f3DPosition = Get_FinalPosition(COORDINATE_3D);
 
     // 포탈 이펙트 생성.
@@ -225,6 +240,7 @@ HRESULT CPortal::Ready_DefaultParticle()
     EffectDesc.iEffectShaderLevel = LEVEL_STATIC;
     EffectDesc.szEffectShaderTags = L"Prototype_Component_Shader_VtxMeshEffect";
     EffectDesc.szSpriteComputeShaderTag = L"Prototype_Component_Compute_Shader_SpriteInstance";
+
 
     m_pDefaultEffect = static_cast<CEffect_System*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Portal.json"), &EffectDesc));
     if (nullptr == m_pDefaultEffect)
@@ -281,6 +297,9 @@ HRESULT CPortal::Ready_InOutParticle()
 {
     if (false == m_isReady_3D)
         return E_FAIL;
+
+    Safe_Release(m_pInOutEffect);
+    Safe_Release(m_PartObjects[PORTAL_PART_INOUTEFFECT]);
 
     _vector f3DPosition = Get_FinalPosition(COORDINATE_3D);
 

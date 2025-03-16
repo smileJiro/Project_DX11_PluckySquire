@@ -42,7 +42,10 @@ void CStandbyState::State_Update(_float _fTimeDelta)
 
 	if (m_pTarget->Get_CurCoord() != m_pOwner->Get_CurCoord())
 	{
-		Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
+		if(true == m_pOwner->Is_CombatMode())
+			Event_ChangeMonsterState(MONSTER_STATE::BACK, m_pFSM);
+		else
+			Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
 		return;
 	}
 	else if (COORDINATE_2D == m_pOwner->Get_CurCoord() && m_pOwner->Get_Include_Section_Name() != m_pTarget->Get_Include_Section_Name())
@@ -105,7 +108,14 @@ void CStandbyState::State_Update(_float _fTimeDelta)
 	//완전히 나가면 idle 전환
 	else if (fDis > Get_CurCoordRange(MONSTER_STATE::CHASE))
 	{
-		Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
+		if(true == m_pOwner->Is_CombatMode())
+		{
+			Event_ChangeMonsterState(MONSTER_STATE::BACK, m_pFSM);
+		}
+		else
+		{
+			Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
+		}
 	}
 }
 

@@ -205,6 +205,58 @@ HRESULT CState_Sneak::Initialize_WayPoints(SNEAKWAYPOINTINDEX _eWayIndex)
 		m_WayPoints[0].Neighbors.push_back(3);
 		break;
 
+
+	case SNEAKWAYPOINTINDEX::CHAPTER8_BEETLE_FINAL_1:
+	case SNEAKWAYPOINTINDEX::CHAPTER8_BEETLE_FINAL_2:
+		m_WayPoints.push_back({ _float3(-6.5f, 18.41f, 44.5f) });
+		m_WayPoints.push_back({ _float3(-6.5f, 18.25f, 40.5f) });
+		m_WayPoints.push_back({ _float3(-10.5f, 18.25f, 40.5f) });
+		m_WayPoints.push_back({ _float3(-10.5f, 18.25f, 44.5f) });
+		m_WayPoints.push_back({ _float3(-13.5f, 18.25f, 46.5f) });
+		m_WayPoints.push_back({ _float3(-4.7f, 18.41f, 46.5f) });
+		m_WayPoints.push_back({ _float3(-4.7f, 18.25f, 40.5f) });
+		m_WayPoints.push_back({ _float3(-8.6f, 18.25f, 37.5f) });
+		m_WayPoints.push_back({ _float3(-14.f, 18.25f, 41.f) });
+
+		m_WayPoints[0].Neighbors.push_back(1);
+		m_WayPoints[1].Neighbors.push_back(0);
+		m_WayPoints[1].Neighbors.push_back(2);
+		m_WayPoints[2].Neighbors.push_back(1);
+		m_WayPoints[2].Neighbors.push_back(3);
+		m_WayPoints[3].Neighbors.push_back(2);
+		m_WayPoints[3].Neighbors.push_back(0);
+		m_WayPoints[0].Neighbors.push_back(3);
+
+		m_WayPoints[3].Neighbors.push_back(4);
+		m_WayPoints[4].Neighbors.push_back(3);
+		m_WayPoints[4].Neighbors.push_back(5);
+		m_WayPoints[5].Neighbors.push_back(4);
+		m_WayPoints[4].Neighbors.push_back(0);
+		m_WayPoints[0].Neighbors.push_back(4);
+		m_WayPoints[5].Neighbors.push_back(0);
+		m_WayPoints[0].Neighbors.push_back(5);
+		m_WayPoints[5].Neighbors.push_back(3);
+		m_WayPoints[3].Neighbors.push_back(5);
+		m_WayPoints[5].Neighbors.push_back(6);
+		m_WayPoints[6].Neighbors.push_back(5);
+		m_WayPoints[6].Neighbors.push_back(1);
+		m_WayPoints[1].Neighbors.push_back(6);
+		m_WayPoints[6].Neighbors.push_back(7);
+		m_WayPoints[7].Neighbors.push_back(6);
+		m_WayPoints[7].Neighbors.push_back(1);
+		m_WayPoints[1].Neighbors.push_back(7);
+		m_WayPoints[7].Neighbors.push_back(2);
+		m_WayPoints[2].Neighbors.push_back(7);
+		m_WayPoints[7].Neighbors.push_back(8);
+		m_WayPoints[8].Neighbors.push_back(7);
+		m_WayPoints[8].Neighbors.push_back(2);
+		m_WayPoints[2].Neighbors.push_back(8);
+		m_WayPoints[3].Neighbors.push_back(8);
+		m_WayPoints[8].Neighbors.push_back(3);
+		m_WayPoints[8].Neighbors.push_back(4);
+		m_WayPoints[4].Neighbors.push_back(8);
+		break;
+
 	default:
 		break;
 	}
@@ -285,6 +337,23 @@ void CState_Sneak::Initialize_PatrolPoints(SNEAKWAYPOINTINDEX _iWayIndex)
 		m_isPatrolCycle = true;
 		break;
 
+	case Client::SNEAKWAYPOINTINDEX::CHAPTER8_BEETLE_FINAL_1:
+		m_PatrolWays.push_back(0);
+		m_PatrolWays.push_back(1);
+		m_PatrolWays.push_back(2);
+		m_PatrolWays.push_back(3);
+		m_isPatrolCycle = true;
+		break;
+
+	case Client::SNEAKWAYPOINTINDEX::CHAPTER8_BEETLE_FINAL_2:
+		m_PatrolWays.push_back(4);
+		m_PatrolWays.push_back(5);
+		m_PatrolWays.push_back(6);
+		m_PatrolWays.push_back(7);
+		m_PatrolWays.push_back(8);
+		m_isPatrolCycle = true;
+		break;
+
 	default:
 		break;
 	}
@@ -337,7 +406,9 @@ void CState_Sneak::Determine_NextDirection(_fvector& _vDestination, _float3* _vD
 			&& false == m_pGameInstance->RayCast_Nearest_GroupFilter(vRightPos, vRightRayDirection, XMVectorGetX(XMVector3Length(XMVectorSetY(_vDestination - XMLoadFloat3(&vRightPos), 0.f))), OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE))
 		{
 			vResult = _vDestination - m_pOwner->Get_FinalPosition();
-			XMStoreFloat3(_vDirection, XMVector3Normalize(XMVectorSetY(vResult, 0.f)));
+			if (0.01f >= XMVectorGetY(vResult))
+				XMVectorSetY(vResult, 0.f);
+			XMStoreFloat3(_vDirection, XMVector3Normalize(vResult));
 			return;
 		}
 		//타겟 방향이 막혀있으면 웨이포인트 이동

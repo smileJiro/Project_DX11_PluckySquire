@@ -401,7 +401,9 @@ void CZippy::Attack_End()
 
 void CZippy::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-    if (OBJECT_GROUP::PLAYER & _pOtherObject->Get_ObjectGroupID())
+    OBJECT_GROUP eOtherGroupID = (OBJECT_GROUP)_pOtherObject->Get_ObjectGroupID();
+
+    if (OBJECT_GROUP::PLAYER & eOtherGroupID)
     {
         if (true == m_isElectric)
         {
@@ -440,16 +442,15 @@ void CZippy::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
     {
         //대시 중일 때는 데미지만 입음.
         m_tStat.iHP -= _iDamg;
-        if (m_tStat.iHP < 0)
-        {
-            m_tStat.iHP = 0;
-        }
         if (0 >= m_tStat.iHP)
         {
-            m_isDash = false;
-            Set_AnimChangeable(true);
-            m_p2DColliderComs[0]->Set_Active(false);
-            Event_ChangeMonsterState(MONSTER_STATE::DEAD, m_pFSM);
+            if (0 == m_tStat.iHP)
+            {
+                m_isDash = false;
+                Set_AnimChangeable(true);
+                m_p2DColliderComs[0]->Set_Active(false);
+                Event_ChangeMonsterState(MONSTER_STATE::DEAD, m_pFSM);
+            }
         }
         else
         {
@@ -538,6 +539,7 @@ HRESULT CZippy::Ready_Components()
     CircleDesc.vOffsetPosition = { 0.f, CircleDesc.fRadius };
     CircleDesc.isBlock = false;
     CircleDesc.iCollisionGroupID = OBJECT_GROUP::MONSTER;
+    CircleDesc.iColliderUse = (_uint)COLLIDER2D_USE::COLLIDER2D_BODY;
     if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
         TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &CircleDesc)))
         return E_FAIL;

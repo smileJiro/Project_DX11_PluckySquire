@@ -61,7 +61,7 @@ HRESULT CLevel_Loading::Ready_Layer_BackGround(const _wstring& strLayerTag)
     if (LEVEL_CHAPTER_8 == m_eNextLevelID) {
         CLogo_BackGround::MAIN_LOGO_DESC		Desc{};
 
-        Desc.vColor = { 1.f, 47.f, 47.f, 1.f };
+        Desc.vColor = { 47.f / 255.f, 47.f / 255.f, 47.f / 255.f, 1.f };
         Desc.iBackGroundMainType = CLogo_BackGround::MAIN_HUMGRUMP;
 
         if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Logo_BackGround"),

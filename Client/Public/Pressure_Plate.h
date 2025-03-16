@@ -6,7 +6,7 @@ BEGIN(Client)
 class CPressure_Plate : public CModelObject
 {
 public:
-	enum PRESSURE_PLATE_STATE {DOWN, DOWN_IDLE, IDLE, UP};
+	enum PRESSURE_PLATE_STATE {DOWN, DOWN_IDLE, IDLE, UP, PRESSURE_PLATE_STATE_LAST};
 
 private:
 	CPressure_Plate(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
@@ -28,9 +28,8 @@ public:
 
 
 private:
-	_uint				 m_iCollisionObjects = {0};
-	PRESSURE_PLATE_STATE m_eState = {IDLE};
-
+	_uint					m_iCollisionObjects = {0};
+	PRESSURE_PLATE_STATE	m_eState = {IDLE};
 public:
 	static CPressure_Plate* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject* Clone(void* _pArg) override;

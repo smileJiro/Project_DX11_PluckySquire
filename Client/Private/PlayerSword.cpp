@@ -404,14 +404,16 @@ void CPlayerSword::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOt
 
 void CPlayerSword::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-    if (OBJECT_GROUP::MONSTER == _pOtherCollider->Get_CollisionGroupID())
+    if (OBJECT_GROUP::MONSTER == _pOtherCollider->Get_CollisionGroupID()
+        || OBJECT_GROUP::GIMMICK_OBJECT == _pOtherCollider->Get_CollisionGroupID())
     {
         m_pGameInstance->Start_SFX(_wstring(L"A_Sfx_Sword_Impact_Body_") + to_wstring(rand() % 3), 50.f);
         Attack(_pOtherObject);
     }
     
     OBJECT_GROUP eGroup = (OBJECT_GROUP)_pOtherCollider->Get_CollisionGroupID();
-    if (OBJECT_GROUP::MAPOBJECT == eGroup || OBJECT_GROUP::BLOCKER == eGroup)
+    if (OBJECT_GROUP::MAPOBJECT == eGroup || OBJECT_GROUP::BLOCKER == eGroup
+        || OBJECT_GROUP::GIMMICK_OBJECT == _pOtherCollider->Get_CollisionGroupID())
     {
         if (Is_Outing())
         {

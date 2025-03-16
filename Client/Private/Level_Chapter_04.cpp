@@ -1452,7 +1452,7 @@ HRESULT CLevel_Chapter_04::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 	CDynamicCastleGate::CONTAINEROBJ_DESC tGateDesc{};
 	tGateDesc.eStartCoord = COORDINATE_3D;
 	tGateDesc.iCurLevelID = m_eLevelID;
-	tGateDesc.tTransform3DDesc.vInitialPosition = _float3(0.f,0.35f, -3.f);
+	tGateDesc.tTransform3DDesc.vInitialPosition = _float3(-46.18f, 9.99f, -1.34f);
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_DynamicCastleGate"), m_eLevelID, _strLayerTag, &tGateDesc)))
 		return E_FAIL;
 	return S_OK;

@@ -187,6 +187,18 @@ HRESULT CSection_Manager::Add_GameObject_ToSectionLayer(const _wstring& _strSect
 	return S_OK;
 }
 
+HRESULT CSection_Manager::Change_GameObject_LayerIndex(const _wstring& _strSectionTag, CGameObject* _pGameObject, _uint _iLayerIndex)
+{
+	CSection* pSection = Find_Section(_strSectionTag);
+	if (nullptr == pSection)
+		return E_FAIL;
+
+	if (FAILED(pSection->Change_GameObject_LayerIndex(_pGameObject, _iLayerIndex)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
 
 HRESULT CSection_Manager::Remove_GameObject_FromSectionLayer(const _wstring& _strSectionTag, CGameObject* _pGameObject)
 {

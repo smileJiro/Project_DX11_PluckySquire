@@ -150,7 +150,7 @@ void CZetPack_Child::State_Change_Talk()
 	if (STATE::STATE_MAKEFATHER == m_ePreState)
 	{
 		m_eDirection = DIR_DOWN;
-		m_pControllerModel->Switch_Animation((_uint)ANIMINDEX::TALK_DOWN);
+		m_pControllerModel->Set_Animation((_uint)ANIMINDEX::TALK_DOWN);
 	}
 	else
 	{
@@ -410,28 +410,28 @@ void CZetPack_Child::Update_AnimationDirection()
 	{
 	case Client::CZetPack_Child::DIR_DOWN:
 		if (STATE_TALK == m_eCurState)
-			m_pControllerModel->Switch_Animation((_uint)ANIMINDEX::TALK_DOWN);
+			m_pControllerModel->Set_Animation((_uint)ANIMINDEX::TALK_DOWN);
 		else
-			m_pControllerModel->Switch_Animation((_uint)ANIMINDEX::IDLE_DOWN);
+			m_pControllerModel->Set_Animation((_uint)ANIMINDEX::IDLE_DOWN);
 		break;
 	case Client::CZetPack_Child::DIR_RIGHT:
 		if (STATE_TALK == m_eCurState)
-			m_pControllerModel->Switch_Animation((_uint)ANIMINDEX::TALK_RIGHT);
+			m_pControllerModel->Set_Animation((_uint)ANIMINDEX::TALK_RIGHT);
 		else
-			m_pControllerModel->Switch_Animation((_uint)ANIMINDEX::IDLE_RIGHT);
+			m_pControllerModel->Set_Animation((_uint)ANIMINDEX::IDLE_RIGHT);
 		Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, XMVectorAbs(vRightVector));
 		break;
 	case Client::CZetPack_Child::DIR_UP:
 		if (STATE_TALK == m_eCurState)
-			m_pControllerModel->Switch_Animation((_uint)ANIMINDEX::TALK_UP);
+			m_pControllerModel->Set_Animation((_uint)ANIMINDEX::TALK_UP);
 		else
-			m_pControllerModel->Switch_Animation((_uint)ANIMINDEX::IDLE_UP);
+			m_pControllerModel->Set_Animation((_uint)ANIMINDEX::IDLE_UP);
 		break;
 	case Client::CZetPack_Child::DIR_LEFT:
 		if (STATE_TALK == m_eCurState)
-			m_pControllerModel->Switch_Animation((_uint)ANIMINDEX::TALK_RIGHT);
+			m_pControllerModel->Set_Animation((_uint)ANIMINDEX::TALK_RIGHT);
 		else
-			m_pControllerModel->Switch_Animation((_uint)ANIMINDEX::IDLE_RIGHT);
+			m_pControllerModel->Set_Animation((_uint)ANIMINDEX::IDLE_RIGHT);
 		Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, -XMVectorAbs(vRightVector));
 		break;
 	default:

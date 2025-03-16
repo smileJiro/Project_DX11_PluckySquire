@@ -6,6 +6,9 @@
 #include "GameInstance.h"
 #include "Section_Manager.h"
 #include "Character.h"
+#include "Laser_Beam.h"
+#include "Pressure_Plate.h"
+#include "Interactable.h"
 
 CLaser_Container::CLaser_Container(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CContainerObject(_pDevice, _pContext)
@@ -26,14 +29,16 @@ HRESULT CLaser_Container::Initialize(void* _pArg)
 {
 	LASER_DESC* pDesc = static_cast<LASER_DESC*>(_pArg);
 
-	m_fStartPos = m_fTargetPos = pDesc->fStartPos;
-	m_fEndPos = pDesc->fEndPos;
+	m_fStartPos = pDesc->fStartPos;
+	m_fEndPos = m_fTargetPos = pDesc->fEndPos;
 	m_eDir = pDesc->eDir;
-	m_fMoveSpeed = pDesc->tTransform2DDesc.fSpeedPerSec = pDesc->fMoveSpeed;
+	m_IsBeamOn = pDesc->isBeamOn;
+	m_IsMove = pDesc->isMove;
 	pDesc->iNumPartObjects = (_uint)PART_END;
 	pDesc->eStartCoord = COORDINATE_2D;
-	pDesc->isCoordChangeEnable= false;
-	pDesc->Build_2D_Transform(m_fTargetPos);
+	pDesc->isCoordChangeEnable = false;
+	pDesc->Build_2D_Transform(m_fStartPos);
+	m_fMoveSpeed = pDesc->tTransform2DDesc.fSpeedPerSec = pDesc->fMoveSpeed;
 
 
 	__super::Initialize(_pArg);
@@ -48,6 +53,7 @@ HRESULT CLaser_Container::Initialize(void* _pArg)
 
 	/* 레이저 방향 설정 */
 	_vector vDir = {};
+	_float2 vStartLength = {60.f,100.f};
 	switch (m_eDir)
 	{
 	case Client::F_DIRECTION::LEFT:
@@ -57,11 +63,11 @@ HRESULT CLaser_Container::Initialize(void* _pArg)
 		vDir = XMVectorSetX(vDir, 1.f);
 		break;
 	case Client::F_DIRECTION::UP:
-		m_bIsBeamRotate = true;
+		m_IsBeamRotate = true;
 		vDir = XMVectorSetY(vDir, 1.f);
 		break;
 	case Client::F_DIRECTION::DOWN:
-		m_bIsBeamRotate = true;
+		m_IsBeamRotate = true;
 		vDir = XMVectorSetY(vDir, -1.f);
 		break;
 	}
@@ -69,30 +75,59 @@ HRESULT CLaser_Container::Initialize(void* _pArg)
 	XMStoreFloat2(&m_fDir, vDir);
 
 
-	XMStoreFloat2(&m_fBeamStartPos,(vDir * 30.f));
-	XMStoreFloat2(&m_fBeamEndPos,(vDir * 500.f));
-
+	XMStoreFloat2(&m_fBeamStartPos, (vDir * vStartLength.x));
+	XMStoreFloat2(&m_fBeamEndPos, (vDir * vStartLength.y));
+	switch (m_eDir)
+	{
+	case Client::F_DIRECTION::LEFT:
+	case Client::F_DIRECTION::RIGHT:
+		m_fBeamStartPos.y = m_fBeamEndPos.y = 40.f;
+		break;
+	case Client::F_DIRECTION::UP:
+	case Client::F_DIRECTION::DOWN:
+		m_fBeamStartPos.x = m_fBeamEndPos.x = 40.f;
+		break;
+	}
 	/* 레이저 콜라이더들 설정*/
 	if (FAILED(Ready_Components(pDesc)))
 		return E_FAIL;
 	/* 레이저 애님 파트들 설정 */
-	if (FAILED(Ready_PartObjects()))
+	if (FAILED(Ready_PartObjects(pDesc)))
 		return E_FAIL;
 
 
 	static_cast<CModelObject*>(m_PartObjects[PART_BEAM_START_EFFECT])->Switch_Animation(LASER_BEAM_BEGIN);
-	static_cast<CModelObject*>(m_PartObjects[PART_BEAM_EFFECT])->Switch_Animation(LASER_BEAM_LENGTH_3);
+	static_cast<CModelObject*>(m_PartObjects[PART_BEAM_EFFECT])->Switch_Animation(LASER_BEAM_LENGTH_5);
 	static_cast<CModelObject*>(m_PartObjects[PART_BEAM_END_EFFECT])->Switch_Animation(LASER_BEAM_END);
 
 	static_cast<CModelObject*>(m_PartObjects[PART_BEAM_START_EFFECT])->Set_Position(XMLoadFloat2(&m_fBeamStartPos));
 	static_cast<CModelObject*>(m_PartObjects[PART_BEAM_END_EFFECT])->Set_Position(XMLoadFloat2(&m_fBeamEndPos));
-	static_cast<CModelObject*>(m_PartObjects[PART_BEAM_EFFECT])->Set_Position(XMVectorLerp(XMLoadFloat2(&m_fBeamStartPos), XMLoadFloat2(&m_fBeamEndPos),0.5f));
+
+
+	_float fMaxLength = 2781.f * (_float)RATIO_BOOK2D_X;
+
+
+	switch (m_eDir)
+	{
+	case Client::F_DIRECTION::LEFT:
+		static_cast<CModelObject*>(m_PartObjects[PART_BEAM_EFFECT])->Set_Position(XMVectorSet(fMaxLength * -1.f + m_fBeamStartPos.x, m_fBeamStartPos.y,0.f,1.f));
+		break;
+	case Client::F_DIRECTION::RIGHT:
+		static_cast<CModelObject*>(m_PartObjects[PART_BEAM_EFFECT])->Set_Position(XMVectorLerp(XMLoadFloat2(&m_fBeamStartPos), XMLoadFloat2(&m_fBeamEndPos), 0.5f));
+		break;
+	case Client::F_DIRECTION::UP:
+		break;
+	case Client::F_DIRECTION::DOWN:
+		break;
+	}
+
 
 	switch (m_eDir)
 	{
 	case Client::F_DIRECTION::LEFT:
 		static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(LASER_MACHINE_LENGTH_SIDE);
 		_vector vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
+		m_PartObjects[PART_BEAM_START_EFFECT]->Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, -1.f * XMVectorAbs(vRight));
 		m_PartObjects[PART_BODY]->Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, -1.f * XMVectorAbs(vRight));
 		break;
 	case Client::F_DIRECTION::RIGHT:
@@ -110,7 +145,9 @@ HRESULT CLaser_Container::Initialize(void* _pArg)
 		break;
 	}
 
-
+	for (auto pPart : m_PartObjects)
+		if(nullptr != pPart)
+			static_cast<CModelObject*>(pPart)->Set_PlayingAnim(true);
 
 
 	return S_OK;
@@ -123,25 +160,36 @@ void CLaser_Container::Priority_Update(_float _fTimeDelta)
 
 void CLaser_Container::Update(_float _fTimeDelta)
 {
-	_vector vMyPos = Get_FinalPosition();
-	_vector vTargetPos = XMLoadFloat2(&m_fTargetPos);
-	m_pControllerTransform->Go_Direction(XMVector2Normalize((vTargetPos - vMyPos)), _fTimeDelta);
-
-	if (1.f > m_pControllerTransform->Compute_Distance(vTargetPos))
-	{
-		m_BackMove = !m_BackMove;
-		if (m_BackMove)
-			m_fTargetPos = m_fEndPos;
-		else
-			m_fTargetPos = m_fStartPos;
-	}
-
 
 	__super::Update(_fTimeDelta);
+
+	if (m_IsMove)
+	{
+		_vector vMyPos = Get_FinalPosition();
+		_vector vTargetPos = XMLoadFloat2(&m_fTargetPos);
+		m_pControllerTransform->Go_Direction(XMVectorSetW(XMVector2Normalize((vTargetPos - vMyPos)), 0.f), _fTimeDelta);
+
+		if (1.f > m_pControllerTransform->Compute_Distance(vTargetPos))
+		{
+			m_BackMove = !m_BackMove;
+			if (m_BackMove)
+				m_fTargetPos = m_fEndPos;
+			else
+				m_fTargetPos = m_fStartPos;
+		}
+	}
+
+	if (nullptr != m_pPressurePlate)
+		m_pPressurePlate->Update(_fTimeDelta);
+	
+	Pressured_Process(_fTimeDelta);
+	
 }
 
 void CLaser_Container::Late_Update(_float _fTimeDelta)
 {
+	if (nullptr != m_pPressurePlate)
+		m_pPressurePlate->Late_Update(_fTimeDelta);
 	__super::Late_Update(_fTimeDelta);
 }
 
@@ -153,7 +201,7 @@ HRESULT CLaser_Container::Render()
 	{
 		for (_uint i = 0; i < m_p2DColliderComs.size(); ++i)
 		{
-			m_p2DColliderComs[i]->Render();
+			m_p2DColliderComs[i]->Render(SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName));
 		}
 	}
 #endif // _DEBUG
@@ -164,7 +212,7 @@ HRESULT CLaser_Container::Render()
 
 void CLaser_Container::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-	if (RAY_TRIGGER & _pOtherCollider->Get_CollisionGroupID())
+	if (RAY_TRIGGER & _pMyCollider->Get_CollisionGroupID())
 	{
 		// 블로커랑 닿았을 때, 거리 계산
 		if (BLOCKER & _pOtherCollider->Get_CollisionGroupID())
@@ -195,13 +243,49 @@ void CLaser_Container::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* 
 			{
 				m_iBeamTargetIndex = _pOtherObject->Get_GameObjectInstanceID();
 				m_fBeamLength = fLength;
-				Compute_Beam();
+				Compute_Beam(_pMyCollider, _pOtherCollider, _pOtherObject);
+			}
+			else if (m_iBeamTargetIndex == _pOtherObject->Get_GameObjectInstanceID())
+			{
+				m_iBeamTargetIndex = _pOtherObject->Get_GameObjectInstanceID();
+				m_fBeamLength = fLength;
+				Compute_Beam(_pMyCollider, _pOtherCollider, _pOtherObject);
 			}
 		}
-		else if (PLAYER & _pOtherCollider->Get_CollisionGroupID())
+	}
+
+	else if (MONSTER_PROJECTILE & _pMyCollider->Get_CollisionGroupID() && PLAYER & _pOtherCollider->Get_CollisionGroupID())
+	{
+		if (m_IsBeamOn)
 		{
+			_vector vPos = Get_FinalPosition();
+			_vector vCheckPos = _pOtherObject->Get_FinalPosition();
+			_float fTargetX = XMVectorGetX(vPos) + m_fBeamEndPos.x;
 			// 플레이어면 걍 죽어
-			Event_Hit(this, static_cast<CCharacter*>(_pOtherObject), 99, XMVectorZero());
+			// 아니야 굳이 콜라이더를 수정하지말고 걍 체크하자?
+
+			_bool isKill = false;
+
+			switch (m_eDir)
+			{
+			case Client::F_DIRECTION::LEFT:
+				isKill = fTargetX < XMVectorGetX(_pOtherObject->Get_FinalPosition());
+				break;
+			case Client::F_DIRECTION::RIGHT:
+				isKill = fTargetX > XMVectorGetX(_pOtherObject->Get_FinalPosition());
+				break;
+			case Client::F_DIRECTION::UP:
+				break;
+			case Client::F_DIRECTION::DOWN:
+				break;
+			case Client::F_DIRECTION::F_DIR_LAST:
+				break;
+			default:
+				break;
+			}
+
+			if (isKill)
+				Event_Hit(this, static_cast<CCharacter*>(_pOtherObject), 99, XMVectorZero());
 		}
 	}
 
@@ -209,12 +293,35 @@ void CLaser_Container::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* 
 
 void CLaser_Container::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
+	if (RAY_TRIGGER & _pMyCollider->Get_CollisionGroupID())
+	{
+		// 블로커랑 닿았을 때, 거리 계산
+		if (BLOCKER & _pOtherCollider->Get_CollisionGroupID())
+		{
+			if (_pOtherObject->Get_GameObjectInstanceID() != m_iBeamTargetIndex)
+				On_Collision2D_Enter(_pMyCollider, _pOtherCollider, _pOtherObject);
+			else
+			{
+				auto pOther = dynamic_cast<IInteractable*>(_pOtherObject);
+				if(nullptr != pOther && INTERACT_ID::DRAGGABLE == pOther->Get_InteractID())
+					On_Collision2D_Enter(_pMyCollider, _pOtherCollider, _pOtherObject);
+			}
+			
+		}
+	}
 }
 
 void CLaser_Container::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-	if (m_iBeamTargetIndex == _pOtherObject->Get_GameObjectInstanceID())
-		m_iBeamTargetIndex = -1;
+	if (RAY_TRIGGER & _pMyCollider->Get_CollisionGroupID())
+	{
+		// 블로커랑 닿았을 때, 거리 계산
+		if (BLOCKER & _pOtherCollider->Get_CollisionGroupID())
+		{
+			if (m_iBeamTargetIndex == _pOtherObject->Get_GameObjectInstanceID())
+				m_iBeamTargetIndex = -1;
+		}
+	}
 }
 
 
@@ -248,15 +355,26 @@ HRESULT CLaser_Container::Ready_Components(LASER_DESC* _pDesc)
 	_float  fSizeColliderOffset = 50.f;
 	_float  fBeamWeight = 10.f;
 	// 움직임 판단, 
-	if (false == m_bIsBeamRotate)
+	_vector vSectionEndPos = XMLoadFloat2(&fSectionSize);
+	vSectionEndPos *= 0.5f;
+
+	if (false == m_IsBeamRotate)
 	{
-		vSizeExtent = { fSectionSize.x * 0.4f, fBeamWeight * 0.5f };
-		vSizeOffsetPos = { fSectionSize.x * 0.5f - XMVectorGetX(vPos) - fSizeColliderOffset , 0.f };
+		vSectionEndPos *= m_fDir.x;
+		fSizeColliderOffset *= m_fDir.x;
+		vSizeExtent = { fabs(XMVectorGetX(vPos) - XMVectorGetX(vSectionEndPos)) * 0.5f, fBeamWeight };
+		vSizeOffsetPos = { Lerp_Pos(XMVectorGetX(vPos), XMVectorGetX(vSectionEndPos), 0.5f)
+			- XMVectorGetX(vPos) + fSizeColliderOffset
+			, 0.f };
+		vSizeOffsetPos.y += 40.f;
 	}
 	else
 	{
-		vSizeExtent = { fBeamWeight * 0.5f, fSectionSize.y * 0.4f };
-		vSizeOffsetPos = { 0.f, fSectionSize.y * 0.5f - XMVectorGetY(vPos) - fSizeColliderOffset };
+		vSectionEndPos *= m_fDir.y;
+		fSizeColliderOffset *= m_fDir.y;
+		vSizeExtent = { fBeamWeight, fabs(XMVectorGetY(vPos) - XMVectorGetY(vSectionEndPos)) * 0.5f };
+		vSizeOffsetPos = { 0.f, Lerp_Pos(XMVectorGetY(vPos),XMVectorGetY(vSectionEndPos),0.5f)
+			- XMVectorGetY(vPos) + fSizeColliderOffset };
 	}
 	m_p2DColliderComs.resize(2);
 	/* Size Trigger Collider */
@@ -276,8 +394,12 @@ HRESULT CLaser_Container::Ready_Components(LASER_DESC* _pDesc)
 	{
 		m_pSizeTriggerCollider = m_p2DColliderComs[0];
 		Safe_AddRef(m_pSizeTriggerCollider);
-	}
 
+#ifdef _DEBUG
+		m_pSizeTriggerCollider->Set_DebugColor({ 1.f,0.f,0.f,1.f });
+
+#endif // DEBUG
+	}
 	/* Beam Collider */
 	AABBDesc.vExtents = vSizeExtent;
 	AABBDesc.vScale = { 1.0f, 1.0f };
@@ -296,7 +418,7 @@ HRESULT CLaser_Container::Ready_Components(LASER_DESC* _pDesc)
 	return S_OK;
 }
 
-HRESULT CLaser_Container::Ready_PartObjects()
+HRESULT CLaser_Container::Ready_PartObjects(LASER_DESC* _pDesc)
 {
 	/* Part Body */
 	CModelObject::MODELOBJECT_DESC BodyDesc{};
@@ -323,23 +445,153 @@ HRESULT CLaser_Container::Ready_PartObjects()
 		);
 		BodyDesc.Build_2D_Transform({ 0.f,0.f });
 
-		m_PartObjects[i] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_Monster_Body"), &BodyDesc));
+		if(i != PART_BEAM_EFFECT)
+		m_PartObjects[i] = 
+			static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, 
+				LEVEL_STATIC, TEXT("Prototype_GameObject_Monster_Body"), &BodyDesc));
+		else
+			m_PartObjects[i] =
+			static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ,
+				m_iCurLevelID, TEXT("Prototype_GameObject_Laser_Beam"), &BodyDesc));
+
 		if (nullptr == m_PartObjects[i])
 			return E_FAIL;
 	}
+	if (_pDesc->isPressurePlate)
+	{
+		CModelObject::MODELOBJECT_DESC Desc = {};
 
+		Desc.tTransform2DDesc.vInitialPosition = _float3(_pDesc->fPressurePlatePos.x, _pDesc->fPressurePlatePos.y,0.f);
+		Desc.iCurLevelID = m_iCurLevelID;
+
+		m_pPressurePlate = dynamic_cast<CPressure_Plate*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC,
+			TEXT("Prototype_GameObject_Pressure_Plate"), &Desc));
+
+		if (nullptr == m_pPressurePlate)
+			return E_FAIL;
+
+		if (FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(m_strSectionName, m_pPressurePlate, SECTION_2D_PLAYMAP_BACKGROUND)))
+			return E_FAIL;
+	}
 
 	return S_OK;
 }
 
-void CLaser_Container::Compute_Beam()
+void CLaser_Container::Pressured_Process(_float _fTimeDelta)
 {
+	if (nullptr != m_pPressurePlate)
+	{
+		m_pPressurePlate->Update(_fTimeDelta);
+
+		// 문 열려있음 & 감압판 눌려있음 -> OPEN!
+		if (m_pPressurePlate->Is_Down())
+		{
+			if (true == m_IsMove)
+			{
+				Set_BeamOn(false);
+				Set_Move(false);
+			}
+		}
+
+		// 감압판 눌려있지 않음 -> Close
+		else if (false == m_pPressurePlate->Is_Down())
+		{
+			if (false == m_IsMove)
+			{
+				Set_BeamOn(true);
+				Set_Move(true);
+			}
+		}
+
+	}
+
+}
+
+void CLaser_Container::Set_BeamOn(_bool _IsBeamOn)
+{
+	m_IsBeamOn = _IsBeamOn;
+
+	static_cast<CPartObject*>(m_PartObjects[PART_BEAM_START_EFFECT])->Set_Render(m_IsBeamOn);
+	static_cast<CPartObject*>(m_PartObjects[PART_BEAM_EFFECT])->Set_Render(m_IsBeamOn);
+	static_cast<CPartObject*>(m_PartObjects[PART_BEAM_END_EFFECT])->Set_Render(m_IsBeamOn);
+}
+
+void CLaser_Container::Compute_Beam(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
+{
+
+	_float fMaxLength = 2781.f * (_float)RATIO_BOOK2D_X;
+
+	_vector vLayerPosition = static_cast<CPartObject*>(m_PartObjects[PART_BEAM_END_EFFECT])->Get_OffsetPosition();
+	_float2 fPos = static_cast<CCollider_AABB*>(_pMyCollider)->Get_CollisionPos();
+	_float2 fExtent = static_cast<CCollider_AABB*>(_pOtherCollider)->Get_FinalExtents();
+	_vector vContPos = Get_FinalPosition();
+
+	_float fOffset = (fExtent.x * 0.8f);
+	switch (m_eDir)
+	{
+	case Client::F_DIRECTION::RIGHT:
+	case Client::F_DIRECTION::UP:
+		fOffset *= -1.f;
+	break;
+	case Client::F_DIRECTION::LEFT:
+	case Client::F_DIRECTION::DOWN:
+	break;
+	}
+
+	vLayerPosition = XMVectorSetX(vLayerPosition, fPos.x - XMVectorGetX(vContPos) + fOffset);
+
+
+
+
+
+
+
+	m_PartObjects[PART_BEAM_END_EFFECT]->Set_Position(vLayerPosition);
+	XMStoreFloat2(&m_fBeamEndPos, vLayerPosition);
+
+	
+
+	_float2 fStartUV = {0.f,0.f};
+	_float2 fEndUV = {1.f,1.f};
+
+
+	switch (m_eDir)
+	{
+	case Client::F_DIRECTION::LEFT:
+	case Client::F_DIRECTION::RIGHT:
+	{
+		_float fX = fabs(m_fBeamStartPos.x - m_fBeamEndPos.x);
+		_float fLengthUV = fX / fMaxLength;
+		if(F_DIRECTION::RIGHT == m_eDir)
+			fEndUV.x = fLengthUV;
+		else
+			fStartUV.x = 1.f - fLengthUV;
+	}
+		break;
+	case Client::F_DIRECTION::UP:
+	case Client::F_DIRECTION::DOWN:
+	{
+		_float fY = fabs(m_fBeamStartPos.y - m_fBeamEndPos.y);
+		_float fLengthUV = fY / fMaxLength;
+		if (F_DIRECTION::UP == m_eDir)
+			fEndUV.y = fLengthUV;
+		else
+			fStartUV.y = 1.f - fLengthUV;
+	}
+		break;
+	default:
+		break;
+	}
+
+	static_cast<CLaser_Beam*>(m_PartObjects[PART_BEAM_EFFECT])->Set_StartUV(fStartUV);
+	static_cast<CLaser_Beam*>(m_PartObjects[PART_BEAM_EFFECT])->Set_EndUV(fEndUV);
+	//static_cast<CModelObject*>(m_PartObjects[PART_BEAM_EFFECT])->Switch_Animation(LASER_BEAM_LENGTH_5);
 }
 
 CLaser_Container* CLaser_Container::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
 	CLaser_Container* pInstance = new CLaser_Container(_pDevice, _pContext);
-
+	
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
 		MSG_BOX("Failed to Created : CLaser_Container");
@@ -366,5 +618,6 @@ void CLaser_Container::Free()
 {
 	Safe_Release(m_pSizeTriggerCollider);
 	Safe_Release(m_pBeamCollider);
+	Safe_Release(m_pPressurePlate);
 	__super::Free();
 }

@@ -706,8 +706,23 @@
     <Filter Include="02.GameObjects\2DGimmik\Laser">
       <UniqueIdentifier>{98d463ca-117b-424d-b94b-e003904a3fdf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\UI\00. GamePlay\07. WorldMap">
-      <UniqueIdentifier>{1e01b687-f167-43cf-9d7d-5ea348d5a426}</UniqueIdentifier>
+    <Filter Include="02.GameObjects\Friend">
+      <UniqueIdentifier>{12c60966-0aaf-46c3-be69-65087f50b58f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Friend\Body">
+      <UniqueIdentifier>{a98d64d0-1d40-49cf-a0c0-d4d55c23fac6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Friend\Thrash">
+      <UniqueIdentifier>{b4fee6b4-49f2-469d-bbe2-f2c1b83a8c5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Friend\Violet">
+      <UniqueIdentifier>{06ce55ed-a892-471d-83ba-1e6021aad8c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Friend\Controller">
+      <UniqueIdentifier>{9a0aa463-c77f-4b7e-8ca3-002ef0cc5dd6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Friend\Pip">
+      <UniqueIdentifier>{c71ac69c-4cf0-4807-9497-38d1a0f591e7}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\NPC\98. Humgrump">
       <UniqueIdentifier>{8806f7cd-ad0e-45e1-a5c2-2b02ee7357f4}</UniqueIdentifier>
@@ -717,6 +732,9 @@
     </Filter>
     <Filter Include="02.GameObjects\UI\03. Logo\01. Logo_Background">
       <UniqueIdentifier>{c7e8ab61-bb58-4fb1-9975-ace2a5b45fb4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UI\03. Logo\01. Logo_Background\Logo_TextObject">
+      <UniqueIdentifier>{52ed9875-8e81-4d04-9e13-332d211ae55a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1812,12 +1830,6 @@
     <ClInclude Include="..\Public\Patrol_WayState.h">
       <Filter>03.Components\FSM\State\Patrol</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Back_WayState.h">
-      <Filter>03.Components\FSM\State\Patrol</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\Chase_WayState.h">
-      <Filter>03.Components\FSM\State\Chase</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\PlayerState_CannonPortal.h">
       <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
@@ -1831,15 +1843,47 @@
     <ClInclude Include="..\Public\Laser_Container.h">
       <Filter>02.GameObjects\2DGimmik\Laser</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Beetle_Corpse.h">
-      <Filter>02.GameObjects\Interact\Carriable</Filter>
+    <ClInclude Include="..\Public\Laser_Beam.h">
+      <Filter>02.GameObjects\2DGimmik\Laser</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\WorldMapNPC.h">
-      <Filter>02.GameObjects\UI\00. GamePlay\07. WorldMap</Filter>
+    <ClInclude Include="..\Public\Back_WayState.h" />
+    <ClInclude Include="..\Public\Beetle_Corpse.h" />
+    <ClInclude Include="..\Public\BombSwitch.h" />
+    <ClInclude Include="..\Public\BombSwitchStopper.h" />
+    <ClInclude Include="..\Public\Chase_WayState.h" />
+    <ClInclude Include="..\Public\WorldMapNPC.h" />
+    <ClInclude Include="..\Public\FriendBody.h">
+      <Filter>02.GameObjects\Friend\Body</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Friend.h">
+      <Filter>02.GameObjects\Friend</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Friend_Controller.h">
+      <Filter>02.GameObjects\Friend\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Friend_Thrash.h">
+      <Filter>02.GameObjects\Friend\Thrash</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Friend_Violet.h">
+      <Filter>02.GameObjects\Friend\Violet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Back_WayState.h" />
+    <ClInclude Include="..\Public\Beetle_Corpse.h" />
+    <ClInclude Include="..\Public\BombSwitch.h" />
+    <ClInclude Include="..\Public\BombSwitchStopper.h" />
+    <ClInclude Include="..\Public\Chase_WayState.h" />
+    <ClInclude Include="..\Public\WorldMapNPC.h" />
+    <ClInclude Include="..\Public\BigPressurePlate.h" />
+    <ClInclude Include="..\Public\PlayerState_Mojam.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Friend_Pip.h">
+      <Filter>02.GameObjects\Friend\Pip</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Logo_BackGround.h">
       <Filter>02.GameObjects\UI\03. Logo\01. Logo_Background</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Logo_ColorObject.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -2921,12 +2965,6 @@
     <ClCompile Include="..\Private\Patrol_WayState.cpp">
       <Filter>03.Components\FSM\State\Patrol</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Back_WayState.cpp">
-      <Filter>03.Components\FSM\State\Patrol</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\Chase_WayState.cpp">
-      <Filter>03.Components\FSM\State\Chase</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\PlayerState_CannonPortal.cpp">
       <Filter>03.Components\PlayerState</Filter>
     </ClCompile>
@@ -2940,15 +2978,47 @@
     <ClCompile Include="..\Private\Laser_Container.cpp">
       <Filter>02.GameObjects\2DGimmik\Laser</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Beetle_Corpse.cpp">
-      <Filter>02.GameObjects\Interact\Carriable</Filter>
+    <ClCompile Include="..\Private\Laser_Beam.cpp">
+      <Filter>02.GameObjects\2DGimmik\Laser</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\WorldMapNPC.cpp">
-      <Filter>02.GameObjects\UI\00. GamePlay\07. WorldMap</Filter>
+    <ClCompile Include="..\Private\Back_WayState.cpp" />
+    <ClCompile Include="..\Private\Beetle_Corpse.cpp" />
+    <ClCompile Include="..\Private\BombSwitch.cpp" />
+    <ClCompile Include="..\Private\BombSwitchStopper.cpp" />
+    <ClCompile Include="..\Private\Chase_WayState.cpp" />
+    <ClCompile Include="..\Private\WorldMapNPC.cpp" />
+    <ClCompile Include="..\Private\FriendBody.cpp">
+      <Filter>02.GameObjects\Friend\Body</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Friend.cpp">
+      <Filter>02.GameObjects\Friend</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Friend_Controller.cpp">
+      <Filter>02.GameObjects\Friend\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Friend_Thrash.cpp">
+      <Filter>02.GameObjects\Friend\Thrash</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Friend_Violet.cpp">
+      <Filter>02.GameObjects\Friend\Violet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Back_WayState.cpp" />
+    <ClCompile Include="..\Private\Beetle_Corpse.cpp" />
+    <ClCompile Include="..\Private\BombSwitch.cpp" />
+    <ClCompile Include="..\Private\BombSwitchStopper.cpp" />
+    <ClCompile Include="..\Private\Chase_WayState.cpp" />
+    <ClCompile Include="..\Private\WorldMapNPC.cpp" />
+    <ClCompile Include="..\Private\BigPressurePlate.cpp" />
+    <ClCompile Include="..\Private\PlayerState_Mojam.cpp">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Friend_Pip.cpp">
+      <Filter>02.GameObjects\Friend\Pip</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Logo_BackGround.cpp">
       <Filter>02.GameObjects\UI\03. Logo\01. Logo_Background</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Logo_ColorObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

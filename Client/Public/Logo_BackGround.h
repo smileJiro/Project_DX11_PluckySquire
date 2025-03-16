@@ -66,6 +66,9 @@ protected:
 	virtual HRESULT			Ready_Components() override;
 	HRESULT					Ready_Objects();
 
+private:
+	void					On_End_Animation(COORDINATE _eCoordinate, _uint _iAnimIndex);
+
 public:
 	static CLogo_BackGround* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject*	Clone(void* _pArg);

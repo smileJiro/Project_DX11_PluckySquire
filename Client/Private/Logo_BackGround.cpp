@@ -3,6 +3,7 @@
 #include "GameInstance.h"
 
 #include "ModelObject.h"
+#include "Logo_ColorObject.h"
 
 CLogo_BackGround::CLogo_BackGround(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CUI(_pDevice, _pContext)
@@ -16,6 +17,7 @@ CLogo_BackGround::CLogo_BackGround(const CLogo_BackGround& _Prototype)
 
 HRESULT CLogo_BackGround::Initialize_Prototype()
 {
+
 	return S_OK;
 }
 
@@ -26,6 +28,11 @@ HRESULT CLogo_BackGround::Initialize(void* _pArg)
 	m_vColor = pDesc->vColor;
 	m_eBackGroundType = pDesc->iBackGroundMainType;
 	m_iCurLevelID = pDesc->iCurLevelID;
+
+	pDesc->fX = g_iWinSizeX >> 1;
+	pDesc->fY = g_iWinSizeY >> 1;
+	pDesc->fSizeX = g_iWinSizeX;
+	pDesc->fSizeY = g_iWinSizeY;
 
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
@@ -42,15 +49,17 @@ HRESULT CLogo_BackGround::Initialize(void* _pArg)
 void CLogo_BackGround::Priority_Update(_float _fTimeDelta)
 {
 	for (auto& Part : m_pBackGroundParts) {
-		if(nullptr != Part)
+		if(nullptr != Part && true == Part->Is_Active())
 			Part->Priority_Update(_fTimeDelta);
 	}
 }
 
 void CLogo_BackGround::Update(_float _fTimeDelta)
 {
+	//Check_Character_Anim();
+
 	for (auto& Part : m_pBackGroundParts) {
-		if (nullptr != Part)
+		if (nullptr != Part && true == Part->Is_Active())
 			Part->Update(_fTimeDelta);
 	}
 }
@@ -60,7 +69,7 @@ void CLogo_BackGround::Late_Update(_float _fTimeDelta)
 	__super::Late_Update(_fTimeDelta);
 
 	for (auto& Part : m_pBackGroundParts) {
-		if (nullptr != Part) {
+		if (nullptr != Part && true == Part->Is_Active()) {
 			Part->Register_RenderGroup(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_UI);
 			Part->Late_Update(_fTimeDelta);
 		}
@@ -69,6 +78,7 @@ void CLogo_BackGround::Late_Update(_float _fTimeDelta)
 
 HRESULT CLogo_BackGround::Render()
 {
+
 	if (FAILED(m_pShaderCom->Bind_RawValue("g_vColors", &m_vColor, sizeof(_float4))))
 		return E_FAIL;
 
@@ -121,7 +131,7 @@ HRESULT CLogo_BackGround::Ready_Objects()
 		Desc.strModelPrototypeTag_2D = TEXT("Main_Jot");
 		break;
 	case MAIN_HUMGRUMP:
-		Desc.strModelPrototypeTag_2D = TEXT("Main_Humgrump");
+		Desc.strModelPrototypeTag_2D = TEXT("Prototype_Component_Main_Humgrump");
 		break;
 	}
 
@@ -130,8 +140,44 @@ HRESULT CLogo_BackGround::Ready_Objects()
 		return E_FAIL;
 
 	m_pBackGroundParts[LOGO_CHARACTER] = static_cast<CModelObject*>(pObject);
+	m_pBackGroundParts[LOGO_CHARACTER]->Register_OnAnimEndCallBack(bind(&CLogo_BackGround::On_End_Animation, this, placeholders::_1, placeholders::_2));
+	
+	// Logo Text »ý¼º
+	CLogo_ColorObject::COLOROBJECT_DESC TextObjDesc = {};
+	TextObjDesc.iCurLevelID = m_iCurLevelID;
+	TextObjDesc.tTransform2DDesc.vInitialPosition = _float3(0.f, 0.f, 0.f);
 
+	switch (m_eBackGroundType) {
+	case MAIN_JOT:
+		TextObjDesc.strModelPrototypeTag_2D = TEXT("Main_Jot");
+		break;
+	case MAIN_HUMGRUMP:
+		TextObjDesc.strModelPrototypeTag_2D = TEXT("Prototype_Logo_TextObject_Humgrump");
+		TextObjDesc.vColor = _float4(1.f, 1.f, 0.f, 1.f);
+		break;
+	}
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Logo_ColorObject"),
+		m_iCurLevelID, TEXT("Layer_UI"), &pObject, &TextObjDesc)))
+		return E_FAIL;
+
+	m_pBackGroundParts[LOGO_TEXT_OBJECT] = static_cast<CModelObject*>(pObject);
 	return S_OK;
+}
+
+void CLogo_BackGround::On_End_Animation(COORDINATE _eCoordinate, _uint _iAnimIndex)
+{
+	if (COORDINATE_3D == _eCoordinate)
+		return;
+
+	if (CLogo_BackGround::INTO == _iAnimIndex) {
+
+		if (nullptr == m_pBackGroundParts[LOGO_TEXT_OBJECT])
+			return;
+
+		m_pBackGroundParts[LOGO_CHARACTER]->Switch_Animation(BG_CHARACTER_ANIM::LOOP);
+		m_pBackGroundParts[LOGO_TEXT_OBJECT]->Set_Active(true);
+	}
 }
 
 CLogo_BackGround* CLogo_BackGround::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

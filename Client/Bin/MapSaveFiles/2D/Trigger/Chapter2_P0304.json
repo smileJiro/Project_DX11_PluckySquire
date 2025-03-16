@@ -1,27 +1,45 @@
 [
-    {
-        "Collider_Info": {
-            "Position": [
-                1274.0,
-                -22.0
-            ],
-            "Scale": [
-                27.0,
-                63.0
-            ]
-        },
-        "Fillter_MyGroup": 128,
-        "Fillter_OtherGroupMask": 2,
-        "Trigger_ConditionType": 0,
-        "Trigger_Coordinate": 0,
-        "Trigger_EventTag": "BookSectionChange_Next",
-        "Trigger_Type": 6,
-		"MapTrigger_Info" :
-		{
-			"Next_Position": [
-                0.0,
-                -300.0
-            ]
-		}
+  {
+    "Collider_Info": {
+      "Position": [
+        1274.0,
+        -22.0
+      ],
+      "Scale": [
+        27.0,
+        63.0
+      ]
+    },
+    "Fillter_MyGroup": 128,
+    "Fillter_OtherGroupMask": 2,
+    "Trigger_ConditionType": 0,
+    "Trigger_Coordinate": 0,
+    "Trigger_EventTag": "BookSectionChange_Next",
+    "Trigger_Type": 6,
+    "MapTrigger_Info": {
+      "Next_Position": [
+        0.0,
+        -300.0
+      ]
     }
+  },
+  {
+    "Collider_Info": {
+      "Position": [
+        -649.0,
+        173.0
+      ],
+      "Scale": [
+        10.0,
+        30.0
+      ]
+    },
+    "Trigger_Reusable": false,
+    "Fillter_MyGroup": 2,
+    "Fillter_OtherGroupMask": 128,
+    "Trigger_ConditionType": 0,
+    "Trigger_Coordinate": 0,
+    "Trigger_EventTag": "Chapter2_FriendEvent_0",
+    "Trigger_Type": 0
+  }
 ]

@@ -70,7 +70,11 @@ private:
 
 	void							Chapter2_After_Opening_Book(_float _fTimeDelta);
 	void							Chapter2_Going_To_Artia(_float _fTimeDelta);
+	void							Chapter2_FriendEvent_0(_float _fTimeDelta); // 돌덩이맵 처음 세명 만남.
+	void							Chapter2_FriendEvent_1(_float _fTimeDelta); // 책의탑 오르기전에 저트 버리는.
 
+private:
+	_uint m_iDialogueIndex = 0; // 태웅
 public:
 	static CGameEventExecuter_C2* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual void Free();

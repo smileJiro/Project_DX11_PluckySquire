@@ -22,6 +22,7 @@ HRESULT CDeadState::Initialize(void* _pArg)
 
 void CDeadState::State_Enter()
 {
+
 	m_pOwner->Set_AnimChangeable(false);
 }
 

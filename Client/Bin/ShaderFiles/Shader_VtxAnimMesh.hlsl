@@ -272,6 +272,7 @@ PS_OUT PS_MAIN(PS_IN In)
     if (vAlbedo.a < 0.1f)
         discard;
     
+    
     Out.vDiffuse = vAlbedo * Material.MultipleAlbedo;
     // 1,0,0 
     // 1, 0.5, 0.5 (¾çÀÇ x Ãà)

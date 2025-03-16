@@ -13,6 +13,7 @@
 #include "PlayerData_Manager.h"
 #include "Effect_Manager.h"
 #include "Effect2D_Manager.h"
+#include "DraggableObject.h"
 
 #include "CubeMap.h"
 #include "MainTable.h"
@@ -186,6 +187,12 @@ HRESULT CLevel_Chapter_06::Initialize(LEVEL_ID _eLevelID)
 		MSG_BOX(" Failed Ready_Layer_Defender (Level_Chapter_06::Initialize)");
 		assert(nullptr);
 	}
+	
+	if (FAILED(Ready_Layer_MapGimmick()))
+	{
+		MSG_BOX(" Failed Ready_Layer_MapGimmick (Level_Chapter_06::Initialize)");
+		assert(nullptr);
+	}
 
 
 	/* Collision Check Matrix */
@@ -209,7 +216,7 @@ HRESULT CLevel_Chapter_06::Initialize(LEVEL_ID _eLevelID)
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MAPOBJECT, OBJECT_GROUP::PLAYER_PROJECTILE);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::TRIGGER_OBJECT, OBJECT_GROUP::GIMMICK_OBJECT);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::SLIPPERY, OBJECT_GROUP::MAPOBJECT);
-	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::SLIPPERY, OBJECT_GROUP::BLOCKER);
+	//m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::SLIPPERY, OBJECT_GROUP::BLOCKER);
 
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::NPC_EVENT, OBJECT_GROUP::INTERACTION_OBEJCT); //3 8
 
@@ -737,6 +744,26 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Defender()
 	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Layer_Defender"), pPlayer);
 	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter6_SKSP_04"), pPlayer, SECTION_2D_PLAYMAP_OBJECT);
 	pPlayer->Set_Active(false);
+
+	return S_OK;
+}
+
+HRESULT CLevel_Chapter_06::Ready_Layer_MapGimmick()
+{
+	CDraggableObject::DRAGGABLE_DESC tDraggableDesc = {};
+	tDraggableDesc.iModelPrototypeLevelID_3D = LEVEL_STATIC;
+	tDraggableDesc.isCoordChangeEnable = false;
+	tDraggableDesc.iCurLevelID = m_eLevelID;
+	tDraggableDesc.strModelPrototypeTag_3D = TEXT("Moving_Block");
+	tDraggableDesc.eStartCoord = COORDINATE_3D;
+	tDraggableDesc.vBoxHalfExtents = { 3.1f,0.33f,0.99f };
+	tDraggableDesc.vBoxOffset = { 0.f,tDraggableDesc.vBoxHalfExtents.y, 0.f };
+	tDraggableDesc.tTransform3DDesc.vInitialPosition = { 74.65, 12.07f, 27.32f };
+	tDraggableDesc.tTransform3DDesc.vInitialScaling = { 1.1f,1.1f,1.1f };
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DraggableObject"),
+		m_eLevelID, L"Layer_Draggable", &tDraggableDesc)))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -1763,14 +1790,6 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Slippery()
 	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter5_P0102"), pSlippery, SECTION_2D_PLAYMAP_OBJECT);
 
 
-	//TMP
-	CTiltSwapPusher::TILTSWAPPUSHER_DESC tTiltSwapPusherDesc{};
-	tTiltSwapPusherDesc.eLookDirection = F_DIRECTION::LEFT;
-	tTiltSwapPusherDesc.iCurLevelID = m_eLevelID;
-	tTiltSwapPusherDesc.tTransform2DDesc.vInitialPosition = _float3(1530.f, 515.f, 0.f);
-	CTiltSwapPusher* pTSP = static_cast<CTiltSwapPusher*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_eLevelID, TEXT("Prototype_GameObject_TiltSwapPusher"), &tTiltSwapPusherDesc));
-	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Layer_Slippery"), pTSP);
-	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter5_P0102"), pTSP, SECTION_2D_PLAYMAP_OBJECT);
 
 	return S_OK;
 }
