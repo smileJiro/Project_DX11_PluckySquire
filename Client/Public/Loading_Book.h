@@ -1,0 +1,84 @@
+#pragma once
+#include "UI.h"
+
+BEGIN(Client)
+class CLoading_Book final: public CUI
+{
+
+public:
+	enum ANIM_2D
+	{
+		Gameover_Pip_Idle,
+		GameOver_Pip_Recover,
+		Pip_C89_Mojam,
+		Pip_C89_Mojam_09_5152,
+		Pip_C89_Mojam_10_0910,
+		Pip_Jump_Fall_right_,
+		Pip_Jump_Rise_Talk_01,
+		Pip_Jump_Rise_Talk01_Right,
+		Pip_Jump_Rise_Talk_01_Up,
+		Pip_Jump_Rise_right,
+		Pip_Run_Down,
+		Pip_Run_Right,
+		Pip_Run_Up,
+		Pip_attack_down,
+		Pip_attack_right,
+		Pip_attack_up,
+		Pip_excited_down,
+		Pip_excited_into,
+		Pip_happy,
+		Pip_happy_down,
+		Pip_hit_down,
+		Pip_hit_right,
+		Pip_hit_up,
+		Pip_idle_down,
+		Pip_idle_right,
+		Pip_idle_up,
+		Pip_jumpup_,
+		Pip_jumpup_idle,
+		Pip_knockedback_End,
+		Pip_knockback_Loop,
+		Pip_released,
+		Pip_trapped,
+		Pip_talk_happy_up_Flipbook,
+
+		Pip_End
+	};
+
+
+private:
+	CLoading_Book(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
+	CLoading_Book(const CLoading_Book& _Prototype);
+	virtual ~CLoading_Book() = default;
+
+
+
+public:
+	virtual HRESULT				Initialize_Prototype();								// 프로토 타입 전용 Initialize
+	virtual HRESULT				Initialize(void* _pArg);							// 초기화 시 필요한 매개변수를 void* 타입으로 넘겨준다.
+	virtual void				Priority_Update(_float _fTimeDelta);				// 특정개체에 대한 참조가 빈번한 객체들이나, 등등의 우선 업데이트 되어야하는 녀석들.
+	virtual void				Update(_float _fTimeDelta);
+	virtual void				Late_Update(_float _fTimeDelta);
+	virtual HRESULT				Render();
+
+
+
+
+protected:
+	virtual HRESULT Ready_Components() override;
+
+
+public:
+	static CLoading_Book*			Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
+	virtual CGameObject*		Clone(void* _pArg) override; // Clone() 프로토 타입이나 객체의 복사시 사용된다.
+	virtual void				Free() override;
+	virtual HRESULT				Cleanup_DeadReferences() override; // 참조 중인 게임오브젝트들 중 죽은 Dead상태인 오브젝트를 체크해서 참조해제.(액티브 false인 애들때매 만듬)
+
+private:
+	void						On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx);
+
+protected:
+	//virtual HRESULT Ready_Components();
+};
+
+END

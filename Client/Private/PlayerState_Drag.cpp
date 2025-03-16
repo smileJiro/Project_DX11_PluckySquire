@@ -19,17 +19,25 @@ void CPlayerState_Drag::Update(_float _fTimeDelta)
 		m_pOwner->Set_State(CPlayer::IDLE);
 		return;
 	}
-	CActor_Dynamic* pDraggableDynamic = dynamic_cast<CActor_Dynamic*>(m_pDraggableObject->Get_ActorCom());
-	CActor_Dynamic* pOwnerDynamic = dynamic_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom());
-	if (pDraggableDynamic->Get_LinearVelocity().m128_f32[1] < -0.1f
-		|| pOwnerDynamic->Get_LinearVelocity().m128_f32[1] < -0.1f)
-	{
-		m_pOwner->Set_State(CPlayer::IDLE);
-		return;
-	}
+
 	COORDINATE eCoord = m_pOwner->Get_CurCoord();
+
+	if (COORDINATE_3D == eCoord)
+	{
+		CActor_Dynamic* pDraggableDynamic = dynamic_cast<CActor_Dynamic*>(m_pDraggableObject->Get_ActorCom());
+		CActor_Dynamic* pOwnerDynamic = dynamic_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom());
+		if (pDraggableDynamic->Get_LinearVelocity().m128_f32[1] < -0.1f
+			|| pOwnerDynamic->Get_LinearVelocity().m128_f32[1] < -0.1f)
+		{
+			m_pOwner->Set_State(CPlayer::IDLE);
+			return;
+		}
+		m_pOwner->Stop_Rotate();
+
+	}
+
+
 	INTERACT_RESULT eResult = m_pOwner->Try_Interact(_fTimeDelta);
-	m_pOwner->Stop_Rotate();
 	//HOLDING 중. 계속 E 키 누름.
 	if (INTERACT_RESULT::SUCCESS == eResult)
 	{
@@ -52,7 +60,7 @@ void CPlayerState_Drag::Update(_float _fTimeDelta)
 			}
 			m_pOwner->Set_PlayingAnim(true);
 			
-			//m_pOwner->Move(XMVector3Normalize(tKeyResult.vMoveDir) * m_fDragMoveSpeed, _fTimeDelta);
+			m_pOwner->Move(XMVector3Normalize(tKeyResult.vMoveDir) * m_fDragMoveSpeed, _fTimeDelta);
 			m_pDraggableObject->Move(XMVector3Normalize(tKeyResult.vMoveDir) * m_fDragMoveSpeed, _fTimeDelta);
 
 			if (COORDINATE_3D == eCoord)
@@ -112,9 +120,14 @@ void CPlayerState_Drag::Enter()
 
 void CPlayerState_Drag::Exit()
 {
-	CActor_Dynamic* pDraggableDynamic = dynamic_cast<CActor_Dynamic*>(m_pDraggableObject->Get_ActorCom());
-	pDraggableDynamic->Delete_Shape(m_iAdditionalShapeIndex);
-	//m_pOwner->Set_Kinematic(false);
+	COORDINATE eCoord = m_pOwner->Get_CurCoord();
+
+	if (COORDINATE_3D == eCoord)
+	{
+		CActor_Dynamic* pDraggableDynamic = dynamic_cast<CActor_Dynamic*>(m_pDraggableObject->Get_ActorCom());
+		pDraggableDynamic->Delete_Shape(m_iAdditionalShapeIndex);
+		//m_pOwner->Set_Kinematic(false);
+	}
 	m_pOwner->Set_PlayingAnim(true);
 }
 
@@ -131,7 +144,25 @@ void CPlayerState_Drag::Switch_To_PushAnimation(COORDINATE _eCoord)
 	}
 	else
 	{
-
+		F_DIRECTION eDir = To_FDirection(-m_vHoldOffset, _eCoord);
+		switch (eDir)
+		{
+		case Client::F_DIRECTION::LEFT:
+			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_PUSH_OBJECT_SS);
+			break;
+		case Client::F_DIRECTION::RIGHT:
+			m_pOwner->Set_2DDirection(F_DIRECTION::LEFT);
+			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_PUSH_OBJECT_SS);
+			break;
+		case Client::F_DIRECTION::UP:
+			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_PUSH_OBJECT_DOWN);
+			break;
+		case Client::F_DIRECTION::DOWN:
+			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_PUSH_OBJECT_UP);
+			break;
+		case Client::F_DIRECTION::F_DIR_LAST:
+			break;
+		}
 	}
 }
 
@@ -161,7 +192,40 @@ void CPlayerState_Drag::Switch_To_PullAnimation(COORDINATE _eCoord, _vector _vMo
 	}
 	else
 	{
-
+		if (To_FDirection(-m_vHoldOffset, _eCoord) == To_FDirection(_vMoveDir, _eCoord))
+		{
+			F_DIRECTION eDir = To_FDirection(_vMoveDir, _eCoord);
+			switch (eDir)
+			{
+			case Client::F_DIRECTION::LEFT:
+				m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_PULL_OBJECT_SS);
+				break;
+			case Client::F_DIRECTION::RIGHT:
+				m_pOwner->Set_2DDirection(F_DIRECTION::LEFT);
+				m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_PULL_OBJECT_SS);
+				break;
+			case Client::F_DIRECTION::UP:
+				m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_PULL_OBJECT_DOWN);
+				break;
+			case Client::F_DIRECTION::DOWN:
+				m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_PULL_OBJECT_UP);
+				break;
+			case Client::F_DIRECTION::F_DIR_LAST:
+				break;
+			}
+		}
+		else
+		{
+			//_float fCross = XMVectorGetY(XMVector3Cross(m_vHoldOffset, _vMoveDir));
+			//if (0 < fCross)
+			//{
+			//	m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_PULL_OBJECT_RIGHT);
+			//}
+			//else if (0 > fCross)
+			//{
+			//	m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_PULL_OBJECT_DOWN);
+			//}
+		}
 	}
 }
 

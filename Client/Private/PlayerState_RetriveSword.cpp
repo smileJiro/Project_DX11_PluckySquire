@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "PlayerState_RetriveSword.h"
 
+#include "Trigger_Manager.h"
+
 CPlayerState_RetriveSword::CPlayerState_RetriveSword(CPlayer* _pOwner)
 	:CPlayerState(_pOwner, CPlayer::RETRIVE_SWORD)
 {
@@ -26,5 +28,7 @@ void CPlayerState_RetriveSword::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 	if (iAnimIdx == (_uint)CPlayer::ANIM_STATE_2D::PLAYER_SWORD_RETRIEVE)
 	{
 		m_pOwner->Set_State(CPlayer::IDLE);
+
+		CTrigger_Manager::GetInstance()->Register_TriggerEvent(TEXT("Chapter2_Going_To_Artia"), 0);
 	}
 }

@@ -50,7 +50,19 @@ void CSlipperyObject::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _
 		if (m_iImpactCollisionFilter & _pOtherCollider->Get_CollisionGroupID())
 		{
 			m_bSlip = false;
+			
 			On_Impact(_pOtherObject);
+		}
+	}
+}
+
+void CSlipperyObject::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
+{
+	if (m_bSlip)
+	{
+		if (m_iImpactCollisionFilter & _pOtherCollider->Get_CollisionGroupID())
+		{
+			m_bSlip = false;
 		}
 	}
 }

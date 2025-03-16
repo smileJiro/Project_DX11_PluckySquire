@@ -127,8 +127,8 @@ class CFriend_Violet final : public CFriend
 		c07_violet_talk_soCute,
 		violet_gameover,
 		violet_gameover_loop,
-		violet_mojam_into,
-		violet_mojam_mojam,
+		VIOLET_MOJAM_INTO,	 // Mojam
+		VIOLET_MOJAM_MOJAM,	 // Mojam
 		violet_mojam_mojam_c02_0910,
 		violet_mojam_mojam_c10_0910,
 		violet_talk_holyguacamole_into_,

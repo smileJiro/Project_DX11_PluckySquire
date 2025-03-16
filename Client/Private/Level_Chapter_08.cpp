@@ -30,6 +30,8 @@
 #include "Soldier_CrossBow.h"
 #include "CrossBow_Arrow.h"
 #include "Bomb.h"
+#include "Rat.h"
+#include "Zippy.h"
 #include "SlipperyObject.h"
 #include "LightningBolt.h"
 #include "ButterGrump.h"
@@ -39,17 +41,20 @@
 #include "BombSwitch.h"
 #include "BombSwitchStopper.h"
 #include "BigPressurePlate.h"
+#include "TiltSwapCrate.h"
 #include "MudPit.h"
 #include "Postit_Page.h"
 #include "Door_Yellow.h"
 #include "C08_Box.h"
 #include "Laser_Container.h"
 #include "Beetle_Corpse.h"
+#include "BombSwitchStopper.h"
 
 #include "RayShape.h"
 #include "CarriableObject.h"
 #include "DraggableObject.h"
 #include "Bulb.h"
+#include "Door_Red.h"
 
 
 #include "2DMapObject.h"
@@ -178,7 +183,7 @@ HRESULT CLevel_Chapter_08::Initialize(LEVEL_ID _eLevelID)
 		assert(nullptr);
 	}
 	/* Collision Check Matrix */
-	// 그룹필터 추가 >> 중복해서 넣어도 돼 내부적으로 걸러줌 알아서 
+	// 그룹필터 추가 >> 중복해서 넣어도 돼 내부적으로 걸러줌 알아서 Door_Yellow
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::MONSTER);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::MONSTER_PROJECTILE);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::TRIGGER_OBJECT);
@@ -189,6 +194,8 @@ HRESULT CLevel_Chapter_08::Initialize(LEVEL_ID _eLevelID)
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::PLAYER_PROJECTILE);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::BLOCKER);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::FALLINGROCK_BASIC);
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::SLIPPERY);
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::DOOR);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_TRIGGER, OBJECT_GROUP::WORD_GAME);
 	//m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::PORTAL);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_TRIGGER, OBJECT_GROUP::INTERACTION_OBEJCT); //3 8
@@ -196,9 +203,10 @@ HRESULT CLevel_Chapter_08::Initialize(LEVEL_ID _eLevelID)
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::INTERACTION_OBEJCT, OBJECT_GROUP::WORD_GAME);
 
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::RAY_TRIGGER, OBJECT_GROUP::BLOCKER);
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::RAY_TRIGGER, OBJECT_GROUP::BLOCKER_JUMPPASS);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MAPOBJECT, OBJECT_GROUP::PLAYER_PROJECTILE);
-	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::SLIPPERY, OBJECT_GROUP::MAPOBJECT);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::SLIPPERY, OBJECT_GROUP::BLOCKER);
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::SLIPPERY, OBJECT_GROUP::TRIGGER_OBJECT);
 
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::NPC_EVENT, OBJECT_GROUP::INTERACTION_OBEJCT); //3 8
 
@@ -211,6 +219,8 @@ HRESULT CLevel_Chapter_08::Initialize(LEVEL_ID _eLevelID)
 
 	/* 발판 - 기믹오브젝트, 2D에 해당하는 오브젝트 (주사위, 등.. )*/
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MAPOBJECT, OBJECT_GROUP::GIMMICK_OBJECT);
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::BLOCKER, OBJECT_GROUP::GIMMICK_OBJECT);
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::GIMMICK_OBJECT, OBJECT_GROUP::GIMMICK_OBJECT);
 
 	/* 돌덩이 */
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER_PROJECTILE, OBJECT_GROUP::BLOCKER);
@@ -439,16 +449,31 @@ void CLevel_Chapter_08::Update(_float _fTimeDelta)
 	{
 		_float3 vPos = {-90.f, 65.2f, 18.3f};
 
-		CBeetle::MONSTER_DESC Beetle_Desc;
-		Beetle_Desc.iCurLevelID = m_eLevelID;
-		Beetle_Desc.eStartCoord = COORDINATE_3D;
-		Beetle_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-		Beetle_Desc.tTransform3DDesc.vInitialPosition = vPos;
-		Beetle_Desc.isSneakMode = true;
-		Beetle_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER8_BEETLE1;
+		//CBeetle::MONSTER_DESC Beetle_Desc;
+		//Beetle_Desc.iCurLevelID = m_eLevelID;
+		//Beetle_Desc.eStartCoord = COORDINATE_3D;
+		//Beetle_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+		//Beetle_Desc.tTransform3DDesc.vInitialPosition = vPos;
+		//Beetle_Desc.isSneakMode = true;
+		//Beetle_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER8_BEETLE1;
 
-		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, TEXT("Layer_Sneak_Beetle"), &Beetle_Desc)))
-			return;
+		//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, TEXT("Layer_Sneak_Beetle"), &Beetle_Desc)))
+		//	return;
+
+		//CBeetle::MONSTER_DESC Beetle_Desc;
+		//Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(-6.5f, 18.5f, 44.5f);
+		//Beetle_Desc.isSneakMode = false;
+		//Beetle_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER8_BEETLE_FINAL_1;
+
+		//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, TEXT("Layer_Sneak_Beetle"), &Beetle_Desc)))
+		//	return;
+
+		//Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(-13.5f, 18.3f, 46.5f);
+		//Beetle_Desc.isSneakMode = false;
+		//Beetle_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER8_BEETLE_FINAL_2;
+
+		//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, TEXT("Layer_Sneak_Beetle"), &Beetle_Desc)))
+		//	return;
 	}
 
 }
@@ -540,7 +565,7 @@ HRESULT CLevel_Chapter_08::Ready_Layer_MainTable(const _wstring& _strLayerTag)
 	
 	Desc = {};
 	Desc.isOverride = true;
-	Desc.tTransform3DDesc.vInitialPosition = _float3(0.0f, 17.25f, 47.f);
+	Desc.tTransform3DDesc.vInitialPosition = _float3(0.0f, 17.5f, 47.f);
 	Desc.vHalfExtents = { 60.f, 1.f, 12.f };
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_MainTable"),
@@ -753,7 +778,7 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Book(const _wstring& _strLayerTag)
 	CBook::BOOK_DESC Desc = {};
 	Desc.iCurLevelID = m_eLevelID;
 	Desc.isInitOverride = true;
-	Desc.tTransform3DDesc.vInitialPosition = _float3(-90.f, 64.4f, 19.0f);
+	Desc.tTransform3DDesc.vInitialPosition = _float3(-90.f, 64.7f, 19.0f);
 	Desc.tTransform3DDesc.vInitialScaling = _float3(1.0f, 1.0f, 1.0f);
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Book"),
 		m_eLevelID, L"Layer_Book", &pBook, &Desc)))
@@ -1182,16 +1207,19 @@ HRESULT CLevel_Chapter_08::Ready_Layer_NPC(const _wstring& _strLayerTag)
 
 HRESULT CLevel_Chapter_08::Ready_Layer_Monster(const _wstring& _strLayerTag, CGameObject** _ppout)
 {
-	//CSpear_Soldier::MONSTER_DESC Spear_Soldier_Desc;
-	//Spear_Soldier_Desc.iCurLevelID = m_eLevelID;
-	//Spear_Soldier_Desc.eStartCoord = COORDINATE_3D;
-	//Spear_Soldier_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-	//Spear_Soldier_Desc.tTransform3DDesc.vInitialPosition = _float3(13.f, 21.58f, 5.5f);
-	//Spear_Soldier_Desc.isSneakMode = true;
-	//Spear_Soldier_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER8_1;
+	CGameObject* pObject = nullptr;
 
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Spear_Soldier"), m_eLevelID, _strLayerTag, &Spear_Soldier_Desc)))
-	//	return E_FAIL;
+
+	CSpear_Soldier::MONSTER_DESC Spear_Soldier_Desc;
+	Spear_Soldier_Desc.iCurLevelID = m_eLevelID;
+	Spear_Soldier_Desc.eStartCoord = COORDINATE_3D;
+	Spear_Soldier_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	Spear_Soldier_Desc.tTransform3DDesc.vInitialPosition = _float3(13.f, 21.58f, 5.5f);
+	Spear_Soldier_Desc.isSneakMode = true;
+	Spear_Soldier_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER8_1;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Spear_Soldier"), m_eLevelID, _strLayerTag, &Spear_Soldier_Desc)))
+		return E_FAIL;
 
 
 
@@ -1207,21 +1235,21 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 	//	return E_FAIL;
 
 
-	CBeetle::MONSTER_DESC Beetle_Desc;
-	Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(-6.5f, 18.5f, 44.5f);
-	Beetle_Desc.isSneakMode = false;
-	Beetle_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER8_BEETLE_FINAL_1;
+	//CBeetle::MONSTER_DESC Beetle_Desc;
+	//Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(-6.5f, 18.5f, 44.5f);
+	//Beetle_Desc.isSneakMode = false;
+	//Beetle_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER8_BEETLE_FINAL_1;
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, _strLayerTag, &Beetle_Desc)))
-		return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, _strLayerTag, &Beetle_Desc)))
+	//	return E_FAIL;
 
 
-	Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(-13.5f, 18.3f, 46.5f);
-	Beetle_Desc.isSneakMode = false;
-	Beetle_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER8_BEETLE_FINAL_2;
+	//Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(-13.5f, 18.3f, 46.5f);
+	//Beetle_Desc.isSneakMode = false;
+	//Beetle_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER8_BEETLE_FINAL_2;
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, _strLayerTag, &Beetle_Desc)))
-		return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, _strLayerTag, &Beetle_Desc)))
+	//	return E_FAIL;
 
 	//CCrossBow_Soldier::MONSTER_DESC CrossBow_Soldier_Desc;
 	//CrossBow_Soldier_Desc.iCurLevelID = m_eLevelID;
@@ -1249,6 +1277,70 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 
 	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_ButterGrump"), m_eLevelID, TEXT("Layer_Monster"), &Boss_Desc)))
 	//	return E_FAIL;
+
+
+
+
+
+
+
+
+
+	_wstring strLayerTag = TEXT("Layer_Monster_Door1");
+
+	//배치
+	CRat::MONSTER_DESC Rat_Desc;
+	Rat_Desc.iCurLevelID = m_eLevelID;
+	Rat_Desc.eStartCoord = COORDINATE_2D;
+	Rat_Desc.tTransform2DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	Rat_Desc.tTransform2DDesc.vInitialPosition = _float3(30.f, -540.f, 0.f);
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Rat"), m_eLevelID, strLayerTag, &pObject, &Rat_Desc)))
+		return E_FAIL;
+
+	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter8_SKSP_05"), pObject);
+
+	Rat_Desc.tTransform2DDesc.vInitialPosition = _float3(220.f, -700.f, 0.f);
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Rat"), m_eLevelID, strLayerTag, &pObject, &Rat_Desc)))
+		return E_FAIL;
+
+	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter8_SKSP_05"), pObject);
+
+
+	CZippy::MONSTER_DESC Zippy_Desc;
+	Zippy_Desc.iCurLevelID = m_eLevelID;
+	Zippy_Desc.eStartCoord = COORDINATE_2D;
+	Zippy_Desc.tTransform2DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	Zippy_Desc.tTransform2DDesc.vInitialPosition = _float3(-120.f, -10.5f, 0.f);
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Zippy"), m_eLevelID, _strLayerTag, &pObject, &Zippy_Desc)))
+		return E_FAIL;
+
+	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter8_SKSP_05"), pObject);
+
+
+
+	strLayerTag= TEXT("Layer_Monster_Door2");
+	Spear_Soldier_Desc.isSneakMode = false;
+	//CSpear_Soldier::MONSTER_DESC Spear_Soldier_Desc;
+	Spear_Soldier_Desc.iCurLevelID = m_eLevelID;
+	Spear_Soldier_Desc.eStartCoord = COORDINATE_2D;
+	Spear_Soldier_Desc.tTransform2DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	Spear_Soldier_Desc.tTransform2DDesc.vInitialPosition = _float3(250.f, 650.5f, 0.f);
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Spear_Soldier"), m_eLevelID, strLayerTag, &pObject, &Spear_Soldier_Desc)))
+		return E_FAIL;
+
+	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter8_SKSP_05"), pObject);
+
+
+	Spear_Soldier_Desc.tTransform2DDesc.vInitialPosition = _float3(-25.f, 600.5f, 0.f);
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Spear_Soldier"), m_eLevelID, strLayerTag, &pObject, &Spear_Soldier_Desc)))
+		return E_FAIL;
+
+	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter8_SKSP_05"), pObject);
 
 	return S_OK;
 }
@@ -1417,6 +1509,9 @@ HRESULT CLevel_Chapter_08::Ready_Layer_PortalLocker(const _wstring& _strLayerTag
 
 HRESULT CLevel_Chapter_08::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 {
+	CSection_Manager* pSectionMgr = CSection_Manager::GetInstance();
+
+
 	CDoor_Yellow::DOOR_YELLOW_DESC Desc = {};
 	Desc.tTransform2DDesc.vInitialPosition = _float3(265.f, 306.8f, 0.f);
 	Desc.iCurLevelID = m_eLevelID;
@@ -1488,7 +1583,7 @@ HRESULT CLevel_Chapter_08::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 	LaserDesc.iCurLevelID = m_eLevelID;
 	LaserDesc.fStartPos = { -380.35f ,-1113.24f };
 	LaserDesc.fEndPos = { -380.35f,-1443.24f };
-	LaserDesc.fMoveSpeed = 200.f;
+	LaserDesc.fMoveSpeed = 150.f;
 	LaserDesc.eDir = F_DIRECTION::RIGHT;
 	LaserDesc.strInitSectionTag = L"Chapter8_SKSP_02";
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Laser_Container"),
@@ -1498,7 +1593,7 @@ HRESULT CLevel_Chapter_08::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 	LaserDesc.iCurLevelID = m_eLevelID;
 	LaserDesc.fStartPos = { -366.74f,249.43f };
 	LaserDesc.fEndPos = { -366.74f,-483.90f };
-	LaserDesc.fMoveSpeed = 200.f;
+	LaserDesc.fMoveSpeed = 150.f;
 	LaserDesc.eDir = F_DIRECTION::RIGHT;
 	LaserDesc.strInitSectionTag = L"Chapter8_SKSP_02";
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Laser_Container"),
@@ -1506,9 +1601,19 @@ HRESULT CLevel_Chapter_08::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 		return E_FAIL;
 
 	LaserDesc.iCurLevelID = m_eLevelID;
+	LaserDesc.fStartPos = { 4.29f,-10.38f };
+	LaserDesc.fEndPos = { 4.29f, -360.f };
+	LaserDesc.fMoveSpeed = 150.f;
+	LaserDesc.eDir = F_DIRECTION::LEFT;
+	LaserDesc.strInitSectionTag = L"Chapter8_SKSP_03";
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Laser_Container"),
+		m_eLevelID, _strLayerTag, &LaserDesc)))
+		return E_FAIL;
+	
+	LaserDesc.iCurLevelID = m_eLevelID;
 	LaserDesc.fStartPos = { -410.19f,1027.82f };
 	LaserDesc.fEndPos = { -410.19f,574.48f };
-	LaserDesc.fMoveSpeed = 200.f;
+	LaserDesc.fMoveSpeed = 150.f;
 	LaserDesc.eDir = F_DIRECTION::RIGHT;
 	LaserDesc.isPressurePlate = true;
 	LaserDesc.fPressurePlatePos = _float2(-280.5f, 686.f);
@@ -1516,6 +1621,54 @@ HRESULT CLevel_Chapter_08::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Laser_Container"),
 		m_eLevelID, _strLayerTag, &LaserDesc)))
 		return E_FAIL;
+
+	CGameObject* pReceiver = nullptr;
+
+	LaserDesc.iCurLevelID = m_eLevelID;
+	LaserDesc.fStartPos = { -302.00f, -1110.68f };
+	LaserDesc.fEndPos = { -410.19f,574.48f };
+	LaserDesc.fMoveSpeed = 150.f;
+	LaserDesc.eDir = F_DIRECTION::RIGHT;
+	LaserDesc.isPressurePlate = false;
+	LaserDesc.isMove = false;
+	LaserDesc.strInitSectionTag = L"Chapter8_SKSP_05";
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Laser_Container"),
+		m_eLevelID, _strLayerTag, &pReceiver ,&LaserDesc)))
+		return E_FAIL;
+
+
+	CBombSwitch::BOMB_SWITCH_DESC tBombSwitchDesc1 = {};
+	tBombSwitchDesc1.pReceivers = static_cast<CLaser_Container*>(pReceiver);
+	tBombSwitchDesc1.iCurLevelID = m_eLevelID;
+	tBombSwitchDesc1.eStartState = CBombSwitch::ON;
+	tBombSwitchDesc1.tTransform2DDesc.vInitialPosition = _float3(-100.01f, -997.07f, 0.f);
+	CBombSwitch* pBombSwitch = static_cast<CBombSwitch*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_eLevelID, TEXT("Prototype_GameObject_BombSwitch"), &tBombSwitchDesc1));
+	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, _strLayerTag, pBombSwitch);
+	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter8_SKSP_05"), pBombSwitch, SECTION_2D_PLAYMAP_OBJECT);
+
+	
+
+	Desc.tTransform2DDesc.vInitialPosition = _float3(-153.00f, 200.00f, 0.f);
+	Desc.iCurLevelID = m_eLevelID;
+	Desc.isHorizontal = true;
+	Desc.eSize = CDoor_2D::MED;
+	Desc.eInitialState = CDoor_2D::CLOSED;
+	Desc.isPressurePlate = false;
+	Desc.strSectionTag = L"Chapter8_SKSP_05";
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorYellow"),
+		m_eLevelID, _strLayerTag, &pReceiver, &Desc)))
+		return E_FAIL;
+
+
+	tBombSwitchDesc1 = {};
+	tBombSwitchDesc1.pReceivers = static_cast<CDoor_Yellow*>(pReceiver);
+	tBombSwitchDesc1.iCurLevelID = m_eLevelID;
+	tBombSwitchDesc1.eStartState = CBombSwitch::ON;
+	tBombSwitchDesc1.tTransform2DDesc.vInitialPosition = _float3(300.00f, 170.00f, 0.f);
+	pBombSwitch = static_cast<CBombSwitch*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_eLevelID, TEXT("Prototype_GameObject_BombSwitch"), &tBombSwitchDesc1));
+	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, _strLayerTag, pBombSwitch);
+	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter8_SKSP_05"), pBombSwitch, SECTION_2D_PLAYMAP_OBJECT);
+
 
 
 	Pooling_DESC Pooling_Desc;
@@ -1528,16 +1681,112 @@ HRESULT CLevel_Chapter_08::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 
 	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Beetle_Corpse"), Pooling_Desc, Beetle_CorpseDesc);
 
+	CDraggableObject::DRAGGABLE_DESC tDraggableDesc = {};
+	tDraggableDesc.iModelPrototypeLevelID_2D = LEVEL_STATIC;
+	tDraggableDesc.isCoordChangeEnable = false;
+	tDraggableDesc.iCurLevelID = m_eLevelID;
+	tDraggableDesc.strModelPrototypeTag_2D = TEXT("SKSP_push_block_Sprite");
+	tDraggableDesc.eStartCoord = COORDINATE_2D;
+	tDraggableDesc.strInitSectionTag = L"Chapter8_SKSP_03";
+	tDraggableDesc.Build_2D_Transform({ -140.f,-150.f });
+	tDraggableDesc.vBoxHalfExtents = { 23.f,26.f,1.f };
+	tDraggableDesc.vBoxOffset = { 0.f,17.f,0.f };
+	//tDraggableDesc.tTransform3DDesc.vInitialPosition = { -47.f, 5.82f, 15.f };
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DraggableObject"),
+		m_eLevelID, _strLayerTag, &tDraggableDesc)))
+		return E_FAIL;
+
+	CDoor_Yellow::DOOR_YELLOW_DESC Desc2 = {};
+	Desc2.tTransform2DDesc.vInitialPosition = _float3(-140.f, 20.f, 0.f);
+	Desc2.iCurLevelID = m_eLevelID;
+	Desc2.isHorizontal = true;
+	Desc2.eSize = CDoor_2D::MED;
+	Desc2.eInitialState = CDoor_2D::CLOSED;
+	Desc2.vPressurePlatePos = _float3(-480.f, -250.95f, 0.f);
+	Desc2.strSectionTag = L"Chapter8_SKSP_03";
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorYellow"),
+		m_eLevelID, _strLayerTag, &Desc2)))
+		return E_FAIL;
+
+	CDoor_Red::DOOR_RED_DESC DoorRedDesc = {};
+	DoorRedDesc.tTransform2DDesc.vInitialPosition = _float3(160.00f, -350.00f, 0.f);
+	DoorRedDesc.iCurLevelID = m_eLevelID;
+	DoorRedDesc.isHorizontal = true;
+	DoorRedDesc.eSize = CDoor_2D::MED;
+	DoorRedDesc.eInitialState = CDoor_2D::CLOSED;
+	DoorRedDesc.strSectionTag = L"Chapter8_SKSP_05";
+	DoorRedDesc.strLayerTag = L"Layer_Monster_Door1";
+
+	DoorRedDesc.fTargetDiff = 13.f;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorRed"),
+		m_eLevelID, _strLayerTag, &DoorRedDesc)))
+		return E_FAIL;
+
+	DoorRedDesc = {};
+	DoorRedDesc.tTransform2DDesc.vInitialPosition = _float3(163.00f, 780.00f, 0.f);
+	DoorRedDesc.iCurLevelID = m_eLevelID;
+	DoorRedDesc.isHorizontal = true;
+	DoorRedDesc.eSize = CDoor_2D::MED;
+	DoorRedDesc.eInitialState = CDoor_2D::CLOSED;
+	DoorRedDesc.strSectionTag = L"Chapter8_SKSP_05";
+	DoorRedDesc.strLayerTag = L"Layer_Monster_Door2";
+
+	DoorRedDesc.fTargetDiff = 13.f;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorRed"),
+		m_eLevelID, _strLayerTag, &DoorRedDesc)))
+		return E_FAIL;
+
+
+	LaserDesc.iCurLevelID = m_eLevelID;
+	LaserDesc.fStartPos = { -1298.52f ,956.33f };
+	LaserDesc.fEndPos = { -957.00f,956.33f };
+	LaserDesc.fMoveSpeed = 150.f;
+	LaserDesc.isMove = true;
+
+	LaserDesc.eDir = F_DIRECTION::DOWN;
+	LaserDesc.strInitSectionTag = L"Chapter8_SKSP_09";
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Laser_Container"),
+		m_eLevelID, _strLayerTag, &LaserDesc)))
+		return E_FAIL;
+	
+
+	LaserDesc.iCurLevelID = m_eLevelID;
+	LaserDesc.fStartPos = { -471.57f ,956.33f };
+	LaserDesc.fEndPos = { 165.,956.33f };
+	LaserDesc.fMoveSpeed = 150.f;
+	LaserDesc.eDir = F_DIRECTION::DOWN;
+	LaserDesc.strInitSectionTag = L"Chapter8_SKSP_09";
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Laser_Container"),
+		m_eLevelID, _strLayerTag, &LaserDesc)))
+		return E_FAIL;
+
+
+	
+	LaserDesc.iCurLevelID = m_eLevelID;
+	LaserDesc.fStartPos = { 251.f ,956.33f };
+	LaserDesc.fEndPos = { 911.f,956.33f };
+	LaserDesc.fMoveSpeed = 150.f;
+	LaserDesc.isMove = true;
+	LaserDesc.eDir = F_DIRECTION::DOWN;
+	LaserDesc.strInitSectionTag = L"Chapter8_SKSP_09";
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Laser_Container"),
+		m_eLevelID, _strLayerTag, &LaserDesc)))
+		return E_FAIL;
+
+
 
 
 
 	//Chapter8_P2122 종합 기믹 맵
-	CSection_Manager* pSectionMgr = CSection_Manager::GetInstance();
 
 	CTiltSwapPusher::TILTSWAPPUSHER_DESC tTiltSwapPusherDesc{};
 	tTiltSwapPusherDesc.eLookDirection = F_DIRECTION::RIGHT;
 	tTiltSwapPusherDesc.iCurLevelID = m_eLevelID;
-	tTiltSwapPusherDesc.tTransform2DDesc.vInitialPosition = _float3(-420.f, -390.f, 0.f);
+	tTiltSwapPusherDesc.tTransform2DDesc.vInitialPosition = _float3(-422.5f, -390.f, 0.f);
 	CTiltSwapPusher* pTSP1 = static_cast<CTiltSwapPusher*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_eLevelID, TEXT("Prototype_GameObject_TiltSwapPusher"), &tTiltSwapPusherDesc));
 	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, _strLayerTag, pTSP1);
 	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter8_P2122"), pTSP1, SECTION_2D_PLAYMAP_OBJECT);
@@ -1552,28 +1801,56 @@ HRESULT CLevel_Chapter_08::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, _strLayerTag, pTSP3);
 	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter8_P2122"), pTSP3, SECTION_2D_PLAYMAP_OBJECT);
 
+	CBombSwitch::BOMB_SWITCH_DESC tBombSwitchDesc = {};
+	tBombSwitchDesc.eStartState = CBombSwitch::OFF;
+	tBombSwitchDesc.iCurLevelID = m_eLevelID;
+	tBombSwitchDesc.tTransform2DDesc.vInitialPosition = _float3(30.f, -820.f, 0.f);
+	pBombSwitch = static_cast<CBombSwitch*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_eLevelID, TEXT("Prototype_GameObject_BombSwitch"), &tBombSwitchDesc));
+	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, _strLayerTag, pBombSwitch);
+	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter8_P2122"), pBombSwitch, SECTION_2D_PLAYMAP_OBJECT);
+
 	CBombSwitchStopper::BOMB_SWITCH_STOPPER_DESC tBombSwitchStopperDesc = {};
+	tBombSwitchStopperDesc.eType = CBombSwitchStopper::SQUARE;
 	tBombSwitchStopperDesc.iCurLevelID = m_eLevelID;
 	tBombSwitchStopperDesc.tTransform2DDesc.vInitialPosition = _float3(-185.f, -1065.f, 0.f);
 	CBombSwitchStopper* pBombSwitchStopper = static_cast<CBombSwitchStopper*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_eLevelID, TEXT("Prototype_GameObject_BombSwitchStopper"), &tBombSwitchStopperDesc));
 	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, _strLayerTag, pBombSwitchStopper);
 	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter8_P2122"), pBombSwitchStopper, SECTION_2D_PLAYMAP_OBJECT);
+	pBombSwitch->Add_Receiver(pBombSwitchStopper);
 
-	CBombSwitch::BOMB_SWITCH_DESC tBombSwitchDesc = {};
-	tBombSwitchDesc.pReceiver = pBombSwitchStopper;
-	tBombSwitchDesc.iCurLevelID = m_eLevelID;
-	tBombSwitchDesc.tTransform2DDesc.vInitialPosition = _float3(30.f, -820.f, 0.f);
-	CBombSwitch* pBombSwitch = static_cast<CBombSwitch*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_eLevelID, TEXT("Prototype_GameObject_BombSwitch"), &tBombSwitchDesc));
-	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, _strLayerTag, pBombSwitch);
-	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter8_P2122"), pBombSwitch, SECTION_2D_PLAYMAP_OBJECT);
+	tBombSwitchStopperDesc.eType = CBombSwitchStopper::RECT;
+	tBombSwitchStopperDesc.tTransform2DDesc.vInitialPosition = _float3(286.f, -300.f, 0.f);
+	pBombSwitchStopper = static_cast<CBombSwitchStopper*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_eLevelID, TEXT("Prototype_GameObject_BombSwitchStopper"), &tBombSwitchStopperDesc));
+	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, _strLayerTag, pBombSwitchStopper);
+	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter8_P2122"), pBombSwitchStopper, SECTION_2D_PLAYMAP_OBJECT);
+	pBombSwitch->Add_Receiver(pBombSwitchStopper);
 
+	CTiltSwapCrate::SLIPPERY_DESC tTiltSwapCrateDesc = {};
+	tTiltSwapCrateDesc.iCurLevelID = m_eLevelID;
+	tTiltSwapCrateDesc.tTransform2DDesc.vInitialPosition = _float3(245.f, 1058.f, 0.f);
+	CTiltSwapCrate* pTiltSwapCrate = static_cast<CTiltSwapCrate*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_eLevelID, TEXT("Prototype_GameObject_TiltSwapCrate"), &tTiltSwapCrateDesc));
+	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, _strLayerTag, pTiltSwapCrate);
+	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter8_P2122"), pTiltSwapCrate, SECTION_2D_PLAYMAP_OBJECT);
 
 	CBigPressurePlate::MODELOBJECT_DESC tBigPressurePlateDesc = {};
 	tBigPressurePlateDesc.iCurLevelID = m_eLevelID;
 	tBigPressurePlateDesc.tTransform2DDesc.vInitialPosition = _float3(-180.f, 1195.f, 0.f);
 	CBigPressurePlate* pBigPressurePlate = static_cast<CBigPressurePlate*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_eLevelID, TEXT("Prototype_GameObject_BigPressurePlate"), &tBigPressurePlateDesc));
-	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, _strLayerTag, pBigPressurePlate);
-	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter8_P2122"), pBigPressurePlate, SECTION_2D_PLAYMAP_BACKGROUND);
+
+	CDoor_Yellow::DOOR_YELLOW_DESC tYellowDoorDesc = {};
+	tYellowDoorDesc.pPressurePlate = pBigPressurePlate;
+	tYellowDoorDesc.tTransform2DDesc.vInitialPosition = _float3(27.f, 1350.f, 0.f);
+	tYellowDoorDesc.tTransform2DDesc.vInitialScaling = _float3(1.15f, 1.f, 0.f);
+	tYellowDoorDesc.iCurLevelID = m_eLevelID;
+	tYellowDoorDesc.isHorizontal = true;
+	tYellowDoorDesc.eSize = CDoor_2D::SMALL;
+	tYellowDoorDesc.eInitialState = CDoor_2D::CLOSED;
+	tYellowDoorDesc.vPressurePlatePos = _float3(25.f, 1350.f, 0.f);
+	tYellowDoorDesc.strSectionTag = TEXT("Chapter8_P2122");
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorYellow"),
+		m_eLevelID, _strLayerTag, &tYellowDoorDesc)))
+		return E_FAIL;
 
 	return S_OK;
 }

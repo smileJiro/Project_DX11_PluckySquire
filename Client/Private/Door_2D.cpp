@@ -25,7 +25,7 @@ HRESULT CDoor_2D::Initialize(void* _pArg)
     pBodyDesc->strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
     pBodyDesc->iShaderPass_2D = (_uint)PASS_VTXPOSTEX::SPRITE2D;
 
-    pBodyDesc->tTransform2DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+    //pBodyDesc->tTransform2DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 
     pBodyDesc->eActorType = ACTOR_TYPE::LAST;
     pBodyDesc->pActorDesc = nullptr;

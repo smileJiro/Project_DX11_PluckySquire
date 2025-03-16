@@ -3035,7 +3035,416 @@
 					"Green": 0,
 					"Blue": 0
 				}
-				
+
+			]
+		},
+		{
+			"id": "Dialogue_Before_Humgrump_Revolt",
+			"Section": "Chapter6_P1314",
+			"isChangeTalker": true,
+			"lines": [
+				{
+					"Portrait": 0,
+					"Talker": "험그럼프",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
+					"TalkerIndex": 0,
+					"FontColorR": 255.0,
+					"FontColorG": 255.0,
+					"FontColorB": 0.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "굉장하군, 달수염. 굉장해!",
+					"Red": 10,
+					"Green": 10,
+					"Blue": 10
+				},
+				{
+					"Portrait": 0,
+					"Talker": "험그럼프",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
+					"TalkerIndex": 0,
+					"FontColorR": 255.0,
+					"FontColorG": 255.0,
+					"FontColorB": 0.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "당연히 나 따위는 네 위대한 마법을 상대할 수 없겠지.",
+					"Red": 10,
+					"Green": 10,
+					"Blue": 10
+				},
+				{
+					"Portrait": 0,
+					"Talker": "험그럼프",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
+					"TalkerIndex": 0,
+					"FontColorR": 255.0,
+					"FontColorG": 255.0,
+					"FontColorB": 0.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "네 실력은 항상 좋았지만, 나는 그저 구석에서 징징대는 \n 무능력한 험그럼프일 뿐이지...",
+					"Red": 10,
+					"Green": 10,
+					"Blue": 10
+				},
+				{
+					"Portrait": 0,
+					"Talker": "험그럼프",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
+					"TalkerIndex": 0,
+					"FontColorR": 255.0,
+					"FontColorG": 255.0,
+					"FontColorB": 0.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "난 언제나 네 그림자 속에 있었다... \n 내 사랑하는 동생... 위대한 달수염한테 맞서지 말아야 했다고!",
+					"Red": 10,
+					"Green": 10,
+					"Blue": 10
+				},
+				{
+					"Portrait": 7,
+					"Talker": "달수염",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
+					"TalkerIndex": 1,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "그쯤해둬, 험그럼프!",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 7,
+					"Talker": "달수염",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
+					"TalkerIndex": 1,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "맨날 그렇게 풀죽은 소리만 하고!",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 7,
+					"Talker": "달수염",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
+					"TalkerIndex": 1,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "나가서 운동 좀 해. 예전엔 탁구도 쳤잖아.",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 0,
+					"Talker": "험그럼프",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
+					"TalkerIndex": 0,
+					"FontColorR": 255.0,
+					"FontColorG": 255.0,
+					"FontColorB": 0.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "잘도 기억하는군! 하지만... 탁구도 항상 네가 이겨 버렸잖아.",
+					"Red": 10,
+					"Green": 10,
+					"Blue": 10
+				},
+				{
+					"Portrait": 0,
+					"Talker": "험그럼프",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
+					"TalkerIndex": 0,
+					"FontColorR": 255.0,
+					"FontColorG": 255.0,
+					"FontColorB": 0.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "그러나 아직 기억하는 작전은 있지. 바로 교란 작전이야.",
+					"Red": 10,
+					"Green": 10,
+					"Blue": 10
+				},
+				{
+					"Portrait": 0,
+					"Talker": "험그럼프",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
+					"TalkerIndex": 0,
+					"FontColorR": 255.0,
+					"FontColorG": 255.0,
+					"FontColorB": 0.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "뒤로 살짝 물러나는 척하다가...",
+					"Red": 10,
+					"Green": 10,
+					"Blue": 10
+				}
+			]
+		},
+		{
+			"id": "Dialogue_Humgrump_Revolt",
+			"Section": "Chapter6_P1314",
+			"isChangeTalker": true,
+			"lines": [
+				{
+					"Portrait": 0,
+					"Talker": "험그럼프",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
+					"TalkerIndex": 0,
+					"FontColorR": 255.0,
+					"FontColorG": 255.0,
+					"FontColorB": 0.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "아주 강력한... 백핸드로...",
+					"Red": 10,
+					"Green": 10,
+					"Blue": 10
+				},
+				{
+					"Portrait": 0,
+					"Talker": "험그럼프",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
+					"TalkerIndex": 0,
+					"FontColorR": 255.0,
+					"FontColorG": 255.0,
+					"FontColorB": 0.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "승기를 잡는 거야.",
+					"Red": 10,
+					"Green": 10,
+					"Blue": 10
+				}
+			]
+		},
+		{
+			"id": "Dialogue_After_Humgrump_Revolt",
+			"Section": "Chapter6_P1314",
+			"isChangeTalker": true,
+			"lines": [
+				{
+					"Portrait": 0,
+					"Talker": "험그럼프",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
+					"TalkerIndex": 0,
+					"FontColorR": 255.0,
+					"FontColorG": 255.0,
+					"FontColorB": 0.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "이번 게임은... 험그럼프의 승리다!",
+					"Red": 10,
+					"Green": 10,
+					"Blue": 10
+				}
+			]
+		},
+		{
+			"id": "Dialogue_Scream_Violet",
+			"Section": "Chapter6_P1314",
+			"lines": [
+				{
+					"Portrait": 0,
+					"Talker": "바이올렛",
+					"BG": 13,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "                           안 돼!!!!!!",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				}
+			]
+		},
+		{
+			"id": "Chapter6_FriendEvent_0",
+			"Section": "Chapter5_P0102",
+			"isChangeTalker": true,
+			"lines": [
+				{
+					"Portrait": 0,
+					"Talker": "바이올렛",
+					"TalkerIndex": 1,
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "다 왔어! 여기가 내 고향이야!",
+					"Red": 191,
+					"Green": 144,
+					"Blue": 224
+				},
+				{
+					"Portrait": 0,
+					"Talker": "바이올렛",
+					"TalkerIndex": 1,
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "우리 엄마가 있을지도 모르니, 최대한 조용히 다니자!",
+					"Red": 191,
+					"Green": 144,
+					"Blue": 224
+				},
+				{
+					"Portrait": 0,
+					"Talker": "바이올렛",
+					"TalkerIndex": 1,
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "아르티아는 예술인들의 도시야!",
+					"Red": 191,
+					"Green": 144,
+					"Blue": 224
+				},
+				{
+					"Portrait": 0,
+					"Talker": "스래쉬",
+					"TalkerIndex": 0,
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "와 멋진도시야 바이올렛!\n어서 사람들을 만나러 가보자!",
+					"Red": 190,
+					"Green": 218,
+					"Blue": 186
+				}
 			]
 		}
 	]

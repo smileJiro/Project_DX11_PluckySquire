@@ -35,6 +35,7 @@
 #include "PlayerState_CyberIdle.h"
 #include "PlayerState_RetriveSword.h"
 #include "PlayerState_CannonPortal.h"
+#include "PlayerState_Mojam.h"
 #include "Actor_Dynamic.h"
 #include "PlayerSword.h"    
 #include "PlayerBody.h"
@@ -48,6 +49,7 @@
 #include "Effect2D_Manager.h"
 #include "Effect_Manager.h"
 #include "PlayerData_Manager.h"
+#include "Friend_Controller.h"
 
 #include "Collider_Fan.h"
 #include "Collider_AABB.h"
@@ -139,11 +141,11 @@ HRESULT CPlayer::Initialize(void* _pArg)
 	pDesc->_fStepSlopeThreshold = 0.45f;
 	pDesc->eStartCoord = COORDINATE_2D;
 
-	pDesc->iNumPartObjects = CPlayer::PLAYER_PART_LAST;
-	//pDesc->eStartCoord = COORDINATE_2D;
-	pDesc->isCoordChangeEnable = true;
-	pDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(180.f);
-	pDesc->tTransform2DDesc.fSpeedPerSec = 500.f;
+    pDesc->iNumPartObjects = CPlayer::PLAYER_PART_LAST;
+    //pDesc->eStartCoord = COORDINATE_2D;
+    pDesc->isCoordChangeEnable = true;
+    pDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(180.f);
+    pDesc->tTransform2DDesc.fSpeedPerSec = 200.f;
 
 	pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(720);
 	pDesc->tTransform3DDesc.fSpeedPerSec = 8.f;
@@ -755,7 +757,7 @@ HRESULT CPlayer::Render()
 
 void CPlayer::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
 {
-	__super::OnContact_Enter(_My, _Other, _ContactPointDatas);
+	__super::OnContact_Enter(_My, _Other, _ContactPointDatas);	
 	m_pStateMachine->Get_CurrentState()->OnContact_Enter(_My, _Other, _ContactPointDatas);
 
 
@@ -1125,6 +1127,7 @@ HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
 	{
 		CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::TARGET, true, 1.f);
 		Set_PlatformerMode(false);
+
 	}
 
 
@@ -1983,6 +1986,10 @@ void CPlayer::Set_State(STATE _eState)
 	case Client::CPlayer::START_CANNON_PORTAL:
 		m_pStateMachine->Transition_To(new CPlayerState_CannonPortal(this));
 		break;
+	case Client::CPlayer::MOJAM:
+		m_pStateMachine->Transition_To(new CPlayerState_Mojam(this));
+		break;
+		
 	case Client::CPlayer::STATE_LAST:
 		break;
 	default:
@@ -2454,10 +2461,12 @@ void CPlayer::Key_Input(_float _fTimeDelta)
             //m_pActorCom->Set_GlobalPose(_float3(42.f, 8.6f, 20.f));
             //m_pActorCom->Set_GlobalPose(_float3(40.f, 0.35f, -7.f));
 
+
+			m_pActorCom->Set_GlobalPose(_float3(48.f, 24.1f, -1.7f));
             //m_pActorCom->Set_GlobalPose(_float3(18.36f, 21.58f, 1.11f));
             //m_pActorCom->Set_GlobalPose(_float3(14.6f, 11.11f, -2.9f));
             //m_pActorCom->Set_GlobalPose(_float3(18.5f, 18.2f, 40.f));
-            m_pActorCom->Set_GlobalPose(_float3(0.f, 20.f, 47.f));
+            //m_pActorCom->Set_GlobalPose(_float3(0.f, 20.f, 47.f));
         }
     }
     //if (KEY_DOWN(KEY::J))

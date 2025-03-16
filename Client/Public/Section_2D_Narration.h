@@ -30,6 +30,9 @@ public:
 public:
 	static CSection_2D_Narration* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, void* _pDesc);
 	void Free() override;
+
+private:
+	_bool		m_FirstPlay[8] = { false, false, false, false, false, false, false, false };
 };
 
 END

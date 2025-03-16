@@ -681,7 +681,7 @@ HRESULT CPhysx_Manager::Initialize_Material()
 		case Engine::ACTOR_MATERIAL::CHARACTER_FOOT: // 캐릭터 구형 마찰
 			vMaterialDesc = { 2.f, 2.f,0.f };
 		case Engine::ACTOR_MATERIAL::CASTLE_GATE: // 성 문 
-			vMaterialDesc = { 2.f, 2.f,0.6f };
+			vMaterialDesc = { 2.f, 2.f,0.f };
 			break;
 		default:
 			break;

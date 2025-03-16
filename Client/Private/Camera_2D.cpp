@@ -1089,10 +1089,10 @@ void CCamera_2D::Find_TargetPos()
 			_float2 fSectionSize = CSection_Manager::GetInstance()->Get_Section_RenderTarget_Size(m_strSectionName);
 			_float2 vPos = { };
 
-			if (true != m_iNarrationPosType) {// 임시 처리.....
-				m_isTargetChanged = true;
-				m_vStartPos = m_v2DPreTargetWorldPos;
-			}
+			//if (true != m_iNarrationPosType) {// 임시 처리.....
+			//	m_isTargetChanged = true;
+			//	m_vStartPos = m_v2DPreTargetWorldPos;
+			//}
 
 			m_iNarrationPosType = Uimgr->isLeft_Right();	// true면 left
 

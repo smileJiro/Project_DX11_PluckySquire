@@ -5,6 +5,7 @@
 #include "Player.h"
 #include "Actor_Dynamic.h"
 #include "GameInstance.h"
+#include "Friend_Controller.h"
 
 CPlayerState_JumpToPortal::CPlayerState_JumpToPortal(CPlayer* _pOwner)
 	:CPlayerState(_pOwner, CPlayer::JUMPTO_PORTAL)
@@ -72,6 +73,7 @@ void CPlayerState_JumpToPortal::Enter()
 
 void CPlayerState_JumpToPortal::Exit()
 {
+    
 }
 
 void CPlayerState_JumpToPortal::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)

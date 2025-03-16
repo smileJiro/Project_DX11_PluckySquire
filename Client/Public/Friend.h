@@ -60,6 +60,8 @@ public:
 
 public:
 	virtual void			Switch_PartAnim(_uint _iPartIndex, _uint _iAnimIndex, _bool _isLoop);
+	void					Move_Position(_float2 _vTargetPosition, CFriend::DIRECTION _eEndDirection);
+	void					Set_Direction(DIRECTION _eDir) { m_eDirection = _eDir; }
 
 public:
 	// Get
@@ -93,6 +95,7 @@ public:
 
 protected: /* State_Move */
 	_float2					m_vMoveTargetPosition = {};
+	DIRECTION				m_eMoveEndDirection = DIRECTION::DIR_LAST;
 
 protected: /* State_ Chase */
 	CGameObject*			m_pChaseTarget = nullptr;

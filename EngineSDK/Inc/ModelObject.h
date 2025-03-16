@@ -111,6 +111,7 @@ public:
 	//애니메이션이 재생중인지 반환
 	_bool	Is_PlayingAnim() { return m_bPlayingAnim; }
 	_bool Is_AnimTransition();
+	_uint	Get_FadeAlphaState() { return m_eFadeAlphaState; }
 
 	// Set
 	void	Set_AnimationLoop(COORDINATE _eCoord, _uint iIdx, _bool bIsLoop);

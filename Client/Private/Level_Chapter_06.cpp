@@ -13,6 +13,7 @@
 #include "PlayerData_Manager.h"
 #include "Effect_Manager.h"
 #include "Effect2D_Manager.h"
+#include "DraggableObject.h"
 
 #include "CubeMap.h"
 #include "MainTable.h"
@@ -74,6 +75,7 @@
 #include "ShopPanel_New.h"
 #include "NPC.h"
 #include "Loader.h"
+#include "WorldMapNPC.h"
 
 // FatherGame
 #include "FatherGame.h"
@@ -81,6 +83,13 @@
 #include "CandleGame.h"
 #include "ZetPack_Child.h"
 
+// Friends
+#include "Friend_Controller.h"
+#include "Friend_Thrash.h"
+#include "Friend_Violet.h"
+// Npc
+#include "Npc_Humgrump.h"
+#include "Npc_MoonBeard.h"
 
 CLevel_Chapter_06::CLevel_Chapter_06(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:
@@ -183,7 +192,17 @@ HRESULT CLevel_Chapter_06::Initialize(LEVEL_ID _eLevelID)
 		MSG_BOX(" Failed Ready_Layer_Defender (Level_Chapter_06::Initialize)");
 		assert(nullptr);
 	}
-
+	
+	if (FAILED(Ready_Layer_MapGimmick()))
+	{
+		MSG_BOX(" Failed Ready_Layer_MapGimmick (Level_Chapter_06::Initialize)");
+		assert(nullptr);
+	}
+	if (FAILED(Ready_Layer_Friends(TEXT("Layer_Friend"))))
+	{
+		MSG_BOX(" Failed Ready_Layer_Friends (Level_Chapter_02::Initialize)");
+		assert(nullptr);
+	}
 
 	/* Collision Check Matrix */
 	// 그룹필터 추가 >> 중복해서 넣어도 돼 내부적으로 걸러줌 알아서 
@@ -206,6 +225,7 @@ HRESULT CLevel_Chapter_06::Initialize(LEVEL_ID _eLevelID)
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MAPOBJECT, OBJECT_GROUP::PLAYER_PROJECTILE);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::TRIGGER_OBJECT, OBJECT_GROUP::GIMMICK_OBJECT);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::SLIPPERY, OBJECT_GROUP::MAPOBJECT);
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::SLIPPERY, OBJECT_GROUP::TRIGGER_OBJECT);
 	//m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::SLIPPERY, OBJECT_GROUP::BLOCKER);
 
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::NPC_EVENT, OBJECT_GROUP::INTERACTION_OBEJCT); //3 8
@@ -694,7 +714,7 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Player(const _wstring& _strLayerTag, CGam
 	CPlayer::CHARACTER_DESC Desc;
 	Desc.iCurLevelID = m_eLevelID;
 	Desc.eStartCoord = COORDINATE_2D;
-	Desc.tTransform2DDesc.vInitialPosition = { 0.f, 400.f, 0.f };   // TODO ::임시 위치
+	Desc.tTransform2DDesc.vInitialPosition = { -22.f, -681.f, 0.f };   // TODO ::임시 위치
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_TestPlayer"), m_eLevelID, _strLayerTag, _ppOut, &Desc)))
 		return E_FAIL;
@@ -734,6 +754,75 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Defender()
 	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Layer_Defender"), pPlayer);
 	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter6_SKSP_04"), pPlayer, SECTION_2D_PLAYMAP_OBJECT);
 	pPlayer->Set_Active(false);
+
+	return S_OK;
+}
+
+HRESULT CLevel_Chapter_06::Ready_Layer_MapGimmick()
+{
+	CDraggableObject::DRAGGABLE_DESC tDraggableDesc = {};
+	tDraggableDesc.iModelPrototypeLevelID_3D = LEVEL_STATIC;
+	tDraggableDesc.isCoordChangeEnable = false;
+	tDraggableDesc.iCurLevelID = m_eLevelID;
+	tDraggableDesc.strModelPrototypeTag_3D = TEXT("Moving_Block");
+	tDraggableDesc.eStartCoord = COORDINATE_3D;
+	tDraggableDesc.vBoxHalfExtents = { 3.1f,0.33f,0.99f };
+	tDraggableDesc.vBoxOffset = { 0.f,tDraggableDesc.vBoxHalfExtents.y, 0.f };
+	tDraggableDesc.tTransform3DDesc.vInitialPosition = { 74.65, 12.07f, 27.32f };
+	tDraggableDesc.tTransform3DDesc.vInitialScaling = { 1.1f,1.1f,1.1f };
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DraggableObject"),
+		m_eLevelID, L"Layer_Draggable", &tDraggableDesc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Chapter_06::Ready_Layer_Friends(const _wstring& _strLayerTag)
+{
+	_wstring strFriendTag = L"Thrash";
+	{ /* Friend_Thrash */
+		CFriend_Thrash::FRIEND_DESC Desc{};
+		Desc.Build_2D_Transform(_float2(-82.f, -771.f), _float2(1.0f, 1.0f), 400.f);
+		Desc.iCurLevelID = LEVEL_CHAPTER_2;
+		Desc.eStartState = CFriend::FRIEND_IDLE;
+		Desc.eStartDirection = CFriend::DIR_UP;
+		Desc.iModelTagLevelID = LEVEL_STATIC;
+		Desc.iNumDialoguesIndices = 0;
+		Desc.strFightLayerTag = TEXT("Layer_Monster");
+
+		CGameObject* pGameObject = nullptr;
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Friend_Thrash"), LEVEL_CHAPTER_2, _strLayerTag, &pGameObject, &Desc)))
+			return E_FAIL;
+
+		if (FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter5_P0102"), pGameObject)))
+			return E_FAIL;
+
+		CFriend_Controller::GetInstance()->Register_Friend(strFriendTag, static_cast<CFriend*>(pGameObject));
+		//CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(strFriendTag);
+	} /* Friend_Thrash */
+
+	{ /* Friend_Violet */
+		strFriendTag = L"Violet";
+		CFriend_Violet::FRIEND_DESC Desc{};
+		Desc.Build_2D_Transform(_float2(42.f, -771.f), _float2(1.0f, 1.0f), 400.f);
+		Desc.iCurLevelID = LEVEL_CHAPTER_2;
+		Desc.eStartState = CFriend::FRIEND_IDLE;
+		Desc.eStartDirection = CFriend::DIR_UP;
+		Desc.iModelTagLevelID = LEVEL_STATIC;
+		Desc.iNumDialoguesIndices = 0;
+		Desc.strFightLayerTag = TEXT("Layer_Monster");
+
+		CGameObject* pGameObject = nullptr;
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Friend_Violet"), LEVEL_CHAPTER_2, _strLayerTag, &pGameObject, &Desc)))
+			return E_FAIL;
+
+		if (FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter5_P0102"), pGameObject)))
+			return E_FAIL;
+
+		CFriend_Controller::GetInstance()->Register_Friend(strFriendTag, static_cast<CFriend*>(pGameObject));
+		//CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(strFriendTag);
+	} /* Friend_Violet */
 
 	return S_OK;
 }
@@ -1216,8 +1305,40 @@ HRESULT CLevel_Chapter_06::Ready_Layer_NPC(const _wstring& _strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_StoreNPC"), NPCDesc.iCurLevelID, _strLayerTag, &NPCDesc)))
 		return E_FAIL;
 
-	return S_OK;
+	CWorldMapNPC::CHARACTER_DESC Desc;
+	Desc.iCurLevelID = m_eLevelID;
+	//Desc.tTransform3DDesc.vInitialPosition = { -3.f, 0.35f, -19.3f };   // TODO ::임시 위치
+	Desc.eStartCoord = COORDINATE_2D;
+	Desc.tTransform2DDesc.vInitialPosition = { 0.f, 0.f, 0.f };   // TODO ::임시 위치
 
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_WorldMapNpc"), m_eLevelID, _strLayerTag, &Desc)))
+		return E_FAIL;
+
+
+	// Humgrump
+	CNpc_Humgrump::HUMGRUMP_DESC HumgrumpDesc = {};
+	HumgrumpDesc.tTransform2DDesc.vInitialPosition = _float3(-211.54f, -163.07f, 0.03f);
+	HumgrumpDesc.iCurLevelID = m_eLevelID;
+	HumgrumpDesc.strSectionTag = TEXT("Chapter6_P1314");
+	HumgrumpDesc.iStartAnimIndex = CNpc_Humgrump::CHAPTER6_IDLE;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Npc_Humgrump"),
+		m_eLevelID, _strLayerTag, &HumgrumpDesc)))
+		return E_FAIL;
+
+	// MoonBeard
+	CNpc_MoonBeard::MOONBEARD_DESC MoonBeardDesc = {};
+	MoonBeardDesc.tTransform2DDesc.vInitialPosition = _float3(211.54f, -163.07f, 0.03f);
+	MoonBeardDesc.iCurLevelID = m_eLevelID;
+	MoonBeardDesc.strSectionTag = TEXT("Chapter6_P1314");
+	MoonBeardDesc.iStartAnimIndex = CNpc_MoonBeard::CHAPTER6_IDLE;
+	MoonBeardDesc.isOppositeSide = true;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Npc_MoonBeard"),
+		m_eLevelID, _strLayerTag, &MoonBeardDesc)))
+		return E_FAIL;
+	
+	return S_OK;
 }
 
 HRESULT CLevel_Chapter_06::Ready_Layer_Monster_2D()
@@ -1709,8 +1830,10 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Effects2D(const _wstring& _strLayerTag)
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("DefRedBullet"), LEVEL_CHAPTER_6, 10);
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("DefTeleport"), LEVEL_CHAPTER_6, 10);
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("DefPlayerHit"), LEVEL_CHAPTER_6, 1);
-
-
+	
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Beam"), LEVEL_CHAPTER_6, 1);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Humgrump_Ha"), LEVEL_CHAPTER_6, 3);
+	
 	return S_OK;
 }
 

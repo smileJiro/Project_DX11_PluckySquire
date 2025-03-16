@@ -158,8 +158,8 @@ void CBack_WayState::Back_WayMove(_float _fTimeDelta, _int _iDir)
 
 				if (m_Ways.size() <= m_iCurWayIndex)
 				{
-					m_pFSM->Set_Sneak_Patrol_Index(m_iDestPatrolIndex);
-					Event_ChangeMonsterState(MONSTER_STATE::SNEAK_IDLE, m_pFSM);
+					m_pFSM->Set_Patrol_Way_Index(m_iDestPatrolIndex);
+					Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
 				}
 			}
 		}
@@ -172,8 +172,8 @@ void CBack_WayState::Back_WayMove(_float _fTimeDelta, _int _iDir)
 				m_isTurn = false;
 				m_isMove = false;
 				m_isOnWay = false;
-				m_pFSM->Set_Sneak_Patrol_Index(m_iDestPatrolIndex);
-				Event_ChangeMonsterState(MONSTER_STATE::SNEAK_IDLE, m_pFSM);
+				m_pFSM->Set_Patrol_Way_Index(m_iDestPatrolIndex);
+				Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
 			}
 		}
 	}

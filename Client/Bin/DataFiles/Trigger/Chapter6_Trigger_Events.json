@@ -70,6 +70,16 @@
     ]
   },
   {
+    "Trigger_EventTag": "Chapter6_FriendEvent_0",
+    "Actions": [
+      {
+        "ActionTag": "Create_EventExecuter",
+        "EventTag": "Chapter6_FriendEvent_0",
+        "Is_Sequence": true
+      }
+    ]
+  },
+  {
     "Trigger_EventTag": "Get_Stop_Stamp",
     "Actions": [
       {
@@ -91,6 +101,26 @@
         "ActionTag": "Get_PlayerItem_After_End",
         "EventTag": "Stop_Stamp",
         "Is_Sequence": false
+      }
+    ]
+  },
+  {
+    "Trigger_EventTag": "Chapter6_Humgrump_Revolt",
+    "Actions": [
+      {
+        "ActionTag": "Create_EventExecuter",
+        "EventTag": "Chapter6_Humgrump_Revolt",
+        "Is_Sequence": true
+      }
+    ]
+  },
+  {
+    "Trigger_EventTag": "Chapter6_Change_Book_To_Greate_Humgrump",
+    "Actions": [
+      {
+        "ActionTag": "Create_EventExecuter",
+        "EventTag": "Chapter6_Change_Book_To_Greate_Humgrump",
+        "Is_Sequence": true
       }
     ]
   }

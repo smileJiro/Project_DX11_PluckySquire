@@ -20,7 +20,7 @@ HRESULT CBeetle_Corpse::Initialize(void* _pArg)
 	Beetle_CorpseModelDesc->eStartCoord = COORDINATE_3D;
 	Beetle_CorpseModelDesc->eCrriableObjId = CARRIABLE_OBJ_ID::BEETLE_CORPSE;
 	Beetle_CorpseModelDesc->vHeadUpRoolPitchYaw3D = { 0.f,0.f,0.f };
-	Beetle_CorpseModelDesc->vHeadUpOffset3D = { 0.f,1.5f,0.f };
+	Beetle_CorpseModelDesc->vHeadUpOffset3D = { 0.f,1.2f,0.f };
 	Beetle_CorpseModelDesc->isCoordChangeEnable = false;
 	Beetle_CorpseModelDesc->iModelPrototypeLevelID_3D = LEVEL_STATIC;
 	Beetle_CorpseModelDesc->strModelPrototypeTag_3D = TEXT("beetle_01");

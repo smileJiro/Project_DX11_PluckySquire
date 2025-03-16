@@ -26,7 +26,8 @@ public:
 	};
 	typedef struct tagBombSwitchDesc : public CModelObject::MODELOBJECT_DESC
 	{
-		IBombSwitchReceiver* pReceiver = nullptr;
+		IBombSwitchReceiver* pReceivers = nullptr;
+		BOMB_SWITCH_STATE eStartState = OFF;
 	}BOMB_SWITCH_DESC;
 public:
 	CBombSwitch(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
@@ -35,15 +36,16 @@ public:
 
 public:
 	virtual HRESULT Initialize(void* _pArg) override;
-
+	virtual HRESULT Render()override;
 
 public:
 	virtual void On_Hit(CGameObject* _pHitter, _int _fDamg, _fvector _vForce) override;
 
+	void Set_SwitchState(BOMB_SWITCH_STATE _eState);
+	void Add_Receiver(IBombSwitchReceiver* _pReceiver) { m_pReceivers.push_back(_pReceiver); }
 private:
-
-	IBombSwitchReceiver* m_pReceiver = nullptr;
-	_bool m_bBombSwitchOn = false;
+	list<IBombSwitchReceiver*> m_pReceivers ;
+	BOMB_SWITCH_STATE m_eBombSwitchOn = LAST;
 public:
 	static CBombSwitch* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject* Clone(void* _pArg) override;

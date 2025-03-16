@@ -20,6 +20,9 @@ private:
 public:
 	HRESULT							Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 
+public:
+	HRESULT							Level_Enter();
+	HRESULT							Level_Exit(_int _iChangeLevelID, _int _iNextChangeLevelID);
 public: /* Default */
 	HRESULT							Register_Friend(const _wstring& _strFriendTag, CFriend* _pFriend);
 	HRESULT							Erase_Friend(const _wstring& _strFriendTag);

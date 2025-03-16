@@ -21,21 +21,27 @@ HRESULT CDoor_Yellow::Initialize(void* _pArg)
         return E_FAIL;
 
     DOOR_YELLOW_DESC* pDesc = static_cast<DOOR_YELLOW_DESC*>(_pArg);
+    m_isPressurePlate = pDesc->isPressurePlate;
 
     if (FAILED(__super::Initialize(_pArg)))
         return E_FAIL;
 
-    if (FAILED(Ready_Part(pDesc)))
-        return E_FAIL;
+    if (m_isPressurePlate)
+    {
+        m_pPressurePlate = pDesc->pPressurePlate;
+        if (FAILED(Ready_Part(pDesc)))
+            return E_FAIL;
+
+        // 발판 추가.
+        if (FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(pDesc->strSectionTag, m_pPressurePlate, SECTION_2D_PLAYMAP_BACKGROUND)))
+            return E_FAIL;
+    }
 
     Set_AnimLoop();
     Switch_Animation_By_State();
 
     Register_OnAnimEndCallBack(bind(&CDoor_Yellow::On_AnimEnd, this, placeholders::_1, placeholders::_2));
 
-    // 발판 추가.
-    if (FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(pDesc->strSectionTag, m_pPressurePlate, SECTION_2D_PLAYMAP_BACKGROUND)))
-        return E_FAIL;
 
     return S_OK;
 }
@@ -135,6 +141,8 @@ void CDoor_Yellow::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 
 HRESULT CDoor_Yellow::Ready_Part(const DOOR_YELLOW_DESC* _pDesc)
 {
+	if (m_pPressurePlate)
+		return S_OK;
     CModelObject::MODELOBJECT_DESC Desc = {};
 
     Desc.tTransform2DDesc.vInitialPosition = _pDesc->vPressurePlatePos;
@@ -279,4 +287,14 @@ void CDoor_Yellow::Free()
     Safe_Release(m_pPressurePlate);
 
     __super::Free();
+}
+
+void CDoor_Yellow::On_BombSwitch(_bool _bOn)
+{
+    if (false == _bOn)
+    {
+        m_eDoorState = OPEN;
+        Set_ReverseAnimation(false);
+        Switch_Animation_By_State();
+    }
 }

@@ -7,6 +7,7 @@
 #include "Camera.h"
 #include "Camera_Target.h"
 #include "Camera_2D.h"
+#include "Friend_Controller.h"
 
 CPlayerState_ExitPortal::CPlayerState_ExitPortal(CPlayer* _pOwner)
 	:CPlayerState(_pOwner, CPlayer::EXIT_PORTAL)
@@ -49,15 +50,21 @@ void CPlayerState_ExitPortal::Update(_float _fTimeDelta)
 				break;
 			default:
 				break;
-			}
+			} 
 		}
 
 		return;
 	}
 	if (COORDINATE_3D == eCoord)
 	{
-		if (m_pOwner->Is_OnGround() && -0.f > m_pOwner->Get_UpForce())
-			m_pOwner->Set_State(CPlayer::IDLE);
+		if (-0.f > m_pOwner->Get_UpForce())
+		{
+			static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Set_ShapeEnable((_uint)SHAPE_USE::SHAPE_BODY, true);
+			if(m_pOwner->Is_OnGround())
+				m_pOwner->Set_State(CPlayer::IDLE);
+		}
+
+
 	}
 }
 
@@ -67,6 +74,7 @@ void CPlayerState_ExitPortal::Enter()
 	assert(nullptr != m_pPortal);
 	m_ePortalNormal = m_pPortal->Get_PortalNormal();
 	m_pPortal->Use_Portal(m_pOwner);
+	static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Set_ShapeEnable((_uint)SHAPE_USE::SHAPE_BODY, false);
 
 
 
@@ -101,7 +109,7 @@ void CPlayerState_ExitPortal::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 void CPlayerState_ExitPortal::Shoot_Player3D()
 {
 	_vector vPlayerPos = m_pOwner->Get_FinalPosition();
-	static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Set_ShapeEnable((_uint)SHAPE_USE::SHAPE_BODY, true);
+	//static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Set_ShapeEnable((_uint)SHAPE_USE::SHAPE_BODY, true);
 	m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_BOOK_JUMP_FALL_FRONT_NEWRIG);
 
 	_vector vImpulse = { 0.f,0.f,0.f,0.f };
@@ -115,8 +123,10 @@ void CPlayerState_ExitPortal::Shoot_Player3D()
 		vImpulse = { -1.f,0.f,0.f ,0.f };
 		break;
 	case Engine::NORMAL_DIRECTION::POSITIVE_Y:
-	case Engine::NORMAL_DIRECTION::NEGATIVE_Y:
 		vImpulse = { 0.f,1.f,0.f ,0.f };
+		break;
+	case Engine::NORMAL_DIRECTION::NEGATIVE_Y:
+		vImpulse = { 0.f,-1.f,0.f ,0.f };
 		break;
 	case Engine::NORMAL_DIRECTION::POSITIVE_Z:
 		vImpulse = { 0.f,0.f,1.f,0.f };
@@ -139,9 +149,9 @@ void CPlayerState_ExitPortal::Shoot_Player3D()
 	_float3 vPos;
 	XMStoreFloat3(&vPos, vPlayerPos + vImpulse * 0.5f);
 	m_pOwner->Get_ActorCom()->Set_GlobalPose(vPos);
-	if(vImpulse.m128_f32[0] == 0)
-		m_pOwner->LookDirectionXZ_Dynamic(vImpulse);
-	else
+
+	if(NORMAL_DIRECTION::NEGATIVE_Y == m_ePortalNormal
+		|| NORMAL_DIRECTION::POSITIVE_Y == m_ePortalNormal)
 	{
 
 		//2D상태일 때 카메라의 방향 구하기
@@ -158,17 +168,31 @@ void CPlayerState_ExitPortal::Shoot_Player3D()
 			vCamLook.m128_f32[2] /= vCamLook.m128_f32[2];
 		}
 		//2D상태일 때 플레이어의 3D좌표계방향 구하기
-		_vector vNewLookDIr = FDir_To_Vector(To_FDirection(m_pOwner->Get_2DDirection()));
-		vNewLookDIr = XMVectorSetZ(vNewLookDIr, XMVectorGetY(vNewLookDIr));
-		vNewLookDIr = XMVectorSetY(vNewLookDIr, 0.f);
+		F_DIRECTION eFDir= To_FDirection(m_pOwner->Get_2DDirection());
+		_vector vNewLookDIr = { 0.f,0.f,0.f,0.f };
+		switch (eFDir)
+		{
+		case Client::F_DIRECTION::LEFT:
+			vNewLookDIr = XMVector3Rotate(vCamLook, XMQuaternionRotationAxis({ 0.f,1.f,0.f }, XMConvertToRadians(-90.f)));
+			break;
+		case Client::F_DIRECTION::RIGHT:
+			vNewLookDIr = XMVector3Rotate(vCamLook, XMQuaternionRotationAxis({ 0.f,1.f,0.f }, XMConvertToRadians(90.f)));
+			break;
+		case Client::F_DIRECTION::UP:
+			vNewLookDIr = vCamLook;
+			break;
+		case Client::F_DIRECTION::DOWN:
+			vNewLookDIr = -1* vCamLook;
+			break;
 
-		//2D 상태일 때 카메라의 방향이 z+가 아니라면?
-		//카메라 방향 :100 -> 001
-		//플레이어 방향 : 
-		vNewLookDIr += (vCamLook - _vector{ 0.f,0.f,1.f });
-		vNewLookDIr = XMVector3Normalize(vNewLookDIr);
-		//static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Start_ParabolicTo(vTargetPos, XMConvertToRadians(45.f));
+		default:
+			break;
+		}
+
+
 		m_pOwner->LookDirectionXZ_Dynamic(vNewLookDIr);
 	}
+	else
+		m_pOwner->LookDirectionXZ_Dynamic(vImpulse);
 
 }

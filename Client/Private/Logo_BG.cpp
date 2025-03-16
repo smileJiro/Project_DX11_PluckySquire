@@ -28,7 +28,6 @@ HRESULT CLogo_BG::Initialize(void* _pArg)
 		return E_FAIL;
 
 	m_vColor = { 227.f / 255.f , 37.f / 255.f,82.f / 255.f, 1.f };
-	CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(this);
 
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
@@ -267,7 +266,7 @@ HRESULT CLogo_BG::Ready_Components()
 		return E_FAIL;
 
 	/* Com_Texture */
-	if (FAILED(Add_Component(m_iCurLevelID, TEXT("Prototype_Component_Texture_Logo_BG"),
+	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Logo_BG"),
 		TEXT("Com_Texture_2D"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
 		return E_FAIL;
 

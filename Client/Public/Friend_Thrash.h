@@ -76,8 +76,8 @@ class CFriend_Thrash final : public CFriend
 		THRASH_IDLE_DOWN,	   // Idle
 		THRASH_IDLE_RIGHT,	   // Idle
 		THRASH_IDLE_UP,		   // Idle
-		Thrash_mojam_into,
-		Thrash_mojam_mojam,
+		THRASH_MOJAM_INTO,	   //Mojam
+		THRASH_MOJAM_MOJAM,	   //Mojam
 		Thrash_mojam_mojam_c02_0910,
 		Thrash_mojam_mojam_c10_0910,
 		THRASH_PULL_LOOP,	// 보스전 당기기 모션
