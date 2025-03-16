@@ -88,7 +88,7 @@ HRESULT CDynamicCastleGate::Initialize(void* _pArg)
 
 void CDynamicCastleGate::Update(_float _fTimeDelta)
 {
-#ifdef _DEBUG
+#ifdef NDEBUG
 
 	if (KEY_DOWN(KEY::I))
 		Collapse();
