@@ -959,8 +959,6 @@ void CPlayer::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCol
 					m_pInteractableObject = pInteractable;
 			}
 		}
-
-
 	}
 	else if (_pMyCollider == m_pAttack2DTriggerCom
 		&& OBJECT_GROUP::MONSTER == eGroup)

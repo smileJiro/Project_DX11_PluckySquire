@@ -1811,6 +1811,7 @@ HRESULT CLevel_Chapter_08::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 
 	CBombSwitchStopper::BOMB_SWITCH_STOPPER_DESC tBombSwitchStopperDesc = {};
 	tBombSwitchStopperDesc.eType = CBombSwitchStopper::SQUARE;
+	tBombSwitchStopperDesc.eInitialState = CBombSwitchStopper::UP;
 	tBombSwitchStopperDesc.iCurLevelID = m_eLevelID;
 	tBombSwitchStopperDesc.tTransform2DDesc.vInitialPosition = _float3(-185.f, -1065.f, 0.f);
 	CBombSwitchStopper* pBombSwitchStopper = static_cast<CBombSwitchStopper*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_eLevelID, TEXT("Prototype_GameObject_BombSwitchStopper"), &tBombSwitchStopperDesc));
@@ -1819,6 +1820,7 @@ HRESULT CLevel_Chapter_08::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 	pBombSwitch->Add_Receiver(pBombSwitchStopper);
 
 	tBombSwitchStopperDesc.eType = CBombSwitchStopper::RECT;
+	tBombSwitchStopperDesc.eInitialState = CBombSwitchStopper::DOWN;
 	tBombSwitchStopperDesc.tTransform2DDesc.vInitialPosition = _float3(286.f, -300.f, 0.f);
 	pBombSwitchStopper = static_cast<CBombSwitchStopper*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_eLevelID, TEXT("Prototype_GameObject_BombSwitchStopper"), &tBombSwitchStopperDesc));
 	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, _strLayerTag, pBombSwitchStopper);

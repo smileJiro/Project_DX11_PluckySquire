@@ -41,7 +41,7 @@ HRESULT CBombSwitchStopper::Initialize(void* _pArg)
     ///* Test 2D Collider */
     CCollider_AABB::COLLIDER_AABB_DESC tAABBDEsc = {};
     tAABBDEsc.pOwner = this;
-    tAABBDEsc.vExtents = { 125.f, 150.f };
+    tAABBDEsc.vExtents = m_vColliderSize[m_eType];
     tAABBDEsc.vScale = { 1.0f, 1.0f };
     tAABBDEsc.vOffsetPosition = { 0.f, tAABBDEsc.vExtents.y };
     tAABBDEsc.isBlock = true;

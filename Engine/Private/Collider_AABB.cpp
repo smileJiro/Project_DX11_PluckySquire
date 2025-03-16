@@ -235,6 +235,56 @@ void CCollider_AABB::Block_Circle(CCollider_Circle* _pOther)
 }
 
 
+_bool CCollider_AABB::Get_CollisionPoint(CCollider* _pOther, _float2* pOutPoint)
+{
+    _bool bCollision = Is_Collision(_pOther);
+	if (false == bCollision)
+		return false;
+
+    CCollider::TYPE eTYpe = _pOther->Get_Type();
+    _float2 vLT = Get_LT();
+    _float2 vRB = Get_RB();
+    switch (eTYpe)
+    {
+    case Engine::CCollider::CIRCLE_2D:
+		CCollider_Circle* pCircle= static_cast<CCollider_Circle*>(_pOther);
+
+        _float2 vOtherPosition = pCircle->Get_Position();
+        _float fOtherFinalRadius = pCircle->Get_FinalRadius();
+
+        // 1. Clamp를 통해 AABB에 가장 가까운 점을 찾는다.
+
+        pOutPoint->x = clamp(vOtherPosition.x, vLT.x, vRB.x);
+        pOutPoint->y = clamp(vOtherPosition.y, vRB.y, vLT.y);
+        break;
+    case Engine::CCollider::AABB_2D:
+    {
+		CCollider_AABB* pAABB = static_cast<CCollider_AABB*>(_pOther);
+        _float2 vOtherLT = pAABB->Get_LT();
+        _float2 vOtherRB = pAABB->Get_RB();
+
+        // 가로 방향 충돌 검사  
+        if (vLT.x > vOtherRB.x || vRB.x < vOtherLT.x)
+            return false;
+
+        // 세로 방향 충돌 검사  
+        if (vLT.y < vOtherRB.y || vRB.y > vOtherLT.y)
+            return false;
+
+        pOutPoint->x = (max(vLT.x, vOtherLT.x) + min(vRB.x, vOtherRB.x)) / 2.0f;
+        pOutPoint->y = (max(vRB.y, vOtherRB.y) + min(vLT.y, vOtherLT.y)) / 2.0f;
+        break;
+    }
+    case Engine::CCollider::TYPE_LAST:
+        break;
+    default:
+        break;
+    }
+
+
+    return true ;
+}
+
 void CCollider_AABB::Update_OwnerTransform()
 {
     _vector vOwnerPos = m_pOwner->Get_FinalPosition(COORDINATE_2D);

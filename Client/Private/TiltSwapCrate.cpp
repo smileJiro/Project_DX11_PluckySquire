@@ -43,7 +43,7 @@ HRESULT CTiltSwapCrate::Initialize(void* _pArg)
     tAABBDEsc.vExtents = m_vColliderSize;
     tAABBDEsc.vScale = { 1.0f, 1.0f };
     tAABBDEsc.vOffsetPosition = { 0.f, tAABBDEsc.vExtents.y };
-    tAABBDEsc.isBlock = true;
+    tAABBDEsc.isBlock = false;
     tAABBDEsc.isTrigger = false;
     tAABBDEsc.iCollisionGroupID = OBJECT_GROUP::SLIPPERY;
 	tAABBDEsc.iColliderUse = (_uint)COLLIDER2D_USE::COLLIDER2D_BODY;
