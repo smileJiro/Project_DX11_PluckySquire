@@ -29,6 +29,10 @@ HRESULT CSpawner::Initialize(void* _pArg)
 
 	/* Add To Layer Data */
 	m_eCurLevelID = pDesc->eCurLevelID;
+	m_eSpawnerMode = pDesc->eMode;
+	m_fRandomStartPos = pDesc->fRandomStartPos;
+	m_fRandomEndPos = pDesc->fRandomEndPos;
+	m_fIntaval = pDesc->fIntaval;
 	m_eGameObjectPrototypeLevelID = pDesc->eGameObjectPrototypeLevelID;
 	m_strLayerTag = pDesc->strLayerTag;
 	m_pObjectCloneDesc = pDesc->pObjectCloneDesc;
@@ -77,6 +81,32 @@ void CSpawner::Update(_float _fTimeDelta)
 
 HRESULT CSpawner::Spawn_Object()
 {
+	if (SPAWNER_RAMDOM == m_eSpawnerMode)
+	{
+		static _float2 vPreSpawnPos = {};
+		
+		_bool isIntarvalCheck = false;
+		_float2 vRandomPos = {};
+
+#ifdef _DEBUG
+		_uint iLoopCnt = 0;
+#endif // _DEBUG
+		do
+		{
+			iLoopCnt++;
+			vRandomPos.x = m_pGameInstance->Compute_Random(m_fRandomStartPos.x, m_fRandomEndPos.x);
+			vRandomPos.y = m_pGameInstance->Compute_Random(m_fRandomStartPos.y, m_fRandomEndPos.y);
+			isIntarvalCheck = m_fIntaval.x < fabs(vPreSpawnPos.x - vRandomPos.x) && m_fIntaval.y < fabs(vPreSpawnPos.y - vRandomPos.y);
+			#ifdef _DEBUG
+			if (iLoopCnt > 200)
+				assert(false);
+			#endif // _DEBUG
+		} while (false == isIntarvalCheck);
+
+		vPreSpawnPos = vRandomPos;
+		m_vSpawnPostion = _float3(vRandomPos.x, vRandomPos.y, 0.f);
+	
+	}
 	if (true == m_isPooling)
 	{
 		CPooling_Manager::GetInstance()->Create_Object(m_strPoolingTag, m_ePoolingObjectStartCoord, &m_vSpawnPostion);
