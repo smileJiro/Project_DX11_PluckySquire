@@ -730,8 +730,9 @@ HRESULT CSection_Manager::Ready_CurLevelSections(const _wstring& _strJsonPath)
 				Desc.isImport = true;
 				Desc.iPriorityID = m_iPriorityGenKey;
 				Desc.SectionJson = ChildJson;
-				// TODO :: 상욱님 나레이션 섹션 생성 코드 작성 , pSection에 넣어야함.
-				pSection = CSection_2D_Narration::Create(m_pDevice, m_pContext, eType, &Desc);
+				// TODO :: 0316 박예슬 나레이션-월드맵 수정요청 
+				//pSection = CSection_2D_Narration::Create(m_pDevice, m_pContext, eType, &Desc);
+				pSection = CSection_2D_Narration::Create(m_pDevice, m_pContext, CSection_2D::NARRAION, &Desc);
 				if (nullptr == pSection)
 				{
 					MSG_BOX("Failed Create CNarration_2D");
