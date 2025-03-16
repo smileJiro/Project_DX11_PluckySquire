@@ -129,7 +129,7 @@ void CLevel_Camera_Tool_Client::Update(_float _fTimeDelta)
 	//Show_CameraTool();
 	Show_CutSceneTool(_fTimeDelta);
 	//Show_ArmInfo();
-	Show_CutSceneInfo();
+	Show_CutSceneInfo(_fTimeDelta);
 	Show_SaveLoadFileWindow();
 
 	Show_AnimModel(_fTimeDelta);
@@ -169,7 +169,7 @@ HRESULT CLevel_Camera_Tool_Client::Ready_Layer_Map()
 {
 	//if (FAILED(Map_Object_Create(L"Chapter_02_Play_Desk.mchc")))
 	//	return E_FAIL;
-	if (FAILED(Map_Object_Create(L"Chapter_06_Play_Desk.mchc")))
+	if (FAILED(Map_Object_Create(L"Chapter_08_Play_Desk.mchc")))
 		return E_FAIL;
 
 	return S_OK;
@@ -323,8 +323,8 @@ HRESULT CLevel_Camera_Tool_Client::Ready_Layer_TestTerrain(const _wstring& _strL
 	// Book
 	CBook::BOOK_DESC BookDesc = {};
 	BookDesc.iCurLevelID = m_eLevelID;
-	BookDesc.isInitOverride = false;
-
+	BookDesc.isInitOverride = true;
+	BookDesc.tTransform3DDesc.vInitialPosition = _float3(-90.f, 64.7f, 19.0f);
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Book"),
 		m_eLevelID, L"_strLayerTag", reinterpret_cast<CGameObject**>(&pOut), &BookDesc)))
 		return E_FAIL;
@@ -520,11 +520,11 @@ void CLevel_Camera_Tool_Client::Show_ArmInfo()
 	ImGui::End();
 }
 
-void CLevel_Camera_Tool_Client::Show_CutSceneInfo()
+void CLevel_Camera_Tool_Client::Show_CutSceneInfo(_float _fTimeDelta)
 {
 	ImGui::Begin("CutScene Info");
 
-	Show_KeyFrameInfo();
+	Show_KeyFrameInfo(_fTimeDelta);
 
 	ImGui::End();
 }
@@ -1003,9 +1003,22 @@ void CLevel_Camera_Tool_Client::Set_InitialData()
 	ImGui::NewLine();
 }
 
-void CLevel_Camera_Tool_Client::Show_KeyFrameInfo()
+void CLevel_Camera_Tool_Client::Show_KeyFrameInfo(_float _fTimeDelta)
 {
+	int a = 0;
+
+	if (true == m_isTimeCount) {
+		m_fTime += _fTimeDelta;
+		ImGui::Text("CutScene Time: %.2f)", m_fTime);
+
+		if (m_fTime >= 25.f) {
+			m_isTimeCount = false;
+			m_fTime = 0.f;
+		}
+	}
+
 	// Cur KeyFrame Info
+
 	if (nullptr != m_pCurKeyFrame) {
 		ImGui::Text("Cur KeyFrame Position: %.2f, %.2f, %.2f", m_pCurKeyFrame->first.vPosition.x, m_pCurKeyFrame->first.vPosition.y, m_pCurKeyFrame->first.vPosition.z);
 		ImGui::Text("TimeStamp: %.2f", m_pCurKeyFrame->first.fTimeStamp);
@@ -1998,7 +2011,7 @@ CGameObject* CLevel_Camera_Tool_Client::Create_Cube()
 	Desc.iRenderGroupID_3D = RG_3D;
 
 	Desc.tTransform3DDesc.vInitialPosition = m_tKeyFrameInfo.vPosition;
-	Desc.tTransform3DDesc.vInitialScaling = _float3(0.1f, 0.1f, 0.1f);
+	Desc.tTransform3DDesc.vInitialScaling = _float3(0.8f, 0.8f, 0.8f);
 	Desc.tTransform3DDesc.fRotationPerSec = XMConvertToRadians(180.f);
 	Desc.tTransform3DDesc.fSpeedPerSec = 0.f;
 
@@ -2302,6 +2315,25 @@ void CLevel_Camera_Tool_Client::Create_Sector()
 
 		m_SelectedKeyFrame.push_back(m_pCurKeyFrame->first);
 		
+	}
+
+	ImGui::SameLine();
+
+	if (ImGui::Button("All KeyFrame To Sector")) {
+
+		for (auto& KeyFrame : m_KeyFrames) {
+			bool bFound = false;
+			for (auto& SelectedFrame : m_SelectedKeyFrame) {
+				_float fEpsilon = 0.01f;
+				if (KeyFrame.first.fTimeStamp < SelectedFrame.fTimeStamp + fEpsilon &&
+					KeyFrame.first.fTimeStamp > SelectedFrame.fTimeStamp - fEpsilon) {
+					bFound = true;
+					break; // 이미 유사한 프레임 있음 -> 더 볼 필요 없음
+				}
+			}
+			if (!bFound)
+				m_SelectedKeyFrame.push_back(KeyFrame.first);
+		}
 	}
 
 	switch (m_iSectorType) {
@@ -2664,6 +2696,7 @@ void CLevel_Camera_Tool_Client::Play_CutScene(_float fTimeDelta)
 		if (nullptr == pCamera)
 			return;
 
+		m_isTimeCount = true;
 		static_cast<CCamera_CutScene_Save*>(pCamera)->Set_NextCutScene(m_CutSceneTags[m_iSelectedCutSceneNum]);
 
 		for (_int i = 0; i < 3; ++i) {
