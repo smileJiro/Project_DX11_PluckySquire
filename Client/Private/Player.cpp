@@ -1723,6 +1723,11 @@ _bool CPlayer::Is_DetonationMode()
 	return m_pDetonator->Is_DetonationMode();
 }
 
+_bool CPlayer::Is_Invincible()
+{
+	return m_bInvincible;
+}
+
 _bool CPlayer::Is_ZetPackEquipped()
 {
 	return m_PartObjects[PLAYER_PART_ZETPACK]->Is_Active();

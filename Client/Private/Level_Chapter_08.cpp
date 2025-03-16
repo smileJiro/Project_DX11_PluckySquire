@@ -13,6 +13,7 @@
 #include "PlayerData_Manager.h"
 #include "Effect_Manager.h"
 #include "Effect2D_Manager.h"
+#include "Formation_Manager.h"
 
 #include "CubeMap.h"
 #include "MainTable.h"
@@ -22,6 +23,7 @@
 #include "Book.h"
 #include "BirdMonster.h"
 #include "Projectile_BirdMonster.h"
+#include "Formation.h"
 #include "Spear_Soldier.h"
 #include "CrossBow_Soldier.h"
 #include "Bomb_Soldier.h"
@@ -254,6 +256,7 @@ HRESULT CLevel_Chapter_08::Initialize(LEVEL_ID _eLevelID)
 	m_pGameInstance->Set_PlayerHideColor(_float3(0.8f, 0.8f, 0.8f), true);
 
 	m_pSneakMinigameManager = CMinigame_Sneak::GetInstance();
+	m_pFormation_Manager = CFormation_Manager::GetInstance();
 
 	return S_OK;
 }
@@ -261,6 +264,7 @@ HRESULT CLevel_Chapter_08::Initialize(LEVEL_ID _eLevelID)
 void CLevel_Chapter_08::Update(_float _fTimeDelta)
 {
 	m_pSneakMinigameManager->Update(_fTimeDelta);
+	m_pFormation_Manager->Update(_fTimeDelta);
 	Uimgr->UI_Update();
 
 	// 피직스 업데이트 
@@ -1943,6 +1947,7 @@ void CLevel_Chapter_08::Free()
 	m_pGameInstance->End_BGM();
 
 	CMinigame_Sneak::GetInstance()->DestroyInstance();
+	CFormation_Manager::GetInstance()->DestroyInstance();
 	//Safe_Release(m_pSneakMinigameManager);
 
 	__super::Free();
