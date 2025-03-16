@@ -20,6 +20,7 @@ HRESULT CBombSwitchStopper::Initialize(void* _pArg)
         return E_FAIL;
     BOMB_SWITCH_STOPPER_DESC* pBodyDesc = static_cast<BOMB_SWITCH_STOPPER_DESC*>(_pArg);
     m_iCurLevelID = pBodyDesc->iCurLevelID;
+	m_eType = pBodyDesc->eType;
 	pBodyDesc->iObjectGroupID = OBJECT_GROUP::MAPOBJECT;
     pBodyDesc->eStartCoord = COORDINATE_2D;
     pBodyDesc->isCoordChangeEnable = false;
@@ -50,7 +51,7 @@ HRESULT CBombSwitchStopper::Initialize(void* _pArg)
         TEXT("Com_Body2DCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &tAABBDEsc)))
         return E_FAIL;
     Register_OnAnimEndCallBack(bind(&CBombSwitchStopper::On_AnimEnd, this, placeholders::_1, placeholders::_2));
-    Switch_Animation(SQUARE_UP);
+	Set_State(pBodyDesc->eInitialState);
     return S_OK;
 }
 
@@ -66,31 +67,75 @@ HRESULT CBombSwitchStopper::Render()
 
 void CBombSwitchStopper::On_BombSwitch(_bool _bOn)
 {
-
-    if (SQUARE_DOWN == Get_CurrentAnimIndex())
-    {
-        Switch_Animation(SQUARE_MOVE_UP);
-        m_p2DColliderComs[0]->Set_Active(true);
-        SECTION_MGR->Change_GameObject_LayerIndex(m_strSectionName, this, SECTION_2D_PLAYMAP_OBJECT);
-    }
-    else if (SQUARE_UP == Get_CurrentAnimIndex())
-        Switch_Animation(SQUARE_MOVE_DOWN);
-
-
+	Set_State( UP == m_eState ?  DOWN: UP);
 }
 
 void CBombSwitchStopper::On_AnimEnd(COORDINATE _eCoord, _uint _iAnimIdx)
 {
-    if (SQUARE_MOVE_UP == _iAnimIdx)
+    switch (m_eType)
     {
-        Switch_Animation(SQUARE_UP);
+    case Client::CBombSwitchStopper::RECT:
+        if (RECT_MOVE_UP == _iAnimIdx)
+        {
+            Switch_Animation(RECT_UP);
+        }
+        else if (RECT_MOVE_DOWN == _iAnimIdx)
+        {
+            Switch_Animation(RECT_DOWN);
+            SECTION_MGR->Change_GameObject_LayerIndex(m_strSectionName, this, SECTION_2D_PLAYMAP_BACKGROUND);
+            m_p2DColliderComs[0]->Set_Active(false);
+        }
+        break;
+    case Client::CBombSwitchStopper::SQUARE:
+        if (SQUARE_MOVE_UP == _iAnimIdx)
+        {
+            Switch_Animation(SQUARE_UP);
+        }
+        else if (SQUARE_MOVE_DOWN == _iAnimIdx)
+        {
+            Switch_Animation(SQUARE_DOWN);
+            SECTION_MGR->Change_GameObject_LayerIndex(m_strSectionName, this, SECTION_2D_PLAYMAP_BACKGROUND);
+            m_p2DColliderComs[0]->Set_Active(false);
+        }
+        break;
+    default:
+        break;
     }
-    else if (SQUARE_MOVE_DOWN == _iAnimIdx)
-    {
-        Switch_Animation(SQUARE_DOWN);
-        SECTION_MGR->Change_GameObject_LayerIndex(m_strSectionName, this, SECTION_2D_PLAYMAP_BACKGROUND);
-        m_p2DColliderComs[0]->Set_Active(false);
-    }
+
+
+
+}
+
+void CBombSwitchStopper::Set_State(STOPPER_STATE _eState)
+{
+	if (m_eState == _eState)
+		return;
+	m_eState = _eState;
+	switch (m_eType)
+	{
+	case Client::CBombSwitchStopper::RECT:
+		if (UP == m_eState)
+        {
+            Switch_Animation(RECT_MOVE_UP);
+            m_p2DColliderComs[0]->Set_Active(true);
+            SECTION_MGR->Change_GameObject_LayerIndex(m_strSectionName, this, SECTION_2D_PLAYMAP_OBJECT);
+        }
+		else
+			Switch_Animation(RECT_MOVE_DOWN);
+		break;
+	case Client::CBombSwitchStopper::SQUARE:
+		if (UP == m_eState)
+        {
+            Switch_Animation(SQUARE_MOVE_UP);
+            m_p2DColliderComs[0]->Set_Active(true);
+            SECTION_MGR->Change_GameObject_LayerIndex(m_strSectionName, this, SECTION_2D_PLAYMAP_OBJECT);
+        }
+		else
+			Switch_Animation(SQUARE_MOVE_DOWN);
+		break;
+	default:
+		break;
+	}
 }
 
 

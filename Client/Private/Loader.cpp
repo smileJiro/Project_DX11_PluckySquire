@@ -163,6 +163,7 @@
 #include "Sneak_Troop.h"
 #include "Sneak_SentryTroop.h"
 #include "C08_Box.h"
+#include "JumpStarter.h"
 
 /* For. Monster */
 #include "Beetle.h"
@@ -632,6 +633,14 @@ HRESULT CLoader::Loading_Level_Static()
 
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Logo_TextObject_Humgrump"),
 		C2DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Textures/Main_Logo/Main_TextObject/title_screen_tmh_KOR.dds", LEVEL_STATIC, true, false))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Logo_TextObject_Button"),
+		C2DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Textures/Main_Logo/Main_TextObject/Text_Object_Button.dds", LEVEL_STATIC, true, false))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Logo_FadeUI"),
+		C2DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Textures/Main_Logo/FadeUI.dds", LEVEL_STATIC, true, false))))
 		return E_FAIL;
 
 	/* For. Prototype_Component_VIBuffer_Mesh */
@@ -1429,6 +1438,10 @@ HRESULT CLoader::Loading_Level_Chapter_4(LEVEL_ID _eLoadLevelID)
 		/* For. Prototype_GameObject_2DMap_BombableBox */
 		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_2DMap_BombableBox"),
 			CBombableBox::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+				
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_JumpStarter"),
+			CJumpStarter::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
 		/* UI */

@@ -225,6 +225,7 @@ HRESULT CLevel_Chapter_06::Initialize(LEVEL_ID _eLevelID)
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MAPOBJECT, OBJECT_GROUP::PLAYER_PROJECTILE);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::TRIGGER_OBJECT, OBJECT_GROUP::GIMMICK_OBJECT);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::SLIPPERY, OBJECT_GROUP::MAPOBJECT);
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::SLIPPERY, OBJECT_GROUP::TRIGGER_OBJECT);
 	//m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::SLIPPERY, OBJECT_GROUP::BLOCKER);
 
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::NPC_EVENT, OBJECT_GROUP::INTERACTION_OBEJCT); //3 8
@@ -240,7 +241,7 @@ HRESULT CLevel_Chapter_06::Initialize(LEVEL_ID _eLevelID)
 	/* 돌덩이 */
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER_PROJECTILE, OBJECT_GROUP::BLOCKER);
 
-
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::FRIEND, OBJECT_GROUP::BLOCKER);
 	// 그룹필터 제거
 	// 삭제도 중복해서 해도 돼 >> 내부적으로 걸러줌. >> 가독성이 및 사용감이 더 중요해서 이렇게 처리했음
 	//m_pGameInstance->Erase_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::PLAYER);
@@ -782,7 +783,7 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Friends(const _wstring& _strLayerTag)
 	_wstring strFriendTag = L"Thrash";
 	{ /* Friend_Thrash */
 		CFriend_Thrash::FRIEND_DESC Desc{};
-		Desc.Build_2D_Transform(_float2(-82.f, -771.f), _float2(1.0f, 1.0f), 450.f);
+		Desc.Build_2D_Transform(_float2(-82.f, -771.f), _float2(1.0f, 1.0f), 400.f);
 		Desc.iCurLevelID = LEVEL_CHAPTER_2;
 		Desc.eStartState = CFriend::FRIEND_IDLE;
 		Desc.eStartDirection = CFriend::DIR_UP;
@@ -804,7 +805,7 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Friends(const _wstring& _strLayerTag)
 	{ /* Friend_Violet */
 		strFriendTag = L"Violet";
 		CFriend_Violet::FRIEND_DESC Desc{};
-		Desc.Build_2D_Transform(_float2(42.f, -771.f), _float2(1.0f, 1.0f), 450.f);
+		Desc.Build_2D_Transform(_float2(42.f, -771.f), _float2(1.0f, 1.0f), 400.f);
 		Desc.iCurLevelID = LEVEL_CHAPTER_2;
 		Desc.eStartState = CFriend::FRIEND_IDLE;
 		Desc.eStartDirection = CFriend::DIR_UP;

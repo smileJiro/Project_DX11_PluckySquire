@@ -35,6 +35,7 @@
 #include "Door_Red.h"
 #include "DynamicCastleGate.h"
 #include "Postit_Page.h"
+#include "JumpStarter.h"
 
 #include "RayShape.h"
 #include "FallingRock.h"
@@ -1466,6 +1467,36 @@ HRESULT CLevel_Chapter_04::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Zipline"),
 		m_eLevelID, _strLayerTag, &ZipDesc)))
+		return E_FAIL;
+
+	CJumpStarter::JUMP_STARTER_DESC tJumpStarterDesc = {};
+	tJumpStarterDesc.isCoordChangeEnable = false;
+	tJumpStarterDesc.iCurLevelID = m_eLevelID;
+	tJumpStarterDesc.eStartCoord = COORDINATE_2D;
+	tJumpStarterDesc.strInitSectionTag = L"Chapter4_P0102";
+	tJumpStarterDesc.Build_2D_Transform({ 2200.f,175.f }, {100.f,35.f});
+	tJumpStarterDesc.vBoxHalfExtents = { 1.f,1.f,1.f };
+	tJumpStarterDesc.vBoxOffset = { 0.f,0.f,0.f };
+	tJumpStarterDesc.eJumpMoveDir = F_DIRECTION::DOWN;
+	tJumpStarterDesc.fTargetPos = { 0.f,-150.f };
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_JumpStarter"),
+		m_eLevelID, _strLayerTag, &tJumpStarterDesc)))
+		return E_FAIL;
+
+	tJumpStarterDesc = {};
+	tJumpStarterDesc.isCoordChangeEnable = false;
+	tJumpStarterDesc.iCurLevelID = m_eLevelID;
+	tJumpStarterDesc.eStartCoord = COORDINATE_2D;
+	tJumpStarterDesc.strInitSectionTag = L"Chapter4_P0102";
+	tJumpStarterDesc.Build_2D_Transform({ 500.f, -160.f }, {10.f, 90.f});
+	tJumpStarterDesc.vBoxHalfExtents = { 1.f,1.f,1.f };
+	tJumpStarterDesc.vBoxOffset = { 0.f,0.f,0.f };
+	tJumpStarterDesc.eJumpMoveDir = F_DIRECTION::LEFT;
+	tJumpStarterDesc.fTargetPos = { -100.f,-50.f };
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_JumpStarter"),
+		m_eLevelID, _strLayerTag, &tJumpStarterDesc)))
 		return E_FAIL;
 
 

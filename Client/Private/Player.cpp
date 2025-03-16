@@ -49,6 +49,7 @@
 #include "Effect2D_Manager.h"
 #include "Effect_Manager.h"
 #include "PlayerData_Manager.h"
+#include "Friend_Controller.h"
 
 #include "Collider_Fan.h"
 #include "Collider_AABB.h"
@@ -756,7 +757,7 @@ HRESULT CPlayer::Render()
 
 void CPlayer::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
 {
-	__super::OnContact_Enter(_My, _Other, _ContactPointDatas);
+	__super::OnContact_Enter(_My, _Other, _ContactPointDatas);	
 	m_pStateMachine->Get_CurrentState()->OnContact_Enter(_My, _Other, _ContactPointDatas);
 
 
@@ -1121,11 +1122,13 @@ HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
 		CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::TARGET_2D, true, 1.f);
 		if (nullptr != m_pAttack2DTriggerCom)
 			m_pAttack2DTriggerCom->Set_Active(false);
-	}
+
+	}		
 	else
 	{
 		CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::TARGET, true, 1.f);
 		Set_PlatformerMode(false);
+
 	}
 
 

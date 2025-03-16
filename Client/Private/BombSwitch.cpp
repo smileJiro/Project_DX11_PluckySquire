@@ -19,7 +19,8 @@ HRESULT CBombSwitch::Initialize(void* _pArg)
         return E_FAIL;
     BOMB_SWITCH_DESC* pBodyDesc = static_cast<BOMB_SWITCH_DESC*>(_pArg);
     m_iCurLevelID = pBodyDesc->iCurLevelID;
-	m_pReceiver = pBodyDesc->pReceiver;
+    if(pBodyDesc->pReceivers)
+	    m_pReceivers .push_back(pBodyDesc->pReceivers);
     pBodyDesc->eStartCoord = COORDINATE_2D;
     pBodyDesc->isCoordChangeEnable = false;
     pBodyDesc->strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
@@ -80,8 +81,10 @@ void CBombSwitch::Set_SwitchState(BOMB_SWITCH_STATE _eState)
 	if (m_eBombSwitchOn == _eState)
 		return;
     m_eBombSwitchOn = _eState;
-    if (m_pReceiver)
-        m_pReceiver->Switch_Bomb(ON == m_eBombSwitchOn );
+    for (auto& pReciever : m_pReceivers)
+    {
+        pReciever->Switch_Bomb(ON == m_eBombSwitchOn );
+    }
     Switch_Animation(m_eBombSwitchOn);
 }
 
