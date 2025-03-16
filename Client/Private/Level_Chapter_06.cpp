@@ -779,7 +779,7 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Friends(const _wstring& _strLayerTag)
 	_wstring strFriendTag = L"Thrash";
 	{ /* Friend_Thrash */
 		CFriend_Thrash::FRIEND_DESC Desc{};
-		Desc.Build_2D_Transform(_float2(-82.f, -771.f), _float2(1.0f, 1.0f), 450.f);
+		Desc.Build_2D_Transform(_float2(-82.f, -771.f), _float2(1.0f, 1.0f), 400.f);
 		Desc.iCurLevelID = LEVEL_CHAPTER_2;
 		Desc.eStartState = CFriend::FRIEND_IDLE;
 		Desc.eStartDirection = CFriend::DIR_UP;
@@ -801,7 +801,7 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Friends(const _wstring& _strLayerTag)
 	{ /* Friend_Violet */
 		strFriendTag = L"Violet";
 		CFriend_Violet::FRIEND_DESC Desc{};
-		Desc.Build_2D_Transform(_float2(42.f, -771.f), _float2(1.0f, 1.0f), 450.f);
+		Desc.Build_2D_Transform(_float2(42.f, -771.f), _float2(1.0f, 1.0f), 400.f);
 		Desc.iCurLevelID = LEVEL_CHAPTER_2;
 		Desc.eStartState = CFriend::FRIEND_IDLE;
 		Desc.eStartDirection = CFriend::DIR_UP;
