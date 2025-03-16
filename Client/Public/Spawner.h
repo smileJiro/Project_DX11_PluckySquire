@@ -16,8 +16,22 @@ BEGIN(Client)
 class CSpawner : public CGameObject
 {
 public:
+
+	enum SPAWNER_MODE
+	{
+		SPAWNER_DEFUALT,
+		SPAWNER_RAMDOM,
+		SPAWNER_END
+	};
+
 	typedef struct tagSpawnerDesc : CController_Transform::CON_TRANSFORM_DESC
 	{
+		SPAWNER_MODE eMode = SPAWNER_DEFUALT;
+
+		_float2 fRandomStartPos = {};
+		_float2 fRandomEndPos = {};
+		_float2 fIntaval = {100.f,0.f};
+
 		/* Add To Layer Data */
 		LEVEL_ID eCurLevelID;
 		LEVEL_ID eGameObjectPrototypeLevelID;
@@ -34,8 +48,11 @@ public:
 		_wstring strPoolingTag;
 		Pooling_DESC tPoolingDesc;
 		COORDINATE ePoolingObjectStartCoord = COORDINATE_LAST;
-	}SPAWNER_DESC;
+		
 
+	
+	}SPAWNER_DESC;
+	
 private:
 	CSpawner(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	CSpawner(const CSpawner& _Prototype);
@@ -54,6 +71,16 @@ private: /* Add To Layer Data */
 	CController_Transform::CON_TRANSFORM_DESC* m_pObjectCloneDesc = nullptr;
 
 private: /* Spawner Data */
+	// 박예슬 추가 : 스폰 위치를 유동적으로 스포너가 조정시켜 주기 위함.
+	// SPAWNER_RAMDOM 모드일 경우 
+	// Spawn_Object() 함수에서 스폰 시마다 m_vSpawnPostion를 변경한다.
+	// 스포너의 이전 스폰위치가 m_fIntaval보다 적으면 다시 뽑음.
+	SPAWNER_MODE m_eSpawnerMode = SPAWNER_MODE::SPAWNER_DEFUALT;
+	_float2 m_fRandomStartPos = {};
+	_float2 m_fRandomEndPos = {};
+	_float2 m_fIntaval = {};
+	//
+
 	_float3 m_vSpawnPostion = {};
 	_float2 m_vSpawnCycleTime = {};
 	_uint m_iOneClycleSpawnCount = 0;
