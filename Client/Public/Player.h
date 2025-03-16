@@ -577,6 +577,7 @@ public:
 	_bool Is_CarryingObject() { return nullptr != m_pCarryingObject; }
 	_bool Is_AttackTriggerActive();
 	_bool Is_DetonationMode();
+	_bool Is_Invincible();
 
 	_bool Is_PlayingAnim();
 	_bool Has_InteractObject() { return nullptr != m_pInteractableObject; }

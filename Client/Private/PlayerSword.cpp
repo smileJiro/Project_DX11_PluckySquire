@@ -159,7 +159,7 @@ HRESULT CPlayerSword::Initialize(void* _pArg)
     SwordTrailDesc.vColor = _float4(0.62f, 0.82f, 1.33f, 0.85f);
     SwordTrailDesc.szTextureTag = L"Prototype_Component_Texture_Trail";
     SwordTrailDesc.szBufferTag = L"Prototype_Component_VIBuffer_Trail32";
-    SwordTrailDesc.fAddTime = 0.015f;
+    SwordTrailDesc.fAddTime = 0.03f;
     SwordTrailDesc.fTrailLifeTime = 0.25f;
 
     m_pTrailEffect = static_cast<CEffect_Trail*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_EffectTrail"), &SwordTrailDesc));

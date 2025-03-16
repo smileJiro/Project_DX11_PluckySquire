@@ -234,6 +234,9 @@
     <ClInclude Include="..\Public\FatherGame_Progress_PartHead.h" />
     <ClInclude Include="..\Public\FatherGame_Progress_PartWing.h" />
     <ClInclude Include="..\public\FatherPart_Prop.h" />
+    <ClInclude Include="..\Public\Formation.h" />
+    <ClInclude Include="..\Public\FormationMoveState.h" />
+    <ClInclude Include="..\Public\Formation_Manager.h" />
     <ClInclude Include="..\public\FresnelModelObject.h" />
     <ClInclude Include="..\Public\FriendBody.h" />
     <ClInclude Include="..\Public\Friend_Pip.h" />
@@ -633,6 +636,9 @@
     <ClCompile Include="..\Private\FatherGame_Progress_PartHead.cpp" />
     <ClCompile Include="..\Private\FatherGame_Progress_PartWing.cpp" />
     <ClCompile Include="..\private\FatherPart_Prop.cpp" />
+    <ClCompile Include="..\Private\Formation.cpp" />
+    <ClCompile Include="..\Private\FormationMoveState.cpp" />
+    <ClCompile Include="..\Private\Formation_Manager.cpp" />
     <ClCompile Include="..\private\FresnelModelObject.cpp" />
     <ClCompile Include="..\Private\FriendBody.cpp" />
     <ClCompile Include="..\Private\Friend_Pip.cpp" />

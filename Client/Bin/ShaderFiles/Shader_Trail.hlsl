@@ -5,7 +5,7 @@ float4x4 g_ViewMatrix;
 float4x4 g_ProjMatrix;
 
 Texture2D g_Texture;
-float4 g_vColor, g_vCentral;
+float4 g_vColor, g_vCentral, g_vDir;
 float g_fLength;
 uint g_iCount;
 
@@ -109,9 +109,6 @@ void GS_MAIN(point GS_IN In[1], inout TriangleStream<GS_OUT> OutStream)
     
     matVP = mul(g_ViewMatrix, g_ProjMatrix);
     
-    // TEST 
-    //float3 vRight = g_WorldMatrix[0].xyz * 0.5f;
-    //float3 vHeight = g_WorldMatrix[1].xyz * 0.5f;
     Out[0].vPosition = float4(CatMullRom(In[0].vPrePrev.xyz, In[0].vPrev.xyz, In[0].vPosition.xyz, In[0].vNext.xyz, 0.f), 1.f);
     vDiff = normalize(Out[0].vPosition.xyz - g_vCentral.xyz) * g_fLength;
     Out[1].vPosition = float4(Out[0].vPosition.xyz - vDiff, 1.f);
@@ -161,6 +158,60 @@ void GS_MAIN(point GS_IN In[1], inout TriangleStream<GS_OUT> OutStream)
     }
 }
 
+[maxvertexcount(18)]
+void GS_FOLLOW(point GS_IN In[1], inout TriangleStream<GS_OUT> OutStream)
+{
+    GS_OUT Out[8];
+    
+    matrix matVP;    
+    matVP = mul(g_ViewMatrix, g_ProjMatrix);
+    
+    Out[0].vPosition = float4(CatMullRom(In[0].vPrePrev.xyz, In[0].vPrev.xyz, In[0].vPosition.xyz, In[0].vNext.xyz, 0.f), 1.f);
+    Out[1].vPosition = float4(Out[0].vPosition.xyz - g_vDir.xyz * g_fLength, 1.f);
+    
+    Out[2].vPosition = float4(CatMullRom(In[0].vPrePrev.xyz, In[0].vPrev.xyz, In[0].vPosition.xyz, In[0].vNext.xyz, 0.33f), 1.f);
+    Out[3].vPosition = float4(Out[2].vPosition.xyz - g_vDir.xyz * g_fLength, 1.f);
+    
+    Out[4].vPosition = float4(CatMullRom(In[0].vPrePrev.xyz, In[0].vPrev.xyz, In[0].vPosition.xyz, In[0].vNext.xyz, 0.66f), 1.f);
+    Out[5].vPosition = float4(Out[4].vPosition.xyz - g_vDir.xyz * g_fLength, 1.f);
+
+    Out[6].vPosition = float4(CatMullRom(In[0].vPrePrev.xyz, In[0].vPrev.xyz, In[0].vPosition.xyz, In[0].vNext.xyz, 1.f), 1.f);
+    Out[7].vPosition = float4(Out[6].vPosition.xyz - g_vDir.xyz * g_fLength, 1.f);
+    
+    float fTexcoordPerIndex = (1.f / (float) g_iCount);
+    
+    Out[0].vTexcoord = float2(In[0].vTexcoord.x, 0.f);
+    Out[1].vTexcoord = float2(Out[0].vTexcoord.x, 1.f);
+    Out[2].vTexcoord = float2(Out[0].vTexcoord.x + fTexcoordPerIndex * 0.33f, 0.f);
+    Out[3].vTexcoord = float2(Out[2].vTexcoord.x, 1.f);
+    Out[4].vTexcoord = float2(Out[0].vTexcoord.x + fTexcoordPerIndex * 0.66f, 0.f);
+    Out[5].vTexcoord = float2(Out[4].vTexcoord.x, 1.f);
+    Out[6].vTexcoord = float2(Out[0].vTexcoord.x + fTexcoordPerIndex * 1.f, 0.f);
+    Out[7].vTexcoord = float2(Out[6].vTexcoord.x, 1.f);
+    
+    
+    for (int i = 0; i < 8; ++i)
+    {
+        Out[i].vPosition = mul(Out[i].vPosition, matVP);
+        Out[i].vProjPos = Out[i].vPosition;
+    }
+    
+    for (int j = 0; j < 3; ++j)
+    {
+        OutStream.Append(Out[j * 2 + 0]);
+        OutStream.Append(Out[j * 2 + 1]);
+        OutStream.Append(Out[j * 2 + 2]);
+        OutStream.RestartStrip();
+
+        OutStream.Append(Out[j * 2 + 2]);
+        OutStream.Append(Out[j * 2 + 1]);
+        OutStream.Append(Out[j * 2 + 3]);
+        OutStream.RestartStrip();
+
+    }
+}
+
+
 float3 g_fBrightness = float3(0.2126, 0.7152, 0.0722);
 float g_fBloomThreshold = 0.1f;
 /* PixelShader */
@@ -204,6 +255,18 @@ technique11 DefaultTechnique
         SetBlendState(BS_WeightAccumulate, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = compile gs_5_0 GS_MAIN();
+        PixelShader = compile ps_5_0 PS_MAIN_DEFAULT();
+        ComputeShader = NULL;
+
+    }
+
+    pass FOLLOW
+    {
+        SetRasterizerState(RS_Cull_None);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_WeightAccumulate, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = compile gs_5_0 GS_FOLLOW();
         PixelShader = compile ps_5_0 PS_MAIN_DEFAULT();
         ComputeShader = NULL;
 

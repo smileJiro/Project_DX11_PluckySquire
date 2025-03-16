@@ -490,7 +490,7 @@ void CGameEventExecuter_C4::Chapter4_3D_Out_01(_float _fTimeDelta)
 			tDraggableDesc.eStartCoord = COORDINATE_3D;
 			tDraggableDesc.vBoxHalfExtents = { 1.02f,1.02f,1.02f };
 			tDraggableDesc.vBoxOffset = { 0.f,tDraggableDesc.vBoxHalfExtents.y,0.f };
-			tDraggableDesc.tTransform3DDesc.vInitialPosition = { 40.f, 5.82f, 15.f };
+			tDraggableDesc.tTransform3DDesc.vInitialPosition = { 0.f, 0.f, 15.f };
 
 			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DraggableObject"),
 				m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Draggable"), &tDraggableDesc)))

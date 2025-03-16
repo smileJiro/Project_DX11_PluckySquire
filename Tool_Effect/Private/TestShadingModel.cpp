@@ -122,7 +122,24 @@ void CTestShadingModel::Update(_float _fTimeDelta)
 
     ImGui::End();
 
-    m_fTime += _fTimeDelta;
+    if (KEY_DOWN(KEY::A))
+        m_isHit = !m_isHit;
+
+    if (m_isHit)
+    {
+        m_fTime += _fTimeDelta * 2.5f;
+        if (1.f < m_fTime)
+            m_fTime = 1.f;
+    }
+    else if (0.f < m_fTime)
+    {
+        m_fTime -= _fTimeDelta * 2.5f;
+        if (0.f >= m_fTime)
+            m_fTime = 0.f;
+    }
+
+        
+
 
     __super::Update(_fTimeDelta);
 }

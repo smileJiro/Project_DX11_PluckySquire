@@ -85,6 +85,7 @@
 #include "NPC_Thrash.h"
 #include "Npc_Rabbit.h"
 #include "Postit_Page.h"
+#include "Meteor.h"
 
 #include "Npc_Humgrump.h"
 #include "Npc_MoonBeard.h"
@@ -190,6 +191,7 @@
 #include "SketchSpace_SpikeBall.h"
 #include "SketchSpace_UFO.h"
 #include "Projectile_SketchSpace_UFO.h"
+#include "Formation.h"
 
 /* For. Boss */
 #include "ButterGrump.h"
@@ -661,6 +663,10 @@ HRESULT CLoader::Loading_Level_Static()
 
 	/* For. Prototype_Component_Trail*/
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Trail32"),
+		CVIBuffer_Trail::Create(m_pDevice, m_pContext, 32))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Trail64"),
 		CVIBuffer_Trail::Create(m_pDevice, m_pContext, 32))))
 		return E_FAIL;
 
@@ -1689,6 +1695,11 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_CollapseBlock"),
 			CCollapseBlock::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
+		
+		/* For. Prototype_GameObject_CollapseBlock */
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Meteor"),
+			CMeteor::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
 
 		/* Chapter 6 FatherGame */
 
@@ -1871,7 +1882,16 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effects/T_FX_CMN_Noise_09.dds"), 1))))
 		return E_FAIL;
 
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_Component_Texture_BossWingAttack"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effects/T_FX_CMN_Mask_03.dds")))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_Component_Texture_WingSlam"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effects/T_FX_CMN_Mask_05_270.dds")))))
+		return E_FAIL;
 	
+	
+
 	#pragma endregion
 	
 	#pragma region Chapter 8 - Texture Load
@@ -2018,6 +2038,10 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Laser_Beam"),
 		CLaser_Beam::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Formation"),
+		CFormation::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 #pragma endregion
 

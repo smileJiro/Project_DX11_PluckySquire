@@ -52,6 +52,7 @@ Texture2D g_DiffuseTexture, g_NoiseTexture;
 float2 g_vDiffuseScaling, g_vNoiseScaling;
 
 float g_fFarZ = 500.f;
+float g_fHitRate = 0.f;
 int g_iFlag = 0;
 int g_iRenderFlag = 0;
 
@@ -601,7 +602,7 @@ float3 HSVLerp(float3 colorA, float3 colorB, float t)
 
 PS_ACCUM PS_SINGLEFRESNEL(PS_IN In)
 {
-    PS_ACCUM Out = (PS_ACCUM) 0;
+    PS_ACCUM Out = (PS_ACCUM) 0;    
     
     float3 vViewDirection = g_vCamPosition.xyz - In.vWorldPos.xyz;
     float fLength = length(vViewDirection);
@@ -609,15 +610,26 @@ PS_ACCUM PS_SINGLEFRESNEL(PS_IN In)
     
     float FresnelValue = Compute_Fresnel(In.vNormal.xyz, vViewDirection, OneFresnel.fBaseReflect, OneFresnel.fExp, OneFresnel.fStrength);
     
-    float3 vFresnelColor = OneFresnel.vColor * FresnelValue;
-    float fWeight = FUNC_WEIGHT(In.vProjPos.w, vDiffuseColor.a);
+    float4 vFresnelColor = OneFresnel.vColor * FresnelValue;
+
+    //Out.vDiffuse.xyz = lerp(vDiffuseColor.xyz, vFresnelColor.xyz, FresnelValue);
+    ////Out.vDiffuse = (OneFresnel.vColor * FresnelValue);
+    //Out.vDiffuse.w = vDiffuseColor.a;
+    //Out.vBrightness = vBloomColor;
+    float4 vOutColor;
+    vOutColor.a = lerp(vDiffuseColor.a, vFresnelColor.a, FresnelValue);
+    vOutColor.rgb = HSVLerp(vDiffuseColor.xyz, vFresnelColor.xyz, FresnelValue);
     
-    float3 vOutColor = lerp(vDiffuseColor.xyz, vFresnelColor.xyz, FresnelValue);
-    Out.vAccumulate.xyz = lerp(vOutColor.xyz, vOutColor.xyz, FresnelValue);
-    Out.vAccumulate.xyz = Out.vAccumulate.rgb * vDiffuseColor.a * fWeight;
-    Out.vAccumulate.a = vDiffuseColor.a * fWeight;
-    Out.vRevealage.r = vDiffuseColor.a;
-    Out.vBright = vSubColor * fWeight;
+    vOutColor.rgb = HSVLerp(vOutColor.rgb, float3(1.f, 1.f, 1.f), g_fHitRate);
+    float3 vOutBloom = HSVLerp(vBloomColor.rgb, float3(1.f, 1.f, 1.f), g_fHitRate);
+    
+    float fWeight = FUNC_WEIGHT(In.vProjPos.w, vOutColor.a);
+
+    Out.vAccumulate.xyz = vOutColor.rgb * vOutColor.a * fWeight;
+    Out.vAccumulate.a = vOutColor.a * fWeight;
+    Out.vRevealage.r = vOutColor.a;
+    Out.vBright.xyz = vOutBloom * fWeight;
+    Out.vBright.a = vBloomColor.a * fWeight;
     //Out.vDiffuse.xyz = lerp(vDiffuseColor.xyz, vFresnelColor.xyz, FresnelValue);
     //Out.vDiffuse = (OneFresnel.vColor * FresnelValue);
     //Out.vDiffuse.w = vDiffuseColor.a;
