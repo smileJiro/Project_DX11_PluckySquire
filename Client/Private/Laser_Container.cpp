@@ -65,9 +65,12 @@ HRESULT CLaser_Container::Initialize(void* _pArg)
 	case Client::F_DIRECTION::UP:
 		m_IsBeamRotate = true;
 		vDir = XMVectorSetY(vDir, 1.f);
+		vStartLength.x = 30.f;
+
 		break;
 	case Client::F_DIRECTION::DOWN:
 		m_IsBeamRotate = true;
+		vStartLength.x = 30.f;
 		vDir = XMVectorSetY(vDir, -1.f);
 		break;
 	}
@@ -85,7 +88,7 @@ HRESULT CLaser_Container::Initialize(void* _pArg)
 		break;
 	case Client::F_DIRECTION::UP:
 	case Client::F_DIRECTION::DOWN:
-		m_fBeamStartPos.x = m_fBeamEndPos.x = 40.f;
+		//m_fBeamStartPos.x = m_fBeamEndPos.x = 40.f;
 		break;
 	}
 	/* 레이저 콜라이더들 설정*/
@@ -118,6 +121,7 @@ HRESULT CLaser_Container::Initialize(void* _pArg)
 	case Client::F_DIRECTION::UP:
 		break;
 	case Client::F_DIRECTION::DOWN:
+		static_cast<CModelObject*>(m_PartObjects[PART_BEAM_EFFECT])->Set_Position(XMVectorSet(m_fBeamStartPos.x, fMaxLength * -1.f + m_fBeamStartPos.y, 0.f,1.f));
 		break;
 	}
 
@@ -140,7 +144,7 @@ HRESULT CLaser_Container::Initialize(void* _pArg)
 		break;
 	case Client::F_DIRECTION::DOWN:
 		static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(LASER_MACHINE_LENGTH_TOP);
-		static_cast<CModelObject*>(m_PartObjects[PART_BEAM_START_EFFECT])->Get_ControllerTransform()->TurnAngle(XMConvertToRadians(90.f), { 0.f,0.f,1.f });
+		static_cast<CModelObject*>(m_PartObjects[PART_BEAM_START_EFFECT])->Get_ControllerTransform()->TurnAngle(XMConvertToRadians(-90.f), { 0.f,0.f,1.f });
 		static_cast<CModelObject*>(m_PartObjects[PART_BEAM_EFFECT])->Get_ControllerTransform()->TurnAngle(XMConvertToRadians(90.f), { 0.f,0.f,1.f });
 		break;
 	}
@@ -217,7 +221,7 @@ void CLaser_Container::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* 
 	if (RAY_TRIGGER & _pMyCollider->Get_CollisionGroupID())
 	{
 		// 블로커랑 닿았을 때, 거리 계산
-		if (BLOCKER & _pOtherCollider->Get_CollisionGroupID())
+		if (BLOCKER & _pOtherCollider->Get_CollisionGroupID() || BLOCKER_JUMPPASS & _pOtherCollider->Get_CollisionGroupID())
 		{
 			_vector vPos = Get_FinalPosition();
 
@@ -263,6 +267,7 @@ void CLaser_Container::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* 
 			_vector vPos = Get_FinalPosition();
 			_vector vCheckPos = _pOtherObject->Get_FinalPosition();
 			_float fTargetX = XMVectorGetX(vPos) + m_fBeamEndPos.x;
+			_float fTargetY = XMVectorGetY(vPos) + m_fBeamEndPos.y;
 			// 플레이어면 걍 죽어
 			// 아니야 굳이 콜라이더를 수정하지말고 걍 체크하자?
 
@@ -279,10 +284,7 @@ void CLaser_Container::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* 
 			case Client::F_DIRECTION::UP:
 				break;
 			case Client::F_DIRECTION::DOWN:
-				break;
-			case Client::F_DIRECTION::F_DIR_LAST:
-				break;
-			default:
+				isKill = fTargetY < XMVectorGetY(_pOtherObject->Get_FinalPosition());
 				break;
 			}
 
@@ -298,7 +300,7 @@ void CLaser_Container::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _
 	if (RAY_TRIGGER & _pMyCollider->Get_CollisionGroupID())
 	{
 		// 블로커랑 닿았을 때, 거리 계산
-		if (BLOCKER & _pOtherCollider->Get_CollisionGroupID())
+		if (BLOCKER & _pOtherCollider->Get_CollisionGroupID() || BLOCKER_JUMPPASS & _pOtherCollider->Get_CollisionGroupID())
 		{
 			if (_pOtherObject->Get_GameObjectInstanceID() != m_iBeamTargetIndex)
 				On_Collision2D_Enter(_pMyCollider, _pOtherCollider, _pOtherObject);
@@ -311,6 +313,39 @@ void CLaser_Container::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _
 			
 		}
 	}
+
+	if (MONSTER_PROJECTILE & _pMyCollider->Get_CollisionGroupID() && PLAYER & _pOtherCollider->Get_CollisionGroupID())
+	{
+		if (m_IsBeamOn)
+		{
+			_vector vPos = Get_FinalPosition();
+			_vector vCheckPos = _pOtherObject->Get_FinalPosition();
+			_float fTargetX = XMVectorGetX(vPos) + m_fBeamEndPos.x;
+			_float fTargetY = XMVectorGetY(vPos) + m_fBeamEndPos.y;
+			// 플레이어면 걍 죽어
+			// 아니야 굳이 콜라이더를 수정하지말고 걍 체크하자?
+
+			_bool isKill = false;
+
+			switch (m_eDir)
+			{
+			case Client::F_DIRECTION::LEFT:
+				isKill = fTargetX < XMVectorGetX(_pOtherObject->Get_FinalPosition());
+				break;
+			case Client::F_DIRECTION::RIGHT:
+				isKill = fTargetX > XMVectorGetX(_pOtherObject->Get_FinalPosition());
+				break;
+			case Client::F_DIRECTION::UP:
+				break;
+			case Client::F_DIRECTION::DOWN:
+				isKill = fTargetY < XMVectorGetY(_pOtherObject->Get_FinalPosition());
+				break;
+			}
+
+			if (isKill)
+				Event_Hit(this, static_cast<CCharacter*>(_pOtherObject), 99, XMVectorZero());
+		}
+	}
 }
 
 void CLaser_Container::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
@@ -318,7 +353,7 @@ void CLaser_Container::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _
 	if (RAY_TRIGGER & _pMyCollider->Get_CollisionGroupID())
 	{
 		// 블로커랑 닿았을 때, 거리 계산
-		if (BLOCKER & _pOtherCollider->Get_CollisionGroupID())
+		if (BLOCKER & _pOtherCollider->Get_CollisionGroupID() || BLOCKER_JUMPPASS & _pOtherCollider->Get_CollisionGroupID())
 		{
 			if (m_iBeamTargetIndex == _pOtherObject->Get_GameObjectInstanceID())
 				m_iBeamTargetIndex = -1;
@@ -536,8 +571,16 @@ void CLaser_Container::Compute_Beam(CCollider* _pMyCollider, CCollider* _pOtherC
 		fOffset *= -1.f;
 	break;
 	case Client::F_DIRECTION::LEFT:
+		break;
 	case Client::F_DIRECTION::DOWN:
-	break;
+		fOffset = (fExtent.y * 0.5f);
+		if (fOffset > 400.f)
+		{
+			fOffset = (fExtent.y);
+		}
+		//_float fOffset = 0.f;
+
+		break;
 	}
 
 	switch (m_eDir)
@@ -547,6 +590,8 @@ void CLaser_Container::Compute_Beam(CCollider* _pMyCollider, CCollider* _pOtherC
 		vLayerPosition = XMVectorSetX(vLayerPosition, fPos.x - XMVectorGetX(vContPos) + fOffset);
 		break;
 	case Client::F_DIRECTION::DOWN:
+		vLayerPosition = XMVectorSetY(vLayerPosition, fPos.y - XMVectorGetY(vContPos) + fOffset);
+		break;
 	case Client::F_DIRECTION::UP:
 		vLayerPosition = XMVectorSetY(vLayerPosition, fPos.y - XMVectorGetY(vContPos) + fOffset);
 		break;
@@ -587,9 +632,9 @@ void CLaser_Container::Compute_Beam(CCollider* _pMyCollider, CCollider* _pOtherC
 		_float fY = fabs(m_fBeamStartPos.y - m_fBeamEndPos.y);
 		_float fLengthUV = fY / fMaxLength;
 		if (F_DIRECTION::UP == m_eDir)
-			fEndUV.y = fLengthUV;
+			fEndUV.x = fLengthUV;
 		else
-			fStartUV.y = 1.f - fLengthUV;
+			fStartUV.x = 1.f - fLengthUV;
 	}
 		break;
 	default:

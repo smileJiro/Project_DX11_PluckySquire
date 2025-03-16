@@ -203,6 +203,7 @@ HRESULT CLevel_Chapter_08::Initialize(LEVEL_ID _eLevelID)
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::INTERACTION_OBEJCT, OBJECT_GROUP::WORD_GAME);
 
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::RAY_TRIGGER, OBJECT_GROUP::BLOCKER);
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::RAY_TRIGGER, OBJECT_GROUP::BLOCKER_JUMPPASS);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MAPOBJECT, OBJECT_GROUP::PLAYER_PROJECTILE);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::SLIPPERY, OBJECT_GROUP::MAPOBJECT);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::SLIPPERY, OBJECT_GROUP::BLOCKER);
@@ -1744,6 +1745,8 @@ HRESULT CLevel_Chapter_08::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 	LaserDesc.fStartPos = { -1298.52f ,956.33f };
 	LaserDesc.fEndPos = { -957.00f,956.33f };
 	LaserDesc.fMoveSpeed = 150.f;
+	LaserDesc.isMove = true;
+
 	LaserDesc.eDir = F_DIRECTION::DOWN;
 	LaserDesc.strInitSectionTag = L"Chapter8_SKSP_09";
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Laser_Container"),
@@ -1755,7 +1758,6 @@ HRESULT CLevel_Chapter_08::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 	LaserDesc.fStartPos = { -471.57f ,956.33f };
 	LaserDesc.fEndPos = { 165.,956.33f };
 	LaserDesc.fMoveSpeed = 150.f;
-	LaserDesc.isMove = true;
 	LaserDesc.eDir = F_DIRECTION::DOWN;
 	LaserDesc.strInitSectionTag = L"Chapter8_SKSP_09";
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Laser_Container"),
