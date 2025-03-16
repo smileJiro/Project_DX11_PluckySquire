@@ -243,6 +243,9 @@
     <ClInclude Include="..\public\Friend_Controller.h" />
     <ClInclude Include="..\public\Friend_Thrash.h" />
     <ClInclude Include="..\Public\Friend_Violet.h" />
+    <ClInclude Include="..\Public\Loading_Book.h" />
+    <ClInclude Include="..\Public\Logo_BackGround.h" />
+    <ClInclude Include="..\Public\Logo_ColorObject.h" />
     <ClInclude Include="..\public\Mat.h" />
     <ClInclude Include="..\Public\MonsterJumpState.h" />
     <ClInclude Include="..\Public\MonsterMoveState.h" />
@@ -250,6 +253,8 @@
     <ClInclude Include="..\Public\Patrol_WayState.h" />
     <ClInclude Include="..\Public\PlayerState_CannonPortal.h" />
     <ClInclude Include="..\Public\PlayerState_Mojam.h" />
+    <ClInclude Include="..\Public\Npc_Humgrump.h" />
+    <ClInclude Include="..\Public\Npc_MoonBeard.h" />
     <ClInclude Include="..\Public\PlayerState_RetriveSword.h" />
     <ClInclude Include="..\public\PortalLocker_LayerCount.h" />
     <ClInclude Include="..\Public\Projectile_SketchSpace_UFO.h" />
@@ -634,6 +639,9 @@
     <ClCompile Include="..\private\Friend_Controller.cpp" />
     <ClCompile Include="..\private\Friend_Thrash.cpp" />
     <ClCompile Include="..\Private\Friend_Violet.cpp" />
+    <ClCompile Include="..\Private\Loading_Book.cpp" />
+    <ClCompile Include="..\Private\Logo_BackGround.cpp" />
+    <ClCompile Include="..\Private\Logo_ColorObject.cpp" />
     <ClCompile Include="..\private\Mat.cpp" />
     <ClCompile Include="..\Private\MonsterJumpState.cpp" />
     <ClCompile Include="..\Private\MonsterMoveState.cpp" />
@@ -641,6 +649,8 @@
     <ClCompile Include="..\Private\Patrol_WayState.cpp" />
     <ClCompile Include="..\Private\PlayerState_CannonPortal.cpp" />
     <ClCompile Include="..\Private\PlayerState_Mojam.cpp" />
+    <ClCompile Include="..\Private\Npc_Humgrump.cpp" />
+    <ClCompile Include="..\Private\Npc_MoonBeard.cpp" />
     <ClCompile Include="..\Private\PlayerState_RetriveSword.cpp" />
     <ClCompile Include="..\private\PortalLocker_LayerCount.cpp" />
     <ClCompile Include="..\Private\Projectile_SketchSpace_UFO.cpp" />

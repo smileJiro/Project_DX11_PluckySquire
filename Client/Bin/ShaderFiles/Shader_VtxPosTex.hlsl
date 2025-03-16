@@ -133,8 +133,11 @@ PS_OUT PS_MAIN(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
     
-    Out.vColor = g_DiffuseTexture.SampleLevel(LinearSampler, In.vTexcoord, 0);
+    float4 vDiffuse = g_DiffuseTexture.SampleLevel(LinearSampler, In.vTexcoord, 0);
+    Out.vColor = vDiffuse * g_vColors;
 
+    Out.vColor.a *= g_fSprite2DFadeAlphaRatio;
+    
     if (Out.vColor.a < 0.01f)
         discard;
     
@@ -191,8 +194,8 @@ PS_OUT PS_COLOR(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
     
-    Out.vColor = float4(g_vColors.x, g_vColors.y, g_vColors.z, g_vColors.w);
-    
+    Out.vColor = g_vColors;
+      
     if (Out.vColor.a < 0.01f)
         discard;
     
