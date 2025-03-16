@@ -68,6 +68,7 @@
 #include "WorldMapNpc_Jot.h"
 #include "WorldMapNpc_Thrash.h"
 #include "WorldMapNpc_Violet.h"
+#include "Loading_Book.h"
 
 #include "Logo_BackGround.h"
 #include "Logo_ColorObject.h"
@@ -360,6 +361,10 @@ HRESULT CLoader::Loading_Level_Static()
 		CGravity::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_UIObejct_Loading_Book"),
+		CLoading_Book::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_PlayerAnimEvent"),
 		CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DAnim/Static/Latch_SkelMesh_NewRig/aaa.animevt"))))
 		return E_FAIL;
@@ -372,6 +377,8 @@ HRESULT CLoader::Loading_Level_Static()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_BookPageActionEvent"),
 		CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/3DObject/Static/book/book_Animation_Event.animevt"))))
 		return E_FAIL;
+
+
 
 
 
@@ -1076,6 +1083,9 @@ HRESULT CLoader::Loading_Level_Static()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Logo_ColorObject"),
 		CLogo_ColorObject::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+
+
+
 
 #pragma endregion
 

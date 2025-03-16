@@ -94,6 +94,7 @@ void CWorldMapNPC::Update(_float _fTimeDelta)
 {
 	__super::Update(_fTimeDelta);
 	Progress(_fTimeDelta);
+	
 
 }
 
@@ -397,6 +398,7 @@ _float2 CWorldMapNPC::Change_PlayerPos()
 	return ChangPlayerPos;
 }
 
+										// 하드 코딩 //
 void CWorldMapNPC::DisplayLocationName()
 {
 	_float2 vMidPoint = { RTSIZE_BOOK2D_X / 2.f, RTSIZE_BOOK2D_Y / 2.f };
