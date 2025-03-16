@@ -596,9 +596,12 @@ _bool CMonster::Check_Block(_fvector _vForce, _float _fTimeDelta)
 	return m_pGameInstance->RayCast_Nearest_GroupFilter(vOrigin, vRayDir, fDistance, OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE);
 }
 
-void CMonster::Get_Formation_Position()
+_bool CMonster::Get_Formation_Position(_float3* _vPosition)
 {
-	//m_pFormation->
+	if (nullptr == m_pFormation)
+		return false;
+
+	return m_pFormation->Get_Formation_Position(this, _vPosition);
 }
 
 //void CMonster::Set_2D_Direction(F_DIRECTION _eDir)

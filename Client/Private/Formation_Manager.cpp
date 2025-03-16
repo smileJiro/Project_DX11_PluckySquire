@@ -5,6 +5,7 @@
 #include "PlayerData_Manager.h"
 #include "Event_Manager.h"
 #include "Formation.h"
+#include "Monster.h"
 
 
 IMPLEMENT_SINGLETON(CFormation_Manager)
@@ -59,6 +60,21 @@ void CFormation_Manager::Register_Formation(CFormation* _pFormation)
 	m_Formations.push_back(_pFormation);
 	Initialize_Formation_PatrolPoints(m_Formations.size() - 1, _pFormation);
 	Safe_AddRef(_pFormation);
+}
+
+_bool CFormation_Manager::Add_To_Formation(CMonster* _pMember)
+{
+	//포메이션들에 빈 위치 있는지 확인해서 넣어줌. (위치 측정 없이 일단 순서대로 탐색해서 넣어봄)
+	for (auto pFormation : m_Formations)
+	{
+		if (true == pFormation->Has_EmptySlot())
+		{
+			pFormation->Add_To_Formation(_pMember);
+			return true;
+		}
+	}
+
+	return false;
 }
 
 HRESULT CFormation_Manager::Ready_Chapter8_Formation()

@@ -15,6 +15,14 @@ CFormation::CFormation(const CGameObject& Prototype)
 {
 }
 
+_bool CFormation::Has_EmptySlot()
+{
+	if (false == m_EmptySlots.empty())
+		return true;
+
+	return false;
+}
+
 HRESULT CFormation::Initialize_Prototype()
 {
 	return S_OK;
@@ -41,7 +49,6 @@ HRESULT CFormation::Initialize(void* _pArg)
 void CFormation::Update(_float _fTimeDelta)
 {
 	//순회하며 각 병사들의 목표 위치 세팅
-
 }
 
 HRESULT CFormation::Initialize_Members(void* _pArg)
@@ -267,6 +274,23 @@ _bool CFormation::Remove_From_Formation(CMonster* _pMember)
 				continue;
 			else
 				return true;
+		}
+	}
+
+	return false;
+}
+
+_bool CFormation::Get_Formation_Position(CMonster* _pMember, _float3* _vPosition)
+{
+	_float3 vPos;
+	XMStoreFloat3(&vPos, Get_FinalPosition());
+	for (_uint i = 0; i < m_Members.size(); ++i)
+	{
+		if (_pMember == m_Members[i])
+		{
+			XMStoreFloat3(&vPos, Get_FinalPosition()+XMLoadFloat3(&m_OffSets[i]));
+			*_vPosition = vPos;
+			return true;
 		}
 	}
 

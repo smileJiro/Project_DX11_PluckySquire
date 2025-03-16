@@ -21,6 +21,9 @@ private:
 	virtual ~CFormation() = default;
 
 public:
+	_bool Has_EmptySlot();
+
+public:
 	virtual HRESULT				Initialize_Prototype();
 	virtual HRESULT				Initialize(void* _pArg);
 	virtual void				Update(_float _fTimeDelta);
@@ -34,6 +37,8 @@ public:
 	_bool Add_To_Formation(CMonster* _pMember);
 
 	_bool Remove_From_Formation(CMonster* _pMember);
+
+	_bool Get_Formation_Position(CMonster* _pMember, _float3* _vPosition);
 
 
 private:

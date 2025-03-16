@@ -196,7 +196,7 @@ public:
 	_bool						Check_Block(_float _fTimeDelta);	// 다음 위치가 장애물에 막히는지 체크
 	_bool						Check_Block(_fvector _vForce, _float _fTimeDelta);	// 다음 위치가 장애물에 막히는지 체크
 
-	void							Get_Formation_Position();
+	_bool							Get_Formation_Position(_float3* _vPosition);
 
 protected:
 	void Delay_On() 
