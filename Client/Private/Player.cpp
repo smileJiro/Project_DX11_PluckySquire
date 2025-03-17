@@ -517,15 +517,15 @@ HRESULT CPlayer::Ready_PartObjects()
 	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_3DAnimationTransitionTime((_uint)ANIM_STATE_3D::LATCH_ANIM_IDLE_NERVOUS_01_GT, 0.f);
 	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_3DAnimationTransitionTime((_uint)ANIM_STATE_3D::LATCH_ANIM_BOOKOUT_01_GT, 0.f);
 	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_3DAnimationTransitionTime((_uint)ANIM_STATE_3D::LATCH_ANIM_LUNCHBOX_POSE_02_LOOP_GT, 2.f);
-	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_3DAnimationTransitionTime((_uint)ANIM_STATE_3D::CYBERJOT_ANIM_FLYING_LEFT, 1.f);
-	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_3DAnimationTransitionTime((_uint)ANIM_STATE_3D::CYBERJOT_ANIM_FLYING_RIGHT, 1.f);
-	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_3DAnimationTransitionTime((_uint)ANIM_STATE_3D::CYBERJOT_ANIM_FLYING_UP, 1.f);
-	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_3DAnimationTransitionTime((_uint)ANIM_STATE_3D::CYBERJOT_ANIM_FLYING_DOWN, 1.f);
+	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_3DAnimationTransitionTime((_uint)ANIM_STATE_3D::CYBERJOT_ANIM_FLYING_LEFT, 0.5f);
+	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_3DAnimationTransitionTime((_uint)ANIM_STATE_3D::CYBERJOT_ANIM_FLYING_RIGHT, 0.5f);
+	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_3DAnimationTransitionTime((_uint)ANIM_STATE_3D::CYBERJOT_ANIM_FLYING_UP, 0.5f);
+	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_3DAnimationTransitionTime((_uint)ANIM_STATE_3D::CYBERJOT_ANIM_FLYING_DOWN, 0.5f);
 	/*static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_3DAnimationTransitionTime((_uint)ANIM_STATE_3D::CYBERJOT_ANIM_FLYING_LEFT_DASH, 1.f);
 	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_3DAnimationTransitionTime((_uint)ANIM_STATE_3D::CYBERJOT_ANIM_FLYING_RIGHT_DASH, 1.f);
 	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_3DAnimationTransitionTime((_uint)ANIM_STATE_3D::CYBERJOT_ANIM_FLYING_UP_DASH, 1.f);
 	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_3DAnimationTransitionTime((_uint)ANIM_STATE_3D::CYBERJOT_ANIM_FLYING_DOWN_DASH, 1.f);*/
-	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_3DAnimationTransitionTime((_uint)ANIM_STATE_3D::CYBERJOT_ANIM_FLYING_IDLE, 1.f);
+	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_3DAnimationTransitionTime((_uint)ANIM_STATE_3D::CYBERJOT_ANIM_FLYING_IDLE, 0.5f);
 	return S_OK;
 }
 
@@ -1886,21 +1886,14 @@ _vector CPlayer::Get_RootBonePosition()
 }
 
 
-
-
 CActor_Dynamic* CPlayer::Get_ActorDynamic()
 {
 	return static_cast<CActor_Dynamic*>(m_pActorCom);
 }
 
-
-
 void CPlayer::Switch_Animation(_uint _iAnimIndex)
 {
-
 	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(_iAnimIndex);
-
-
 }
 
 void CPlayer::Set_Animation(_uint _iAnimIndex)
@@ -2279,6 +2272,16 @@ void CPlayer::UnEquip_All()
 	for (_int i = PLAYER_PART_SWORD; i < PLAYER_PART_LAST; ++i)
 		Set_PartActive((_uint)i, false);
 }
+
+void CPlayer::Position_To_FrontCamera(_float _fDistance)
+{
+	CCamera_Target* pTargetCam = static_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_CurrentCamera());
+	_vector vCamPos = pTargetCam->Get_FinalPosition();
+	_vector vPlayerPos = vCamPos - pTargetCam->Get_Arm()->Get_ArmVector() * _fDistance;
+	_float3 vPos; XMStoreFloat3(&vPos, vPlayerPos);
+	Get_ActorDynamic()->Set_GlobalPose(vPos);
+}
+
 
 
 void CPlayer::ThrowSword()
