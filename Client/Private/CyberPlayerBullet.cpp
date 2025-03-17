@@ -7,6 +7,8 @@
 #include "Effect_Manager.h"
 #include "FresnelModelObject.h"
 #include "Trail_Manager.h"
+#include "Boss_TennisBall.h"
+#include "ButterGrump_Shield.h"
 
 CCyberPlayerBullet::CCyberPlayerBullet(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CContainerObject(_pDevice, _pContext)
@@ -175,8 +177,20 @@ void CCyberPlayerBullet::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& 
 		Event_Hit(this, static_cast<CCharacter*>(_Other.pActorUserData->pOwner), m_iDamg, _vector{ 0.f,0.f,0.f });
 		Event_DeleteObject(this);
 
-		CEffect_Manager::GetInstance()->Active_EffectPosition(TEXT("CyberBulletHit"), true, Get_FinalPosition());
 
+		if (nullptr != dynamic_cast<CBoss_TennisBall*>(_Other.pActorUserData->pOwner))
+		{
+			CEffect_Manager::GetInstance()->Active_EffectPosition(TEXT("BulletHitTennis"), true, Get_FinalPosition());
+
+		}
+		else if (nullptr != dynamic_cast<CButterGrump_Shield*>(_Other.pActorUserData->pOwner))
+		{
+			int a = 3;
+		}
+		else
+		{
+			CEffect_Manager::GetInstance()->Active_EffectPosition(TEXT("CyberBulletHit"), true, Get_FinalPosition());
+		}
 		if (nullptr != m_pParticleTrailEffect)
 			m_pParticleTrailEffect->Inactive_All();
 	}

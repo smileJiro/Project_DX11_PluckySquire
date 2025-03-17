@@ -526,7 +526,7 @@
                     ]
                 }
             },
-            "DelayTime": 0.029999999329447746,
+            "DelayTime": 0.05999999865889549,
             "Event": 0,
             "Float": [
                 {
@@ -703,7 +703,7 @@
                     ]
                 }
             },
-            "DelayTime": 0.05000000074505806,
+            "DelayTime": 0.07999999821186066,
             "DissolveTexture": "../Bin/Resources/Textures/Effects/T_FX_CMN_Noise_15.dds",
             "Event": 0,
             "Float": [
