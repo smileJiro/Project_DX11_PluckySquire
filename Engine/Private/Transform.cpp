@@ -167,7 +167,7 @@ _bool CTransform::Turn_To_DesireDir(_fvector _vStartDir, _fvector _vDesireDir, _
     Set_State(STATE_RIGHT, XMVector3Normalize(vRight) * vScale.x);
     Set_State(STATE_UP, XMVector3Normalize(vUp) * vScale.y);
     Set_State(STATE_LOOK, XMVector3Normalize(vLook) * vScale.z);
-    return true;
+    return false;
 }
 
 void CTransform::TurnAngle(_float _fRadian, _fvector _vAxis)

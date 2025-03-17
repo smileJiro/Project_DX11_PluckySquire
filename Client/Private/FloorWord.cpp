@@ -204,7 +204,7 @@ HRESULT CFloorWord::Load_Json(const wstring& filePath, const _wstring& _strLayer
 		tFloorText.tHightLight.fHighlightSize = text["highlight"]["highlightSize"].get<_float>();
 		
 
-		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_iCurLevelID, TEXT("Prototype_GameObject_PrintFloorWord"), m_iCurLevelID, _strLayerTag, &pGameObject, &tFloorText)))
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_iCurLevelID, TEXT("Prototype_GameObject_PrintFloorWord"), m_iCurLevelID, TEXT("Layer_FloorWord"), &pGameObject, &tFloorText)))
 			return E_FAIL;
 
 		//Uimgr->PushBack_FloorWords(tFloorText);

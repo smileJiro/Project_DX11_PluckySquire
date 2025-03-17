@@ -344,7 +344,7 @@ _bool CCharacter::Rotate_To_Radians(_fvector _vDirection, _float _fSpeed)
 
 	if (ACTOR_TYPE::KINEMATIC == pDynamicActor->Get_ActorType())
     {
-        return Get_ControllerTransform()->Turn_To_DesireDir(vLook, vDirection, _fSpeed);
+		return Get_ControllerTransform()->Turn_To_DesireDir(vLook, vDirection, _fSpeed);
     }
     else
     {
@@ -722,7 +722,7 @@ void CCharacter::Move(_fvector _vVelocity, _float _fTimeDelta)
     }
 }
 
-_bool CCharacter::Move_To_3D(_fvector _vPosition, _float _fEpsilon, _bool _FreezeY)
+_bool CCharacter::Move_To_3D(_fvector _vPosition, _float _fEpsilon, _bool _FreezeY, _float _fTimeDelta)
 {
     CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
     _vector vDir = _vPosition - Get_FinalPosition();
@@ -738,8 +738,8 @@ _bool CCharacter::Move_To_3D(_fvector _vPosition, _float _fEpsilon, _bool _Freez
 
     if (true == pDynamicActor->Is_Dynamic())
         pDynamicActor->Set_LinearVelocity(XMVector3Normalize(vDir), m_pControllerTransform->Get_SpeedPerSec());
-    //else if (true == pDynamicActor->Is_Kinematic())
-    //    Get_ControllerTransform()->MoveToTarget()
+    else
+        Get_ControllerTransform()->Go_Direction(vDir, _fTimeDelta);
 
     return false;
 }

@@ -132,6 +132,7 @@ HRESULT CFormation::Initialize_Members(void* _pArg)
 				m_Members.push_back(pMonster);
 				Safe_AddRef(pObject);
 				Event_Set_Kinematic(static_cast<CActor_Dynamic*>(pMonster->Get_ActorCom()), true);
+				return S_OK;
 			}
 		}
 	}

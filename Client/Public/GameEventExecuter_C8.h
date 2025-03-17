@@ -55,6 +55,7 @@ public:
 	virtual void					Update(_float _fTimeDelta) override;
 	virtual void					Late_Update(_float _fTimeDelta) override;
 
+	void Chapter8_Laser_Stage(_float _fTimeDelta);
 	void Chapter8_Intro(_float _fTimeDelta);
 	void Chapter8_Map_Intro(_float _fTimeDelta);
 	void Chapter8_Intro_Postit_Sequence(_float _fTimeDelta);
@@ -63,10 +64,11 @@ public:
 	void Chapter8_Stop_Stamp(_float _fTimeDelta);
 	void Chapter8_Bomb_Stamp(_float _fTimeDelta);
 	void Chapter8_Tilting_Glove(_float _fTimeDelta);
+	virtual void							Change_PlayMap() override;
 
 
 private:
-
+	_bool				m_isPlayerFirstDead = false;
 public:
 	static CGameEventExecuter_C8* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual void Free();

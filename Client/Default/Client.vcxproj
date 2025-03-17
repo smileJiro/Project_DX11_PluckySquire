@@ -193,6 +193,7 @@
     <ClInclude Include="..\Public\Back_WayState.h" />
     <ClInclude Include="..\Public\Beetle_Corpse.h" />
     <ClInclude Include="..\Public\BigPressurePlate.h" />
+    <ClInclude Include="..\Public\Big_Laser.h" />
     <ClInclude Include="..\Public\Bomb.h" />
     <ClInclude Include="..\Public\Bombable.h" />
     <ClInclude Include="..\Public\BombableBox.h" />
@@ -229,6 +230,9 @@
     <ClInclude Include="..\Public\DefenderPerson.h" />
     <ClInclude Include="..\Public\DynamicCastleGate.h" />
     <ClInclude Include="..\Public\EvictedSword.h" />
+    <ClInclude Include="..\public\Excavator_Centre.h" />
+    <ClInclude Include="..\public\Excavator_Switch.h" />
+    <ClInclude Include="..\public\Excavator_Tread.h" />
     <ClInclude Include="..\Public\FatherGame_Progress_MakeFather.h" />
     <ClInclude Include="..\Public\FatherGame_Progress_PartBody.h" />
     <ClInclude Include="..\Public\FatherGame_Progress_PartHead.h" />
@@ -597,6 +601,7 @@
     <ClCompile Include="..\Private\Back_WayState.cpp" />
     <ClCompile Include="..\Private\Beetle_Corpse.cpp" />
     <ClCompile Include="..\Private\BigPressurePlate.cpp" />
+    <ClCompile Include="..\Private\Big_Laser.cpp" />
     <ClCompile Include="..\Private\Bomb.cpp" />
     <ClCompile Include="..\Private\Bombable.cpp" />
     <ClCompile Include="..\Private\BombableBox.cpp" />
@@ -634,6 +639,9 @@
     <ClCompile Include="..\Private\DefenderPerson.cpp" />
     <ClCompile Include="..\Private\DynamicCastleGate.cpp" />
     <ClCompile Include="..\Private\EvictedSword.cpp" />
+    <ClCompile Include="..\private\Excavator_Centre.cpp" />
+    <ClCompile Include="..\private\Excavator_Switch.cpp" />
+    <ClCompile Include="..\private\Excavator_Tread.cpp" />
     <ClCompile Include="..\Private\FatherGame_Progress_MakeFather.cpp" />
     <ClCompile Include="..\Private\FatherGame_Progress_PartBody.cpp" />
     <ClCompile Include="..\Private\FatherGame_Progress_PartHead.cpp" />

@@ -77,6 +77,8 @@ void CCollision_Manager::Collision_GroupUpdate(const array<vector<CCollider*>, M
             // 본격적인 충돌 검사 수행.
             CGameObject* pLeftObject = pLeftCollider->Get_Owner();
             CGameObject* pRightObject = pRightCollider->Get_Owner();
+            if (pRightObject == pLeftObject)
+                continue;
 
             if (true == pLeftCollider->Is_Collision(pRightCollider))
             {

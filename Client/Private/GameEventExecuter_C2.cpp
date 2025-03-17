@@ -24,6 +24,7 @@
 #include "CarriableObject.h"
 #include "Section_2D_PlayMap.h"
 #include "DraggableObject.h"
+#include "PlayerData_Manager.h"
 
 #include "Zippy.h"
 #include "Room_Door.h"
@@ -488,156 +489,8 @@ void CGameEventExecuter_C2::Chapter2_Humgrump(_float _fTimeDelta)
 			//pCamera->Start_Changing_AtOffset(3.f, XMVectorSet(0.f, 4.f, 0.f, 0.f), EASE_IN_OUT);
 
 		}
-		if (m_fTimer > 1.f && 0 == m_iSubStep)
-		{
-			m_iSubStep++;
-			Event_ChangeMapObject(LEVEL_CHAPTER_2, L"Chapter_02_Play_Desk.mchc", L"Layer_MapObject");
-		}
-		if (m_fTimer > 1.1f && 1 == m_iSubStep)
-		{
-			m_iSubStep++;
-			CGameObject* pObject = nullptr;
-			const json* pJson = m_pGameInstance->Find_Json_InLevel(TEXT("Chapter2_Monsters_3D"), m_pGameInstance->Get_CurLevelID());
 
-			if (nullptr == pJson)
-				return;
-			if (pJson->contains("3D"))
-			{
-				_wstring strLayerTag = L"Layer_Monster";
-				_wstring strMonsterTag = L"";
-
-				for (auto Json : (*pJson)["3D"])
-				{
-					CMonster::MONSTER_DESC MonsterDesc3D = {};
-
-					MonsterDesc3D.iCurLevelID = m_pGameInstance->Get_CurLevelID();
-					MonsterDesc3D.eStartCoord = COORDINATE_3D;
-
-					if (Json.contains("Position"))
-					{
-						for (_int j = 0; j < 3; ++j)
-						{
-							*(((_float*)&MonsterDesc3D.tTransform3DDesc.vInitialPosition) + j) = Json["Position"][j];
-						}
-					}
-					if (Json.contains("Scaling"))
-					{
-						for (_int j = 0; j < 3; ++j)
-						{
-							*(((_float*)&MonsterDesc3D.tTransform3DDesc.vInitialScaling) + j) = Json["Scaling"][j];
-						}
-					}
-					if (Json.contains("LayerTag"))
-					{
-						strLayerTag = STRINGTOWSTRING(Json["LayerTag"]);
-					}
-
-					if (Json.contains("MonsterTag"))
-					{
-						strMonsterTag = STRINGTOWSTRING(Json["MonsterTag"]);
-					}
-
-					if (Json.contains("SneakMode"))
-					{
-						if (Json.contains("SneakWayPointIndex"))
-						{
-							MonsterDesc3D.eWayIndex = Json["SneakWayPointIndex"];
-						}
-						MonsterDesc3D.isSneakMode = Json["SneakMode"];
-					}
-
-					if (Json.contains("IsStay"))
-					{
-						MonsterDesc3D.isStay = Json["IsStay"];
-					}
-
-					if (Json.contains("IsIgnoreGround"))
-					{
-						MonsterDesc3D._isIgnoreGround = Json["IsIgnoreGround"];
-					}
-
-					if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, strMonsterTag, m_pGameInstance->Get_CurLevelID(), strLayerTag, &pObject, &MonsterDesc3D)))
-						return;
-				}
-			}
-		}
-		if (m_fTimer > 1.2f && 2 == m_iSubStep)
-		{
-
-			LEVEL_ID eCurLevelID = (LEVEL_ID)m_pGameInstance->Get_CurLevelID();
-
-			m_iSubStep++;
-			//주사위
-			CCarriableObject::CARRIABLE_DESC tCarriableDesc{};
-			tCarriableDesc.eStartCoord = COORDINATE_3D;
-			tCarriableDesc.iCurLevelID = m_pGameInstance->Get_CurLevelID();
-			tCarriableDesc.tTransform3DDesc.vInitialPosition = _float3(15.f, 6.8f, 21.5f);
-			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eCurLevelID, TEXT("Prototype_GameObject_Dice"), eCurLevelID, TEXT("Layer_Domino"), &tCarriableDesc)))
-				return;
-			CModelObject::MODELOBJECT_DESC tModelDesc{};
-			tModelDesc.eStartCoord = COORDINATE_3D;
-			tModelDesc.iCurLevelID = eCurLevelID;
-			_float fDominoXPosition = 14.47f;
-			_float fDominoYPosition = 1.31f;
-			_float fDominoZPosition = 24.3f;
-			_float fDominoXPositionStep = -3.5f;
-			tModelDesc.tTransform3DDesc.vInitialPosition = _float3(fDominoXPosition, fDominoYPosition, fDominoZPosition);
-			tModelDesc.tTransform3DDesc.vInitialScaling = _float3(1.5f, 1.5f, 1.5f);
-
-			tModelDesc.strModelPrototypeTag_3D = TEXT("Domino_4");
-			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eCurLevelID, TEXT("Prototype_GameObject_Domino"), eCurLevelID, TEXT("Layer_Domino"), &tModelDesc)))
-				return;
-			tModelDesc.tTransform3DDesc.vInitialPosition.x += fDominoXPositionStep;
-			tModelDesc.strModelPrototypeTag_3D = TEXT("Domino_2");
-			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eCurLevelID, TEXT("Prototype_GameObject_Domino"), eCurLevelID, TEXT("Layer_Domino"), &tModelDesc)))
-				return;
-			tModelDesc.tTransform3DDesc.vInitialPosition.x += fDominoXPositionStep;
-			tModelDesc.tTransform3DDesc.vInitialPosition.y += 0.001f;
-			tModelDesc.strModelPrototypeTag_3D = TEXT("Domino_3");
-			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eCurLevelID, TEXT("Prototype_GameObject_Domino"), eCurLevelID, TEXT("Layer_Domino"), &tModelDesc)))
-				return;
-			tModelDesc.tTransform3DDesc.vInitialPosition.x += fDominoXPositionStep;
-			tModelDesc.strModelPrototypeTag_3D = TEXT("Domino_1");
-			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eCurLevelID, TEXT("Prototype_GameObject_Domino"), eCurLevelID, TEXT("Layer_Domino"), &tModelDesc)))
-				return;
-
-			// 도미노
-			//2번째 도미노
-			tCarriableDesc.tTransform3DDesc.vInitialPosition = _float3(48.13f, 2.61f, -5.02f);
-			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eCurLevelID, TEXT("Prototype_GameObject_Dice"), eCurLevelID, TEXT("Layer_Domino"), &tCarriableDesc)))
-				return;
-
-			fDominoXPosition = 64.5f;
-			fDominoYPosition = 0.0;
-			fDominoZPosition = -0.54f;
-			fDominoXPositionStep = -3.5f;
-			tModelDesc.tTransform3DDesc.vInitialPosition = _float3(fDominoXPosition, fDominoYPosition, fDominoZPosition);
-			tModelDesc.strModelPrototypeTag_3D = TEXT("Domino_1");
-			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eCurLevelID, TEXT("Prototype_GameObject_Domino"), eCurLevelID, TEXT("Layer_Domino"), &tModelDesc)))
-				return;
-
-
-			tModelDesc.tTransform3DDesc.vInitialPosition.x += fDominoXPositionStep;
-			tModelDesc.strModelPrototypeTag_3D = TEXT("Domino_3");
-			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eCurLevelID, TEXT("Prototype_GameObject_Domino"), eCurLevelID, TEXT("Layer_Domino"), &tModelDesc)))
-				return;
-
-
-			CDraggableObject::DRAGGABLE_DESC tDraggableDesc = {};
-			tDraggableDesc.iModelPrototypeLevelID_3D = LEVEL_STATIC;
-			tDraggableDesc.iCurLevelID = eCurLevelID;
-			tDraggableDesc.strModelPrototypeTag_3D = TEXT("SM_Plastic_Block_04");
-			tDraggableDesc.eStartCoord = COORDINATE_3D;
-			tDraggableDesc.vBoxHalfExtents = { 1.02f,1.02f,1.02f };
-			tDraggableDesc.vBoxOffset = { 0.f,tDraggableDesc.vBoxHalfExtents.y,0.f };
-			tDraggableDesc.tTransform3DDesc.vInitialPosition = { -47.f, 5.82f, 15.f };
-
-			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DraggableObject"),
-				eCurLevelID, TEXT("Layer_Draggable"), &tDraggableDesc)))
-				return ;
-
-		}
-
+		Change_PlayMap();
 
 		CPlayer* pPlayer = Get_Player();
 
@@ -797,11 +650,11 @@ void CGameEventExecuter_C2::Chapter2_Lunchbox_Open(_float _fTimeDelta)
 			const auto& Objects = pLayer->Get_GameObjects();
 			if (Objects.size() != 1)
 				assert(nullptr);
-			m_pTargetObject = Objects.front();
-			if (nullptr == m_pTargetObject)
+			m_TargetObjects.push_back(Objects.front());
+			if (nullptr == m_TargetObjects[0])
 				assert(nullptr);
 
-			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_pTargetObject);
+			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_TargetObjects[0]);
 			if (nullptr != pPage)
 			{
 				pPage->Set_Render(true);
@@ -811,9 +664,9 @@ void CGameEventExecuter_C2::Chapter2_Lunchbox_Open(_float _fTimeDelta)
 		}
 		else 
 		{
-			if (nullptr == m_pTargetObject)
+			if (nullptr == m_TargetObjects[0])
 				assert(nullptr);
-			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_pTargetObject);
+			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_TargetObjects[0]);
 			
 			Next_Step(!pPage->Is_DuringAnimation() && m_fTimer > 1.8f);
 		}
@@ -822,7 +675,7 @@ void CGameEventExecuter_C2::Chapter2_Lunchbox_Open(_float _fTimeDelta)
 	{
 		if (Is_Start())
 		{
-			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_pTargetObject);
+			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_TargetObjects[0]);
 			pPage->Anim_Action(CPostit_Page::POSTIT_PAGE_TALK_1, true);
 			CDialog_Manager::GetInstance()->Set_DialogId(L"Postit_Page_02");
 		}
@@ -835,17 +688,17 @@ void CGameEventExecuter_C2::Chapter2_Lunchbox_Open(_float _fTimeDelta)
 		{
 			CPlayer* pPlayer = Get_Player();
 			pPlayer->Set_BlockPlayerInput(false);
-			if (nullptr == m_pTargetObject)
+			if (nullptr == m_TargetObjects[0])
 				assert(nullptr);
-			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_pTargetObject);
+			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_TargetObjects[0]);
 
 			pPage->Anim_Action(CPostit_Page::POSTIT_PAGE_DISAPPEAR, false);
 		}
 		else
 		{
-			if (nullptr == m_pTargetObject)
+			if (nullptr == m_TargetObjects[0])
 				assert(nullptr);
-			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_pTargetObject);
+			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_TargetObjects[0]);
 
 			if (Next_Step(!pPage->Is_DuringAnimation()))
 			{
@@ -908,11 +761,11 @@ void CGameEventExecuter_C2::Chapter2_Bettle_Page(_float _fTimeDelta)
 			const auto& Objects = pLayer->Get_GameObjects();
 			if (Objects.size() != 1)
 				assert(nullptr);
-			m_pTargetObject = Objects.front();
-			if (nullptr == m_pTargetObject)
+			m_TargetObjects.push_back(Objects.front());
+			if (nullptr == m_TargetObjects[0])
 				assert(nullptr);
 
-			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_pTargetObject);
+			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_TargetObjects[0]);
 			if (nullptr != pPage)
 			{
 				pPage->Set_Render(true);
@@ -922,9 +775,9 @@ void CGameEventExecuter_C2::Chapter2_Bettle_Page(_float _fTimeDelta)
 		}
 		else
 		{
-			if (nullptr == m_pTargetObject)
+			if (nullptr == m_TargetObjects[0])
 				assert(nullptr);
-			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_pTargetObject);
+			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_TargetObjects[0]);
 
 			Next_Step(!pPage->Is_DuringAnimation() && m_fTimer > 1.8f);
 		}
@@ -933,7 +786,7 @@ void CGameEventExecuter_C2::Chapter2_Bettle_Page(_float _fTimeDelta)
 	{
 		if (Is_Start())
 		{
-			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_pTargetObject);
+			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_TargetObjects[0]);
 			pPage->Anim_Action(CPostit_Page::POSTIT_PAGE_TALK_1, true);
 			CDialog_Manager::GetInstance()->Set_DialogId(L"Postit_Page_03");
 		}
@@ -946,17 +799,17 @@ void CGameEventExecuter_C2::Chapter2_Bettle_Page(_float _fTimeDelta)
 		{
 			CPlayer* pPlayer = Get_Player();
 			pPlayer->Set_BlockPlayerInput(false);
-			if (nullptr == m_pTargetObject)
+			if (nullptr == m_TargetObjects[0])
 				assert(nullptr);
-			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_pTargetObject);
+			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_TargetObjects[0]);
 
 			pPage->Anim_Action(CPostit_Page::POSTIT_PAGE_DISAPPEAR, false);
 		}
 		else
 		{
-			if (nullptr == m_pTargetObject)
+			if (nullptr == m_TargetObjects[0])
 				assert(nullptr);
-			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_pTargetObject);
+			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_TargetObjects[0]);
 
 			if (Next_Step(!pPage->Is_DuringAnimation()))
 			{
@@ -1019,11 +872,11 @@ void CGameEventExecuter_C2::Chapter2_OpenBookEvent(_float _fTimeDelta)
 			const auto& Objects = pLayer->Get_GameObjects();
 			if (Objects.size() != 1)
 				assert(nullptr);
-			m_pTargetObject = Objects.front();
-			if (nullptr == m_pTargetObject)
+			m_TargetObjects.push_back(Objects.front());
+			if (nullptr == m_TargetObjects[0])
 				assert(nullptr);
 
-			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_pTargetObject);
+			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_TargetObjects[0]);
 			if (nullptr != pPage)
 			{
 				pPage->Set_Render(true);
@@ -1033,9 +886,9 @@ void CGameEventExecuter_C2::Chapter2_OpenBookEvent(_float _fTimeDelta)
 		}
 		else
 		{
-			if (nullptr == m_pTargetObject)
+			if (nullptr == m_TargetObjects[0])
 				assert(nullptr);
-			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_pTargetObject);
+			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_TargetObjects[0]);
 
 			Next_Step(!pPage->Is_DuringAnimation() && m_fTimer > 1.8f);
 		}
@@ -1044,7 +897,7 @@ void CGameEventExecuter_C2::Chapter2_OpenBookEvent(_float _fTimeDelta)
 	{
 		if (Is_Start())
 		{
-			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_pTargetObject);
+			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_TargetObjects[0]);
 			pPage->Anim_Action(CPostit_Page::POSTIT_PAGE_TALK_1, true);
 			CDialog_Manager::GetInstance()->Set_DialogId(L"Postit_Page_04");
 		}
@@ -1077,7 +930,7 @@ void CGameEventExecuter_C2::Chapter2_OpenBookEvent(_float _fTimeDelta)
 	{
 		if (Is_Start())
 		{
-			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_pTargetObject);
+			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_TargetObjects[0]);
 			pPage->Anim_Action(CPostit_Page::POSTIT_PAGE_TALK_1, true);
 			CDialog_Manager::GetInstance()->Set_DialogId(L"Postit_Page_05");
 		}
@@ -1085,22 +938,22 @@ void CGameEventExecuter_C2::Chapter2_OpenBookEvent(_float _fTimeDelta)
 			Next_Step(!CDialog_Manager::GetInstance()->Get_DisPlayDialogue());
 	}
 	else if (Step_Check(STEP_6))
-	{ 
+	{
 		if (Is_Start())
 		{
 			CPlayer* pPlayer = Get_Player();
 			pPlayer->Set_BlockPlayerInput(false);
-			if (nullptr == m_pTargetObject)
+			if (nullptr == m_TargetObjects[0])
 				assert(nullptr);
-			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_pTargetObject);
+			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_TargetObjects[0]);
 
 			pPage->Anim_Action(CPostit_Page::POSTIT_PAGE_DISAPPEAR, false);
 		}
 		else
 		{
-			if (nullptr == m_pTargetObject)
+			if (nullptr == m_TargetObjects[0])
 				assert(nullptr);
-			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_pTargetObject);
+			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_TargetObjects[0]);
 
 			if (Next_Step(!pPage->Is_DuringAnimation()))
 			{
@@ -1176,11 +1029,11 @@ void CGameEventExecuter_C2::Chapter2_StorySequence(_float _fTimeDelta)
 			const auto& Objects = pLayer->Get_GameObjects();
 			if (Objects.size() != 1)
 				assert(nullptr);
-			m_pTargetObject = Objects.front();
-			if (nullptr == m_pTargetObject)
+			m_TargetObjects.push_back(Objects.front());
+			if (nullptr == m_TargetObjects[0])
 				assert(nullptr);
 
-			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_pTargetObject);
+			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_TargetObjects[0]);
 			if (nullptr != pPage)
 			{
 				pPage->Set_Render(true);
@@ -1190,9 +1043,9 @@ void CGameEventExecuter_C2::Chapter2_StorySequence(_float _fTimeDelta)
 		}
 		else
 		{
-			if (nullptr == m_pTargetObject)
+			if (nullptr == m_TargetObjects[0])
 				assert(nullptr);
-			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_pTargetObject);
+			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_TargetObjects[0]);
 			// 애니메이션 끝나고, 인터벌 조금 준뒤 다음 다이얼로그 스타트
 			Next_Step(!pPage->Is_DuringAnimation() && m_fTimer > 1.5f);
 		}
@@ -1202,7 +1055,7 @@ void CGameEventExecuter_C2::Chapter2_StorySequence(_float _fTimeDelta)
 		if (Is_Start())
 		{
 			// 말함
-			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_pTargetObject);
+			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_TargetObjects[0]);
 			pPage->Anim_Action(CPostit_Page::POSTIT_PAGE_TALK_1, true);
 			CDialog_Manager::GetInstance()->Set_DialogId(L"Postit_Page_06");
 		}
@@ -1267,7 +1120,7 @@ void CGameEventExecuter_C2::Chapter2_StorySequence(_float _fTimeDelta)
 				});
 
 
-			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_pTargetObject);
+			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_TargetObjects[0]);
 			pPage->Anim_Action(CPostit_Page::POSTIT_PAGE_TALK_1, true);
 			CDialog_Manager::GetInstance()->Set_DialogId(L"Postit_Page_07");
 		}
@@ -1284,7 +1137,7 @@ void CGameEventExecuter_C2::Chapter2_StorySequence(_float _fTimeDelta)
 				XMVectorSet(12.f, 2.f, 0.f, 0.f),
 				EASE_IN_OUT
 			);
-		
+
 		}
 		Next_Step_Over(1.f);
 	}
@@ -1313,7 +1166,7 @@ void CGameEventExecuter_C2::Chapter2_StorySequence(_float _fTimeDelta)
 				});
 
 
-			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_pTargetObject);
+			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_TargetObjects[0]);
 			pPage->Anim_Action(CPostit_Page::POSTIT_PAGE_TALK_1, true);
 			CDialog_Manager::GetInstance()->Set_DialogId(L"Postit_Page_08");
 		}
@@ -1332,7 +1185,7 @@ void CGameEventExecuter_C2::Chapter2_StorySequence(_float _fTimeDelta)
 			);
 		}
 		Next_Step_Over(1.f);
-		}
+	}
 	else if (Step_Check(STEP_9))
 	{
 		// 다이얼로그 + 포스트잇 3.
@@ -1357,7 +1210,7 @@ void CGameEventExecuter_C2::Chapter2_StorySequence(_float _fTimeDelta)
 				}
 				});
 
-			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_pTargetObject);
+			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_TargetObjects[0]);
 			pPage->Anim_Action(CPostit_Page::POSTIT_PAGE_TALK_1, true);
 			CDialog_Manager::GetInstance()->Set_DialogId(L"Postit_Page_09");
 		}
@@ -1398,9 +1251,9 @@ void CGameEventExecuter_C2::Chapter2_StorySequence(_float _fTimeDelta)
 
 		CPlayer* pPlayer = Get_Player();
 		pPlayer->Set_BlockPlayerInput(false);
-		if (nullptr == m_pTargetObject)
+		if (nullptr == m_TargetObjects[0])
 			assert(nullptr);
-		CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_pTargetObject);
+		CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_TargetObjects[0]);
 
 		pPlayer->Set_BlockPlayerInput(false);
 
@@ -1689,6 +1542,166 @@ void CGameEventExecuter_C2::Chapter2_Pip_0(_float _fTimeDelta)
 		CCamera_Manager::GetInstance()->Start_ResetArm_To_SettingPoint(eCamType, 1.0f);
 		pPlayer->Set_BlockPlayerInput(false);
 		GameEvent_End();
+	}
+}
+
+void CGameEventExecuter_C2::Change_PlayMap()
+{
+	// 맵 설치
+	if (m_fTimer > 1.f && 0 == m_iSubStep)
+	{
+		m_iSubStep++;
+		Event_ChangeMapObject(LEVEL_CHAPTER_2, L"Chapter_02_Play_Desk.mchc", L"Layer_MapObject");
+	}
+
+	// 몬스터 추가
+	if (m_fTimer > 1.1f && 1 == m_iSubStep)
+	{
+		m_iSubStep++;
+		CGameObject* pObject = nullptr;
+		const json* pJson = m_pGameInstance->Find_Json_InLevel(TEXT("Chapter2_Monsters_3D"), m_pGameInstance->Get_CurLevelID());
+
+		if (nullptr == pJson)
+			return;
+		if (pJson->contains("3D"))
+		{
+			_wstring strLayerTag = L"Layer_Monster";
+			_wstring strMonsterTag = L"";
+
+			for (auto Json : (*pJson)["3D"])
+			{
+				CMonster::MONSTER_DESC MonsterDesc3D = {};
+
+				MonsterDesc3D.iCurLevelID = m_pGameInstance->Get_CurLevelID();
+				MonsterDesc3D.eStartCoord = COORDINATE_3D;
+
+				if (Json.contains("Position"))
+				{
+					for (_int j = 0; j < 3; ++j)
+					{
+						*(((_float*)&MonsterDesc3D.tTransform3DDesc.vInitialPosition) + j) = Json["Position"][j];
+					}
+				}
+				if (Json.contains("Scaling"))
+				{
+					for (_int j = 0; j < 3; ++j)
+					{
+						*(((_float*)&MonsterDesc3D.tTransform3DDesc.vInitialScaling) + j) = Json["Scaling"][j];
+					}
+				}
+				if (Json.contains("LayerTag"))
+				{
+					strLayerTag = STRINGTOWSTRING(Json["LayerTag"]);
+				}
+
+				if (Json.contains("MonsterTag"))
+				{
+					strMonsterTag = STRINGTOWSTRING(Json["MonsterTag"]);
+				}
+
+				if (Json.contains("SneakMode"))
+				{
+					if (Json.contains("SneakWayPointIndex"))
+					{
+						MonsterDesc3D.eWayIndex = Json["SneakWayPointIndex"];
+					}
+					MonsterDesc3D.isSneakMode = Json["SneakMode"];
+				}
+
+				if (Json.contains("IsStay"))
+				{
+					MonsterDesc3D.isStay = Json["IsStay"];
+				}
+
+				if (Json.contains("IsIgnoreGround"))
+				{
+					MonsterDesc3D._isIgnoreGround = Json["IsIgnoreGround"];
+				}
+
+				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, strMonsterTag, m_pGameInstance->Get_CurLevelID(), strLayerTag, &pObject, &MonsterDesc3D)))
+					return;
+			}
+		}
+	}
+
+	// 3D 오브젝트 추가 
+	if (m_fTimer > 1.2f && 2 == m_iSubStep)
+	{
+
+		LEVEL_ID eCurLevelID = (LEVEL_ID)m_pGameInstance->Get_CurLevelID();
+
+		m_iSubStep++;
+		//주사위
+		CCarriableObject::CARRIABLE_DESC tCarriableDesc{};
+		tCarriableDesc.eStartCoord = COORDINATE_3D;
+		tCarriableDesc.iCurLevelID = m_pGameInstance->Get_CurLevelID();
+		tCarriableDesc.tTransform3DDesc.vInitialPosition = _float3(15.f, 6.8f, 21.5f);
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eCurLevelID, TEXT("Prototype_GameObject_Dice"), eCurLevelID, TEXT("Layer_Domino"), &tCarriableDesc)))
+			return;
+		CModelObject::MODELOBJECT_DESC tModelDesc{};
+		tModelDesc.eStartCoord = COORDINATE_3D;
+		tModelDesc.iCurLevelID = eCurLevelID;
+		_float fDominoXPosition = 14.47f;
+		_float fDominoYPosition = 1.31f;
+		_float fDominoZPosition = 24.3f;
+		_float fDominoXPositionStep = -3.5f;
+		tModelDesc.tTransform3DDesc.vInitialPosition = _float3(fDominoXPosition, fDominoYPosition, fDominoZPosition);
+		tModelDesc.tTransform3DDesc.vInitialScaling = _float3(1.5f, 1.5f, 1.5f);
+
+		tModelDesc.strModelPrototypeTag_3D = TEXT("Domino_4");
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eCurLevelID, TEXT("Prototype_GameObject_Domino"), eCurLevelID, TEXT("Layer_Domino"), &tModelDesc)))
+			return;
+		tModelDesc.tTransform3DDesc.vInitialPosition.x += fDominoXPositionStep;
+		tModelDesc.strModelPrototypeTag_3D = TEXT("Domino_2");
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eCurLevelID, TEXT("Prototype_GameObject_Domino"), eCurLevelID, TEXT("Layer_Domino"), &tModelDesc)))
+			return;
+		tModelDesc.tTransform3DDesc.vInitialPosition.x += fDominoXPositionStep;
+		tModelDesc.tTransform3DDesc.vInitialPosition.y += 0.001f;
+		tModelDesc.strModelPrototypeTag_3D = TEXT("Domino_3");
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eCurLevelID, TEXT("Prototype_GameObject_Domino"), eCurLevelID, TEXT("Layer_Domino"), &tModelDesc)))
+			return;
+		tModelDesc.tTransform3DDesc.vInitialPosition.x += fDominoXPositionStep;
+		tModelDesc.strModelPrototypeTag_3D = TEXT("Domino_1");
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eCurLevelID, TEXT("Prototype_GameObject_Domino"), eCurLevelID, TEXT("Layer_Domino"), &tModelDesc)))
+			return;
+
+		// 도미노
+		//2번째 도미노
+		tCarriableDesc.tTransform3DDesc.vInitialPosition = _float3(48.13f, 2.61f, -5.02f);
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eCurLevelID, TEXT("Prototype_GameObject_Dice"), eCurLevelID, TEXT("Layer_Domino"), &tCarriableDesc)))
+			return;
+
+		fDominoXPosition = 64.5f;
+		fDominoYPosition = 0.0;
+		fDominoZPosition = -0.54f;
+		fDominoXPositionStep = -3.5f;
+		tModelDesc.tTransform3DDesc.vInitialPosition = _float3(fDominoXPosition, fDominoYPosition, fDominoZPosition);
+		tModelDesc.strModelPrototypeTag_3D = TEXT("Domino_1");
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eCurLevelID, TEXT("Prototype_GameObject_Domino"), eCurLevelID, TEXT("Layer_Domino"), &tModelDesc)))
+			return;
+
+
+		tModelDesc.tTransform3DDesc.vInitialPosition.x += fDominoXPositionStep;
+		tModelDesc.strModelPrototypeTag_3D = TEXT("Domino_3");
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eCurLevelID, TEXT("Prototype_GameObject_Domino"), eCurLevelID, TEXT("Layer_Domino"), &tModelDesc)))
+			return;
+
+
+		CDraggableObject::DRAGGABLE_DESC tDraggableDesc = {};
+		tDraggableDesc.iModelPrototypeLevelID_3D = LEVEL_STATIC;
+		tDraggableDesc.iCurLevelID = eCurLevelID;
+		tDraggableDesc.strModelPrototypeTag_3D = TEXT("SM_Plastic_Block_04");
+		tDraggableDesc.eStartCoord = COORDINATE_3D;
+		tDraggableDesc.vBoxHalfExtents = { 1.02f,1.02f,1.02f };
+		tDraggableDesc.vBoxOffset = { 0.f,tDraggableDesc.vBoxHalfExtents.y,0.f };
+		tDraggableDesc.tTransform3DDesc.vInitialPosition = { -47.f, 5.82f, 15.f };
+
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DraggableObject"),
+			eCurLevelID, TEXT("Layer_Draggable"), &tDraggableDesc)))
+			return;
+
+		CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)eCurLevelID, TEXT("Flipping_Glove"), _float3(62.31f, 6.28f, -21.097f));
+		CPlayerData_Manager::GetInstance()->Spawn_Bulb(LEVEL_STATIC, (LEVEL_ID)eCurLevelID);
 	}
 }
 

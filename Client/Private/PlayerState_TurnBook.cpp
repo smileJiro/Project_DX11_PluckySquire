@@ -267,6 +267,7 @@ void CPlayerState_TurnBook::On_StateChange(BOOK_STATE _eNewState)
 			break;
 		case Client::CPlayerState_TurnBook::CLOSED_RIGHT:
 			m_pBook->Decalcomani_LToR();
+			m_pBook->Start_DropBook();
 			break;
 		default:
 			break;

@@ -2,6 +2,26 @@
   {
     "Collider_Info": {
       "Position": [
+        -806.0,
+        -180.0
+      ],
+      "Scale": [
+        100.0,
+        120.0
+      ]
+    },
+    "Trigger_Reusable": false,
+
+    "Fillter_MyGroup": 2,
+    "Fillter_OtherGroupMask": 128,
+    "Trigger_ConditionType": 0,
+    "Trigger_Coordinate": 0,
+    "Trigger_EventTag": "Chapter8_Laser_Stage",
+    "Trigger_Type": 0
+  },
+  {
+    "Collider_Info": {
+      "Position": [
         1060.0,
         365.0
       ],

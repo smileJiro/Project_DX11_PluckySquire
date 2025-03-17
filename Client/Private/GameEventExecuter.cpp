@@ -251,12 +251,12 @@ _bool CGameEventExecuter::Setting_Postit_Page(const _wstring& _strPostItSectionT
 	const auto& Objects = pLayer->Get_GameObjects();
 	if (Objects.size() != 1)
 		assert(nullptr);
-	m_pTargetObject = Objects.front();
-	if (nullptr == m_pTargetObject)
+	m_TargetObjects.push_back(Objects.front());
+	if (nullptr == m_TargetObjects[0])
 		return false;
 	else
-		m_pPostitPage = dynamic_cast<CPostit_Page*>(m_pTargetObject);
-	m_pTargetObject = nullptr;
+		m_pPostitPage = dynamic_cast<CPostit_Page*>(m_TargetObjects[0]);
+	m_TargetObjects[0] = nullptr;
 	return true;
 }
 

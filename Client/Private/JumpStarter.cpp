@@ -27,6 +27,7 @@ HRESULT CJumpStarter::Initialize(void* _pArg)
 	m_eInteractType = INTERACT_TYPE::NORMAL;
 	m_eJumpMoveDir = pDesc->eJumpMoveDir;
 	m_fTargetPos = pDesc->fTargetPos;
+	m_fMoveMag = pDesc->fMoveMag;
 
 
 	//switch (m_eJumpMoveDir)
@@ -149,6 +150,7 @@ void CJumpStarter::Interact(CPlayer* _pUser)
 	AutoMove.eType = AUTOMOVE_TYPE::MOVE_TO;
 	AutoMove.fPostDelayTime = 0.0f;
 	AutoMove.fPreDelayTime = 0.0f;
+	AutoMove.fMoveSpeedMag = m_fMoveMag;
 	AutoMove.iAnimIndex = (_uint)CPlayer::ANIM_STATE_2D::PLAYER_RUN_DOWN;
 	AutoMove.vTarget = vPlayerPos;
 	

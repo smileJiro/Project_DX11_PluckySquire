@@ -33,6 +33,11 @@ HRESULT CPick_Bulb::Initialize(void* _pArg)
 
 	m_isRender = false;
 
+	if (nullptr != CPlayerData_Manager::GetInstance())
+		m_iPreBulbCount = m_iCurBulbCount = CPlayerData_Manager::GetInstance()->Get_BulbCount();
+	else
+		m_iPreBulbCount = m_iCurBulbCount = 0;
+
 	return S_OK;
 }
 
@@ -47,7 +52,7 @@ void CPick_Bulb::Update(_float _fTimeDelta)
 	if (m_iPreBulbCount != m_iCurBulbCount)
 	{
 		m_fAmountTime = 0.f;
-		m_isRender = false;
+		m_isRender = true;
 		m_iPreBulbCount = m_iCurBulbCount;
 	}
 
