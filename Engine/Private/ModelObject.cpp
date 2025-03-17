@@ -66,6 +66,7 @@ void CModelObject::Late_Update(_float _fTimeDelta)
 
     /* Update 2D Object FadeAlpha Effect :: еб©У*/
     Action_Fade(_fTimeDelta);
+    Action_StoppableRender(_fTimeDelta);
     /* Update Parent Matrix */
     __super::Late_Update(_fTimeDelta);
 }
@@ -124,6 +125,13 @@ HRESULT CModelObject::Render()
         }
         
         pShader->Bind_RawValue("g_fSprite2DFadeAlphaRatio", &fFadeAlphaRatio, sizeof(_float));
+
+
+        /* Stoppable */
+        pShader->Bind_RawValue("g_isStoppable", &m_isStoppable, sizeof(_int));
+        pShader->Bind_RawValue("g_vStoppableColor", &m_vStoppableColor, sizeof(_float4));
+        _float fStoppableRatio = m_vStoppableTime.y / m_vStoppableTime.x;
+        pShader->Bind_RawValue("g_fStoppableRatio", &fStoppableRatio, sizeof(_float));
     }
 
     m_pControllerModel->Render(pShader, iShaderPass);
@@ -535,6 +543,24 @@ HRESULT CModelObject::Render_Trail()
         return E_FAIL;
 
     return S_OK;
+}
+
+void CModelObject::Action_StoppableRender(_float _fTimeDelta)
+{
+    if (false == m_isStoppable)
+        return;
+
+    m_vStoppableTime.y += _fTimeDelta * m_fUpDownFactor;
+    if (m_vStoppableTime.x <= m_vStoppableTime.y)
+    {
+        m_vStoppableTime.y = m_vStoppableTime.x;
+        m_fUpDownFactor = -1.0f;
+    }
+    else if (0.0f >= m_vStoppableTime.y)
+    {
+        m_vStoppableTime.y = 0.0f;
+        m_fUpDownFactor = 1.0f;
+    }
 }
 
 HRESULT CModelObject::Bind_ShaderResources_WVP()

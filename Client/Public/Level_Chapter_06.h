@@ -40,6 +40,7 @@ public:
 	HRESULT					Ready_Layer_Defender();
 	HRESULT					Ready_Layer_MapGimmick();
 	HRESULT					Ready_Layer_Friends(const _wstring& _strLayerTag);
+	HRESULT					Ready_Layer_Gear(const _wstring& _strLayerTag);
 private:
 	// Chapter6 나가기 이벤트 처리 전에 해 놓은 코드 (0310, 효림)
 	void					Create_IntroTrigger();

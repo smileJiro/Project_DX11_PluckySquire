@@ -261,6 +261,9 @@
 #include "Friend_Pip.h"
 #include "FriendBody.h"
 
+/* For. Chapter6 */
+#include "Gear.h"
+
 
 
 CLoader::CLoader(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -1675,6 +1678,11 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 
 		/* UI */
 		if (FAILED(UI_Object_Load(_eLoadLevelID)))
+			return E_FAIL;
+
+		/* For. Prototype_GameObject_Gear */
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Gear"),
+			CGear::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
 		/* For. Prototype_GameObject_GameEventExecuter */

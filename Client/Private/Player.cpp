@@ -555,14 +555,7 @@ void CPlayer::Enter_Section(const _wstring _strIncludeSectionName)
 		m_pControllerTransform->Get_Transform(COORDINATE_2D)->Set_State(CTransform::STATE_POSITION, XMVectorSet(0.0f, 2800.f, 0.0f, 0.0f));
 	}
 
-	if (TEXT("Chapter2_P1314") == _strIncludeSectionName)
-	{
-		static_cast<CCollider_Circle*>(m_pBody2DTriggerCom)->Set_Radius(9999.f);
-	}
-	else
-	{
-		static_cast<CCollider_Circle*>(m_pBody2DTriggerCom)->Set_Radius(m_f2DInteractRange);
-	}
+
 }
 
 void CPlayer::Exit_Section(const _wstring _strIncludeSectionName)
@@ -680,10 +673,11 @@ void CPlayer::Priority_Update(_float _fTimeDelta)
 {
 	if (KEY_DOWN(KEY::K))
 	{
-		CGravity::STATE eCurState = m_pGravityCom->Get_CurState();
-		_int iState = eCurState;
-		iState ^= 1;
-		m_pGravityCom->Change_State((CGravity::STATE)iState);
+		//CGravity::STATE eCurState = m_pGravityCom->Get_CurState();
+		//_int iState = eCurState;
+		//iState ^= 1;
+		//m_pGravityCom->Change_State((CGravity::STATE)iState);
+		//On_Stop();
 	}
 
 	__super::Priority_Update(_fTimeDelta); /* Part Object Priority_Update */
@@ -2476,6 +2470,16 @@ void CPlayer::Key_Input(_float _fTimeDelta)
     //}
 }
 
+
+void CPlayer::On_Stop()
+{
+	//static_cast<CModelObject*>(m_PartObjects[PLAYER_PART_BODY])->Start_StoppableRender();
+}
+
+void CPlayer::On_UnStop()
+{
+	//static_cast<CModelObject*>(m_PartObjects[PLAYER_PART_BODY])->End_StoppableRender();
+}
 
 CPlayer* CPlayer::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {

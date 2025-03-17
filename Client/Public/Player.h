@@ -757,6 +757,9 @@ private:
 	// Turn Book ÇÒ ¶§ Effect
 	class CTurnBookEffect* m_pTurnBookEffect = { nullptr };
 
+private:
+		void On_Stop() override;
+		void On_UnStop() override;
 //public:
 //	void Set_FirstExitPortalDesc(const _wstring& _strSectionName, _int _iIndex)
 //	{

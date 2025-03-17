@@ -754,6 +754,9 @@
     <Filter Include="02.GameObjects\2DGimmik\JumpStarter">
       <UniqueIdentifier>{69f5978f-e2dc-45c9-8cbc-04e627a8897d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Gear">
+      <UniqueIdentifier>{b3ec759b-ec9a-4ee7-bb34-c61c799ae319}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -1926,6 +1929,7 @@
     <ClInclude Include="..\Public\JumpStarter.h">
       <Filter>02.GameObjects\2DGimmik\JumpStarter</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Gear.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -3083,6 +3087,7 @@
     <ClCompile Include="..\Private\JumpStarter.cpp">
       <Filter>02.GameObjects\2DGimmik\JumpStarter</Filter>
     </ClCompile>
+    <ClCompile Include="..\private\Gear.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

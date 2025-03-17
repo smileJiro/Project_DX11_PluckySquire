@@ -91,6 +91,9 @@
 #include "Npc_Humgrump.h"
 #include "Npc_MoonBeard.h"
 
+// Gear
+#include "Gear.h"
+
 CLevel_Chapter_06::CLevel_Chapter_06(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:
 	m_eLevelID(LEVEL_CHAPTER_6)
@@ -203,6 +206,12 @@ HRESULT CLevel_Chapter_06::Initialize(LEVEL_ID _eLevelID)
 		MSG_BOX(" Failed Ready_Layer_Friends (Level_Chapter_02::Initialize)");
 		assert(nullptr);
 	}
+	if (FAILED(Ready_Layer_Gear(TEXT("Layer_Gear"))))
+	{
+		MSG_BOX(" Failed Ready_Layer_Gear (Level_Chapter_02::Initialize)");
+		assert(nullptr);
+	}
+	
 
 	/* Collision Check Matrix */
 	// 그룹필터 추가 >> 중복해서 넣어도 돼 내부적으로 걸러줌 알아서 
@@ -714,7 +723,8 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Player(const _wstring& _strLayerTag, CGam
 	CPlayer::CHARACTER_DESC Desc;
 	Desc.iCurLevelID = m_eLevelID;
 	Desc.eStartCoord = COORDINATE_2D;
-	Desc.tTransform2DDesc.vInitialPosition = { -22.f, -681.f, 0.f };   // TODO ::임시 위치
+	Desc.tTransform2DDesc.vInitialPosition = { -22.f, -681.f, 0.f };   // TODO ::정상 위치
+	Desc.tTransform2DDesc.vInitialPosition = { 0.0f, 0.0f, 0.0f };   // TODO ::임시 위치
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_TestPlayer"), m_eLevelID, _strLayerTag, _ppOut, &Desc)))
 		return E_FAIL;
@@ -823,6 +833,26 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Friends(const _wstring& _strLayerTag)
 		CFriend_Controller::GetInstance()->Register_Friend(strFriendTag, static_cast<CFriend*>(pGameObject));
 		//CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(strFriendTag);
 	} /* Friend_Violet */
+
+	return S_OK;
+}
+
+HRESULT CLevel_Chapter_06::Ready_Layer_Gear(const _wstring& _strLayerTag)
+{
+	{// Chapter_6 FirstGear
+		CGear::GEAR_DESC Desc;
+		Desc.iCurLevelID = LEVEL_CHAPTER_6;
+		Desc.Build_2D_Transform(_float2(472.f, 185.0f));
+
+		CGameObject* pGameObject = nullptr;
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_Gear"), LEVEL_CHAPTER_6, _strLayerTag, &pGameObject, &Desc)))
+			return E_FAIL;
+
+		CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_P0102"), pGameObject);
+	}// Chapter_6 FirstGear
+	
+
+
 
 	return S_OK;
 }
