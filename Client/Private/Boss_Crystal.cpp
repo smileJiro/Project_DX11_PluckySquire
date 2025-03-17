@@ -5,6 +5,7 @@
 #include "GameInstance.h"
 #include "Pooling_Manager.h"
 #include "ButterGrump.h"
+#include "Effect_Manager.h"
 
 CBoss_Crystal::CBoss_Crystal(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CProjectile_Monster(_pDevice, _pContext)
@@ -114,6 +115,8 @@ void CBoss_Crystal::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
     m_tStat.iHP -= _iDamg;
     if (0 >= m_tStat.iHP && false == Is_Dead())
     {
+        CEffect_Manager::GetInstance()->Active_EffectMatrix(TEXT("Meteorite"), true, m_pControllerTransform->Get_WorldMatrix());
+
         Event_DeleteObject(this);
     }
 }

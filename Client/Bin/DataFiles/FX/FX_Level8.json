@@ -37,6 +37,14 @@
     },
     {
         "Name": "BulletHitTennis.json",
-        "Count": 4
+        "Count": 6
+    },
+    {
+        "Name": "BulletHitShield.json",
+        "Count": 6
+    },
+    {
+        "Name": "Meteorite.json",
+        "Count": 1
     }
 ]

@@ -441,7 +441,7 @@
                 1.0,
                 1.0
             ],
-            "DelayTime": 0.05000000074505806,
+            "DelayTime": 0.07999999821186066,
             "Event": 0,
             "Float": [
                 {
@@ -462,7 +462,7 @@
                 },
                 {
                     "Name": "DissolveTimeFactor",
-                    "Value": 1.5
+                    "Value": 2.5
                 }
             ],
             "Float4": [
@@ -488,7 +488,7 @@
                     "Name": "NoiseUVScale",
                     "Value": [
                         1.0,
-                        2.0,
+                        1.0,
                         0.0,
                         0.0
                     ]
@@ -526,13 +526,13 @@
                                 1.399999976158142,
                                 1.0
                             ],
-                            "Time": 0.2800000011920929
+                            "Time": 0.20000000298023224
                         },
                         {
                             "Data": [
-                                0.0,
-                                0.0,
-                                0.0,
+                                1.600000023841858,
+                                1.600000023841858,
+                                1.600000023841858,
                                 1.0
                             ],
                             "Time": 0.30000001192092896
@@ -545,24 +545,24 @@
             ],
             "Pooling": "KILL",
             "PreTransform": [
-                0.006666666828095913,
-                0.0,
-                0.0,
                 0.0,
                 0.0,
                 0.006666666828095913,
                 0.0,
                 0.0,
-                0.0,
-                0.0,
                 0.006666666828095913,
+                0.0,
+                0.0,
+                -0.006666666828095913,
+                0.0,
+                0.0,
                 0.0,
                 0.0,
                 0.0,
                 0.0,
                 1.0
             ],
-            "ShaderPass": "SUBCOLOR_BLOOM_DISSOLVE",
+            "ShaderPass": "SUBCOLOR_BLOOMDISSOLVE_BILLBOARD",
             "SpawnPosition": "RELATIVE_WORLD",
             "SpawnType": "SPAWN_RATE",
             "Textures": [
@@ -598,5 +598,5 @@
         }
     ],
     "Name": "BulletHitTennis",
-    "ToolLoopTime": 0.5
+    "ToolLoopTime": 1.0
 }

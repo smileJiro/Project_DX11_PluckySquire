@@ -51,16 +51,16 @@
                 },
                 "Scale": {
                     "Arg1": [
-                        1.2999999523162842,
-                        2.0,
+                        1.0,
+                        1.2000000476837158,
                         1.0
                     ],
                     "Arg2": [
-                        1.2999999523162842,
-                        2.0,
+                        1.0,
+                        1.2000000476837158,
                         1.0
                     ],
-                    "SetType": "RANDOMLINEAR"
+                    "SetType": "DIRECTSET"
                 },
                 "ShapeLocation": {
                     "Coverage": 0.4000000059604645,
@@ -70,7 +70,7 @@
                         0.0
                     ],
                     "Ring_Distribution": 0.0,
-                    "Ring_Radius": 0.75,
+                    "Ring_Radius": 0.4000000059604645,
                     "Rotation": [
                         90.0,
                         0.0,
@@ -113,7 +113,7 @@
                 },
                 {
                     "Name": "DissolveTimeFactor",
-                    "Value": 1.0
+                    "Value": 1.2000000476837158
                 },
                 {
                     "Name": "EdgeWidth",
@@ -174,7 +174,7 @@
                         "Float": [
                             {
                                 "Name": "Amount",
-                                "Value": 8.0
+                                "Value": 12.0
                             }
                         ],
                         "Float3": [
@@ -310,14 +310,14 @@
                     "SetType": "RANDOMLINEAR"
                 },
                 "ShapeLocation": {
-                    "Coverage": 0.20000000298023224,
+                    "Coverage": 0.5,
                     "Position": [
                         0.0,
                         0.0,
                         0.0
                     ],
                     "Ring_Distribution": 0.0,
-                    "Ring_Radius": 0.5,
+                    "Ring_Radius": 0.30000001192092896,
                     "Rotation": [
                         90.0,
                         0.0,
@@ -360,7 +360,7 @@
                 },
                 {
                     "Name": "DissolveTimeFactor",
-                    "Value": 0.4000000059604645
+                    "Value": 0.6000000238418579
                 },
                 {
                     "Name": "EdgeWidth",
@@ -467,7 +467,7 @@
                 }
             ],
             "Pooling": "KILL",
-            "ShaderPass": "ROT_SUB_DISSOLVE",
+            "ShaderPass": "DISSOLVE_SUBCOLORBLOOM",
             "SpawnPosition": "RELATIVE_WORLD",
             "SpawnType": "BURST_SPAWN",
             "Texture": "../Bin/Resources/Textures/Effects/T_FX_CMN_Fire8x8_01.dds",

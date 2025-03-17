@@ -185,7 +185,7 @@ void CCyberPlayerBullet::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& 
 		}
 		else if (nullptr != dynamic_cast<CButterGrump_Shield*>(_Other.pActorUserData->pOwner))
 		{
-			int a = 3;
+			CEffect_Manager::GetInstance()->Active_EffectPosition(TEXT("BulletHitShield"), true, Get_FinalPosition());
 		}
 		else
 		{
