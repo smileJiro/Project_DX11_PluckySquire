@@ -155,20 +155,15 @@ void CGameEventExecuter_C8::Chapter8_Map_Intro(_float _fTimeDelta)
 			// 1. Player 움직임 막기
 			pPlayer->Set_BlockPlayerInput(true);
 
-			// 2. 어리둥절 애니메이션 재생
-			pPlayer->Swicth_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_IDLE_NERVOUS_TURN_01_GT);
-		}
-		
-		
-		if (false == static_cast<CPlayerBody*>(pPlayer->Get_Body())->Is_DuringAnimation() &&
-			m_fTimer >= 0.7f) {
 			Next_Step(true);
+
 		}
+		
 	}
 	else if (Step_Check(STEP_1)) {
 		// 3. CutScene 재생
 		CCamera_Manager::GetInstance()->Set_NextCutSceneData(TEXT("Chapter8_Map_Intro"));
-		CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::CUTSCENE, true, 0.8f);
+		CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::CUTSCENE, true, 1.8f);
 		Next_Step(true);
 	}
 	else if (Step_Check(STEP_2)) {

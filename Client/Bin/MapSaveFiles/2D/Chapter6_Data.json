@@ -6,6 +6,7 @@
 		"Section_Type": 4,
 		"Section_Default": 0,
 		"Section_Info": {
+			"Camera_Zoom_Ratio": 2.0,
 			"Next_Page_Tag": "Chapter5_P0102"
 		}
 	},
@@ -45,6 +46,7 @@
 		"Section_Type": 4,
 		"Section_Default": 0,
 		"Section_Info": {
+			"Camera_Zoom_Ratio": 2.0,
 			"Pre_Page_Tag": "Chapter5_P0304",
 			"Next_Page_Tag": "Chapter6_P0102"
 		}
