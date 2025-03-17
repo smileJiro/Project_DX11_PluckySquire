@@ -843,8 +843,17 @@ HRESULT CDialog::DisplayText(_float2 _vRTSize)
 
 
 			// 대화 내용 출력
-			wsprintf(m_tFont, strDisplaytext.c_str());
-			pGameInstance->Render_Font(TEXT("Font24"), m_tFont, _float2((vCalPos.x - 50.f), (vCalPos.y + 45.f)), XMVectorSet(m_vFontColor.x / 255.f, m_vFontColor.y / 255.f, m_vFontColor.z / 255.f, 1.f));
+			if (false == Get_Dialogue(m_tDialogId)[0].lines[m_iCurrentLineIndex].isLineEnter)
+			{
+				wsprintf(m_tFont, strDisplaytext.c_str());
+				pGameInstance->Render_Font(TEXT("Font24"), m_tFont, _float2((vCalPos.x - 50.f), (vCalPos.y + 45.f)), XMVectorSet(m_vFontColor.x / 255.f, m_vFontColor.y / 255.f, m_vFontColor.z / 255.f, 1.f));
+			}
+			else if (true == Get_Dialogue(m_tDialogId)[0].lines[m_iCurrentLineIndex].isLineEnter)
+			{
+				wsprintf(m_tFont, strDisplaytext.c_str());
+				pGameInstance->Render_Font(TEXT("Font24"), m_tFont, _float2((vCalPos.x - 50.f), (vCalPos.y + 40.f)), XMVectorSet(m_vFontColor.x / 255.f, m_vFontColor.y / 255.f, m_vFontColor.z / 255.f, 1.f));
+			}
+			
 		}
 
 
@@ -863,8 +872,21 @@ HRESULT CDialog::DisplayText(_float2 _vRTSize)
 		//vCalPos.y += +_vRTSize.y * 0.1f;
 
 		// 대화 내용 출력
-		wsprintf(m_tFont, strDisplaytext.c_str());
-		pGameInstance->Render_Font(TEXT("Font24"), m_tFont, _float2(vCalPos.x - 50.f, vCalPos.y + 50.f), XMVectorSet(m_vFontColor.x / 255.f, m_vFontColor.y / 255.f, m_vFontColor.z / 255.f, 1.f));
+
+		if (false == Get_Dialogue(m_tDialogId)[0].lines[m_iCurrentLineIndex].isLineEnter)
+		{
+			wsprintf(m_tFont, strDisplaytext.c_str());
+			pGameInstance->Render_Font(TEXT("Font24"), m_tFont, _float2(vCalPos.x - 50.f, vCalPos.y + 50.f), XMVectorSet(m_vFontColor.x / 255.f, m_vFontColor.y / 255.f, m_vFontColor.z / 255.f, 1.f));
+		}
+		else if (true == Get_Dialogue(m_tDialogId)[0].lines[m_iCurrentLineIndex].isLineEnter)
+		{
+			wsprintf(m_tFont, strDisplaytext.c_str());
+			pGameInstance->Render_Font(TEXT("Font24"), m_tFont, _float2((vCalPos.x - 50.f), (vCalPos.y + 45.f)), XMVectorSet(m_vFontColor.x / 255.f, m_vFontColor.y / 255.f, m_vFontColor.z / 255.f, 1.f));
+		}
+
+
+		//wsprintf(m_tFont, strDisplaytext.c_str());
+		//pGameInstance->Render_Font(TEXT("Font24"), m_tFont, _float2(vCalPos.x - 50.f, vCalPos.y + 50.f), XMVectorSet(m_vFontColor.x / 255.f, m_vFontColor.y / 255.f, m_vFontColor.z / 255.f, 1.f));
 	}
 
 	Safe_Release(pGameInstance);

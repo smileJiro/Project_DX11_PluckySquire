@@ -49,8 +49,8 @@ HRESULT CFormation::Initialize(void* _pArg)
 		return E_FAIL;
 	if (FAILED(Initialize_OffSets()))
 		return E_FAIL;
-	/*if (FAILED(Initialize_Members(_pArg)))
-		return E_FAIL;*/
+	if (FAILED(Initialize_Members(_pArg)))
+		return E_FAIL;
 
 
 	return S_OK;

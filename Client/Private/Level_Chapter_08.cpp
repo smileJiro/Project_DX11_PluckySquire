@@ -268,9 +268,9 @@ HRESULT CLevel_Chapter_08::Initialize(LEVEL_ID _eLevelID)
 	m_pGameInstance->Set_PlayerHideColor(_float3(0.8f, 0.8f, 0.8f), true);
 
 	m_pSneakMinigameManager = CMinigame_Sneak::GetInstance();
-	//m_pFormation_Manager = CFormation_Manager::GetInstance();
-	//if (FAILED(m_pFormation_Manager->Initialize()))
-	//	return E_FAIL;
+	m_pFormation_Manager = CFormation_Manager::GetInstance();
+	if (FAILED(m_pFormation_Manager->Initialize()))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -278,7 +278,7 @@ HRESULT CLevel_Chapter_08::Initialize(LEVEL_ID _eLevelID)
 void CLevel_Chapter_08::Update(_float _fTimeDelta)
 {
 	m_pSneakMinigameManager->Update(_fTimeDelta);
-	//m_pFormation_Manager->Update(_fTimeDelta);
+	m_pFormation_Manager->Update(_fTimeDelta);
 	Uimgr->UI_Update();
 
 	// 피직스 업데이트 
@@ -2000,7 +2000,7 @@ void CLevel_Chapter_08::Free()
 	m_pGameInstance->End_BGM();
 
 	CMinigame_Sneak::GetInstance()->DestroyInstance();
-	//CFormation_Manager::GetInstance()->DestroyInstance();
+	CFormation_Manager::GetInstance()->DestroyInstance();
 	//Safe_Release(m_pSneakMinigameManager);
 
 	__super::Free();

@@ -33,6 +33,11 @@ HRESULT CPick_Bulb::Initialize(void* _pArg)
 
 	m_isRender = false;
 
+	if (nullptr != CPlayerData_Manager::GetInstance())
+		m_iPreBulbCount = m_iCurBulbCount = CPlayerData_Manager::GetInstance()->Get_BulbCount();
+	else
+		m_iPreBulbCount = m_iCurBulbCount = 0;
+
 	return S_OK;
 }
 
