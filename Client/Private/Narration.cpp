@@ -653,11 +653,6 @@ void CNarration::Update_Narration(_float _fTimeDelta)
 					if (false == m_isWaitingPrint)
 					{
 
-
-						
-
-						// 대기시간이 완료되었다.
-						// 다음 장으로 이동하자.
 						++m_iCurrentLine;
 						m_isLeftRight = true;
 						m_fFadeTimer = 0.f;
@@ -668,6 +663,10 @@ void CNarration::Update_Narration(_float _fTimeDelta)
 
 						// TODO :: 테스트용도
 						m_DisPlayTextLine = m_iCurrentLine;
+						
+
+						// 대기시간이 완료되었다.
+						// 다음 장으로 이동하자.
 
 						m_iCameraPos = m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].iCameraPos;
 
@@ -721,6 +720,9 @@ void CNarration::Update_Narration(_float _fTimeDelta)
 
 						m_fWaitingTime += _fTimeDelta;
 						m_isWaitingNextPage = true;
+
+
+
 					}
 				}
 				else
@@ -1049,6 +1051,8 @@ _float3 CNarration::SetPlayerPos(wstring _strNarrationID)
 		vPos = _float3(408.1f, -87.1f, 0.0f);
 	else if (TEXT("Chapter8_P1112") == _strNarrationID)
 		vPos = _float3(-808.1f, 192.f, 0.0f);
+	else
+		vPos = _float3(0.f, 0.f, 0.f);
 
 	return vPos;
 }
