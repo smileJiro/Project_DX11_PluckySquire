@@ -47,7 +47,7 @@ void CPick_Bulb::Update(_float _fTimeDelta)
 	if (m_iPreBulbCount != m_iCurBulbCount)
 	{
 		m_fAmountTime = 0.f;
-		m_isRender = false;
+		m_isRender = true;
 		m_iPreBulbCount = m_iCurBulbCount;
 	}
 

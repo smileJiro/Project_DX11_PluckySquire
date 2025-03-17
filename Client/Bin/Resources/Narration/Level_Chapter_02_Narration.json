@@ -4,7 +4,7 @@
 			"strSectionid": "Chapter1_P0102",
 			"strid": "Chapter1_P0102_Narration_01",
 			"CurlevelId": 3,
-			"bTerminal": false,
+			"bTerminal": true,
 			"lines": [
 				{
 					"iduration": 1000,
@@ -80,14 +80,15 @@
 					"strSFX": "P0102_02_02",
 					"fLineHeight": 35.0,
 					"fFadeDuration": 2.0,
-					"fDelayNextLine": 2.0,
+					"fDelayNextLine": 1.1,
 					"fscale": 1.0,
 					"isLeft": false,
 					"iCameraPos": 1,
 					"fposX": 925.0,
 					"fposY": 180.0,
-					"fwaitingTime": 2.0,
+					"fwaitingTime": 1.1,
 					"isFinishedThisLine": true,
+					"isDirTurn": true,
 					"NarAnim": [
 						{
 							"strAnimationid": "0102_02_Narration_Model_Villager",
