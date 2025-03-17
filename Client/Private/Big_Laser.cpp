@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Big_Laser.h"
 #include "Shader.h"
+#include "Section_Manager.h"
 #include "GameInstance.h"
 
 CBig_Laser::CBig_Laser(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -62,7 +63,16 @@ HRESULT CBig_Laser::Render()
 {
     if (FAILED(__super::Render()))
         return E_FAIL;
+#ifdef _DEBUG
 
+    if (COORDINATE_2D == Get_CurCoord())
+    {
+        for (_uint i = 0; i < m_p2DColliderComs.size(); ++i)
+        {
+            m_p2DColliderComs[i]->Render(SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName));
+        }
+    }
+#endif // _DEBUG
     return S_OK;
 }
 
@@ -88,6 +98,25 @@ void CBig_Laser::Move_Start(_float _fMovePosX, _float _fSpeed)
     XMStoreFloat2(&m_fTargetPos, XMVectorSetX(vPos, XMVectorGetX(vPos) + _fMovePosX));
     Get_ControllerTransform()->Set_SpeedPerSec(_fSpeed);
     m_isMove = true;
+}
+
+HRESULT CBig_Laser::Ready_Collider()
+{
+    m_p2DColliderComs.resize(1);
+    CCollider_AABB::COLLIDER_AABB_DESC AABBDesc = {};
+    AABBDesc.pOwner = this;
+    AABBDesc.vExtents = {1.f,1.f};
+    AABBDesc.vScale = { 100.0f, 700.0f };
+    AABBDesc.vOffsetPosition = {0.f,0.f};
+    AABBDesc.isBlock = false;
+    AABBDesc.isTrigger = true;
+    AABBDesc.iCollisionGroupID = RAY_TRIGGER;
+
+    if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
+        TEXT("Com_Collider_Trigger"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &AABBDesc)))
+        return E_FAIL;
+
+    return S_OK;
 }
 
 CModelObject* CBig_Laser::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

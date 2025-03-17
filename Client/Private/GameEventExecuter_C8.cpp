@@ -194,6 +194,10 @@ void CGameEventExecuter_C8::Chapter8_Laser_Stage(_float _fTimeDelta)
 		// 스텝 1. 레이저 생성, 맵오브젝트들 배치.
 		if (Step_Check(STEP_0))
 		{
+			Next_Step_Over(0.7f);
+		}
+		else if (Step_Check(STEP_1))
+		{
 			if (Is_Start())
 			{
 
@@ -236,6 +240,8 @@ void CGameEventExecuter_C8::Chapter8_Laser_Stage(_float _fTimeDelta)
 					iter++;
 				}
 
+				m_TargetObjects[BRIDGE]->Get_ControllerTransform()->Set_SpeedPerSec(500.f);
+
 				// 다리 막는 블로커 세팅. 
 				CBlocker::BLOCKER2D_DESC Desc = {};
 				Desc.iCurLevelID = (LEVEL_ID)CSection_Manager::GetInstance()->Get_SectionLeveID();
@@ -257,7 +263,7 @@ void CGameEventExecuter_C8::Chapter8_Laser_Stage(_float _fTimeDelta)
 				//핍 생성 .
 				_wstring  strFriendTag = L"Pip";
 				CFriend_Pip::FRIEND_DESC PipDesc{};
-				PipDesc.Build_2D_Transform(_float2(590.00f, 160.00f), _float2(1.0f, 1.0f), 400.f);
+				PipDesc.Build_2D_Transform(_float2(590.00f, 140.00f), _float2(1.0f, 1.0f), 400.f);
 				PipDesc.iCurLevelID = m_iCurLevelID;
 				PipDesc.eStartState = CFriend::FRIEND_IDLE;
 				PipDesc.eStartDirection = CFriend::DIR_LEFT;
@@ -281,7 +287,7 @@ void CGameEventExecuter_C8::Chapter8_Laser_Stage(_float _fTimeDelta)
 			Next_Step(false == static_cast<CBig_Laser*>(m_TargetObjects[LASER])->Is_Move());
 		}
 		// 다 옆으로 움직였으면, 켜자.
-		else if (Step_Check(STEP_1))
+		else if (Step_Check(STEP_2))
 		{
 			if (Is_Start())
 			{
@@ -290,17 +296,17 @@ void CGameEventExecuter_C8::Chapter8_Laser_Stage(_float _fTimeDelta)
 			Next_Step_Over(1.5f);
 		}
 		// 움직이기 시작한다. 플레이어 무빙을 해제한다.
-		else if (Step_Check(STEP_2))
+		else if (Step_Check(STEP_3))
 		{
 			if (Is_Start())
 			{
 				static_cast<CBig_Laser*>(m_TargetObjects[LASER])->Move_Start(1800.f, 100.f);
 				pPlayer->Set_BlockPlayerInput(false);
 			}
-			Next_Step_Over(2.f);
+			Next_Step_Over(3.f);
 		}
 		// 매혹적
-		else if (Step_Check(STEP_3))
+		else if (Step_Check(STEP_4))
 		{
 			if (Is_Start())
 			{
@@ -323,10 +329,10 @@ void CGameEventExecuter_C8::Chapter8_Laser_Stage(_float _fTimeDelta)
 					}
 				}
 			}
-			Next_Step_Over(3.f);
+			Next_Step_Over(4.f);
 		}
 		// 찍찍이가 구해주는거. 
-		else if (Step_Check(STEP_4))
+		else if (Step_Check(STEP_5))
 		{
 			if (Is_Start())
 			{
@@ -334,8 +340,9 @@ void CGameEventExecuter_C8::Chapter8_Laser_Stage(_float _fTimeDelta)
 				static_cast<CFriend*>(m_TargetObjects[PIP])->Swicth_Animation(CFriend_Pip::PIP_C09_JUMPUP);
 			}
 			Next_Step_Over(0.5f);
+			static_cast<CFriend*>(m_TargetObjects[PIP])->Swicth_Animation(CFriend_Pip::PIP_C09_JUMPUP);
 		}		
-		else if (Step_Check(STEP_5))
+		else if (Step_Check(STEP_6))
 		{
 			if (Is_Start())
 			{
@@ -343,7 +350,7 @@ void CGameEventExecuter_C8::Chapter8_Laser_Stage(_float _fTimeDelta)
 			}
 			Next_Step_Over(0.5f);
 		}		
-		else if (Step_Check(STEP_6))
+		else if (Step_Check(STEP_7))
 		{
 			_vector vTargetPos = m_TargetObjects[BRIDGE]->Get_FinalPosition();
 			vTargetPos = XMVectorSetX(vTargetPos, 452.0f);
@@ -356,7 +363,7 @@ void CGameEventExecuter_C8::Chapter8_Laser_Stage(_float _fTimeDelta)
 			//static_cast<CModelObject*>(m_TargetObjects[BRIDGE])->Get_ControllerTransform()->MoveTo(vTargetPos,_fTimeDelta);
 			Next_Step(m_TargetObjects[BRIDGE]->Get_ControllerTransform()->Compute_Distance(vTargetPos) < 2.f);
 		}
-		else if (Step_Check(STEP_7))
+		else if (Step_Check(STEP_8))
 		{
 			if (Is_Start())
 			{
