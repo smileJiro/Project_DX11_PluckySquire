@@ -16,6 +16,7 @@
 #include "DynamicCastleGate.h"
 #include "Friend_Controller.h"
 #include "Friend.h"
+#include "Friend_Violet.h"
 
 CGameEventExecuter_C4::CGameEventExecuter_C4(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CGameEventExecuter(_pDevice, _pContext)
@@ -429,12 +430,13 @@ void CGameEventExecuter_C4::Chapter4_StorySequence(_float _fTimeDelta)
 void CGameEventExecuter_C4::Chapter4_3D_Out_01(_float _fTimeDelta)
 {
 	m_fTimer += _fTimeDelta;
-
+	CPlayer* pPlayer = Get_Player();
+	CFriend* pThrash = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Thrash"));
+	CFriend* pViolet = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Violet"));
 	if (Step_Check(STEP_0))
 	{
 		if (Is_Start())
 		{
-			CPlayer* pPlayer = Get_Player();
 			pPlayer->Set_BlockPlayerInput(true);
 			// 1. 카메라 위치 박스로 세팅. target을 바꿔버리면 위화감이 좀 잇을거같으니 걍 암오프셋만 좀 바까주자.
 			CCamera_Manager::GetInstance()->Set_ResetData(CCamera_Manager::TARGET_2D);
@@ -443,13 +445,39 @@ void CGameEventExecuter_C4::Chapter4_3D_Out_01(_float _fTimeDelta)
 				0.5f,
 				XMVectorSet(0.f, 0.f, 0.5f, 0.f),
 				EASE_IN_OUT);
+			
+			//_vector vPlayerPos = pPlayer->Get_FinalPosition();
+			//vPlayerPos += XMVectorSet(0.f, 100.f, 0.f, 0.f);
+			CFriend_Controller::GetInstance()->End_Train();
+
+			_vector vPlayerPos = pPlayer->Get_FinalPosition() + XMVectorSet(0.0f, 100.f, 0.0f, 0.0f);
+			_vector vThrashPos = pThrash->Get_FinalPosition() + XMVectorSet(80.0f, 100.f, 0.0f, 0.0f);
+			_vector vVioletPos = pViolet->Get_FinalPosition() + XMVectorSet(-80.0f, 160.f, 0.0f, 0.0f);
+			AUTOMOVE_COMMAND AutoMove{};
+			AutoMove.eType = AUTOMOVE_TYPE::MOVE_TO;
+			AutoMove.fPostDelayTime = 0.0f;
+			AutoMove.fPreDelayTime = 0.0f;
+			AutoMove.iAnimIndex = (_uint)CPlayer::ANIM_STATE_2D::PLAYER_RUN_UP;
+			AutoMove.vTarget = vPlayerPos;
+
+			AUTOMOVE_COMMAND AutoMove2{};
+			AutoMove2.eType = AUTOMOVE_TYPE::LOOK_DIRECTION;
+			AutoMove2.fPostDelayTime = 0.0f;
+			AutoMove2.fPreDelayTime = 0.0f;
+			AutoMove2.vTarget = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+			AutoMove2.iAnimIndex = (_uint)CPlayer::ANIM_STATE_2D::PLAYER_IDLE_UP;
+			pPlayer->Add_AutoMoveCommand(AutoMove);
+			pPlayer->Add_AutoMoveCommand(AutoMove2);
+			pPlayer->Start_AutoMove(true);
+			pThrash->Move_Position(_float2(XMVectorGetX(vThrashPos), XMVectorGetY(vThrashPos)), CFriend::DIR_UP);
+			pViolet->Move_Position(_float2(XMVectorGetX(vVioletPos), XMVectorGetY(vVioletPos)), CFriend::DIR_UP);
+
 		}
 
 		Next_Step_Over(1.f);
 	}
 	else if (Step_Check(STEP_1))
 	{
-
 		// 대화 1 재생
 		if (Is_Start())
 			CDialog_Manager::GetInstance()->Set_DialogId(L"Chapter4_3D_Out_01_Dialog_01");
@@ -482,23 +510,48 @@ void CGameEventExecuter_C4::Chapter4_3D_Out_01(_float _fTimeDelta)
 			if (Objects.end() != iter)
 			{
 				CCamera_Manager::GetInstance()->Change_CameraTarget(*iter);
-				CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Decrease(CCamera_Manager::TARGET_2D, 1.f,
-					3.f, EASE_IN_OUT);
+				CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Increase(CCamera_Manager::TARGET_2D, 1.f,
+					5.f, EASE_IN_OUT);
 			}
+			_vector vVioletPos = pViolet->Get_FinalPosition() + XMVectorSet(-50.0f, 70.f, 0.0f, 0.0f);
+			_vector vPlayerPos = pPlayer->Get_FinalPosition() + XMVectorSet(-20.0f, 50.f, 0.0f, 0.0f);
+			_vector vThrashPos = pThrash->Get_FinalPosition() + XMVectorSet(-50.0f, 50.f, 0.0f, 0.0f);
+			pViolet->Move_Position(_float2(XMVectorGetX(vVioletPos), XMVectorGetY(vVioletPos)), CFriend::DIR_LEFT);
+			pThrash->Move_Position(_float2(XMVectorGetX(vThrashPos), XMVectorGetY(vThrashPos)), CFriend::DIR_UP);
 
-			// 카메라 위치 2로 세팅. 나무 올리기 위함.
-			//CCamera_Manager::GetInstance()->Start_Changing_AtOffset(CCamera_Manager::TARGET_2D,
-			//	0.5f,
-			//	XMVectorSet(-0.5f, 0.f, -0.5f, 0.f),
-			//	EASE_IN_OUT);
+			AUTOMOVE_COMMAND AutoMove{};
+			AutoMove.eType = AUTOMOVE_TYPE::MOVE_TO;
+			AutoMove.fPostDelayTime = 0.0f;
+			AutoMove.fPreDelayTime = 0.0f;
+			AutoMove.iAnimIndex = (_uint)CPlayer::ANIM_STATE_2D::PLAYER_RUN_RIGHT;
+			AutoMove.vTarget = vPlayerPos;
+
+			AUTOMOVE_COMMAND AutoMove2{};
+			AutoMove2.eType = AUTOMOVE_TYPE::LOOK_DIRECTION;
+			AutoMove2.fPostDelayTime = 0.0f;
+			AutoMove2.fPreDelayTime = 0.0f;
+			AutoMove2.vTarget = XMVectorSet(-1.0f, 0.0f, 0.0f, 0.0f);
+			AutoMove2.iAnimIndex = (_uint)CPlayer::ANIM_STATE_2D::PLAYER_IDLE_UP;
+			pPlayer->Add_AutoMoveCommand(AutoMove);
+			pPlayer->Add_AutoMoveCommand(AutoMove2);
+			pPlayer->Start_AutoMove(true);
 		}
 
 		Next_Step_Over(1.f);
 	}
-	// 여기 바이올렛 추가되면 애니메이션 추가.
 	else if (Step_Check(STEP_3))
 	{
-
+		if (Is_Start())
+		{
+			pViolet->Change_AnyState(CFriend_Violet::VIOLET_MAGIC02_INTO_RIGHT, false, CFriend::DIR_LEFT);
+			pPlayer->Set_2DDirection(F_DIRECTION::LEFT);
+			pThrash->Set_Direction(CFriend::DIR_LEFT);
+		}
+		Next_Step_Over(1.5f);
+	}
+	// 여기 바이올렛 추가되면 애니메이션 추가.
+	else if (Step_Check(STEP_4))
+	{
 		if (Is_Start())
 		{
 			CSection_2D* pSection = static_cast<CSection_2D*>(SECTION_MGR->Find_Section(L"Chapter4_P0708"));
@@ -519,104 +572,35 @@ void CGameEventExecuter_C4::Chapter4_3D_Out_01(_float _fTimeDelta)
 
 				});
 
-
-
-			CDraggableObject::DRAGGABLE_DESC tDraggableDesc = {};
-			tDraggableDesc.iModelPrototypeLevelID_3D = LEVEL_STATIC;
-			tDraggableDesc.iCurLevelID = m_pGameInstance->Get_CurLevelID();
-			tDraggableDesc.strModelPrototypeTag_3D = TEXT("SM_Plastic_Block_04");
-			tDraggableDesc.eStartCoord = COORDINATE_3D;
-			tDraggableDesc.vBoxHalfExtents = { 1.02f,1.02f,1.02f };
-			tDraggableDesc.vBoxOffset = { 0.f,tDraggableDesc.vBoxHalfExtents.y,0.f };
-			tDraggableDesc.tTransform3DDesc.vInitialPosition = { 0.f, 0.f, 15.f };
-
-			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DraggableObject"),
-				m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Draggable"), &tDraggableDesc)))
-				return;
-
-
-			// 동시에 3D 몹들 생성.
-			const json* pJson = m_pGameInstance->Find_Json_InLevel(TEXT("Chapter4_Monsters_3D"), m_pGameInstance->Get_CurLevelID());
-
-			CGameObject* pObject;
-
-
-			CMonster::MONSTER_DESC MonsterDesc3D = {};
-
-			MonsterDesc3D.iCurLevelID = m_pGameInstance->Get_CurLevelID();
-			MonsterDesc3D.eStartCoord = COORDINATE_3D;
-
-			if (pJson->contains("3D"))
-			{
-				_wstring strLayerTag = L"Layer_Monster";
-				_wstring strMonsterTag = L"";
-
-				for (_int i = 0; i < (*pJson)["3D"].size(); ++i)
-				{
-					if ((*pJson)["3D"][i].contains("Position"))
-					{
-						for (_int j = 0; j < 3; ++j)
-						{
-							*(((_float*)&MonsterDesc3D.tTransform3DDesc.vInitialPosition) + j) = (*pJson)["3D"][i]["Position"][j];
-						}
-					}
-					if ((*pJson)["3D"][i].contains("Scaling"))
-					{
-						for (_int j = 0; j < 3; ++j)
-						{
-							*(((_float*)&MonsterDesc3D.tTransform3DDesc.vInitialScaling) + j) = (*pJson)["3D"][i]["Scaling"][j];
-						}
-					}
-					if ((*pJson)["3D"][i].contains("LayerTag"))
-					{
-						strLayerTag = STRINGTOWSTRING((*pJson)["3D"][i]["LayerTag"]);
-					}
-
-					if ((*pJson)["3D"][i].contains("MonsterTag"))
-					{
-						strMonsterTag = STRINGTOWSTRING((*pJson)["3D"][i]["MonsterTag"]);
-					}
-					else
-						return;
-
-					if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, strMonsterTag, m_pGameInstance->Get_CurLevelID(), strLayerTag, &pObject, &MonsterDesc3D)))
-						return;
-
-				}
-			}
-
-
 		}
 
 		Next_Step_Over(2.f);
 	}
-	else if (Step_Check(STEP_4))
+	else if (Step_Check(STEP_5))
 	{
 		if (Is_Start())
 		{
+			pViolet->Change_CurState(CFriend::FRIEND_IDLE);
 			// 카메라 원복
-			CPlayer* pPlayer = Get_Player();
-
 			CCamera_Manager::GetInstance()->Change_CameraTarget(pPlayer);
 			CCamera_Manager::GetInstance()->Start_ResetArm_To_SettingPoint(CCamera_Manager::TARGET_2D, 1.f);
 		}
 		Next_Step_Over(1.f);
 		}
-	else if (Step_Check(STEP_5))
+	else if (Step_Check(STEP_6))
 	{
 		// 대화 2 재생
 		if (Is_Start())
 		{	
 		
 			CDialog_Manager::GetInstance()->Set_DialogId(L"Chapter4_3D_Out_01_Dialog_02");
-			Event_ChangeMapObject(LEVEL_CHAPTER_4, L"Chapter_04_Play_Desk.mchc", L"Layer_MapObject");
 		}
 		else
 			Next_Step(!CDialog_Manager::GetInstance()->Get_DisPlayDialogue());
 	}
 	else
 	{
-		CPlayer* pPlayer = Get_Player();
+		CFriend_Controller::GetInstance()->Start_Train();
 
 		pPlayer->Set_BlockPlayerInput(false);
 		GameEvent_End();
@@ -720,6 +704,101 @@ void CGameEventExecuter_C4::Friend_MapEnter(_float _fTimeDelta)
 		CCamera_Manager::GetInstance()->Start_ResetArm_To_SettingPoint(eCamType, 1.0f);
 		pPlayer->Set_BlockPlayerInput(false);
 		GameEvent_End();
+	}
+}
+
+void CGameEventExecuter_C4::Change_PlayMap()
+{
+	// 맵 설치
+	if (m_fTimer > 1.f && 0 == m_iSubStep)
+	{
+		Event_ChangeMapObject(LEVEL_CHAPTER_4, L"Chapter_04_Play_Desk.mchc", L"Layer_MapObject");
+	}
+	//몬스터 추가
+	if (m_fTimer > 1.2f && 1 == m_iSubStep)
+	{
+		const json* pJson = m_pGameInstance->Find_Json_InLevel(TEXT("Chapter4_Monsters_3D"), m_pGameInstance->Get_CurLevelID());
+
+		CGameObject* pObject;
+
+
+		CMonster::MONSTER_DESC MonsterDesc3D = {};
+
+		MonsterDesc3D.iCurLevelID = m_pGameInstance->Get_CurLevelID();
+		MonsterDesc3D.eStartCoord = COORDINATE_3D;
+
+		if (pJson->contains("3D"))
+		{
+			_wstring strLayerTag = L"Layer_Monster";
+			_wstring strMonsterTag = L"";
+
+			for (_int i = 0; i < (*pJson)["3D"].size(); ++i)
+			{
+				if ((*pJson)["3D"][i].contains("Position"))
+				{
+					for (_int j = 0; j < 3; ++j)
+					{
+						*(((_float*)&MonsterDesc3D.tTransform3DDesc.vInitialPosition) + j) = (*pJson)["3D"][i]["Position"][j];
+					}
+				}
+				if ((*pJson)["3D"][i].contains("Scaling"))
+				{
+					for (_int j = 0; j < 3; ++j)
+					{
+						*(((_float*)&MonsterDesc3D.tTransform3DDesc.vInitialScaling) + j) = (*pJson)["3D"][i]["Scaling"][j];
+					}
+				}
+				if ((*pJson)["3D"][i].contains("LayerTag"))
+				{
+					strLayerTag = STRINGTOWSTRING((*pJson)["3D"][i]["LayerTag"]);
+				}
+
+				if ((*pJson)["3D"][i].contains("MonsterTag"))
+				{
+					strMonsterTag = STRINGTOWSTRING((*pJson)["3D"][i]["MonsterTag"]);
+				}
+				else
+					return;
+
+				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, strMonsterTag, m_pGameInstance->Get_CurLevelID(), strLayerTag, &pObject, &MonsterDesc3D)))
+					return;
+
+			}
+		}
+	}
+
+	// 3D object 추가 
+	if (m_fTimer > 1.3f && 2 == m_iSubStep)
+	{
+		CDraggableObject::DRAGGABLE_DESC tDraggableDesc = {};
+		tDraggableDesc.iModelPrototypeLevelID_3D = LEVEL_STATIC;
+		tDraggableDesc.iCurLevelID = m_pGameInstance->Get_CurLevelID();
+		tDraggableDesc.strModelPrototypeTag_3D = TEXT("SM_Plastic_Block_04");
+		tDraggableDesc.eStartCoord = COORDINATE_3D;
+		tDraggableDesc.vBoxHalfExtents = { 1.02f,1.02f,1.02f };
+		tDraggableDesc.vBoxOffset = { 0.f,tDraggableDesc.vBoxHalfExtents.y,0.f };
+		tDraggableDesc.tTransform3DDesc.vInitialPosition = { 54.77f, 4.29f, 6.06f };
+
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DraggableObject"),
+			m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Draggable"), &tDraggableDesc)))
+			return;
+	}
+
+	// 3D NPC들 렌더 
+	if (m_fTimer > 1.4f && 3 == m_iSubStep)
+	{
+		auto pLayer = m_pGameInstance->Find_Layer(m_iCurLevelID,L"Layer_Social3DNPC");
+
+		if(nullptr != pLayer)
+		{ 
+			auto GameObjects = pLayer->Get_GameObjects();
+			for (auto& pObject : GameObjects)
+			{
+				pObject->Set_Render(true);
+			}
+		}
+
+
 	}
 }
 

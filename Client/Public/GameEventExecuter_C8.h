@@ -64,6 +64,7 @@ public:
 	void Chapter8_Stop_Stamp(_float _fTimeDelta);
 	void Chapter8_Bomb_Stamp(_float _fTimeDelta);
 	void Chapter8_Tilting_Glove(_float _fTimeDelta);
+	virtual void							Change_PlayMap() override;
 
 
 private:

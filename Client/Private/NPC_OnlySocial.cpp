@@ -258,9 +258,16 @@ HRESULT CNPC_OnlySocial::LoadFromJson(const std::wstring& filePath)
 			tOnlySocial.iSubIndex = 0;
 			wsprintf(tOnlySocial.strDialogueIndex, (tOnlySocial.strDialogueId).c_str());
 			//tOnlySocial.strDialogueIndex = tOnlySocial.strDialogueId;
-			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(tOnlySocial.iCurLevelID, TEXT("Prototype_GameObject_NPC_Social"), tOnlySocial.iCurLevelID, TEXT("Layer_SocialNPC"), &pGameObject, &tOnlySocial)))
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(tOnlySocial.iCurLevelID, TEXT("Prototype_GameObject_NPC_Social"),
+				tOnlySocial.iCurLevelID,
+				tOnlySocial.is2D ?
+				TEXT("Layer_SocialNPC")
+				:
+				TEXT("Layer_Social3DNPC")
+				, &pGameObject, &tOnlySocial)))
 				return E_FAIL;
-
+			else if(false == tOnlySocial.is2D)
+				pGameObject->Set_Render(false);
 
 			CNPC_Manager::GetInstance()->SocialNpc_PushBack(static_cast<CNPC_Social*>(pGameObject));
 

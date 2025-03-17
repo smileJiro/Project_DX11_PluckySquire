@@ -82,6 +82,7 @@ public:
 		m_iAnyAnimIndex = _iAnimIndex;
 		m_isAnyAnimLoop = _isLoop;
 		m_eDirection = _eDirectionLR;
+		m_ePreState = FRIEND_LAST;
 		State_Change();
 	}
 protected:

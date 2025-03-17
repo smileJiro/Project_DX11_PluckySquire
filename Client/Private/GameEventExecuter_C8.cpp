@@ -339,7 +339,7 @@ void CGameEventExecuter_C8::Chapter8_Laser_Stage(_float _fTimeDelta)
 			if (Is_Start())
 			{
 				m_TargetObjects[PIP]->Set_Active(true);
-				static_cast<CFriend*>(m_TargetObjects[PIP])->Swicth_Animation(CFriend_Pip::PIP_C09_JUMPUP);
+				static_cast<CFriend*>(m_TargetObjects[PIP])->Change_AnyState(CFriend_Pip::PIP_C09_JUMPUP, false, CFriend::DIR_LEFT);
 			}
 			Next_Step_Over(1.5f);
 		}		
@@ -347,7 +347,7 @@ void CGameEventExecuter_C8::Chapter8_Laser_Stage(_float _fTimeDelta)
 		{
 			if (Is_Start())
 			{
-				static_cast<CFriend*>(m_TargetObjects[PIP])->Swicth_Animation(CFriend_Pip::PIP_BUTTONPUSH);
+				static_cast<CFriend*>(m_TargetObjects[PIP])->Change_AnyState(CFriend_Pip::PIP_BUTTONPUSH, false, CFriend::DIR_LEFT);
 			}
 			if (Next_Step_Over(1.f)) 
 			{
@@ -632,6 +632,100 @@ void CGameEventExecuter_C8::Chapter8_Tilting_Glove(_float _fTimeDelta)
 	if (true == Postit_Process(L"Chapter8_SKSP_Postit", L"Chapter8_Tilting_Glove", 1.f, CPostit_Page::POSTIT_PAGE_POSTION_TYPE_A, false, fCamerafunc))
 	{
 		GameEvent_End();
+	}
+}
+
+void CGameEventExecuter_C8::Change_PlayMap()
+{
+	// 맵 설치
+	if (m_fTimer > 1.f && 0 == m_iSubStep)
+	{
+		Event_ChangeMapObject(LEVEL_CHAPTER_4, L"Chapter_04_Play_Desk.mchc", L"Layer_MapObject");
+
+	}
+	//몬스터 추가
+	if (m_fTimer > 1.2f && 1 == m_iSubStep)
+	{
+		const json* pJson = m_pGameInstance->Find_Json_InLevel(TEXT("Chapter4_Monsters_3D"), m_pGameInstance->Get_CurLevelID());
+
+		CGameObject* pObject;
+
+
+		CMonster::MONSTER_DESC MonsterDesc3D = {};
+
+		MonsterDesc3D.iCurLevelID = m_pGameInstance->Get_CurLevelID();
+		MonsterDesc3D.eStartCoord = COORDINATE_3D;
+
+		if (pJson->contains("3D"))
+		{
+			_wstring strLayerTag = L"Layer_Monster";
+			_wstring strMonsterTag = L"";
+
+			for (_int i = 0; i < (*pJson)["3D"].size(); ++i)
+			{
+				if ((*pJson)["3D"][i].contains("Position"))
+				{
+					for (_int j = 0; j < 3; ++j)
+					{
+						*(((_float*)&MonsterDesc3D.tTransform3DDesc.vInitialPosition) + j) = (*pJson)["3D"][i]["Position"][j];
+					}
+				}
+				if ((*pJson)["3D"][i].contains("Scaling"))
+				{
+					for (_int j = 0; j < 3; ++j)
+					{
+						*(((_float*)&MonsterDesc3D.tTransform3DDesc.vInitialScaling) + j) = (*pJson)["3D"][i]["Scaling"][j];
+					}
+				}
+				if ((*pJson)["3D"][i].contains("LayerTag"))
+				{
+					strLayerTag = STRINGTOWSTRING((*pJson)["3D"][i]["LayerTag"]);
+				}
+
+				if ((*pJson)["3D"][i].contains("MonsterTag"))
+				{
+					strMonsterTag = STRINGTOWSTRING((*pJson)["3D"][i]["MonsterTag"]);
+				}
+				else
+					return;
+
+				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, strMonsterTag, m_pGameInstance->Get_CurLevelID(), strLayerTag, &pObject, &MonsterDesc3D)))
+					return;
+
+			}
+		}
+	}
+
+	// 3D object 추가 
+	if (m_fTimer > 1.3f && 2 == m_iSubStep)
+	{
+		CDraggableObject::DRAGGABLE_DESC tDraggableDesc = {};
+		tDraggableDesc.iModelPrototypeLevelID_3D = LEVEL_STATIC;
+		tDraggableDesc.iCurLevelID = m_pGameInstance->Get_CurLevelID();
+		tDraggableDesc.strModelPrototypeTag_3D = TEXT("SM_Plastic_Block_04");
+		tDraggableDesc.eStartCoord = COORDINATE_3D;
+		tDraggableDesc.vBoxHalfExtents = { 1.02f,1.02f,1.02f };
+		tDraggableDesc.vBoxOffset = { 0.f,tDraggableDesc.vBoxHalfExtents.y,0.f };
+		tDraggableDesc.tTransform3DDesc.vInitialPosition = { 54.77f, 4.29f, 6.06f };
+
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DraggableObject"),
+			m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Draggable"), &tDraggableDesc)))
+			return;
+	}
+
+	// 3D NPC들 렌더 
+	if (m_fTimer > 1.4f && 3 == m_iSubStep)
+	{
+		auto pLayer = m_pGameInstance->Find_Layer(m_iCurLevelID, L"Layer_Social3DNPC");
+
+		if (nullptr != pLayer)
+		{
+			auto GameObjects = pLayer->Get_GameObjects();
+			for (auto& pObject : GameObjects)
+			{
+				pObject->Set_Render(true);
+			}
+		}
 	}
 }
 
