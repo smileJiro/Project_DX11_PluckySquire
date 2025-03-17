@@ -125,7 +125,7 @@ void CCamera_Free::Key_Input(_float fTimeDelta)
 		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, vPos);
 	}
 
-	if (KEY_PRESSING(KEY::W))
+	/*if (KEY_PRESSING(KEY::W))
 	{
 		_float fSpeed = m_pControllerTransform->Get_SpeedPerSec();
 		_vector vPos = m_pControllerTransform->Get_State(CTransform::STATE_POSITION);
@@ -163,7 +163,7 @@ void CCamera_Free::Key_Input(_float fTimeDelta)
 		vPos = vPos + (fTimeDelta * fSpeed * XMVectorSet(1.f, 0.f, 0.f, 0.f));
 
 		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, vPos);
-	}
+	}*/
 
 	//_long		MouseMove = {};
 
