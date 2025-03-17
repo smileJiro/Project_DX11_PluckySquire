@@ -562,6 +562,7 @@ public:
 	void Set_PlayingAnim(_bool _bPlaying);
 	void Start_Invinciblity();
 	void RetrieveSword();
+	void CatchSword();
 	// interact 함수가 호출되면 true 반환.
 	INTERACT_RESULT Try_Interact(_float _fTimeDelta);
 
@@ -765,6 +766,9 @@ private:
 	// Turn Book 할 때 Effect
 	class CTurnBookEffect* m_pTurnBookEffect = { nullptr };
 
+private:
+		void On_Stop() override;
+		void On_UnStop() override;
 //public:
 //	void Set_FirstExitPortalDesc(const _wstring& _strSectionName, _int _iIndex)
 //	{

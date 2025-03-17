@@ -62,6 +62,7 @@ HRESULT CTrigger_Manager::Mapping_ExecuterTag()
 	m_EventExecuterTags[C02P0910_LIGHTNING_BOLT_SPAWN] = L"C02P0910_Spawn_LightningBolt";
 	m_EventExecuterTags[C02P0910_MONSTER_SPAWN] = L"C02P0910_Monster_Spawn";
 	m_EventExecuterTags[START_TRAIN] = L"Start_Train";
+	m_EventExecuterTags[FRIEND_MAPENTER] = L"Friend_MapEnter";
 	m_EventExecuterTags[CHAPTER2_BOOKMAGIC] = L"Chapter2_BookMagic";
 	m_EventExecuterTags[CHAPTER2_INTRO] = L"Chapter2_Intro";
 	m_EventExecuterTags[CHAPTER2_HUMGRUMP] = L"Chapter2_Humgrump";

@@ -731,23 +731,15 @@ _bool CCharacter::Move_To_3D(_fvector _vPosition, _float _fEpsilon, _bool _Freez
 
     return false;
 }
-//이전 프레임의 위치는 언제 업데이트 해야할까?
-// 오븨젝트이 Updaet ->충돌처리(피직스,콜라이더)->lateUpdate 
-// 
-//이전 프레임의 위치를 저장해 놓고, 
-//이전 프레임 위치와 이번 프레임의 위치를 비교하여
-//목표 지점을 넘어갔으면 멈춤.
-//목표 지점을 못 넘어갔으면?
-// -> 이동
-//만약 첫 번째 프레임이면? 이전 프레임의 위치가 없을 것.
-// ->일단 이동하고, 
-_bool CCharacter::Move_To(_fvector _vPosition, _float _fTimeDelta, _float fInterval)
+
+//임의의 위치까지 이동하는 함수. 
+_bool CCharacter::Move_To(_fvector _vPosition, _float _fTimeDelta, _float fInterval, _float fSpeedMag)
 {
     COORDINATE eCoord = Get_CurCoord();
 	_vector vCurrentPos = Get_FinalPosition();
 	_float fEpsilon = COORDINATE_2D == eCoord ? 10.f : 0.3f;
 
-    _float fMoveSpeed = m_pControllerTransform->Get_SpeedPerSec();
+    _float fMoveSpeed = m_pControllerTransform->Get_SpeedPerSec() * fSpeedMag;
     _vector vDir = XMVector3Normalize(XMVectorSetW(_vPosition - vCurrentPos, 0.f));
 	if (Check_Arrival(_vPosition, fEpsilon + fInterval))
 	{
@@ -928,7 +920,7 @@ _bool CCharacter::Process_AutoMove_MoveTo(const AUTOMOVE_COMMAND& _pCommand, _fl
     {
         Rotate_To_Radians(vDir, m_pControllerTransform->Get_RotationPerSec());
     }
-    _bool _bResult = Move_To(XMVectorSetW(_pCommand.vTarget,1.f), _fTimeDelta);
+    _bool _bResult = Move_To(XMVectorSetW(_pCommand.vTarget,1.f), _fTimeDelta,0.f, _pCommand.fMoveSpeedMag);
     if (_bResult)
         Stop_Move();
     return _bResult;

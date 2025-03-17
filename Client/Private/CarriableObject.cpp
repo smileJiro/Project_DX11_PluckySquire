@@ -343,3 +343,18 @@ void CCarriableObject::Set_Kinematic(_bool _bKinematic)
 		pDynamicActor->Late_Update(0);
 	}
 }
+
+void CCarriableObject::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
+{
+	int a = 0;
+}
+
+void CCarriableObject::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
+{
+	int a = 0;
+}
+
+void CCarriableObject::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
+{
+	int a = 0;
+}

@@ -15,8 +15,8 @@ public:
     virtual void Exit() override;
     virtual void On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)override;
 
-private:
 	void Switch_JumpAnimation();
+private:
 private:
     F_DIRECTION m_eOldFDir = F_DIRECTION::F_DIR_LAST;
     _bool m_bPlatformerMode = false;
