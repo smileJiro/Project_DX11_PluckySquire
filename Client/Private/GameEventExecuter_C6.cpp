@@ -21,6 +21,7 @@
 #include "Player.h"
 #include "PortalLocker.h"
 #include "ZetPack_Child.h"
+#include "2DMapActionObject.h"
 
 /* Camera */
 #include "Camera_CutScene.h"
@@ -803,7 +804,7 @@ void CGameEventExecuter_C6::Chapter6_Humgrump_Revolt(_float _fTimeDelta)
 
 			pPlayer->Start_AutoMove(true);
 		}
-		
+
 		/* 중앙으로 카메라 Target 변경 */
 		if (m_fTimer > 0.8f) {
 			static _float4x4 matCenter = {};
@@ -1018,13 +1019,13 @@ void CGameEventExecuter_C6::Chapter6_Humgrump_Revolt(_float _fTimeDelta)
 		}
 	}
 	else if (Step_Check(STEP_8)) {
-		
+
 		// 8.5. 바이올렛이 소리치기
 		if (0 == m_iSubStep) {
 
 			m_iSubStep++;
 		}
-		
+
 		if (m_fTimer >= 2.5f) {
 			if (Is_Start()) {
 				// 9. 험그럼프 Beam 끝, 할배 죽기 시작
@@ -1067,9 +1068,9 @@ void CGameEventExecuter_C6::Chapter6_Humgrump_Revolt(_float _fTimeDelta)
 		if (false == static_cast<CModelObject*>(m_pTargetObject)->Is_DuringAnimation()) {
 			static_cast<CModelObject*>(m_pTargetObject)->Switch_Animation(CNpc_Humgrump::CHAPTER6_TRANSFORM_LAUGH_IDLE);
 
-			CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("Humgrump_Ha"), TEXT("Chapter6_P1314"), XMMatrixTranslation(-271.54, -73.07f, 0.f), 0.f, 1, true, 10.5f, SECTION_2D_PLAYMAP_EFFECT);
-			CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("Humgrump_Ha"), TEXT("Chapter6_P1314"), XMMatrixTranslation(-211.54, -53.07f, 0.f), 0.5f, 1, true, 10.5f, SECTION_2D_PLAYMAP_EFFECT);
-			CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("Humgrump_Ha"), TEXT("Chapter6_P1314"), XMMatrixTranslation(-151.54, -73.07f, 0.f), 1.f, 1, true, 10.5f, SECTION_2D_PLAYMAP_EFFECT);
+			CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("Humgrump_Ha"), TEXT("Chapter6_P1314"), XMMatrixTranslation(-271.54f, -73.07f, 0.f), 0.f, 1, true, 10.5f, SECTION_2D_PLAYMAP_EFFECT);
+			CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("Humgrump_Ha"), TEXT("Chapter6_P1314"), XMMatrixTranslation(-211.54f, -53.07f, 0.f), 0.5f, 1, true, 10.5f, SECTION_2D_PLAYMAP_EFFECT);
+			CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("Humgrump_Ha"), TEXT("Chapter6_P1314"), XMMatrixTranslation(-151.54f, -73.07f, 0.f), 1.f, 1, true, 10.5f, SECTION_2D_PLAYMAP_EFFECT);
 			Next_Step(true);
 		}
 	}
@@ -1109,7 +1110,7 @@ void CGameEventExecuter_C6::Chapter6_Change_Book_To_Greate_Humgrump(_float _fTim
 
 		// 2. 책 덮기
 		if (m_fTimer >= 1.f && 0 == m_iSubStep) {
-			
+
 			CBook* pBook = static_cast<CBook*>(m_pGameInstance->Get_GameObject_Ptr(LEVEL_CHAPTER_6, TEXT("Layer_Book"), 0));
 			pBook->Set_Animation(CBook::CLOSE_L_TO_R);
 
@@ -1126,7 +1127,7 @@ void CGameEventExecuter_C6::Chapter6_Change_Book_To_Greate_Humgrump(_float _fTim
 				memcpy(&m_TargetWorldMatrix.m[3], &vRightBookPos, sizeof(_float4));
 
 				CCamera_Manager::GetInstance()->Change_CameraTarget(&m_TargetWorldMatrix, 0.8f);
-				CCamera_Manager::GetInstance()->Start_Changing_ArmLength(CCamera_Manager::TARGET_2D, 0.8f, 23.1590042, EASE_IN_OUT);
+				CCamera_Manager::GetInstance()->Start_Changing_ArmLength(CCamera_Manager::TARGET_2D, 0.8f, 23.1590042f, EASE_IN_OUT);
 				CCamera_Manager::GetInstance()->Start_Turn_ArmVector(CCamera_Manager::TARGET_2D, 0.8f, XMVectorSet(0.0f, 0.907808542f, -0.419384748f, 0.f), EASE_IN_OUT);
 				CCamera_Manager::GetInstance()->Start_Zoom(CCamera_Manager::TARGET_2D, 0.8f, CCamera::LEVEL_4, EASE_IN_OUT);
 
@@ -1249,6 +1250,9 @@ void CGameEventExecuter_C6::Chapter6_StorySequence_01(_float _fTimeDelta)
 	CPlayer* pPlayer = Get_Player();
 	CFriend* pThrash = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Thrash"));
 	CFriend* pViolet = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Violet"));
+	auto pMural = CNPC_Manager::GetInstance()->Find_SocialNPC(L"Mural");
+	auto pQueen = CNPC_Manager::GetInstance()->Find_SocialNPC(L"Queen");
+
 	if (Step_Check(STEP_0))
 	{
 		Next_Step_Over(1.5f);
@@ -1280,29 +1284,29 @@ void CGameEventExecuter_C6::Chapter6_StorySequence_01(_float _fTimeDelta)
 
 		Next_Step(false == pMural->Is_AutoMoving());
 
-	} 
-	else if (Step_Check(STEP_2)) 
+	}
+	else if (Step_Check(STEP_2))
 	{
 		if (Is_Start())
 			CDialog_Manager::GetInstance()->Set_DialogId(L"Chapter6_StorySequence_01_01");
 		else
 			Next_Step(!CDialog_Manager::GetInstance()->Get_DisPlayDialogue());
 	}
-	else if (Step_Check(STEP_3)) 
+	else if (Step_Check(STEP_3))
 	{
-		auto pMural = CNPC_Manager::GetInstance()->Find_SocialNPC(L"Mural");
-
 		if (Is_Start())
 		{
+			CFriend_Controller::GetInstance()->End_Train(); // 체이스 끝
+
 			//pMural->auto
 
 			//_vector vMuralPos = pMural->Get_FinalPosition();
-			_vector vMuralMovePos = XMVectorSet(-8.f, -188.f, 0.f, 0.f);
+			_vector vMuralMovePos = XMVectorSet(-48.f, -168.f, 0.f, 0.f);
 			AUTOMOVE_COMMAND AutoMove{};
 			AutoMove.eType = AUTOMOVE_TYPE::MOVE_TO;
 			AutoMove.fPostDelayTime = 0.0f;
 			AutoMove.fPreDelayTime = 0.0f;
-			AutoMove.iAnimIndex = (_uint)7;
+			AutoMove.iAnimIndex = (_uint)15;
 			AutoMove.vTarget = vMuralMovePos;
 
 			pMural->Add_AutoMoveCommand(AutoMove);
@@ -1310,16 +1314,15 @@ void CGameEventExecuter_C6::Chapter6_StorySequence_01(_float _fTimeDelta)
 
 
 			_vector vPlayerPos = XMVectorSet(-8.f, -238.f, 0.f, 0.f);;
-			_vector vThrashPos = XMVectorSet(50.f, -238.f, 0.f, 0.f);;
-			_vector vVioletPos = XMVectorSet(-40.f, -238.f, 0.f, 0.f);;
+			_vector vThrashPos = XMVectorSet(60.f, -238.f, 0.f, 0.f);;
+			_vector vVioletPos = XMVectorSet(-76.f, -238.f, 0.f, 0.f);;
 			AutoMove = {};
 			AutoMove.eType = AUTOMOVE_TYPE::MOVE_TO;
 			AutoMove.fPostDelayTime = 0.0f;
 			AutoMove.fPreDelayTime = 0.0f;
 			AutoMove.iAnimIndex = (_uint)CPlayer::ANIM_STATE_2D::PLAYER_RUN_RIGHT;
 			AutoMove.vTarget = vPlayerPos;
-			m_fPlaye2DMoveSpeed = pPlayer->Get_MoveSpeed(COORDINATE_2D);
-			pPlayer->Set_MoveSpeed(m_fPlaye2DMoveSpeed * 2.f, COORDINATE_2D);
+			AutoMove.fMoveSpeedMag = 1.8f;
 			pPlayer->Add_AutoMoveCommand(AutoMove);
 			pPlayer->Start_AutoMove(true);
 
@@ -1327,12 +1330,126 @@ void CGameEventExecuter_C6::Chapter6_StorySequence_01(_float _fTimeDelta)
 			pViolet->Move_Position(_float2(XMVectorGetX(vVioletPos), XMVectorGetY(vVioletPos)), CFriend::DIR_UP);
 		}
 
-		Next_Step(false == pMural->Is_AutoMoving());
+		Next_Step(false == pPlayer->Is_AutoMoving());
 	}
-	else 
+	else if (Step_Check(STEP_4))
 	{
+		if (Is_Start())
+		{
+			pPlayer->Set_2DDirection(F_DIRECTION::UP);
+			pPlayer->Set_State(CPlayer::IDLE);
+			pMural->Set_2DDirection(F_DIRECTION::DOWN);
+			pMural->Swicth_Animation(5);
+			pQueen->Swicth_Animation(10);
+		}
+		Next_Step_Over(1.5f);
+	}
+	else if (Step_Check(STEP_5))
+	{
+		if (Is_Start())
+		{
+			pQueen->Swicth_Animation(3);
+			CDialog_Manager::GetInstance()->Set_DialogId(L"Chapter6_StorySequence_01_02");
+		}
+		else
+			Next_Step(!CDialog_Manager::GetInstance()->Get_DisPlayDialogue());
+	}
+	else if (Step_Check(STEP_6))
+	{
+		if (Is_Start())
+		{
+			CCamera_Manager::GetInstance()->Start_FadeOut(1.f);
+		}
+		else
+			Next_Step_Over(1.1f);
+
+	}
+	else if (Step_Check(STEP_7))
+	{
+		if (Is_Start())
+		{
+			CCamera_Manager::GetInstance()->Start_FadeIn();
+			CDialog_Manager::GetInstance()->Set_DialogId(L"Chapter6_StorySequence_01_03");
+		}
+		else
+			Next_Step(!CDialog_Manager::GetInstance()->Get_DisPlayDialogue());
+	}
+	else  if (Step_Check(STEP_8))
+	{
+		if (Is_Start())
+		{
+			CSection_2D* pSection = static_cast<CSection_2D*>(SECTION_MGR->Find_Section(SECTION_MGR->Get_Cur_Section_Key()));
+
+
+			auto pLayer = pSection->Get_Section_Layer(SECTION_PLAYMAP_2D_RENDERGROUP::SECTION_2D_PLAYMAP_BACKGROUND);
+
+			const auto& Objects = pLayer->Get_GameObjects();
+
+			for_each(Objects.begin(), Objects.end(), [this](CGameObject* pGameObject) {
+				auto pActionObj = dynamic_cast<C2DMapActionObject*>(pGameObject);
+
+				if (nullptr != pActionObj)
+				{
+					if (C2DMapActionObject::ACTIVE_TYPE_DYNAMIC_BACKGROUND == pActionObj->Get_ActionType())
+						m_pTargetObject = pActionObj;
+				}
+				});
+
+			CCamera_Manager::GetInstance()->Change_CameraTarget(m_pTargetObject);
+
+		}
+		Next_Step_Over(1.1f);
+	}
+	else  if (Step_Check(STEP_9))
+	{
+		if (Is_Start())
+		{
+			_vector vPos = static_cast<C2DMapActionObject*>(m_pTargetObject)->Get_FinalPosition();
+			CEffect2D_Manager::GetInstance()->Play_Effect(L"Ch05_MountainExp_SmokeInto", SECTION_MGR->Get_Cur_Section_Key(), XMMatrixTranslation(XMVectorGetX(vPos), XMVectorGetY(vPos), 0.f), 0.f, 0, false);
+			CEffect2D_Manager::GetInstance()->Play_Effect(L"Ch05_MountainExp_SmokeLoop", SECTION_MGR->Get_Cur_Section_Key(), XMMatrixTranslation(XMVectorGetX(vPos), XMVectorGetY(vPos), 0.f), 1.8f, 0);
+		}
+
+		Next_Step_Over(0.7f);
+	}
+	else  if (Step_Check(STEP_10))
+	{
+		if (Is_Start())
+		{
+			_vector vThrashPos = XMVectorSet(-200.f, 48.f, 0.f, 0.f);;
+			pThrash->Move_Position(_float2(XMVectorGetX(vThrashPos), XMVectorGetY(vThrashPos)), CFriend::DIR_LEFT);
+		}
+
+		if (Next_Step(0.7f))
+			pThrash->Set_2DDirection(F_DIRECTION::UP);
+	}
+	else  if (Step_Check(STEP_11))
+	{
+		if (Is_Start())
+		{
+			CDialog_Manager::GetInstance()->Set_NPC(pThrash);
+			CDialog_Manager::GetInstance()->Set_DialogId(L"Chapter6_StorySequence_01_04");
+		}
+		else
+			Next_Step(!CDialog_Manager::GetInstance()->Get_DisPlayDialogue());
+	}
+	else  if (Step_Check(STEP_12))
+	{
+		if (Is_Start())
+
+		{
+			_vector vPos = static_cast<C2DMapActionObject*>(m_pTargetObject)->Get_FinalPosition();
+
+			CEffect2D_Manager::GetInstance()->Play_Effect(L"Ch05_MountainExp_ExpSmall", SECTION_MGR->Get_Cur_Section_Key(), XMMatrixTranslation(XMVectorGetX(vPos), XMVectorGetY(vPos), 0.f), 0.f, 0, false);
+			CEffect2D_Manager::GetInstance()->Play_Effect(L"Ch05_MountainExp_ExpBig", SECTION_MGR->Get_Cur_Section_Key(), XMMatrixTranslation(XMVectorGetX(vPos), XMVectorGetY(vPos), 0.f), 1.8f, 0, false, 999.f);
+			CEffect2D_Manager::GetInstance()->Play_Effect(L"Ch05_MountainExp_Thoom", SECTION_MGR->Get_Cur_Section_Key(), XMMatrixTranslation(XMVectorGetX(vPos), XMVectorGetY(vPos), 0.f), 1.8f, 0);
+		}
+		else
+			Next_Step_Over(1.5f);
+	}
+	else
+	{
+
 		pPlayer->Set_BlockPlayerInput(false);
-		pPlayer->Set_MoveSpeed(m_fPlaye2DMoveSpeed , COORDINATE_2D);
 		GameEvent_End();
 	}
 

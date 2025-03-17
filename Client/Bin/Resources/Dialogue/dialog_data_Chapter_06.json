@@ -3456,7 +3456,9 @@
 					"Talker": "뮤렐",
 					"TalkerIndex": 0,
 					"BG": 0,
-					"location": 1,
+					"location": 3,
+					"OffsetX": 0.0,
+					"OffsetY": 200.0,
 					"is2D": true,
 					"isPortrait": false,
 					"isLineEnter": true,
@@ -3469,6 +3471,202 @@
 					"Green": 144,
 					"Blue": 224
 				}
+			]
+		},
+		{
+			"id": "Chapter6_StorySequence_01_02",
+			"Section": "Chapter5_P0304",
+			"lines": [
+				{
+					"Portrait": 0,
+					"Talker": "크로마 여왕",
+					"TalkerIndex": 0,
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"OffsetX": 0.0,
+					"OffsetY": 200.0,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "저트! 이렇게 다시 만나니 너무 기쁘네요.",
+					"Red": 252,
+					"Green": 190,
+					"Blue": 203
+				},
+								{
+					"Portrait": 0,
+					"Talker": "크로마 여왕",
+					"TalkerIndex": 0,
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"OffsetX": 0.0,
+					"OffsetY": 200.0,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "바이올렛, 스레쉬... 다들 잘 와줬어요.",
+					"Red": 252,
+					"Green": 190,
+					"Blue": 203
+				},
+				{
+					"Portrait": 0,
+					"Talker": "크로마 여왕",
+					"TalkerIndex": 0,
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"OffsetX": 0.0,
+					"OffsetY": 200.0,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "저트, 이번 소동에 관해 설명해 주시겠어요?",
+					"Red": 252,
+					"Green": 190,
+					"Blue": 203
+				},
+				{
+					"Portrait": 0,
+					"Talker": "크로마 여왕",
+					"TalkerIndex": 0,
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"OffsetX": 0.0,
+					"OffsetY": 200.0,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "또 그 말썽쟁이 험그럼프 짓이겠지요?",
+					"Red": 252,
+					"Green": 190,
+					"Blue": 203
+				}
+			]
+		},
+		{
+			"id": "Chapter6_StorySequence_01_03",
+			"Section": "Chapter5_P0304",
+			"lines": [
+				{
+					"Portrait": 0,
+					"Talker": "크로마 여왕",
+					"TalkerIndex": 0,
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"OffsetX": 0.0,
+					"OffsetY": 200.0,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "그런 일이 있었다니...",
+					"Red": 252,
+					"Green": 190,
+					"Blue": 203
+				},
+								{
+					"Portrait": 0,
+					"Talker": "크로마 여왕",
+					"TalkerIndex": 0,
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"OffsetX": 0.0,
+					"OffsetY": 200.0,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "책 바깥으로 나가는 초월 마법이라니,\n정말 터무니없네요.",
+					"Red": 252,
+					"Green": 190,
+					"Blue": 203
+				},
+				{
+					"Portrait": 0,
+					"Talker": "크로마 여왕",
+					"TalkerIndex": 0,
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"OffsetX": 0.0,
+					"OffsetY": 200.0,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "게다가 그 마법을 사용해\n우리 세계의 이야기를 차지하려는 음모까지...",
+					"Red": 252,
+					"Green": 190,
+					"Blue": 203
+				},
+				{
+					"Portrait": 0,
+					"Talker": "크로마 여왕",
+					"TalkerIndex": 0,
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"OffsetX": 0.0,
+					"OffsetY": 200.0,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "얼른 험그럼프를 찾아, 그가 꾸미는 흉계를 막아야 해요.",
+					"Red": 252,
+					"Green": 190,
+					"Blue": 203
+				}
+			]
+		},
+		{
+			"id": "Chapter6_StorySequence_01_04",
+			"Section": "Chapter5_P0304",
+			"lines": [
+				{
+          "Portrait": 1,
+          "Talker": "스래쉬",
+          "BG": 2,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": true,
+		  "isLineEnter": true,
+			"TalkerIndex": 0,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "트라르그에 무슨 일이 생겼나?",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        }
 			]
 		}
 	]

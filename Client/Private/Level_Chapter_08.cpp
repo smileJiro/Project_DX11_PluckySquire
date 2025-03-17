@@ -13,6 +13,7 @@
 #include "PlayerData_Manager.h"
 #include "Effect_Manager.h"
 #include "Effect2D_Manager.h"
+#include "JumpStarter.h"
 #include "Formation_Manager.h"
 
 #include "CubeMap.h"
@@ -1784,7 +1785,20 @@ HRESULT CLevel_Chapter_08::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 		m_eLevelID, _strLayerTag, &LaserDesc)))
 		return E_FAIL;
 
+	CJumpStarter::JUMP_STARTER_DESC tJumpStarterDesc = {};
+	tJumpStarterDesc.isCoordChangeEnable = false;
+	tJumpStarterDesc.iCurLevelID = m_eLevelID;
+	tJumpStarterDesc.eStartCoord = COORDINATE_2D;
+	tJumpStarterDesc.strInitSectionTag = L"Chapter8_P1112";
+	tJumpStarterDesc.Build_2D_Transform({ -806.0f,143.0f }, { 83.0f,25.0f });
+	tJumpStarterDesc.vBoxHalfExtents = { 1.f,1.f,1.f };
+	tJumpStarterDesc.vBoxOffset = { 0.f,0.f,0.f };
+	tJumpStarterDesc.eJumpMoveDir = F_DIRECTION::DOWN;
+	tJumpStarterDesc.fTargetPos = { 0.f,-350.f };
 
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_JumpStarter"),
+		m_eLevelID, _strLayerTag, &tJumpStarterDesc)))
+		return E_FAIL;
 
 
 
