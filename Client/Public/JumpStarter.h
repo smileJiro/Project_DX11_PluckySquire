@@ -16,6 +16,7 @@ public:
 		
 		F_DIRECTION	eJumpMoveDir = F_DIRECTION::DOWN;
 		_float2		fTargetPos = { 0.f, 150.f };
+		_float		fMoveMag = 1.f;
 	}JUMP_STARTER_DESC;
 protected:
 	explicit CJumpStarter(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
@@ -37,13 +38,14 @@ public:
 	_float				Get_Distance(COORDINATE _eCoord, CPlayer* _pUser) override;
 	virtual void		On_InteractionStart(CPlayer* _pPlayer) override;
 	virtual void		On_InteractionEnd(CPlayer* _pPlayer) override;
-	void				Move(_fvector _vForce, _float _fTimeDelta);
+	//void				Move(_fvector _vForce, _float _fTimeDelta);
 
 private:
 	_bool				m_isBodyContact = false;
 	_bool				m_isJump = false;
 	F_DIRECTION			m_eJumpMoveDir = F_DIRECTION::DOWN;
 	_float2				m_fTargetPos = { 0.f,100.f };
+	_float 				m_fMoveMag = 1.f;
 public:
 	static CJumpStarter* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject* Clone(void* _pArg) override;

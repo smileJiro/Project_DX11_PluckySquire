@@ -29,6 +29,7 @@
 			"PosX": -409.0,
 			"PosY": -113.0,
 			"strSFX": "Chapter8_P1112",
+			"isLengthCheck": false,
 			"Text": "따뜻해 보이는\n에너지 광선은\n매혹적이었습니다",
 			"highlight": {
 				"substring": "",

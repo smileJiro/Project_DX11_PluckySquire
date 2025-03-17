@@ -27,6 +27,10 @@ private:
 
 public:
 	_bool Has_EmptySlot();
+	_bool Is_Stop()
+	{
+		return m_isDelay;
+	}
 
 public:
 	virtual HRESULT				Initialize_Prototype();
@@ -56,6 +60,9 @@ private:
 	_float m_fRow_Interval = { 1.5f };
 	_float m_fColumn_Interval = { 1.5f };
 
+	_uint m_iPatrolIndex = { 0 };
+	_bool m_isBack = { false };
+	_bool m_isDelay = { false };
 	_float m_fAccTime = { 0.f };
 	_float m_fDelayTime = { 0.f };
 

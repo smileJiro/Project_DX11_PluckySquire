@@ -81,11 +81,11 @@ HRESULT CButterGrump::Initialize(void* _pArg)
     m_pBossFSM->Add_State((_uint)BOSS_STATE::IDLE);
     m_pBossFSM->Add_State((_uint)BOSS_STATE::MOVE);
     m_pBossFSM->Add_State((_uint)BOSS_STATE::HOMINGBALL);
-    m_pBossFSM->Add_State((_uint)BOSS_STATE::YELLOWBALL);
-    m_pBossFSM->Add_State((_uint)BOSS_STATE::PURPLEBALL);
-    m_pBossFSM->Add_State((_uint)BOSS_STATE::WINGSLAM);
+    //m_pBossFSM->Add_State((_uint)BOSS_STATE::YELLOWBALL);
+    //m_pBossFSM->Add_State((_uint)BOSS_STATE::PURPLEBALL);
+    //m_pBossFSM->Add_State((_uint)BOSS_STATE::WINGSLAM);
     //m_pBossFSM->Add_State((_uint)BOSS_STATE::ROCKVOLLEY);
-    m_pBossFSM->Add_State((_uint)BOSS_STATE::WINGSLICE);
+    //m_pBossFSM->Add_State((_uint)BOSS_STATE::WINGSLICE);
     m_pBossFSM->Add_State((_uint)BOSS_STATE::SHIELD);
     m_pBossFSM->Add_State((_uint)BOSS_STATE::HIT);
     m_pBossFSM->Add_State((_uint)BOSS_STATE::DEAD);

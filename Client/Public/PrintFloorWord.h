@@ -33,12 +33,13 @@ public:
 	virtual CGameObject*	Clone(void* _pArg);
 	virtual void			Free() override;
 	HRESULT					Cleanup_DeadReferences() override;
-
+	void					Start_FloorWord();
 
 private:
 	void					Add_Amount(_float _fTimeDelta);
 
 private:
+	_bool					m_isLengthCheck = { true };
 	_float2					m_vRenderPos = { 0.f, 0.f };
 	_tchar					m_tFloorWord[MAX_PATH] = {};
 	_float					m_fAmount = { 0.f };
@@ -46,6 +47,7 @@ private:
 	_bool					m_isFadeInComplete = { false };
 	wstring					m_strSFX = { L"" };
 	wstring					m_strSection = { L"" };
+
 };
 
 END

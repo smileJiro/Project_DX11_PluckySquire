@@ -279,7 +279,7 @@ void CCharacter::Stop_Move()
             {
 
             }
-    }
+        }
     }
 }
 
@@ -341,42 +341,50 @@ _bool CCharacter::Rotate_To_Radians(_fvector _vDirection, _float _fSpeed)
 
 	_vector vDirection = XMVector3Normalize(_vDirection);
     _vector vLook = XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
-    _float3 vLookDiff; XMStoreFloat3(&vLookDiff, vDirection - vLook);
-    _float3 vLookDiffBefore; XMStoreFloat3(&vLookDiffBefore, vDirection - m_vLookBefore);
-    if (XMVector3Equal(vDirection, XMVectorZero()))
-    {
-        return true;
-    }
 
-    if (XMVector3NearEqual(vDirection, vLook, XMVectorReplicate(0.1f)))
+	if (ACTOR_TYPE::KINEMATIC == pDynamicActor->Get_ActorType())
     {
-        pDynamicActor->Set_Rotation(vDirection);
-        pDynamicActor->Set_AngularVelocity(_vector{ 0,0,0,0 });
-        return true;
-    }
-   /* else if ((vLookDiff.x * vLookDiffBefore.x) < 0
-        || (vLookDiff.z * vLookDiffBefore.z) < 0)
-    {
-        pDynamicActor->Set_Rotation(vDirection);
-        pDynamicActor->Set_AngularVelocity(_vector{ 0,0,0,0 });
-        return true;
-    }*/
-    else if (XMVectorGetY(XMVector3Cross(vLook, vDirection)) * XMVectorGetY(XMVector3Cross(m_vLookBefore, vDirection)) < 0)
-    {
-        pDynamicActor->Set_Rotation(vDirection);
-        pDynamicActor->Set_AngularVelocity(_vector{ 0,0,0,0 });
-        return true;
+		return Get_ControllerTransform()->Turn_To_DesireDir(vLook, vDirection, _fSpeed);
     }
     else
     {
-        _vector vAxis = XMVector3Cross(vLook, vDirection);
-        //if (XMVector3Equal(vAxis, XMVectorZero()))
-        //    vAxis = XMVectorSet(0, 1, 0, 0);
-        if (XMVector3NearEqual(vAxis, XMVectorZero(), XMVectorReplicate(0.1f)))
-            vAxis = XMVectorSet(0, 1, 0, 0);
+        _float3 vLookDiff; XMStoreFloat3(&vLookDiff, vDirection - vLook);
+        _float3 vLookDiffBefore; XMStoreFloat3(&vLookDiffBefore, vDirection - m_vLookBefore);
+        if (XMVector3Equal(vDirection, XMVectorZero()))
+        {
+            return true;
+        }
 
-        pDynamicActor->Set_AngularVelocity(XMVector3Normalize(vAxis)*_fSpeed);
-        return false;
+        if (XMVector3NearEqual(vDirection, vLook, XMVectorReplicate(0.1f)))
+        {
+            pDynamicActor->Set_Rotation(vDirection);
+            pDynamicActor->Set_AngularVelocity(_vector{ 0,0,0,0 });
+            return true;
+        }
+        /* else if ((vLookDiff.x * vLookDiffBefore.x) < 0
+             || (vLookDiff.z * vLookDiffBefore.z) < 0)
+         {
+             pDynamicActor->Set_Rotation(vDirection);
+             pDynamicActor->Set_AngularVelocity(_vector{ 0,0,0,0 });
+             return true;
+         }*/
+        else if (XMVectorGetY(XMVector3Cross(vLook, vDirection)) * XMVectorGetY(XMVector3Cross(m_vLookBefore, vDirection)) < 0)
+        {
+            pDynamicActor->Set_Rotation(vDirection);
+            pDynamicActor->Set_AngularVelocity(_vector{ 0,0,0,0 });
+            return true;
+        }
+        else
+        {
+            _vector vAxis = XMVector3Cross(vLook, vDirection);
+            //if (XMVector3Equal(vAxis, XMVectorZero()))
+            //    vAxis = XMVectorSet(0, 1, 0, 0);
+            if (XMVector3NearEqual(vAxis, XMVectorZero(), XMVectorReplicate(0.1f)))
+                vAxis = XMVectorSet(0, 1, 0, 0);
+
+            pDynamicActor->Set_AngularVelocity(XMVector3Normalize(vAxis) * _fSpeed);
+            return false;
+        }
     }
 }
 
@@ -714,7 +722,7 @@ void CCharacter::Move(_fvector _vVelocity, _float _fTimeDelta)
     }
 }
 
-_bool CCharacter::Move_To_3D(_fvector _vPosition, _float _fEpsilon, _bool _FreezeY)
+_bool CCharacter::Move_To_3D(_fvector _vPosition, _float _fEpsilon, _bool _FreezeY, _float _fTimeDelta)
 {
     CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
     _vector vDir = _vPosition - Get_FinalPosition();
@@ -723,11 +731,15 @@ _bool CCharacter::Move_To_3D(_fvector _vPosition, _float _fEpsilon, _bool _Freez
     vDir.m128_f32[3] = 0.f;
     if (Check_Arrival(_vPosition, _fEpsilon))
     {
-        pDynamicActor->Set_LinearVelocity(_vector{ 0,0,0,0 });
+		if (true == pDynamicActor->Is_Dynamic())
+            pDynamicActor->Set_LinearVelocity(_vector{ 0,0,0,0 });
         return true;
     }
 
-    pDynamicActor->Set_LinearVelocity(XMVector3Normalize(vDir), m_pControllerTransform->Get_SpeedPerSec());
+    if (true == pDynamicActor->Is_Dynamic())
+        pDynamicActor->Set_LinearVelocity(XMVector3Normalize(vDir), m_pControllerTransform->Get_SpeedPerSec());
+    else
+        Get_ControllerTransform()->Go_Direction(vDir, _fTimeDelta);
 
     return false;
 }
@@ -839,6 +851,13 @@ void CCharacter::Clear_AutoMove()
 		m_AutoMoveQue.pop();
 }
 
+
+void CCharacter::Swicth_Animation(_uint _iAnimIndex)
+{
+    if (nullptr == m_PartObjects[0])
+        return;
+    static_cast<CModelObject*>(m_PartObjects[0])->Switch_Animation(_iAnimIndex);
+}
 
 _bool CCharacter::Process_AutoMove(_float _fTimeDelta)
 {

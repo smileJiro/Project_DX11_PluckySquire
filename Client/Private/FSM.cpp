@@ -27,6 +27,9 @@
 #include "Patrol_WayState.h"
 #include "Back_WayState.h"
 #include "Chase_WayState.h"
+#include "FormationIdleState.h"
+#include "FormationMoveState.h"
+#include "FormationBackState.h"
 #include "SideScroll_IdleState.h"
 #include "SideScroll_PatrolState.h"
 #include "SideScroll_AttackState.h"
@@ -752,6 +755,142 @@ HRESULT CFSM::Add_C6_State()
 	else
 		pState = CRangedAttackState::Create(&Desc);
 
+	if (nullptr == pState)
+		return E_FAIL;
+	pState->Set_Owner(m_pOwner);
+	pState->Set_FSM(this);
+	m_States.emplace((_uint)MONSTER_STATE::ATTACK, pState);
+
+	pState = CHitState::Create(&Desc);
+	if (nullptr == pState)
+		return E_FAIL;
+	pState->Set_Owner(m_pOwner);
+	pState->Set_FSM(this);
+	m_States.emplace((_uint)MONSTER_STATE::HIT, pState);
+
+	pState = CDeadState::Create(&Desc);
+	if (nullptr == pState)
+		return E_FAIL;
+	pState->Set_Owner(m_pOwner);
+	pState->Set_FSM(this);
+	m_States.emplace((_uint)MONSTER_STATE::DEAD, pState);
+
+	return S_OK;
+}
+
+HRESULT CFSM::Add_FormationState()
+{
+	if (nullptr == m_pOwner)
+		return E_FAIL;
+
+	CState* pState = nullptr;
+	CState::STATEDESC Desc;
+	Desc.fAlertRange = m_fAlertRange;
+	Desc.fChaseRange = m_fChaseRange;
+	Desc.fAttackRange = m_fAttackRange;
+	Desc.fAlert2DRange = m_fAlert2DRange;
+	Desc.fChase2DRange = m_fChase2DRange;
+	Desc.fAttack2DRange = m_fAttack2DRange;
+	Desc.iCurLevel = m_iCurLevel;
+	Desc.pOwner = m_pOwner;
+
+
+	pState = CFormationIdleState::Create(&Desc);
+	if (nullptr == pState)
+		return E_FAIL;
+	pState->Set_Owner(m_pOwner);
+	pState->Set_FSM(this);
+	m_States.emplace((_uint)MONSTER_STATE::FORMATION_IDLE, pState);
+
+	pState = CFormationMoveState::Create(&Desc);
+	if (nullptr == pState)
+		return E_FAIL;
+	pState->Set_Owner(m_pOwner);
+	pState->Set_FSM(this);
+	m_States.emplace((_uint)MONSTER_STATE::FORMATION_MOVE, pState);
+
+	pState = CFormationBackState::Create(&Desc);
+	if (nullptr == pState)
+		return E_FAIL;
+	pState->Set_Owner(m_pOwner);
+	pState->Set_FSM(this);
+	m_States.emplace((_uint)MONSTER_STATE::FORMATION_BACK, pState);
+
+
+
+	pState = CSneak_AwareState::Create(&Desc);
+	if (nullptr == pState)
+		return E_FAIL;
+	pState->Set_Owner(m_pOwner);
+	pState->Set_FSM(this);
+	m_States.emplace((_uint)MONSTER_STATE::SNEAK_AWARE, pState);
+
+	pState = CSneak_InvestigateState::Create(&Desc);
+	if (nullptr == pState)
+		return E_FAIL;
+	pState->Set_Owner(m_pOwner);
+	pState->Set_FSM(this);
+	m_States.emplace((_uint)MONSTER_STATE::SNEAK_INVESTIGATE, pState);
+
+	pState = CSneak_AlertState::Create(&Desc);
+	if (nullptr == pState)
+		return E_FAIL;
+	pState->Set_Owner(m_pOwner);
+	pState->Set_FSM(this);
+	m_States.emplace((_uint)MONSTER_STATE::SNEAK_ALERT, pState);
+
+	pState = CSneak_ChaseState::Create(&Desc);
+	if (nullptr == pState)
+		return E_FAIL;
+	pState->Set_Owner(m_pOwner);
+	pState->Set_FSM(this);
+	m_States.emplace((_uint)MONSTER_STATE::SNEAK_CHASE, pState);
+
+	pState = CSneak_AttackState::Create(&Desc);
+	if (nullptr == pState)
+		return E_FAIL;
+	pState->Set_Owner(m_pOwner);
+	pState->Set_FSM(this);
+	m_States.emplace((_uint)MONSTER_STATE::SNEAK_ATTACK, pState);
+
+
+
+	pState = CIdleState::Create(&Desc);
+	if (nullptr == pState)
+		return E_FAIL;
+	pState->Set_Owner(m_pOwner);
+	pState->Set_FSM(this);
+	m_States.emplace((_uint)MONSTER_STATE::IDLE, pState);
+
+	pState = CPatrolState::Create(&Desc);
+	if (nullptr == pState)
+		return E_FAIL;
+	pState->Set_Owner(m_pOwner);
+	pState->Set_FSM(this);
+	m_States.emplace((_uint)MONSTER_STATE::PATROL, pState);
+
+	pState = CAlertState::Create(&Desc);
+	if (nullptr == pState)
+		return E_FAIL;
+	pState->Set_Owner(m_pOwner);
+	pState->Set_FSM(this);
+	m_States.emplace((_uint)MONSTER_STATE::ALERT, pState);
+
+	pState = CChaseWalkState::Create(&Desc);
+	if (nullptr == pState)
+		return E_FAIL;
+	pState->Set_Owner(m_pOwner);
+	pState->Set_FSM(this);
+	m_States.emplace((_uint)MONSTER_STATE::CHASE, pState);
+
+	pState = CStandbyState::Create(&Desc);
+	if (nullptr == pState)
+		return E_FAIL;
+	pState->Set_Owner(m_pOwner);
+	pState->Set_FSM(this);
+	m_States.emplace((_uint)MONSTER_STATE::STANDBY, pState);
+
+	pState = CMeleeAttackState::Create(&Desc);
 	if (nullptr == pState)
 		return E_FAIL;
 	pState->Set_Owner(m_pOwner);

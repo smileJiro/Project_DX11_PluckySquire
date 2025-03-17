@@ -119,7 +119,6 @@ void CNPC_Violet::Child_Update(_float _fTimeDelta)
 				Welcome_Jot(_fTimeDelta);
 		}
 
-		Rock_Dialog(_fTimeDelta);
 		__super::Child_Update(_fTimeDelta);
 	}
 	
@@ -128,28 +127,7 @@ void CNPC_Violet::Child_Update(_float _fTimeDelta)
 void CNPC_Violet::Child_LateUpdate(_float _fTimeDelta)
 {
 	__super::Child_LateUpdate(_fTimeDelta);
-	//if (m_isLookOut == true)
-	//{
-	//	__super::Child_LateUpdate(_fTimeDelta);
-	//
-	//	if (VIOLET_RENDER == m_eRenderType  && TEXT("Chapter2_P0102") == CSection_Manager::GetInstance()->Get_Cur_Section_Key()/* || TEXT("Chapter2_P0506") == CSection_Manager::GetInstance()->Get_Cur_Section_Key()*/)
-	//	{
-	//		m_eRenderType = VIOLET_NOTRENDER;
-	//		
-	//		m_isRender = false;
-	//
-	//		//CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(this);
-	//
-	//	}
-	//	 if (VIOLET_RENDER != m_eRenderType  && TEXT("Chapter2_P0102") != CSection_Manager::GetInstance()->Get_Cur_Section_Key())
-	//	{
-	//		m_eRenderType = VIOLET_RENDER;
-	//		
-	//		m_isRender = true;
-	//		//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(CSection_Manager::GetInstance()->Get_Cur_Section_Key(), this, SECTION_2D_PLAYMAP_OBJECT);
-	//	}
-	//
-	//	
+
 	if (VIOLET_RENDER == m_eRenderType && false == m_isRender)
 	{
 		m_isRender = true;
@@ -331,76 +309,48 @@ void CNPC_Violet::Welcome_Jot(_float _fTimeDelta)
 		{
 			if (Violet_idle_down != static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_2D)->Get_CurrentAnimIndex())
 				static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Violet_idle_down);
-
-			//m_fWelcomeWaitTime += _fTimeDelta;
-			//
-			//if (5.f < m_fWelcomeWaitTime)
-			//{
-			//	m_eActionType = ACTION_MOVE;
-			//}
-			//else
-			//	return;
 		}
 
-		// 캐릭터로 향해 뚜벅뚜벅 걸어온다.
-		//m_eActionType = ACTION_MOVE;
+
 
 		if (m_isWelcomeDialog)
 		{
-			//if (Violet_Run_Right != static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_2D)->Get_CurrentAnimIndex())
-			//{
-			//	_vector vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
-			//	m_PartObjects[PART_BODY]->Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, -XMVectorAbs(vRight));
-			//	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Violet_Run_Right);
-			//	m_eAnimationType = ANIM_LEFT;
-			//}
-			//
-			//
-			//_float4 vPlayerPos = _float4(Uimgr->Get_Player()->Get_FinalPosition().m128_f32[0], Uimgr->Get_Player()->Get_FinalPosition().m128_f32[1], 0.f, 1.f);
-			//_float4 vVioletPos = _float4(m_pControllerTransform->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[0], m_pControllerTransform->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[1], 0.f, 1.f);
-			//_float4 vCalPos = _float4(vVioletPos.x - vPlayerPos.x, vVioletPos.y - vPlayerPos.y, 0.f, 1.f);
-			//_float	fDistance = XMVectorGetX(XMVector3Length(XMVectorSet(vCalPos.x, vCalPos.y, 0.f, 1.f)));
-			//
-			//if (200.f <= fDistance)
-			//{
-			//	// 걸어간다.
-			//	vVioletPos.x -= m_f2DSpeed * _fTimeDelta;
-			//	m_pControllerTransform->Get_Transform(COORDINATE_2D)->Set_State(CTransform::STATE_POSITION, _float4(vVioletPos.x, vVioletPos.y, 0.f, 1.f));
-			//}
-			//else
-			//{
+			if (Violet_Talk01_Right != static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_2D)->Get_CurrentAnimIndex())
+			{
+				_vector vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
+				m_PartObjects[PART_BODY]->Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, -XMVectorAbs(vRight));
+				static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Violet_Talk01_Right);
+				m_eAnimationType = ANIM_LEFT;
+			}
 
-				// 일정 거리까지 오면 다이얼로그 시작한다.
-				
+			if (ACTION_DIALOG != m_eActionType)
+			{
+				Throw_Dialogue();
+				m_isWelcomeDialog = false;
+			}
 
-				if (Violet_Talk01_Right != static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_2D)->Get_CurrentAnimIndex())
-				{
-					_vector vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
-					m_PartObjects[PART_BODY]->Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, -XMVectorAbs(vRight));
-					static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Violet_Talk01_Right);
-					m_eAnimationType = ANIM_LEFT;
-				}
-
-				if (ACTION_DIALOG != m_eActionType)
-				{
-					Throw_Dialogue();
-					m_isWelcomeDialog = false;
-				}
-				
-				m_eActionType = ACTION_DIALOG;
-				// 멈추고 다이얼로그를 시작한다.
+			m_eActionType = ACTION_DIALOG;
+			// 멈추고 다이얼로그를 시작한다.
 			
 		}
 		else if (ACTION_DIALOG == m_eActionType)
 		{
-
 			// 다이얼로그가 끝났나?
 			// 다이얼로그가 끝났는지 계속 체크한다.
 			if (false == CDialog_Manager::GetInstance()->Get_DisPlayDialogue())
 			{
 				// 다이얼로그가 끝났으면 trace를 이제 true로해서 따라 다니게 한다.
 				m_eActionType = ACTION_TRACE;
+
+				_vector vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
+				m_PartObjects[PART_BODY]->Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, -XMVectorAbs(vRight));
+				static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Violet_idle_right);
+
+
 				m_isTrace = true;
+				m_isInteraction = true;
+				Event_DeleteObject(this);
+
 			}
 		}
 	}
@@ -447,6 +397,10 @@ void CNPC_Violet::Interact(CPlayer* _pUser)
 
 _bool CNPC_Violet::Is_Interactable(CPlayer* _pUser)
 {
+	if (true == m_isInteraction)
+		return false;
+
+	else
 	return true;
 }
 
@@ -458,32 +412,32 @@ _float CNPC_Violet::Get_Distance(COORDINATE _eCOord, CPlayer* _pUser)
 void CNPC_Violet::Trace(_float _fTimeDelta)
 {
 	
-
-	_float2 vTargetObjectPos = _float2(
-		m_pTargetObject->Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[0],
-		m_pTargetObject->Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[1]);
-
-	_float2 _NPCPos = _float2(
-		m_pControllerTransform->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[0],
-		m_pControllerTransform->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[1]);
-
-	Cal_PlayerDistance();
-
-	if (COORDINATE_2D == m_pTargetObject->Get_CurCoord())
-	{
-		m_isMove = Trace_Player(vTargetObjectPos, _NPCPos);
-	}
-
-	// TODO :: 테스트 코드
-	
-	//if (true == m_isMove && )
-
-	//_vector vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
-	//m_PartObjects[PART_BODY]->Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, -XMVectorAbs(vRight));
-	
-
-	///////////// 애니메이션 변경 관련 ////////////////
-	For_MoveAnimationChange(_fTimeDelta, _NPCPos);
+	//
+	//_float2 vTargetObjectPos = _float2(
+	//	m_pTargetObject->Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[0],
+	//	m_pTargetObject->Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[1]);
+	//
+	//_float2 _NPCPos = _float2(
+	//	m_pControllerTransform->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[0],
+	//	m_pControllerTransform->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[1]);
+	//
+	//Cal_PlayerDistance();
+	//
+	//if (COORDINATE_2D == m_pTargetObject->Get_CurCoord())
+	//{
+	//	m_isMove = Trace_Player(vTargetObjectPos, _NPCPos);
+	//}
+	//
+	//// TODO :: 테스트 코드
+	//
+	////if (true == m_isMove && )
+	//
+	////_vector vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
+	////m_PartObjects[PART_BODY]->Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, -XMVectorAbs(vRight));
+	//
+	//
+	/////////////// 애니메이션 변경 관련 ////////////////
+	//For_MoveAnimationChange(_fTimeDelta, _NPCPos);
 	
 
 	

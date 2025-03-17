@@ -18,11 +18,11 @@ public:
 	virtual void State_Exit() override;
 
 private:
-	void Move();
+	void Move(_float _fTimeDelta);
 
 private:
 	_float m_fAccTime = { 0.f };
-	_float3 m_vDir = {};
+	_float3 m_vNextPos = {};
 	_bool m_isTurn = { false };
 	_bool m_isMove = { false };
 

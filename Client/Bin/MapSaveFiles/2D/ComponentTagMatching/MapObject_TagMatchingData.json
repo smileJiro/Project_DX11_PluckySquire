@@ -3967,9 +3967,9 @@
  {
   "Active": true,
   "ActivePropertis": {
-   "ActiveType": 8
+   "ActiveType": 6
   },
-  "BackGround": false,
+  "BackGround": true,
   "Collider": false,
   "ModelType": 0,
   "SearchTag": "artia_roof_trarrg_mountain_Sprite",
@@ -6679,5 +6679,29 @@
   "SearchTag": "Right_WaterLog",
   "Sorting": false,
   "TextureName": "Right_WaterLog"
+ },
+ {
+  "Active": true,
+  "ActivePropertis": {
+   "ActiveType": 13
+  },
+  "BackGround": true,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "09_1718_Bridge_Sprite",
+  "Sorting": false,
+  "TextureName": "09_1718_Bridge_Sprite"
+ },
+ {
+  "Active": true,
+  "ActivePropertis": {
+   "ActiveType": 6
+  },
+  "BackGround": true,
+  "Collider": false,
+  "ModelType": 0,
+  "SearchTag": "C09_1718_platform_03_png",
+  "Sorting": false,
+  "TextureName": "C09_1718_platform_03_png"
  }
 ]

@@ -58,8 +58,40 @@ HRESULT CFormation::Initialize(void* _pArg)
 
 void CFormation::Update(_float _fTimeDelta)
 {
-	//포인트로 이동 (회전하면서 이동하는거라 이상한지 체크해봐야함)
-	Get_ControllerTransform()->MoveToTarget(XMLoadFloat3(&m_PatrolPoints[0]), _fTimeDelta);
+	if (true == m_isDelay)
+	{
+		m_fAccTime += _fTimeDelta;
+		if (m_fDelayTime <= m_fAccTime)
+		{
+			m_fAccTime = 0.f;
+			m_isDelay = false;
+
+			if (true == m_isBack)
+				--m_iPatrolIndex;
+			else
+				++m_iPatrolIndex;
+
+			if (m_PatrolPoints.size()-1 <= m_iPatrolIndex)
+			{
+				m_isBack = true;
+				m_iPatrolIndex = m_PatrolPoints.size() - 1;
+			}
+			if (0 >= m_iPatrolIndex)
+			{
+				m_isBack = false;
+				m_iPatrolIndex = 0;
+			}
+		}
+	}
+	else
+	{
+		//포인트로 이동 (회전하면서 이동하는거라 이상한지 체크해봐야함)
+		if (true == Get_ControllerTransform()->MoveTo(XMLoadFloat3(&m_PatrolPoints[m_iPatrolIndex]), _fTimeDelta))
+		{
+			//도착하면 딜레이 동안 대기 하다가 다시 이동
+			m_isDelay = true;
+		}
+	}
 }
 
 HRESULT CFormation::Initialize_Members(void* _pArg)
@@ -88,6 +120,7 @@ HRESULT CFormation::Initialize_Members(void* _pArg)
 			
 			Monster_Desc.tTransform3DDesc.vInitialPosition = vPos;
 			//Monster_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER8_1;
+			Monster_Desc.isFormationMode = true;
 			Monster_Desc.pFormation = this;
 
 			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, pDesc->strMemberPrototypeTag, m_iCurLevelID, pDesc->strMemberLayerTag, &pObject, &Monster_Desc)))
@@ -95,8 +128,11 @@ HRESULT CFormation::Initialize_Members(void* _pArg)
 
 			if (pObject != nullptr)
 			{
-				m_Members.push_back(static_cast<CMonster*>(pObject));
+				CMonster* pMonster = static_cast<CMonster*>(pObject);
+				m_Members.push_back(pMonster);
 				Safe_AddRef(pObject);
+				Event_Set_Kinematic(static_cast<CActor_Dynamic*>(pMonster->Get_ActorCom()), true);
+				return S_OK;
 			}
 		}
 	}

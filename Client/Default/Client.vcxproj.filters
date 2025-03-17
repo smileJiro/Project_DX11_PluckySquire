@@ -1983,8 +1983,16 @@
     <ClInclude Include="..\Public\PlayerState_RetriveSword.h">
       <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\PlayerBlocker.h">
-      <Filter>02.GameObjects\Blocker</Filter>
+    <ClInclude Include="..\Public\PlayerBlocker.h" />
+    <ClInclude Include="..\Public\FormationIdleState.h">
+      <Filter>03.Components\FSM\State\Formation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\FormationBackState.h">
+      <Filter>03.Components\FSM\State\Formation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Gear.h" />
+    <ClInclude Include="..\Public\Big_Laser.h">
+      <Filter>02.GameObjects\2DGimmik\Laser</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -3182,8 +3190,16 @@
     <ClCompile Include="..\Private\PlayerState_RetriveSword.cpp">
       <Filter>03.Components\PlayerState</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\PlayerBlocker.cpp">
-      <Filter>02.GameObjects\Blocker</Filter>
+    <ClCompile Include="..\Private\PlayerBlocker.cpp" />
+    <ClCompile Include="..\Private\FormationIdleState.cpp">
+      <Filter>03.Components\FSM\State\Formation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\FormationBackState.cpp">
+      <Filter>03.Components\FSM\State\Formation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Gear.cpp" />
+    <ClCompile Include="..\Private\Big_Laser.cpp">
+      <Filter>02.GameObjects\2DGimmik\Laser</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

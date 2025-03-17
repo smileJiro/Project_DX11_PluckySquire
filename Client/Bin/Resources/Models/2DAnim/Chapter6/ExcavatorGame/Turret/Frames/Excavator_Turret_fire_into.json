@@ -1,0 +1,222 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "Excavator_Turret_fire_into",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Properties": {
+      "FramesPerSecond": 30.0,
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Excavator_Turret_fire_into_0001_X01'",
+            "ObjectPath": "/Game/Minigames/ExcavatorBoss/Animation/Turret/Frames/Excavator_Turret_fire_into_0001_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Excavator_Turret_fire_into_0002_X01'",
+            "ObjectPath": "/Game/Minigames/ExcavatorBoss/Animation/Turret/Frames/Excavator_Turret_fire_into_0002_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Excavator_Turret_fire_into_0003_X01'",
+            "ObjectPath": "/Game/Minigames/ExcavatorBoss/Animation/Turret/Frames/Excavator_Turret_fire_into_0003_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Excavator_Turret_fire_into_0004_X01'",
+            "ObjectPath": "/Game/Minigames/ExcavatorBoss/Animation/Turret/Frames/Excavator_Turret_fire_into_0004_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Excavator_Turret_fire_into_0005_X01'",
+            "ObjectPath": "/Game/Minigames/ExcavatorBoss/Animation/Turret/Frames/Excavator_Turret_fire_into_0005_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Excavator_Turret_fire_into_0006_X01'",
+            "ObjectPath": "/Game/Minigames/ExcavatorBoss/Animation/Turret/Frames/Excavator_Turret_fire_into_0006_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Excavator_Turret_fire_into_0007_X01'",
+            "ObjectPath": "/Game/Minigames/ExcavatorBoss/Animation/Turret/Frames/Excavator_Turret_fire_into_0007_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Excavator_Turret_fire_into_0008_X01'",
+            "ObjectPath": "/Game/Minigames/ExcavatorBoss/Animation/Turret/Frames/Excavator_Turret_fire_into_0008_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Excavator_Turret_fire_into_0009_X01'",
+            "ObjectPath": "/Game/Minigames/ExcavatorBoss/Animation/Turret/Frames/Excavator_Turret_fire_into_0009_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Excavator_Turret_fire_into_0010_X01'",
+            "ObjectPath": "/Game/Minigames/ExcavatorBoss/Animation/Turret/Frames/Excavator_Turret_fire_into_0010_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Excavator_Turret_fire_into_0011_X01'",
+            "ObjectPath": "/Game/Minigames/ExcavatorBoss/Animation/Turret/Frames/Excavator_Turret_fire_into_0011_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Excavator_Turret_fire_into_0012_X01'",
+            "ObjectPath": "/Game/Minigames/ExcavatorBoss/Animation/Turret/Frames/Excavator_Turret_fire_into_0012_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Excavator_Turret_fire_into_0013_X01'",
+            "ObjectPath": "/Game/Minigames/ExcavatorBoss/Animation/Turret/Frames/Excavator_Turret_fire_into_0013_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Excavator_Turret_fire_into_0014_X01'",
+            "ObjectPath": "/Game/Minigames/ExcavatorBoss/Animation/Turret/Frames/Excavator_Turret_fire_into_0014_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Excavator_Turret_fire_into_0015_X01'",
+            "ObjectPath": "/Game/Minigames/ExcavatorBoss/Animation/Turret/Frames/Excavator_Turret_fire_into_0015_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Excavator_Turret_fire_into_0016_X01'",
+            "ObjectPath": "/Game/Minigames/ExcavatorBoss/Animation/Turret/Frames/Excavator_Turret_fire_into_0016_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Excavator_Turret_fire_into_0017_X01'",
+            "ObjectPath": "/Game/Minigames/ExcavatorBoss/Animation/Turret/Frames/Excavator_Turret_fire_into_0017_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Excavator_Turret_fire_into_0018_X01'",
+            "ObjectPath": "/Game/Minigames/ExcavatorBoss/Animation/Turret/Frames/Excavator_Turret_fire_into_0018_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Excavator_Turret_fire_into_0019_X01'",
+            "ObjectPath": "/Game/Minigames/ExcavatorBoss/Animation/Turret/Frames/Excavator_Turret_fire_into_0019_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Excavator_Turret_fire_into_0020_X01'",
+            "ObjectPath": "/Game/Minigames/ExcavatorBoss/Animation/Turret/Frames/Excavator_Turret_fire_into_0020_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Excavator_Turret_fire_into_0021_X01'",
+            "ObjectPath": "/Game/Minigames/ExcavatorBoss/Animation/Turret/Frames/Excavator_Turret_fire_into_0021_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Excavator_Turret_fire_into_0022_X01'",
+            "ObjectPath": "/Game/Minigames/ExcavatorBoss/Animation/Turret/Frames/Excavator_Turret_fire_into_0022_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Excavator_Turret_fire_into_0023_X01'",
+            "ObjectPath": "/Game/Minigames/ExcavatorBoss/Animation/Turret/Frames/Excavator_Turret_fire_into_0023_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Excavator_Turret_fire_into_0024_X01'",
+            "ObjectPath": "/Game/Minigames/ExcavatorBoss/Animation/Turret/Frames/Excavator_Turret_fire_into_0024_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Excavator_Turret_fire_into_0025_X01'",
+            "ObjectPath": "/Game/Minigames/ExcavatorBoss/Animation/Turret/Frames/Excavator_Turret_fire_into_0025_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Excavator_Turret_fire_into_0026_X01'",
+            "ObjectPath": "/Game/Minigames/ExcavatorBoss/Animation/Turret/Frames/Excavator_Turret_fire_into_0026_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Excavator_Turret_fire_into_0027_X01'",
+            "ObjectPath": "/Game/Minigames/ExcavatorBoss/Animation/Turret/Frames/Excavator_Turret_fire_into_0027_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Excavator_Turret_fire_into_0028_X01'",
+            "ObjectPath": "/Game/Minigames/ExcavatorBoss/Animation/Turret/Frames/Excavator_Turret_fire_into_0028_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Excavator_Turret_fire_into_0029_X01'",
+            "ObjectPath": "/Game/Minigames/ExcavatorBoss/Animation/Turret/Frames/Excavator_Turret_fire_into_0029_X01.0"
+          },
+          "FrameRun": 1
+        },
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Excavator_Turret_fire_into_0030_X01'",
+            "ObjectPath": "/Game/Minigames/ExcavatorBoss/Animation/Turret/Frames/Excavator_Turret_fire_into_0030_X01.0"
+          },
+          "FrameRun": 1
+        }
+      ]
+    }
+  }
+]

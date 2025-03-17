@@ -193,6 +193,7 @@
     <ClInclude Include="..\Public\Back_WayState.h" />
     <ClInclude Include="..\Public\Beetle_Corpse.h" />
     <ClInclude Include="..\Public\BigPressurePlate.h" />
+    <ClInclude Include="..\Public\Big_Laser.h" />
     <ClInclude Include="..\Public\Bomb.h" />
     <ClInclude Include="..\Public\Bombable.h" />
     <ClInclude Include="..\Public\BombableBox.h" />
@@ -235,6 +236,8 @@
     <ClInclude Include="..\Public\FatherGame_Progress_PartWing.h" />
     <ClInclude Include="..\public\FatherPart_Prop.h" />
     <ClInclude Include="..\Public\Formation.h" />
+    <ClInclude Include="..\Public\FormationBackState.h" />
+    <ClInclude Include="..\Public\FormationIdleState.h" />
     <ClInclude Include="..\Public\FormationMoveState.h" />
     <ClInclude Include="..\Public\Formation_Manager.h" />
     <ClInclude Include="..\public\FresnelModelObject.h" />
@@ -595,6 +598,7 @@
     <ClCompile Include="..\Private\Back_WayState.cpp" />
     <ClCompile Include="..\Private\Beetle_Corpse.cpp" />
     <ClCompile Include="..\Private\BigPressurePlate.cpp" />
+    <ClCompile Include="..\Private\Big_Laser.cpp" />
     <ClCompile Include="..\Private\Bomb.cpp" />
     <ClCompile Include="..\Private\Bombable.cpp" />
     <ClCompile Include="..\Private\BombableBox.cpp" />
@@ -638,6 +642,8 @@
     <ClCompile Include="..\Private\FatherGame_Progress_PartWing.cpp" />
     <ClCompile Include="..\private\FatherPart_Prop.cpp" />
     <ClCompile Include="..\Private\Formation.cpp" />
+    <ClCompile Include="..\Private\FormationBackState.cpp" />
+    <ClCompile Include="..\Private\FormationIdleState.cpp" />
     <ClCompile Include="..\Private\FormationMoveState.cpp" />
     <ClCompile Include="..\Private\Formation_Manager.cpp" />
     <ClCompile Include="..\private\FresnelModelObject.cpp" />

@@ -52,6 +52,7 @@ private:
 	HRESULT						Ready_Companion(const _wstring& _strLayerName, void* _pArg);
 	void						On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx) {};
 	void						Set_NotDisPlaySection();
+	void						Suicide();
 
 protected:
 	virtual	void				Interact(CPlayer* _pUser) {};

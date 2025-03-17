@@ -3,6 +3,7 @@
 #include "ModelObject.h"
 #include "Pooling_Manager.h"
 #include "GameInstance.h"
+#include "Player.h"
 
 CBoss_Rock::CBoss_Rock(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CProjectile_Monster(_pDevice, _pContext)
@@ -84,20 +85,14 @@ void CBoss_Rock::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, 
     {
         if ((_uint)SHAPE_USE::SHAPE_BODY == _Other.pShapeUserData->iShapeUse)
         {
-            _vector vRepulse = 10.f * XMVector3Normalize(XMVectorSetY(_Other.pActorUserData->pOwner->Get_FinalPosition() - Get_FinalPosition(), 0.f));
-            XMVectorSetY(vRepulse, -1.f);
-            Event_Hit(this, static_cast<CCharacter*>(_Other.pActorUserData->pOwner), Get_Stat().iDamg, vRepulse);
-            //Event_KnockBack(static_cast<CCharacter*>(_My.pActorUserData->pOwner), vRepulse);
-            Event_DeleteObject(this);
-        }
-    }
-
-    else if (OBJECT_GROUP::PLAYER_PROJECTILE & _Other.pActorUserData->iObjectGroup)
-    {
-        m_tStat.iHP -= 1;
-        if (0 >= m_tStat.iHP)
-        {
-            Event_DeleteObject(this);
+            if (false == static_cast<CPlayer*>(_Other.pActorUserData->pOwner)->Is_Invincible())
+            {
+                _vector vRepulse = 10.f * XMVector3Normalize(XMVectorSetY(_Other.pActorUserData->pOwner->Get_FinalPosition() - Get_FinalPosition(), 0.f));
+                XMVectorSetY(vRepulse, -1.f);
+                Event_Hit(this, static_cast<CCharacter*>(_Other.pActorUserData->pOwner), Get_Stat().iDamg, vRepulse);
+                //Event_KnockBack(static_cast<CCharacter*>(_My.pActorUserData->pOwner), vRepulse);
+                Event_DeleteObject(this);
+            }
         }
     }
 
@@ -111,6 +106,19 @@ void CBoss_Rock::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, c
 
 void CBoss_Rock::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
 {
+}
+
+void CBoss_Rock::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
+{
+}
+
+void CBoss_Rock::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
+{
+    m_tStat.iHP -= _iDamg;
+    if (0 >= m_tStat.iHP && false == Is_Dead())
+    {
+        Event_DeleteObject(this);
+    }
 }
 
 HRESULT CBoss_Rock::Cleanup_DeadReferences()

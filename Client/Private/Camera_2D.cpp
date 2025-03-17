@@ -183,6 +183,9 @@ void CCamera_2D::Switch_CameraView(INITIAL_DATA* _pInitialData)
 	// Sketch Space 면에 따라서 Arm 바꿔 주기
 	if (CSection_Manager::GetInstance()->Is_WordPos_Capcher())
 	{
+		/*if (CSection_2D::WORLDMAP == m_iPlayType) {
+			
+		}*/
 #pragma region Book
 		if (CSection_2D::PLAYMAP == m_iPlayType) { // 일단 Narration이랑 Book이랑 같이 처리
 			
@@ -206,7 +209,7 @@ void CCamera_2D::Switch_CameraView(INITIAL_DATA* _pInitialData)
 		}
 #pragma endregion
 
-#pragma region Book
+#pragma region Minigame
 		else if (CSection_2D::MINIGAME == m_iPlayType) { // 일단 Narration이랑 Book이랑 같이 처리
 
 			// 처음 들어올 땐 이렇게 해도 상관없음
@@ -618,6 +621,10 @@ void CCamera_2D::Action_SetUp_ByMode()
 				m_eTargetCoordinate = COORDINATE_2D;
 			}
 				break;
+			case CSection_2D::WORLDMAP:
+			{
+			}
+				break;
 			case CSection_2D::SKSP:
 				break;
 			}
@@ -950,7 +957,7 @@ void CCamera_2D::Find_TargetPos()
 	case (_uint)COORDINATE_2D:
 	{
 #pragma region Book
-		if (CSection_2D::PLAYMAP == m_iPlayType) {
+		if (CSection_2D::PLAYMAP == m_iPlayType || CSection_2D::WORLDMAP) {
 
 			if (false == Is_Target_In_SketchSpace())
 				break;
@@ -1094,12 +1101,15 @@ void CCamera_2D::Find_TargetPos()
 			//	m_vStartPos = m_v2DPreTargetWorldPos;
 			//}
 
-			m_iNarrationPosType = Uimgr->isLeft_Right();	// true면 left
+			m_iNarrationPosType = Uimgr->Get_NarrationCameraPos();	// true면 left
 
-			if (true == m_iNarrationPosType)
+			if (CNarration::CAMERA_LEFT == m_iNarrationPosType)
 				vPos = { fSectionSize.x * 0.25f, fSectionSize.y * 0.5f };
-			else
+			else if(CNarration::CAMERA_RIGHT == m_iNarrationPosType)
 				vPos = { fSectionSize.x * (1.f - 0.25f), fSectionSize.y * 0.5f };
+			else if (CNarration::CAMERA_MID == m_iNarrationPosType) {
+				vPos = { fSectionSize.x * 0.5f, fSectionSize.y * 0.5f };
+			}
 
 			vPos = { (vPos.x - (fSectionSize.x * 0.5f)), -vPos.y + (fSectionSize.y * 0.5f) };
 			_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName, { vPos.x, vPos.y });
