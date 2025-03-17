@@ -1908,6 +1908,12 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Effects2D(const _wstring& _strLayerTag)
 
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Death_Burst"), LEVEL_STATIC, 3);
 
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Ch05_MountainExp_Thoom"), m_eLevelID, 1);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Ch05_MountainExp_ExpBig"), m_eLevelID, 1);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Ch05_MountainExp_ExpSmall"), m_eLevelID, 1);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Ch05_MountainExp_SmokeInto"), m_eLevelID, 1);
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Ch05_MountainExp_SmokeLoop"), m_eLevelID, 1);
+
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Hit_FX1"), LEVEL_STATIC, 3);
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Hit_FX2"), LEVEL_STATIC, 3);
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Hit_FX3"), LEVEL_STATIC, 3);

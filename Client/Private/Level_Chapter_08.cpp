@@ -13,6 +13,7 @@
 #include "PlayerData_Manager.h"
 #include "Effect_Manager.h"
 #include "Effect2D_Manager.h"
+#include "JumpStarter.h"
 #include "Formation_Manager.h"
 
 #include "CubeMap.h"
@@ -83,6 +84,8 @@
 #include "PortalLocker_LayerCount.h"
 #include "Portal_Default.h"
 #include "Section_2D_PlayMap.h"
+
+#include "Room_Door.h"
 
 CLevel_Chapter_08::CLevel_Chapter_08(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:
@@ -181,9 +184,15 @@ HRESULT CLevel_Chapter_08::Initialize(LEVEL_ID _eLevelID)
 	}
 	if (FAILED(Ready_Layer_MapGimmick(TEXT("Layer_MapGimmick"))))
 	{
-		MSG_BOX(" Failed Ready_Layer_MapGimmick (Level_Chapter_02::Initialize)");
+		MSG_BOX(" Failed Ready_Layer_MapGimmick (Level_Chapter_08::Initialize)");
 		assert(nullptr);
 	}
+	if (FAILED(Ready_Layer_RoomDoor(TEXT("Layer_RoomDoor"))))
+	{
+		MSG_BOX(" Failed Ready_Layer_RoomDoor (Level_Chapter_08::Initialize)");
+		assert(nullptr);
+	}
+
 	/* Collision Check Matrix */
 	// 그룹필터 추가 >> 중복해서 넣어도 돼 내부적으로 걸러줌 알아서 Door_Yellow
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::MONSTER);
@@ -251,9 +260,9 @@ HRESULT CLevel_Chapter_08::Initialize(LEVEL_ID _eLevelID)
 	CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("Stop_Stamp"), _float3(45.13f,50.24f,23.34f), { 1.f,1.f,1.f });
 	CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("Tilting_Glove"), _float3(30.55f, 30.98f, 23.34f));
 
-
-	//CTrigger_Manager::GetInstance()->Resister_TriggerEvent(TEXT("Chapter2_Intro"),
-	//	50);
+	// Intro 시작
+	CTrigger_Manager::GetInstance()->Register_TriggerEvent(TEXT("Chapter8_Intro"), 50);
+	CCamera_Manager::GetInstance()->Start_FadeIn(3.f);
 
 	/* Set Shader PlayerHideColor */
 	m_pGameInstance->Set_PlayerHideColor(_float3(0.8f, 0.8f, 0.8f), true);
@@ -600,8 +609,8 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Map()
 			return E_FAIL;
 		break;
 	case Client::LEVEL_CHAPTER_8:
-		//if (FAILED(Map_Object_Create(L"Chapter8_Intro.mchc")))
-		if (FAILED(Map_Object_Create(L"Chapter_08_Play_Desk.mchc")))
+		if (FAILED(Map_Object_Create(L"Chapter8_Intro.mchc")))
+		//if (FAILED(Map_Object_Create(L"Chapter_08_Play_Desk.mchc")))
 			return E_FAIL;
 		break;
 	case Client::LEVEL_CHAPTER_TEST:
@@ -727,6 +736,8 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Camera(const _wstring& _strLayerTag, CGam
 	CCamera_Manager::GetInstance()->Load_CutSceneData(m_eLevelID);
 	CCamera_Manager::GetInstance()->Load_ArmData(m_eLevelID);
 
+	CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::CUTSCENE);
+
 	return S_OK;
 }
 
@@ -736,7 +747,7 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Player(const _wstring& _strLayerTag, CGam
 
 	CPlayer::CHARACTER_DESC Desc;
 	Desc.iCurLevelID = m_eLevelID;
-	Desc.eStartCoord = COORDINATE_3D;
+	Desc.eStartCoord = COORDINATE_2D;
 	Desc.tTransform3DDesc.vInitialPosition = { -90.f, 67.f, 18.3f };   // TODO ::임시 위치
 	Desc.tTransform2DDesc.vInitialPosition = { 409.f, 102.f, 0.f };   // TODO ::임시 위치
 
@@ -756,7 +767,6 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Player(const _wstring& _strLayerTag, CGam
 	CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(pPlayer, SECTION_2D_PLAYMAP_OBJECT);
 	pPlayer->Set_Mode(CPlayer::PLAYER_MODE_SNEAK);
 	//pPlayer->Equip_Part(CPlayer::PLAYER_PART_ZETPACK);
-	Event_Change_Coordinate(pPlayer, (COORDINATE)iCurCoord, &vNewPos);
 
 	CPlayerData_Manager::GetInstance()->Set_CurrentPlayer(PLAYABLE_ID::NORMAL);
 
@@ -1784,7 +1794,20 @@ HRESULT CLevel_Chapter_08::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 		m_eLevelID, _strLayerTag, &LaserDesc)))
 		return E_FAIL;
 
+	CJumpStarter::JUMP_STARTER_DESC tJumpStarterDesc = {};
+	tJumpStarterDesc.isCoordChangeEnable = false;
+	tJumpStarterDesc.iCurLevelID = m_eLevelID;
+	tJumpStarterDesc.eStartCoord = COORDINATE_2D;
+	tJumpStarterDesc.strInitSectionTag = L"Chapter8_P1112";
+	tJumpStarterDesc.Build_2D_Transform({ -806.0f,143.0f }, { 83.0f,25.0f });
+	tJumpStarterDesc.vBoxHalfExtents = { 1.f,1.f,1.f };
+	tJumpStarterDesc.vBoxOffset = { 0.f,0.f,0.f };
+	tJumpStarterDesc.eJumpMoveDir = F_DIRECTION::DOWN;
+	tJumpStarterDesc.fTargetPos = { 0.f,-350.f };
 
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_JumpStarter"),
+		m_eLevelID, _strLayerTag, &tJumpStarterDesc)))
+		return E_FAIL;
 
 
 
@@ -1871,6 +1894,18 @@ HRESULT CLevel_Chapter_08::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 	CPlayerBlocker* pPlayerBlocker = static_cast<CPlayerBlocker*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerBlocker2D"), &tPlayerBlockerDesc));
 	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, _strLayerTag, pPlayerBlocker);
 	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter8_P2122"), pPlayerBlocker, SECTION_2D_PLAYMAP_UI);
+
+	return S_OK;
+}
+
+HRESULT CLevel_Chapter_08::Ready_Layer_RoomDoor(const _wstring& _strLayerTag)
+{
+	CRoom_Door::CONTAINEROBJ_DESC Desc = {};
+	Desc.iCurLevelID = m_eLevelID;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Room_Door"),
+		m_eLevelID, _strLayerTag, &Desc)))
+		return E_FAIL;
 
 	return S_OK;
 }

@@ -1981,6 +1981,11 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 		CPostit_Page::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_JumpStarter"),
+		CJumpStarter::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+
 	/* Pip_Player */
 
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_PipPlayer"),
@@ -2276,14 +2281,14 @@ HRESULT CLoader::Loading_Level_Camera_Tool()
 	// 3D Map Load
 	if (FAILED(Load_Models_FromJson(LEVEL_CAMERA_TOOL,
 		MAP_3D_DEFAULT_PATH,
-		L"Chapter_06_Play_Desk.json",
+		L"Chapter_08_Play_Desk.json",
 		matPretransform, true)))
 		return E_FAIL;
 
-	CSection_Manager::GetInstance()->Set_LoadLevel(LEVEL_CHAPTER_6);
+	CSection_Manager::GetInstance()->Set_LoadLevel(LEVEL_CHAPTER_8);
 
 
-	return Loading_Level_Chapter_6(LEVEL_CAMERA_TOOL);
+	return Loading_Level_Chapter_8(LEVEL_CAMERA_TOOL);
 }
 
 HRESULT CLoader::Model_Load(LEVEL_ID _eResourceLevelID, LEVEL_ID _eLoadLevelID)
@@ -2364,8 +2369,8 @@ HRESULT CLoader::Model_Load(LEVEL_ID _eResourceLevelID, LEVEL_ID _eLoadLevelID)
 			return E_FAIL;
 		break;
 	case LEVEL_CAMERA_TOOL:
-		str3DMapProtoJsonName = L"Chapter_06_Play_Desk.json";
-		strChapterName += L"Chapter6";
+		str3DMapProtoJsonName = L"Chapter8_Intro.json";
+		strChapterName += L"Chapter8";
 		break;
 	default:
 		return S_OK;
