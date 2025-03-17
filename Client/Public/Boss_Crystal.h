@@ -45,7 +45,6 @@ private:
 	virtual HRESULT					Ready_PartObjects();
 
 private:
-	_uint m_iHp = { 0 };
 	CButterGrump* m_pSpawner = { nullptr };
 
 public:

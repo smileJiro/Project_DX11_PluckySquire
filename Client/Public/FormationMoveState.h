@@ -18,7 +18,7 @@ public:
 	virtual void State_Exit() override;
 
 private:
-	void Move();
+	void Move(_float _fTimeDelta);
 
 private:
 	_float m_fAccTime = { 0.f };

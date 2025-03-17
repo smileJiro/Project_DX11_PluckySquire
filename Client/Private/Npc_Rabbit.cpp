@@ -39,7 +39,7 @@ HRESULT CNpc_Rabbit::Initialize(void* _pArg)
 
 	pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(180.f);
 	pDesc->tTransform3DDesc.fSpeedPerSec = 3.f;
-	pDesc->iObjectGroupID = OBJECT_GROUP::INTERACTION_OBEJCT;
+	pDesc->iObjectGroupID = OBJECT_GROUP::NONE;
 	m_iMainIndex = pDesc->iMainIndex;
 	m_iSubIndex = pDesc->iSubIndex;
 	
