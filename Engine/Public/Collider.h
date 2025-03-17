@@ -57,6 +57,7 @@ public:
 	_bool					Is_Block() const { return m_isBlock; }
 	_bool					Is_Trigger() const { return m_isTrigger; }
 	virtual _bool			Get_CollisionPoint(CCollider* _pOther, _float2* pOutPoint) abstract;
+	virtual _bool			Get_CollisionNormal(CCollider* _pOther, _float2* pOutNormal) abstract;
 	// Set 
 	void						Set_CollisionGroupID(_uint _iGroupID) { m_iCollisionGroupID = _iGroupID; }
 	void						Set_Offset(_float2 _vOffset) { m_vOffsetPosition = _vOffset; }

@@ -16,6 +16,7 @@
 
 /* For. etc Bulb, PlayerItem*/
 #include "Blocker.h"
+#include "PlayerBlocker.h"
 #include "CubeMap.h"
 #include "MainTable.h"
 #include "FallingRock.h"
@@ -262,6 +263,9 @@
 #include "Friend_Violet.h"
 #include "Friend_Pip.h"
 #include "FriendBody.h"
+
+/* For. Chapter6 */
+#include "Gear.h"
 
 
 
@@ -1045,7 +1049,9 @@ HRESULT CLoader::Loading_Level_Static()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Blocker2D"),
 		CBlocker::Create(m_pDevice, m_pContext, COORDINATE_2D))))
 		return E_FAIL;
-
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerBlocker2D"),
+		CPlayerBlocker::Create(m_pDevice, m_pContext, COORDINATE_2D))))
+		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorYellow"),
 		CDoor_Yellow::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
@@ -1681,6 +1687,11 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 
 		/* UI */
 		if (FAILED(UI_Object_Load(_eLoadLevelID)))
+			return E_FAIL;
+
+		/* For. Prototype_GameObject_Gear */
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Gear"),
+			CGear::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
 		/* For. Prototype_GameObject_GameEventExecuter */

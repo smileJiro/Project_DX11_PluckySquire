@@ -18,6 +18,9 @@ public:
 	virtual void State_Exit() override;
 
 private:
+	void Move();
+
+private:
 	_float m_fAccTime = { 0.f };
 	_float3 m_vDir = {};
 	_bool m_isTurn = { false };

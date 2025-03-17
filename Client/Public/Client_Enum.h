@@ -136,11 +136,12 @@ namespace Client
 		DOOR =						0x20000,	// 2D에서 잠겨있는 문, 열쇠로 열 때를 대비하기 위해서.
 		GIMMICK_OBJECT =			0x40000,	// 맵 기믹 (발판, 등..)
 		BOSS =						0x80000,		//
-		SLIPPERY =					0x100000,	//책장 기울이기
+		SLIPPERY =					0x100000,	// 20 책장 기울이기
 		BOSS_PROJECTILE =			0x200000,	//보스 패턴 파훼용 투사체
 		RAY_TRIGGER =				0x400000,	//주변 물체의 씬 쿼리를 켜는 트리거
 		BLOCKER_JUMPPASS =			0x800000,	//플레이어 점프시에 충돌을 피하는 
 		FRIEND =					0x1000000,	
+		PLAYER_BLOCKER =			0x2000000,	// 플레이어만 막는애
 
 
 		LAST =					0x40000000 // == 2의 32승 (32개 이상의 그룹은 X) -> enum은 기본 int므로, 오버플로우 발생 여지 있음. 최대값을 30승으로 제한. 0215 박예슬

@@ -23,6 +23,11 @@ int g_iFlag = 0;
 float g_fOpaque;
 float g_fSprite2DFadeAlphaRatio = 1.0f;
 
+// Stoppable
+int g_isStoppable = 0;
+float4 g_vStoppableColor = float4(1.0f,0.0f,0.0f,1.0f);
+float g_fStoppableRatio = 0.0f;
+
 /* ±¸Á¶Ã¼ */
 struct VS_IN
 {
@@ -163,12 +168,21 @@ PS_OUT PS_SPRITE2D(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
     
-    Out.vColor = g_DiffuseTexture.SampleLevel(LinearSampler, In.vTexcoord, 0);
+    float4 vDiffuse = g_DiffuseTexture.SampleLevel(LinearSampler, In.vTexcoord, 0);
+
+    if (0 < g_isStoppable)
+    {
+        float fStoppableRatio = g_fStoppableRatio * 0.8f;
+        float4 vStoppableColor = vDiffuse * g_vStoppableColor * fStoppableRatio;
+        vDiffuse.rgb = (vDiffuse.rgb * (1.0f - fStoppableRatio)) + (g_vStoppableColor.rgb * fStoppableRatio);
+
+    }
     
-    Out.vColor.a *= g_fSprite2DFadeAlphaRatio;
-    if (Out.vColor.a < 0.1f)
+    vDiffuse.a *= g_fSprite2DFadeAlphaRatio;
+    if (vDiffuse.a < 0.1f)
         discard;
     
+    Out.vColor = vDiffuse;
     return Out;
 }
 

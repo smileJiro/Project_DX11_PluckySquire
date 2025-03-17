@@ -766,6 +766,12 @@
     <Filter Include="03.Components\FSM\State\Formation">
       <UniqueIdentifier>{125ca684-3bee-4cfe-8bdb-a4a29e93d71a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Chapter8_P2122">
+      <UniqueIdentifier>{5df4e4e5-bd2d-4b37-9acb-eefc8a5e43fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Gear">
+      <UniqueIdentifier>{b3ec759b-ec9a-4ee7-bb34-c61c799ae319}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -1758,8 +1764,6 @@
     <ClInclude Include="..\Public\ShopPanel_RenderFont.h">
       <Filter>02.GameObjects\UI\02. ShopPanel\00. ShopPanel_BG\02. Shop_RenderFont</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\DefenderCapsule.h" />
-    <ClInclude Include="..\Public\DefenderPerson.h" />
     <ClInclude Include="..\public\Pip_Player.h" />
     <ClInclude Include="..\public\Sneak_MapObject.h" />
     <ClInclude Include="..\public\Sneak_FlipObject.h" />
@@ -1834,8 +1838,6 @@
     <ClInclude Include="..\Public\StampKey_1.h">
       <Filter>02.GameObjects\UI\00. GamePlay\01. Stamp\03. StampKeyCommand\01. StampKey_1</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\EvictedSword.h" />
-    <ClInclude Include="..\Public\PlayerState_RetriveSword.h" />
     <ClInclude Include="..\public\Sneak_SentryTroop.h">
       <Filter>05.MiniGames\Minigame_Sneak</Filter>
     </ClInclude>
@@ -1863,7 +1865,6 @@
     <ClInclude Include="..\Public\PlayerState_CannonPortal.h">
       <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\DynamicCastleGate.h" />
     <ClInclude Include="..\Public\Npc_Humgrump.h">
       <Filter>02.GameObjects\NPC\98. Humgrump</Filter>
     </ClInclude>
@@ -1878,6 +1879,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\BombSwitch.h" />
     <ClInclude Include="..\Public\BombSwitchStopper.h" />
+    <ClInclude Include="..\Public\Back_WayState.h" />
+    <ClInclude Include="..\Public\Beetle_Corpse.h" />
+    <ClInclude Include="..\Public\Chase_WayState.h" />
     <ClInclude Include="..\Public\WorldMapNPC.h" />
     <ClInclude Include="..\Public\FriendBody.h">
       <Filter>02.GameObjects\Friend\Body</Filter>
@@ -1900,8 +1904,6 @@
     <ClInclude Include="..\Public\BombSwitchStopper.h" />
     <ClInclude Include="..\Public\Chase_WayState.h" />
     <ClInclude Include="..\Public\WorldMapNPC.h" />
-    <ClInclude Include="..\Public\BigPressurePlate.h" />
-    <ClInclude Include="..\Public\TiltSwapCrate.h" />
     <ClInclude Include="..\Public\PlayerState_Mojam.h">
       <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
@@ -1954,6 +1956,35 @@
     <ClInclude Include="..\Public\Back_WayState.h">
       <Filter>03.Components\FSM\State\Patrol</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\EvictedSword.h">
+      <Filter>02.GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\DynamicCastleGate.h">
+      <Filter>02.GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\DefenderPerson.h">
+      <Filter>02.GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\DefenderCapsule.h">
+      <Filter>02.GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BigPressurePlate.h">
+      <Filter>02.GameObjects\Chapter8_P2122</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BombSwitch.h">
+      <Filter>02.GameObjects\Chapter8_P2122</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BombSwitchStopper.h">
+      <Filter>02.GameObjects\Chapter8_P2122</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\TiltSwapCrate.h">
+      <Filter>02.GameObjects\Chapter8_P2122</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_RetriveSword.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerBlocker.h" />
+    <ClInclude Include="..\public\Gear.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -2930,8 +2961,6 @@
     <ClCompile Include="..\Private\ShopPanel_RenderFont.cpp">
       <Filter>02.GameObjects\UI\02. ShopPanel\00. ShopPanel_BG\02. Shop_RenderFont</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\DefenderCapsule.cpp" />
-    <ClCompile Include="..\Private\DefenderPerson.cpp" />
     <ClCompile Include="..\private\Pip_Player.cpp" />
     <ClCompile Include="..\private\Sneak_MapObject.cpp" />
     <ClCompile Include="..\private\Sneak_FlipObject.cpp" />
@@ -3009,8 +3038,6 @@
     <ClCompile Include="..\Private\Interaction_Key.cpp">
       <Filter>02.GameObjects\UI\00. GamePlay\03. InterAction\03. Interaction_Key</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\EvictedSword.cpp" />
-    <ClCompile Include="..\Private\PlayerState_RetriveSword.cpp" />
     <ClCompile Include="..\private\Sneak_SentryTroop.cpp">
       <Filter>05.MiniGames\Minigame_Sneak</Filter>
     </ClCompile>
@@ -3035,7 +3062,6 @@
     <ClCompile Include="..\Private\PlayerState_CannonPortal.cpp">
       <Filter>03.Components\PlayerState</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\DynamicCastleGate.cpp" />
     <ClCompile Include="..\Private\Npc_Humgrump.cpp">
       <Filter>02.GameObjects\NPC\98. Humgrump</Filter>
     </ClCompile>
@@ -3050,6 +3076,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\BombSwitch.cpp" />
     <ClCompile Include="..\Private\BombSwitchStopper.cpp" />
+    <ClCompile Include="..\Private\Back_WayState.cpp" />
+    <ClCompile Include="..\Private\Beetle_Corpse.cpp" />
+    <ClCompile Include="..\Private\Chase_WayState.cpp" />
     <ClCompile Include="..\Private\WorldMapNPC.cpp" />
     <ClCompile Include="..\Private\FriendBody.cpp">
       <Filter>02.GameObjects\Friend\Body</Filter>
@@ -3072,8 +3101,6 @@
     <ClCompile Include="..\Private\BombSwitchStopper.cpp" />
     <ClCompile Include="..\Private\Chase_WayState.cpp" />
     <ClCompile Include="..\Private\WorldMapNPC.cpp" />
-    <ClCompile Include="..\Private\BigPressurePlate.cpp" />
-    <ClCompile Include="..\Private\TiltSwapCrate.cpp" />
     <ClCompile Include="..\Private\PlayerState_Mojam.cpp">
       <Filter>03.Components\PlayerState</Filter>
     </ClCompile>
@@ -3127,6 +3154,35 @@
     <ClCompile Include="..\Private\Back_WayState.cpp">
       <Filter>03.Components\FSM\State\Patrol</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\EvictedSword.cpp">
+      <Filter>02.GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\DynamicCastleGate.cpp">
+      <Filter>02.GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\DefenderPerson.cpp">
+      <Filter>02.GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\DefenderCapsule.cpp">
+      <Filter>02.GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BigPressurePlate.cpp">
+      <Filter>02.GameObjects\Chapter8_P2122</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BombSwitch.cpp">
+      <Filter>02.GameObjects\Chapter8_P2122</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BombSwitchStopper.cpp">
+      <Filter>02.GameObjects\Chapter8_P2122</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\TiltSwapCrate.cpp">
+      <Filter>02.GameObjects\Chapter8_P2122</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_RetriveSword.cpp">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerBlocker.cpp" />
+    <ClCompile Include="..\private\Gear.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

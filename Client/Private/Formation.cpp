@@ -15,6 +15,14 @@ CFormation::CFormation(const CGameObject& Prototype)
 {
 }
 
+_bool CFormation::Has_EmptySlot()
+{
+	if (false == m_EmptySlots.empty())
+		return true;
+
+	return false;
+}
+
 HRESULT CFormation::Initialize_Prototype()
 {
 	return S_OK;
@@ -22,9 +30,19 @@ HRESULT CFormation::Initialize_Prototype()
 
 HRESULT CFormation::Initialize(void* _pArg)
 {
-	//+z 기준으로 행,열 세팅
-	m_iRow = 3;
-	m_iColumn = 4;
+	CFormation::FORMATIONDESC* pDesc = static_cast<FORMATIONDESC*>(_pArg);
+
+	if (0 < pDesc->iRow)
+		m_iRow = pDesc->iRow;
+	if (0 < pDesc->iColumn)
+		m_iColumn = pDesc->iColumn;
+	if (0.f < pDesc->fRow_Interval)
+		m_fRow_Interval = pDesc->fRow_Interval;
+	if (0.f < pDesc->fColumn_Interval)
+		m_fColumn_Interval = pDesc->fColumn_Interval;
+
+	m_fDelayTime = pDesc->fDelayTime;
+
 	m_OffSets.resize(m_iRow * m_iColumn);
 
 	if (FAILED(__super::Initialize(_pArg)))
@@ -40,8 +58,8 @@ HRESULT CFormation::Initialize(void* _pArg)
 
 void CFormation::Update(_float _fTimeDelta)
 {
-	//순회하며 각 병사들의 목표 위치 세팅
-
+	//포인트로 이동 (회전하면서 이동하는거라 이상한지 체크해봐야함)
+	Get_ControllerTransform()->MoveToTarget(XMLoadFloat3(&m_PatrolPoints[0]), _fTimeDelta);
 }
 
 HRESULT CFormation::Initialize_Members(void* _pArg)
@@ -53,82 +71,24 @@ HRESULT CFormation::Initialize_Members(void* _pArg)
 	CMonster::MONSTER_DESC Monster_Desc;
 	Monster_Desc.iCurLevelID = m_iCurLevelID;
 	Monster_Desc.eStartCoord = COORDINATE_3D;
+	Monster_Desc.isCoordChangeEnable = false;
 	Monster_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 	Monster_Desc.isSneakMode = true;
 
+	//+z 기준으로 행,열 세팅
+	//초기 위치는 포메이션의 위치의 오프셋을 적용한채로 생성 (포메이션의 위치는 중심)
+	_float3 vPos;
+
 	for (_uint i = 0; i < m_iRow; ++i)
 	{
-		//초기 위치는 포메이션의 위치의 오프셋을 적용한채로 생성 (포메이션의 위치는 중심)
-		//+x와 +z 를 기준으로 함
-		_float3 vPos; XMStoreFloat3(&vPos, Get_FinalPosition());
-
-
-		_int iCenterZ = m_iRow / 2;
-
-		//행이 짝수 일 때
-		if (0 == m_iRow % 2)
-		{
-			if (iCenterZ > i)
-			{
-				vPos.z += m_fRow_Interval * 0.5f;
-				vPos.z += (iCenterZ - 1 - i) * m_fRow_Interval;
-			}
-			else
-			{
-				vPos.z -= m_fRow_Interval * 0.5f;
-				vPos.z -= (i - iCenterZ) * m_fRow_Interval;
-			}
-		}
-		//행이 홀수 일 때
-		else
-		{
-			if (iCenterZ > i)
-			{
-				vPos.z += (iCenterZ - i) * m_fRow_Interval;
-			}
-			else
-			{
-				vPos.z -= (i - iCenterZ) * m_fRow_Interval;
-			}
-		}
-
-
 		for (_uint j = 0; j < m_iColumn; ++j)
 		{
 			pObject = nullptr;
+			XMStoreFloat3(&vPos, Get_FinalPosition() + XMLoadFloat3(&m_OffSets[i * m_iColumn + j]));
 			
-			_int iCenterX = m_iColumn / 2;
-
-			//열이 짝수 일 때
-			if (0 == m_iColumn % 2)
-			{
-				if (iCenterX > j)
-				{
-					vPos.x -= m_fColumn_Interval * 0.5f;
-					vPos.x -= (iCenterX - 1 - j) * m_fColumn_Interval;
-				}
-				else
-				{
-					vPos.x += m_fColumn_Interval * 0.5f;
-					vPos.x += (j - iCenterX) * m_fColumn_Interval;
-				}
-			}
-			//열이 홀수 일 때
-			else
-			{
-				if (iCenterX > j)
-				{
-					vPos.x -= (iCenterX - j) * m_fColumn_Interval;
-				}
-				else
-				{
-					vPos.x += (j - iCenterX) * m_fColumn_Interval;
-				}
-			}
-
 			Monster_Desc.tTransform3DDesc.vInitialPosition = vPos;
-
 			//Monster_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER8_1;
+			Monster_Desc.pFormation = this;
 
 			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, pDesc->strMemberPrototypeTag, m_iCurLevelID, pDesc->strMemberLayerTag, &pObject, &Monster_Desc)))
 				return E_FAIL;
@@ -215,7 +175,7 @@ HRESULT CFormation::Initialize_OffSets()
 				}
 			}
 
-			m_OffSets[i * m_iRow + j] = vPos;
+			m_OffSets[i * m_iColumn + j] = vPos;
 		}
 	}
 
@@ -227,7 +187,7 @@ void CFormation::Add_Formation_PatrolPoints(_float3& _vPatrolPoint)
 	m_PatrolPoints.push_back(_vPatrolPoint);
 }
 
-_bool CFormation::Add_To_Formation(CMonster* _pMember)
+_bool CFormation::Add_To_Formation(CMonster* _pMember, CFormation** _pFormation)
 {
 	if (nullptr == _pMember || false == _pMember->Is_ValidGameObject())
 		return false;
@@ -240,12 +200,13 @@ _bool CFormation::Add_To_Formation(CMonster* _pMember)
 	if (nullptr != m_Members[iIndex])
 	{
 		m_EmptySlots.erase(iIndex);
-		return Add_To_Formation(_pMember);
+		return Add_To_Formation(_pMember, _pFormation);
 	}
 	else
 	{
 		m_Members[iIndex] = _pMember;
 		Safe_AddRef(_pMember);
+		*_pFormation = this;
 		return true;
 	}
 
@@ -261,12 +222,31 @@ _bool CFormation::Remove_From_Formation(CMonster* _pMember)
 	{
 		if (_pMember == m_Members[iIndex])
 		{
-			Safe_Release(m_Members[iIndex]);
-			m_Members[iIndex] = nullptr;
 			if (false == m_EmptySlots.insert(iIndex).second)
+			{
+				Safe_Release(m_Members[iIndex]);
+				m_Members[iIndex] = nullptr;
 				continue;
+			}
 			else
 				return true;
+		}
+	}
+
+	return false;
+}
+
+_bool CFormation::Get_Formation_Position(CMonster* _pMember, _float3* _vPosition)
+{
+	_float3 vPos;
+	XMStoreFloat3(&vPos, Get_FinalPosition());
+	for (_uint i = 0; i < m_Members.size(); ++i)
+	{
+		if (_pMember == m_Members[i])
+		{
+			XMStoreFloat3(&vPos, Get_FinalPosition() + XMLoadFloat3(&m_OffSets[i]));
+			*_vPosition = vPos;
+			return true;
 		}
 	}
 
