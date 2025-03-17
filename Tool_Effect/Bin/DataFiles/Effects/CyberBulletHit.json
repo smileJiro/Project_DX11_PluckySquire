@@ -70,7 +70,7 @@
                         0.0
                     ],
                     "Ring_Distribution": 0.0,
-                    "Ring_Radius": 1.0,
+                    "Ring_Radius": 0.75,
                     "Rotation": [
                         90.0,
                         0.0,
@@ -92,6 +92,7 @@
                 }
             },
             "DelayTime": 0.07999999821186066,
+            "DissolveTexture": "../Bin/Resources/Textures/Effects/T_FX_CMN_Mask_03.dds",
             "Event": 0,
             "Float": [
                 {
@@ -105,6 +106,18 @@
                 {
                     "Name": "ColorScale",
                     "Value": 1.0
+                },
+                {
+                    "Name": "DissolveFactor",
+                    "Value": 0.0
+                },
+                {
+                    "Name": "DissolveTimeFactor",
+                    "Value": 1.0
+                },
+                {
+                    "Name": "EdgeWidth",
+                    "Value": 0.20000000298023224
                 },
                 {
                     "Name": "MaskBrightness",
@@ -126,6 +139,24 @@
                     ]
                 },
                 {
+                    "Name": "EdgeColor",
+                    "Value": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                    ]
+                },
+                {
+                    "Name": "NoiseUVScale",
+                    "Value": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ]
+                },
+                {
                     "Name": "SubColor",
                     "Value": [
                         0.0,
@@ -143,7 +174,7 @@
                         "Float": [
                             {
                                 "Name": "Amount",
-                                "Value": 4.5
+                                "Value": 8.0
                             }
                         ],
                         "Float3": [
@@ -191,11 +222,11 @@
                 }
             ],
             "Pooling": "KILL",
-            "ShaderPass": "VELOCITY_BILLBOARD_SUBCOLORBLOOM",
+            "ShaderPass": "VEL_SUB_DISSOLVE",
             "SpawnPosition": "RELATIVE_WORLD",
             "SpawnType": "BURST_SPAWN",
             "Texture": "../Bin/Resources/Textures/Effects/T_FX_CMN_Dust_01_s.dds",
-            "Time": 3.0,
+            "Time": 0.5,
             "Transform": [
                 1.0,
                 0.0,
@@ -308,6 +339,7 @@
                 }
             },
             "DelayTime": 0.07999999821186066,
+            "DissolveTexture": "../Bin/Resources/Textures/Effects/T_FX_CMN_Noise_15.dds",
             "Event": 0,
             "Float": [
                 {
@@ -321,6 +353,18 @@
                 {
                     "Name": "ColorScale",
                     "Value": 1.0
+                },
+                {
+                    "Name": "DissolveFactor",
+                    "Value": 0.10000000149011612
+                },
+                {
+                    "Name": "DissolveTimeFactor",
+                    "Value": 0.4000000059604645
+                },
+                {
+                    "Name": "EdgeWidth",
+                    "Value": 0.15000000596046448
                 },
                 {
                     "Name": "MaskBrightness",
@@ -342,11 +386,29 @@
                     ]
                 },
                 {
+                    "Name": "EdgeColor",
+                    "Value": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ]
+                },
+                {
+                    "Name": "NoiseUVScale",
+                    "Value": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                {
                     "Name": "SubColor",
                     "Value": [
                         0.0,
-                        0.9089999794960022,
-                        1.0,
+                        0.10000000149011612,
+                        0.10000000149011612,
                         0.0
                     ]
                 }
@@ -405,11 +467,11 @@
                 }
             ],
             "Pooling": "KILL",
-            "ShaderPass": "ROTATION_BILLBOARD_SUBBLOOM",
+            "ShaderPass": "ROT_SUB_DISSOLVE",
             "SpawnPosition": "RELATIVE_WORLD",
             "SpawnType": "BURST_SPAWN",
             "Texture": "../Bin/Resources/Textures/Effects/T_FX_CMN_Fire8x8_01.dds",
-            "Time": 3.0,
+            "Time": 0.5,
             "Transform": [
                 1.0,
                 0.0,

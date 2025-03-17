@@ -3,6 +3,7 @@
 #include "ModelObject.h"
 #include "Pooling_Manager.h"
 #include "GameInstance.h"
+#include "Effect_Manager.h"
 
 CBoss_Rock::CBoss_Rock(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CProjectile_Monster(_pDevice, _pContext)
@@ -23,8 +24,8 @@ HRESULT CBoss_Rock::Initialize(void* _pArg)
 {
     PROJECTILE_MONSTER_DESC* pDesc = static_cast<PROJECTILE_MONSTER_DESC*>(_pArg);
 
-    pDesc->_tStat.iMaxHP = 10;
-    pDesc->_tStat.iHP = 10;
+    pDesc->_tStat.iMaxHP = 3;
+    pDesc->_tStat.iHP = 3;
     pDesc->_tStat.iDamg = 1;
 
     if (FAILED(Ready_ActorDesc(pDesc)))
@@ -88,6 +89,9 @@ void CBoss_Rock::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, 
             XMVectorSetY(vRepulse, -1.f);
             Event_Hit(this, static_cast<CCharacter*>(_Other.pActorUserData->pOwner), Get_Stat().iDamg, vRepulse);
             //Event_KnockBack(static_cast<CCharacter*>(_My.pActorUserData->pOwner), vRepulse);
+
+            CEffect_Manager::GetInstance()->Active_Effect(TEXT("RockBroke"), true, m_pControllerTransform->Get_WorldMatrix_Ptr());
+           
             Event_DeleteObject(this);
         }
     }
@@ -98,6 +102,7 @@ void CBoss_Rock::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, 
         if (0 >= m_tStat.iHP)
         {
             Event_DeleteObject(this);
+            CEffect_Manager::GetInstance()->Active_Effect(TEXT("RockBroke"), true, m_pControllerTransform->Get_WorldMatrix_Ptr());
         }
     }
 

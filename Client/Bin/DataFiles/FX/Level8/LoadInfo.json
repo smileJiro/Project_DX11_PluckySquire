@@ -15,6 +15,7 @@
         "../Bin/DataFiles/FX/Level8/WingSliceDust.json",
         "../Bin/DataFiles/FX/Level8/PurpleHit.json",
         "../Bin/DataFiles/FX/Level8/YellowHit.json",
-        "../Bin/DataFiles/FX/Level8/HomingHit.json"
+        "../Bin/DataFiles/FX/Level8/HomingHit.json",
+        "../Bin/DataFiles/FX/Level8/RockBroke.json"
     ]
 }
