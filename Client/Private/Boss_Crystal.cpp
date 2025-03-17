@@ -25,6 +25,14 @@ HRESULT CBoss_Crystal::Initialize(void* _pArg)
 {
     BOSS_CRYSTAL_DESC* pDesc = static_cast<BOSS_CRYSTAL_DESC*>(_pArg);
 
+
+    pDesc->_tStat.iMaxHP = 10;
+    pDesc->_tStat.iHP = 10;
+    pDesc->_tStat.iDamg = 1;
+
+    if(FAILED(Ready_ActorDesc(pDesc)))
+        return E_FAIL;
+
     if (FAILED(__super::Initialize(pDesc)))
         return E_FAIL;
 
@@ -103,8 +111,8 @@ void CBoss_Crystal::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other
 
 void CBoss_Crystal::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
 {
-    m_iHp -= _iDamg;
-    if (0 >= m_iHp && false == Is_Dead())
+    m_tStat.iHP -= _iDamg;
+    if (0 >= m_tStat.iHP && false == Is_Dead())
     {
         Event_DeleteObject(this);
     }
@@ -136,7 +144,7 @@ void CBoss_Crystal::Active_OnEnable()
 {
     __super::Active_OnEnable();
 
-    m_iHp = 10;
+    m_tStat.iHP = m_tStat.iMaxHP;
 }
 
 void CBoss_Crystal::Active_OnDisable()
@@ -183,7 +191,7 @@ HRESULT CBoss_Crystal::Ready_ActorDesc(void* _pArg)
 
     /* 사용하려는 Shape의 형태를 정의 */
     SHAPE_SPHERE_DESC* ShapeDesc = new SHAPE_SPHERE_DESC;
-    ShapeDesc->fRadius = 10.f;
+    ShapeDesc->fRadius = 2.f;
 
     /* 해당 Shape의 Flag에 대한 Data 정의 */
     SHAPE_DATA* ShapeData = new SHAPE_DATA;

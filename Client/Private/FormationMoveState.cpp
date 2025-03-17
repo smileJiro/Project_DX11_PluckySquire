@@ -51,8 +51,8 @@ void CFormationMoveState::State_Update(_float _fTimeDelta)
 			{
 				if (true == Check_Target3D(true))
 				{
-					m_pOwner->Stop_Rotate();
-					m_pOwner->Stop_Move();
+					//m_pOwner->Stop_Rotate();
+					//m_pOwner->Stop_Move();
 
 					m_pOwner->Remove_From_Formation();
 
@@ -67,9 +67,9 @@ void CFormationMoveState::State_Update(_float _fTimeDelta)
 				//플레이어가 인식되지 않았을 경우 소리가 나면 대열에서 빠지고 경계로 전환 
 				if (m_pOwner->IsTarget_In_Sneak_Detection())
 				{
-					m_pOwner->Stop_Rotate();
-					m_pOwner->Stop_Move();
-					m_pFSM->Set_Sneak_AwarePos(m_pOwner->Get_FinalPosition());
+					//m_pOwner->Stop_Rotate();
+					//m_pOwner->Stop_Move();
+					m_pFSM->Set_Sneak_AwarePos(m_pTarget->Get_FinalPosition());
 					m_pOwner->Remove_From_Formation();
 					Event_ChangeMonsterState(MONSTER_STATE::SNEAK_AWARE, m_pFSM);
 					return;
@@ -85,7 +85,7 @@ void CFormationMoveState::State_Update(_float _fTimeDelta)
 		m_isTurn = true;
 	}
 
-	Move();
+	Move(_fTimeDelta);
 }
 
 void CFormationMoveState::State_Exit()
@@ -94,13 +94,13 @@ void CFormationMoveState::State_Exit()
 	m_isMove = false;
 }
 
-void CFormationMoveState::Move()
+void CFormationMoveState::Move(_float _fTimeDelta)
 {
-	_vector vDir = XMLoadFloat3(&m_vNextPos) - m_pOwner->Get_FinalPosition();
+	_vector vDir = XMVectorSetW(XMLoadFloat3(&m_vNextPos) - m_pOwner->Get_FinalPosition(), 0.f);
 	if (0.1f >= XMVectorGetX(XMVector3Length(vDir)))
 	{
-		m_pOwner->Stop_Rotate();
-		m_pOwner->Stop_Move();
+		//m_pOwner->Stop_Rotate();
+		//m_pOwner->Stop_Move();
 		m_isTurn = false;
 		m_isMove = false;
 
@@ -110,7 +110,7 @@ void CFormationMoveState::Move()
 	//회전
 	if (true == m_isTurn && false == m_isMove)
 	{
-		if (m_pOwner->Rotate_To_Radians(vDir, m_pOwner->Get_ControllerTransform()->Get_RotationPerSec()))
+		if (true == m_pOwner->Rotate_To_Radians(vDir, m_pOwner->Get_ControllerTransform()->Get_RotationPerSec() * _fTimeDelta))
 		{
 			m_isMove = true;
 			//m_pOwner->Change_Animation();
@@ -132,11 +132,11 @@ void CFormationMoveState::Move()
 		//웨이포인트 도달 했는지 체크 후 도달하면 다음 위치 받아옴
 		//포메이션이 멈춰있는 경우 idle로 전환
 
-		//if (m_pOwner->Move_To(XMLoadFloat3(&m_WayPoints[m_PatrolWays[m_iCurWayIndex]].vPosition), 0.3f))
+		//if (m_pOwner->Move_To(XMLoadFloat3(&m_vNextPos), 0.3f))
 		if (m_pOwner->Monster_MoveTo(XMLoadFloat3(&m_vNextPos), 0.3f))
 		{
-			m_pOwner->Stop_Rotate();
-			m_pOwner->Stop_Move();
+			//m_pOwner->Stop_Rotate();
+			//m_pOwner->Stop_Move();
 			m_isTurn = false;
 			m_isMove = false;
 
