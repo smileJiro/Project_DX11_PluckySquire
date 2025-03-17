@@ -68,7 +68,7 @@ void CFormationIdleState::State_Update(_float _fTimeDelta)
 		}
 	}
 
-	//대열이 다시 움직이기 시작할 경우 move 전환
+	//대열이 움직이기 시작할 경우 move 전환
 	if (false == m_pOwner->Is_Formation_Stop())
 	{
 		Event_ChangeMonsterState(MONSTER_STATE::FORMATION_MOVE, m_pFSM);

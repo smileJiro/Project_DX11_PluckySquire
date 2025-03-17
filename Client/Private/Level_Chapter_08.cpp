@@ -269,6 +269,8 @@ HRESULT CLevel_Chapter_08::Initialize(LEVEL_ID _eLevelID)
 
 	m_pSneakMinigameManager = CMinigame_Sneak::GetInstance();
 	m_pFormation_Manager = CFormation_Manager::GetInstance();
+	if (FAILED(m_pFormation_Manager->Initialize()))
+		return E_FAIL;
 
 	return S_OK;
 }

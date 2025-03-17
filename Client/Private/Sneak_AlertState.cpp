@@ -49,12 +49,18 @@ void CSneak_AlertState::State_Update(_float _fTimeDelta)
 		//구역 밖으로 나가면 못 쫓음
 		else
 		{
-			Event_ChangeMonsterState(MONSTER_STATE::SNEAK_IDLE, m_pFSM);
+			if (false == m_pOwner->Is_FormationMode())
+				Event_ChangeMonsterState(MONSTER_STATE::SNEAK_IDLE, m_pFSM);
+			else
+				Event_ChangeMonsterState(MONSTER_STATE::FORMATION_BACK, m_pFSM);
 		}
 	}
 	else
 	{
-		Event_ChangeMonsterState(MONSTER_STATE::SNEAK_IDLE, m_pFSM);
+		if (false == m_pOwner->Is_FormationMode())
+			Event_ChangeMonsterState(MONSTER_STATE::SNEAK_IDLE, m_pFSM);
+		else
+			Event_ChangeMonsterState(MONSTER_STATE::FORMATION_BACK, m_pFSM);
 	}
 }
 

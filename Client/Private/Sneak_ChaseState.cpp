@@ -71,7 +71,11 @@ void CSneak_ChaseState::State_Update(_float _fTimeDelta)
 	{
 		m_pOwner->Stop_Rotate();
 		m_pOwner->Stop_Move();
-		Event_ChangeMonsterState(MONSTER_STATE::SNEAK_BACK, m_pFSM);
+
+		if(false == m_pOwner->Is_FormationMode())
+			Event_ChangeMonsterState(MONSTER_STATE::SNEAK_BACK, m_pFSM);
+		else
+			Event_ChangeMonsterState(MONSTER_STATE::FORMATION_BACK, m_pFSM);
 	}
 	else
 	{
