@@ -28,11 +28,13 @@ public:
 	void					Move_Start(_float _fMovePosX, _float _fSpeed);
 
 	_bool					Is_Move() { return m_isMove; }
+	virtual void					On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject);
 
 private:
 	_bool	m_isMove = false;
 	_float2 m_fTargetPos = {};
 	
+	HRESULT		Ready_Collider();
 public:
 	static CModelObject*	Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject*	Clone(void* _pArg) override;

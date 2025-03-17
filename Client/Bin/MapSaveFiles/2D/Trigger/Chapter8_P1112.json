@@ -10,6 +10,8 @@
         120.0
       ]
     },
+    "Trigger_Reusable": false,
+
     "Fillter_MyGroup": 2,
     "Fillter_OtherGroupMask": 128,
     "Trigger_ConditionType": 0,

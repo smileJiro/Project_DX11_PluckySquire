@@ -4,6 +4,7 @@ BEGIN(Engine)
 class CActor_Dynamic;
 END
 BEGIN(Client)
+class CCamera_Target;
 class CPlayerState_CyberIdle :
     public CPlayerState
 {
@@ -30,12 +31,18 @@ public:
     void Set_VeloState(_fvector _vVelocity);
 private:
     CActor_Dynamic* m_pDynamicActor = nullptr;
+    CCamera_Target* m_pTargetCamera = nullptr;
+    const _float4x4* m_pCameraTargetWorldMatrix = { nullptr };
+
     _bool m_bRifleTriggered = false;
     _float m_f3DCyberFlySpeed = 7.f;
 
 	VELOCITY_STATE m_eVelocityState = VELOCITY_LAST;
 
     _float m_fRunVelocityThreshold = 3.f;
+
+
+    _float m_fDistanceFromCamearPlane = 5.f;
 
 };
 
@@ -54,8 +61,33 @@ public:
 
 private:
     CActor_Dynamic* m_pDynamicActor = nullptr;
-    _float m_f3DCyberDashForce = 15.f;
+    CCamera_Target* m_pTargetCamera = nullptr;
 
-    _float m_fEndDashVelocityThreshold = 5.f;
+    _float m_f3DCyberDashForce = 30.f;
+
+    _float m_fEndDashVelocityThreshold = 3.f;
+
+
+};
+
+
+class CPlayerState_CyberHit :
+    public CPlayerState
+{
+public:
+    CPlayerState_CyberHit(CPlayer* _pOwner);
+
+    // CPlayerState을(를) 통해 상속됨
+    void Update(_float _fTimeDelta) override;
+    virtual void Enter() override;
+    virtual void Exit() override;
+    virtual void On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx) override;
+
+private:
+    CActor_Dynamic* m_pDynamicActor = nullptr;
+    CCamera_Target* m_pTargetCamera = nullptr;
+    _float m_f3DCyberFlySpeed = 5.f;
+    const _float4x4* m_pCameraTargetWorldMatrix = { nullptr };
+
 };
 END

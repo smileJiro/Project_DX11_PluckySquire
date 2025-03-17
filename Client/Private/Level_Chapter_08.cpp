@@ -421,10 +421,20 @@ void CLevel_Chapter_08::Update(_float _fTimeDelta)
 			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_ButterGrump"), m_eLevelID, TEXT("Layer_Monster"), &pBoss, &Boss_Desc)))
 				return;
 
+			// Pivot에 Boss 넣기(효림)
+			CCameraPivot*  pPivot = static_cast<CCameraPivot*>(m_pGameInstance->Get_GameObject_Ptr(m_eLevelID, TEXT("Layer_CameraPivot"), 0));
+			pPivot->Set_MainTarget(pBoss);
+			pPivot->Set_Active(true);
+			CCamera_Manager::GetInstance()->Change_CameraTarget(pPivot, 0.f);
+
+
+			Event_ChangeMapObject(m_eLevelID, L"Chapter_Boss.mchc", L"Layer_MapObject");
+
+
 			CPlayer* pPlayer = CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr();
 			if (nullptr != pPlayer)
 			{
-				_float3 vPos = { -5.5f, 70.f, -71.f };
+				_float3 vPos = _float3(0.53f, 60.35f, -35.0f);
 				if(ACTOR_TYPE::DYNAMIC==pPlayer->Get_ActorCom()->Get_ActorType())
 				{
 					pPlayer->Get_ActorCom()->Set_GlobalPose(vPos);
@@ -433,17 +443,8 @@ void CLevel_Chapter_08::Update(_float _fTimeDelta)
 				{
 					pPlayer->Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSet(vPos.x, vPos.y, vPos.z, 1.f));
 				}
+				
 			}
-
-
-			// Pivot에 Boss 넣기(효림)
-			CCameraPivot* pPivot = static_cast<CCameraPivot*>(m_pGameInstance->Get_GameObject_Ptr(m_eLevelID, TEXT("Layer_CameraPivot"), 0));
-			pPivot->Set_MainTarget(pBoss);
-			pPivot->Set_Active(true);
-			CCamera_Manager::GetInstance()->Change_CameraTarget(pPivot, 1.f);
-
-
-			Event_ChangeMapObject(m_eLevelID, L"Chapter_Boss.mchc", L"Layer_MapObject");
 
 
 			//m_pGameInstance->Get_ThreadPool()->EnqueueJob([]()
@@ -1243,16 +1244,16 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 
 
 
-	//CBeetle::MONSTER_DESC Beetle_Desc;
-	//Beetle_Desc.iCurLevelID = m_eLevelID;
-	//Beetle_Desc.eStartCoord = COORDINATE_3D;
-	//Beetle_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-	//Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(15.f, 11.1f, 3.4f);
-	//Beetle_Desc.isSneakMode = true;
-	//Beetle_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER8_BEETLE1;
+	CBeetle::MONSTER_DESC Beetle_Desc;
+	Beetle_Desc.iCurLevelID = m_eLevelID;
+	Beetle_Desc.eStartCoord = COORDINATE_3D;
+	Beetle_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(15.f, 11.1f, 3.4f);
+	Beetle_Desc.isSneakMode = true;
+	Beetle_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER8_BEETLE1;
 
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, TEXT("Layer_Sneak_Beetle"), &Beetle_Desc)))
-	//	return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, TEXT("Layer_Sneak_Beetle"), &Beetle_Desc)))
+		return E_FAIL;
 
 
 	//CBeetle::MONSTER_DESC Beetle_Desc;

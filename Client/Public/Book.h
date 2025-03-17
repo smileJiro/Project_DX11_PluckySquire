@@ -77,6 +77,7 @@ public:
 
 
 public:
+	virtual void OnContact_Modify(const COLL_INFO& _0, const COLL_INFO& _1, CModifiableContacts& _ModifiableContacts, _bool _bIm0)override;
 	virtual void OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)override;
 	virtual void OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)override;
 	virtual void OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)override;
@@ -119,7 +120,8 @@ public:
 		m_isStartBlending = true; 
 	}
 	void					Set_BlendingRatio(_float _fRatio) { m_fBlendingRatio = _fRatio; }
-	void					DropBook();
+	void					Start_DropBook();
+	void					End_DropBook();
 private:
 	//void					Calc_Page3DWorldMinMax();	
 

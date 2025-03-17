@@ -184,7 +184,11 @@ void CFriend_Violet::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 	case Client::CFriend::FRIEND_HIT:
 		m_eCurState = FRIEND_IDLE;
 		break;
+	case Client::CFriend::FRIEND_ANY:
+		m_eCurState = FRIEND_IDLE;
+		break;
 	default:
+		m_eCurState = FRIEND_IDLE;
 		break;
 	}
 

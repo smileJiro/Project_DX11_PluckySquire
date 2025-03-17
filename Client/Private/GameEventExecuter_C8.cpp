@@ -118,6 +118,8 @@ void CGameEventExecuter_C8::Chapter8_Laser_Stage(_float _fTimeDelta)
 	if (pPlayer == nullptr)
 		return;
 
+	if (Is_Dead())
+		return;
 
 
 #pragma region 죽었을때 처리 
@@ -152,7 +154,7 @@ void CGameEventExecuter_C8::Chapter8_Laser_Stage(_float _fTimeDelta)
 					if (i != BRIDGE)
 						Event_DeleteObject(m_TargetObjects[i]);
 					else
-						m_TargetObjects[BRIDGE]->Set_Position({});
+						m_TargetObjects[BRIDGE]->Set_Position({902.f,-107.f});
 					m_TargetObjects[i] = nullptr;
 				}
 
@@ -161,38 +163,38 @@ void CGameEventExecuter_C8::Chapter8_Laser_Stage(_float _fTimeDelta)
 				pPlayer->Set_Position(vPos);
 				pPlayer->Revive();
 				CCamera_Manager::GetInstance()->Start_FadeIn();
+
+
+				CTriggerObject::TRIGGEROBJECT_DESC Desc = {};
+				Desc.vHalfExtents = { 100.f, 120.0f, 0.f };
+				Desc.iTriggerType = (_uint)TRIGGER_TYPE::EVENT_TRIGGER;
+				Desc.szEventTag = TEXT("Chapter8_Laser_Stage");
+				Desc.eConditionType = CTriggerObject::TRIGGER_ENTER;
+				Desc.isReusable = false; // 한 번 하고 삭제할 때
+				Desc.eStartCoord = COORDINATE_2D;
+				Desc.tTransform2DDesc.vInitialPosition = { -806.f,-180.f, 0.f };
+
+				CSection* pBookSection = CSection_Manager::GetInstance()->Find_Section(TEXT("Chapter8_P1112"));
+				CTrigger_Manager::GetInstance()->Create_TriggerObject(LEVEL_STATIC, LEVEL_CHAPTER_2, &Desc, pBookSection);
+
+
+
+
+				pPlayer->Set_BlockPlayerInput(false);
+				GameEvent_End();
 			}
-			else
-				Next_Step_Over(0.5f);
-		}
-		else if (Step_Check(STEP_3))
-		{
-			// 트 리 거  제위치에... 다시 생성하고, 이 이벤트는 종료하자. 
-			
-			CTriggerObject::TRIGGEROBJECT_DESC Desc = {};
-			Desc.vHalfExtents = { 100.f, 120.0f, 0.f };
-			Desc.iTriggerType = (_uint)TRIGGER_TYPE::EVENT_TRIGGER;
-			Desc.szEventTag = TEXT("Chapter8_Laser_Stage");
-			Desc.eConditionType = CTriggerObject::TRIGGER_ENTER;
-			Desc.isReusable = false; // 한 번 하고 삭제할 때
-			Desc.eStartCoord = COORDINATE_2D;
-			Desc.tTransform2DDesc.vInitialPosition = { -806.f,-180.f, 0.f };
-
-			CSection* pBookSection = CSection_Manager::GetInstance()->Find_Section(TEXT("Chapter8_P1112"));
-			CTrigger_Manager::GetInstance()->Create_TriggerObject(LEVEL_STATIC, LEVEL_CHAPTER_2, &Desc, pBookSection);
-
-
-
-
-			pPlayer->Set_BlockPlayerInput(false);
-			GameEvent_End();
 		}
 	}
 #pragma endregion
 	else
 	{
+			
 		// 스텝 1. 레이저 생성, 맵오브젝트들 배치.
 		if (Step_Check(STEP_0))
+		{
+			Next_Step_Over(0.5f);
+		}
+		else if (Step_Check(STEP_1))
 		{
 			if (Is_Start())
 			{
@@ -235,6 +237,8 @@ void CGameEventExecuter_C8::Chapter8_Laser_Stage(_float _fTimeDelta)
 					}
 					iter++;
 				}
+				// 다리 속도 설정.
+				m_TargetObjects[BRIDGE]->Get_ControllerTransform()->Set_SpeedPerSec(450.f);
 
 				// 다리 막는 블로커 세팅. 
 				CBlocker::BLOCKER2D_DESC Desc = {};
@@ -257,13 +261,15 @@ void CGameEventExecuter_C8::Chapter8_Laser_Stage(_float _fTimeDelta)
 				//핍 생성 .
 				_wstring  strFriendTag = L"Pip";
 				CFriend_Pip::FRIEND_DESC PipDesc{};
-				PipDesc.Build_2D_Transform(_float2(590.00f, 160.00f), _float2(1.0f, 1.0f), 400.f);
+				PipDesc.Build_2D_Transform(_float2(600.00f, 145.00f), _float2(1.0f, 1.0f), 400.f);
 				PipDesc.iCurLevelID = m_iCurLevelID;
-				PipDesc.eStartState = CFriend::FRIEND_IDLE;
+				PipDesc.eStartState = CFriend::FRIEND_LAST;
 				PipDesc.eStartDirection = CFriend::DIR_LEFT;
 				PipDesc.iModelTagLevelID = LEVEL_STATIC;
 				PipDesc.iNumDialoguesIndices = 0;
 				PipDesc.strFightLayerTag = TEXT("Layer_Monster");
+
+				
 
 				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Friend_Pip"), m_iCurLevelID, L"Layer_Friend", &pGameObject, &PipDesc)))
 					return;
@@ -272,6 +278,8 @@ void CGameEventExecuter_C8::Chapter8_Laser_Stage(_float _fTimeDelta)
 					return;
 				m_TargetObjects[PIP] = pGameObject;
 				m_TargetObjects[PIP]->Set_Active(false);
+				
+
 				//CFriend_Controller::GetInstance()->Register_Friend(strFriendTag, static_cast<CFriend*>(pGameObject));
 				// 그냥 생성하자마자 바로 조금 옆으로움직여주자.
 				static_cast<CBig_Laser*>(m_TargetObjects[LASER])->Move_Start(300.f, 200.f);
@@ -281,7 +289,7 @@ void CGameEventExecuter_C8::Chapter8_Laser_Stage(_float _fTimeDelta)
 			Next_Step(false == static_cast<CBig_Laser*>(m_TargetObjects[LASER])->Is_Move());
 		}
 		// 다 옆으로 움직였으면, 켜자.
-		else if (Step_Check(STEP_1))
+		else if (Step_Check(STEP_2))
 		{
 			if (Is_Start())
 			{
@@ -290,17 +298,17 @@ void CGameEventExecuter_C8::Chapter8_Laser_Stage(_float _fTimeDelta)
 			Next_Step_Over(1.5f);
 		}
 		// 움직이기 시작한다. 플레이어 무빙을 해제한다.
-		else if (Step_Check(STEP_2))
+		else if (Step_Check(STEP_3))
 		{
 			if (Is_Start())
 			{
 				static_cast<CBig_Laser*>(m_TargetObjects[LASER])->Move_Start(1800.f, 100.f);
 				pPlayer->Set_BlockPlayerInput(false);
 			}
-			Next_Step_Over(2.f);
+			Next_Step_Over(4.5f);
 		}
 		// 매혹적
-		else if (Step_Check(STEP_3))
+		else if (Step_Check(STEP_4))
 		{
 			if (Is_Start())
 			{
@@ -323,27 +331,30 @@ void CGameEventExecuter_C8::Chapter8_Laser_Stage(_float _fTimeDelta)
 					}
 				}
 			}
-			Next_Step_Over(3.f);
+			Next_Step_Over(3.4f);
 		}
 		// 찍찍이가 구해주는거. 
-		else if (Step_Check(STEP_4))
+		else if (Step_Check(STEP_5))
 		{
 			if (Is_Start())
 			{
 				m_TargetObjects[PIP]->Set_Active(true);
 				static_cast<CFriend*>(m_TargetObjects[PIP])->Swicth_Animation(CFriend_Pip::PIP_C09_JUMPUP);
 			}
-			Next_Step_Over(0.5f);
+			Next_Step_Over(1.5f);
 		}		
-		else if (Step_Check(STEP_5))
+		else if (Step_Check(STEP_6))
 		{
 			if (Is_Start())
 			{
 				static_cast<CFriend*>(m_TargetObjects[PIP])->Swicth_Animation(CFriend_Pip::PIP_BUTTONPUSH);
 			}
-			Next_Step_Over(0.5f);
+			if (Next_Step_Over(1.f)) 
+			{
+			};
 		}		
-		else if (Step_Check(STEP_6))
+		// 다리 움직임.
+		else if (Step_Check(STEP_7))
 		{
 			_vector vTargetPos = m_TargetObjects[BRIDGE]->Get_FinalPosition();
 			vTargetPos = XMVectorSetX(vTargetPos, 452.0f);
@@ -354,15 +365,20 @@ void CGameEventExecuter_C8::Chapter8_Laser_Stage(_float _fTimeDelta)
 			_vector vDir = XMVectorSetW(XMVector2Normalize(vTargetPos - m_TargetObjects[BRIDGE]->Get_FinalPosition()), 0.f);
 			m_TargetObjects[BRIDGE]->Get_ControllerTransform()->Go_Direction(vDir, _fTimeDelta);
 			//static_cast<CModelObject*>(m_TargetObjects[BRIDGE])->Get_ControllerTransform()->MoveTo(vTargetPos,_fTimeDelta);
-			Next_Step(m_TargetObjects[BRIDGE]->Get_ControllerTransform()->Compute_Distance(vTargetPos) < 2.f);
+			if(Next_Step(m_TargetObjects[BRIDGE]->Get_ControllerTransform()->Compute_Distance(vTargetPos) < 2.f))
+				m_TargetObjects[PIP]->Set_Active(false);
 		}
-		else if (Step_Check(STEP_7))
+		else if (Step_Check(STEP_8))
 		{
 			if (Is_Start())
 			{
 				Event_DeleteObject(m_TargetObjects[BLOCKER]);
 			}
 			Next_Step(true);
+		}
+		else if (Step_Check(STEP_9))
+		{
+			Next_Step_Over(5.f);
 		}
 		else
 		{

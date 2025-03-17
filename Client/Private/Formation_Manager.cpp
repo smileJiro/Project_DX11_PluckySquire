@@ -59,7 +59,6 @@ void CFormation_Manager::Register_Formation(CFormation* _pFormation)
 
 	m_Formations.push_back(_pFormation);
 	Initialize_Formation_PatrolPoints(m_Formations.size() - 1, _pFormation);
-	Safe_AddRef(_pFormation);
 }
 
 _bool CFormation_Manager::Add_To_Formation(CMonster* _pMember, CFormation** _pFormation)

@@ -526,6 +526,9 @@ public:
 	virtual void On_StartAutoMove() override;
 	virtual void On_EndAutoMove() override;
 	void On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx);
+
+	void On_Stop() override;
+	void On_UnStop() override;
 public:
 
 	void Move_Attack_3D();
@@ -563,6 +566,14 @@ public:
 	void Start_Invinciblity();
 	void RetrieveSword();
 	void CatchSword();
+
+	void Start_Attack(ATTACK_TYPE _eAttackType);
+	void End_Attack();
+	void Flush_AttckedSet() { m_AttckedObjects.clear(); }
+	void Equip_Part(PLAYER_PART _ePartId);
+	void UnEquip_Part(PLAYER_PART _ePartId);
+	void UnEquip_All();
+	void Position_To_FrontCamera(_float _fDistance);
 	// interact 함수가 호출되면 true 반환.
 	INTERACT_RESULT Try_Interact(_float _fTimeDelta);
 
@@ -651,15 +662,7 @@ public:
 	void Set_InteractObject(IInteractable* _pInteractable) { m_pInteractableObject = _pInteractable; }
 	//	NORMAL_DIRECTION Set_PortalNormal(NORMAL_DIRECTION _eNormal) { return m_e3DPortalNormal = _eNormal; }
 	void Set_GravityCompOn(_bool _bOn, CGravity::STATE _eGravityState = CGravity::STATE_FALLDOWN);
-
 	void Set_CurrentStampType(PLAYER_PART _eStamp) { m_eCurrentStamp = _eStamp; }
-
-	void Start_Attack(ATTACK_TYPE _eAttackType);
-	void End_Attack();
-	void Flush_AttckedSet() { m_AttckedObjects.clear(); }
-	void Equip_Part(PLAYER_PART _ePartId);
-	void UnEquip_Part(PLAYER_PART _ePartId);
-	void UnEquip_All();
 
 
 private:
@@ -766,9 +769,7 @@ private:
 	// Turn Book 할 때 Effect
 	class CTurnBookEffect* m_pTurnBookEffect = { nullptr };
 
-private:
-		void On_Stop() override;
-		void On_UnStop() override;
+
 //public:
 //	void Set_FirstExitPortalDesc(const _wstring& _strSectionName, _int _iIndex)
 //	{
