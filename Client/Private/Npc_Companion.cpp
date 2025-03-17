@@ -103,40 +103,22 @@ void CNPC_Companion::Update(_float _fTimeDelta)
 						CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(m_vecCompanionNpc[i]);
 						continue;
 					}
-			
-					
-					
-					 //특정 섹션에서만 안나와야한다.
-					 //현재는 전체 섹션을 체크를한다..
-
 					const _wstring curSection = CSection_Manager::GetInstance()->Get_Cur_Section_Key();
 
-					if (curSection != TEXT("Chapter2_P0102") &&
-						curSection != TEXT("Chapter2_P0506") &&
-						curSection != TEXT("Chapter2_P1112") &&
-						curSection != TEXT("Chapter2_P1314") &&
+					if (curSection == TEXT("Chapter1_P0708") &&
 						!CSection_Manager::GetInstance()->Is_CurSection(m_vecCompanionNpc[i]))
 					{
 						CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(m_vecCompanionNpc[i]);
 						return;
 					}
 					
-					//if (TEXT("Chapter2_P0304") != CSection_Manager::GetInstance()->Get_Cur_Section_Key() ||
-					//	TEXT("Chapter2_P1112") != CSection_Manager::GetInstance()->Get_Cur_Section_Key() ||
-					//	TEXT("Chapter2_P1314") != CSection_Manager::GetInstance()->Get_Cur_Section_Key() &&
-					//	false == CSection_Manager::GetInstance()->Is_CurSection(m_vecCompanionNpc[i]))
-					//	CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(m_vecCompanionNpc[i]);
 				}
 			
 				else 
 				{
-					//CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(m_vecCompanionNpc[i]);
 					const _wstring curSection = CSection_Manager::GetInstance()->Get_Cur_Section_Key();
 
-					if (curSection != TEXT("Chapter2_P0506") &&
-						curSection != TEXT("Chapter2_P1112") &&
-						curSection != TEXT("Chapter2_P1314") &&
-						!CSection_Manager::GetInstance()->Is_CurSection(m_vecCompanionNpc[i]))
+					if (curSection == TEXT("Chapter2_P0102") && !CSection_Manager::GetInstance()->Is_CurSection(m_vecCompanionNpc[i]))
 					{
 						CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(m_vecCompanionNpc[i]);
 					}
@@ -145,6 +127,7 @@ void CNPC_Companion::Update(_float _fTimeDelta)
 		}
 	}
 
+	Suicide();
 	__super::Update(_fTimeDelta);
 }
 
@@ -288,6 +271,18 @@ void CNPC_Companion::Set_NotDisPlaySection()
 
 	// 나중에 하자. 어디어디 안들어갈건지 파악이 필요하다.
 
+}
+
+void CNPC_Companion::Suicide()
+{
+	const _wstring curSection = CSection_Manager::GetInstance()->Get_Cur_Section_Key();
+
+	if (curSection == TEXT("Chapter2_P0304"))
+	{
+		Event_DeleteObject(this);
+	}
+
+	
 }
 
 void CNPC_Companion::Set_TargetObject(_int _index)

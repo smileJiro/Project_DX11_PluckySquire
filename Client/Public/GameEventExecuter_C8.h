@@ -55,6 +55,7 @@ public:
 	virtual void					Update(_float _fTimeDelta) override;
 	virtual void					Late_Update(_float _fTimeDelta) override;
 
+	void Chapter8_Intro(_float _fTimeDelta);
 	void Chapter8_Intro_Postit_Sequence(_float _fTimeDelta);
 	void Chapter8_Outro_Postit_Sequence(_float _fTimeDelta);
 	void Chapter8_Sword(_float _fTimeDelta);

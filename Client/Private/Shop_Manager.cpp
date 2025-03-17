@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Shop_Manager.h"
+#include "PlayerData_Manager.h"
 
 
 IMPLEMENT_SINGLETON(CShop_Manager)
@@ -471,22 +472,41 @@ void CShop_Manager::Skill_LevelUp(_uint _index)
 	_int iLevel = m_ShopItems[_index][1]->Get_SkillLevel();
 	CUI::SKILLSHOP eSkillIcon = m_ShopItems[_index][1]->Get_SkillShopIcon();
 
+	CPlayerData_Manager* pPlayerData = CPlayerData_Manager::GetInstance();
+
 	switch (eSkillIcon)
 	{
 	case CUI::SKILLSHOP::SKILLSHOP_JUMPATTACKBADGE:
+	{
 		++m_iJumpAttackLevel;
+		pPlayerData->Set_JumpSkillLevel(m_iJumpAttackLevel);
+	}
+
+		
 		break;
 
 	case CUI::SKILLSHOP::SKILLSHOP_SPINATTACKBADGE:
+	{
 		++m_iSpinAttackLevel;
+		pPlayerData->Set_JumpSkillLevel(m_iSpinAttackLevel);
+	}
+		
 		break;
 
 	case CUI::SKILLSHOP::SKILLSHOP_ATTACKPLUSBADGE:
+	{
 		++m_iAttackPlusLevel;
+		pPlayerData->Set_JumpSkillLevel(m_iAttackPlusLevel);
+	}
+		
 		break;
 
 	case CUI::SKILLSHOP::SKILLSHOP_THROWATTBADGE:
+	{
 		++m_iThrowAttackLevel;
+		pPlayerData->Set_JumpSkillLevel(m_iThrowAttackLevel);
+	}
+		
 		break;
 
 	}

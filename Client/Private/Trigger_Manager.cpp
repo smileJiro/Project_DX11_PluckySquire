@@ -80,6 +80,7 @@ HRESULT CTrigger_Manager::Mapping_ExecuterTag()
 	m_EventExecuterTags[CHAPTER4_3D_OUT_01] = L"Chapter4_3D_Out_01";
 	m_EventExecuterTags[CHAPTER4_3D_OUT_02] = L"Chapter4_3D_Out_02";
 	m_EventExecuterTags[CHAPTER4_INTRO] = L"Chapter4_Intro";
+	m_EventExecuterTags[CHAPTER4_2D_INTRO] = L"Chapter4_2D_Intro";
 	m_EventExecuterTags[CHAPTER4_INTRO_POSTIT_SEQUENCE] = L"Chapter4_Intro_Postit_Sequence";
 	m_EventExecuterTags[CHAPTER4_RIDE_ZIPLINE] = L"Chapter4_Ride_Zipline";
 	m_EventExecuterTags[CHAPTER4_EVENT_FLAG] = L"Chapter4_Event_Flag";
@@ -99,6 +100,7 @@ HRESULT CTrigger_Manager::Mapping_ExecuterTag()
 	m_EventExecuterTags[CHAPTER6_STORYSEQUENCE_01] = L"Chapter6_StorySequence_01";
 
 
+	m_EventExecuterTags[CHAPTER8_INTRO] = L"Chapter8_Intro";
 	m_EventExecuterTags[CHAPTER8_INTRO_POSTIT_SEQUENCE] = L"Chapter8_Intro_Postit_Sequence";
 	m_EventExecuterTags[CHAPTER8_SWORD] = 	L"Chapter8_Sword";
 	m_EventExecuterTags[CHAPTER8_STOP_STAMP] = 	L"Chapter8_Stop_Stamp";

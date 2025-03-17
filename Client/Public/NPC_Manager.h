@@ -3,7 +3,7 @@
 #include "NPC.h"
 #include "Npc_OnlySocial.h"
 #include "NPC_Social.h"
-
+#include "WorldMapNPC.h"
 
 
 BEGIN(Client)
@@ -16,6 +16,7 @@ private:
 	virtual ~CNPC_Manager() = default;
 
 private:
+	CWorldMapNPC* m_pWorldNpc = { nullptr };
 	CNPC* m_pNPC = { nullptr };
 	CNPC_OnlySocial* m_pOnlyNpc = { nullptr };
 	vector<CNPC_Social*> m_pNpcSocials;
@@ -34,6 +35,14 @@ public:
 		Safe_AddRef(_SocialNpc); 
 	}
 	CNPC_Social*						Find_SocialNPC(wstring _NPCName);
+	void								Set_WorldmapNpc(CWorldMapNPC* _WorldNpc) { m_pWorldNpc = _WorldNpc; Safe_AddRef(_WorldNpc); }
+	CWorldMapNPC*						Get_WorldmapNpc()
+	{
+		if (nullptr == m_pWorldNpc)
+			assert(m_pWorldNpc);
+
+		return m_pWorldNpc;
+	}
 
 
 public:
