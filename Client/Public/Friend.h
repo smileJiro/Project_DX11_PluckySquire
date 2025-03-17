@@ -15,7 +15,7 @@ class CFriend abstract : public CCharacter
 {
 public:
 	enum FRIEND_MODE { MODE_DEFAULT, MODE_FIGHT, MODE_BOSS };
-	enum FRIEND_STATE { FRIEND_IDLE, FRIEND_MOVE, FRIEND_CHASE, FRIEND_ATTACK, FRIEND_TALK, FRIEND_MOJAM, FRIEND_HIT, FRIEND_LAST };
+	enum FRIEND_STATE { FRIEND_IDLE, FRIEND_MOVE, FRIEND_CHASE, FRIEND_ATTACK, FRIEND_TALK, FRIEND_MOJAM, FRIEND_HIT, FRIEND_ANY, FRIEND_LAST };
 	enum COLLIDER_USE { COL_BODY, COL_ATTACK, COL_INTERACT, COL_LAST };
 	enum DIRECTION 
 	{
@@ -77,7 +77,13 @@ public:
 	virtual HRESULT			Mode_Enter(FRIEND_MODE _eNextMode);
 	virtual HRESULT			Mode_Exit();
 	void					Change_CurState(FRIEND_STATE _eState) { m_eCurState = _eState; State_Change(); } // 상태 강제 전환.
-
+	void					Change_AnyState(_uint _iAnimIndex, _bool _isLoop, DIRECTION _eDirectionLR) {
+		m_eCurState = FRIEND_ANY; 
+		m_iAnyAnimIndex = _iAnimIndex;
+		m_isAnyAnimLoop = _isLoop;
+		m_eDirection = _eDirectionLR;
+		State_Change();
+	}
 protected:
 	FRIEND_MODE				m_eCurMode = FRIEND_MODE::MODE_DEFAULT;
 	FRIEND_STATE			m_eCurState = FRIEND_STATE::FRIEND_LAST;
@@ -87,6 +93,9 @@ protected:
 protected: /* State_Idle */
 	list<FRIEND_STATE>		m_StateIdleQueue;
 
+protected: /* State_Any */
+	_uint					m_iAnyAnimIndex = 0;
+	_bool					m_isAnyAnimLoop = false;
 public:
 	void					Add_IdleQueue(FRIEND_STATE _eState); // 추가
 	void					Pop_IdleQueue();					 // 삭제
@@ -134,6 +143,7 @@ protected:
 	virtual void			State_Change_Talk();
 	virtual void			State_Change_Mojam();
 	virtual void			State_Change_Hit();
+	virtual void			State_Change_Any();
 
 protected:
 	virtual void			Action_State(_float _fTimeDelta);
@@ -144,6 +154,7 @@ protected:
 	virtual void			Action_State_Talk(_float _fTimeDelta);
 	virtual void			Action_State_Mojam(_float _fTimeDelta);
 	virtual void			Action_State_Hit(_float _fTimeDelta);
+	virtual void			Action_State_Any(_float _fTimeDelta);
 
 protected:
 	virtual void			Finished_DialogueAction() = 0;
