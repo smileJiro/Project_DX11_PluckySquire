@@ -39,10 +39,16 @@ public:
 	virtual void OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)override;
 	virtual void OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)override;
 
+	virtual void			On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce);
+
 public:
 	HRESULT Cleanup_DeadReferences() override;
 	virtual void Active_OnEnable() override;
 	virtual void Active_OnDisable() override;
+
+private:
+	ID3D11Buffer* m_pFresnelBuffer = { nullptr };
+	ID3D11Buffer* m_pColorBuffer = { nullptr };
 
 private:
 	virtual HRESULT					Ready_ActorDesc(void* _pArg);

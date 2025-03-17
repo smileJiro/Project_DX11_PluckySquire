@@ -6,6 +6,7 @@ END
 
 BEGIN(Client)
 class CSpawner;
+class CFormation_Manager;
 class CLevel_Chapter_08 final : public CLevel
 {
 private:
@@ -38,6 +39,7 @@ public:
 
 private:
 	class CMinigame_Sneak* m_pSneakMinigameManager = { nullptr };
+	CFormation_Manager* m_pFormation_Manager = { nullptr };
 private:
 
 	HRESULT					Map_Object_Create(_wstring _strFileName);

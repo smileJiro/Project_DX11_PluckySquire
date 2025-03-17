@@ -16,6 +16,7 @@
 
 /* For. etc Bulb, PlayerItem*/
 #include "Blocker.h"
+#include "PlayerBlocker.h"
 #include "CubeMap.h"
 #include "MainTable.h"
 #include "FallingRock.h"
@@ -84,6 +85,7 @@
 #include "NPC_Thrash.h"
 #include "Npc_Rabbit.h"
 #include "Postit_Page.h"
+#include "Meteor.h"
 
 #include "Npc_Humgrump.h"
 #include "Npc_MoonBeard.h"
@@ -189,6 +191,7 @@
 #include "SketchSpace_SpikeBall.h"
 #include "SketchSpace_UFO.h"
 #include "Projectile_SketchSpace_UFO.h"
+#include "Formation.h"
 
 /* For. Boss */
 #include "ButterGrump.h"
@@ -260,6 +263,9 @@
 #include "Friend_Violet.h"
 #include "Friend_Pip.h"
 #include "FriendBody.h"
+
+/* For. Chapter6 */
+#include "Gear.h"
 
 
 
@@ -663,6 +669,10 @@ HRESULT CLoader::Loading_Level_Static()
 		CVIBuffer_Trail::Create(m_pDevice, m_pContext, 32))))
 		return E_FAIL;
 
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Trail64"),
+		CVIBuffer_Trail::Create(m_pDevice, m_pContext, 32))))
+		return E_FAIL;
+
 	/* For. Prototype_Component_Beam*/
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Beam16"),
 		CVIBuffer_Beam::Create(m_pDevice, m_pContext, 16))))
@@ -1039,7 +1049,9 @@ HRESULT CLoader::Loading_Level_Static()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Blocker2D"),
 		CBlocker::Create(m_pDevice, m_pContext, COORDINATE_2D))))
 		return E_FAIL;
-
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_PlayerBlocker2D"),
+		CPlayerBlocker::Create(m_pDevice, m_pContext, COORDINATE_2D))))
+		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorYellow"),
 		CDoor_Yellow::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
@@ -1677,6 +1689,11 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 		if (FAILED(UI_Object_Load(_eLoadLevelID)))
 			return E_FAIL;
 
+		/* For. Prototype_GameObject_Gear */
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Gear"),
+			CGear::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
 		/* For. Prototype_GameObject_GameEventExecuter */
 		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_GameEventExecuter"),
 			CGameEventExecuter_C6::Create(m_pDevice, m_pContext))))
@@ -1685,6 +1702,11 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 		/* For. Prototype_GameObject_CollapseBlock */
 		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_CollapseBlock"),
 			CCollapseBlock::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+		
+		/* For. Prototype_GameObject_CollapseBlock */
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Meteor"),
+			CMeteor::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
 		/* Chapter 6 FatherGame */
@@ -1868,7 +1890,16 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effects/T_FX_CMN_Noise_09.dds"), 1))))
 		return E_FAIL;
 
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_Component_Texture_BossWingAttack"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effects/T_FX_CMN_Mask_03.dds")))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_Component_Texture_WingSlam"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effects/T_FX_CMN_Mask_05_270.dds")))))
+		return E_FAIL;
 	
+	
+
 	#pragma endregion
 	
 	#pragma region Chapter 8 - Texture Load
@@ -1908,6 +1939,12 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 	m_pGameInstance->Load_SFX(TEXT("Chapter8_P0506"), TEXT("../Bin/Resources/Audio/FloorWord/Chapter_8/Chapter8_P0506.wav"));
 	m_pGameInstance->Load_SFX(TEXT("Chapter8_P1112"), TEXT("../Bin/Resources/Audio/FloorWord/Chapter_8/Chapter8_P1112.wav"));
 	m_pGameInstance->Load_SFX(TEXT("Chapter8_P1920"), TEXT("../Bin/Resources/Audio/FloorWord/Chapter_8/Chapter8_P1920.wav"));
+
+	m_pGameInstance->Load_SFX(TEXT("C8_End_01"), TEXT("../Bin/Resources/Audio/Narration/Chapter8/Chapter8_EndNarration_01.wav"));
+	m_pGameInstance->Load_SFX(TEXT("C8_End_02"), TEXT("../Bin/Resources/Audio/Narration/Chapter8/Chapter8_EndNarration_02.wav"));
+	m_pGameInstance->Load_SFX(TEXT("C8_End_03"), TEXT("../Bin/Resources/Audio/Narration/Chapter8/Chapter8_EndNarration_03.wav"));
+	m_pGameInstance->Load_SFX(TEXT("C8_End_04"), TEXT("../Bin/Resources/Audio/Narration/Chapter8/Chapter8_EndNarration_04.wav"));
+
 	// 나레이션 관련
 
 #pragma endregion
@@ -1918,6 +1955,10 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 
 	/* 레벨별 모델 Load */
 	if (FAILED(Model_Load(eResourceLevelID, _eLoadLevelID)))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_Model2D_End_Narration_ENDWord"),
+		C2DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DAnim/Chapter8/Narration/Chpater8_End/END.dds", _eLoadLevelID, true, true))))
 		return E_FAIL;
 
 #pragma endregion
@@ -2005,6 +2046,10 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Laser_Beam"),
 		CLaser_Beam::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Formation"),
+		CFormation::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 #pragma endregion
 

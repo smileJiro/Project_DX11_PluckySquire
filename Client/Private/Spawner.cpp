@@ -98,7 +98,7 @@ HRESULT CSpawner::Spawn_Object()
 #endif // _DEBUG
 			vRandomPos.x = m_pGameInstance->Compute_Random(m_fRandomStartPos.x, m_fRandomEndPos.x);
 			vRandomPos.y = m_pGameInstance->Compute_Random(m_fRandomStartPos.y, m_fRandomEndPos.y);
-			isIntarvalCheck = m_fIntaval.x < fabs(vPreSpawnPos.x - vRandomPos.x) && m_fIntaval.y < fabs(vPreSpawnPos.y - vRandomPos.y);
+			isIntarvalCheck = m_fIntaval.x < fabs(vPreSpawnPos.x - vRandomPos.x);/* && m_fIntaval.y <= fabs(vPreSpawnPos.y - vRandomPos.y)*/;
 			#ifdef _DEBUG
 			if (iLoopCnt > 200)
 				assert(false);

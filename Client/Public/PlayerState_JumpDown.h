@@ -13,8 +13,8 @@ public:
     virtual void Exit() override;
     virtual void On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)override;
 
-private:
     void Switch_To_JumpDownAnimation();
+private:
 
 	_bool Try_Clamber();
 private:

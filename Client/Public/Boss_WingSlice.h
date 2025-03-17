@@ -2,7 +2,12 @@
 #include "Projectile_Monster.h"
 #include "Client_Defines.h"
 
+BEGIN(Engine)
+class CEffect_System;
+END
+
 BEGIN(Client)
+
 class CBoss_WingSlice final : public CProjectile_Monster
 {
 //public:
@@ -10,6 +15,8 @@ class CBoss_WingSlice final : public CProjectile_Monster
 //	{
 //		_float fLifeTime;
 //	}BOSS_ENERGYBALL_DESC;
+public:
+	enum WINGSLICE_PART { WINGSLICE_PART_TRAIL = 1, WINGSLICE_PART_END };
 
 protected:
 	CBoss_WingSlice(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
@@ -33,6 +40,12 @@ public:
 	HRESULT Cleanup_DeadReferences() override;
 	virtual void Active_OnEnable() override;
 	virtual void Active_OnDisable() override;
+
+private:
+	ID3D11Buffer* m_pFresnelBuffer = { nullptr };
+	ID3D11Buffer* m_pColorBuffer = { nullptr };
+	class CEffect_Trail* m_pTrailEffect = { nullptr };
+
 
 private:
 	virtual HRESULT					Ready_ActorDesc(void* _pArg);

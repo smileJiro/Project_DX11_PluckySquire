@@ -174,7 +174,7 @@ HRESULT CEffectToolLoader::Loading_Level_Tool()
 
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Model_Sphere"),
         C3DModel::Create(m_pDevice, m_pContext,
-            ("../Bin/Resources/Models/3DAnim/buttergrump_Rig/Projectiles/TennisBall_01.model"
+            ("../Bin/Resources/Models/3DAnim/buttergrump_Rig/Projectiles/S_FX_CMN_Sonic_02.model"
                 ), matPretransform))))
         return E_FAIL;
 
@@ -188,11 +188,11 @@ HRESULT CEffectToolLoader::Loading_Level_Tool()
         return E_FAIL;
 
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Component_Texture_Diffuse"), 
-        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effects/T_FX_CMN_Noise_06.dds")))))
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effects/T_FX_CMN_Mask_03.dds")))))
         return E_FAIL;
 
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Component_Texture_Distortion"),
-        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effects/T_FX_CMN_Noise_03_90.dds")))))
+        CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effects/T_FX_CMN_Noise_11_s.dds")))))
         return E_FAIL;
 
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Component_Texture_Normal"),

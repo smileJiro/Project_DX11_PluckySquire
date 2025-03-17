@@ -257,7 +257,8 @@ _bool CCollider_Circle::Get_CollisionPoint(CCollider* _pOther, _float2* pOutPoin
     _bool bCollision = Is_Collision(_pOther);
     if (false == bCollision)
         return false;
-
+    _float2 vPosition = Get_Position();
+    _float fFinalRadius = Get_FinalRadius();
     CCollider::TYPE eTYpe = _pOther->Get_Type();
     switch (eTYpe)
     {
@@ -266,31 +267,60 @@ _bool CCollider_Circle::Get_CollisionPoint(CCollider* _pOther, _float2* pOutPoin
         CCollider_AABB* pAABB = static_cast<CCollider_AABB*>(_pOther);
         _float2 vOtherLT = pAABB->Get_LT();
         _float2 vOtherRB = pAABB->Get_RB();
-
-        _float2 vPosition = Get_Position();
-        _float fFinalRadius = Get_FinalRadius();
-
+        _float fAABBSlope1 = (vOtherRB.y - vOtherLT.y) / (vOtherRB.x - vOtherLT.x);
         // 1. Clamp를 통해 AABB에 가장 가까운 점을 찾는다.
+        _float2 vClamp;
+        vClamp.x =clamp(vPosition.x, vOtherLT.x, vOtherRB.x);
+        vClamp.y = clamp(vPosition.y, vOtherRB.y, vOtherLT.y);
 
-        pOutPoint->x = clamp(vPosition.x, vOtherLT.x, vOtherRB.x);
-        pOutPoint->y = clamp(vPosition.y, vOtherRB.y, vOtherLT.y);
+        //vClamp가 대각선 기준 어디 있는지 확인
+        _float fAABBSlope2 = -fAABBSlope1;
+        _float2 vAABBPos = pAABB->Get_Position();
+        _float fCollisionSlope = (vClamp.y - vAABBPos.y) / (vClamp.x - vAABBPos.x);
+        _float2 vDirection = {};
+        if (abs(fCollisionSlope) < abs(fAABBSlope1))
+        {
+            //좌
+            if (vAABBPos.x < vClamp.x)
+            {
+                *pOutPoint = vClamp;
+                pOutPoint->x = vOtherRB.x;
+            }
+            //우
+            else
+            {
+                *pOutPoint = vClamp;
+                pOutPoint->x = vOtherLT.x;
+            }
+        }
+        //상하 충돌
+        else
+        {
+            //상
+            if (vAABBPos.y < vClamp.y)
+            {
+                *pOutPoint = vClamp;
+                pOutPoint->y = vOtherLT.y;
+            }
+            //하
+            else
+            {
+                *pOutPoint = vClamp;
+                pOutPoint->y = vOtherRB.y;
+            }
+        }
         break;
     }
     case Engine::CCollider::CIRCLE_2D:
     {
         CCollider_Circle* pCircle = static_cast<CCollider_Circle*>(_pOther);
 
-        _float2 vPosition = Get_Position();
-        _float fFinalRadius = Get_FinalRadius();
-
 		_float2 vOtherPosition = pCircle->Get_Position();
 		_float fOtherFinalRadius = pCircle->Get_FinalRadius();
 
-		_vector vDiff = XMLoadFloat2(&vOtherPosition) - XMLoadFloat2(&vPosition);
+		_vector vDiff = XMLoadFloat2(&vPosition) - XMLoadFloat2(&vOtherPosition);
 		_vector vDirection = XMVector2Normalize(vDiff);
-		_float fDistance = XMVector2Length(vDiff).m128_f32[0];
-        _float fRatio = fFinalRadius /(fOtherFinalRadius + fFinalRadius);
-        _vector vCollisonPoint = XMLoadFloat2(&vPosition)+ fRatio * fDistance * vDirection;
+        _vector vCollisonPoint = XMLoadFloat2(&vOtherPosition)+ fOtherFinalRadius * vDirection;
 		pOutPoint->x = vCollisonPoint.m128_f32[0];
 		pOutPoint->y = vCollisonPoint.m128_f32[1];
         break;
@@ -303,7 +333,81 @@ _bool CCollider_Circle::Get_CollisionPoint(CCollider* _pOther, _float2* pOutPoin
 
 
     return true;
-    return _bool();
+}
+
+_bool CCollider_Circle::Get_CollisionNormal(CCollider* _pOther, _float2* pOutNormal)
+{
+    _bool bCollision = Is_Collision(_pOther);
+    if (false == bCollision)
+        return false;
+
+    _float2 vPosition = Get_Position();
+    _float fFinalRadius = Get_FinalRadius();
+    CCollider::TYPE eTYpe = _pOther->Get_Type();
+    switch (eTYpe)
+    {
+    case Engine::CCollider::AABB_2D:
+    {
+        CCollider_AABB* pAABB = static_cast<CCollider_AABB*>(_pOther);
+        _float2 vOtherLT = pAABB->Get_LT();
+        _float2 vOtherRB = pAABB->Get_RB();
+        _float2 vAABBPos = pAABB->Get_Position();
+		_float fDiagSlope1 = (vOtherRB.y - vOtherLT.y) / (vOtherRB.x - vOtherLT.x);
+        
+        _float2 vClamp;
+        vClamp.x = clamp(vPosition.x, vOtherLT.x, vOtherRB.x);
+        vClamp.y = clamp(vPosition.y, vOtherRB.y, vOtherLT.y);
+        //vClamp가 대각선 기준 어디 있는지 확인
+		_float fDiagSlope2 = -fDiagSlope1;
+		_float fCollisionSlope = (vClamp.y - vAABBPos.y) / (vClamp.x - vAABBPos.x);
+		_float2 vDirection = {};
+		if (abs(fCollisionSlope) < abs(fDiagSlope1))
+		{
+			//좌
+			if (vAABBPos.x < vClamp.x)
+				vDirection = { 1.f,0.f };
+			//우
+			else
+				vDirection = { -1.f,0.f };
+		}
+		//상하 충돌
+		else
+		{
+			//상
+			if (vAABBPos.y < vClamp.y)
+				vDirection = { 0.f,1.f };
+			//우
+			else
+				vDirection = { 0.f,-1.f };
+		}
+		*pOutNormal = vDirection;
+
+        break;
+    }
+    case Engine::CCollider::CIRCLE_2D:
+    {
+        CCollider_Circle* pCircle = static_cast<CCollider_Circle*>(_pOther);
+
+        _float2 vOtherPosition = pCircle->Get_Position();
+        _float fOtherFinalRadius = pCircle->Get_FinalRadius();
+
+        _vector vDiff = XMLoadFloat2(&vPosition) - XMLoadFloat2(&vOtherPosition);
+        _vector vDirection = XMVector2Normalize(vDiff);
+        vDirection.m128_f32[2] = 0;
+        vDirection.m128_f32[3] = 0;
+        pOutNormal->x = vDirection.m128_f32[0];
+        pOutNormal->y = vDirection.m128_f32[1];
+
+        break;
+    }
+    case Engine::CCollider::TYPE_LAST:
+        break;
+    default:
+        break;
+    }
+
+
+    return true;
 }
 
 CCollider_Circle* CCollider_Circle::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

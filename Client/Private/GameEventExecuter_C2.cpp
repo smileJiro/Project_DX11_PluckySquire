@@ -121,6 +121,9 @@ void CGameEventExecuter_C2::Update(_float _fTimeDelta)
 		case Client::CTrigger_Manager::CHAPTER2_PIP_0:
 			Chapter2_Pip_0(_fTimeDelta);
 			break;
+		case Client::CTrigger_Manager::START_TRAIN:
+			Start_Train(_fTimeDelta);
+			break;
 		default:
 			break;
 		}

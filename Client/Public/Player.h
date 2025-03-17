@@ -562,6 +562,7 @@ public:
 	void Set_PlayingAnim(_bool _bPlaying);
 	void Start_Invinciblity();
 	void RetrieveSword();
+	void CatchSword();
 	// interact 함수가 호출되면 true 반환.
 	INTERACT_RESULT Try_Interact(_float _fTimeDelta);
 
@@ -577,6 +578,7 @@ public:
 	_bool Is_CarryingObject() { return nullptr != m_pCarryingObject; }
 	_bool Is_AttackTriggerActive();
 	_bool Is_DetonationMode();
+	_bool Is_Invincible();
 
 	_bool Is_PlayingAnim();
 	_bool Has_InteractObject() { return nullptr != m_pInteractableObject; }
@@ -630,6 +632,13 @@ public:
 	void Set_Animation(_uint _iAnimIndex);
 	void Set_State(STATE _eState);
 	void Set_Mode(PLAYER_MODE _eNewMode);
+	void Set_MoveSpeed(_float _fSpeed, COORDINATE _eCoord) 
+	{
+		if (COORDINATE_2D == _eCoord)
+			m_f2DMoveSpeed = _fSpeed;
+		else
+			m_f3DMoveSpeed = _fSpeed;
+	}
 	void Set_3DTargetDirection(_fvector _vDir);
 	void Set_WallNormal(_fvector _vNormal) { m_vWallNormal = _vNormal; }
 	void Set_ClamberEndPosition(_fvector _vPos) { m_vClamberEndPosition = _vPos; }
@@ -757,6 +766,9 @@ private:
 	// Turn Book 할 때 Effect
 	class CTurnBookEffect* m_pTurnBookEffect = { nullptr };
 
+private:
+		void On_Stop() override;
+		void On_UnStop() override;
 //public:
 //	void Set_FirstExitPortalDesc(const _wstring& _strSectionName, _int _iIndex)
 //	{

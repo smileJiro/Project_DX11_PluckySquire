@@ -537,6 +537,38 @@
 			"fCollisionRadius": 1.0,
 			"fTriggerRadius": 1.5,
 			"fRotateAngle": 175.0
+		},
+		{
+			"strSectionid": "Chapter5_P0304",
+			"strAnimaionName": "Queen",
+			"strNPCName": "Queen",
+			"strCreateSection": 5,
+			"strDialogueId": "Sal_Dialogue_01",
+			"iStartAnimation": 2,
+			"vPositionX": -8.0,
+			"vPositionY": -138.0,
+			"vPositionZ": 0.0,
+			"CollisionScaleX": 20.0,
+			"CollisionScaleY": 20.0,
+			"isInteractable": false,
+			"isDialog": false,
+			"is2D": true
+		},
+		{
+			"strSectionid": "Chapter5_P0304",
+			"strAnimaionName": "Mural",
+			"strNPCName": "Mural",
+			"strCreateSection": 5,
+			"strDialogueId": "Sal_Dialogue_01",
+			"iStartAnimation": 5,
+			"vPositionX": -979.0,
+			"vPositionY": -222.0,
+			"vPositionZ": 0.0,
+			"CollisionScaleX": 20.0,
+			"CollisionScaleY": 20.0,
+			"isInteractable": false,
+			"isDialog": false,
+			"is2D": true
 		}
 	]
 }

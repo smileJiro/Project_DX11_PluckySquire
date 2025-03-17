@@ -1,10 +1,11 @@
 #include "stdafx.h"
 #include "Boss_TennisBall.h"
-#include "ModelObject.h"
+#include "FresnelModelObject.h"
 #include "Pooling_Manager.h"
 #include "GameInstance.h"
 #include "ButterGrump_Shield.h"
 #include "ButterGrump.h"
+#include "Effect_Manager.h"
 
 CBoss_TennisBall::CBoss_TennisBall(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CProjectile_Monster(_pDevice, _pContext)
@@ -13,11 +14,30 @@ CBoss_TennisBall::CBoss_TennisBall(ID3D11Device* _pDevice, ID3D11DeviceContext* 
 
 CBoss_TennisBall::CBoss_TennisBall(const CBoss_TennisBall& _Prototype)
     : CProjectile_Monster(_Prototype)
+    , m_pFresnelBuffer(_Prototype.m_pFresnelBuffer)
+    , m_pColorBuffer(_Prototype.m_pColorBuffer)
 {
+    Safe_AddRef(m_pFresnelBuffer);
+    Safe_AddRef(m_pColorBuffer);
 }
 
 HRESULT CBoss_TennisBall::Initialize_Prototype()
 {
+    FRESNEL_INFO tBulletFresnelInfo = {};
+    tBulletFresnelInfo.fBaseReflect = 0.22f;
+    tBulletFresnelInfo.fExp = 0.49f;
+    tBulletFresnelInfo.vColor = { 0.263f, 1.f, 0.f, 1.f };
+    tBulletFresnelInfo.fStrength = 1.f; // 안씀.
+    m_pGameInstance->CreateConstBuffer(tBulletFresnelInfo, D3D11_USAGE_DEFAULT, &m_pFresnelBuffer);
+
+
+    COLORS_INFO tColorsInfo = {};
+    tColorsInfo.vDiffuseColor = _float4(0.006f, 0.311f, 0.f, 1.0f);
+    tColorsInfo.vBloomColor = _float4(0.014f, 0.031f, 0.f, 0.03f);
+    tColorsInfo.vSubColor = _float4(0.38f, 0.1f, 0.15f, 0.89f); // 필요 없음
+    tColorsInfo.vInnerColor = _float4(0.2f, 0.f, 0.23f, 1.f); // 필요 없음
+    m_pGameInstance->CreateConstBuffer(tColorsInfo, D3D11_USAGE_DEFAULT, &m_pColorBuffer);
+
 	return S_OK;
 }
 
@@ -118,17 +138,6 @@ void CBoss_TennisBall::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _O
         }
     }
 
-    if (OBJECT_GROUP::PLAYER_PROJECTILE & _Other.pActorUserData->iObjectGroup)
-    {
-        if (true == m_isShoot)
-        {
-            m_tStat.iHP -= 1;
-            if (0 >= m_tStat.iHP)
-            {
-                m_isShoot = true;
-            }
-        }
-    }
 }
 
 void CBoss_TennisBall::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
@@ -152,7 +161,8 @@ void CBoss_TennisBall::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _O
                 Event_DeleteObject(this);
             }
         }
-        
+        CEffect_Manager::GetInstance()->Active_EffectPosition(TEXT("ShieldHit"), true, m_pControllerTransform->Get_State(CTransform::STATE_POSITION));
+
     }
 }
 
@@ -162,6 +172,18 @@ void CBoss_TennisBall::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Ot
 
 void CBoss_TennisBall::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
 {
+}
+
+void CBoss_TennisBall::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
+{
+    if (false == m_isShoot)
+    {
+        m_tStat.iHP -= _iDamg;
+        if (0 >= m_tStat.iHP)
+        {
+            m_isShoot = true;
+        }
+    }
 }
 
 HRESULT CBoss_TennisBall::Cleanup_DeadReferences()
@@ -274,7 +296,7 @@ HRESULT CBoss_TennisBall::Ready_Components()
 
 HRESULT CBoss_TennisBall::Ready_PartObjects()
 {
-    CModelObject::MODELOBJECT_DESC BodyDesc{};
+    CFresnelModelObject::FRESNEL_MODEL_DESC BodyDesc{};
 
     BodyDesc.eStartCoord = m_pControllerTransform->Get_CurCoord();
     BodyDesc.iCurLevelID = m_iCurLevelID;
@@ -283,10 +305,10 @@ HRESULT CBoss_TennisBall::Ready_PartObjects()
     BodyDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
     BodyDesc.strModelPrototypeTag_3D = TEXT("TennisBall_01");
     BodyDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
-    BodyDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
+    BodyDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::FRESNEL;
 
     BodyDesc.iRenderGroupID_3D = RG_3D;
-    BodyDesc.iPriorityID_3D = PR3D_GEOMETRY;
+    BodyDesc.iPriorityID_3D = PR3D_PARTICLE;
 
     BodyDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
 
@@ -295,7 +317,10 @@ HRESULT CBoss_TennisBall::Ready_PartObjects()
     BodyDesc.tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
     BodyDesc.tTransform3DDesc.fSpeedPerSec = 10.f;
 
-    m_PartObjects[PART_BODY] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &BodyDesc));
+    BodyDesc.pColorBuffer = m_pColorBuffer;
+    BodyDesc.pFresnelBuffer = m_pFresnelBuffer;
+
+    m_PartObjects[PART_BODY] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_FresnelModelObject"), &BodyDesc));
     if (nullptr == m_PartObjects[PART_BODY])
         return E_FAIL;
 
@@ -334,6 +359,9 @@ CGameObject* CBoss_TennisBall::Clone(void* _pArg)
 void CBoss_TennisBall::Free()
 {
     Safe_Release(m_pSpawner);
+
+    Safe_Release(m_pFresnelBuffer);
+    Safe_Release(m_pColorBuffer);
 
     __super::Free();
 }

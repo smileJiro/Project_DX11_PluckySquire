@@ -1,0 +1,495 @@
+{
+    "Emitters": [
+        {
+            "Buffer": {
+                "Color": {
+                    "Arg1": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        2.0
+                    ],
+                    "Arg2": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "SetType": "DIRECTSET"
+                },
+                "Count": 1536,
+                "LifeTime": {
+                    "Arg1": 0.4399999976158142,
+                    "Arg2": 0.6600000262260437,
+                    "SetType": "RANDOMLINEAR"
+                },
+                "Position": {
+                    "Arg1": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "Arg2": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "SetType": "UNSET"
+                },
+                "Rotation": {
+                    "Arg1": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "Arg2": [
+                        0.0,
+                        0.0,
+                        360.0
+                    ],
+                    "SetType": "RANDOMRANGE"
+                },
+                "Scale": {
+                    "Arg1": [
+                        0.5,
+                        0.5,
+                        1.0
+                    ],
+                    "Arg2": [
+                        1.0,
+                        4.5,
+                        1.0
+                    ],
+                    "SetType": "RANDOMRANGE"
+                },
+                "ShapeLocation": {
+                    "Position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "Shape": "SPHERE",
+                    "Sphere_Radius": 20.0,
+                    "Sphere_Surface": 1.0
+                },
+                "UVSet": {
+                    "Count": 4.0,
+                    "UV": [
+                        0.5,
+                        0.5
+                    ]
+                }
+            },
+            "DelayTime": 0.07999999821186066,
+            "DissolveTexture": "../Bin/Resources/Textures/Effects/T_FX_CMN_Noise_04.dds",
+            "Event": 0,
+            "Float": [
+                {
+                    "Name": "AlphaTest",
+                    "Value": 0.0
+                },
+                {
+                    "Name": "BloomThreshold",
+                    "Value": 0.0
+                },
+                {
+                    "Name": "ColorScale",
+                    "Value": 1.0
+                },
+                {
+                    "Name": "DissolveFactor",
+                    "Value": 0.0
+                },
+                {
+                    "Name": "DissolveTimeFactor",
+                    "Value": 1.0
+                },
+                {
+                    "Name": "EdgeWidth",
+                    "Value": 0.25
+                },
+                {
+                    "Name": "MaskBrightness",
+                    "Value": 0.0
+                },
+                {
+                    "Name": "SpawnRate",
+                    "Value": 1.0
+                }
+            ],
+            "Float4": [
+                {
+                    "Name": "ColorIntensity",
+                    "Value": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                    ]
+                },
+                {
+                    "Name": "EdgeColor",
+                    "Value": [
+                        1.0,
+                        0.0,
+                        1.0,
+                        0.0
+                    ]
+                },
+                {
+                    "Name": "NoiseUVScale",
+                    "Value": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                {
+                    "Name": "SubColor",
+                    "Value": [
+                        0.0,
+                        0.10000000149011612,
+                        0.10000000149011612,
+                        0.0
+                    ]
+                }
+            ],
+            "LoopTime": 1,
+            "Modules": [
+                {
+                    "Apply": "TRANSLATION",
+                    "Datas": {
+                        "Float": [
+                            {
+                                "Name": "Amount",
+                                "Value": 0.800000011920929
+                            }
+                        ],
+                        "Float3": [
+                            {
+                                "Name": "Origin",
+                                "Value": [
+                                    0.0,
+                                    0.0,
+                                    0.0
+                                ]
+                            }
+                        ]
+                    },
+                    "Init": true,
+                    "Module": "POINT_VELOCITY",
+                    "Order": 0,
+                    "Type": "MODULE_TRANSLATION"
+                },
+                {
+                    "Apply": "TRANSLATION",
+                    "Datas": {
+                        "Float": [
+                            {
+                                "Name": "Amount",
+                                "Value": 0.5
+                            }
+                        ]
+                    },
+                    "Init": true,
+                    "Module": "INIT_ACCELERATION",
+                    "Order": 1,
+                    "Type": "MODULE_TRANSLATION"
+                },
+                {
+                    "Apply": "COLOR",
+                    "Init": false,
+                    "Keyframe": [
+                        {
+                            "Data": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ],
+                            "Time": 0.0
+                        },
+                        {
+                            "Data": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                1.0
+                            ],
+                            "Time": 0.75
+                        },
+                        {
+                            "Data": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0
+                            ],
+                            "Time": 1.0
+                        }
+                    ],
+                    "Module": "COLOR_KEYFRAME",
+                    "Order": 2,
+                    "Type": "MODULE_KEYFRAME"
+                }
+            ],
+            "Pooling": "KILL",
+            "ShaderPass": "ROT_SUB_DISSOLVE",
+            "SpawnPosition": "RELATIVE_WORLD",
+            "SpawnType": "BURST_SPAWN",
+            "Texture": "../Bin/Resources/Textures/Effects/T_FX_CMN_Dust2x2_01_2.dds",
+            "Time": 3.0,
+            "Transform": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Type": "SPRITE"
+        },
+        {
+            "Buffer": {
+                "Color": {
+                    "Arg1": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        3.0
+                    ],
+                    "Arg2": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "SetType": "DIRECTSET"
+                },
+                "Count": 256,
+                "LifeTime": {
+                    "Arg1": 0.4000000059604645,
+                    "Arg2": 0.6000000238418579,
+                    "SetType": "RANDOMLINEAR"
+                },
+                "Position": {
+                    "Arg1": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "Arg2": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "SetType": "UNSET"
+                },
+                "Rotation": {
+                    "Arg1": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "Arg2": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "SetType": "UNSET"
+                },
+                "Scale": {
+                    "Arg1": [
+                        0.5,
+                        0.5,
+                        1.0
+                    ],
+                    "Arg2": [
+                        5.0,
+                        5.0,
+                        1.0
+                    ],
+                    "SetType": "RANDOMRANGE"
+                },
+                "ShapeLocation": {
+                    "Position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "Shape": "SPHERE",
+                    "Sphere_Radius": 16.0,
+                    "Sphere_Surface": 1.0
+                },
+                "UVSet": {
+                    "Count": 1.0,
+                    "UV": [
+                        1.0,
+                        1.0
+                    ]
+                }
+            },
+            "DelayTime": 0.07999999821186066,
+            "DissolveTexture": "../Bin/Resources/Textures/Effects/T_FX_CMN_Noise_12_s.dds",
+            "Event": 0,
+            "Float": [
+                {
+                    "Name": "AlphaTest",
+                    "Value": 0.0
+                },
+                {
+                    "Name": "BloomThreshold",
+                    "Value": 0.0
+                },
+                {
+                    "Name": "ColorScale",
+                    "Value": 1.0
+                },
+                {
+                    "Name": "DissolveFactor",
+                    "Value": 0.5
+                },
+                {
+                    "Name": "DissolveTimeFactor",
+                    "Value": 0.5
+                },
+                {
+                    "Name": "EdgeWidth",
+                    "Value": 0.25
+                },
+                {
+                    "Name": "MaskBrightness",
+                    "Value": 0.0
+                },
+                {
+                    "Name": "SpawnRate",
+                    "Value": 1.0
+                }
+            ],
+            "Float4": [
+                {
+                    "Name": "ColorIntensity",
+                    "Value": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                    ]
+                },
+                {
+                    "Name": "EdgeColor",
+                    "Value": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                    ]
+                },
+                {
+                    "Name": "NoiseUVScale",
+                    "Value": [
+                        1.0,
+                        0.30000001192092896,
+                        1.0,
+                        1.0
+                    ]
+                },
+                {
+                    "Name": "SubColor",
+                    "Value": [
+                        0.10000000149011612,
+                        0.0,
+                        0.10000000149011612,
+                        0.0
+                    ]
+                }
+            ],
+            "LoopTime": 1,
+            "Modules": [
+                {
+                    "Apply": "TRANSLATION",
+                    "Datas": {
+                        "Float": [
+                            {
+                                "Name": "Amount",
+                                "Value": 1.0
+                            }
+                        ],
+                        "Float3": [
+                            {
+                                "Name": "Origin",
+                                "Value": [
+                                    0.0,
+                                    0.0,
+                                    0.0
+                                ]
+                            }
+                        ]
+                    },
+                    "Init": true,
+                    "Module": "POINT_VELOCITY",
+                    "Order": 0,
+                    "Type": "MODULE_TRANSLATION"
+                }
+            ],
+            "Pooling": "KILL",
+            "ShaderPass": "VEL_SUB_DISSOLVE",
+            "SpawnPosition": "RELATIVE_WORLD",
+            "SpawnType": "BURST_SPAWN",
+            "Texture": "../Bin/Resources/Textures/Effects/T_FX_CMN_Noise_13_s.dds",
+            "Time": 3.0,
+            "Transform": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Type": "SPRITE"
+        }
+    ],
+    "Name": "Shieldbreak",
+    "ToolLoopTime": 1.0
+}

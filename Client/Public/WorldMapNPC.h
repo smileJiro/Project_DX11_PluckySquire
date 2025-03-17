@@ -1,25 +1,7 @@
 #pragma once
 #include "Character.h"
 
-// 이걸 상속 받는 놈들은 함수를 사용하게한다.
-// abstract로 사용하게 한다.
-// 이건 객체 생성하지 아니한다.
-// 캐릭터 이동을 계산해준다.
-// json을.. 여기로 받는다?
-// 근데 객체 생성은 안하는데..
 
-
-
-/// <생각 중>
-/// json
-/// 시작 위치 및 종료 위치 필요
-/// 애니메이션 어떤걸로 변경할지 필요
-/// 각 라인 마다 읽어서 해당 위치로 이동한다.
-/// 종료 위치로 왔을 때 캐릭터의 애니메이션을 아이들로 변경 시킨다.
-/// 
-/// 
-/// 
-/// </생각 중>
 
 BEGIN(Engine)
 class CShader;
@@ -83,12 +65,10 @@ protected:
 	HRESULT					Ready_PartObjects();
 	
 private:
-	void					Progress(_float _fTimeDelta);
-	void					Pos_Ready();
+	HRESULT					Progress(_float _fTimeDelta);
+	HRESULT					Pos_Ready();
 	void					Change_BookOrder();
 	_float2					Change_PlayerPos();
-	void					DisplayLocationName();
-	void					DisplayHoneyBee(_float2 _MidPoint);
 
 public:
 	static CWorldMapNPC*		Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
@@ -98,9 +78,9 @@ public:
 
 
 private:
-	_float2					m_PosMoves[POS_LAST];
+	_float2					m_PosMoves[POS_LAST] = { _float2(0.f, 0.f) };
 
-	MOVEPOS					m_iStartIndex = { POS_HONEYBEE };
+	MOVEPOS					m_iStartIndex = { POS_LAST };
 
 	wstring					m_strSection = { TEXT("") };
 
@@ -117,9 +97,6 @@ private:
 	_bool					m_isArriveAnim = { false };
 
 	_bool					m_isChangeCameraTarget = { false };
-	wstring					m_strLocationName = { TEXT("") };
-
-
 
 };
 END

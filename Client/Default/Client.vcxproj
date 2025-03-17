@@ -234,9 +234,15 @@
     <ClInclude Include="..\Public\FatherGame_Progress_PartHead.h" />
     <ClInclude Include="..\Public\FatherGame_Progress_PartWing.h" />
     <ClInclude Include="..\public\FatherPart_Prop.h" />
+    <ClInclude Include="..\Public\Formation.h" />
+    <ClInclude Include="..\Public\FormationBackState.h" />
+    <ClInclude Include="..\Public\FormationIdleState.h" />
+    <ClInclude Include="..\Public\FormationMoveState.h" />
+    <ClInclude Include="..\Public\Formation_Manager.h" />
     <ClInclude Include="..\public\FresnelModelObject.h" />
     <ClInclude Include="..\Public\FriendBody.h" />
     <ClInclude Include="..\Public\Friend_Pip.h" />
+    <ClInclude Include="..\public\Gear.h" />
     <ClInclude Include="..\Public\JumpStarter.h" />
     <ClInclude Include="..\Public\Laser_Beam.h" />
     <ClInclude Include="..\Public\Laser_Container.h" />
@@ -253,6 +259,7 @@
     <ClInclude Include="..\Public\MonsterMoveState.h" />
     <ClInclude Include="..\public\Mug_Alien.h" />
     <ClInclude Include="..\Public\Patrol_WayState.h" />
+    <ClInclude Include="..\Public\PlayerBlocker.h" />
     <ClInclude Include="..\Public\PlayerState_CannonPortal.h" />
     <ClInclude Include="..\Public\PlayerState_Mojam.h" />
     <ClInclude Include="..\Public\Npc_Humgrump.h" />
@@ -632,9 +639,15 @@
     <ClCompile Include="..\Private\FatherGame_Progress_PartHead.cpp" />
     <ClCompile Include="..\Private\FatherGame_Progress_PartWing.cpp" />
     <ClCompile Include="..\private\FatherPart_Prop.cpp" />
+    <ClCompile Include="..\Private\Formation.cpp" />
+    <ClCompile Include="..\Private\FormationBackState.cpp" />
+    <ClCompile Include="..\Private\FormationIdleState.cpp" />
+    <ClCompile Include="..\Private\FormationMoveState.cpp" />
+    <ClCompile Include="..\Private\Formation_Manager.cpp" />
     <ClCompile Include="..\private\FresnelModelObject.cpp" />
     <ClCompile Include="..\Private\FriendBody.cpp" />
     <ClCompile Include="..\Private\Friend_Pip.cpp" />
+    <ClCompile Include="..\private\Gear.cpp" />
     <ClCompile Include="..\Private\JumpStarter.cpp" />
     <ClCompile Include="..\Private\Laser_Beam.cpp" />
     <ClCompile Include="..\Private\Laser_Container.cpp" />
@@ -651,6 +664,7 @@
     <ClCompile Include="..\Private\MonsterMoveState.cpp" />
     <ClCompile Include="..\private\Mug_Alien.cpp" />
     <ClCompile Include="..\Private\Patrol_WayState.cpp" />
+    <ClCompile Include="..\Private\PlayerBlocker.cpp" />
     <ClCompile Include="..\Private\PlayerState_CannonPortal.cpp" />
     <ClCompile Include="..\Private\PlayerState_Mojam.cpp" />
     <ClCompile Include="..\Private\Npc_Humgrump.cpp" />

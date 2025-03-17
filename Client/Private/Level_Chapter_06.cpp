@@ -57,7 +57,7 @@
 
 #include "2DMapObject.h"
 #include "3DMapObject.h"
-#include "FallingRock.h"
+#include "Meteor.h"
 #include "Spawner.h"
 #include "CollapseBlock.h"
 #include "Portal_Cannon.h"
@@ -90,6 +90,9 @@
 // Npc
 #include "Npc_Humgrump.h"
 #include "Npc_MoonBeard.h"
+
+// Gear
+#include "Gear.h"
 
 CLevel_Chapter_06::CLevel_Chapter_06(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:
@@ -203,6 +206,18 @@ HRESULT CLevel_Chapter_06::Initialize(LEVEL_ID _eLevelID)
 		MSG_BOX(" Failed Ready_Layer_Friends (Level_Chapter_02::Initialize)");
 		assert(nullptr);
 	}
+	if (FAILED(Ready_Layer_Spawner()))
+	{
+		MSG_BOX(" Failed Ready_Layer_Spawner (Level_Chapter_02::Initialize)");
+		assert(nullptr);
+	}
+
+	if (FAILED(Ready_Layer_Gear(TEXT("Layer_Gear"))))
+	{
+		MSG_BOX(" Failed Ready_Layer_Gear (Level_Chapter_02::Initialize)");
+		assert(nullptr);
+	}
+	
 
 	/* Collision Check Matrix */
 	// 그룹필터 추가 >> 중복해서 넣어도 돼 내부적으로 걸러줌 알아서 
@@ -714,7 +729,8 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Player(const _wstring& _strLayerTag, CGam
 	CPlayer::CHARACTER_DESC Desc;
 	Desc.iCurLevelID = m_eLevelID;
 	Desc.eStartCoord = COORDINATE_2D;
-	Desc.tTransform2DDesc.vInitialPosition = { -22.f, -681.f, 0.f };   // TODO ::임시 위치
+	Desc.tTransform2DDesc.vInitialPosition = { -22.f, -681.f, 0.f };   // TODO ::정상 위치
+	Desc.tTransform2DDesc.vInitialPosition = { 0.0f, 0.0f, 0.0f };   // TODO ::임시 위치
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_TestPlayer"), m_eLevelID, _strLayerTag, _ppOut, &Desc)))
 		return E_FAIL;
@@ -768,7 +784,7 @@ HRESULT CLevel_Chapter_06::Ready_Layer_MapGimmick()
 	tDraggableDesc.eStartCoord = COORDINATE_3D;
 	tDraggableDesc.vBoxHalfExtents = { 3.1f,0.33f,0.99f };
 	tDraggableDesc.vBoxOffset = { 0.f,tDraggableDesc.vBoxHalfExtents.y, 0.f };
-	tDraggableDesc.tTransform3DDesc.vInitialPosition = { 74.65, 12.07f, 27.32f };
+	tDraggableDesc.tTransform3DDesc.vInitialPosition = { 74.65f, 12.07f, 27.32f };
 	tDraggableDesc.tTransform3DDesc.vInitialScaling = { 1.1f,1.1f,1.1f };
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DraggableObject"),
@@ -780,49 +796,65 @@ HRESULT CLevel_Chapter_06::Ready_Layer_MapGimmick()
 
 HRESULT CLevel_Chapter_06::Ready_Layer_Spawner()
 {
-	CFallingRock::FALLINGROCK_DESC* pFallingRockDesc = new CFallingRock::FALLINGROCK_DESC; 
-	pFallingRockDesc->eStartCoord = COORDINATE_2D;
-	pFallingRockDesc->fFallDownEndY = 900.f;
-	pFallingRockDesc->fBoundEndPosY = -400.f;
-	pFallingRockDesc->m_isChapter4 = true;
-	pFallingRockDesc->iCurLevelID = m_eLevelID;
-	pFallingRockDesc->isDeepCopyConstBuffer = false;
-	pFallingRockDesc->Build_2D_Transform(_float2(0.0f, 1500.f));
+	CMeteor::METEOR_DESC* pMeteorDesc = new CMeteor::METEOR_DESC;
+	pMeteorDesc->eStartCoord = COORDINATE_2D;
+	pMeteorDesc->iCurLevelID = m_eLevelID;
+	pMeteorDesc->eDir = F_DIRECTION::LEFT;
+	pMeteorDesc->isDeepCopyConstBuffer = false;
+	pMeteorDesc->Build_2D_Transform(_float2(0.0f, 1500.f));
 
 	/* Pooling Desc */
 	Pooling_DESC tPooling_Desc; 
 	tPooling_Desc.eSection2DRenderGroup = SECTION_2D_PLAYMAP_OBJECT;
 	tPooling_Desc.iPrototypeLevelID = m_eLevelID;
-	tPooling_Desc.strLayerTag = TEXT("Layer_FallingRock");
-	tPooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_FallingRock");
-	tPooling_Desc.strSectionKey = TEXT("Chapter4_SKSP_07");
+	tPooling_Desc.strLayerTag = TEXT("Layer_Meteor");
+	tPooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Meteor");
+	tPooling_Desc.strSectionKey = TEXT("Chapter6_SKSP_05");
 
 	CSpawner::SPAWNER_DESC SpawnerDesc;
-	SpawnerDesc.pObjectCloneDesc = pFallingRockDesc;
+	SpawnerDesc.eMode = CSpawner::SPAWNER_RAMDOM;
+	SpawnerDesc.fRandomStartPos = {900.f, 700.f};
+	SpawnerDesc.fRandomEndPos = { 1700.f, 700.f};
+	SpawnerDesc.fIntaval = { 100.f,-1.f };
+
+	SpawnerDesc.pObjectCloneDesc = pMeteorDesc;
 	SpawnerDesc.tPoolingDesc = tPooling_Desc;
 	SpawnerDesc.eCurLevelID = m_eLevelID;
 	SpawnerDesc.eGameObjectPrototypeLevelID = m_eLevelID;
-	SpawnerDesc.fSpawnCycleTime = 5.0f;
+	SpawnerDesc.fSpawnCycleTime = 0.8f;
 	SpawnerDesc.iOneClycleSpawnCount = 1;
 	SpawnerDesc.vSpawnPosition = _float3(0.0f, 500.f, 0.0f);
 	SpawnerDesc.isPooling = true;
-	SpawnerDesc.strPoolingTag = TEXT("Pooling_FallingRock");
+	SpawnerDesc.strPoolingTag = TEXT("Pooling_Meteor_Right");
 	SpawnerDesc.ePoolingObjectStartCoord = COORDINATE_2D;
-	SpawnerDesc.strLayerTag = TEXT("Layer_FallingRock");
+	SpawnerDesc.strLayerTag = TEXT("Layer_Meteor");
 
 	CGameObject* pGameObject = nullptr;
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Spawner"), m_eLevelID, L"Layer_Spawner", &pGameObject, &SpawnerDesc)))
 		return E_FAIL;
 
-	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT(""), pGameObject, SECTION_2D_PLAYMAP_TRIGGER);
+	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_SKSP_05"), pGameObject, SECTION_2D_PLAYMAP_TRIGGER);
 
 	pGameObject = nullptr;
-	SpawnerDesc.fSpawnCycleTime = 4.0f;
+
+	CMeteor::METEOR_DESC* pMeteorDesc_2 = new CMeteor::METEOR_DESC;
+	pMeteorDesc_2->eStartCoord = COORDINATE_2D;
+	pMeteorDesc_2->iCurLevelID = m_eLevelID;
+	pMeteorDesc_2->eDir = F_DIRECTION::RIGHT;
+	pMeteorDesc_2->isDeepCopyConstBuffer = false;
+	pMeteorDesc_2->Build_2D_Transform(_float2(0.0f, 1500.f));
+
+	SpawnerDesc.fSpawnCycleTime = 0.8f;
 	SpawnerDesc.vSpawnPosition = _float3(400.0f, 700.f, 0.0f);
+	SpawnerDesc.fRandomStartPos = { -1700.f, 700.f };
+	SpawnerDesc.fRandomEndPos = { -500.f, 700.f };
+	SpawnerDesc.strPoolingTag = TEXT("Pooling_Meteor_Left");
+	SpawnerDesc.pObjectCloneDesc = pMeteorDesc_2;
+
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Spawner"), m_eLevelID, L"Layer_Spawner", &pGameObject, &SpawnerDesc)))
 		return E_FAIL;
-	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT(""), pGameObject, SECTION_2D_PLAYMAP_TRIGGER);
-
+	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_SKSP_05"), pGameObject, SECTION_2D_PLAYMAP_TRIGGER);
+	return S_OK;
 }
 
 HRESULT CLevel_Chapter_06::Ready_Layer_Friends(const _wstring& _strLayerTag)
@@ -870,6 +902,26 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Friends(const _wstring& _strLayerTag)
 		CFriend_Controller::GetInstance()->Register_Friend(strFriendTag, static_cast<CFriend*>(pGameObject));
 		//CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(strFriendTag);
 	} /* Friend_Violet */
+
+	return S_OK;
+}
+
+HRESULT CLevel_Chapter_06::Ready_Layer_Gear(const _wstring& _strLayerTag)
+{
+	{// Chapter_6 FirstGear
+		CGear::GEAR_DESC Desc;
+		Desc.iCurLevelID = LEVEL_CHAPTER_6;
+		Desc.Build_2D_Transform(_float2(472.f, 185.0f));
+
+		CGameObject* pGameObject = nullptr;
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_Gear"), LEVEL_CHAPTER_6, _strLayerTag, &pGameObject, &Desc)))
+			return E_FAIL;
+
+		CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_P0102"), pGameObject);
+	}// Chapter_6 FirstGear
+	
+
+
 
 	return S_OK;
 }

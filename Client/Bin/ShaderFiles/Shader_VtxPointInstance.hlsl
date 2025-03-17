@@ -1162,5 +1162,17 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_WEIGHT_BLENDEDDISSOLVE_SUBBLOOM();
         ComputeShader = NULL;
     }
+    pass VEL_DISSOLVE_SUBCOLORBLOOM // 14
+    {
+        SetRasterizerState(RS_Cull_None);
+        SetDepthStencilState(DSS_WriteNone, 0);
+        SetBlendState(BS_WeightAccumulate, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        //SetBlendState(BS_WeightAccumulate, float4(0.f, 0, f, 0.f, 0.f), 0xffffffff);
 
+        VertexShader = compile vs_5_0 VS_SRV_MAIN();
+        GeometryShader = compile gs_5_0 GS_VELOCITYBILLBOARD();
+        PixelShader = compile ps_5_0 PS_WEIGHT_BLENDEDDISSOLVE_SUBBLOOM();
+
+        ComputeShader = NULL;
+    }
 }

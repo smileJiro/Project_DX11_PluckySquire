@@ -71,6 +71,9 @@ void CGameEventExecuter_C8::Update(_float _fTimeDelta)
 		case Client::CTrigger_Manager::CHAPTER8_TILTING_GLOVE:
 			Chapter8_Tilting_Glove(_fTimeDelta);
 			break;
+		case Client::CTrigger_Manager::START_TRAIN:
+			Start_Train(_fTimeDelta);
+			break;
 		default:
 			break;
 		}

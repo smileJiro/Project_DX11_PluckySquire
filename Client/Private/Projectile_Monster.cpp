@@ -125,7 +125,7 @@ HRESULT CProjectile_Monster::Change_Coordinate(COORDINATE _eCoordinate, _float3*
     return S_OK;
 }
 
-void CProjectile_Monster::On_Hit(CGameObject* _pHitter, _float _fDamg, _fvector _vForce)
+void CProjectile_Monster::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
 {
 
 }
@@ -136,11 +136,14 @@ void CProjectile_Monster::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO&
     {
         if((_uint)SHAPE_USE::SHAPE_BODY == _Other.pShapeUserData->iShapeUse)
         {
-            _vector vRepulse = 10.f * XMVector3Normalize(XMVectorSetY(_Other.pActorUserData->pOwner->Get_FinalPosition() - Get_FinalPosition(), 0.f));
-            XMVectorSetY(vRepulse, -1.f);
-            Event_Hit(this, static_cast<CCharacter*>(_Other.pActorUserData->pOwner), 1, vRepulse);
-            //Event_KnockBack(static_cast<CCharacter*>(_My.pActorUserData->pOwner), vRepulse);
-            Event_DeleteObject(this);
+            if(false == static_cast<CPlayer*>(_Other.pActorUserData->pOwner)->Is_Invincible())
+            {
+                _vector vRepulse = 10.f * XMVector3Normalize(XMVectorSetY(_Other.pActorUserData->pOwner->Get_FinalPosition() - Get_FinalPosition(), 0.f));
+                XMVectorSetY(vRepulse, -1.f);
+                Event_Hit(this, static_cast<CCharacter*>(_Other.pActorUserData->pOwner), 1, vRepulse);
+                //Event_KnockBack(static_cast<CCharacter*>(_My.pActorUserData->pOwner), vRepulse);
+                Event_DeleteObject(this);
+            }
         }
 
     }

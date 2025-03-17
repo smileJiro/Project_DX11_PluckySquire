@@ -1,8 +1,10 @@
 #include "stdafx.h"
 #include "Boss_WingSlice.h"
-#include "ModelObject.h"
+#include "FresnelModelObject.h"
 #include "Pooling_Manager.h"
 #include "GameInstance.h"
+#include "Effect_Trail.h"
+#include "Effect_Manager.h"
 
 CBoss_WingSlice::CBoss_WingSlice(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CProjectile_Monster(_pDevice, _pContext)
@@ -11,11 +13,31 @@ CBoss_WingSlice::CBoss_WingSlice(ID3D11Device* _pDevice, ID3D11DeviceContext* _p
 
 CBoss_WingSlice::CBoss_WingSlice(const CBoss_WingSlice& _Prototype)
     : CProjectile_Monster(_Prototype)
+    , m_pColorBuffer(_Prototype.m_pColorBuffer)
+    , m_pFresnelBuffer(_Prototype.m_pFresnelBuffer)
 {
+    Safe_AddRef(m_pColorBuffer);
+    Safe_AddRef(m_pFresnelBuffer);
 }
 
 HRESULT CBoss_WingSlice::Initialize_Prototype()
 {
+    FRESNEL_INFO tBulletFresnelInfo = {};
+    tBulletFresnelInfo.fBaseReflect = 0.18f;
+    tBulletFresnelInfo.fExp = 2.9f;
+    tBulletFresnelInfo.vColor = { 0.66f, 1.f, 0.f, 1.f };
+    tBulletFresnelInfo.fStrength = 1.f; // ¾È¾¸.
+    m_pGameInstance->CreateConstBuffer(tBulletFresnelInfo, D3D11_USAGE_DEFAULT, &m_pFresnelBuffer);
+
+
+    COLORS_INFO tColorsInfo = {};
+    tColorsInfo.vDiffuseColor = _float4(0.97f, 0.55f, 0.12f, 1.f);
+    tColorsInfo.vBloomColor = _float4(0.08f, 0.32f, 0.21f, 0.2f);
+    tColorsInfo.vSubColor = _float4(0.27f, 1.f, 0.6f, 0.1f);
+    tColorsInfo.vInnerColor = _float4(0.7f, 0.7f, 0.7f, 1.f);
+
+    m_pGameInstance->CreateConstBuffer(tColorsInfo, D3D11_USAGE_DEFAULT, &m_pColorBuffer);
+
 	return S_OK;
 }
 
@@ -75,7 +97,17 @@ HRESULT CBoss_WingSlice::Render()
 
 void CBoss_WingSlice::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
 {
-    __super::OnTrigger_Enter(_My, _Other);
+    if (OBJECT_GROUP::PLAYER & _Other.pActorUserData->iObjectGroup)
+    {
+        if ((_uint)SHAPE_USE::SHAPE_BODY == _Other.pShapeUserData->iShapeUse)
+        {
+            _vector vRepulse = 10.f * XMVector3Normalize(XMVectorSetY(_Other.pActorUserData->pOwner->Get_FinalPosition() - Get_FinalPosition(), 0.f));
+            XMVectorSetY(vRepulse, -1.f);
+            Event_Hit(this, static_cast<CCharacter*>(_Other.pActorUserData->pOwner), 1, vRepulse);
+            //Event_KnockBack(static_cast<CCharacter*>(_My.pActorUserData->pOwner), vRepulse);
+        }
+
+    }
 }
 
 void CBoss_WingSlice::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)
@@ -110,11 +142,18 @@ HRESULT CBoss_WingSlice::Cleanup_DeadReferences()
 
 void CBoss_WingSlice::Active_OnEnable()
 {
+    if (nullptr != m_pTrailEffect)
+        m_pTrailEffect->Delete_Effect();
+
+    CEffect_Manager::GetInstance()->Active_Effect(TEXT("WingSliceDust"), true, m_pControllerTransform->Get_WorldMatrix_Ptr());
+
     __super::Active_OnEnable();
 }
 
 void CBoss_WingSlice::Active_OnDisable()
 {
+    CEffect_Manager::GetInstance()->Stop_Spawn(TEXT("WingSliceDust"), 0.25f);
+
     __super::Active_OnDisable();
 }
 
@@ -175,19 +214,21 @@ HRESULT CBoss_WingSlice::Ready_Components()
 
 HRESULT CBoss_WingSlice::Ready_PartObjects()
 {
-    CModelObject::MODELOBJECT_DESC BodyDesc{};
+    CFresnelModelObject::FRESNEL_MODEL_DESC BodyDesc{};
+
+    m_PartObjects.resize(WINGSLICE_PART_END);
 
     BodyDesc.eStartCoord = m_pControllerTransform->Get_CurCoord();
     BodyDesc.iCurLevelID = m_iCurLevelID;
     BodyDesc.isCoordChangeEnable = m_pControllerTransform->Is_CoordChangeEnable();
 
     BodyDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
-    BodyDesc.strModelPrototypeTag_3D = TEXT("S_FX_CMN_Sonic_02");
+    BodyDesc.strModelPrototypeTag_3D = TEXT("S_FX_CMN_Sonic_03");
     BodyDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
-    BodyDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
+    BodyDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::NOISEFRESNEL;
 
     BodyDesc.iRenderGroupID_3D = RG_3D;
-    BodyDesc.iPriorityID_3D = PR3D_GEOMETRY;
+    BodyDesc.iPriorityID_3D = PR3D_PARTICLE;
 
     BodyDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D);
 
@@ -196,7 +237,13 @@ HRESULT CBoss_WingSlice::Ready_PartObjects()
     BodyDesc.tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
     BodyDesc.tTransform3DDesc.fSpeedPerSec = 10.f;
 
-    m_PartObjects[PART_BODY] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &BodyDesc));
+    BodyDesc.pFresnelBuffer = m_pFresnelBuffer;
+    BodyDesc.pColorBuffer = m_pColorBuffer;
+    BodyDesc.szDiffusePrototypeTag = L"Prototype_Component_Texture_BossWingAttack";
+    BodyDesc.vDiffuseScaling = { 1.f, 1.f };
+    BodyDesc.vNoiseScaling = { 0.f, 0.f };
+
+    m_PartObjects[PART_BODY] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_FresnelModelObject"), &BodyDesc));
     if (nullptr == m_PartObjects[PART_BODY])
         return E_FAIL;
 
@@ -205,6 +252,52 @@ HRESULT CBoss_WingSlice::Ready_PartObjects()
 
     //m_PartObjects[PART_BODY]->Get_ControllerTransform()->RotationXYZ(_float3(45.f, 0.f, -45.f));
     m_PartObjects[PART_BODY]->Get_ControllerTransform()->RotationQuaternion(_float3(XMConvertToRadians(0.f), XMConvertToRadians(90.f),XMConvertToRadians(0.f)));
+
+
+  /*  CEffect_System::EFFECT_SYSTEM_DESC EffectSystemDesc = {};
+    EffectSystemDesc.iCurLevelID = m_iCurLevelID;
+    EffectSystemDesc.isCoordChangeEnable = false;
+    EffectSystemDesc.iSpriteShaderLevel = LEVEL_STATIC;
+    EffectSystemDesc.szSpriteShaderTags = L"Prototype_Component_Shader_VtxPointInstance";
+    EffectSystemDesc.iEffectShaderLevel = LEVEL_STATIC;
+    EffectSystemDesc.szEffectShaderTags = L"Prototype_Component_Shader_VtxMeshEffect";
+    EffectSystemDesc.szSpriteComputeShaderTag = L"Prototype_Component_Compute_Shader_SpriteInstance";
+
+    m_PartObjects[WINGSLICE_PART_EFFECT] = m_pDustEffect = static_cast<CEffect_System*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_iCurLevelID, TEXT("WingSliceDust.json"), &EffectSystemDesc));
+    if (nullptr != m_pDustEffect)
+    {
+        m_pDustEffect->Set_ParentMatrix(COORDINATE_3D, m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D));
+    }
+
+    Safe_AddRef(m_pDustEffect);
+
+    if (nullptr != m_pDustEffect)
+        m_pDustEffect->Active_All();*/
+
+    CEffect_Trail::EFFECTTRAIL_DESC TrailDesc = {};
+    TrailDesc.eStartCoord = COORDINATE_3D;
+    TrailDesc.iCurLevelID = m_iCurLevelID;
+    TrailDesc.isCoordChangeEnable = false;
+    TrailDesc.pParentMatrices[COORDINATE_3D] = m_pControllerTransform->Get_WorldMatrix_Ptr();
+    TrailDesc.fLength = 40.f;
+    TrailDesc.vAddPoint = _float3(0.f, 20.f, -1.5f);
+    TrailDesc.vColor = _float4(0.2f, 1.f, 0.6f, 1.f);
+    TrailDesc.szTextureTag = L"Prototype_Component_Texture_WingSlam";
+    TrailDesc.iTextureLevel = m_iCurLevelID;
+    TrailDesc.szBufferTag = L"Prototype_Component_VIBuffer_Trail64";
+    TrailDesc.fAddTime = 0.03f;
+    TrailDesc.fTrailLifeTime = 0.4f;
+    TrailDesc.eTrailType = CEffect_Trail::FOLLOW_TRAIL;
+
+    m_PartObjects[WINGSLICE_PART_TRAIL] = m_pTrailEffect = static_cast<CEffect_Trail*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_EffectTrail"), &TrailDesc));
+
+    if (nullptr != m_pTrailEffect)
+    {
+        m_pTrailEffect->Get_ControllerTransform()->Rotation(XMConvertToRadians(90.f), XMVectorSet(0.f, 0.f, 1.f, 0.f));
+        m_pTrailEffect->Set_AddUpdate(true);
+    }
+
+    Safe_AddRef(m_pTrailEffect);
 
     return S_OK;
 }
@@ -237,5 +330,9 @@ CGameObject* CBoss_WingSlice::Clone(void* _pArg)
 
 void CBoss_WingSlice::Free()
 {
+    Safe_Release(m_pColorBuffer);
+    Safe_Release(m_pFresnelBuffer);
+    Safe_Release(m_pTrailEffect);
+
     __super::Free();
 }

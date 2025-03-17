@@ -72,7 +72,10 @@ void CWorldMapNpc_Jot::Late_Update(_float _fTimeDelta)
 HRESULT CWorldMapNpc_Jot::Render()
 {
 	if (Is_Active())
-		return __super::Render();
+	{
+		__super::Render();
+		DisplayLocationName();
+	}
 
 	return S_OK;
 }
@@ -157,5 +160,142 @@ void CWorldMapNpc_Jot::Free()
 
 HRESULT CWorldMapNpc_Jot::Cleanup_DeadReferences()
 {
+	return S_OK;
+}
+
+HRESULT CWorldMapNpc_Jot::DisplayLocationName()
+{
+
+
+	_float2 vMidPoint = { RTSIZE_BOOK2D_X / 2.f, RTSIZE_BOOK2D_Y / 2.f };
+
+	_float2 vCalPos = { 0.f, 0.f };
+	_float2 vTextPos = { 0.f, 0.f };
+
+	switch ((CWorldMapNPC::MOVEPOS)m_iCurIndex)
+	{
+	case CWorldMapNPC::POS_HONEYBEE:
+	{
+		DisplayHoneyBee(vMidPoint);
+	}
+	break;
+
+	case CWorldMapNPC::POS_TOWER:
+	{
+		DisplayHoneyBee(vMidPoint);
+		vTextPos = _float2(-272.f, 188.1f);
+		wsprintf(m_strLocationName, L"½ÃÀÇ ´Ë");
+		//m_strLocationName = TEXT("½ÃÀÇ ´Ë");
+
+		vCalPos.x = vMidPoint.x + vTextPos.x;
+		vCalPos.y = vMidPoint.y - vTextPos.y;
+
+		if (FAILED(m_pGameInstance->Render_Font(TEXT("Font18"), m_strLocationName, _float2((vCalPos.x), (vCalPos.y + 25.f)), XMVectorSet(0.f, 0.f, 0.f, 1.f))))
+			return E_FAIL;
+	}
+	break;
+
+	case CWorldMapNPC::POS_SWAMPEND:
+	{
+		DisplayHoneyBee(vMidPoint);
+		vTextPos = _float2(-272.f, 188.1f);
+		wsprintf(m_strLocationName, L"½ÃÀÇ ´Ë");
+		//m_strLocationName = TEXT("½ÃÀÇ ´Ë");
+
+		vCalPos.x = vMidPoint.x + vTextPos.x;
+		vCalPos.y = vMidPoint.y - vTextPos.y;
+
+		if (FAILED(m_pGameInstance->Render_Font(TEXT("Font18"), m_strLocationName, _float2((vCalPos.x), (vCalPos.y + 25.f)), XMVectorSet(0.f, 0.f, 0.f, 1.f))))
+			return E_FAIL;
+
+		vTextPos = _float2(99.1f, 70.5f);
+		wsprintf(m_strLocationName, L"¾Æ¸£Æ¼¾Æ");
+		//m_strLocationName = TEXT("¾Æ¸£Æ¼¾Æ");
+
+		vCalPos.x = vMidPoint.x + vTextPos.x;
+		vCalPos.y = vMidPoint.y - vTextPos.y;
+
+		if (FAILED(m_pGameInstance->Render_Font(TEXT("Font30"), m_strLocationName, _float2((vCalPos.x), (vCalPos.y + 25.f)), XMVectorSet(0.f, 0.f, 0.f, 1.f))))
+			return E_FAIL;
+	}
+	break;
+
+	case CWorldMapNPC::POS_ATRIA:
+	{
+		DisplayHoneyBee(vMidPoint);
+		vTextPos = _float2(-272.f, 188.1f);
+		wsprintf(m_strLocationName, L"½ÃÀÇ ´Ë");
+		//m_strLocationName = TEXT("½ÃÀÇ ´Ë");
+
+		vCalPos.x = vMidPoint.x + vTextPos.x;
+		vCalPos.y = vMidPoint.y - vTextPos.y;
+
+		if (FAILED(m_pGameInstance->Render_Font(TEXT("Font18"), m_strLocationName, _float2((vCalPos.x), (vCalPos.y + 25.f)), XMVectorSet(0.f, 0.f, 0.f, 1.f))))
+			return E_FAIL;
+
+		vTextPos = _float2(99.1f, 70.5f);
+		wsprintf(m_strLocationName, L"¾Æ¸£Æ¼¾Æ");
+		//m_strLocationName = TEXT("¾Æ¸£Æ¼¾Æ");
+
+		vCalPos.x = vMidPoint.x + vTextPos.x;
+		vCalPos.y = vMidPoint.y - vTextPos.y;
+
+		if (FAILED(m_pGameInstance->Render_Font(TEXT("Font30"), m_strLocationName, _float2((vCalPos.x), (vCalPos.y + 25.f)), XMVectorSet(0.f, 0.f, 0.f, 1.f))))
+			return E_FAIL;
+
+		vTextPos = _float2(282.9f, -200.f);
+		wsprintf(m_strLocationName, L"Æ®¶ó¸£±× »ê");
+		//m_strLocationName = TEXT("Æ®¶ó¸£±× »ê");
+
+		vCalPos.x = vMidPoint.x + vTextPos.x;
+		vCalPos.y = vMidPoint.y - vTextPos.y;
+
+		if (FAILED(m_pGameInstance->Render_Font(TEXT("Font24"), m_strLocationName, _float2((vCalPos.x), (vCalPos.y + 25.f)), XMVectorSet(0.f, 0.f, 0.f, 1.f))))
+			return E_FAIL;
+	}
+	break;
+
+	}
+
+	return S_OK;
+}
+
+HRESULT CWorldMapNpc_Jot::DisplayHoneyBee(_float2 _MidPoint)
+{
+	_float2 Middle = _MidPoint;
+
+	_float2 vText = { 0.f, 0.f };
+	_float2 vCal = { 0.f, 0.f };
+
+	vText = _float2(-507.f, -206.f);
+	wsprintf(m_strLocationName, L"¸Ô¹°½£");
+	//m_strLocationName = TEXT("¸Ô¹°½£");
+
+	vCal.x = Middle.x + vText.x;
+	vCal.y = Middle.y - vText.y;
+
+	if (FAILED(m_pGameInstance->Render_Font(TEXT("Font18"), m_strLocationName, _float2((vCal.x), (vCal.y + 25.f)), XMVectorSet(0.f, 0.f, 0.f, 1.f))))
+		return E_FAIL;
+
+	vText = _float2(-474.f, -66.f);
+	wsprintf(m_strLocationName, L"¹ú²Ü ºÀ¿ì¸®");
+	//m_strLocationName = TEXT("¹ú²Ü ºÀ¿ì¸®");
+
+	vCal.x = _MidPoint.x + vText.x;
+	vCal.y = _MidPoint.y - vText.y;
+
+	if (FAILED(m_pGameInstance->Render_Font(TEXT("Font18"), m_strLocationName, _float2((vCal.x), (vCal.y + 25.f)), XMVectorSet(0.f, 0.f, 0.f, 1.f))))
+		return E_FAIL;
+
+	vText = _float2(-560.f, 175.9f);
+	wsprintf(m_strLocationName, L"Ã¥ÀÇ Å¾");
+	//m_strLocationName = TEXT("Ã¥ÀÇ Å¾");
+
+	vCal.x = _MidPoint.x + vText.x;
+	vCal.y = _MidPoint.y - vText.y;
+
+	if (FAILED(m_pGameInstance->Render_Font(TEXT("Font18"), m_strLocationName, _float2((vCal.x), (vCal.y + 25.f)), XMVectorSet(0.f, 0.f, 0.f, 1.f))))
+		return E_FAIL;
+
 	return S_OK;
 }

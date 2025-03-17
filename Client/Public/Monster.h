@@ -11,6 +11,8 @@ BEGIN(Client)
 class CFSM;
 class CDetectionField;
 class CSneak_DetectionField;
+class CFormation;
+
 class CMonster abstract : public CCharacter, public IAnimEventReceiver
 {
 public:
@@ -31,6 +33,8 @@ public:
 		_bool isStay = false;
 		_float3 vLook = { 0.f,0.f,-1.f };
 		_bool isSneakMode = false;
+		_bool isFormationMode = false;
+		CFormation* pFormation = { nullptr };
 		SNEAKWAYPOINTINDEX eWayIndex = SNEAKWAYPOINTINDEX::LAST;
 	}MONSTER_DESC;
 
@@ -95,6 +99,16 @@ public:
 		return m_isCombatMode;
 	}
 
+	void Set_FormationMode(_bool _isFormation)
+	{
+		m_isFormationMode = _isFormation;
+	}
+
+	_bool Is_FormationMode()
+	{
+		return m_isFormationMode;
+	}
+
 	_bool IsDelay() 
 	{
 		return m_isDelay;
@@ -137,6 +151,9 @@ public:
 	{
 		return m_fRayHalfWidth;
 	}
+
+
+	_bool Is_Formation_Stop();
 
 public:
 	virtual HRESULT Initialize_Prototype() override;
@@ -193,6 +210,11 @@ public:
 	_bool						Check_Block(_float _fTimeDelta);	// 다음 위치가 장애물에 막히는지 체크
 	_bool						Check_Block(_fvector _vForce, _float _fTimeDelta);	// 다음 위치가 장애물에 막히는지 체크
 
+								//비어있는 대열로 추가
+	_bool						Add_To_Formation();
+	_bool						Remove_From_Formation();
+	_bool							Get_Formation_Position(_float3* _vPosition);
+
 protected:
 	void Delay_On() 
 	{ 
@@ -223,6 +245,7 @@ protected:
 	CAnimEventGenerator* m_pAnimEventGenerator = { nullptr };
 	CDetectionField* m_pDetectionField = { nullptr };
 	CSneak_DetectionField* m_pSneak_DetectionField = { nullptr };
+	CFormation* m_pFormation = { nullptr };
 
 #ifdef _DEBUG
 	CDebugDraw_For_Client* m_pDraw = { nullptr };
@@ -263,6 +286,8 @@ protected:
 	_bool m_isSneakMode = { false };
 	//잠입 모드 해제 후 전투모드
 	_bool m_isCombatMode = { false };
+	//대열 모드
+	_bool m_isFormationMode = { false };
 
 	//장애물 탐지
 	SNEAKWAYPOINTINDEX m_eWayIndex;

@@ -10,7 +10,7 @@ public :
 	}SECTION_2D_NARRATION_DESC;
 
 private:
-	CSection_2D_Narration(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
+	CSection_2D_Narration(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, SECTION_2D_PLAY_TYPE _ePlayType);
 	virtual ~CSection_2D_Narration() = default;
 
 public:
@@ -28,11 +28,11 @@ public:
 	// 맵 연결 생각안해놨는데, 일단 해보자.
 
 public:
-	static CSection_2D_Narration* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, void* _pDesc);
+	static CSection_2D_Narration* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext,  SECTION_2D_PLAY_TYPE _ePlayType, void* _pDesc);
 	void Free() override;
 
 private:
-	_bool		m_FirstPlay[8] = { false, false, false, false, false, false, false, false };
+	_bool		m_FirstPlay[9] = { false, false, false, false, false, false, false, false, false };
 };
 
 END

@@ -329,13 +329,16 @@ HRESULT CSection_Manager::Change_CurSection(const _wstring _strSectionKey)
 		Main_Section_Active_Process(m_pCurSection->Get_SectionName());
 
 
-		CSection_2D_Narration* pNarrationSection = static_cast<CSection_2D_Narration*>(pSection_2D);
 
-		if (nullptr == pNarrationSection)
-			return S_OK;
+		if (CSection_2D::SECTION_2D_PLAY_TYPE::NARRAION == pSection_2D->Get_Section_2D_PlayType())
+		{
+			CSection_2D_Narration* pNarrationSection = static_cast<CSection_2D_Narration*>(pSection_2D);
 
-		pNarrationSection->Start_Narration();
+			if (nullptr == pNarrationSection)
+				return S_OK;
 
+			pNarrationSection->Start_Narration();
+		}
 
 		return S_OK;
 	}
@@ -721,13 +724,15 @@ HRESULT CSection_Manager::Ready_CurLevelSections(const _wstring& _strJsonPath)
 			}
 			break;
 			case Client::CSection_2D::NARRAION:
+			case Client::CSection_2D::WORLDMAP:
 			{
 				CSection_2D_Narration::SECTION_2D_NARRATION_DESC Desc = {};
 				Desc.isImport = true;
 				Desc.iPriorityID = m_iPriorityGenKey;
 				Desc.SectionJson = ChildJson;
-				// TODO :: 상욱님 나레이션 섹션 생성 코드 작성 , pSection에 넣어야함.
-				pSection = CSection_2D_Narration::Create(m_pDevice, m_pContext, &Desc);
+				// TODO :: 0316 박예슬 나레이션-월드맵 수정요청 
+				pSection = CSection_2D_Narration::Create(m_pDevice, m_pContext, eType, &Desc);
+				//pSection = CSection_2D_Narration::Create(m_pDevice, m_pContext, CSection_2D::NARRAION, &Desc);
 				if (nullptr == pSection)
 				{
 					MSG_BOX("Failed Create CNarration_2D");

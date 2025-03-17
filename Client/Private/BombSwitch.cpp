@@ -44,7 +44,7 @@ HRESULT CBombSwitch::Initialize(void* _pArg)
     CircleDesc.fRadius = 30.f;
     CircleDesc.vScale = { 1.0f, 1.0f };
     CircleDesc.vOffsetPosition = { 0.f, CircleDesc.fRadius};
-    CircleDesc.isBlock = false;
+    CircleDesc.isBlock = true;
     CircleDesc.isTrigger = true;
     CircleDesc.iCollisionGroupID = OBJECT_GROUP::GIMMICK_OBJECT;
 
@@ -58,13 +58,13 @@ HRESULT CBombSwitch::Initialize(void* _pArg)
 
 HRESULT CBombSwitch::Render()
 {
-
+    __super::Render();
 #ifdef _DEBUG
     if (m_p2DColliderComs[0]->Is_Active())
         m_p2DColliderComs[0]->Render(SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName));
 
 #endif // _DEBUG
-    return __super::Render();
+    return S_OK;
 }
 
 
