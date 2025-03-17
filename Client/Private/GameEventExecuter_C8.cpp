@@ -9,10 +9,18 @@
 #include "Player.h"
 #include "GameInstance.h"
 #include "Beetle.h"
+#include "Blocker.h"
+#include "Big_Laser.h"
+#include "PrintFloorWord.h"
+#include "Friend_Pip.h"
 
 #include "Camera_CutScene.h"
+#include "Effect2D_Manager.h"
+#include "2DMapActionObject.h"
 #include "Room_Door.h"
 #include "Book.h"
+
+#include "PlayerBody.h"
 
 CGameEventExecuter_C8::CGameEventExecuter_C8(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CGameEventExecuter(_pDevice, _pContext)
@@ -50,8 +58,14 @@ void CGameEventExecuter_C8::Update(_float _fTimeDelta)
 	{
 		switch ((CTrigger_Manager::EVENT_EXECUTER_ACTION_TYPE)m_iEventExcuterAction)
 		{
+		case Client::CTrigger_Manager::CHAPTER8_LASER_STAGE:
+			Chapter8_Laser_Stage(_fTimeDelta);
+			break;
 		case Client::CTrigger_Manager::CHAPTER8_INTRO:
 			Chapter8_Intro(_fTimeDelta);
+			break;
+		case Client::CTrigger_Manager::CHAPTER8_MAP_INTRO:
+			Chapter8_Map_Intro(_fTimeDelta);
 			break;
 		case Client::CTrigger_Manager::CHAPTER8_INTRO_POSTIT_SEQUENCE:
 			Chapter8_Intro_Postit_Sequence(_fTimeDelta);
@@ -83,6 +97,281 @@ void CGameEventExecuter_C8::Update(_float _fTimeDelta)
 
 void CGameEventExecuter_C8::Late_Update(_float _fTimeDelta)
 {
+}
+
+void CGameEventExecuter_C8::Chapter8_Laser_Stage(_float _fTimeDelta)
+{
+	m_fTimer += _fTimeDelta;
+
+
+	// INDEX : 0 -> 레이저, 1-> 다리, 2->블로커
+	enum LASER_STAGE {
+		LASER,
+		BRIDGE,
+		BLOCKER,
+		PIP,
+		LAST
+	};
+
+
+	CPlayer* pPlayer = Get_Player();
+	if (pPlayer == nullptr)
+		return;
+
+
+
+#pragma region 죽었을때 처리 
+	if (pPlayer->Get_CurrentStateID() == CPlayer::DIE)
+	{
+		if (false == m_isPlayerFirstDead)
+		{
+			m_isPlayerFirstDead = true;
+			pPlayer->Set_BlockPlayerInput(true);
+			Init_Step();
+		}
+		else if (Step_Check(STEP_0))
+		{
+			Next_Step_Over(1.f);
+		}
+		else if(Step_Check(STEP_1)) 
+		{
+			if (Is_Start())
+				CCamera_Manager::GetInstance()->Start_FadeOut();
+			else
+				Next_Step_Over(1.5f);
+		}
+		else if(Step_Check(STEP_2)) 
+		{
+			if (Is_Start())
+			{
+
+				for (_uint i = 0; i < LAST; i++)
+				{
+					// 원복시켜놓자. 
+					// 다리는 지우지말까?
+					if (i != BRIDGE)
+						Event_DeleteObject(m_TargetObjects[i]);
+					else
+						m_TargetObjects[BRIDGE]->Set_Position({});
+					m_TargetObjects[i] = nullptr;
+				}
+
+
+				_vector vPos = XMVectorSet(-808.1f, 192.f, 0.f, 0.f);
+				pPlayer->Set_Position(vPos);
+				pPlayer->Revive();
+				CCamera_Manager::GetInstance()->Start_FadeIn();
+			}
+			else
+				Next_Step_Over(0.5f);
+		}
+		else if (Step_Check(STEP_3))
+		{
+			// 트 리 거  제위치에... 다시 생성하고, 이 이벤트는 종료하자. 
+			
+			CTriggerObject::TRIGGEROBJECT_DESC Desc = {};
+			Desc.vHalfExtents = { 100.f, 120.0f, 0.f };
+			Desc.iTriggerType = (_uint)TRIGGER_TYPE::EVENT_TRIGGER;
+			Desc.szEventTag = TEXT("Chapter8_Laser_Stage");
+			Desc.eConditionType = CTriggerObject::TRIGGER_ENTER;
+			Desc.isReusable = false; // 한 번 하고 삭제할 때
+			Desc.eStartCoord = COORDINATE_2D;
+			Desc.tTransform2DDesc.vInitialPosition = { -806.f,-180.f, 0.f };
+
+			CSection* pBookSection = CSection_Manager::GetInstance()->Find_Section(TEXT("Chapter8_P1112"));
+			CTrigger_Manager::GetInstance()->Create_TriggerObject(LEVEL_STATIC, LEVEL_CHAPTER_2, &Desc, pBookSection);
+
+
+
+
+			pPlayer->Set_BlockPlayerInput(false);
+			GameEvent_End();
+		}
+	}
+#pragma endregion
+	else
+	{
+		// 스텝 1. 레이저 생성, 맵오브젝트들 배치.
+		if (Step_Check(STEP_0))
+		{
+			if (Is_Start())
+			{
+
+				m_TargetObjects.resize(LAST);
+
+				// 플레이어 인풋 막기.
+				pPlayer->Set_BlockPlayerInput(true);
+				CGameObject* pGameObject = nullptr;
+
+				//레이저 생성
+				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_iCurLevelID, TEXT("Prototype_GameObject_Big_Laser"), m_iCurLevelID, L"Layer_MapGimmik", &pGameObject)))
+					return;
+				else
+					m_TargetObjects[LASER] = pGameObject;
+				if (FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(SECTION_MGR->Get_Cur_Section_Key(), pGameObject)))
+					return;
+
+				// 다리 찾기.
+				CSection_2D* pSection = static_cast<CSection_2D*>(SECTION_MGR->Find_Section(SECTION_MGR->Get_Cur_Section_Key()));
+				auto pLayer = pSection->Get_Section_Layer(SECTION_PLAYMAP_2D_RENDERGROUP::SECTION_2D_PLAYMAP_BACKGROUND);
+				const auto& Objects = pLayer->Get_GameObjects();
+
+				for (auto iter = Objects.begin() ; iter != Objects.end() ; )
+				{
+					auto pActionObj = dynamic_cast<C2DMapActionObject*>(*iter);
+
+					if (nullptr != pActionObj)
+					{
+						//if (C2DMapActionObject::ACTIVE_TYPE_DYNAMIC_BACKGROUND == pActionObj->Get_ActionType())
+						//{
+						//	// 어차피 포탈이 없는 맵이고, 다리에 대한 소팅이 필요하기때문에 한단 위로 올려준다.
+						//	SECTION_MGR->Change_GameObject_LayerIndex(pActionObj->Get_Include_Section_Name(), pActionObj, SECTION_2D_PLAYMAP_PORTAL);
+						//	continue;
+						//}
+						//else 
+							if (C2DMapActionObject::ACTIVETYPE_MOVING_BRIDGE == pActionObj->Get_ActionType())
+							// 다리 찾아서 세팅.
+							m_TargetObjects[BRIDGE] = pActionObj;
+					}
+					iter++;
+				}
+
+				// 다리 막는 블로커 세팅. 
+				CBlocker::BLOCKER2D_DESC Desc = {};
+				Desc.iCurLevelID = (LEVEL_ID)CSection_Manager::GetInstance()->Get_SectionLeveID();
+				Desc.vColliderExtents = { 1.f, 1.f};
+				Desc.vColliderScale = { 30.f, 132.6f };
+				Desc.Build_2D_Transform({ 238.f, -180.f });
+				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC,
+					TEXT("Prototype_GameObject_Blocker2D"), Desc.iCurLevelID, L"Layer_Blocker", &pGameObject, &Desc)))
+				{
+					assert(nullptr);
+					return;
+				}
+				else
+				{
+					SECTION_MGR->Add_GameObject_ToCurSectionLayer(pGameObject, SECTION_2D_PLAYMAP_TRIGGER);
+					m_TargetObjects[BLOCKER] = pGameObject;
+				}
+
+				//핍 생성 .
+				_wstring  strFriendTag = L"Pip";
+				CFriend_Pip::FRIEND_DESC PipDesc{};
+				PipDesc.Build_2D_Transform(_float2(590.00f, 160.00f), _float2(1.0f, 1.0f), 400.f);
+				PipDesc.iCurLevelID = m_iCurLevelID;
+				PipDesc.eStartState = CFriend::FRIEND_IDLE;
+				PipDesc.eStartDirection = CFriend::DIR_LEFT;
+				PipDesc.iModelTagLevelID = LEVEL_STATIC;
+				PipDesc.iNumDialoguesIndices = 0;
+				PipDesc.strFightLayerTag = TEXT("Layer_Monster");
+
+				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Friend_Pip"), m_iCurLevelID, L"Layer_Friend", &pGameObject, &PipDesc)))
+					return;
+
+				if (FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(SECTION_MGR->Get_Cur_Section_Key(), pGameObject)))
+					return;
+				m_TargetObjects[PIP] = pGameObject;
+				m_TargetObjects[PIP]->Set_Active(false);
+				//CFriend_Controller::GetInstance()->Register_Friend(strFriendTag, static_cast<CFriend*>(pGameObject));
+				// 그냥 생성하자마자 바로 조금 옆으로움직여주자.
+				static_cast<CBig_Laser*>(m_TargetObjects[LASER])->Move_Start(300.f, 200.f);
+
+			}
+
+			Next_Step(false == static_cast<CBig_Laser*>(m_TargetObjects[LASER])->Is_Move());
+		}
+		// 다 옆으로 움직였으면, 켜자.
+		else if (Step_Check(STEP_1))
+		{
+			if (Is_Start())
+			{
+				static_cast<CModelObject*>(m_TargetObjects[LASER])->Switch_Animation(CBig_Laser::LASER_START);
+			}
+			Next_Step_Over(1.5f);
+		}
+		// 움직이기 시작한다. 플레이어 무빙을 해제한다.
+		else if (Step_Check(STEP_2))
+		{
+			if (Is_Start())
+			{
+				static_cast<CBig_Laser*>(m_TargetObjects[LASER])->Move_Start(1800.f, 100.f);
+				pPlayer->Set_BlockPlayerInput(false);
+			}
+			Next_Step_Over(2.f);
+		}
+		// 매혹적
+		else if (Step_Check(STEP_3))
+		{
+			if (Is_Start())
+			{
+				auto pLayer = m_pGameInstance->Find_Layer(m_iCurLevelID,L"Layer_FloorWord");
+				if (nullptr != pLayer)
+				{
+					auto GameObjects = pLayer->Get_GameObjects();
+					if (false == GameObjects.empty())
+					{
+						for (auto pWord : GameObjects)
+						{
+							auto pFloorWord = dynamic_cast<CPrintFloorWord*>(pWord);
+							if (nullptr != pFloorWord)
+							{
+								if (pPlayer->Get_Include_Section_Name() == pFloorWord->Get_Include_Section_Name())
+									pFloorWord->Start_FloorWord();
+							}
+						}
+					
+					}
+				}
+			}
+			Next_Step_Over(3.f);
+		}
+		// 찍찍이가 구해주는거. 
+		else if (Step_Check(STEP_4))
+		{
+			if (Is_Start())
+			{
+				m_TargetObjects[PIP]->Set_Active(true);
+				static_cast<CFriend*>(m_TargetObjects[PIP])->Swicth_Animation(CFriend_Pip::PIP_C09_JUMPUP);
+			}
+			Next_Step_Over(0.5f);
+		}		
+		else if (Step_Check(STEP_5))
+		{
+			if (Is_Start())
+			{
+				static_cast<CFriend*>(m_TargetObjects[PIP])->Swicth_Animation(CFriend_Pip::PIP_BUTTONPUSH);
+			}
+			Next_Step_Over(0.5f);
+		}		
+		else if (Step_Check(STEP_6))
+		{
+			_vector vTargetPos = m_TargetObjects[BRIDGE]->Get_FinalPosition();
+			vTargetPos = XMVectorSetX(vTargetPos, 452.0f);
+
+			if (Is_Start())
+			{
+			}
+			_vector vDir = XMVectorSetW(XMVector2Normalize(vTargetPos - m_TargetObjects[BRIDGE]->Get_FinalPosition()), 0.f);
+			m_TargetObjects[BRIDGE]->Get_ControllerTransform()->Go_Direction(vDir, _fTimeDelta);
+			//static_cast<CModelObject*>(m_TargetObjects[BRIDGE])->Get_ControllerTransform()->MoveTo(vTargetPos,_fTimeDelta);
+			Next_Step(m_TargetObjects[BRIDGE]->Get_ControllerTransform()->Compute_Distance(vTargetPos) < 2.f);
+		}
+		else if (Step_Check(STEP_7))
+		{
+			if (Is_Start())
+			{
+				Event_DeleteObject(m_TargetObjects[BLOCKER]);
+			}
+			Next_Step(true);
+		}
+		else
+		{
+			GameEvent_End();
+		}
+
+	}
+
+
 }
 
 void CGameEventExecuter_C8::Chapter8_Intro(_float _fTimeDelta)
@@ -138,22 +427,83 @@ void CGameEventExecuter_C8::Chapter8_Intro(_float _fTimeDelta)
 	}
 }
 
+void CGameEventExecuter_C8::Chapter8_Map_Intro(_float _fTimeDelta)
+{
+	m_fTimer += _fTimeDelta;
+
+	if (Step_Check(STEP_0))
+	{
+		CPlayer* pPlayer = Get_Player();
+
+		if (Is_Start()) {
+			// 1. Player 움직임 막기
+			pPlayer->Set_BlockPlayerInput(true);
+
+			// 2. 어리둥절 애니메이션 재생
+			pPlayer->Swicth_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_IDLE_NERVOUS_TURN_01_GT);
+		}
+		
+		
+		if (false == static_cast<CPlayerBody*>(pPlayer->Get_Body())->Is_DuringAnimation() &&
+			m_fTimer >= 0.7f) {
+			Next_Step(true);
+		}
+	}
+	else if (Step_Check(STEP_1)) {
+		// 3. CutScene 재생
+		CCamera_Manager::GetInstance()->Set_NextCutSceneData(TEXT("Chapter8_Map_Intro"));
+		CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::CUTSCENE, true, 0.8f);
+		Next_Step(true);
+	}
+	else if (Step_Check(STEP_2)) {
+		CCamera_CutScene* pCamera = static_cast<CCamera_CutScene*>(CCamera_Manager::GetInstance()->Get_CurrentCamera());
+		if (true == pCamera->Is_Finish_CutScene()) {
+			Next_Step(true);
+		}
+	}
+	else if (Step_Check(STEP_3)) {
+		if (Is_Start()) {
+			CCamera_Manager::GetInstance()->Start_FadeOut(0.8f);
+		}
+
+		// 4. FadeOut이 끝난 후 CutScene Camera -> Target Camera로 전환
+		if (m_fTimer > 0.8f) {
+			static_cast<CCamera_CutScene*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::CUTSCENE))->Set_Pause_After_CutScene(false);
+			Next_Step(true);
+		}
+	}
+	// 5. 전환 후 Target Camera로(다음 프레임) FadeIn 시작 + 기존 CutScene Camera를 다시 밝게 만들기
+	else if (Step_Check(STEP_4)) {
+		if (Is_Start()) {
+			CCamera_Manager::GetInstance()->Start_FadeIn(0.7f);
+			CCamera_Manager::GetInstance()->Set_FadeRatio(CCamera_Manager::CUTSCENE, 1.f, true);
+
+			CPlayer* pPlayer = Get_Player();
+
+			// 6. Player 움직임 풀기
+			pPlayer->Set_BlockPlayerInput(false);
+			
+			GameEvent_End();
+		}
+	}
+}
+
 void CGameEventExecuter_C8::Chapter8_Intro_Postit_Sequence(_float _fTimeDelta)
 {
 	m_fTimer += _fTimeDelta;
 
-	function fCamerafunc = []() 
+	function fCamerafunc = []()
 		{
 			// <-으로 돌리기. 1초동안
-		CCamera_Manager::GetInstance()->Start_Turn_AxisY(CCamera_Manager::TARGET, 1.f, XMConvertToRadians(-40.f), XMConvertToRadians(-25.f));
-		 // 암 3.f 줄이기, 1초동안
-		CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Decrease(CCamera_Manager::TARGET, 1.f,
-			3.f, EASE_IN_OUT);
-		// 타겟 오프셋 y -2.f
-		CCamera_Manager::GetInstance()->Start_Changing_AtOffset(CCamera_Manager::TARGET,
-			1.f,
-			XMVectorSet(0.f, -2.f, 0.f, 0.f),
-			EASE_IN_OUT);
+			CCamera_Manager::GetInstance()->Start_Turn_AxisY(CCamera_Manager::TARGET, 1.f, XMConvertToRadians(-40.f), XMConvertToRadians(-25.f));
+			// 암 3.f 줄이기, 1초동안
+			CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Decrease(CCamera_Manager::TARGET, 1.f,
+				3.f, EASE_IN_OUT);
+			// 타겟 오프셋 y -2.f
+			CCamera_Manager::GetInstance()->Start_Changing_AtOffset(CCamera_Manager::TARGET,
+				1.f,
+				XMVectorSet(0.f, -2.f, 0.f, 0.f),
+				EASE_IN_OUT);
 		};
 	if (true == Postit_Process(L"Chapter8_SKSP_Postit", L"Chapter8_Intro_Postit_Sequence", 1.f, CPostit_Page::POSTIT_PAGE_POSTION_TYPE_A, true, fCamerafunc))
 	{
@@ -169,16 +519,16 @@ void CGameEventExecuter_C8::Chapter8_Sword(_float _fTimeDelta)
 {
 	m_fTimer += _fTimeDelta;
 
-	function fCamerafunc = []() 
+	function fCamerafunc = []()
 		{
-		CCamera_Manager::GetInstance()->Start_Turn_AxisY(CCamera_Manager::TARGET, 1.f, XMConvertToRadians(60.f), (_uint)EASE_IN_OUT);
+			CCamera_Manager::GetInstance()->Start_Turn_AxisY(CCamera_Manager::TARGET, 1.f, XMConvertToRadians(60.f), (_uint)EASE_IN_OUT);
 
-		//CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Increase(CCamera_Manager::TARGET, 1.f,
-		//	3.f, EASE_IN_OUT);
-		CCamera_Manager::GetInstance()->Start_Changing_AtOffset(CCamera_Manager::TARGET,
-			1.f,
-			XMVectorSet(0.f, -2.5f, 0.f, 0.f),
-			EASE_IN_OUT);
+			//CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Increase(CCamera_Manager::TARGET, 1.f,
+			//	3.f, EASE_IN_OUT);
+			CCamera_Manager::GetInstance()->Start_Changing_AtOffset(CCamera_Manager::TARGET,
+				1.f,
+				XMVectorSet(0.f, -2.5f, 0.f, 0.f),
+				EASE_IN_OUT);
 		};
 	if (true == Postit_Process(L"Chapter8_SKSP_Postit", L"Chapter8_Sword", 1.f, CPostit_Page::POSTIT_PAGE_POSTION_TYPE_A, false, fCamerafunc))
 	{
@@ -211,16 +561,16 @@ void CGameEventExecuter_C8::Chapter8_Stop_Stamp(_float _fTimeDelta)
 {
 	m_fTimer += _fTimeDelta;
 
-	function fCamerafunc = []() 
+	function fCamerafunc = []()
 		{
 			// <-으로 돌리기. 1초동안
-		CCamera_Manager::GetInstance()->Start_Turn_AxisY(CCamera_Manager::TARGET, 1.f, XMConvertToRadians(-70.f), (_uint)EASE_IN_OUT);
-		CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Increase(CCamera_Manager::TARGET, 1.f,
+			CCamera_Manager::GetInstance()->Start_Turn_AxisY(CCamera_Manager::TARGET, 1.f, XMConvertToRadians(-70.f), (_uint)EASE_IN_OUT);
+			CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Increase(CCamera_Manager::TARGET, 1.f,
 				3.f, EASE_IN_OUT);
-		CCamera_Manager::GetInstance()->Start_Changing_AtOffset(CCamera_Manager::TARGET,
-			1.f,
-			XMVectorSet(0.f, -2.f, 0.f, 0.f),
-			EASE_IN_OUT);
+			CCamera_Manager::GetInstance()->Start_Changing_AtOffset(CCamera_Manager::TARGET,
+				1.f,
+				XMVectorSet(0.f, -2.f, 0.f, 0.f),
+				EASE_IN_OUT);
 		};
 	if (true == Postit_Process(L"Chapter8_SKSP_Postit", L"Chapter8_Stop_Stamp", 1.f, CPostit_Page::POSTIT_PAGE_POSTION_TYPE_A, false, fCamerafunc))
 	{
@@ -232,15 +582,15 @@ void CGameEventExecuter_C8::Chapter8_Bomb_Stamp(_float _fTimeDelta)
 {
 	m_fTimer += _fTimeDelta;
 
-	function fCamerafunc = []() 
+	function fCamerafunc = []()
 		{
 			CCamera_Manager::GetInstance()->Start_Turn_AxisY(CCamera_Manager::TARGET, 1.f, XMConvertToRadians(-60.f), (_uint)EASE_IN_OUT);
 			CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Increase(CCamera_Manager::TARGET, 1.f,
 				3.f, EASE_IN_OUT);
-		CCamera_Manager::GetInstance()->Start_Changing_AtOffset(CCamera_Manager::TARGET,
-			1.f,
-			XMVectorSet(0.f, -2.f, 0.f, 0.f),
-			EASE_IN_OUT);
+			CCamera_Manager::GetInstance()->Start_Changing_AtOffset(CCamera_Manager::TARGET,
+				1.f,
+				XMVectorSet(0.f, -2.f, 0.f, 0.f),
+				EASE_IN_OUT);
 		};
 	if (true == Postit_Process(L"Chapter8_SKSP_Postit", L"Chapter8_Bomb_Stamp", 1.f, CPostit_Page::POSTIT_PAGE_POSTION_TYPE_A, false, fCamerafunc))
 	{
@@ -252,16 +602,16 @@ void CGameEventExecuter_C8::Chapter8_Tilting_Glove(_float _fTimeDelta)
 {
 	m_fTimer += _fTimeDelta;
 
-	function fCamerafunc = []() 
+	function fCamerafunc = []()
 		{
-		CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Increase(CCamera_Manager::TARGET, 1.f,
+			CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Increase(CCamera_Manager::TARGET, 1.f,
 				1.f, EASE_IN_OUT);
-		CCamera_Manager::GetInstance()->Start_Changing_AtOffset(CCamera_Manager::TARGET,
-			1.f,
-			XMVectorSet(0.f, -2.5f, 0.f, 0.f),
-			EASE_IN_OUT);
+			CCamera_Manager::GetInstance()->Start_Changing_AtOffset(CCamera_Manager::TARGET,
+				1.f,
+				XMVectorSet(0.f, -2.5f, 0.f, 0.f),
+				EASE_IN_OUT);
 
-		CCamera_Manager::GetInstance()->Start_Turn_AxisRight(CCamera_Manager::TARGET, 1.f, XMConvertToRadians(30.f), (_uint)EASE_IN_OUT);
+			CCamera_Manager::GetInstance()->Start_Turn_AxisRight(CCamera_Manager::TARGET, 1.f, XMConvertToRadians(30.f), (_uint)EASE_IN_OUT);
 		};
 	if (true == Postit_Process(L"Chapter8_SKSP_Postit", L"Chapter8_Tilting_Glove", 1.f, CPostit_Page::POSTIT_PAGE_POSTION_TYPE_A, false, fCamerafunc))
 	{

@@ -119,6 +119,7 @@
 #include "BombSwitchStopper.h"
 #include "Key.h"
 #include "Beetle_Corpse.h"
+#include "Big_Laser.h"
 
 
 #include "2DModel.h"
@@ -1983,6 +1984,11 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_JumpStarter"),
 		CJumpStarter::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Big_Laser"),
+		CBig_Laser::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 

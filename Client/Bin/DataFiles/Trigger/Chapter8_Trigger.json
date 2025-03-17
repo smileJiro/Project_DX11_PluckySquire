@@ -1536,5 +1536,32 @@
         "Trigger_Coordinate": 1,
         "Trigger_EventTag": "Chapter8_LookAt_9",
         "Trigger_Type": 8
+    },
+    {
+        "Collider_Info": {
+            "HalfExtents": [
+                4.5,
+                4.800000190734863,
+                0.5
+            ],
+            "Position": [
+                -48.029998779296875,
+                0.8330000042915344,
+                26.983999252319336
+            ],
+            "Radius": 0.5,
+            "Rotation": [
+                -0.0,
+                0.0,
+                -0.0
+            ],
+            "ShapeType": 0
+        },
+        "Fillter_MyGroup": 128,
+        "Fillter_OtherGroupMask": 2,
+        "Trigger_ConditionType": 3,
+        "Trigger_Coordinate": 1,
+        "Trigger_EventTag": "Chapter8_Map_Intro",
+        "Trigger_Type": 0
     }
 ]

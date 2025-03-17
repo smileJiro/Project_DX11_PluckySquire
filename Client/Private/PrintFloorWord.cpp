@@ -87,19 +87,17 @@ void CPrintFloorWord::Update(_float _fTimeDelta)
 			isSameSection = true;
 		}
 	}
+
 	
-
-	if (190.f > fabs(fThisPosX - fPlayerPosX) &&
-		190.f > fabs(fThisPosY - fPlayerPosY) &&
-		COORDINATE_2D == pPlayer->Get_CurCoord() && 
-		false == m_isFadeIn && true == isSameSection )
+	if (m_isLengthCheck)
 	{
-		m_isFadeIn = true;
-		
-		// NOTWORD 소리가 나면 안되는 floorword
-		if (TEXT("NOTWORD") != m_strSFX)
-			m_pGameInstance->Start_SFX_Delay(m_strSFX, 0.f, 50.f, false);
-
+		if (190.f > fabs(fThisPosX - fPlayerPosX) &&
+			190.f > fabs(fThisPosY - fPlayerPosY) &&
+			COORDINATE_2D == pPlayer->Get_CurCoord() && 
+			false == m_isFadeIn && true == isSameSection )
+		{
+			Start_FloorWord();
+		}
 	}
 
 	Add_Amount(_fTimeDelta);
@@ -176,6 +174,15 @@ void CPrintFloorWord::Free()
 HRESULT CPrintFloorWord::Cleanup_DeadReferences()
 {
 	return S_OK;
+}
+
+void CPrintFloorWord::Start_FloorWord()
+{
+	m_isFadeIn = true;
+
+	// NOTWORD 소리가 나면 안되는 floorword
+	if (TEXT("NOTWORD") != m_strSFX)
+		m_pGameInstance->Start_SFX_Delay(m_strSFX, 0.f, 50.f, false);
 }
 
 void CPrintFloorWord::Add_Amount(_float _fTimeDelta)

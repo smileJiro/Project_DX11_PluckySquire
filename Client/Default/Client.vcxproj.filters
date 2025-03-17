@@ -1990,6 +1990,10 @@
     <ClInclude Include="..\Public\FormationBackState.h">
       <Filter>03.Components\FSM\State\Formation</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Gear.h" />
+    <ClInclude Include="..\Public\Big_Laser.h">
+      <Filter>02.GameObjects\2DGimmik\Laser</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -3192,6 +3196,10 @@
     </ClCompile>
     <ClCompile Include="..\Private\FormationBackState.cpp">
       <Filter>03.Components\FSM\State\Formation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Gear.cpp" />
+    <ClCompile Include="..\Private\Big_Laser.cpp">
+      <Filter>02.GameObjects\2DGimmik\Laser</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

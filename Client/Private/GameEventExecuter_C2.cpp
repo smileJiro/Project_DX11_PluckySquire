@@ -797,11 +797,11 @@ void CGameEventExecuter_C2::Chapter2_Lunchbox_Open(_float _fTimeDelta)
 			const auto& Objects = pLayer->Get_GameObjects();
 			if (Objects.size() != 1)
 				assert(nullptr);
-			m_pTargetObject = Objects.front();
-			if (nullptr == m_pTargetObject)
+			m_TargetObjects.push_back(Objects.front());
+			if (nullptr == m_TargetObjects[0])
 				assert(nullptr);
 
-			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_pTargetObject);
+			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_TargetObjects[0]);
 			if (nullptr != pPage)
 			{
 				pPage->Set_Render(true);
@@ -811,9 +811,9 @@ void CGameEventExecuter_C2::Chapter2_Lunchbox_Open(_float _fTimeDelta)
 		}
 		else 
 		{
-			if (nullptr == m_pTargetObject)
+			if (nullptr == m_TargetObjects[0])
 				assert(nullptr);
-			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_pTargetObject);
+			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_TargetObjects[0]);
 			
 			Next_Step(!pPage->Is_DuringAnimation() && m_fTimer > 1.8f);
 		}
@@ -822,7 +822,7 @@ void CGameEventExecuter_C2::Chapter2_Lunchbox_Open(_float _fTimeDelta)
 	{
 		if (Is_Start())
 		{
-			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_pTargetObject);
+			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_TargetObjects[0]);
 			pPage->Anim_Action(CPostit_Page::POSTIT_PAGE_TALK_1, true);
 			CDialog_Manager::GetInstance()->Set_DialogId(L"Postit_Page_02");
 		}
@@ -835,17 +835,17 @@ void CGameEventExecuter_C2::Chapter2_Lunchbox_Open(_float _fTimeDelta)
 		{
 			CPlayer* pPlayer = Get_Player();
 			pPlayer->Set_BlockPlayerInput(false);
-			if (nullptr == m_pTargetObject)
+			if (nullptr == m_TargetObjects[0])
 				assert(nullptr);
-			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_pTargetObject);
+			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_TargetObjects[0]);
 
 			pPage->Anim_Action(CPostit_Page::POSTIT_PAGE_DISAPPEAR, false);
 		}
 		else
 		{
-			if (nullptr == m_pTargetObject)
+			if (nullptr == m_TargetObjects[0])
 				assert(nullptr);
-			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_pTargetObject);
+			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_TargetObjects[0]);
 
 			if (Next_Step(!pPage->Is_DuringAnimation()))
 			{
@@ -908,11 +908,11 @@ void CGameEventExecuter_C2::Chapter2_Bettle_Page(_float _fTimeDelta)
 			const auto& Objects = pLayer->Get_GameObjects();
 			if (Objects.size() != 1)
 				assert(nullptr);
-			m_pTargetObject = Objects.front();
-			if (nullptr == m_pTargetObject)
+			m_TargetObjects.push_back(Objects.front());
+			if (nullptr == m_TargetObjects[0])
 				assert(nullptr);
 
-			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_pTargetObject);
+			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_TargetObjects[0]);
 			if (nullptr != pPage)
 			{
 				pPage->Set_Render(true);
@@ -922,9 +922,9 @@ void CGameEventExecuter_C2::Chapter2_Bettle_Page(_float _fTimeDelta)
 		}
 		else
 		{
-			if (nullptr == m_pTargetObject)
+			if (nullptr == m_TargetObjects[0])
 				assert(nullptr);
-			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_pTargetObject);
+			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_TargetObjects[0]);
 
 			Next_Step(!pPage->Is_DuringAnimation() && m_fTimer > 1.8f);
 		}
@@ -933,7 +933,7 @@ void CGameEventExecuter_C2::Chapter2_Bettle_Page(_float _fTimeDelta)
 	{
 		if (Is_Start())
 		{
-			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_pTargetObject);
+			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_TargetObjects[0]);
 			pPage->Anim_Action(CPostit_Page::POSTIT_PAGE_TALK_1, true);
 			CDialog_Manager::GetInstance()->Set_DialogId(L"Postit_Page_03");
 		}
@@ -946,17 +946,17 @@ void CGameEventExecuter_C2::Chapter2_Bettle_Page(_float _fTimeDelta)
 		{
 			CPlayer* pPlayer = Get_Player();
 			pPlayer->Set_BlockPlayerInput(false);
-			if (nullptr == m_pTargetObject)
+			if (nullptr == m_TargetObjects[0])
 				assert(nullptr);
-			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_pTargetObject);
+			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_TargetObjects[0]);
 
 			pPage->Anim_Action(CPostit_Page::POSTIT_PAGE_DISAPPEAR, false);
 		}
 		else
 		{
-			if (nullptr == m_pTargetObject)
+			if (nullptr == m_TargetObjects[0])
 				assert(nullptr);
-			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_pTargetObject);
+			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_TargetObjects[0]);
 
 			if (Next_Step(!pPage->Is_DuringAnimation()))
 			{
@@ -1019,11 +1019,11 @@ void CGameEventExecuter_C2::Chapter2_OpenBookEvent(_float _fTimeDelta)
 			const auto& Objects = pLayer->Get_GameObjects();
 			if (Objects.size() != 1)
 				assert(nullptr);
-			m_pTargetObject = Objects.front();
-			if (nullptr == m_pTargetObject)
+			m_TargetObjects.push_back(Objects.front());
+			if (nullptr == m_TargetObjects[0])
 				assert(nullptr);
 
-			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_pTargetObject);
+			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_TargetObjects[0]);
 			if (nullptr != pPage)
 			{
 				pPage->Set_Render(true);
@@ -1033,9 +1033,9 @@ void CGameEventExecuter_C2::Chapter2_OpenBookEvent(_float _fTimeDelta)
 		}
 		else
 		{
-			if (nullptr == m_pTargetObject)
+			if (nullptr == m_TargetObjects[0])
 				assert(nullptr);
-			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_pTargetObject);
+			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_TargetObjects[0]);
 
 			Next_Step(!pPage->Is_DuringAnimation() && m_fTimer > 1.8f);
 		}
@@ -1044,7 +1044,7 @@ void CGameEventExecuter_C2::Chapter2_OpenBookEvent(_float _fTimeDelta)
 	{
 		if (Is_Start())
 		{
-			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_pTargetObject);
+			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_TargetObjects[0]);
 			pPage->Anim_Action(CPostit_Page::POSTIT_PAGE_TALK_1, true);
 			CDialog_Manager::GetInstance()->Set_DialogId(L"Postit_Page_04");
 		}
@@ -1077,7 +1077,7 @@ void CGameEventExecuter_C2::Chapter2_OpenBookEvent(_float _fTimeDelta)
 	{
 		if (Is_Start())
 		{
-			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_pTargetObject);
+			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_TargetObjects[0]);
 			pPage->Anim_Action(CPostit_Page::POSTIT_PAGE_TALK_1, true);
 			CDialog_Manager::GetInstance()->Set_DialogId(L"Postit_Page_05");
 		}
@@ -1085,22 +1085,22 @@ void CGameEventExecuter_C2::Chapter2_OpenBookEvent(_float _fTimeDelta)
 			Next_Step(!CDialog_Manager::GetInstance()->Get_DisPlayDialogue());
 	}
 	else if (Step_Check(STEP_6))
-	{ 
+	{
 		if (Is_Start())
 		{
 			CPlayer* pPlayer = Get_Player();
 			pPlayer->Set_BlockPlayerInput(false);
-			if (nullptr == m_pTargetObject)
+			if (nullptr == m_TargetObjects[0])
 				assert(nullptr);
-			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_pTargetObject);
+			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_TargetObjects[0]);
 
 			pPage->Anim_Action(CPostit_Page::POSTIT_PAGE_DISAPPEAR, false);
 		}
 		else
 		{
-			if (nullptr == m_pTargetObject)
+			if (nullptr == m_TargetObjects[0])
 				assert(nullptr);
-			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_pTargetObject);
+			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_TargetObjects[0]);
 
 			if (Next_Step(!pPage->Is_DuringAnimation()))
 			{
@@ -1176,11 +1176,11 @@ void CGameEventExecuter_C2::Chapter2_StorySequence(_float _fTimeDelta)
 			const auto& Objects = pLayer->Get_GameObjects();
 			if (Objects.size() != 1)
 				assert(nullptr);
-			m_pTargetObject = Objects.front();
-			if (nullptr == m_pTargetObject)
+			m_TargetObjects.push_back(Objects.front());
+			if (nullptr == m_TargetObjects[0])
 				assert(nullptr);
 
-			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_pTargetObject);
+			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_TargetObjects[0]);
 			if (nullptr != pPage)
 			{
 				pPage->Set_Render(true);
@@ -1190,9 +1190,9 @@ void CGameEventExecuter_C2::Chapter2_StorySequence(_float _fTimeDelta)
 		}
 		else
 		{
-			if (nullptr == m_pTargetObject)
+			if (nullptr == m_TargetObjects[0])
 				assert(nullptr);
-			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_pTargetObject);
+			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_TargetObjects[0]);
 			// 애니메이션 끝나고, 인터벌 조금 준뒤 다음 다이얼로그 스타트
 			Next_Step(!pPage->Is_DuringAnimation() && m_fTimer > 1.5f);
 		}
@@ -1202,7 +1202,7 @@ void CGameEventExecuter_C2::Chapter2_StorySequence(_float _fTimeDelta)
 		if (Is_Start())
 		{
 			// 말함
-			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_pTargetObject);
+			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_TargetObjects[0]);
 			pPage->Anim_Action(CPostit_Page::POSTIT_PAGE_TALK_1, true);
 			CDialog_Manager::GetInstance()->Set_DialogId(L"Postit_Page_06");
 		}
@@ -1267,7 +1267,7 @@ void CGameEventExecuter_C2::Chapter2_StorySequence(_float _fTimeDelta)
 				});
 
 
-			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_pTargetObject);
+			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_TargetObjects[0]);
 			pPage->Anim_Action(CPostit_Page::POSTIT_PAGE_TALK_1, true);
 			CDialog_Manager::GetInstance()->Set_DialogId(L"Postit_Page_07");
 		}
@@ -1284,7 +1284,7 @@ void CGameEventExecuter_C2::Chapter2_StorySequence(_float _fTimeDelta)
 				XMVectorSet(12.f, 2.f, 0.f, 0.f),
 				EASE_IN_OUT
 			);
-		
+
 		}
 		Next_Step_Over(1.f);
 	}
@@ -1313,7 +1313,7 @@ void CGameEventExecuter_C2::Chapter2_StorySequence(_float _fTimeDelta)
 				});
 
 
-			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_pTargetObject);
+			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_TargetObjects[0]);
 			pPage->Anim_Action(CPostit_Page::POSTIT_PAGE_TALK_1, true);
 			CDialog_Manager::GetInstance()->Set_DialogId(L"Postit_Page_08");
 		}
@@ -1332,7 +1332,7 @@ void CGameEventExecuter_C2::Chapter2_StorySequence(_float _fTimeDelta)
 			);
 		}
 		Next_Step_Over(1.f);
-		}
+	}
 	else if (Step_Check(STEP_9))
 	{
 		// 다이얼로그 + 포스트잇 3.
@@ -1357,7 +1357,7 @@ void CGameEventExecuter_C2::Chapter2_StorySequence(_float _fTimeDelta)
 				}
 				});
 
-			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_pTargetObject);
+			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_TargetObjects[0]);
 			pPage->Anim_Action(CPostit_Page::POSTIT_PAGE_TALK_1, true);
 			CDialog_Manager::GetInstance()->Set_DialogId(L"Postit_Page_09");
 		}
@@ -1398,9 +1398,9 @@ void CGameEventExecuter_C2::Chapter2_StorySequence(_float _fTimeDelta)
 
 		CPlayer* pPlayer = Get_Player();
 		pPlayer->Set_BlockPlayerInput(false);
-		if (nullptr == m_pTargetObject)
+		if (nullptr == m_TargetObjects[0])
 			assert(nullptr);
-		CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_pTargetObject);
+		CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_TargetObjects[0]);
 
 		pPlayer->Set_BlockPlayerInput(false);
 
