@@ -65,6 +65,7 @@ void CInteraction_Heart::Late_Update(_float _fTimeDelta)
 		{
 			m_isRender = true;
 			m_PrePlayerHP = m_PlayerHP;
+			m_fRenderTime = 0.f;
 
 			if (COORDINATE_2D == pPlayer->Get_CurCoord())
 			{

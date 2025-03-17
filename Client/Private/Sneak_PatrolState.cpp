@@ -104,7 +104,7 @@ void CSneak_PatrolState::State_Update(_float _fTimeDelta)
 			{
 				m_pOwner->Stop_Rotate();
 				m_pOwner->Stop_Move();
-				m_pFSM->Set_Sneak_AwarePos(m_pOwner->Get_FinalPosition());
+				m_pFSM->Set_Sneak_AwarePos(m_pTarget->Get_FinalPosition());
 				Event_ChangeMonsterState(MONSTER_STATE::SNEAK_AWARE, m_pFSM);
 				return;
 			}
