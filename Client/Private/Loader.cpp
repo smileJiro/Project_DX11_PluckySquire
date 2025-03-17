@@ -266,6 +266,8 @@
 
 /* For. Chapter6 */
 #include "Gear.h"
+#include "Excavator_Tread.h"
+#include "Excavator_Centre.h"
 
 
 
@@ -1687,6 +1689,15 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 
 		/* UI */
 		if (FAILED(UI_Object_Load(_eLoadLevelID)))
+			return E_FAIL;
+		/* For. Prototype_GameObject_Excavator_Centre */
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Excavator_Centre"),
+			CExcavator_Centre::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		/* For. Prototype_GameObject_Excavator_Tread */
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Excavator_Tread"),
+			CExcavator_Tread::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
 		/* For. Prototype_GameObject_Gear */
