@@ -3,11 +3,11 @@
 
 BEGIN(Client)
 
-class CFormationMoveState final : public CState
+class CFormationIdleState final : public CState
 {
 private:
-	CFormationMoveState();
-	virtual ~CFormationMoveState() = default;
+	CFormationIdleState();
+	virtual ~CFormationIdleState() = default;
 
 public:
 	virtual HRESULT Initialize(void* _pArg) override;
@@ -17,17 +17,8 @@ public:
 	virtual void State_Update(_float _fTimeDelta) override;
 	virtual void State_Exit() override;
 
-private:
-	void Move();
-
-private:
-	_float m_fAccTime = { 0.f };
-	_float3 m_vNextPos = {};
-	_bool m_isTurn = { false };
-	_bool m_isMove = { false };
-
 public:
-	static CFormationMoveState* Create(void* _pArg);
+	static CFormationIdleState* Create(void* _pArg);
 
 public:
 	virtual void Free() override;

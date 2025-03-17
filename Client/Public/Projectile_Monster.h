@@ -30,7 +30,7 @@ public:
 	virtual HRESULT		Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr) override;
 
 public:
-	virtual void			On_Hit(CGameObject* _pHitter, _float _fDamg, _fvector _vForce);
+	virtual void			On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce) override;
 
 	virtual void OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)override;
 	virtual void OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)override;

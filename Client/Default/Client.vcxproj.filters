@@ -1981,6 +1981,12 @@
       <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\PlayerBlocker.h" />
+    <ClInclude Include="..\Public\FormationIdleState.h">
+      <Filter>03.Components\FSM\State\Formation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\FormationBackState.h">
+      <Filter>03.Components\FSM\State\Formation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -3178,6 +3184,12 @@
       <Filter>03.Components\PlayerState</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\PlayerBlocker.cpp" />
+    <ClCompile Include="..\Private\FormationIdleState.cpp">
+      <Filter>03.Components\FSM\State\Formation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\FormationBackState.cpp">
+      <Filter>03.Components\FSM\State\Formation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
