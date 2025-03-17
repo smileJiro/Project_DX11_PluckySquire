@@ -269,6 +269,7 @@
 #include "Gear.h"
 #include "Excavator_Tread.h"
 #include "Excavator_Centre.h"
+#include "Excavator_Switch.h"
 
 
 
@@ -631,6 +632,11 @@ HRESULT CLoader::Loading_Level_Static()
 	XMMATRIX matPretransform = XMMatrixScaling(1 / 150.0f, 1 / 150.0f, 1 / 150.0f);
 
 	/* 개별 모델 로드 - dds 로드 */
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Model2D_Rectangle"),
+		C2DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Textures/UI/Static/Achivement/BackGround/boxing_bar_energy_fill_white.dds", LEVEL_STATIC, true, true))))
+		return E_FAIL;
+
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Model2D_Bulb"),
 		C2DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DObject/Static/bulb/pickup_bulb_01.dds", LEVEL_STATIC, true, true))))
 		return E_FAIL;
@@ -1691,6 +1697,12 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 		/* UI */
 		if (FAILED(UI_Object_Load(_eLoadLevelID)))
 			return E_FAIL;
+
+		/* For. Prototype_GameObject_Excavator_Switch */
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Excavator_Switch"),
+			CExcavator_Switch::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
 		/* For. Prototype_GameObject_Excavator_Centre */
 		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Excavator_Centre"),
 			CExcavator_Centre::Create(m_pDevice, m_pContext))))
