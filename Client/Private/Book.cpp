@@ -78,7 +78,7 @@ HRESULT CBook::Initialize(void* _pArg)
 
 	/* 사용하려는 Shape의 형태를 정의 */
 	SHAPE_BOX_DESC BoxDesc = {};
-	BoxDesc.vHalfExtents = { 19.8f, 0.77f, 5.6f };
+	BoxDesc.vHalfExtents = { 19.8f, 0.335f, 5.6f };
 
 	SHAPE_DATA ShapeData;
 	ShapeData.pShapeDesc = &BoxDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
@@ -87,8 +87,8 @@ HRESULT CBook::Initialize(void* _pArg)
 	ShapeData.iShapeUse = (_uint)SHAPE_USE::SHAPE_BODY;
 	ShapeData.isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
 	ShapeData.FilterData.MyGroup = OBJECT_GROUP::MAPOBJECT;
-	ShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE | OBJECT_GROUP::TRIGGER_OBJECT | OBJECT_GROUP::PLAYER | OBJECT_GROUP::DYNAMIC_OBJECT;
-	XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixIdentity()); // Shape의 LocalOffset을 행렬정보로 저장.
+	ShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE | OBJECT_GROUP::TRIGGER_OBJECT | OBJECT_GROUP::PLAYER | OBJECT_GROUP::DYNAMIC_OBJECT | OBJECT_GROUP::MAPOBJECT ;
+	XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(0.f, BoxDesc.vHalfExtents.y,0.f)); // Shape의 LocalOffset을 행렬정보로 저장.
 
 	/* 최종으로 결정 된 ShapeData를 PushBack */
 	ActorDesc.ShapeDatas.push_back(ShapeData);
@@ -185,10 +185,7 @@ void CBook::Update(_float _fTimeDelta)
 
 
 	}
-	if (KEY_DOWN(KEY::I))
-	{
-		DropBook();
-	}
+
 	if ((ACTION_LAST != m_eCurAction) && true == m_isAction) {
 
 		CGameObject* pGameObject = m_pGameInstance->Get_GameObject_Ptr(m_pGameInstance->Get_CurLevelID(), L"Layer_Player", 0);
@@ -684,6 +681,29 @@ HRESULT CBook::Init_RT_RenderPos_Capcher()
 	return S_OK;
 }
 
+void CBook::OnContact_Modify(const COLL_INFO& _0, const COLL_INFO& _1, CModifiableContacts& _ModifiableContacts, _bool _bIm0)
+{
+	OBJECT_GROUP eOtherGroup = (OBJECT_GROUP)(_bIm0 ? _1.pActorUserData->iObjectGroup : _0.pActorUserData->iObjectGroup);
+	if (false == (OBJECT_GROUP::MAPOBJECT & eOtherGroup))
+	{
+		if (_bIm0)
+		{
+			_ModifiableContacts.Set_InvMassScale0(0.1f); // Reduce mass effect on actor0
+			_ModifiableContacts.Set_InvInertiaScale0(0.1f); // Reduce rotation effect on actor0
+		}
+		else
+		{
+			_ModifiableContacts.Set_InvMassScale1(0.1f); // Reduce mass effect on actor1
+			_ModifiableContacts.Set_InvInertiaScale1(0.1f); // Reduce rotation effect on actor1
+		}
+		_uint iContactCount = _ModifiableContacts.Get_ContactCount();
+		for (_uint i = 0; i < iContactCount; i++)
+		{
+			_ModifiableContacts.Set_Restitution(i, 0);
+		}
+	}
+}
+
 void CBook::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
 {
 	SHAPE_USE eShapeUse = (SHAPE_USE)_My.pShapeUserData->iShapeUse;
@@ -947,14 +967,26 @@ HRESULT CBook::Convert_Position_3DTo2D(_fvector _v3DPos, _vector* _pOutPosition)
 	return S_OK;
 }
 
-void CBook::DropBook()
+void CBook::Start_DropBook()
 {	
 	CActor_Dynamic* pActor = static_cast<CActor_Dynamic*>(Get_ActorCom());
 	pActor->Update(0.f);
 	pActor->Set_Dynamic();
 	pActor->Set_MassLocalPos(_float3(19.0f,0.f,0.f));
 	pActor->Set_Gravity(true);
-	pActor->Freeze_Rotation(false, false, false);
+	pActor->Freeze_Rotation(true, true, false);
+	pActor->Freeze_Position(false, false, false);
+
+}
+
+void CBook::End_DropBook()
+{
+	CActor_Dynamic* pActor = static_cast<CActor_Dynamic*>(Get_ActorCom());
+	pActor->Late_Update(0.f);
+	pActor->Set_Kinematic();
+	pActor->Set_MassLocalPos(_float3(0.0f, 0.f, 0.f));
+	pActor->Set_Gravity(false);
+	pActor->Freeze_Rotation(true, true, true);
 	pActor->Freeze_Position(false, false, false);
 }
 

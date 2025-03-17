@@ -842,12 +842,12 @@ void CGameEventExecuter_C6::Chapter6_Humgrump_Revolt(_float _fTimeDelta)
 				if (TEXT("Humgrump") == pModel->Get_ModelPrototypeTag(COORDINATE_2D)) {
 					pModel->Switch_Animation(CNpc_Humgrump::CHAPTER6_TALK);
 					CDialog_Manager::GetInstance()->Set_NPC(pModel);
-					m_pTargetObject = pObject;
+					m_TargetObjects.push_back(pObject);
 				}
 
 				if (TEXT("MoonBeard") == pModel->Get_ModelPrototypeTag(COORDINATE_2D)) {
 					CDialog_Manager::GetInstance()->Set_NPC(pModel);
-					m_pTargetObject_Second = pObject;
+					m_TargetObjects.push_back(pObject);
 				}
 			}
 
@@ -859,13 +859,13 @@ void CGameEventExecuter_C6::Chapter6_Humgrump_Revolt(_float _fTimeDelta)
 		if (4 == CDialog_Manager::GetInstance()->Get_CurrentLineIndex()) {
 
 			if (Is_Start()) {
-				static_cast<CModelObject*>(m_pTargetObject)->Switch_Animation(CNpc_Humgrump::CHAPTER6_IDLE);
-				static_cast<CModelObject*>(m_pTargetObject_Second)->Switch_Animation(CNpc_MoonBeard::CHAPTER6_GIVE_IT_AREST);
+				static_cast<CModelObject*>(m_TargetObjects[0])->Switch_Animation(CNpc_Humgrump::CHAPTER6_IDLE);
+				static_cast<CModelObject*>(m_TargetObjects[1])->Switch_Animation(CNpc_MoonBeard::CHAPTER6_GIVE_IT_AREST);
 			}
 		}
 
 		if (5 == CDialog_Manager::GetInstance()->Get_CurrentLineIndex()) {
-			static_cast<CModelObject*>(m_pTargetObject_Second)->Switch_Animation(CNpc_MoonBeard::CHAPTER6_GIVE_IT_AREST_IDLE);
+			static_cast<CModelObject*>(m_TargetObjects[1])->Switch_Animation(CNpc_MoonBeard::CHAPTER6_GIVE_IT_AREST_IDLE);
 			Next_Step(true);
 		}
 	}
@@ -873,7 +873,7 @@ void CGameEventExecuter_C6::Chapter6_Humgrump_Revolt(_float _fTimeDelta)
 		if (7 == CDialog_Manager::GetInstance()->Get_CurrentLineIndex() && 0 == m_iSubStep) {
 
 			// 1. 험그럼프 손가락 올리기 전
-			static_cast<CModelObject*>(m_pTargetObject)->Switch_Animation(CNpc_Humgrump::CHAPTER6_TALK_STAND);
+			static_cast<CModelObject*>(m_TargetObjects[0])->Switch_Animation(CNpc_Humgrump::CHAPTER6_TALK_STAND);
 
 			// 2. Cage 생성
 			CGameObject* pObject = nullptr;
@@ -912,7 +912,7 @@ void CGameEventExecuter_C6::Chapter6_Humgrump_Revolt(_float _fTimeDelta)
 				// 3. 험그럼프 손가락 올리기
 				if (m_fTimer >= 0.4f) {
 					if (Is_Start()) {
-						static_cast<CModelObject*>(m_pTargetObject)->Switch_Animation(CNpc_Humgrump::CHAPTER6_FINGER_RAISE);
+						static_cast<CModelObject*>(m_TargetObjects[0])->Switch_Animation(CNpc_Humgrump::CHAPTER6_FINGER_RAISE);
 
 						m_iSubStep++;
 					}
@@ -923,19 +923,19 @@ void CGameEventExecuter_C6::Chapter6_Humgrump_Revolt(_float _fTimeDelta)
 			// 4. 두 번쨰 다이얼로그 시작
 			if (m_fTimer >= 0.6f) {
 				CDialog_Manager::GetInstance()->Set_DialogId(L"Dialogue_Humgrump_Revolt");
-				CDialog_Manager::GetInstance()->Set_NPC(m_pTargetObject);
+				CDialog_Manager::GetInstance()->Set_NPC(m_TargetObjects[0]);
 
 				m_iSubStep++;
 			}
 		}
 		else if (3 == m_iSubStep) {
-			if (false == static_cast<CModelObject*>(m_pTargetObject)->Is_DuringAnimation()) {
-				static_cast<CModelObject*>(m_pTargetObject)->Switch_Animation(CNpc_Humgrump::CHAPTER6_FINGER_TALK);
+			if (false == static_cast<CModelObject*>(m_TargetObjects[0])->Is_DuringAnimation()) {
+				static_cast<CModelObject*>(m_TargetObjects[0])->Switch_Animation(CNpc_Humgrump::CHAPTER6_FINGER_TALK);
 			}
 
 			// 3. 험그럼프 손가락 내리기
 			if (false == CDialog_Manager::GetInstance()->Get_DisPlayDialogue()) {
-				static_cast<CModelObject*>(m_pTargetObject)->Switch_Animation(CNpc_Humgrump::CHAPTER6_FINGER_DOWN);
+				static_cast<CModelObject*>(m_TargetObjects[0])->Switch_Animation(CNpc_Humgrump::CHAPTER6_FINGER_DOWN);
 				Next_Step(true);
 			}
 		}
@@ -954,7 +954,7 @@ void CGameEventExecuter_C6::Chapter6_Humgrump_Revolt(_float _fTimeDelta)
 			// 5. 달수염 놀라기
 			if (fRatio >= 0.9f) {
 				if (Is_Start())
-					static_cast<CModelObject*>(m_pTargetObject_Second)->Switch_Animation(CNpc_MoonBeard::CHAPTER6_SURPRISED);
+					static_cast<CModelObject*>(m_TargetObjects[1])->Switch_Animation(CNpc_MoonBeard::CHAPTER6_SURPRISED);
 			}
 
 			if (fRatio >= (1.f - EPSILON)) {
@@ -983,23 +983,23 @@ void CGameEventExecuter_C6::Chapter6_Humgrump_Revolt(_float _fTimeDelta)
 		// 6. 달수염 뒤돌기
 		if (m_fTimer >= 0.3f) {
 			if (Is_Start()) {
-				static_cast<CModelObject*>(m_pTargetObject_Second)->Switch_Animation(CNpc_MoonBeard::CHAPTER6_SURPRISED_TURN);
-				static_cast<CNpc_MoonBeard*>(m_pTargetObject_Second)->Set_Opposite_Side();
+				static_cast<CModelObject*>(m_TargetObjects[1])->Switch_Animation(CNpc_MoonBeard::CHAPTER6_SURPRISED_TURN);
+				static_cast<CNpc_MoonBeard*>(m_TargetObjects[1])->Set_Opposite_Side();
 			}
 		}
 
 		// 7. 험그럼프 Windup 시작
-		if (false == static_cast<CModelObject*>(m_pTargetObject_Second)->Is_DuringAnimation()) {
-			static_cast<CModelObject*>(m_pTargetObject_Second)->Switch_Animation(CNpc_MoonBeard::CHAPTER6_SURPRISED_IDLE);
-			static_cast<CModelObject*>(m_pTargetObject)->Switch_Animation(CNpc_Humgrump::CHAPTER6_WINDUP);
+		if (false == static_cast<CModelObject*>(m_TargetObjects[1])->Is_DuringAnimation()) {
+			static_cast<CModelObject*>(m_TargetObjects[1])->Switch_Animation(CNpc_MoonBeard::CHAPTER6_SURPRISED_IDLE);
+			static_cast<CModelObject*>(m_TargetObjects[0])->Switch_Animation(CNpc_Humgrump::CHAPTER6_WINDUP);
 			Next_Step(true);
 		}
 
 	}
 	else if (Step_Check(STEP_6)) {
-		if (false == static_cast<CModelObject*>(m_pTargetObject)->Is_DuringAnimation()) {
+		if (false == static_cast<CModelObject*>(m_TargetObjects[0])->Is_DuringAnimation()) {
 			// 8. 험그럼프 Beam, Beam 이펙트 시작, 진동
-			static_cast<CModelObject*>(m_pTargetObject)->Switch_Animation(CNpc_Humgrump::CHAPTER6_BEAM);
+			static_cast<CModelObject*>(m_TargetObjects[0])->Switch_Animation(CNpc_Humgrump::CHAPTER6_BEAM);
 
 			CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("Beam"), TEXT("Chapter6_P1314"), XMMatrixTranslation(70.f, -105.07f, 0.f), 0.f, 0, true, 2.5f, SECTION_2D_PLAYMAP_OBJECT);
 			CCamera_Manager::GetInstance()->Start_Shake_ByTime(CCamera_Manager::TARGET_2D, 2.5f, 0.02f);
@@ -1012,11 +1012,11 @@ void CGameEventExecuter_C6::Chapter6_Humgrump_Revolt(_float _fTimeDelta)
 
 		if (m_fTimer >= 0.2f) {
 			if (Is_Start())
-				static_cast<CModelObject*>(m_pTargetObject_Second)->Switch_Animation(CNpc_MoonBeard::CHAPTER6_ZAP_INTO);
+				static_cast<CModelObject*>(m_TargetObjects[1])->Switch_Animation(CNpc_MoonBeard::CHAPTER6_ZAP_INTO);
 		}
 
-		if (false == static_cast<CModelObject*>(m_pTargetObject_Second)->Is_DuringAnimation()) {
-			static_cast<CModelObject*>(m_pTargetObject_Second)->Switch_Animation(CNpc_MoonBeard::CHAPTER6_ZAP_IDLE);
+		if (false == static_cast<CModelObject*>(m_TargetObjects[1])->Is_DuringAnimation()) {
+			static_cast<CModelObject*>(m_TargetObjects[1])->Switch_Animation(CNpc_MoonBeard::CHAPTER6_ZAP_IDLE);
 
 			Next_Step(true);
 		}
@@ -1032,31 +1032,31 @@ void CGameEventExecuter_C6::Chapter6_Humgrump_Revolt(_float _fTimeDelta)
 		if (m_fTimer >= 2.5f) {
 			if (Is_Start()) {
 				// 9. 험그럼프 Beam 끝, 할배 죽기 시작
-				static_cast<CModelObject*>(m_pTargetObject)->Switch_Animation(CNpc_Humgrump::CHAPTER6_BEAM_END);
-				static_cast<CModelObject*>(m_pTargetObject_Second)->Switch_Animation(CNpc_MoonBeard::CHAPTER6_ZAP_DEATH);
+				static_cast<CModelObject*>(m_TargetObjects[0])->Switch_Animation(CNpc_Humgrump::CHAPTER6_BEAM_END);
+				static_cast<CModelObject*>(m_TargetObjects[1])->Switch_Animation(CNpc_MoonBeard::CHAPTER6_ZAP_DEATH);
 			}
 		}
 
-		if (false == static_cast<CModelObject*>(m_pTargetObject)->Is_DuringAnimation()) {
-			static_cast<CModelObject*>(m_pTargetObject)->Switch_Animation(CNpc_Humgrump::CHAPTER6_TRANSFORM_IDLE);
+		if (false == static_cast<CModelObject*>(m_TargetObjects[0])->Is_DuringAnimation()) {
+			static_cast<CModelObject*>(m_TargetObjects[0])->Switch_Animation(CNpc_Humgrump::CHAPTER6_TRANSFORM_IDLE);
 
 			Next_Step(true);
 		}
 	}
 	else if (Step_Check(STEP_9)) {
 		if (m_fTimer >= 4.f) {
-			static_cast<CModelObject*>(m_pTargetObject)->Switch_Animation(CNpc_Humgrump::CHAPTER6_TRANSFORM_TURN);
+			static_cast<CModelObject*>(m_TargetObjects[0])->Switch_Animation(CNpc_Humgrump::CHAPTER6_TRANSFORM_TURN);
 
 			Next_Step(true);
 		}
 	}
 	// 10. 험그럼프로 줌인, 마지막 대사 말하기
 	else if (Step_Check(STEP_10)) {
-		if (false == static_cast<CModelObject*>(m_pTargetObject)->Is_DuringAnimation()) {
-			static_cast<CModelObject*>(m_pTargetObject)->Switch_Animation(CNpc_Humgrump::CHAPTER6_TRANSFORM_TURN_TALK);
+		if (false == static_cast<CModelObject*>(m_TargetObjects[0])->Is_DuringAnimation()) {
+			static_cast<CModelObject*>(m_TargetObjects[0])->Switch_Animation(CNpc_Humgrump::CHAPTER6_TRANSFORM_TURN_TALK);
 			CDialog_Manager::GetInstance()->Set_DialogId(L"Dialogue_After_Humgrump_Revolt");
-			CDialog_Manager::GetInstance()->Set_NPC(m_pTargetObject);
-			CCamera_Manager::GetInstance()->Change_CameraTarget(m_pTargetObject, 0.5f);
+			CDialog_Manager::GetInstance()->Set_NPC(m_TargetObjects[0]);
+			CCamera_Manager::GetInstance()->Change_CameraTarget(m_TargetObjects[0], 0.5f);
 			CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Decrease(CCamera_Manager::TARGET_2D, 0.5f, 4.f, EASE_IN_OUT);
 			Next_Step(true);
 		}
@@ -1065,11 +1065,11 @@ void CGameEventExecuter_C6::Chapter6_Humgrump_Revolt(_float _fTimeDelta)
 	else if (Step_Check(STEP_11)) {
 		if (false == CDialog_Manager::GetInstance()->Get_DisPlayDialogue()) {
 			if (Is_Start())
-				static_cast<CModelObject*>(m_pTargetObject)->Switch_Animation(CNpc_Humgrump::CHAPTER6_TRANSFORM_LAUGH_INTO);
+				static_cast<CModelObject*>(m_TargetObjects[0])->Switch_Animation(CNpc_Humgrump::CHAPTER6_TRANSFORM_LAUGH_INTO);
 		}
 
-		if (false == static_cast<CModelObject*>(m_pTargetObject)->Is_DuringAnimation()) {
-			static_cast<CModelObject*>(m_pTargetObject)->Switch_Animation(CNpc_Humgrump::CHAPTER6_TRANSFORM_LAUGH_IDLE);
+		if (false == static_cast<CModelObject*>(m_TargetObjects[0])->Is_DuringAnimation()) {
+			static_cast<CModelObject*>(m_TargetObjects[0])->Switch_Animation(CNpc_Humgrump::CHAPTER6_TRANSFORM_LAUGH_IDLE);
 
 			CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("Humgrump_Ha"), TEXT("Chapter6_P1314"), XMMatrixTranslation(-271.54f, -73.07f, 0.f), 0.f, 1, true, 10.5f, SECTION_2D_PLAYMAP_EFFECT);
 			CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("Humgrump_Ha"), TEXT("Chapter6_P1314"), XMMatrixTranslation(-211.54f, -53.07f, 0.f), 0.5f, 1, true, 10.5f, SECTION_2D_PLAYMAP_EFFECT);
@@ -1449,7 +1449,7 @@ void CGameEventExecuter_C6::Chapter6_StorySequence_01(_float _fTimeDelta)
 	{
 		if (Is_Start())
 		{
-			CCamera_Manager::GetInstance()->Start_FadeOut(1.f);
+			CCamera_Manager::GetInstance()->Start_FadeOut();
 		}
 		else
 			Next_Step_Over(1.1f);
@@ -1482,11 +1482,11 @@ void CGameEventExecuter_C6::Chapter6_StorySequence_01(_float _fTimeDelta)
 				if (nullptr != pActionObj)
 				{
 					if (C2DMapActionObject::ACTIVE_TYPE_DYNAMIC_BACKGROUND == pActionObj->Get_ActionType())
-						m_pTargetObject = pActionObj;
+						m_TargetObjects.push_back(pActionObj);
 				}
 				});
 
-			CCamera_Manager::GetInstance()->Change_CameraTarget(m_pTargetObject);
+			CCamera_Manager::GetInstance()->Change_CameraTarget(m_TargetObjects[0]);
 
 		}
 		Next_Step_Over(1.1f);
@@ -1495,7 +1495,7 @@ void CGameEventExecuter_C6::Chapter6_StorySequence_01(_float _fTimeDelta)
 	{
 		if (Is_Start())
 		{
-			_vector vPos = static_cast<C2DMapActionObject*>(m_pTargetObject)->Get_FinalPosition();
+			_vector vPos = static_cast<C2DMapActionObject*>(m_TargetObjects[0])->Get_FinalPosition();
 			CEffect2D_Manager::GetInstance()->Play_Effect(L"Ch05_MountainExp_SmokeInto", SECTION_MGR->Get_Cur_Section_Key(), XMMatrixTranslation(XMVectorGetX(vPos), XMVectorGetY(vPos), 0.f), 0.f, 0, false);
 			CEffect2D_Manager::GetInstance()->Play_Effect(L"Ch05_MountainExp_SmokeLoop", SECTION_MGR->Get_Cur_Section_Key(), XMMatrixTranslation(XMVectorGetX(vPos), XMVectorGetY(vPos), 0.f), 1.8f, 0);
 		}
@@ -1528,7 +1528,7 @@ void CGameEventExecuter_C6::Chapter6_StorySequence_01(_float _fTimeDelta)
 		if (Is_Start())
 
 		{
-			_vector vPos = static_cast<C2DMapActionObject*>(m_pTargetObject)->Get_FinalPosition();
+			_vector vPos = static_cast<C2DMapActionObject*>(m_TargetObjects[0])->Get_FinalPosition();
 
 			CEffect2D_Manager::GetInstance()->Play_Effect(L"Ch05_MountainExp_ExpSmall", SECTION_MGR->Get_Cur_Section_Key(), XMMatrixTranslation(XMVectorGetX(vPos), XMVectorGetY(vPos), 0.f), 0.f, 0, false);
 			CEffect2D_Manager::GetInstance()->Play_Effect(L"Ch05_MountainExp_ExpBig", SECTION_MGR->Get_Cur_Section_Key(), XMMatrixTranslation(XMVectorGetX(vPos), XMVectorGetY(vPos), 0.f), 1.8f, 0, false, 999.f);

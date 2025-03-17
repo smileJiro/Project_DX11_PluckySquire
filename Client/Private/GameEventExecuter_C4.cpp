@@ -333,7 +333,7 @@ void CGameEventExecuter_C4::Chapter4_GateEvent(_float _fTimeDelta)
 				if (GameObjects.end() != iter)
 				{
 					CDynamicCastleGate* pGate = static_cast<CDynamicCastleGate*>(*iter);
-					m_pTargetObject = pGate;
+					m_TargetObjects.push_back(pGate);
 					pGate->Collapse();
 				}
 			}
@@ -348,8 +348,8 @@ void CGameEventExecuter_C4::Chapter4_GateEvent(_float _fTimeDelta)
 			CPlayer* pPlayer = Get_Player();
 			pPlayer->Set_Position({ -133.f, -477.f, 0.f });
 
-			if (nullptr != m_pTargetObject)
-				static_cast<CDynamicCastleGate*>(m_pTargetObject)->WorldMap_ReCapture();
+			if (nullptr != m_TargetObjects[0])
+				static_cast<CDynamicCastleGate*>(m_TargetObjects[0])->WorldMap_ReCapture();
 
 		}
 		Next_Step_Over(0.3f);

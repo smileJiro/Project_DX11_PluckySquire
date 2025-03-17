@@ -41,8 +41,8 @@ void CFormationIdleState::State_Update(_float _fTimeDelta)
 			{
 				if (true == Check_Target3D(true))
 				{
-					m_pOwner->Stop_Rotate();
-					m_pOwner->Stop_Move();
+					//m_pOwner->Stop_Rotate();
+					//m_pOwner->Stop_Move();
 
 					m_pOwner->Remove_From_Formation();
 
@@ -57,10 +57,10 @@ void CFormationIdleState::State_Update(_float _fTimeDelta)
 				//플레이어가 인식되지 않았을 경우 소리가 나면 대열에서 빠지고 경계로 전환 
 				if (m_pOwner->IsTarget_In_Sneak_Detection())
 				{
-					m_pOwner->Stop_Rotate();
-					m_pOwner->Stop_Move();
+					//m_pOwner->Stop_Rotate();
+					//m_pOwner->Stop_Move();
 					m_pOwner->Remove_From_Formation();
-					m_pFSM->Set_Sneak_AwarePos(m_pOwner->Get_FinalPosition());
+					m_pFSM->Set_Sneak_AwarePos(m_pTarget->Get_FinalPosition());
 					Event_ChangeMonsterState(MONSTER_STATE::SNEAK_AWARE, m_pFSM);
 					return;
 				}
@@ -68,7 +68,7 @@ void CFormationIdleState::State_Update(_float _fTimeDelta)
 		}
 	}
 
-	//대열이 다시 움직이기 시작할 경우 move 전환
+	//대열이 움직이기 시작할 경우 move 전환
 	if (false == m_pOwner->Is_Formation_Stop())
 	{
 		Event_ChangeMonsterState(MONSTER_STATE::FORMATION_MOVE, m_pFSM);

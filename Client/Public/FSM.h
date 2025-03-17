@@ -67,7 +67,7 @@ public:
 	HRESULT Add_Neutral_State(_bool _isJump=false);
 	HRESULT Add_FlyUnit_State();
 	HRESULT Add_C6_State();
-	HRESULT Add_FormationState();
+	HRESULT Add_FormationState();	            //안에 기본 전투 상태까지 포함
 
 protected:
 	CState* m_pCurState = { nullptr };
