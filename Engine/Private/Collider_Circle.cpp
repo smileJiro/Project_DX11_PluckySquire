@@ -320,9 +320,7 @@ _bool CCollider_Circle::Get_CollisionPoint(CCollider* _pOther, _float2* pOutPoin
 
 		_vector vDiff = XMLoadFloat2(&vPosition) - XMLoadFloat2(&vOtherPosition);
 		_vector vDirection = XMVector2Normalize(vDiff);
-		_float fDistance = XMVector2Length(vDiff).m128_f32[0];
-        _float fRatio = fOtherFinalRadius /(fOtherFinalRadius + fFinalRadius);
-        _vector vCollisonPoint = XMLoadFloat2(&vPosition)+ fRatio * fDistance * vDirection;
+        _vector vCollisonPoint = XMLoadFloat2(&vOtherPosition)+ fOtherFinalRadius * vDirection;
 		pOutPoint->x = vCollisonPoint.m128_f32[0];
 		pOutPoint->y = vCollisonPoint.m128_f32[1];
         break;

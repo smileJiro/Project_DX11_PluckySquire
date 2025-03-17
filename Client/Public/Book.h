@@ -119,7 +119,7 @@ public:
 		m_isStartBlending = true; 
 	}
 	void					Set_BlendingRatio(_float _fRatio) { m_fBlendingRatio = _fRatio; }
-
+	void					DropBook();
 private:
 	//void					Calc_Page3DWorldMinMax();	
 

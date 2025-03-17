@@ -40,6 +40,7 @@ public :
 		C02P0910_LIGHTNING_BOLT_SPAWN,
 		C02P0910_MONSTER_SPAWN,
 		START_TRAIN, // NPC 공용
+		FRIEND_MAPENTER, // NPC 공용
 
 		CHAPTER2_BOOKMAGIC,
 		CHAPTER2_INTRO,
@@ -58,6 +59,7 @@ public :
 		CHAPTER4_3D_OUT_01,			// 3D로 나가는 맵 처음 들어갔을때 이벤트
 		CHAPTER4_3D_OUT_02,			// 포탈쪽으로 갔을때의 이벤트
 		CHAPTER4_INTRO,				// 김효림 카메라컷씬
+		CHAPTER4_2D_INTRO,			// 처음 4챕터 진입했을 때
 		CHAPTER4_INTRO_POSTIT_SEQUENCE, // 책벌레 처음 조우
 		CHAPTER4_RIDE_ZIPLINE,		// Zipline 타기
 		CHAPTER4_EVENT_FLAG,		// Zipline 들어가기 전 이벤트
@@ -66,6 +68,7 @@ public :
 		//CHAPTER4_2D_IN,				// 폭탄 도장 얻고나서의 이벤트 
 
 		CHAPTER6_INTRO,				// Intro
+		CHAPTER6_START_3D,			// 톱니 앞에서 3D 진입 전
 
 		/* Father Game Start */
 		CHAPTER6_FATHERGAME_PROGRESS_START_CLEAR,
@@ -76,6 +79,7 @@ public :
 		/* Father Game End */
 		CHAPTER6_HUMGRUMP_REVOLT,	// 달수염 죽는 이벤트
 		CHAPTER6_CHANGE_BOOK_TO_GREATE_HUMGRUMP,		// 위대한 험그럼프로 책 바뀌는 이벤트
+		CHAPTER6_STORYSEQUENCE_01, // 왕궁 이벤트
 
 		/* Friend Event */
 		CHAPTER6_FRIENDEVENT_0,

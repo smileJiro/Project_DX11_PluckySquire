@@ -38,7 +38,7 @@ public:
 	HRESULT					Ready_Layer_Carriable(const _wstring& _strLayerTag);
 	HRESULT					Ready_Layer_MapGimmick(const _wstring& _strLayerTag);
 	HRESULT					Ready_Layer_Spawner(const _wstring& _strLayerTag);
-
+	HRESULT					Ready_Layer_Friends(const _wstring& _strLayerTag);
 
 private:
 	// Chapter4 폭탄으로 길 뚫는 이벤트 만들어지기 전에 임시로 해 놓은 코드 (0310, 효림)

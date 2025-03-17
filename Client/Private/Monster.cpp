@@ -23,6 +23,14 @@ CMonster::CMonster(const CMonster& _Prototype)
 {
 }
 
+_bool CMonster::Is_Formation_Stop()
+{
+	if (nullptr == m_pFormation)
+		return false;
+
+	return m_pFormation->Is_Stop();
+}
+
 HRESULT CMonster::Initialize_Prototype()
 {
 	return S_OK;
@@ -49,9 +57,12 @@ HRESULT CMonster::Initialize(void* _pArg)
 		m_isStay = true;
 	if (true == pDesc->isSneakMode)
 		m_isSneakMode = true;
-
-	if (nullptr != pDesc->pFormation)
-		m_pFormation = pDesc->pFormation;
+	if (true == pDesc->isFormationMode)
+	{
+		m_isFormationMode = true;
+		if (nullptr != pDesc->pFormation)
+			m_pFormation = pDesc->pFormation;
+	}
 
 	pDesc->_fStepHeightThreshold = 0.2f;
 	pDesc->_fStepSlopeThreshold = 0.45f;

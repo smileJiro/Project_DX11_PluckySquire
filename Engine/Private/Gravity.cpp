@@ -34,6 +34,8 @@ void CGravity::Priority_Update(_float _fTimeDelta)
     /* 상태 변경 */
     State_Change();
 
+    if (COORDINATE_3D == m_pOwner->Get_CurCoord())
+        return;
     /* 중력 적용 */
     Action_State(_fTimeDelta);
 }

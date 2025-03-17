@@ -22,43 +22,60 @@
         -503.0
       ]
     }
+
   },
-  {
-    "Collider_Info": {
-      "Position": [
-        -1955.0,
-        -524.0
-      ],
-      "Scale": [
-        100.0,
-        20.0
-      ]
+    {
+        "Collider_Info": {
+            "Position": [
+                -1955.0,
+                -524.0
+            ],
+            "Scale": [
+                100.0,
+                20.0
+            ]
+        },
+        "Fillter_MyGroup": 2,
+        "Fillter_OtherGroupMask": 128,
+        "Trigger_ConditionType": 0,
+        "Trigger_Coordinate": 0,
+        "Trigger_EventTag": "Chapter4_2D_Intro",
+        "Trigger_Type": 9
     },
-    "Fillter_MyGroup": 2,
-    "Fillter_OtherGroupMask": 128,
-    "Trigger_Reusable": false,
-    "Trigger_ConditionType": 0,
-    "Trigger_Coordinate": 0,
-    "Trigger_EventTag": "Chapter4_2D_Intro",
-    "Trigger_Type": 9
-  },
-  {
-    "Collider_Info": {
-      "Position": [
-        -283.0,
-        327.0
-      ],
-      "Scale": [
-        107.0,
-        77.0
-      ]
+    {
+        "Collider_Info": {
+            "Position": [
+                -283.0,
+                327.0
+            ],
+            "Scale": [
+                107.0,
+                77.0
+            ]
+        },
+        "Fillter_MyGroup": 2,
+        "Fillter_OtherGroupMask": 128,
+        "Trigger_ConditionType": 0,
+        "Trigger_Coordinate": 0,
+        "Trigger_EventTag": "Chapter4_StorySequence_01",
+        "Trigger_Type": 0
     },
-    "Fillter_MyGroup": 2,
-    "Fillter_OtherGroupMask": 128,
-    "Trigger_Reusable": false,
-    "Trigger_ConditionType": 0,
-    "Trigger_Coordinate": 0,
-    "Trigger_EventTag": "Chapter4_StorySequence_01",
-    "Trigger_Type": 0
-  }
+    {
+        "Collider_Info": {
+            "Position": [
+                -1956.0,
+                -648.0
+            ],
+            "Scale": [
+                100.0,
+                53.0
+            ]
+        },
+        "Fillter_MyGroup": 2,
+        "Fillter_OtherGroupMask": 128,
+        "Trigger_ConditionType": 0,
+        "Trigger_Coordinate": 0,
+        "Trigger_EventTag": "Friend_MapEnter",
+        "Trigger_Type": 0
+    }
 ]

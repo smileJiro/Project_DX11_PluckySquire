@@ -91,15 +91,6 @@ void CBoss_Crystal::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Othe
             //Event_KnockBack(static_cast<CCharacter*>(_My.pActorUserData->pOwner), vRepulse);
         }
     }
-
-    if (OBJECT_GROUP::PLAYER_PROJECTILE & _Other.pActorUserData->iObjectGroup)
-    {
-        m_iHp -= 1;
-        if (0 >= m_iHp)
-        {
-            Event_DeleteObject(this);
-        }
-    }
 }
 
 void CBoss_Crystal::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
@@ -108,6 +99,15 @@ void CBoss_Crystal::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other
 
 void CBoss_Crystal::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
 {
+}
+
+void CBoss_Crystal::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
+{
+    m_iHp -= _iDamg;
+    if (0 >= m_iHp && false == Is_Dead())
+    {
+        Event_DeleteObject(this);
+    }
 }
 
 HRESULT CBoss_Crystal::Cleanup_DeadReferences()

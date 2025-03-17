@@ -62,6 +62,12 @@
 #include "ShopPanel_New.h"
 #include "WorldMapNPC.h"
 
+// Friend
+#include "Friend_Controller.h"
+#include "Friend_Thrash.h"
+#include "Friend_Violet.h"
+
+
 
 CLevel_Chapter_04::CLevel_Chapter_04(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:
@@ -166,9 +172,13 @@ HRESULT CLevel_Chapter_04::Initialize(LEVEL_ID _eLevelID)
 		MSG_BOX(" Failed Ready_Layer_Map (CLevel_Chapter_04::Initialize)");
 		assert(nullptr);
 	}
-
+	if (FAILED(Ready_Layer_Friends(TEXT("Layer_Friend"))))
+	{
+		MSG_BOX(" Failed Ready_Layer_Friends (CLevel_Chapter_04::Initialize)");
+		assert(nullptr);
+	}
 	/* Collision Test */
-
+	
 	// 그룹필터 추가 >> 중복해서 넣어도 돼 내부적으로 걸러줌 알아서 
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::MONSTER);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::MONSTER_PROJECTILE);
@@ -1582,6 +1592,54 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Spawner(const _wstring& _strLayerTag )
 
 	} /* 4챕 스케치스페이스 */
 
+	return S_OK;
+}
+
+HRESULT CLevel_Chapter_04::Ready_Layer_Friends(const _wstring& _strLayerTag)
+{
+	_wstring strFriendTag = L"Thrash";
+	{ /* Friend_Thrash */
+		CFriend_Thrash::FRIEND_DESC Desc{};
+		Desc.Build_2D_Transform(_float2(-2014.f, -740.f), _float2(1.0f, 1.0f), 400.f);
+		Desc.iCurLevelID = LEVEL_CHAPTER_4;
+		Desc.eStartState = CFriend::FRIEND_IDLE;
+		Desc.eStartDirection = CFriend::DIR_UP;
+		Desc.iModelTagLevelID = LEVEL_STATIC;
+		Desc.iNumDialoguesIndices = 0;
+		Desc.strFightLayerTag = TEXT("Layer_Monster");
+
+		CGameObject* pGameObject = nullptr;
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Friend_Thrash"), LEVEL_CHAPTER_2, _strLayerTag, &pGameObject, &Desc)))
+			return E_FAIL;
+
+		if (FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter4_P0102"), pGameObject)))
+			return E_FAIL;
+
+		CFriend_Controller::GetInstance()->Register_Friend(strFriendTag, static_cast<CFriend*>(pGameObject));
+		//CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(strFriendTag);
+	} /* Friend_Thrash */
+
+	{ /* Friend_Violet */
+		strFriendTag = L"Violet";
+		CFriend_Violet::FRIEND_DESC Desc{};
+		Desc.Build_2D_Transform(_float2(-1894.f, -740.f), _float2(1.0f, 1.0f), 400.f);
+		Desc.iCurLevelID = LEVEL_CHAPTER_4;
+		Desc.eStartState = CFriend::FRIEND_IDLE;
+		Desc.eStartDirection = CFriend::DIR_UP;
+		Desc.iModelTagLevelID = LEVEL_STATIC;
+		Desc.iNumDialoguesIndices = 0;
+		Desc.strFightLayerTag = TEXT("Layer_Monster");
+
+		CGameObject* pGameObject = nullptr;
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Friend_Violet"), LEVEL_CHAPTER_2, _strLayerTag, &pGameObject, &Desc)))
+			return E_FAIL;
+
+		if (FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter4_P0102"), pGameObject)))
+			return E_FAIL;
+
+		CFriend_Controller::GetInstance()->Register_Friend(strFriendTag, static_cast<CFriend*>(pGameObject));
+		//CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(strFriendTag);
+	} /* Friend_Violet */
 	return S_OK;
 }
 

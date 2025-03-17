@@ -83,7 +83,7 @@ HRESULT CMeteor::Initialize(void* _pArg)
     if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Gravity"),
         TEXT("Com_Gravity"), reinterpret_cast<CComponent**>(&m_pGravityCom), &GravityDesc)))
         return E_FAIL;
-    Safe_AddRef(m_pGravityCom);
+    // Safe_AddRef(m_pGravityCom);
 
     m_pGravityCom->Set_Active(true);
     m_pGravityCom->Change_State(CGravity::STATE_FALLDOWN);
