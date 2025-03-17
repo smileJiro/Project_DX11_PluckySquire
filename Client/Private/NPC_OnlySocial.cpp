@@ -267,7 +267,7 @@ HRESULT CNPC_OnlySocial::LoadFromJson(const std::wstring& filePath)
 				, &pGameObject, &tOnlySocial)))
 				return E_FAIL;
 			else if(false == tOnlySocial.is2D)
-				pGameObject->Set_Render(false);
+				pGameObject->Set_Active(false);
 
 			CNPC_Manager::GetInstance()->SocialNpc_PushBack(static_cast<CNPC_Social*>(pGameObject));
 

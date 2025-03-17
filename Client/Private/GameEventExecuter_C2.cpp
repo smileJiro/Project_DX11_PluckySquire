@@ -490,7 +490,7 @@ void CGameEventExecuter_C2::Chapter2_Humgrump(_float _fTimeDelta)
 
 		}
 
-		Change_PlayMap();
+		Change_PlayMap(1.f);
 
 		CPlayer* pPlayer = Get_Player();
 
@@ -1545,17 +1545,17 @@ void CGameEventExecuter_C2::Chapter2_Pip_0(_float _fTimeDelta)
 	}
 }
 
-void CGameEventExecuter_C2::Change_PlayMap()
+void CGameEventExecuter_C2::Change_PlayMap(_float _fStartTime)
 {
 	// 맵 설치
-	if (m_fTimer > 1.f && 0 == m_iSubStep)
+	if (m_fTimer > _fStartTime && 0 == m_iSubStep)
 	{
 		m_iSubStep++;
 		Event_ChangeMapObject(LEVEL_CHAPTER_2, L"Chapter_02_Play_Desk.mchc", L"Layer_MapObject");
 	}
-
+	_fStartTime += 0.1f;
 	// 몬스터 추가
-	if (m_fTimer > 1.1f && 1 == m_iSubStep)
+	if (m_fTimer > _fStartTime && 1 == m_iSubStep)
 	{
 		m_iSubStep++;
 		CGameObject* pObject = nullptr;
@@ -1623,9 +1623,10 @@ void CGameEventExecuter_C2::Change_PlayMap()
 			}
 		}
 	}
+	_fStartTime += 0.1f;
 
 	// 3D 오브젝트 추가 
-	if (m_fTimer > 1.2f && 2 == m_iSubStep)
+	if (m_fTimer > _fStartTime && 2 == m_iSubStep)
 	{
 
 		LEVEL_ID eCurLevelID = (LEVEL_ID)m_pGameInstance->Get_CurLevelID();

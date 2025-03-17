@@ -13,12 +13,15 @@
 #include "Big_Laser.h"
 #include "PrintFloorWord.h"
 #include "Friend_Pip.h"
+#include "Spear_Soldier.h"
+#include "Beetle.h"
 
 #include "Camera_CutScene.h"
 #include "Effect2D_Manager.h"
 #include "2DMapActionObject.h"
 #include "Room_Door.h"
 #include "Book.h"
+#include "PlayerData_Manager.h"
 
 #include "PlayerBody.h"
 
@@ -367,6 +370,8 @@ void CGameEventExecuter_C8::Chapter8_Laser_Stage(_float _fTimeDelta)
 			//static_cast<CModelObject*>(m_TargetObjects[BRIDGE])->Get_ControllerTransform()->MoveTo(vTargetPos,_fTimeDelta);
 			if(Next_Step(m_TargetObjects[BRIDGE]->Get_ControllerTransform()->Compute_Distance(vTargetPos) < 2.f))
 				m_TargetObjects[PIP]->Set_Active(false);
+		
+			Change_PlayMap(1.f);
 		}
 		else if (Step_Check(STEP_8))
 		{
@@ -635,86 +640,102 @@ void CGameEventExecuter_C8::Chapter8_Tilting_Glove(_float _fTimeDelta)
 	}
 }
 
-void CGameEventExecuter_C8::Change_PlayMap()
+void CGameEventExecuter_C8::Change_PlayMap(_float _fStartTime)
 {
+	LEVEL_ID eCurLevelID = (LEVEL_ID)m_pGameInstance->Get_CurLevelID();
+
 	// 맵 설치
-	if (m_fTimer > 1.f && 0 == m_iSubStep)
+	if (m_fTimer > _fStartTime && 0 == m_iSubStep)
 	{
-		Event_ChangeMapObject(LEVEL_CHAPTER_4, L"Chapter_04_Play_Desk.mchc", L"Layer_MapObject");
+		Event_ChangeMapObject(LEVEL_CHAPTER_4, L"Chapter_08_Play_Desk.mchc", L"Layer_MapObject");
 
 	}
 	//몬스터 추가
-	if (m_fTimer > 1.2f && 1 == m_iSubStep)
+	_fStartTime += 0.1f;
+
+	if (m_fTimer > _fStartTime && 1 == m_iSubStep)
 	{
-		const json* pJson = m_pGameInstance->Find_Json_InLevel(TEXT("Chapter4_Monsters_3D"), m_pGameInstance->Get_CurLevelID());
-
-		CGameObject* pObject;
 
 
-		CMonster::MONSTER_DESC MonsterDesc3D = {};
+		CSpear_Soldier::MONSTER_DESC Spear_Soldier_Desc;
+		Spear_Soldier_Desc.iCurLevelID = eCurLevelID;
+		Spear_Soldier_Desc.eStartCoord = COORDINATE_3D;
+		Spear_Soldier_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+		Spear_Soldier_Desc.tTransform3DDesc.vInitialPosition = _float3(13.f, 21.58f, 5.5f);
+		Spear_Soldier_Desc.isSneakMode = true;
+		Spear_Soldier_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER8_1;
 
-		MonsterDesc3D.iCurLevelID = m_pGameInstance->Get_CurLevelID();
-		MonsterDesc3D.eStartCoord = COORDINATE_3D;
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Spear_Soldier"), eCurLevelID, L"Layer_Monster", &Spear_Soldier_Desc)))
+			return ;
 
-		if (pJson->contains("3D"))
-		{
-			_wstring strLayerTag = L"Layer_Monster";
-			_wstring strMonsterTag = L"";
 
-			for (_int i = 0; i < (*pJson)["3D"].size(); ++i)
-			{
-				if ((*pJson)["3D"][i].contains("Position"))
-				{
-					for (_int j = 0; j < 3; ++j)
-					{
-						*(((_float*)&MonsterDesc3D.tTransform3DDesc.vInitialPosition) + j) = (*pJson)["3D"][i]["Position"][j];
-					}
-				}
-				if ((*pJson)["3D"][i].contains("Scaling"))
-				{
-					for (_int j = 0; j < 3; ++j)
-					{
-						*(((_float*)&MonsterDesc3D.tTransform3DDesc.vInitialScaling) + j) = (*pJson)["3D"][i]["Scaling"][j];
-					}
-				}
-				if ((*pJson)["3D"][i].contains("LayerTag"))
-				{
-					strLayerTag = STRINGTOWSTRING((*pJson)["3D"][i]["LayerTag"]);
-				}
 
-				if ((*pJson)["3D"][i].contains("MonsterTag"))
-				{
-					strMonsterTag = STRINGTOWSTRING((*pJson)["3D"][i]["MonsterTag"]);
-				}
-				else
-					return;
+		CBeetle::MONSTER_DESC Beetle_Desc;
+		Beetle_Desc.iCurLevelID = eCurLevelID;
+		Beetle_Desc.eStartCoord = COORDINATE_3D;
+		Beetle_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+		Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(15.f, 11.1f, 3.4f);
+		Beetle_Desc.isSneakMode = true;
+		Beetle_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER8_BEETLE1;
 
-				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, strMonsterTag, m_pGameInstance->Get_CurLevelID(), strLayerTag, &pObject, &MonsterDesc3D)))
-					return;
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), eCurLevelID, TEXT("Layer_Sneak_Beetle"), &Beetle_Desc)))
+			return ;
 
-			}
-		}
+
+
+		//const json* pJson = m_pGameInstance->Find_Json_InLevel(TEXT("Chapter8_Monsters_3D"), m_pGameInstance->Get_CurLevelID());
+
+		//CGameObject* pObject;
+
+
+		//CMonster::MONSTER_DESC MonsterDesc3D = {};
+
+		//MonsterDesc3D.iCurLevelID = m_pGameInstance->Get_CurLevelID();
+		//MonsterDesc3D.eStartCoord = COORDINATE_3D;
+
+		//if (pJson->contains("3D"))
+		//{
+		//	_wstring strLayerTag = L"Layer_Monster";
+		//	_wstring strMonsterTag = L"";
+
+		//	for (_int i = 0; i < (*pJson)["3D"].size(); ++i)
+		//	{
+		//		if ((*pJson)["3D"][i].contains("Position"))
+		//		{
+		//			for (_int j = 0; j < 3; ++j)
+		//			{
+		//				*(((_float*)&MonsterDesc3D.tTransform3DDesc.vInitialPosition) + j) = (*pJson)["3D"][i]["Position"][j];
+		//			}
+		//		}
+		//		if ((*pJson)["3D"][i].contains("Scaling"))
+		//		{
+		//			for (_int j = 0; j < 3; ++j)
+		//			{
+		//				*(((_float*)&MonsterDesc3D.tTransform3DDesc.vInitialScaling) + j) = (*pJson)["3D"][i]["Scaling"][j];
+		//			}
+		//		}
+		//		if ((*pJson)["3D"][i].contains("LayerTag"))
+		//		{
+		//			strLayerTag = STRINGTOWSTRING((*pJson)["3D"][i]["LayerTag"]);
+		//		}
+
+		//		if ((*pJson)["3D"][i].contains("MonsterTag"))
+		//		{
+		//			strMonsterTag = STRINGTOWSTRING((*pJson)["3D"][i]["MonsterTag"]);
+		//		}
+		//		else
+		//			return;
+
+		//		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, strMonsterTag, m_pGameInstance->Get_CurLevelID(), strLayerTag, &pObject, &MonsterDesc3D)))
+		//			return;
+
+		//	}
+		//}
 	}
-
-	// 3D object 추가 
-	if (m_fTimer > 1.3f && 2 == m_iSubStep)
-	{
-		CDraggableObject::DRAGGABLE_DESC tDraggableDesc = {};
-		tDraggableDesc.iModelPrototypeLevelID_3D = LEVEL_STATIC;
-		tDraggableDesc.iCurLevelID = m_pGameInstance->Get_CurLevelID();
-		tDraggableDesc.strModelPrototypeTag_3D = TEXT("SM_Plastic_Block_04");
-		tDraggableDesc.eStartCoord = COORDINATE_3D;
-		tDraggableDesc.vBoxHalfExtents = { 1.02f,1.02f,1.02f };
-		tDraggableDesc.vBoxOffset = { 0.f,tDraggableDesc.vBoxHalfExtents.y,0.f };
-		tDraggableDesc.tTransform3DDesc.vInitialPosition = { 54.77f, 4.29f, 6.06f };
-
-		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DraggableObject"),
-			m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Draggable"), &tDraggableDesc)))
-			return;
-	}
+	_fStartTime += 0.1f;
 
 	// 3D NPC들 렌더 
-	if (m_fTimer > 1.4f && 3 == m_iSubStep)
+	if (m_fTimer > _fStartTime && 2 == m_iSubStep)
 	{
 		auto pLayer = m_pGameInstance->Find_Layer(m_iCurLevelID, L"Layer_Social3DNPC");
 
@@ -723,9 +744,16 @@ void CGameEventExecuter_C8::Change_PlayMap()
 			auto GameObjects = pLayer->Get_GameObjects();
 			for (auto& pObject : GameObjects)
 			{
-				pObject->Set_Render(true);
+				pObject->Set_Active(true);
 			}
 		}
+
+		CPlayerData_Manager::GetInstance()->Spawn_Bulb(LEVEL_STATIC, (LEVEL_ID)eCurLevelID);
+		CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)eCurLevelID, TEXT("Bomb_Stamp"), _float3(-15.54f, 26.06f, 16.56f), { 1.f,1.f,1.f });
+		CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)eCurLevelID, TEXT("Sword"), _float3(42.22f, 15.82f, -0.45f), { 2.f,2.f,2.f });
+		CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)eCurLevelID, TEXT("Stop_Stamp"), _float3(45.13f, 50.24f, 23.34f), { 1.f,1.f,1.f });
+		CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)eCurLevelID, TEXT("Tilting_Glove"), _float3(30.55f, 30.98f, 23.34f));
+
 	}
 }
 

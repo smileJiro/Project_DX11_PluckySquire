@@ -17,6 +17,7 @@
 #include "Friend_Controller.h"
 #include "Friend.h"
 #include "Friend_Violet.h"
+#include "PlayerData_Manager.h"
 
 CGameEventExecuter_C4::CGameEventExecuter_C4(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CGameEventExecuter(_pDevice, _pContext)
@@ -573,6 +574,7 @@ void CGameEventExecuter_C4::Chapter4_3D_Out_01(_float _fTimeDelta)
 				});
 
 		}
+		Change_PlayMap(1.f);
 
 		Next_Step_Over(2.f);
 	}
@@ -707,24 +709,27 @@ void CGameEventExecuter_C4::Friend_MapEnter(_float _fTimeDelta)
 	}
 }
 
-void CGameEventExecuter_C4::Change_PlayMap()
+void CGameEventExecuter_C4::Change_PlayMap(_float _fStartTime)
 {
+	LEVEL_ID eCurLevelID = (LEVEL_ID)m_pGameInstance->Get_CurLevelID();
+
 	// 맵 설치
-	if (m_fTimer > 1.f && 0 == m_iSubStep)
+	if (m_fTimer > _fStartTime && 0 == m_iSubStep)
 	{
 		Event_ChangeMapObject(LEVEL_CHAPTER_4, L"Chapter_04_Play_Desk.mchc", L"Layer_MapObject");
 	}
+	_fStartTime += 0.1f;
+
 	//몬스터 추가
-	if (m_fTimer > 1.2f && 1 == m_iSubStep)
+	if (m_fTimer > _fStartTime && 1 == m_iSubStep)
 	{
-		const json* pJson = m_pGameInstance->Find_Json_InLevel(TEXT("Chapter4_Monsters_3D"), m_pGameInstance->Get_CurLevelID());
+		const json* pJson = m_pGameInstance->Find_Json_InLevel(TEXT("Chapter4_Monsters_3D"), eCurLevelID);
 
 		CGameObject* pObject;
 
 
 		CMonster::MONSTER_DESC MonsterDesc3D = {};
 
-		MonsterDesc3D.iCurLevelID = m_pGameInstance->Get_CurLevelID();
 		MonsterDesc3D.eStartCoord = COORDINATE_3D;
 
 		if (pJson->contains("3D"))
@@ -760,15 +765,16 @@ void CGameEventExecuter_C4::Change_PlayMap()
 				else
 					return;
 
-				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, strMonsterTag, m_pGameInstance->Get_CurLevelID(), strLayerTag, &pObject, &MonsterDesc3D)))
+				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, strMonsterTag, eCurLevelID, strLayerTag, &pObject, &MonsterDesc3D)))
 					return;
 
 			}
 		}
 	}
+	_fStartTime += 0.1f;
 
 	// 3D object 추가 
-	if (m_fTimer > 1.3f && 2 == m_iSubStep)
+	if (m_fTimer > _fStartTime && 2 == m_iSubStep)
 	{
 		CDraggableObject::DRAGGABLE_DESC tDraggableDesc = {};
 		tDraggableDesc.iModelPrototypeLevelID_3D = LEVEL_STATIC;
@@ -783,9 +789,10 @@ void CGameEventExecuter_C4::Change_PlayMap()
 			m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Draggable"), &tDraggableDesc)))
 			return;
 	}
+	_fStartTime += 0.1f;
 
 	// 3D NPC들 렌더 
-	if (m_fTimer > 1.4f && 3 == m_iSubStep)
+	if (m_fTimer > _fStartTime && 3 == m_iSubStep)
 	{
 		auto pLayer = m_pGameInstance->Find_Layer(m_iCurLevelID,L"Layer_Social3DNPC");
 
@@ -794,10 +801,14 @@ void CGameEventExecuter_C4::Change_PlayMap()
 			auto GameObjects = pLayer->Get_GameObjects();
 			for (auto& pObject : GameObjects)
 			{
-				pObject->Set_Render(true);
+				pObject->Set_Active(true);
 			}
 		}
 
+		// 아이템들 렌더
+		CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)eCurLevelID, TEXT("Tilting_Glove"), _float3(-3.59f, 29.89f, 27.14f));
+		CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)eCurLevelID, TEXT("Bomb_Stamp"), _float3(-45.9f, 10.83f, 8.21f), {1.f,1.f,1.f});
+		CPlayerData_Manager::GetInstance()->Spawn_Bulb(LEVEL_STATIC, (LEVEL_ID)eCurLevelID);
 
 	}
 }
