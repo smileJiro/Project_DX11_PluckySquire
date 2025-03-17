@@ -9,6 +9,7 @@ class CAnimEventGenerator;
 class CCollider; // test
 class CModelObject;
 class CLight_Target;
+class CActor_Dynamic;
 END
 BEGIN(Client)
 class CCarriableObject;
@@ -159,6 +160,8 @@ public:
 		CYBER_HIT,
 		RETRIVE_SWORD,
 		MOJAM,
+		PULL,
+		BACKROLL,
 
 		STATE_LAST
 	};
@@ -770,15 +773,20 @@ private:
 	class CTurnBookEffect* m_pTurnBookEffect = { nullptr };
 
 
-//public:
-//	void Set_FirstExitPortalDesc(const _wstring& _strSectionName, _int _iIndex)
-//	{
-//		m_pairFirstExitPortalDesc.first = _strSectionName;
-//		m_pairFirstExitPortalDesc.second = _iIndex;
-//	}
-//private: /* Book에서 나온 portalindex와 section을 기억하기 위함 */
-//	pair<_wstring, _int> m_pairFirstExitPortalDesc = {}; // _int 가 -1일때 첫 Exit으로 본다.
 
+// CyberJot용
+public:
+	_vector Get_CyberPlanePosition() { return m_vCyberPlanePosition; }
+	void Move_CyberPlane(_vector _vMoveVelocity, _float _fTimeDelta);
+private:
+	CActor_Dynamic* m_pDynamicActor = nullptr;
+	class CCamera_Target* m_pTargetCamera = nullptr;
+	const _float4x4* m_pCameraTargetWorldMatrix = { nullptr };
+	_float m_fRunVelocityThreshold = 3.f;
+	_float m_fDistanceFromCamearPlane = 5.f;
+	_vector m_vCyberPlanePosition = { 0.f,0.f };
+	_vector m_vCyberPlaneMaxPosition = { 10.f,10.f};
+	_vector m_vCyberPlaneMinPosition = { -10.f,-10.f};
 public:
 	static CPlayer*		Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject*	Clone(void* _pArg) override;

@@ -264,10 +264,12 @@
     <ClInclude Include="..\public\Mug_Alien.h" />
     <ClInclude Include="..\Public\Patrol_WayState.h" />
     <ClInclude Include="..\Public\PlayerBlocker.h" />
+    <ClInclude Include="..\Public\PlayerState_BackRoll.h" />
     <ClInclude Include="..\Public\PlayerState_CannonPortal.h" />
     <ClInclude Include="..\Public\PlayerState_Mojam.h" />
     <ClInclude Include="..\Public\Npc_Humgrump.h" />
     <ClInclude Include="..\Public\Npc_MoonBeard.h" />
+    <ClInclude Include="..\Public\PlayerState_Pull.h" />
     <ClInclude Include="..\Public\PlayerState_RetriveSword.h" />
     <ClInclude Include="..\public\PortalLocker_LayerCount.h" />
     <ClInclude Include="..\Public\Projectile_SketchSpace_UFO.h" />
@@ -673,10 +675,12 @@
     <ClCompile Include="..\private\Mug_Alien.cpp" />
     <ClCompile Include="..\Private\Patrol_WayState.cpp" />
     <ClCompile Include="..\Private\PlayerBlocker.cpp" />
+    <ClCompile Include="..\Private\PlayerState_BackRoll.cpp" />
     <ClCompile Include="..\Private\PlayerState_CannonPortal.cpp" />
     <ClCompile Include="..\Private\PlayerState_Mojam.cpp" />
     <ClCompile Include="..\Private\Npc_Humgrump.cpp" />
     <ClCompile Include="..\Private\Npc_MoonBeard.cpp" />
+    <ClCompile Include="..\Private\PlayerState_Pull.cpp" />
     <ClCompile Include="..\Private\PlayerState_RetriveSword.cpp" />
     <ClCompile Include="..\private\PortalLocker_LayerCount.cpp" />
     <ClCompile Include="..\Private\Projectile_SketchSpace_UFO.cpp" />

@@ -63,6 +63,12 @@ HRESULT CSection_2D::Import(void* _pDesc)
 		_uint eSectionDefault = pDesc->SectionJson["Section_Default"];
 
 		pDesc->Book_2D_Build(m_strName);
+		if (pDesc->SectionJson.contains("Section_Info"))
+		{
+			auto SectionInfo = pDesc->SectionJson["Section_Info"];
+			if (SectionInfo.contains("Camera_Zoom_Ratio"))
+				m_fCameraRatio = (_float)SectionInfo["Camera_Zoom_Ratio"];
+		}
 
 	}
 	// Default 설정값이 없다? 

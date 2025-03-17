@@ -3,6 +3,7 @@
 BEGIN(Client)
 class CFriend_Violet final : public CFriend
 {
+public :
 	enum ANIM
 	{
 		Jump_Fall_violet_jump_fall_down,
@@ -75,8 +76,8 @@ class CFriend_Violet final : public CFriend
 		Violet_Magic01_Up,
 		Violet_Magic01_Up_Loop_,
 		Violet_Magic01_Up_Outro,
-		Violet_Magic02_into_right,
-		Violet_Magic02_loop_right,
+		VIOLET_MAGIC02_INTO_RIGHT,
+		VIOLET_MAGIC02_LOOP_RIGHT,
 		Violet_PullSwordV02,
 		Violet_RubHead_Up,
 		VIOLET_RUN_DOWN,	 // Move
