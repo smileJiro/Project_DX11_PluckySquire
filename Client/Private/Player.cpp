@@ -1599,6 +1599,37 @@ void CPlayer::RetrieveSword()
 	Set_State(RETRIVE_SWORD);
 }
 
+void CPlayer::CatchSword()
+{
+	COORDINATE eCoord = Get_CurCoord();
+	if (COORDINATE_2D == eCoord)
+	{
+		ANIM_STATE_2D eCurAnimIdx = (ANIM_STATE_2D)m_pBody->Get_CurrentAnimIndex();
+		STATE eState = Get_CurrentStateID();
+		F_DIRECTION eFDir = To_FDirection(Get_2DDirection());
+		if (STATE::IDLE == eState)
+		{
+			static_cast<CPlayerState_Idle*>(m_pStateMachine->Get_CurrentState())->Switch_IdleAnimation2D(eFDir);
+		}
+		else if (STATE::RUN == eState)
+		{
+			static_cast<CPlayerState_Run*>(m_pStateMachine->Get_CurrentState())->Switch_RunAnimation2D(eFDir);
+		}
+		else if (STATE::JUMP_UP == eState)
+		{
+			static_cast<CPlayerState_JumpUp*>(m_pStateMachine->Get_CurrentState())->Switch_JumpAnimation();
+		}
+		else if (STATE::JUMP_DOWN == eState)
+		{
+			static_cast<CPlayerState_JumpDown*>(m_pStateMachine->Get_CurrentState())->Switch_To_JumpDownAnimation();
+		}
+	}
+	else
+	{
+		
+	}
+}
+
 INTERACT_RESULT CPlayer::Try_Interact(_float _fTimeDelta)
 {
 	//이미 인터렉터블 오브젝트가 있다? 

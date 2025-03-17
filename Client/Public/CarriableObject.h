@@ -66,6 +66,9 @@ public:
 	const _float4x4& Get_HeadUpMatrix(COORDINATE _eCoord) { return m_matHeadUpMatrix[_eCoord]; };
 
 protected:
+	virtual void On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
+	virtual void On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
+	virtual void On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
 	virtual void On_PickUpStart(CPlayer* _pPalyer, _fmatrix _matPlayerOffset) {};
 	virtual void On_PickUpEnd() {};
 	virtual void On_LayDownStart(_fmatrix _matWorld) {};
