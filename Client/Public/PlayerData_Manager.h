@@ -66,6 +66,15 @@ public:
 	CPlayer*				Get_NormalPlayer_Ptr() { return static_cast<CPlayer*>(m_pPlayers[(_uint)PLAYABLE_ID::NORMAL]); }
 	CDefenderPlayer*		Get_DefenderPlayer_Ptr() { return static_cast<CDefenderPlayer*>(m_pPlayers[(_uint)PLAYABLE_ID::DEFENDER]); }
 
+	//스킬 레벨 용도
+public:
+	void					Set_JumpSkillLevel(_uint _JumpSkill) { m_iJumpSkill = _JumpSkill; }
+	void					Set_ThrowSkillLevel(_uint _ThrowSkill) { m_iThorowSkill = _ThrowSkill; }
+	void					Set_WhirlSkillLevel(_uint _WhirlSkill) { m_iWhirlSkill = _WhirlSkill; }
+	void					Set_AttackDamageLevel(_uint _DamageLevel) { m_iAttackDamagePlus = _DamageLevel; }
+
+
+
 private: 
 	CGameInstance*						m_pGameInstance = { nullptr };
 	ID3D11Device*						m_pDevice = { nullptr };

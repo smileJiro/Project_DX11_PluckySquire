@@ -143,5 +143,15 @@
         "Is_Sequence": true
       }
     ]
+  },
+  {
+    "Trigger_EventTag": "Chapter6_Start_3D",
+    "Actions": [
+      {
+        "ActionTag": "Create_EventExecuter",
+        "EventTag": "Chapter6_Start_3D",
+        "Is_Sequence": true
+      }
+    ]
   }
 ]

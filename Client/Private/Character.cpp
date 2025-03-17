@@ -852,6 +852,13 @@ void CCharacter::Clear_AutoMove()
 }
 
 
+void CCharacter::Swicth_Animation(_uint _iAnimIndex)
+{
+    if (nullptr == m_PartObjects[0])
+        return;
+    static_cast<CModelObject*>(m_PartObjects[0])->Switch_Animation(_iAnimIndex);
+}
+
 _bool CCharacter::Process_AutoMove(_float _fTimeDelta)
 {
     assert(false == m_AutoMoveQue.empty());

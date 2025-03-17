@@ -69,6 +69,7 @@ private:
 
 	void							Chapter6_Humgrump_Revolt(_float _fTimeDelta);
 	void							Chapter6_Change_Book_To_Greate_Humgrump(_float _fTimeDelta);
+	void							Chapter6_Start_3D(_float _fTimeDelta); // 6챕터 3d 진입 이벤트
 
 private:
 

@@ -149,6 +149,10 @@ private:
 	_float3									m_vStartPos = {};
 	_float3									m_vDestination = {};
 
+	//
+	_float									m_fTime = {};
+	_bool									m_isTimeCount = { false };
+
 private:
 	LEVEL_ID								m_eLevelID;
 
@@ -156,7 +160,7 @@ private:
 	void				Show_CameraTool();
 	void				Show_CutSceneTool(_float fTimeDelta);
 	void				Show_ArmInfo();
-	void				Show_CutSceneInfo();
+	void				Show_CutSceneInfo(_float _fTimeDelta);
 
 	void				Show_ComboBox();
 	void				Show_SelectedArmData();
@@ -164,7 +168,7 @@ private:
 	void				Show_AnimModel(_float _fTimeDelta);
 
 	//CutScene
-	void				Show_KeyFrameInfo();
+	void				Show_KeyFrameInfo(_float _fTimeDelta);
 	void				Show_CutSceneComboBox();
 
 	// Save

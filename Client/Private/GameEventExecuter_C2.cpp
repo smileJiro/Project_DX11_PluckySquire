@@ -1422,6 +1422,12 @@ void CGameEventExecuter_C2::Chapter2_After_Opening_Book(_float _fTimeDelta)
 
 			// 검 줍자는 대화 시작
 			CDialog_Manager::GetInstance()->Set_DialogId(L"Dialogue_Into_HumgrumCastle");
+			CFriend* pFriend = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Violet"));
+			CDialog_Manager::GetInstance()->Set_NPC(pFriend);
+
+			pFriend = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Thrash"));
+			CDialog_Manager::GetInstance()->Set_NPC(pFriend);
+
 			Next_Step(true);
 		}
 	}
@@ -1430,6 +1436,10 @@ void CGameEventExecuter_C2::Chapter2_After_Opening_Book(_float _fTimeDelta)
 		if (false == CDialog_Manager::GetInstance()->Get_DisPlayDialogue()) {
 			CPlayer* pPlayer = Get_Player();
 			pPlayer->Set_BlockPlayerInput(false);
+
+			CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(TEXT("Thrash"));
+			CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(TEXT("Violet"));
+			CFriend_Controller::GetInstance()->Start_Train();
 
 			GameEvent_End();
 		}
@@ -1448,34 +1458,23 @@ void CGameEventExecuter_C2::Chapter2_Going_To_Artia(_float _fTimeDelta)
 
 			// 아르티아 대화 시작
 			CDialog_Manager::GetInstance()->Set_DialogId(L"Dialogue_After_Drawing_On_Sword");
+			CFriend* pFriend = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Violet"));
+			CDialog_Manager::GetInstance()->Set_NPC(pFriend);
+
+			pFriend = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Thrash"));
+			CDialog_Manager::GetInstance()->Set_NPC(pFriend);
+
 			Next_Step(true);
 		}
 	}
 	else if (Step_Check(STEP_1)) {
-		
-		if (false == CDialog_Manager::GetInstance()->Get_DisPlayDialogue()) {
-			
-			// 모잼
-			CPlayer* pPlayer = Get_Player();
-			pPlayer->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_MOJAM_MOJAM);
+		if (true == CDialog_Manager::GetInstance()->Get_isLastDialog()) {
 			Next_Step(true);
 		}
 	}
 	else if (Step_Check(STEP_2)) {
 
-		if (m_fTimer >= 1.5f) {
-			//PLAYER_IDLE_SWORD_DOWN
-			// 모잼 dialogue
-			CDialog_Manager::GetInstance()->Set_DialogId(L"Dialogue_Mojam");
-			Next_Step(true);
-		}
-	}
-	else if (Step_Check(STEP_3)) {
-
-		if (false == CDialog_Manager::GetInstance()->Get_DisPlayDialogue()) {
-			CPlayer* pPlayer = Get_Player();
-			pPlayer->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_IDLE_SWORD_DOWN);
-
+		if (m_fTimer >= 2.f) {
 			// Chapter 전환
 			CTrigger_Manager::GetInstance()->Register_TriggerEvent(L"Next_Chapter_Event", 0);
 			GameEvent_End();

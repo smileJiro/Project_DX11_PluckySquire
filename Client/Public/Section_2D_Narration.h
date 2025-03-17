@@ -32,7 +32,7 @@ public:
 	void Free() override;
 
 private:
-	_bool		m_FirstPlay[8] = { false, false, false, false, false, false, false, false };
+	_bool		m_FirstPlay[9] = { false, false, false, false, false, false, false, false, false };
 };
 
 END

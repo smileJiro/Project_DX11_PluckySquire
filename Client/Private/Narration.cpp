@@ -668,22 +668,17 @@ void CNarration::Update_Narration(_float _fTimeDelta)
 						m_iCameraPos = m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].iCameraPos;
 
 						_float3 vPos = _float3(0.f, 0.f, 1.f);
-						if (true == m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].isDirTurn)
-							Event_Book_Main_Section_Change_Start(1, &vPos);
-						else
-							Event_Book_Main_Section_Change_Start(0, &vPos);
+						//if (true == m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].isDirTurn)
+						//	Event_Book_Main_Section_Change_Start(1, &vPos);
+						//else
+						//	Event_Book_Main_Section_Change_Start(0, &vPos);
 
 						if (true == m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].isDirTurn)
 						{
-							if (CSection_Manager::GetInstance()->Get_Next_Section_Key() == TEXT("Chapter1_P0506"))
-							{
-								vPos = _float3(-693.f, -35.5f, 0.0f);
-							}
-							else if (CSection_Manager::GetInstance()->Get_Next_Section_Key() == TEXT("Chapter2_P0708"))
-							{
-								vPos = _float3(0.0f, -293.f, 0.0f);
-							}
 
+							vPos = SetPlayerPos(CSection_Manager::GetInstance()->Get_Next_Section_Key());
+
+							
 							Event_Book_Main_Section_Change_Start(1, &vPos);
 
 						}
@@ -691,7 +686,7 @@ void CNarration::Update_Narration(_float _fTimeDelta)
 						{
 							if (CSection_Manager::GetInstance()->Get_Prev_Section_Key() == (TEXT("Chapter1_P0708")))
 							{
-								vPos = _float3(-932.f, -79.1f, 0.0f);
+								vPos = SetPlayerPos(TEXT("Chapter1_P0708"));
 							}
 
 
@@ -725,14 +720,7 @@ void CNarration::Update_Narration(_float _fTimeDelta)
 				{
 					if (true == m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].isDirTurn)
 					{
-						if (CSection_Manager::GetInstance()->Get_Next_Section_Key() == TEXT("Chapter1_P0506"))
-						{
-							vPos = _float3(-693.f, -35.5f, 0.0f);
-						}
-						else if (CSection_Manager::GetInstance()->Get_Next_Section_Key() == TEXT("Chapter2_P0708"))
-						{
-							vPos = _float3(0.0f, -333.f, 0.0f);
-						}
+						vPos = SetPlayerPos(CSection_Manager::GetInstance()->Get_Next_Section_Key());
 
 						Event_Book_Main_Section_Change_Start(1, &vPos);
 
@@ -741,7 +729,7 @@ void CNarration::Update_Narration(_float _fTimeDelta)
 					{
 						if (CSection_Manager::GetInstance()->Get_Prev_Section_Key() == (TEXT("Chapter1_P0708")))
 						{
-							vPos = _float3(-932.f, -79.1f, 0.0f);
+							vPos = SetPlayerPos(TEXT("Chapter1_P0708"));
 						}
 
 
@@ -818,18 +806,7 @@ void CNarration::Update_Narration(_float _fTimeDelta)
 
 						if (true == m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].isDirTurn)
 						{
-							if (CSection_Manager::GetInstance()->Get_Next_Section_Key() == TEXT("Chapter1_P0506"))
-							{
-								vPos = _float3(-693.f, -35.5f, 0.0f);
-							}
-							else if (CSection_Manager::GetInstance()->Get_Next_Section_Key() == TEXT("Chapter2_P0708"))
-							{
-								vPos = _float3(30.0f, 2322.f, 0.0f);
-							}
-							else if (CSection_Manager::GetInstance()->Get_Next_Section_Key() == TEXT("Chapter2_P0506"))
-							{
-								vPos = _float3(0.0f, -333.f, 0.0f);
-							}
+							vPos = SetPlayerPos(CSection_Manager::GetInstance()->Get_Next_Section_Key());
 
 							Event_Book_Main_Section_Change_Start(1, &vPos);
 
@@ -838,7 +815,7 @@ void CNarration::Update_Narration(_float _fTimeDelta)
 						{
 							if (CSection_Manager::GetInstance()->Get_Prev_Section_Key() == (TEXT("Chapter1_P0708")))
 							{
-								vPos = _float3(-932.f, -79.1f, 0.0f);
+								vPos = SetPlayerPos(TEXT("Chapter1_P0708"));
 							}
 
 
@@ -1032,6 +1009,28 @@ void CNarration::StopNarration()
 	else
 		Event_Book_Main_Section_Change_Start(0, &vPos);
 
+}
+
+_float3 CNarration::SetPlayerPos(wstring _strNarrationID)
+{
+	_float3 vPos = { 0.f, 0.f, 0.f };
+
+
+
+	if (TEXT("Chapter1_P0506") == _strNarrationID)
+		vPos = _float3(-693.f, -35.5f, 0.0f);
+	else if (TEXT("Chapter1_P0708") == _strNarrationID)
+		vPos = _float3(-932.f, -79.1f, 0.0f);
+	else if (TEXT("Chapter2_P0708") == _strNarrationID)
+		vPos = _float3(0.0f, -293.f, 0.0f);
+	else if (TEXT("Chapter2_P0506") == _strNarrationID)
+		vPos = _float3(0.0f, -333.f, 0.0f);
+
+
+
+
+
+	return vPos;
 }
 
 _bool CNarration::isLeftRight()

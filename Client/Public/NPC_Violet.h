@@ -237,6 +237,8 @@ private:
 
 	_bool						m_isRockDialogue = { false };
 
+	_bool						m_isInteraction = { false };
+
 };
 
 END

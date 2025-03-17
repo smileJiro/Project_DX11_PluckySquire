@@ -1021,7 +1021,7 @@ HRESULT CLevel_Chapter_04::Ready_Layer_UI(const _wstring& _strLayerTag)
 	//pDesc.fSizeY = 0.f;
 	//
 	//
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_FloorWord"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_FloorWord"), pDesc.iCurLevelID, TEXT("Layer_FloorWord"), &pDesc)))
 		return E_FAIL;
 
 
@@ -1116,16 +1116,17 @@ HRESULT CLevel_Chapter_04::Ready_Layer_NPC(const _wstring& _strLayerTag)
 
 
 
-
+	CGameObject* pWorldmapNpc = nullptr;
 	CWorldMapNPC::CHARACTER_DESC Desc;
 	Desc.iCurLevelID = m_eLevelID;
 	//Desc.tTransform3DDesc.vInitialPosition = { -3.f, 0.35f, -19.3f };   // TODO ::임시 위치
 	Desc.eStartCoord = COORDINATE_2D;
 	Desc.tTransform2DDesc.vInitialPosition = { 0.f, 0.f, 0.f };   // TODO ::임시 위치
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_WorldMapNpc"), m_eLevelID, _strLayerTag, &Desc)))
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_WorldMapNpc"), m_eLevelID, _strLayerTag, &pWorldmapNpc, &Desc)))
 		return E_FAIL;
 
+	CNPC_Manager::GetInstance()->Set_WorldmapNpc(static_cast<CWorldMapNPC*>(pWorldmapNpc));
 
 	return S_OK;
 }

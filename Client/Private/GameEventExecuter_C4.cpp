@@ -98,6 +98,26 @@ void CGameEventExecuter_C4::Late_Update(_float _fTimeDelta)
 
 void CGameEventExecuter_C4::Chapter4_2D_Intro(_float _fTimeDelta)
 {
+	m_fTimer += _fTimeDelta;
+
+	if (Step_Check(STEP_0))
+	{
+		if (Is_Start())
+			CDialog_Manager::GetInstance()->Set_DialogId(L"Chapter4_2D_Intro");
+		else
+			Next_Step(!CDialog_Manager::GetInstance()->Get_DisPlayDialogue());
+	}
+	else
+	{
+	
+		CFriend* pThrash = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Thrash"));
+		CFriend* pViolet = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Violet"));
+		CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(TEXT("Thrash"));
+		CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(TEXT("Violet"));
+		CFriend_Controller::GetInstance()->Start_Train(); // 체이스 시작
+		//CFriend_Controller::GetInstance()->End_Train(); // 체이스 끝
+		GameEvent_End();
+	}
 }
 
 void CGameEventExecuter_C4::Chapter4_Intro(_float _fTimeDelta)
@@ -144,14 +164,6 @@ void CGameEventExecuter_C4::Chapter4_Intro(_float _fTimeDelta)
 	}
 	else
 	{
-		/* 태웅 추가 : npc dialog 붙이실때, 해당 포인터 사용하시면 되세요 */
-		//CFriend* pThrash = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Thrash"));
-		//CFriend* pViolet = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Violet"));
-		// 기차놀이 등록 및 시작. 
-		//CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(TEXT("Thrash"));
-		//CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(TEXT("Violet"));
-		//CFriend_Controller::GetInstance()->Start_Train(); // 체이스 시작
-		//CFriend_Controller::GetInstance()->End_Train(); // 체이스 끝
 
 		GameEvent_End();
 	}
@@ -662,6 +674,10 @@ void CGameEventExecuter_C4::Friend_MapEnter(_float _fTimeDelta)
 	/* 플레이어 인풋락  */
 
 	if (Step_Check(STEP_0))
+	{
+		Next_Step_Over(1.f);
+	}
+	else if (Step_Check(STEP_1))
 	{
 		/* 1. Save Reset ArmData */
 		if (Is_Start())
