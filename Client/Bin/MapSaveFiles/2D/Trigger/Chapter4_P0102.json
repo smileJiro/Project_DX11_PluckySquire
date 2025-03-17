@@ -39,8 +39,9 @@
         "Fillter_OtherGroupMask": 128,
         "Trigger_ConditionType": 0,
         "Trigger_Coordinate": 0,
+		"Trigger_Reusable" : false,
         "Trigger_EventTag": "Chapter4_2D_Intro",
-        "Trigger_Type": 9
+        "Trigger_Type": 0
     },
     {
         "Collider_Info": {
@@ -75,6 +76,7 @@
         "Fillter_OtherGroupMask": 128,
         "Trigger_ConditionType": 0,
         "Trigger_Coordinate": 0,
+		"Trigger_Reusable" : false,
         "Trigger_EventTag": "Friend_MapEnter",
         "Trigger_Type": 0
     }

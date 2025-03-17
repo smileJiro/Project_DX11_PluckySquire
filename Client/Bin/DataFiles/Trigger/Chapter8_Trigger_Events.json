@@ -10,6 +10,16 @@
     ]
   },
   {
+    "Trigger_EventTag": "Chapter8_Intro",
+    "Actions": [
+      {
+        "ActionTag": "Create_EventExecuter",
+        "EventTag": "Chapter8_Intro",
+        "Is_Sequence": true
+      }
+    ]
+  },
+  {
     "Trigger_EventTag": "Chapter8_Outro_Postit_Sequence",
     "Actions": [
       {
@@ -19,7 +29,7 @@
       }
     ]
   },
-{
+  {
     "Trigger_EventTag": "Get_C08_Sword",
     "Actions": [
       {
@@ -49,7 +59,7 @@
       }
     ]
   },
-    {
+  {
     "Trigger_EventTag": "Get_C08_Stop_Stamp",
     "Actions": [
       {
@@ -79,7 +89,7 @@
       }
     ]
   },
-    {
+  {
     "Trigger_EventTag": "Get_C08_Bomb_Stamp",
     "Actions": [
       {

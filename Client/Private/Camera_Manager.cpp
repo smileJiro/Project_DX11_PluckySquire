@@ -655,7 +655,7 @@ void CCamera_Manager::Load_CutSceneData(LEVEL_ID _eLevelID)
 		szFileName = TEXT("Chapter6/Chapter6_CutScene.json");
 		break;
 	case LEVEL_CHAPTER_8:
-		szFileName = TEXT("Chapter6/Chapter6_CutScene.json");
+		szFileName = TEXT("Chapter8/Chapter8_CutScene.json");
 		break;
 	}
 

@@ -2107,14 +2107,18 @@
 		{
 			"id": "Dialogue_Into_HumgrumCastle",
 			"Section": "Chapter2_P1314",
+			"isChangeTalker": true,
 			"lines": [
 				{
 					"Portrait": 0,
 					"Talker": "바이올렛",
 					"BG": 13,
-					"location": 7,
+					"location": 1,
 					"is2D": true,
 					"isPortrait": true,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
+					"TalkerIndex": 0,
 					"animation": {
 						"duration": 1000,
 						"speed": 500
@@ -2128,9 +2132,12 @@
 					"Portrait": 1,
 					"Talker": "스래쉬",
 					"BG": 2,
-					"location": 4,
+					"location": 1,
 					"is2D": true,
 					"isPortrait": true,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
+					"TalkerIndex": 1,
 					"animation": {
 						"duration": 1000,
 						"speed": 500
@@ -2144,9 +2151,12 @@
 					"Portrait": 0,
 					"Talker": "바이올렛",
 					"BG": 13,
-					"location": 7,
+					"location": 1,
 					"is2D": true,
 					"isPortrait": true,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
+					"TalkerIndex": 0,
 					"animation": {
 						"duration": 1000,
 						"speed": 500
@@ -2160,9 +2170,12 @@
 					"Portrait": 1,
 					"Talker": "스래쉬",
 					"BG": 2,
-					"location": 4,
+					"location": 1,
 					"is2D": true,
 					"isPortrait": true,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
+					"TalkerIndex": 1,
 					"animation": {
 						"duration": 1000,
 						"speed": 500
@@ -2176,10 +2189,13 @@
 					"Portrait": 0,
 					"Talker": "바이올렛",
 					"BG": 13,
-					"location": 7,
+					"location": 1,
 					"is2D": true,
 					"isLineEnter": true,
 					"isPortrait": true,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
+					"TalkerIndex": 0,
 					"animation": {
 						"duration": 1000,
 						"speed": 500
@@ -2193,9 +2209,12 @@
 					"Portrait": 0,
 					"Talker": "바이올렛",
 					"BG": 13,
-					"location": 7,
+					"location": 1,
 					"is2D": true,
 					"isPortrait": true,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
+					"TalkerIndex": 0,
 					"animation": {
 						"duration": 1000,
 						"speed": 500
@@ -2209,9 +2228,12 @@
 					"Portrait": 1,
 					"Talker": "스래쉬",
 					"BG": 2,
-					"location": 4,
+					"location": 1,
 					"is2D": true,
 					"isPortrait": true,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
+					"TalkerIndex": 1,
 					"animation": {
 						"duration": 1000,
 						"speed": 500
@@ -2225,9 +2247,12 @@
 					"Portrait": 1,
 					"Talker": "스래쉬",
 					"BG": 2,
-					"location": 4,
+					"location": 1,
 					"is2D": true,
 					"isPortrait": true,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
+					"TalkerIndex": 1,
 					"animation": {
 						"duration": 1000,
 						"speed": 500
@@ -2241,9 +2266,12 @@
 					"Portrait": 0,
 					"Talker": "바이올렛",
 					"BG": 13,
-					"location": 7,
+					"location": 1,
 					"is2D": true,
 					"isPortrait": true,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
+					"TalkerIndex": 0,
 					"animation": {
 						"duration": 1000,
 						"speed": 500
@@ -2257,15 +2285,19 @@
 		},
 		{
 			"id": "Dialogue_After_Drawing_On_Sword",
+			"isChangeTalker": true,
 			"Section": "Chapter2_P1314",
 			"lines": [
 				{
 					"Portrait": 1,
 					"Talker": "스래쉬",
 					"BG": 2,
-					"location": 4,
+					"location": 1,
 					"is2D": true,
 					"isPortrait": true,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
+					"TalkerIndex": 1,
 					"animation": {
 						"duration": 1000,
 						"speed": 500
@@ -2279,9 +2311,12 @@
 					"Portrait": 0,
 					"Talker": "바이올렛",
 					"BG": 13,
-					"location": 7,
+					"location": 1,
 					"is2D": true,
 					"isPortrait": true,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
+					"TalkerIndex": 0,
 					"animation": {
 						"duration": 1000,
 						"speed": 500
@@ -2295,52 +2330,17 @@
 					"Portrait": 0,
 					"Talker": "바이올렛",
 					"BG": 13,
-					"location": 7,
+					"location": 1,
 					"is2D": true,
 					"isPortrait": true,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
+					"TalkerIndex": 0,
 					"animation": {
 						"duration": 1000,
 						"speed": 500
 					},
 					"text": "이제 여왕님이 계신 아르티아로 가자.",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 1,
-					"Talker": "스래쉬",
-					"BG": 2,
-					"location": 4,
-					"is2D": true,
-					"isPortrait": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "그렇다면 우선...",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				}
-			]
-		},
-		{
-			"id": "Dialogue_Mojam",
-			"Section": "Chapter2_P1314",
-			"lines": [
-				{
-					"Portrait": 1,
-					"Talker": "",
-					"BG": 24,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": false,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "                                      모잼!!!",
 					"Red": 0,
 					"Green": 0,
 					"Blue": 0
