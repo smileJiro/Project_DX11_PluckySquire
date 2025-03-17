@@ -150,13 +150,16 @@ HRESULT CDraggableObject::Initialize(void* _pArg)
 	}
 	
 
-
 	return S_OK;
 }
 
 void CDraggableObject::Update(_float _fTimeDelta)
 {
+	m_pControllerTransform;
+	if (XMVectorGetY(Get_FinalPosition()) < 140.f)
+		int a = 1;
 	__super::Update(_fTimeDelta);
+	int a = 1;
 }
 
 void CDraggableObject::Late_Update(_float _fTimeDelta)
@@ -269,6 +272,7 @@ void CDraggableObject::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* 
 
 void CDraggableObject::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
+	int a = 1;
 }
 
 void CDraggableObject::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)

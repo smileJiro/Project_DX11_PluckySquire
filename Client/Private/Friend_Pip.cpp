@@ -179,7 +179,7 @@ void CFriend_Pip::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 		m_eCurState = FRIEND_IDLE;
 		break;
 	case Client::CFriend::FRIEND_ANY:
-		m_eCurState = FRIEND_IDLE;
+		//m_eCurState = FRIEND_IDLE;
 		break;
 	default:
 		m_eCurState = FRIEND_IDLE;

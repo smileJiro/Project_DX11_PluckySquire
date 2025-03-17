@@ -2088,7 +2088,8 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 
 #pragma region Chapter 8 - Object Create
 
-	if (FAILED(Map_Object_Create(LEVEL_STATIC, _eLoadLevelID, L"Room_Enviroment_Small.mchc")))
+	if (FAILED(Map_Object_Create(LEVEL_STATIC, _eLoadLevelID, L"Room_Enviroment_Intro.mchc")))
+	//if (FAILED(Map_Object_Create(LEVEL_STATIC, _eLoadLevelID, L"Room_Enviroment_Small.mchc")))
 		return E_FAIL;
 
 #pragma endregion
@@ -2108,10 +2109,6 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 		return E_FAIL;
 
 
-
-
-	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
-	m_isFinished = true;
 
 	/* Boss */
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_Component_FSM_Boss"),
@@ -2226,6 +2223,10 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 				), matPretransform))))
 		return E_FAIL;
 
+
+
+	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
+	m_isFinished = true;
 
 
 	return S_OK;

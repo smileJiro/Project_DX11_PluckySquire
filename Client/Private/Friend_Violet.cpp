@@ -185,7 +185,11 @@ void CFriend_Violet::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 		m_eCurState = FRIEND_IDLE;
 		break;
 	case Client::CFriend::FRIEND_ANY:
-		m_eCurState = FRIEND_IDLE;
+		if (iAnimIdx == ANIM::VIOLET_MAGIC02_INTO_RIGHT)
+		{
+			Change_AnyState(CFriend_Violet::VIOLET_MAGIC02_LOOP_RIGHT, true, CFriend::DIR_LEFT);
+		}
+		//m_eCurState = FRIEND_IDLE;
 		break;
 	default:
 		m_eCurState = FRIEND_IDLE;
