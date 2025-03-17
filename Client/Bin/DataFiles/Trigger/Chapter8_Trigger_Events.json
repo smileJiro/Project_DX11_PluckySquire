@@ -29,6 +29,16 @@
     ]
   },
   {
+    "Trigger_EventTag": "Chapter8_Map_Intro",
+    "Actions": [
+      {
+        "ActionTag": "Create_EventExecuter",
+        "EventTag": "Chapter8_Map_Intro",
+        "Is_Sequence": true
+      }
+    ]
+  },
+  {
     "Trigger_EventTag": "Chapter8_Outro_Postit_Sequence",
     "Actions": [
       {

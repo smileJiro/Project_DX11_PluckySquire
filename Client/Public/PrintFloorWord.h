@@ -47,6 +47,8 @@ private:
 	_bool					m_isFadeInComplete = { false };
 	wstring					m_strSFX = { L"" };
 	wstring					m_strSection = { L"" };
+	_bool					m_isLengthCehck = { true };
+
 };
 
 END

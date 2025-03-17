@@ -169,7 +169,7 @@ HRESULT CLevel_Camera_Tool_Client::Ready_Layer_Map()
 {
 	//if (FAILED(Map_Object_Create(L"Chapter_02_Play_Desk.mchc")))
 	//	return E_FAIL;
-	if (FAILED(Map_Object_Create(L"Chapter8_Intro.mchc")))
+	if (FAILED(Map_Object_Create(L"Chapter_08_Play_Desk.mchc")))
 		return E_FAIL;
 
 	return S_OK;
@@ -2290,9 +2290,16 @@ void CLevel_Camera_Tool_Client::Set_CameraInfo(_float _fTimeDelta)
 
 			_vector vDir = XMVector3Normalize(XMLoadFloat3(&m_vDestination) - XMLoadFloat3(&m_vStartPos));
 
-			pCamera->Get_ControllerTransform()->Go_Direction(vDir, _fTimeDelta);
+			pCamera->Get_ControllerTransform()->Go_Direction(vDir, _fTimeDelta * 0.5f);
+		}
+		if (KEY_PRESSING(KEY::U)) {
+
+			_vector vDir = XMVector3Normalize(XMLoadFloat3(&m_vDestination) - XMLoadFloat3(&m_vStartPos));
+
+			pCamera->Get_ControllerTransform()->Go_Direction(-vDir, _fTimeDelta * 0.5f);
 		}
 	}
+
 }
 
 void CLevel_Camera_Tool_Client::Create_Sector()

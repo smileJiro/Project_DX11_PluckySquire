@@ -261,14 +261,16 @@ HRESULT CLevel_Chapter_08::Initialize(LEVEL_ID _eLevelID)
 	CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("Tilting_Glove"), _float3(30.55f, 30.98f, 23.34f));
 
 	// Intro ½ÃÀÛ
-	CTrigger_Manager::GetInstance()->Register_TriggerEvent(TEXT("Chapter8_Intro"), 50);
-	CCamera_Manager::GetInstance()->Start_FadeIn(3.f);
+	/*CTrigger_Manager::GetInstance()->Register_TriggerEvent(TEXT("Chapter8_Intro"), 50);
+	CCamera_Manager::GetInstance()->Start_FadeIn(3.f);*/
 
 	/* Set Shader PlayerHideColor */
 	m_pGameInstance->Set_PlayerHideColor(_float3(0.8f, 0.8f, 0.8f), true);
 
 	m_pSneakMinigameManager = CMinigame_Sneak::GetInstance();
 	m_pFormation_Manager = CFormation_Manager::GetInstance();
+	if (FAILED(m_pFormation_Manager->Initialize()))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -1134,7 +1136,7 @@ HRESULT CLevel_Chapter_08::Ready_Layer_UI(const _wstring& _strLayerTag)
 	//pDesc.fSizeY = 0.f;
 	//
 	//
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_FloorWord"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_FloorWord"), pDesc.iCurLevelID, TEXT("Layer_FloorWord"), &pDesc)))
 		return E_FAIL;
 
 
