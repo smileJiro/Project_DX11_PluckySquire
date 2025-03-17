@@ -131,6 +131,9 @@ HRESULT CSpear_Soldier::Initialize(void* _pArg)
         {
             m_pFSM->Add_FormationState();
             m_pFSM->Set_State((_uint)MONSTER_STATE::FORMATION_IDLE);
+
+            Get_ControllerTransform()->Set_SpeedPerSec(pDesc->tTransform3DDesc.fSpeedPerSec);
+            Get_ControllerTransform()->Set_RotationPerSec(pDesc->tTransform3DDesc.fRotationPerSec);
         }
         else
         {

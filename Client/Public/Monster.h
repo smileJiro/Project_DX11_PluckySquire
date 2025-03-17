@@ -214,6 +214,7 @@ public:
 	_bool						Add_To_Formation();
 	_bool						Remove_From_Formation();
 	_bool							Get_Formation_Position(_float3* _vPosition);
+	_bool							Get_Formation_NextPosition(_float3* _vPosition);
 
 protected:
 	void Delay_On() 
