@@ -2543,6 +2543,7 @@ void CPlayer::Move_CyberPlane(_vector _vMoveVelocity, _float _fTimeDelta)
 {
 
 	m_vCyberPlanePosition += _vMoveVelocity * _fTimeDelta;
+	m_vCyberPlanePosition =XMVectorClamp(m_vCyberPlanePosition, m_vCyberPlaneMinPosition, m_vCyberPlaneMaxPosition);
 }
 
 CPlayer* CPlayer::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

@@ -448,6 +448,12 @@ namespace Client
 		return strMatrix;
 	}
 
+	std::string VectorToString(_fvector _vVec)
+	{
+		string strVector = to_string(_vVec.m128_f32[0]) + " " + to_string(_vVec.m128_f32[1]) + " " + to_string(_vVec.m128_f32[2]) + " " + to_string(_vVec.m128_f32[3]) + "\n";
+		return strVector;
+	}
+
 	F_DIRECTION To_FDirection(_vector _vDir, COORDINATE _eCoord)
 	{
 		if (COORDINATE_2D == _eCoord)

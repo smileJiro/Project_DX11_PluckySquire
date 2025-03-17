@@ -783,6 +783,8 @@ private:
 	_float m_fRunVelocityThreshold = 3.f;
 	_float m_fDistanceFromCamearPlane = 5.f;
 	_vector m_vCyberPlanePosition = { 0.f,0.f };
+	_vector m_vCyberPlaneMaxPosition = { 10.f,10.f};
+	_vector m_vCyberPlaneMinPosition = { -10.f,-10.f};
 public:
 	static CPlayer*		Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject*	Clone(void* _pArg) override;
