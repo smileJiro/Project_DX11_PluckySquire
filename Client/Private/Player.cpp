@@ -703,7 +703,21 @@ void CPlayer::Update(_float _fTimeDelta)
 			m_fInvincibleTImeAcc = 0;
 		}
 	}
+	if (Is_CyvberJotMode())
+	{
 
+		_vector vCamTargetPos = { m_pCameraTargetWorldMatrix->_41, m_pCameraTargetWorldMatrix->_42, m_pCameraTargetWorldMatrix->_43, 1.f };
+		_vector vBaseLookVector = XMVector4Normalize(vCamTargetPos - m_pTargetCamera->Get_FinalPosition() );
+		_vector vBaseRightVector = XMVector3Cross(vBaseLookVector, { 0,1,0,0 });
+		_vector vBaseUpVector = XMVector3Cross(vBaseRightVector, vBaseLookVector);
+		_vector vBasePosition = m_pTargetCamera->Get_FinalPosition();
+		_matrix matBase = { vBaseRightVector, vBaseUpVector, vBaseLookVector, vBasePosition };
+		_vector vPlanePostition = m_vCyberPlanePosition + vBaseLookVector * m_fDistanceFromCamearPlane;
+		_matrix matPlane = XMMatrixTranslationFromVector(vPlanePostition);
+		_matrix matWorld = XMMatrixMultiply(matBase, matPlane);
+		_float4x4 matWorldFloat4x4; XMStoreFloat4x4(&matWorldFloat4x4, matWorld);
+		Set_WorldMatrix(matWorldFloat4x4);
+	}
 	__super::Update(_fTimeDelta); /* Part Object Update */
 	if (m_pInteractableObject && false == dynamic_cast<CBase*>(m_pInteractableObject)->Is_Active())
 		m_pInteractableObject = nullptr;
@@ -2068,9 +2082,12 @@ void CPlayer::Set_Mode(PLAYER_MODE _eNewMode)
 		if (COORDINATE_2D == eCoord)
 			break;
 		cout << "PLAYER_MODE_CYBERJOT" << endl;
-		Set_Kinematic(false);
-		Get_ActorDynamic()->Set_Gravity(false);
-		Get_ActorDynamic()->Set_LinearDamping(2.f);
+
+		m_pTargetCamera = static_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET));
+		m_pCameraTargetWorldMatrix = m_pTargetCamera->Get_TargetMatrix();
+		Set_Kinematic(true);
+		//Get_ActorDynamic()->Set_Gravity(false);
+		//Get_ActorDynamic()->Set_LinearDamping(2.f);
 		Equip_Part(PLAYER_PART_RIFLE);
 		Equip_Part(PLAYER_PART_VISOR);
 		Equip_Part(PLAYER_PART_ZETPACK);
@@ -2520,6 +2537,13 @@ void CPlayer::On_Stop()
 void CPlayer::On_UnStop()
 {
 	//static_cast<CModelObject*>(m_PartObjects[PLAYER_PART_BODY])->End_StoppableRender();
+}
+
+void CPlayer::Move_CyberPlane(_vector _vMoveVelocity, _float _fTimeDelta)
+{
+
+	m_vCyberPlanePosition += _vMoveVelocity * _fTimeDelta;
+	m_vCyberPlanePosition =XMVectorClamp(m_vCyberPlanePosition, m_vCyberPlaneMinPosition, m_vCyberPlaneMaxPosition);
 }
 
 CPlayer* CPlayer::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

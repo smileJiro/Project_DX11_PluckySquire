@@ -178,7 +178,11 @@ void CFriend_Pip::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 	case Client::CFriend::FRIEND_HIT:
 		m_eCurState = FRIEND_IDLE;
 		break;
+	case Client::CFriend::FRIEND_ANY:
+		//m_eCurState = FRIEND_IDLE;
+		break;
 	default:
+		m_eCurState = FRIEND_IDLE;
 		break;
 	}
 
@@ -231,7 +235,9 @@ void CFriend_Pip::Switch_AnimIndex_State()
 	case Client::CFriend::FRIEND_MOJAM:
 		Switch_PartAnim(PART_BODY, ANIM::PIP_C09_MOJAM, false);
 		break;
-
+	case Client::CFriend::FRIEND_ANY:
+		Switch_PartAnim(PART_BODY, ANIM::PIP_C09_MOJAM, false);
+		break;
 	default:
 		break;
 	}

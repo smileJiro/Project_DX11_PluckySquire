@@ -73,6 +73,7 @@ private:
 	void							Chapter2_FriendEvent_0(_float _fTimeDelta); // 돌덩이맵 처음 세명 만남.
 	void							Chapter2_FriendEvent_1(_float _fTimeDelta); // 책의탑 오르기전에 저트 버리는.
 	void							Chapter2_Pip_0(_float _fTimeDelta); // 찍찍이
+	virtual void					Change_PlayMap(_float _fStartTime) override;;
 
 private:
 	_uint m_iDialogueIndex = 0; // 태웅

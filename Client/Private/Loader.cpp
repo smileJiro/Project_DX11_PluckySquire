@@ -267,6 +267,8 @@
 
 /* For. Chapter6 */
 #include "Gear.h"
+#include "Excavator_Tread.h"
+#include "Excavator_Centre.h"
 
 
 
@@ -1689,6 +1691,15 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 		/* UI */
 		if (FAILED(UI_Object_Load(_eLoadLevelID)))
 			return E_FAIL;
+		/* For. Prototype_GameObject_Excavator_Centre */
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Excavator_Centre"),
+			CExcavator_Centre::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
+
+		/* For. Prototype_GameObject_Excavator_Tread */
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Excavator_Tread"),
+			CExcavator_Tread::Create(m_pDevice, m_pContext))))
+			return E_FAIL;
 
 		/* For. Prototype_GameObject_Gear */
 		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Gear"),
@@ -2077,7 +2088,8 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 
 #pragma region Chapter 8 - Object Create
 
-	if (FAILED(Map_Object_Create(LEVEL_STATIC, _eLoadLevelID, L"Room_Enviroment_Small.mchc")))
+	if (FAILED(Map_Object_Create(LEVEL_STATIC, _eLoadLevelID, L"Room_Enviroment_Intro.mchc")))
+	//if (FAILED(Map_Object_Create(LEVEL_STATIC, _eLoadLevelID, L"Room_Enviroment_Small.mchc")))
 		return E_FAIL;
 
 #pragma endregion
@@ -2097,10 +2109,6 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 		return E_FAIL;
 
 
-
-
-	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
-	m_isFinished = true;
 
 	/* Boss */
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_Component_FSM_Boss"),
@@ -2215,6 +2223,10 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 				), matPretransform))))
 		return E_FAIL;
 
+
+
+	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
+	m_isFinished = true;
 
 
 	return S_OK;

@@ -508,19 +508,19 @@ void CCamera_Target::Key_Input(_float _fTimeDelta)
 	pCamera->Start_Changing_AtOffset(3.f, XMVectorSet(-0.7f, 2.f, 0.f, 0.f), EASE_IN_OUT);*/
 #pragma endregion
 	 
-	//Imgui(_fTimeDelta);
+	Imgui(_fTimeDelta);
 
-	//if (KEY_DOWN(KEY::Y)) {
-	//	Set_FreezeEnter(FREEZE_X, XMVectorSet(-0.3150f, 0.1552f, -0.9363f, 0.f), 0);
-	//	//Set_FreezeEnter(FREEZE_Z, XMVectorSet(-0.3150f, 0.1552f, -0.9363f, 0.f), 0);
-	//	Set_FreezeEnter(FREEZE_Y, XMVectorSet(-0.3150f, 0.1552f, -0.9363f, 0.f), 0);
-	//	m_isUsingFreezeOffset = true;
-	//}
-	//if (KEY_DOWN(KEY::I)) {
-	//	Set_FreezeExit(FREEZE_X, 0);
-	//	//Set_FreezeExit(FREEZE_Z, 0);
-	//	Set_FreezeExit(FREEZE_Y, 0);
-	//}
+	if (KEY_DOWN(KEY::Y)) {
+		Set_FreezeEnter(FREEZE_X, XMVectorSet(-0.3150f, 0.1552f, -0.9363f, 0.f), 0);
+		Set_FreezeEnter(FREEZE_Z, XMVectorSet(-0.3150f, 0.1552f, -0.9363f, 0.f), 0);
+		Set_FreezeEnter(FREEZE_Y, XMVectorSet(-0.3150f, 0.1552f, -0.9363f, 0.f), 0);
+		m_isUsingFreezeOffset = true;
+	}
+	if (KEY_DOWN(KEY::I)) {
+		Set_FreezeExit(FREEZE_X, 0);
+		Set_FreezeExit(FREEZE_Z, 0);
+		Set_FreezeExit(FREEZE_Y, 0);
+	}
 
 	//static RETURN_ARMDATA tData = {};
 	//static RETURN_ARMDATA tData1 = {};

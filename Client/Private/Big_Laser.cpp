@@ -3,6 +3,7 @@
 #include "Shader.h"
 #include "Section_Manager.h"
 #include "GameInstance.h"
+#include "Character.h"
 
 CBig_Laser::CBig_Laser(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : CModelObject(_pDevice, _pContext)
@@ -25,7 +26,9 @@ HRESULT CBig_Laser::Initialize(void* _pArg)
     HRESULT hr = __super::Initialize(&Desc);
 
     Register_OnAnimEndCallBack(bind(&CBig_Laser::Anim_End, this, placeholders::_1, placeholders::_2));
-
+    
+    
+    Ready_Collider();
     
     Switch_Animation(LASER_STOP);
     __super::Update(0.f);
@@ -100,17 +103,23 @@ void CBig_Laser::Move_Start(_float _fMovePosX, _float _fSpeed)
     m_isMove = true;
 }
 
+void CBig_Laser::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
+{
+    if (PLAYER & _pOtherCollider->Get_CollisionGroupID())
+        Event_Hit(this, static_cast<CCharacter*>(_pOtherObject), 99, XMVectorZero());
+}
+
 HRESULT CBig_Laser::Ready_Collider()
 {
     m_p2DColliderComs.resize(1);
     CCollider_AABB::COLLIDER_AABB_DESC AABBDesc = {};
     AABBDesc.pOwner = this;
     AABBDesc.vExtents = {1.f,1.f};
-    AABBDesc.vScale = { 100.0f, 700.0f };
-    AABBDesc.vOffsetPosition = {0.f,0.f};
+    AABBDesc.vScale = { 60.0f, 500.0f };
+    AABBDesc.vOffsetPosition = {0.f,-300.f};
     AABBDesc.isBlock = false;
     AABBDesc.isTrigger = true;
-    AABBDesc.iCollisionGroupID = RAY_TRIGGER;
+    AABBDesc.iCollisionGroupID = MONSTER_PROJECTILE;
 
     if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
         TEXT("Com_Collider_Trigger"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &AABBDesc)))

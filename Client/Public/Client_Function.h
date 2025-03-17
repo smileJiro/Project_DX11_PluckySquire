@@ -55,6 +55,7 @@ namespace Client
 	std::wstring StringToWstring(const std::string& _strUTF8);
 	std::string WstringToString(const std::wstring& wstr); 
 	std::string MatrixToString(_float4x4 vMatrix);
+	std::string VectorToString(_fvector _vVec);
 	F_DIRECTION To_FDirection(_vector _vDir, COORDINATE _eCoord = COORDINATE_2D);
 	F_DIRECTION To_FDirection(E_DIRECTION _eEDir);
 	E_DIRECTION To_EDirection(F_DIRECTION _eFDir);

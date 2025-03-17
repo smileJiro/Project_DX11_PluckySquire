@@ -69,7 +69,9 @@ void CFriend::Update(_float _fTimeDelta)
 {
     if (KEY_DOWN(KEY::H))
     {
-        On_Hit(nullptr, 0, XMVectorSet(0.0f, 0.0f,0.0f,0.0f));
+        //m_ePreState = FRIEND_LAST;
+        //Change_AnyState(5, false, DIRECTION::DIR_RIGHT);
+        //On_Hit(nullptr, 0, XMVectorSet(0.0f, 0.0f,0.0f,0.0f));
         //Change_Mode(FRIEND_MODE::MODE_FIGHT);
         //m_eCurState = FRIEND_ATTACK;
     }
@@ -305,11 +307,15 @@ void CFriend::State_Change()
     case Client::CFriend::FRIEND_MOJAM:
         State_Change_Mojam();
         break;
+    case Client::CFriend::FRIEND_ANY:
+        State_Change_Any();
+        break;
     default:
         break;
     }
 
-    Switch_AnimIndex_State(); // 현재 상태에 맞는 Animation 선택
+    if(m_eCurState != FRIEND_ANY)
+        Switch_AnimIndex_State(); // 현재 상태에 맞는 Animation 선택
     m_ePreState = m_eCurState;
 }
 
@@ -409,6 +415,17 @@ void CFriend::State_Change_Mojam()
 
 void CFriend::State_Change_Hit()
 {
+}
+
+void CFriend::State_Change_Any()
+{
+    _vector vRightVector = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
+    if(DIRECTION::DIR_RIGHT == m_eDirection)
+        Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, XMVectorAbs(vRightVector));
+    else if (DIRECTION::DIR_LEFT == m_eDirection)
+        Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, -XMVectorAbs(vRightVector));
+
+    Switch_PartAnim(PART_BODY, m_iAnyAnimIndex, m_isAnyAnimLoop);
 }
 
 void CFriend::Update_ChaseTargetDirection()
@@ -588,6 +605,7 @@ void CFriend::Action_State(_float _fTimeDelta)
     case Client::CFriend::FRIEND_MOJAM:
         Action_State_Mojam(_fTimeDelta); // Mojam 애니메이션 재생 후 Idle 
         break;
+        
     default:
         break;
     }
@@ -708,6 +726,10 @@ void CFriend::Action_State_Mojam(_float _fTimeDelta)
 }
 
 void CFriend::Action_State_Hit(_float _fTimeDelta)
+{
+}
+
+void CFriend::Action_State_Any(_float _fTimeDelta)
 {
 }
 
