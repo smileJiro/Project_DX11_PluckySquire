@@ -1596,6 +1596,37 @@ void CPlayer::RetrieveSword()
 	Set_State(RETRIVE_SWORD);
 }
 
+void CPlayer::CatchSword()
+{
+	COORDINATE eCoord = Get_CurCoord();
+	if (COORDINATE_2D == eCoord)
+	{
+		ANIM_STATE_2D eCurAnimIdx = (ANIM_STATE_2D)m_pBody->Get_CurrentAnimIndex();
+		STATE eState = Get_CurrentStateID();
+		F_DIRECTION eFDir = To_FDirection(Get_2DDirection());
+		if (STATE::IDLE == eState)
+		{
+			static_cast<CPlayerState_Idle*>(m_pStateMachine->Get_CurrentState())->Switch_IdleAnimation2D(eFDir);
+		}
+		else if (STATE::RUN == eState)
+		{
+			static_cast<CPlayerState_Run*>(m_pStateMachine->Get_CurrentState())->Switch_RunAnimation2D(eFDir);
+		}
+		else if (STATE::JUMP_UP == eState)
+		{
+			static_cast<CPlayerState_JumpUp*>(m_pStateMachine->Get_CurrentState())->Switch_JumpAnimation();
+		}
+		else if (STATE::JUMP_DOWN == eState)
+		{
+			static_cast<CPlayerState_JumpDown*>(m_pStateMachine->Get_CurrentState())->Switch_To_JumpDownAnimation();
+		}
+	}
+	else
+	{
+		
+	}
+}
+
 INTERACT_RESULT CPlayer::Try_Interact(_float _fTimeDelta)
 {
 	//이미 인터렉터블 오브젝트가 있다? 
@@ -2419,14 +2450,15 @@ void CPlayer::Key_Input(_float _fTimeDelta)
 		//tCommand.vTarget += { 0.f, 0.f, -2.f };
 		//Add_AutoMoveCommand(tCommand);
 
-		//Start_AutoMove(true);
 		//Set_State(EVICT);
+		//Start_AutoMove(true);
 		//AUTOMOVE_COMMAND tCommand{};
 		//tCommand.eType = AUTOMOVE_TYPE::MOVE_TO;
 		//tCommand.iAnimIndex = (_uint)CPlayer::ANIM_STATE_2D::PLAYER_RUN_RIGHT;
 		//tCommand.fPreDelayTime = 0.5f;
 		//tCommand.vTarget = { 0.f, 0.f, 0.f };
 		//tCommand.fPostDelayTime = 0.5f;
+		//tCommand.fMoveSpeedMag = 4.f;
 		//Add_AutoMoveCommand(tCommand);
   //      Start_AutoMove(true);
 	}

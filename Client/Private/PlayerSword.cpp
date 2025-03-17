@@ -407,32 +407,8 @@ void CPlayerSword::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
 void CPlayerSword::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
 	OBJECT_GROUP eGroup = (OBJECT_GROUP)_pOtherCollider->Get_CollisionGroupID();
-    if (OBJECT_GROUP::PLAYER == eGroup)
-    {
-        //if (Is_ComingBack())
-        //{
-        //    Set_State(HANDLING);
-        //}
-    }
-    else
-    {
-    }
-}
-
-void CPlayerSword::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
-{
     _uint iMyColUse = _pMyCollider->Get_ColliderUse();
-    OBJECT_GROUP eGroup = (OBJECT_GROUP)_pOtherCollider->Get_CollisionGroupID();
-    if ((_uint)COLLIDER2D_USE::COLLIDER2D_ATTACK == iMyColUse)
-    {
-        if (OBJECT_GROUP::MONSTER == eGroup
-            || OBJECT_GROUP::GIMMICK_OBJECT == eGroup)
-        {
-            m_pGameInstance->Start_SFX(_wstring(L"A_Sfx_Sword_Impact_Body_") + to_wstring(rand() % 3), 50.f);
-            Attack(_pOtherObject);
-        }
-    }
-    else if ((_uint)COLLIDER2D_USE::COLLIDER2D_BODY == iMyColUse)
+    if ((_uint)COLLIDER2D_USE::COLLIDER2D_BODY == iMyColUse)
     {
         if (_pOtherCollider->Is_Block())
         {
@@ -450,6 +426,21 @@ void CPlayerSword::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOth
             }
         }
 
+    }
+}
+
+void CPlayerSword::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
+{
+    _uint iMyColUse = _pMyCollider->Get_ColliderUse();
+    OBJECT_GROUP eGroup = (OBJECT_GROUP)_pOtherCollider->Get_CollisionGroupID();
+    if ((_uint)COLLIDER2D_USE::COLLIDER2D_ATTACK == iMyColUse)
+    {
+        if (OBJECT_GROUP::MONSTER == eGroup
+            || OBJECT_GROUP::GIMMICK_OBJECT == eGroup)
+        {
+            m_pGameInstance->Start_SFX(_wstring(L"A_Sfx_Sword_Impact_Body_") + to_wstring(rand() % 3), 50.f);
+            Attack(_pOtherObject);
+        }
     }
     
 }
@@ -576,7 +567,7 @@ void CPlayerSword::On_StateChange()
         {
              Set_Active(false);
         }
-
+        m_pPlayer->CatchSword();
         m_pGameInstance->Start_SFX(_wstring(L"A_sfx_sword_catch-") + to_wstring(rand() % 2), 50.f);
 
         Set_AttackEnable(false);

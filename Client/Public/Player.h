@@ -562,6 +562,7 @@ public:
 	void Set_PlayingAnim(_bool _bPlaying);
 	void Start_Invinciblity();
 	void RetrieveSword();
+	void CatchSword();
 	// interact 함수가 호출되면 true 반환.
 	INTERACT_RESULT Try_Interact(_float _fTimeDelta);
 

@@ -1983,8 +1983,9 @@
     <ClInclude Include="..\Public\PlayerState_RetriveSword.h">
       <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\PlayerBlocker.h" />
-    <ClInclude Include="..\public\Gear.h" />
+    <ClInclude Include="..\Public\PlayerBlocker.h">
+      <Filter>02.GameObjects\Blocker</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -3181,8 +3182,9 @@
     <ClCompile Include="..\Private\PlayerState_RetriveSword.cpp">
       <Filter>03.Components\PlayerState</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\PlayerBlocker.cpp" />
-    <ClCompile Include="..\private\Gear.cpp" />
+    <ClCompile Include="..\Private\PlayerBlocker.cpp">
+      <Filter>02.GameObjects\Blocker</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
