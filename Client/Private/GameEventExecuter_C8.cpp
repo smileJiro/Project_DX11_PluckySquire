@@ -14,6 +14,8 @@
 #include "Room_Door.h"
 #include "Book.h"
 
+#include "PlayerBody.h"
+
 CGameEventExecuter_C8::CGameEventExecuter_C8(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CGameEventExecuter(_pDevice, _pContext)
 {
@@ -52,6 +54,9 @@ void CGameEventExecuter_C8::Update(_float _fTimeDelta)
 		{
 		case Client::CTrigger_Manager::CHAPTER8_INTRO:
 			Chapter8_Intro(_fTimeDelta);
+			break;
+		case Client::CTrigger_Manager::CHAPTER8_MAP_INTRO:
+			Chapter8_Map_Intro(_fTimeDelta);
 			break;
 		case Client::CTrigger_Manager::CHAPTER8_INTRO_POSTIT_SEQUENCE:
 			Chapter8_Intro_Postit_Sequence(_fTimeDelta);
@@ -133,6 +138,67 @@ void CGameEventExecuter_C8::Chapter8_Intro(_float _fTimeDelta)
 
 		if (m_fTimer >= 3.f) {
 			CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::TARGET_2D, true, 0.5f);
+			GameEvent_End();
+		}
+	}
+}
+
+void CGameEventExecuter_C8::Chapter8_Map_Intro(_float _fTimeDelta)
+{
+	m_fTimer += _fTimeDelta;
+
+	if (Step_Check(STEP_0))
+	{
+		CPlayer* pPlayer = Get_Player();
+
+		if (Is_Start()) {
+			// 1. Player 움직임 막기
+			pPlayer->Set_BlockPlayerInput(true);
+
+			// 2. 어리둥절 애니메이션 재생
+			pPlayer->Swicth_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_IDLE_NERVOUS_TURN_01_GT);
+		}
+		
+		
+		if (false == static_cast<CPlayerBody*>(pPlayer->Get_Body())->Is_DuringAnimation() &&
+			m_fTimer >= 0.7f) {
+			Next_Step(true);
+		}
+	}
+	else if (Step_Check(STEP_1)) {
+		// 3. CutScene 재생
+		CCamera_Manager::GetInstance()->Set_NextCutSceneData(TEXT("Chapter8_Map_Intro"));
+		CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::CUTSCENE, true, 0.8f);
+		Next_Step(true);
+	}
+	else if (Step_Check(STEP_2)) {
+		CCamera_CutScene* pCamera = static_cast<CCamera_CutScene*>(CCamera_Manager::GetInstance()->Get_CurrentCamera());
+		if (true == pCamera->Is_Finish_CutScene()) {
+			Next_Step(true);
+		}
+	}
+	else if (Step_Check(STEP_3)) {
+		if (Is_Start()) {
+			CCamera_Manager::GetInstance()->Start_FadeOut(0.8f);
+		}
+
+		// 4. FadeOut이 끝난 후 CutScene Camera -> Target Camera로 전환
+		if (m_fTimer > 0.8f) {
+			static_cast<CCamera_CutScene*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::CUTSCENE))->Set_Pause_After_CutScene(false);
+			Next_Step(true);
+		}
+	}
+	// 5. 전환 후 Target Camera로(다음 프레임) FadeIn 시작 + 기존 CutScene Camera를 다시 밝게 만들기
+	else if (Step_Check(STEP_4)) {
+		if (Is_Start()) {
+			CCamera_Manager::GetInstance()->Start_FadeIn(0.7f);
+			CCamera_Manager::GetInstance()->Set_FadeRatio(CCamera_Manager::CUTSCENE, 1.f, true);
+
+			CPlayer* pPlayer = Get_Player();
+
+			// 6. Player 움직임 풀기
+			pPlayer->Set_BlockPlayerInput(false);
+			
 			GameEvent_End();
 		}
 	}
