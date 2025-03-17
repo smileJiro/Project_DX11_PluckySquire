@@ -67,6 +67,8 @@ private:
 	void							Chapter4_3D_Out_02(_float _fTimeDelta);
 	void							Friend_MapEnter(_float _fTimeDelta);
 
+	virtual void							Change_PlayMap(_float _fStartTime) override;
+
 public:
 	static CGameEventExecuter_C4* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual void Free();

@@ -20,6 +20,7 @@ public:
 	virtual void Enter() {};
 	virtual void Exit() {};
 	virtual void On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx) {};
+	virtual void On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce) {};
 
 	CPlayer::STATE Get_StateID() { return m_eStateID; }
 

@@ -6,7 +6,7 @@
 #include "Dialog_Manager.h"
 #include "Player.h"
 #include "Shop_Manager.h"
-
+#include "Trigger_Manager.h"
 
 
 CInteraction_E::CInteraction_E(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -678,5 +678,13 @@ void CInteraction_E::Render_InteractionE()
 	// 상점 진행 중일 때 랜더 끄기
 	if (true == CShop_Manager::GetInstance()->Get_isOpenShop())
 		m_isDisplayInteractionE = false;
+
+	//_int Get_Running_EventExecuterAction(); // 현재 진행 중인 EventExecuterActionType이 뭔지 리턴한다, 없다면  -1을 리턴함
+
+	if (-1 != CTrigger_Manager::GetInstance()->Get_Running_EventExecuterAction())
+		m_isDisplayInteractionE = false;
+
+
+
 								
 }

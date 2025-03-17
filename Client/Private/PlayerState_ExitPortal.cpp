@@ -165,6 +165,7 @@ void CPlayerState_ExitPortal::Shoot_Player3D()
 		break;
 	}
 	m_pOwner->Add_Impuls(vImpulse * m_f3DJumpDistance);
+	cout << " vImpulse : " << VectorToString(vImpulse * m_f3DJumpDistance);
 	//_vector vNewLookDir = vImpulse;
 	//if (abs(vNewLookDir.m128_f32[1]) > abs(vNewLookDir.m128_f32[0])
 	//	&& abs(vNewLookDir.m128_f32[1]) > abs(vNewLookDir.m128_f32[2]))
@@ -214,7 +215,7 @@ void CPlayerState_ExitPortal::Shoot_Player3D()
 		default:
 			break;
 		}
-
+		 
 
 		m_pOwner->LookDirectionXZ_Dynamic(vNewLookDIr);
 	}
