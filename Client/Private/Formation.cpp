@@ -86,7 +86,7 @@ void CFormation::Update(_float _fTimeDelta)
 	else
 	{
 		//포인트로 이동 (회전하면서 이동하는거라 이상한지 체크해봐야함)
-		if (true == Get_ControllerTransform()->MoveToTarget(XMLoadFloat3(&m_PatrolPoints[m_iPatrolIndex]), _fTimeDelta))
+		if (true == Get_ControllerTransform()->MoveTo(XMLoadFloat3(&m_PatrolPoints[m_iPatrolIndex]), _fTimeDelta))
 		{
 			//도착하면 딜레이 동안 대기 하다가 다시 이동
 			m_isDelay = true;
@@ -128,8 +128,10 @@ HRESULT CFormation::Initialize_Members(void* _pArg)
 
 			if (pObject != nullptr)
 			{
-				m_Members.push_back(static_cast<CMonster*>(pObject));
+				CMonster* pMonster = static_cast<CMonster*>(pObject);
+				m_Members.push_back(pMonster);
 				Safe_AddRef(pObject);
+				Event_Set_Kinematic(static_cast<CActor_Dynamic*>(pMonster->Get_ActorCom()), true);
 			}
 		}
 	}
