@@ -235,8 +235,8 @@ void CGameEventExecuter_C2::Chapter2_BookMagic(_float _fTimeDelta)
 			CEffect2D_Manager::GetInstance()->Play_Effect(L"beam", SECTION_MGR->Get_Cur_Section_Key(), XMMatrixTranslation(-236.f, 217.f, 0.f), 2.8f, 0, true, 999.f);// ºö½î´Â°Å
 			CEffect2D_Manager::GetInstance()->Play_Effect(L"EffectBack", SECTION_MGR->Get_Cur_Section_Key(), XMMatrixTranslation(-276.f, 181.4f, 0.f), 0.f, 0); // ¹é ½ÃÀÛ
 			CEffect2D_Manager::GetInstance()->Play_Effect(L"EffectBack", SECTION_MGR->Get_Cur_Section_Key(), XMMatrixTranslation(-276.f, 181.4f, 0.f), 0.8f, 1, true, 999.f); //¹é ·çÇÁ
-			CEffect2D_Manager::GetInstance()->Play_Effect(L"hum", SECTION_MGR->Get_Cur_Section_Key(), XMMatrixTranslation(-276.f, 179.4f, 0.f), 0.f, 0);
-			CEffect2D_Manager::GetInstance()->Play_Effect(L"hum", SECTION_MGR->Get_Cur_Section_Key(), XMMatrixTranslation(-276.f, 179.4f, 0.f), 1.8f, 1, false, 999.f);
+			CEffect2D_Manager::GetInstance()->Play_Effect(L"hum", SECTION_MGR->Get_Cur_Section_Key(), XMMatrixTranslation(-276.f, 170.4f, 0.f), 0.f, 0);
+			CEffect2D_Manager::GetInstance()->Play_Effect(L"hum", SECTION_MGR->Get_Cur_Section_Key(), XMMatrixTranslation(-276.f, 170.4f, 0.f), 1.8f, 1, false, 999.f);
 			CEffect2D_Manager::GetInstance()->Play_Effect(L"storm", SECTION_MGR->Get_Cur_Section_Key(), XMMatrixTranslation(10.f, 280.f, 0.f), 3.0f, 0, false);
 			CEffect2D_Manager::GetInstance()->Play_Effect(L"storm", SECTION_MGR->Get_Cur_Section_Key(), XMMatrixTranslation(10.f, 280.f, 0.f), 3.6f, 1, true, 999.f);
 		}

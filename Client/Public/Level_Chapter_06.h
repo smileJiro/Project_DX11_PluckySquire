@@ -39,6 +39,7 @@ public:
 	HRESULT					Ready_Layer_Slippery();
 	HRESULT					Ready_Layer_Defender();
 	HRESULT					Ready_Layer_MapGimmick();
+	HRESULT					Ready_Layer_Spawner();
 	HRESULT					Ready_Layer_Friends(const _wstring& _strLayerTag);
 	HRESULT					Ready_Layer_Gear(const _wstring& _strLayerTag);
 private:

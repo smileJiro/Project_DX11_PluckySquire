@@ -83,12 +83,12 @@ protected:
 	HRESULT					Ready_PartObjects();
 	
 private:
-	void					Progress(_float _fTimeDelta);
-	void					Pos_Ready();
+	HRESULT					Progress(_float _fTimeDelta);
+	HRESULT					Pos_Ready();
 	void					Change_BookOrder();
 	_float2					Change_PlayerPos();
-	void					DisplayLocationName();
-	void					DisplayHoneyBee(_float2 _MidPoint);
+	HRESULT					DisplayLocationName();
+	HRESULT					DisplayHoneyBee(_float2 _MidPoint);
 
 public:
 	static CWorldMapNPC*		Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

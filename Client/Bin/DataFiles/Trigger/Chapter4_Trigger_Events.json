@@ -158,5 +158,15 @@
         "Is_Sequence": true
       }
     ]
+  },
+  {
+    "Trigger_EventTag": "Chapter4_P0304_Portal",
+    "Actions": [
+      {
+        "ActionTag": "Use_Portal",
+        "EventTag": "Chapter4_P0304",
+        "Is_Sequence": false
+      }
+    ]
   }
 ]

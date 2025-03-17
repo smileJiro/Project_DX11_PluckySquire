@@ -12,8 +12,11 @@ BEGIN(Client)
 class CEffect_Trail : public CPartObject
 {
 public:
+	enum TRAILTYPE {CENTRAL_TRAIL, FOLLOW_TRAIL};
+public:
 	typedef struct tagEffectTrail : public CPartObject::PARTOBJECT_DESC
 	{		
+		TRAILTYPE   eTrailType = CENTRAL_TRAIL;
 		_float fAddTime = 0.002f;
 		_float fTrailLifeTime = 0.25f;
 		_float fLength = 1.5f;
@@ -21,6 +24,8 @@ public:
 		_float4 vColor = _float4(1.f, 1.f, 1.f, 1.f);
 		const _tchar* szTextureTag = L"";
 		const _tchar* szBufferTag = L"";
+		_uint	iTextureLevel = LEVEL_STATIC;
+		_uint	iBufferLevel = LEVEL_STATIC;
 
 	}EFFECTTRAIL_DESC;
 private:
@@ -56,6 +61,7 @@ private:
 	//_bool  m_isDeleteUpdate = { true }; // Á¤Á¡ 
 
 private:
+	TRAILTYPE m_eTrailType = CENTRAL_TRAIL;
 	_float m_fAccAddTime = 0.f;
 	_float m_fAddTime = 0.002f;
 	_float m_fTrailLifeTime = 0.25f;

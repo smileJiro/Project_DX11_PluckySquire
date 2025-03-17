@@ -2,7 +2,7 @@
 	{
 		"Section_Name": "Chapter6_Worldmap_0",
 		"Section_BackGround_Name": "Worldmap",
-		"Section_Type": 1,
+		"Section_Type": 4,
 		"Section_Default": 0,
 		"Section_Info": {
 			"Next_Page_Tag": "Chapter5_P0102"
@@ -39,7 +39,7 @@
 	{
 		"Section_Name": "Chapter6_Worldmap_01",
 		"Section_BackGround_Name": "Worldmap1",
-		"Section_Type": 1,
+		"Section_Type": 4,
 		"Section_Default": 0,
 		"Section_Info": {
 			"Pre_Page_Tag": "Chapter5_P0304",

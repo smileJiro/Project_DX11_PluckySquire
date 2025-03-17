@@ -105,8 +105,11 @@ HRESULT CDoor_2D::Initialize(void* _pArg)
         TEXT("Com_Body2DCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &AABBDESC)))
         return E_FAIL;
 
-    m_p2DColliderComs[0]->Set_Active(true);
-    
+    if (CLOSE == m_eDoorState || CLOSED == m_eDoorState)
+        m_p2DColliderComs[0]->Set_Active(true);
+    else
+        m_p2DColliderComs[0]->Set_Active(false);
+
 
     //Switch_Animation(H_LARGE_RED_CLOSE);
 

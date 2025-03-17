@@ -34,14 +34,14 @@ public:
 	void						Block(CCollider* _pOther);
 	void						Block_AABB(CCollider_AABB* _pOther);
 	void						Block_Circle(CCollider_Circle* _pOther);
-
 public:
 	_bool						Compute_NearestPoint_AABB(CCollider_AABB* _pOtherAABB, _float2* _pOutPos = nullptr, _float2* _pContactVector_NotNormalize = nullptr);
 	
 private:
 	_bool						Is_Collision_Circle(CCollider_Circle* _pOther);
 	_bool						Is_Collision_AABB(CCollider_AABB* _pOther);
-
+	virtual _bool				Get_CollisionPoint(CCollider* _pOther, _float2* pOutPoint) override;
+	virtual _bool				Get_CollisionNormal(CCollider* _pOther, _float2* pOutNormal) override;
 public:
 	_float						Get_FinalRadius() const { return m_fFinalRadius; }
 	void							Set_Radius(_float _fRadius) { m_fRadius = _fRadius; }

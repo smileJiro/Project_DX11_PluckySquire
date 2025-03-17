@@ -11,8 +11,8 @@
 #include "UI_Manager.h"
 
 
-CSection_2D_Narration::CSection_2D_Narration(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
-	:CSection_2D(_pDevice, _pContext, NARRAION, SECTION_2D_BOOK)
+CSection_2D_Narration::CSection_2D_Narration(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, SECTION_2D_PLAY_TYPE _ePlayType)
+	:CSection_2D(_pDevice, _pContext, _ePlayType, SECTION_2D_BOOK)
 {
 }
 
@@ -113,14 +113,17 @@ HRESULT CSection_2D_Narration::Start_Narration()
 	
 		else if (Get_SectionName() == L"Chapter8_P1314")
 			CUI_Manager::GetInstance()->Set_PlayNarration(TEXT("CChapter8_P1314_Narration_01"));
+		
+		else if (Get_SectionName() == L"Chapter8_P2526")
+			CUI_Manager::GetInstance()->Set_PlayNarration(TEXT("CChapter8_END_Narration_01"));
 	}
 
 	return S_OK;
 }
 
-CSection_2D_Narration* CSection_2D_Narration::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, void* _pDesc)
+CSection_2D_Narration* CSection_2D_Narration::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, SECTION_2D_PLAY_TYPE _ePlayType, void* _pDesc)
 {
-	CSection_2D_Narration* pInstance = new CSection_2D_Narration(_pDevice, _pContext);
+	CSection_2D_Narration* pInstance = new CSection_2D_Narration(_pDevice, _pContext, _ePlayType);
 
 	if (FAILED(pInstance->Initialize(_pDesc)))
 	{

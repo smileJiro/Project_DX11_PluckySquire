@@ -25,6 +25,9 @@ public:
 	virtual HRESULT			Render() override;
 
 public:
+	virtual void OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)override;
+
+
 	HRESULT Cleanup_DeadReferences() override;
 	virtual void Active_OnEnable() override;
 	virtual void Active_OnDisable() override;

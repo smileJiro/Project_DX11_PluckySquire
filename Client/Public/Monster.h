@@ -11,6 +11,8 @@ BEGIN(Client)
 class CFSM;
 class CDetectionField;
 class CSneak_DetectionField;
+class CFormation;
+
 class CMonster abstract : public CCharacter, public IAnimEventReceiver
 {
 public:
@@ -31,6 +33,7 @@ public:
 		_bool isStay = false;
 		_float3 vLook = { 0.f,0.f,-1.f };
 		_bool isSneakMode = false;
+		CFormation* pFormation = { nullptr };
 		SNEAKWAYPOINTINDEX eWayIndex = SNEAKWAYPOINTINDEX::LAST;
 	}MONSTER_DESC;
 
@@ -193,6 +196,11 @@ public:
 	_bool						Check_Block(_float _fTimeDelta);	// 다음 위치가 장애물에 막히는지 체크
 	_bool						Check_Block(_fvector _vForce, _float _fTimeDelta);	// 다음 위치가 장애물에 막히는지 체크
 
+								//비어있는 대열로 추가
+	_bool						Add_To_Formation();
+	_bool						Remove_From_Formation();
+	_bool							Get_Formation_Position(_float3* _vPosition);
+
 protected:
 	void Delay_On() 
 	{ 
@@ -223,6 +231,7 @@ protected:
 	CAnimEventGenerator* m_pAnimEventGenerator = { nullptr };
 	CDetectionField* m_pDetectionField = { nullptr };
 	CSneak_DetectionField* m_pSneak_DetectionField = { nullptr };
+	CFormation* m_pFormation = { nullptr };
 
 #ifdef _DEBUG
 	CDebugDraw_For_Client* m_pDraw = { nullptr };
