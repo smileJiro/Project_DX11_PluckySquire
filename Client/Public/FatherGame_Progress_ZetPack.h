@@ -33,8 +33,6 @@ public:
 private:
 	CZetPack_Child*			m_pZetPack_Child = nullptr;
 
-
-
 public:
 	static CFatherGame_Progress_ZetPack* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, void* _pArg);
 	void					Free() override;

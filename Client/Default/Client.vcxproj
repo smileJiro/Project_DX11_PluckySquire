@@ -242,6 +242,7 @@
     <ClInclude Include="..\public\FresnelModelObject.h" />
     <ClInclude Include="..\Public\FriendBody.h" />
     <ClInclude Include="..\Public\Friend_Pip.h" />
+    <ClInclude Include="..\public\Gear.h" />
     <ClInclude Include="..\Public\JumpStarter.h" />
     <ClInclude Include="..\Public\Laser_Beam.h" />
     <ClInclude Include="..\Public\Laser_Container.h" />
@@ -646,6 +647,7 @@
     <ClCompile Include="..\private\FresnelModelObject.cpp" />
     <ClCompile Include="..\Private\FriendBody.cpp" />
     <ClCompile Include="..\Private\Friend_Pip.cpp" />
+    <ClCompile Include="..\private\Gear.cpp" />
     <ClCompile Include="..\Private\JumpStarter.cpp" />
     <ClCompile Include="..\Private\Laser_Beam.cpp" />
     <ClCompile Include="..\Private\Laser_Container.cpp" />

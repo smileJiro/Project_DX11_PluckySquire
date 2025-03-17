@@ -182,6 +182,16 @@ protected:
 	_float					m_fTrailDuration = 0.3f;
 	_float4					m_vTrailColor = { 0.0f, 0.909f, 1.0f, 1.0f };
 
+public:
+	void					Start_StoppableRender() { m_isStoppable = 1; }
+	void					End_StoppableRender() { m_isStoppable = 0; }
+	void					Action_StoppableRender(_float _fTimeDelta);
+protected: /* Stoppable */
+	_int	m_isStoppable = 0;
+	_float	m_fUpDownFactor = 1.0f;
+	_float4 m_vStoppableColor = { 1.0f, 0.0f,0.0f,1.0f };
+	_float2 m_vStoppableTime = { 1.0f, 0.0f };
+
 protected:
 	virtual HRESULT			Bind_ShaderResources_WVP();
 

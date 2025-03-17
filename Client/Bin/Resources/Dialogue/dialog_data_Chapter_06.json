@@ -3446,6 +3446,30 @@
 					"Blue": 186
 				}
 			]
+		},
+		{
+			"id": "Chapter6_StorySequence_01_01",
+			"Section": "Chapter5_P0304",
+			"lines": [
+				{
+					"Portrait": 0,
+					"Talker": "뮤렐",
+					"TalkerIndex": 0,
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "폐하께서 기다리고 계셨습니다. 안으로 드시지요.",
+					"Red": 191,
+					"Green": 144,
+					"Blue": 224
+				}
+			]
 		}
 	]
 }
