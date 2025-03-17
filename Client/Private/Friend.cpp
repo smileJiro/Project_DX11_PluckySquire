@@ -55,7 +55,8 @@ void CFriend::Priority_Update(_float _fTimeDelta)
     CSection_2D* pCurSection = dynamic_cast<CSection_2D*>(CSection_Manager::GetInstance()->Find_Section(m_strSectionName));
     if (nullptr != pCurSection)
     {
-        if (CSection_2D::SECTION_2D_PLAY_TYPE::NARRAION == pCurSection->Get_Section_2D_PlayType())
+        CSection_2D::SECTION_2D_PLAY_TYPE ePlayType = pCurSection->Get_Section_2D_PlayType();
+        if (CSection_2D::SECTION_2D_PLAY_TYPE::NARRAION == ePlayType || CSection_2D::SECTION_2D_PLAY_TYPE::WORLDMAP == ePlayType)
             m_isRender = false;
         else
             m_isRender = true;
@@ -611,6 +612,16 @@ void CFriend::Action_State_Idle(_float _fTimeDelta)
     {
         if (nullptr != m_pChaseTarget && COORDINATE_2D == m_pChaseTarget->Get_CurCoord())
         {
+            _wstring strTargetSection = m_pChaseTarget->Get_Include_Section_Name();
+            if (m_pChaseTarget->Get_Include_Section_Name() != m_strSectionName)
+            {
+                _vector vTargetPos = m_pChaseTarget->Get_FinalPosition();
+                m_pControllerTransform->Set_State(CTransform::STATE_POSITION, vTargetPos);
+                CSection_Manager::GetInstance()->Remove_GameObject_FromSectionLayer(m_strSectionName, this);
+                CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strTargetSection, this);
+                return;
+            }
+
             /* 일반 모드일때 플레이어가 공격하면 멈추기 */
             CPlayer* pPlayer = CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr();
             if (CPlayer::STATE::ATTACK == pPlayer->Get_CurrentStateID() || CPlayer::STATE::JUMP_ATTACK == pPlayer->Get_CurrentStateID() || CPlayer::STATE::SPINATTACK == pPlayer->Get_CurrentStateID())
@@ -627,6 +638,8 @@ void CFriend::Action_State_Idle(_float _fTimeDelta)
             if (m_fChaseInterval < fLen - fIdleOffset)
                 m_eCurState = FRIEND_CHASE;
         }
+
+       
     }
     else if (m_eCurMode == MODE_FIGHT)
     {
