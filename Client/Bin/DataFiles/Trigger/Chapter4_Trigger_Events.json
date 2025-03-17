@@ -178,5 +178,15 @@
         "Is_Sequence": false
       }
     ]
+  },
+  {
+    "Trigger_EventTag": "Start_Train",
+    "Actions": [
+      {
+        "ActionTag": "Create_EventExecuter",
+        "EventTag": "Start_Train",
+        "Is_Sequence": true
+      }
+    ]
   }
 ]

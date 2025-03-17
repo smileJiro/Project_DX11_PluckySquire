@@ -673,6 +673,9 @@ void CPlayer::Priority_Update(_float _fTimeDelta)
 {
 	if (KEY_DOWN(KEY::K))
 	{
+		//CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(TEXT("Thrash"));
+		//CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(TEXT("Violet"));
+		//CFriend_Controller::GetInstance()->Start_Train();
 		//CGravity::STATE eCurState = m_pGravityCom->Get_CurState();
 		//_int iState = eCurState;
 		//iState ^= 1;

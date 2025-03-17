@@ -80,6 +80,9 @@ void CGameEventExecuter_C4::Update(_float _fTimeDelta)
 		case Client::CTrigger_Manager::FRIEND_MAPENTER:
 			Friend_MapEnter(_fTimeDelta);
 			break;
+		case Client::CTrigger_Manager::START_TRAIN:
+			Start_Train(_fTimeDelta);
+			break;
 		default:
 			break;
 		}
