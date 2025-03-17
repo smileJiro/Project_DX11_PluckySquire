@@ -55,7 +55,8 @@ void CFriend::Priority_Update(_float _fTimeDelta)
     CSection_2D* pCurSection = dynamic_cast<CSection_2D*>(CSection_Manager::GetInstance()->Find_Section(m_strSectionName));
     if (nullptr != pCurSection)
     {
-        if (CSection_2D::SECTION_2D_PLAY_TYPE::NARRAION == pCurSection->Get_Section_2D_PlayType())
+        CSection_2D::SECTION_2D_PLAY_TYPE ePlayType = pCurSection->Get_Section_2D_PlayType();
+        if (CSection_2D::SECTION_2D_PLAY_TYPE::NARRAION == ePlayType || CSection_2D::SECTION_2D_PLAY_TYPE::WORLDMAP == ePlayType)
             m_isRender = false;
         else
             m_isRender = true;
