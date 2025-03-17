@@ -58,7 +58,10 @@ void CGameEventExecuter_C4::Update(_float _fTimeDelta)
 			Chapter4_3D_Out_02(_fTimeDelta);
 			break;
 		case Client::CTrigger_Manager::CHAPTER4_INTRO:
-			Chapter4_Intro(_fTimeDelta);
+			Chapter4_Intro(_fTimeDelta);		
+			break;
+		case Client::CTrigger_Manager::CHAPTER4_2D_INTRO:
+			Chapter4_2D_Intro(_fTimeDelta);
 			break;
 		case Client::CTrigger_Manager::CHAPTER4_INTRO_POSTIT_SEQUENCE:
 			Chapter4_Intro_Postit_Sequence(_fTimeDelta);
@@ -82,6 +85,10 @@ void CGameEventExecuter_C4::Update(_float _fTimeDelta)
 }
 
 void CGameEventExecuter_C4::Late_Update(_float _fTimeDelta)
+{
+}
+
+void CGameEventExecuter_C4::Chapter4_2D_Intro(_float _fTimeDelta)
 {
 }
 

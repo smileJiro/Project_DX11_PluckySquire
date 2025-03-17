@@ -40,7 +40,7 @@
     "Trigger_ConditionType": 0,
     "Trigger_Coordinate": 0,
     "Trigger_EventTag": "Chapter4_2D_Intro",
-    "Trigger_Type": 9
+    "Trigger_Type": 0
   },
   {
     "Collider_Info": {

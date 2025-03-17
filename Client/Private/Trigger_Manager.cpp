@@ -94,6 +94,7 @@ HRESULT CTrigger_Manager::Mapping_ExecuterTag()
 	m_EventExecuterTags[CHAPTER6_HUMGRUMP_REVOLT] = L"Chapter6_Humgrump_Revolt";
 	m_EventExecuterTags[CHAPTER6_CHANGE_BOOK_TO_GREATE_HUMGRUMP] = L"Chapter6_Change_Book_To_Greate_Humgrump";
 	m_EventExecuterTags[CHAPTER6_FRIENDEVENT_0] = L"Chapter6_FriendEvent_0";
+	m_EventExecuterTags[CHAPTER6_STORYSEQUENCE_01] = L"Chapter6_StorySequence_01";
 
 
 	m_EventExecuterTags[CHAPTER8_INTRO_POSTIT_SEQUENCE] = L"Chapter8_Intro_Postit_Sequence";

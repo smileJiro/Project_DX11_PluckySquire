@@ -246,33 +246,40 @@ _bool CCharacter::Is_OnGround()
 }
 void CCharacter::Stop_Rotate()
 {
-    ACTOR_TYPE eActorType = Get_ActorType();
-    if (ACTOR_TYPE::DYNAMIC == eActorType)
+
+    if (nullptr != m_pActorCom)
     {
-        if (COORDINATE_3D == Get_CurCoord())
+        ACTOR_TYPE eActorType = Get_ActorType();
+        if (ACTOR_TYPE::DYNAMIC == eActorType)
         {
-            CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
-            pDynamicActor->Set_AngularVelocity(_vector{ 0,0,0,0 });
+            if (COORDINATE_3D == Get_CurCoord())
+            {
+                CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
+                pDynamicActor->Set_AngularVelocity(_vector{ 0,0,0,0 });
+            }
         }
     }
 }
 
 void CCharacter::Stop_Move()
 {
-    ACTOR_TYPE eActorType = Get_ActorType();
-    if (ACTOR_TYPE::DYNAMIC == eActorType)
+    if (nullptr != m_pActorCom)
     {
-        if (COORDINATE_3D == Get_CurCoord())
+        ACTOR_TYPE eActorType = Get_ActorType();
+        if (ACTOR_TYPE::DYNAMIC == eActorType)
         {
-            CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
+            if (COORDINATE_3D == Get_CurCoord())
+            {
+                CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
   
-            _float fYVelocity = XMVectorGetY(pDynamicActor->Get_LinearVelocity());
-            pDynamicActor->Set_LinearVelocity(_vector{ 0,fYVelocity,0 });
-        }
-        else
-        {
+                _float fYVelocity = XMVectorGetY(pDynamicActor->Get_LinearVelocity());
+                pDynamicActor->Set_LinearVelocity(_vector{ 0,fYVelocity,0 });
+            }
+            else
+            {
 
-        }
+            }
+    }
     }
 }
 
