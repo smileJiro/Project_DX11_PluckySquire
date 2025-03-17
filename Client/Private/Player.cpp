@@ -1091,6 +1091,7 @@ void CPlayer::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
 		return;
 	}
 	m_tStat.iHP -= _iDamg;
+	m_pStateMachine->Get_CurrentState()->On_Hit(_pHitter, _iDamg, _vForce);
 	COORDINATE eCoord = Get_CurCoord();
 
 	Uimgr->Set_PlayerOnHit(true);
