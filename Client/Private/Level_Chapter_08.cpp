@@ -443,7 +443,8 @@ void CLevel_Chapter_08::Update(_float _fTimeDelta)
 				{
 					pPlayer->Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSet(vPos.x, vPos.y, vPos.z, 1.f));
 				}
-				
+				pPlayer->Set_Mode(CPlayer::PLAYER_MODE_CYBERJOT);
+				pPlayer->Set_State(CPlayer::CYBER_IDLE);
 			}
 
 

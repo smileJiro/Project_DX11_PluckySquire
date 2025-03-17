@@ -30,19 +30,17 @@ public:
 
     void Set_VeloState(_fvector _vVelocity);
 private:
-    CActor_Dynamic* m_pDynamicActor = nullptr;
-    CCamera_Target* m_pTargetCamera = nullptr;
-    const _float4x4* m_pCameraTargetWorldMatrix = { nullptr };
+
 
     _bool m_bRifleTriggered = false;
     _float m_f3DCyberFlySpeed = 7.f;
+ 
+
 
 	VELOCITY_STATE m_eVelocityState = VELOCITY_LAST;
 
-    _float m_fRunVelocityThreshold = 3.f;
 
 
-    _float m_fDistanceFromCamearPlane = 5.f;
 
 };
 
