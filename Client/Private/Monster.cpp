@@ -388,7 +388,8 @@ _bool CMonster::Monster_MoveTo(_fvector _vPosition, _float _fTimeDelta)
 
 		if (true == pDynamicActor->Is_Kinematic())
 		{
-			if (true == Move_To_3D(_vPosition, 0.5f, false))
+			if (true == Move_To_3D(_vPosition, 0.3f, false, _fTimeDelta))
+			//if (true == Get_ControllerTransform()->MoveToTarget(_vPosition, _fTimeDelta))
 				return true;
 			else
 				return false;
