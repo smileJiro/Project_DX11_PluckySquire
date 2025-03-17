@@ -27,6 +27,7 @@ public:
 	void					Active_EffectPositionID(const _tchar* _szEffectTag, _bool _isReset = true, _fvector _vPosition = XMVectorSet(0.f, 0.f, 0.f, 1.f),  _uint _iEffectID = 0);
 	void					Active_Effect(const _tchar* _szEffectTag, _bool _isReset = true, const _float4x4* _pWorldMatrix = nullptr);
 	void					Active_EffectID(const _tchar* _szEffectTag, _bool _isReset = true, const _float4x4* _pWorldMatrix = nullptr, _uint _iEffectID = 0);
+	void					Active_EffectMatrix(const _tchar* _szEffectTag, _bool _isReset = true, _fmatrix _fMatrix = XMMatrixIdentity() );
 	void					InActive_Effect(const _tchar* _szEffectTag);
 	void					InActive_EffectID(const _tchar* _szEffectTag, _uint _iEffectID);
 	void					Stop_Spawn(const _tchar* _szEffectTag, _float _fDelayTime = 5.f);
