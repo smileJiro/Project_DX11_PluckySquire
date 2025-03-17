@@ -170,6 +170,9 @@ private:
 	// Section Capture			
 	_bool						m_isWolrdPosChaptured = { false };
 
+	// Narration WorldMatrix
+	_float4x4					m_NarrationWorldMatrix = {};
+
 private:
 	void						Action_Mode(_float _fTimeDelta);
 	void						Action_SetUp_ByMode();

@@ -10,6 +10,10 @@
 #include "GameInstance.h"
 #include "Beetle.h"
 
+#include "Camera_CutScene.h"
+#include "Room_Door.h"
+#include "Book.h"
+
 CGameEventExecuter_C8::CGameEventExecuter_C8(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CGameEventExecuter(_pDevice, _pContext)
 {
@@ -46,6 +50,9 @@ void CGameEventExecuter_C8::Update(_float _fTimeDelta)
 	{
 		switch ((CTrigger_Manager::EVENT_EXECUTER_ACTION_TYPE)m_iEventExcuterAction)
 		{
+		case Client::CTrigger_Manager::CHAPTER8_INTRO:
+			Chapter8_Intro(_fTimeDelta);
+			break;
 		case Client::CTrigger_Manager::CHAPTER8_INTRO_POSTIT_SEQUENCE:
 			Chapter8_Intro_Postit_Sequence(_fTimeDelta);
 			break;
@@ -73,6 +80,59 @@ void CGameEventExecuter_C8::Update(_float _fTimeDelta)
 
 void CGameEventExecuter_C8::Late_Update(_float _fTimeDelta)
 {
+}
+
+void CGameEventExecuter_C8::Chapter8_Intro(_float _fTimeDelta)
+{
+	m_fTimer += _fTimeDelta;
+	if (Step_Check(STEP_0))
+	{
+		if (Is_Start())
+		{
+			CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::CUTSCENE);
+			CCamera_Manager::GetInstance()->Set_NextCutSceneData(TEXT("Chapter8_Intro"));
+		}
+
+		Next_Step_Over(2.8f);
+	}
+	else if (Step_Check(STEP_1))
+	{
+		if (Is_Start())
+		{
+			CRoom_Door* pDoor = static_cast<CRoom_Door*>(m_pGameInstance->Get_GameObject_Ptr(LEVEL_CHAPTER_8, TEXT("Layer_RoomDoor"), 0));
+			pDoor->Start_Turn_DoorKnob(true);
+		}
+		Next_Step_Over(0.5f);
+	}
+	else if (Step_Check(STEP_2))
+	{
+		CRoom_Door* pDoor = static_cast<CRoom_Door*>(m_pGameInstance->Get_GameObject_Ptr(LEVEL_CHAPTER_8, TEXT("Layer_RoomDoor"), 0));
+
+		if (Is_Start())
+		{
+			pDoor->Start_Turn_Door(true);
+		}
+
+		if (false == pDoor->Is_Turn_DoorKnob()) {
+			pDoor->Start_Turn_DoorKnob(true);
+			Next_Step(true);
+		}
+	}
+	else if (Step_Check(STEP_3)) {
+
+		CCamera_CutScene* pCamera = static_cast<CCamera_CutScene*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::CUTSCENE));
+
+		if (true == pCamera->Is_Finish_CutScene()) {
+			Next_Step(true);
+		}
+	}
+	else if (Step_Check(STEP_4)) {
+
+		if (m_fTimer >= 3.f) {
+			CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::TARGET_2D, true, 0.5f);
+			GameEvent_End();
+		}
+	}
 }
 
 void CGameEventExecuter_C8::Chapter8_Intro_Postit_Sequence(_float _fTimeDelta)
