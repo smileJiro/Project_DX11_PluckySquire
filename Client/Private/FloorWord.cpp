@@ -188,7 +188,11 @@ HRESULT CFloorWord::Load_Json(const wstring& filePath, const _wstring& _strLayer
 		tFloorText.fPosX = text["PosX"].get<_float>();
 		tFloorText.fPosY = text["PosY"].get<_float>();
 		tFloorText.strText = StringToWstring(text["Text"]);
-		
+		if (text.contains("isLengthCheck") && text["isLengthCheck"].is_boolean())
+		{
+			tFloorText.isLengthCheck = text["isLengthCheck"].get<_bool>();
+		}
+
 		tFloorText.strSFX = StringToWstring(text["strSFX"]);
 		if (L"" == tFloorText.strSFX)
 		{

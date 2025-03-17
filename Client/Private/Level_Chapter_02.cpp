@@ -1159,7 +1159,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_UI(const _wstring& _strLayerTag)
 	//pDesc.fSizeY = 0.f;
 	//
 	//
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_FloorWord"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_FloorWord"), pDesc.iCurLevelID, TEXT("Layer_FloorWord"), &pDesc)))
 		return E_FAIL;
 
 	CGameObject* pHeartObject;

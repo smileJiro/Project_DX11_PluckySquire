@@ -31,6 +31,7 @@ HRESULT CPrintFloorWord::Initialize(void* _pArg)
 	m_vRenderPos.y = pDesc->fPosY;
 	m_strSFX = pDesc->strSFX;
 	m_strSection = pDesc->strSection;
+	m_isLengthCehck = pDesc->isLengthCheck;
 
 	wsprintf(m_tFloorWord, pDesc->strText.c_str());
 
