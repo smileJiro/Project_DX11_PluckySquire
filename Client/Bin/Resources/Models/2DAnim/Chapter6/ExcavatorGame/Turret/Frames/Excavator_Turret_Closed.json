@@ -1,0 +1,18 @@
+[
+  {
+    "Type": "PaperFlipbook",
+    "Name": "Excavator_Turret_Closed",
+    "Class": "UScriptClass'PaperFlipbook'",
+    "Properties": {
+      "KeyFrames": [
+        {
+          "Sprite": {
+            "ObjectName": "PaperSprite'Excavator_Turret_Rise_0001_X02'",
+            "ObjectPath": "/Game/Minigames/ExcavatorBoss/Animation/Turret/Frames/Excavator_Turret_Rise_0001_X02.0"
+          },
+          "FrameRun": 1
+        }
+      ]
+    }
+  }
+]
