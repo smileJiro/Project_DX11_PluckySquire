@@ -3,11 +3,12 @@
 BEGIN(Client)
 class CFriend_Pip final : public CFriend
 {
+public :
 	enum ANIM
 	{
 		GameOver_Pip_Idle,
 		GameOver_Pip_Recover,
-		Pip_ButtonPush,
+		PIP_BUTTONPUSH,
 		PIP_C09_MOJAM,					//Mojam
 		Pip_C09_Mojam_09_5152,
 		Pip_C09_Mojam_10_0910,
@@ -32,8 +33,8 @@ class CFriend_Pip final : public CFriend
 		PIP_IDLE_DOWN,					  // IDLE
 		PIP_IDLE_RIGHT,					  // IDLE
 		PIP_IDLE_UP,					  // IDLE
-		Pip_jumpup_,
-		Pip_jumpup_idle,
+		PIP_C09_JUMPUP,
+		PIP_C09_JUMPUP_IDLE,
 		Pip_knockedback_End,
 		Pip_knockedback_Loop,
 		Pip_released,
