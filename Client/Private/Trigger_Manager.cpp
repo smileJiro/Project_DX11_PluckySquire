@@ -62,6 +62,7 @@ HRESULT CTrigger_Manager::Mapping_ExecuterTag()
 	m_EventExecuterTags[C02P0910_LIGHTNING_BOLT_SPAWN] = L"C02P0910_Spawn_LightningBolt";
 	m_EventExecuterTags[C02P0910_MONSTER_SPAWN] = L"C02P0910_Monster_Spawn";
 	m_EventExecuterTags[START_TRAIN] = L"Start_Train";
+	m_EventExecuterTags[FRIEND_MAPENTER] = L"Friend_MapEnter";
 	m_EventExecuterTags[CHAPTER2_BOOKMAGIC] = L"Chapter2_BookMagic";
 	m_EventExecuterTags[CHAPTER2_INTRO] = L"Chapter2_Intro";
 	m_EventExecuterTags[CHAPTER2_HUMGRUMP] = L"Chapter2_Humgrump";
@@ -86,6 +87,7 @@ HRESULT CTrigger_Manager::Mapping_ExecuterTag()
 	m_EventExecuterTags[CHAPTER4_STORYSEQUENCE] = L"Chapter4_StorySequence";
 
 	m_EventExecuterTags[CHAPTER6_INTRO] = L"Chapter6_Intro";
+	m_EventExecuterTags[CHAPTER6_START_3D] = L"Chapter6_Start_3D";
 	m_EventExecuterTags[CHAPTER6_FATHERGAME_PROGRESS_START_CLEAR] = L"Chapter6_FatherGame_Progress_Start_Clear";
 	m_EventExecuterTags[CHAPTER6_FATHERGAME_PROGRESS_ZETPACK_CLEAR] = L"Chapter6_FatherGame_Progress_ZetPack_Clear";
 	m_EventExecuterTags[CHAPTER6_FATHERGAME_PROGRESS_FATHERPART_1] = L"Chapter6_FatherGame_Progress_Fatherpart_1";
@@ -94,6 +96,7 @@ HRESULT CTrigger_Manager::Mapping_ExecuterTag()
 	m_EventExecuterTags[CHAPTER6_HUMGRUMP_REVOLT] = L"Chapter6_Humgrump_Revolt";
 	m_EventExecuterTags[CHAPTER6_CHANGE_BOOK_TO_GREATE_HUMGRUMP] = L"Chapter6_Change_Book_To_Greate_Humgrump";
 	m_EventExecuterTags[CHAPTER6_FRIENDEVENT_0] = L"Chapter6_FriendEvent_0";
+	m_EventExecuterTags[CHAPTER6_STORYSEQUENCE_01] = L"Chapter6_StorySequence_01";
 
 
 	m_EventExecuterTags[CHAPTER8_INTRO_POSTIT_SEQUENCE] = L"Chapter8_Intro_Postit_Sequence";

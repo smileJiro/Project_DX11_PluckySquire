@@ -184,7 +184,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
 	m_tBodyShapeData.iShapeUse = (_uint)SHAPE_USE::SHAPE_BODY;
 	m_tBodyShapeData.isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
 	m_tBodyShapeData.FilterData.MyGroup = OBJECT_GROUP::PLAYER;
-	m_tBodyShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE | OBJECT_GROUP::TRIGGER_OBJECT | OBJECT_GROUP::DYNAMIC_OBJECT | OBJECT_GROUP::EXPLOSION; // Actor가 충돌을 감지할 그룹
+	m_tBodyShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE | OBJECT_GROUP::TRIGGER_OBJECT | OBJECT_GROUP::DYNAMIC_OBJECT | OBJECT_GROUP::EXPLOSION | OBJECT_GROUP::BOSS_PROJECTILE; // Actor가 충돌을 감지할 그룹
 	XMStoreFloat4x4(&m_tBodyShapeData.LocalOffsetMatrix, XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.0f, m_f3DCenterYOffset /*+ 0.1f*/, 0.0f)); // Shape의 LocalOffset을 행렬정보로 저장.
 
 	/* 최종으로 결정 된 ShapeData를 PushBack */
@@ -555,14 +555,7 @@ void CPlayer::Enter_Section(const _wstring _strIncludeSectionName)
 		m_pControllerTransform->Get_Transform(COORDINATE_2D)->Set_State(CTransform::STATE_POSITION, XMVectorSet(0.0f, 2800.f, 0.0f, 0.0f));
 	}
 
-	if (TEXT("Chapter2_P1314") == _strIncludeSectionName)
-	{
-		static_cast<CCollider_Circle*>(m_pBody2DTriggerCom)->Set_Radius(9999.f);
-	}
-	else
-	{
-		static_cast<CCollider_Circle*>(m_pBody2DTriggerCom)->Set_Radius(m_f2DInteractRange);
-	}
+
 }
 
 void CPlayer::Exit_Section(const _wstring _strIncludeSectionName)
@@ -680,10 +673,14 @@ void CPlayer::Priority_Update(_float _fTimeDelta)
 {
 	if (KEY_DOWN(KEY::K))
 	{
-		CGravity::STATE eCurState = m_pGravityCom->Get_CurState();
-		_int iState = eCurState;
-		iState ^= 1;
-		m_pGravityCom->Change_State((CGravity::STATE)iState);
+		//CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(TEXT("Thrash"));
+		//CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(TEXT("Violet"));
+		//CFriend_Controller::GetInstance()->Start_Train();
+		//CGravity::STATE eCurState = m_pGravityCom->Get_CurState();
+		//_int iState = eCurState;
+		//iState ^= 1;
+		//m_pGravityCom->Change_State((CGravity::STATE)iState);
+		//On_Stop();
 	}
 
 	__super::Priority_Update(_fTimeDelta); /* Part Object Priority_Update */
@@ -1599,6 +1596,37 @@ void CPlayer::RetrieveSword()
 	Set_State(RETRIVE_SWORD);
 }
 
+void CPlayer::CatchSword()
+{
+	COORDINATE eCoord = Get_CurCoord();
+	if (COORDINATE_2D == eCoord)
+	{
+		ANIM_STATE_2D eCurAnimIdx = (ANIM_STATE_2D)m_pBody->Get_CurrentAnimIndex();
+		STATE eState = Get_CurrentStateID();
+		F_DIRECTION eFDir = To_FDirection(Get_2DDirection());
+		if (STATE::IDLE == eState)
+		{
+			static_cast<CPlayerState_Idle*>(m_pStateMachine->Get_CurrentState())->Switch_IdleAnimation2D(eFDir);
+		}
+		else if (STATE::RUN == eState)
+		{
+			static_cast<CPlayerState_Run*>(m_pStateMachine->Get_CurrentState())->Switch_RunAnimation2D(eFDir);
+		}
+		else if (STATE::JUMP_UP == eState)
+		{
+			static_cast<CPlayerState_JumpUp*>(m_pStateMachine->Get_CurrentState())->Switch_JumpAnimation();
+		}
+		else if (STATE::JUMP_DOWN == eState)
+		{
+			static_cast<CPlayerState_JumpDown*>(m_pStateMachine->Get_CurrentState())->Switch_To_JumpDownAnimation();
+		}
+	}
+	else
+	{
+		
+	}
+}
+
 INTERACT_RESULT CPlayer::Try_Interact(_float _fTimeDelta)
 {
 	//이미 인터렉터블 오브젝트가 있다? 
@@ -2422,14 +2450,15 @@ void CPlayer::Key_Input(_float _fTimeDelta)
 		//tCommand.vTarget += { 0.f, 0.f, -2.f };
 		//Add_AutoMoveCommand(tCommand);
 
-		//Start_AutoMove(true);
 		//Set_State(EVICT);
+		//Start_AutoMove(true);
 		//AUTOMOVE_COMMAND tCommand{};
 		//tCommand.eType = AUTOMOVE_TYPE::MOVE_TO;
 		//tCommand.iAnimIndex = (_uint)CPlayer::ANIM_STATE_2D::PLAYER_RUN_RIGHT;
 		//tCommand.fPreDelayTime = 0.5f;
 		//tCommand.vTarget = { 0.f, 0.f, 0.f };
 		//tCommand.fPostDelayTime = 0.5f;
+		//tCommand.fMoveSpeedMag = 4.f;
 		//Add_AutoMoveCommand(tCommand);
   //      Start_AutoMove(true);
 	}
@@ -2479,6 +2508,16 @@ void CPlayer::Key_Input(_float _fTimeDelta)
     //}
 }
 
+
+void CPlayer::On_Stop()
+{
+	//static_cast<CModelObject*>(m_PartObjects[PLAYER_PART_BODY])->Start_StoppableRender();
+}
+
+void CPlayer::On_UnStop()
+{
+	//static_cast<CModelObject*>(m_PartObjects[PLAYER_PART_BODY])->End_StoppableRender();
+}
 
 CPlayer* CPlayer::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {

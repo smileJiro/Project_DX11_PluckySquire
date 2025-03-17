@@ -67,6 +67,7 @@ public:
 	HRESULT Add_Neutral_State(_bool _isJump=false);
 	HRESULT Add_FlyUnit_State();
 	HRESULT Add_C6_State();
+	HRESULT Add_FormationState();
 
 protected:
 	CState* m_pCurState = { nullptr };

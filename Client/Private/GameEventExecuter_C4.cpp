@@ -14,6 +14,8 @@
 #include "Monster.h"
 #include "DraggableObject.h"
 #include "DynamicCastleGate.h"
+#include "Friend_Controller.h"
+#include "Friend.h"
 
 CGameEventExecuter_C4::CGameEventExecuter_C4(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CGameEventExecuter(_pDevice, _pContext)
@@ -58,7 +60,10 @@ void CGameEventExecuter_C4::Update(_float _fTimeDelta)
 			Chapter4_3D_Out_02(_fTimeDelta);
 			break;
 		case Client::CTrigger_Manager::CHAPTER4_INTRO:
-			Chapter4_Intro(_fTimeDelta);
+			Chapter4_Intro(_fTimeDelta);		
+			break;
+		case Client::CTrigger_Manager::CHAPTER4_2D_INTRO:
+			Chapter4_2D_Intro(_fTimeDelta);
 			break;
 		case Client::CTrigger_Manager::CHAPTER4_INTRO_POSTIT_SEQUENCE:
 			Chapter4_Intro_Postit_Sequence(_fTimeDelta);
@@ -75,6 +80,12 @@ void CGameEventExecuter_C4::Update(_float _fTimeDelta)
 		case Client::CTrigger_Manager::CHAPTER4_STORYSEQUENCE:
 			Chapter4_StorySequence(_fTimeDelta);
 			break;
+		case Client::CTrigger_Manager::FRIEND_MAPENTER:
+			Friend_MapEnter(_fTimeDelta);
+			break;
+		case Client::CTrigger_Manager::START_TRAIN:
+			Start_Train(_fTimeDelta);
+			break;
 		default:
 			break;
 		}
@@ -82,6 +93,10 @@ void CGameEventExecuter_C4::Update(_float _fTimeDelta)
 }
 
 void CGameEventExecuter_C4::Late_Update(_float _fTimeDelta)
+{
+}
+
+void CGameEventExecuter_C4::Chapter4_2D_Intro(_float _fTimeDelta)
 {
 }
 
@@ -128,7 +143,18 @@ void CGameEventExecuter_C4::Chapter4_Intro(_float _fTimeDelta)
 		}
 	}
 	else
+	{
+		/* 태웅 추가 : npc dialog 붙이실때, 해당 포인터 사용하시면 되세요 */
+		//CFriend* pThrash = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Thrash"));
+		//CFriend* pViolet = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Violet"));
+		// 기차놀이 등록 및 시작. 
+		//CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(TEXT("Thrash"));
+		//CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(TEXT("Violet"));
+		//CFriend_Controller::GetInstance()->Start_Train(); // 체이스 시작
+		//CFriend_Controller::GetInstance()->End_Train(); // 체이스 끝
+
 		GameEvent_End();
+	}
 }
 
 void CGameEventExecuter_C4::Chapter4_Intro_Postit_Sequence(_float _fTimeDelta)
@@ -619,6 +645,66 @@ void CGameEventExecuter_C4::Chapter4_3D_Out_02(_float _fTimeDelta)
 	}
 	else
 		GameEvent_End();
+}
+
+void CGameEventExecuter_C4::Friend_MapEnter(_float _fTimeDelta)
+{
+	m_fTimer += _fTimeDelta;
+	CCamera_Manager::CAMERA_TYPE eCamType = CCamera_Manager::TARGET_2D;
+	CPlayer* pPlayer = Get_Player();
+	CFriend* pThrash = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Thrash"));
+	CFriend* pViolet = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Violet"));
+	if (nullptr == pPlayer)
+	{
+		GameEvent_End();
+		return;
+	}
+	/* 플레이어 인풋락  */
+
+	if (Step_Check(STEP_0))
+	{
+		/* 1. Save Reset ArmData */
+		if (Is_Start())
+		{
+			pPlayer->Set_2DDirection(F_DIRECTION::UP);
+			pPlayer->Set_BlockPlayerInput(true);
+			CFriend_Controller::GetInstance()->End_Train();
+			_vector vPlayerPos = pPlayer->Get_FinalPosition() + XMVectorSet(0.0f, 140.f, 0.0f, 0.0f);
+			_vector vThrashPos = pThrash->Get_FinalPosition() + XMVectorSet(0.0f, 140.f, 0.0f, 0.0f);
+			_vector vVioletPos = pViolet->Get_FinalPosition() + XMVectorSet(0.0f, 140.f, 0.0f, 0.0f);
+			AUTOMOVE_COMMAND AutoMove{};
+			AutoMove.eType = AUTOMOVE_TYPE::MOVE_TO;
+			AutoMove.fPostDelayTime = 0.0f;
+			AutoMove.fPreDelayTime = 0.0f;
+			AutoMove.iAnimIndex = (_uint)CPlayer::ANIM_STATE_2D::PLAYER_RUN_UP;
+			AutoMove.vTarget = vPlayerPos;
+
+			AUTOMOVE_COMMAND AutoMove2{};
+			AutoMove2.eType = AUTOMOVE_TYPE::LOOK_DIRECTION;
+			AutoMove2.fPostDelayTime = 0.0f;
+			AutoMove2.fPreDelayTime = 0.0f;
+			AutoMove2.vTarget = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+			AutoMove2.iAnimIndex = (_uint)CPlayer::ANIM_STATE_2D::PLAYER_IDLE_UP;
+
+			pPlayer->Add_AutoMoveCommand(AutoMove);
+			pPlayer->Add_AutoMoveCommand(AutoMove2);
+			pPlayer->Start_AutoMove(true);
+			pThrash->Move_Position(_float2(XMVectorGetX(vThrashPos), XMVectorGetY(vThrashPos)), CFriend::DIR_UP);
+			pViolet->Move_Position(_float2(XMVectorGetX(vVioletPos), XMVectorGetY(vVioletPos)), CFriend::DIR_UP);
+
+			CCamera_Manager::GetInstance()->Set_ResetData(eCamType);
+		}
+		Next_Step_Over(1.5f);
+	}
+	else
+	{
+		//CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(TEXT("Thrash"));
+		//CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(TEXT("Violet"));
+		//CFriend_Controller::GetInstance()->Start_Train();
+		CCamera_Manager::GetInstance()->Start_ResetArm_To_SettingPoint(eCamType, 1.0f);
+		pPlayer->Set_BlockPlayerInput(false);
+		GameEvent_End();
+	}
 }
 
 CGameEventExecuter_C4* CGameEventExecuter_C4::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

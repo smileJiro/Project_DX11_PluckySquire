@@ -60,7 +60,7 @@ HRESULT CBook::Initialize(void* _pArg)
 	pDesc->iObjectGroupID = OBJECT_GROUP::INTERACTION_OBEJCT;
 
 	CActor::ACTOR_DESC ActorDesc;
-	pDesc->eActorType = ACTOR_TYPE::STATIC;
+	pDesc->eActorType = ACTOR_TYPE::KINEMATIC;
 
 
 	/* Actor의 주인 오브젝트 포인터 */
@@ -86,6 +86,8 @@ HRESULT CBook::Initialize(void* _pArg)
 	ShapeData.eMaterial = ACTOR_MATERIAL::NORESTITUTION;
 	ShapeData.iShapeUse = (_uint)SHAPE_USE::SHAPE_BODY;
 	ShapeData.isTrigger = false;                    // Trigger 알림을 받기위한 용도라면 true
+	ShapeData.FilterData.MyGroup = OBJECT_GROUP::MAPOBJECT;
+	ShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE | OBJECT_GROUP::TRIGGER_OBJECT | OBJECT_GROUP::PLAYER | OBJECT_GROUP::DYNAMIC_OBJECT;
 	XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixIdentity()); // Shape의 LocalOffset을 행렬정보로 저장.
 
 	/* 최종으로 결정 된 ShapeData를 PushBack */
@@ -183,52 +185,55 @@ void CBook::Update(_float _fTimeDelta)
 
 
 	}
+	if (KEY_DOWN(KEY::I))
+	{
+		DropBook();
+	}
+	if ((ACTION_LAST != m_eCurAction) && true == m_isAction) {
 
-		if ((ACTION_LAST != m_eCurAction) && true == m_isAction) {
-
-			CGameObject* pGameObject = m_pGameInstance->Get_GameObject_Ptr(m_pGameInstance->Get_CurLevelID(), L"Layer_Player", 0);
-			if (nullptr == pGameObject
-				||
-				pGameObject->Get_CurCoord() == COORDINATE_3D
-				||
-				CCamera_2D::PAUSE == CCamera_Manager::GetInstance()->Get_CurCameraMode()
-				)
-			{
-				if (m_eCurAction == NEXT)
-				{
-					Set_ReverseAnimation(false);
-					Set_Animation(8);
-				}
-
-				if (m_eCurAction == PREVIOUS)
-				{
-					Set_ReverseAnimation(true);
-					Set_Animation(8);
-				}
-
-				m_isAction = false;
-			}
-		}
-
-		/*
-		* 임시, 민용추가
-		* 현재 Anim (책 넘기는 애니메이션 제외!)이 끝 나면 IDLE Animation으로 가게했음
-		*/
-		if (ANIM_ACTION_NONE != m_eAnimAction)
+		CGameObject* pGameObject = m_pGameInstance->Get_GameObject_Ptr(m_pGameInstance->Get_CurLevelID(), L"Layer_Player", 0);
+		if (nullptr == pGameObject
+			||
+			pGameObject->Get_CurCoord() == COORDINATE_3D
+			||
+			CCamera_2D::PAUSE == CCamera_Manager::GetInstance()->Get_CurCameraMode()
+			)
 		{
-			m_fAccAnimTime += _fTimeDelta;
-			
-			// 어쩔수없는하드코딩..
-			if (ANIM_ACTION_MAGICDUST == m_eAnimAction && 6.7f <= m_fAccAnimTime)
+			if (m_eCurAction == NEXT)
 			{
-				m_fAccAnimTime = 0.f;
-				m_eAnimAction = ANIM_ACTION_NONE;
-				Set_Animation(IDLE);
+				Set_ReverseAnimation(false);
+				Set_Animation(8);
 			}
 
-			// 닫힌 애니메이션 ? 
-			//if (false == Is_PlayingAnim())
+			if (m_eCurAction == PREVIOUS)
+			{
+				Set_ReverseAnimation(true);
+				Set_Animation(8);
+			}
+
+			m_isAction = false;
 		}
+	}
+
+	/*
+	* 임시, 민용추가
+	* 현재 Anim (책 넘기는 애니메이션 제외!)이 끝 나면 IDLE Animation으로 가게했음
+	*/
+	if (ANIM_ACTION_NONE != m_eAnimAction)
+	{
+		m_fAccAnimTime += _fTimeDelta;
+			
+		// 어쩔수없는하드코딩..
+		if (ANIM_ACTION_MAGICDUST == m_eAnimAction && 6.7f <= m_fAccAnimTime)
+		{
+			m_fAccAnimTime = 0.f;
+			m_eAnimAction = ANIM_ACTION_NONE;
+			Set_Animation(IDLE);
+		}
+
+		// 닫힌 애니메이션 ? 
+		//if (false == Is_PlayingAnim())
+	}
 
 	// 책 커버 Blending
 	Calculate_BlendingRatio(_fTimeDelta);
@@ -246,6 +251,7 @@ void CBook::Late_Update(_float _fTimeDelta)
 
 		Change_RenderState((RT_RENDERSTATE)isRenderState);
 	}
+	
 	__super::Late_Update(_fTimeDelta);
 }
 
@@ -939,6 +945,17 @@ HRESULT CBook::Convert_Position_3DTo2D(_fvector _v3DPos, _vector* _pOutPosition)
 	*_pOutPosition = { vRatio.x * vRenderTargetSize.x - vRenderTargetSize.x * 0.5f,
 			vRatio.y * vRenderTargetSize.y - vRenderTargetSize.y * 0.5f };
 	return S_OK;
+}
+
+void CBook::DropBook()
+{	
+	CActor_Dynamic* pActor = static_cast<CActor_Dynamic*>(Get_ActorCom());
+	pActor->Update(0.f);
+	pActor->Set_Dynamic();
+	pActor->Set_MassLocalPos(_float3(19.0f,0.f,0.f));
+	pActor->Set_Gravity(true);
+	pActor->Freeze_Rotation(false, false, false);
+	pActor->Freeze_Position(false, false, false);
 }
 
 //void CBook::Calc_Page3DWorldMinMax()

@@ -55,7 +55,7 @@ HRESULT CFatherGame_Progress_Start::Progress_Enter()
         Safe_AddRef(pGameObject);
     }
 
-   
+
 
 #ifdef _DEBUG
     cout << "FatherGame Progress_Start Start" << endl;

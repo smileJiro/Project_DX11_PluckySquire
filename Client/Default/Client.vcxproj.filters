@@ -769,6 +769,9 @@
     <Filter Include="02.GameObjects\Chapter8_P2122">
       <UniqueIdentifier>{5df4e4e5-bd2d-4b37-9acb-eefc8a5e43fe}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Gear">
+      <UniqueIdentifier>{b3ec759b-ec9a-4ee7-bb34-c61c799ae319}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -1981,6 +1984,12 @@
       <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\PlayerBlocker.h" />
+    <ClInclude Include="..\Public\FormationIdleState.h">
+      <Filter>03.Components\FSM\State\Formation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\FormationBackState.h">
+      <Filter>03.Components\FSM\State\Formation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -3178,6 +3187,12 @@
       <Filter>03.Components\PlayerState</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\PlayerBlocker.cpp" />
+    <ClCompile Include="..\Private\FormationIdleState.cpp">
+      <Filter>03.Components\FSM\State\Formation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\FormationBackState.cpp">
+      <Filter>03.Components\FSM\State\Formation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
