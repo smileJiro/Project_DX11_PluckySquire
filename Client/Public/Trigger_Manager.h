@@ -68,6 +68,7 @@ public :
 		//CHAPTER4_2D_IN,				// 폭탄 도장 얻고나서의 이벤트 
 
 		CHAPTER6_INTRO,				// Intro
+		CHAPTER6_START_3D,			// 톱니 앞에서 3D 진입 전
 
 		/* Father Game Start */
 		CHAPTER6_FATHERGAME_PROGRESS_START_CLEAR,
@@ -84,6 +85,7 @@ public :
 		CHAPTER6_FRIENDEVENT_0,
 		/* Friend Event */
 
+		CHAPTER8_INTRO,
 		CHAPTER8_INTRO_POSTIT_SEQUENCE,
 		CHAPTER8_OUTRO_POSTIT_SEQUENCE,
 		CHAPTER8_SWORD,

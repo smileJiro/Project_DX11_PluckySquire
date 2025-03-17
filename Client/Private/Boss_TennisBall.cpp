@@ -138,17 +138,6 @@ void CBoss_TennisBall::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _O
         }
     }
 
-    if (OBJECT_GROUP::PLAYER_PROJECTILE & _Other.pActorUserData->iObjectGroup)
-    {
-        if (true == m_isShoot)
-        {
-            m_tStat.iHP -= 1;
-            if (0 >= m_tStat.iHP)
-            {
-                m_isShoot = true;
-            }
-        }
-    }
 }
 
 void CBoss_TennisBall::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
@@ -183,6 +172,18 @@ void CBoss_TennisBall::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Ot
 
 void CBoss_TennisBall::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
 {
+}
+
+void CBoss_TennisBall::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
+{
+    if (false == m_isShoot)
+    {
+        m_tStat.iHP -= _iDamg;
+        if (0 >= m_tStat.iHP)
+        {
+            m_isShoot = true;
+        }
+    }
 }
 
 HRESULT CBoss_TennisBall::Cleanup_DeadReferences()

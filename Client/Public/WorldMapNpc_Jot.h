@@ -60,11 +60,18 @@ public:
 	virtual HRESULT				Cleanup_DeadReferences() override; // 참조 중인 게임오브젝트들 중 죽은 Dead상태인 오브젝트를 체크해서 참조해제.(액티브 false인 애들때매 만듬)
 
 private:
+	HRESULT DisplayLocationName();
+	HRESULT DisplayHoneyBee(_float2 _MidPoint);
+
+public:
+	void						Set_CurIndex(_uint _iIndex) { m_iCurIndex = _iIndex; }
 	void						On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx);
-	void						ChangeState_Panel();
 
 private:
 	class CWorldMapNPC* m_pParent = { nullptr };
+
+	_uint				m_iCurIndex = { 0 };
+	_tchar				m_strLocationName[MAX_PATH] = {};
 };
 
 END

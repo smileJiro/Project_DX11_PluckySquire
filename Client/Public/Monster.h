@@ -33,6 +33,7 @@ public:
 		_bool isStay = false;
 		_float3 vLook = { 0.f,0.f,-1.f };
 		_bool isSneakMode = false;
+		_bool isFormationMode = false;
 		CFormation* pFormation = { nullptr };
 		SNEAKWAYPOINTINDEX eWayIndex = SNEAKWAYPOINTINDEX::LAST;
 	}MONSTER_DESC;
@@ -98,6 +99,16 @@ public:
 		return m_isCombatMode;
 	}
 
+	void Set_FormationMode(_bool _isFormation)
+	{
+		m_isFormationMode = _isFormation;
+	}
+
+	_bool Is_FormationMode()
+	{
+		return m_isFormationMode;
+	}
+
 	_bool IsDelay() 
 	{
 		return m_isDelay;
@@ -140,6 +151,9 @@ public:
 	{
 		return m_fRayHalfWidth;
 	}
+
+
+	_bool Is_Formation_Stop();
 
 public:
 	virtual HRESULT Initialize_Prototype() override;
@@ -272,6 +286,8 @@ protected:
 	_bool m_isSneakMode = { false };
 	//잠입 모드 해제 후 전투모드
 	_bool m_isCombatMode = { false };
+	//대열 모드
+	_bool m_isFormationMode = { false };
 
 	//장애물 탐지
 	SNEAKWAYPOINTINDEX m_eWayIndex;

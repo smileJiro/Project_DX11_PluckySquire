@@ -756,6 +756,7 @@ void CPlayerSword::Free()
     Safe_Release(m_pBeamEffect);
 
 	Safe_Release(m_pAttack2DColliderCom);
+	Safe_Release(m_pBody2DColliderCom);
     for (CGameObject* pObj : m_AttckedObjects)
     {
         Safe_Release(pObj);

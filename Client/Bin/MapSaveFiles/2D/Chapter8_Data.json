@@ -1,6 +1,7 @@
 [
 	{
 		"Section_Name": "Chapter8_P0102",
+		"Section_Start": true,
 		"Section_BackGround_Name": "Chapter8_P0102_BackGround",
 		"Section_Type": 1,
 		"Section_Default": 0,

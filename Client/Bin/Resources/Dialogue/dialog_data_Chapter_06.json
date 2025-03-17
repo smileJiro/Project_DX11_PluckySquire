@@ -3474,6 +3474,103 @@
 			]
 		},
 		{
+			"id": "Chapter6_Start_3D",
+			"Section": "Chapter6_P0102",
+			"isChangeTalker": true,
+			"lines": [
+				{
+					"Portrait": 0,
+					"Talker": "스래쉬",
+					"TalkerIndex": 0,
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "무시무시한 톱니가 길을 막고있어!",
+					"Red": 190,
+					"Green": 218,
+					"Blue": 186
+				},
+				{
+					"Portrait": 0,
+					"Talker": "스래쉬",
+					"TalkerIndex": 0,
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "이 앞을 지나는 것은 무리야... 어떡하지...?",
+					"Red": 190,
+					"Green": 218,
+					"Blue": 186
+				},
+				{
+					"Portrait": 7,
+					"Talker": "달수염",
+					"TalkerIndex": 0,
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": true,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "너흰 지금 막다른 길에 몰린 것 같구나!",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 7,
+					"Talker": "달수염",
+					"TalkerIndex": 0,
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": true,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "너희도 잘 알겠지만, 멈춰 달라고 정중히 부탁해 봤자\n기계는 꼼짝도 안 할 게야.",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 7,
+					"Talker": "달수염",
+					"TalkerIndex": 0,
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": true,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "이 기계를 멈추려면 아주 특별한 물건이 필요할 거다.\n바로... 책상에서 찾을 수 있는 물건 말이야.",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				}
+			]
+		},
+		{
 			"id": "Chapter6_StorySequence_01_02",
 			"Section": "Chapter5_P0304",
 			"lines": [

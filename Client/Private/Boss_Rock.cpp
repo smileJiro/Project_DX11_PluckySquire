@@ -92,15 +92,6 @@ void CBoss_Rock::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, 
         }
     }
 
-    else if (OBJECT_GROUP::PLAYER_PROJECTILE & _Other.pActorUserData->iObjectGroup)
-    {
-        m_tStat.iHP -= 1;
-        if (0 >= m_tStat.iHP)
-        {
-            Event_DeleteObject(this);
-        }
-    }
-
     else if (OBJECT_GROUP::MAPOBJECT & _Other.pActorUserData->iObjectGroup)
         Event_DeleteObject(this);
 }
@@ -111,6 +102,19 @@ void CBoss_Rock::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, c
 
 void CBoss_Rock::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
 {
+}
+
+void CBoss_Rock::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
+{
+}
+
+void CBoss_Rock::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
+{
+    m_tStat.iHP -= _iDamg;
+    if (0 >= m_tStat.iHP && false == Is_Dead())
+    {
+        Event_DeleteObject(this);
+    }
 }
 
 HRESULT CBoss_Rock::Cleanup_DeadReferences()

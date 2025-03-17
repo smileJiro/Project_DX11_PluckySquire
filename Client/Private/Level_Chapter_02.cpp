@@ -196,7 +196,7 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 	}
 	//if (FAILED(Ready_Layer_Draggable(TEXT("Layer_Draggable"))))
 	//{
-	//	MSG_BOX(" Failed REady_Layer_Draggable (Level_Chapter_02::Initialize)");
+	//	MSG_BOX(" Failed REady_Layer_Draggable (Level_Chapter_02::Ingitialize)");
 	//	assert(nullptr);
 	//}
 	if (FAILED(Ready_Layer_MapGimmick(TEXT("Layer_MapGimmick"))))
@@ -257,8 +257,6 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MAPOBJECT, OBJECT_GROUP::PLAYER_PROJECTILE);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::BLOCKER, OBJECT_GROUP::PLAYER_PROJECTILE);
-
-
 
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::NPC_EVENT, OBJECT_GROUP::INTERACTION_OBEJCT); //3 8
 

@@ -1094,12 +1094,15 @@ void CCamera_2D::Find_TargetPos()
 			//	m_vStartPos = m_v2DPreTargetWorldPos;
 			//}
 
-			m_iNarrationPosType = Uimgr->isLeft_Right();	// true¸é left
+			m_iNarrationPosType = Uimgr->Get_NarrationCameraPos();	// true¸é left
 
-			if (true == m_iNarrationPosType)
+			if (CNarration::CAMERA_LEFT == m_iNarrationPosType)
 				vPos = { fSectionSize.x * 0.25f, fSectionSize.y * 0.5f };
-			else
+			else if(CNarration::CAMERA_RIGHT == m_iNarrationPosType)
 				vPos = { fSectionSize.x * (1.f - 0.25f), fSectionSize.y * 0.5f };
+			else if (CNarration::CAMERA_MID == m_iNarrationPosType) {
+				vPos = { fSectionSize.x * 0.5f, fSectionSize.y * 0.5f };
+			}
 
 			vPos = { (vPos.x - (fSectionSize.x * 0.5f)), -vPos.y + (fSectionSize.y * 0.5f) };
 			_vector vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName, { vPos.x, vPos.y });
