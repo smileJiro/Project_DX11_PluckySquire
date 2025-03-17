@@ -749,7 +749,8 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Player(const _wstring& _strLayerTag, CGam
 	Desc.iCurLevelID = m_eLevelID;
 	Desc.eStartCoord = COORDINATE_2D;
 	Desc.tTransform3DDesc.vInitialPosition = { -90.f, 67.f, 18.3f };   // TODO ::임시 위치
-	Desc.tTransform2DDesc.vInitialPosition = { 409.f, 102.f, 0.f };   // TODO ::임시 위치
+	//Desc.tTransform2DDesc.vInitialPosition = { 409.f, 102.f, 0.f };   // TODO ::임시 위치
+	Desc.tTransform2DDesc.vInitialPosition = { -808.1f, 192.f, 0.f };   // TODO ::임시 위치
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_TestPlayer"), m_eLevelID, _strLayerTag, _ppOut, &Desc)))
 		return E_FAIL;
@@ -1799,11 +1800,12 @@ HRESULT CLevel_Chapter_08::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 	tJumpStarterDesc.iCurLevelID = m_eLevelID;
 	tJumpStarterDesc.eStartCoord = COORDINATE_2D;
 	tJumpStarterDesc.strInitSectionTag = L"Chapter8_P1112";
-	tJumpStarterDesc.Build_2D_Transform({ -806.0f,143.0f }, { 83.0f,25.0f });
+	tJumpStarterDesc.Build_2D_Transform({ -806.0f,37.f }, { 83.0f, 91.00f });
 	tJumpStarterDesc.vBoxHalfExtents = { 1.f,1.f,1.f };
 	tJumpStarterDesc.vBoxOffset = { 0.f,0.f,0.f };
 	tJumpStarterDesc.eJumpMoveDir = F_DIRECTION::DOWN;
-	tJumpStarterDesc.fTargetPos = { 0.f,-350.f };
+	tJumpStarterDesc.fTargetPos = { 0.f,-330.f };
+	tJumpStarterDesc.fMoveMag = 2.f;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_JumpStarter"),
 		m_eLevelID, _strLayerTag, &tJumpStarterDesc)))

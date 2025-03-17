@@ -100,6 +100,7 @@ HRESULT CTrigger_Manager::Mapping_ExecuterTag()
 	m_EventExecuterTags[CHAPTER6_STORYSEQUENCE_01] = L"Chapter6_StorySequence_01";
 
 
+	m_EventExecuterTags[CHAPTER8_LASER_STAGE] = L"Chapter8_Laser_Stage";
 	m_EventExecuterTags[CHAPTER8_INTRO] = L"Chapter8_Intro";
 	m_EventExecuterTags[CHAPTER8_INTRO_POSTIT_SEQUENCE] = L"Chapter8_Intro_Postit_Sequence";
 	m_EventExecuterTags[CHAPTER8_SWORD] = 	L"Chapter8_Sword";

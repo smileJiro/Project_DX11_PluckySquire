@@ -193,6 +193,7 @@
     <ClInclude Include="..\Public\Back_WayState.h" />
     <ClInclude Include="..\Public\Beetle_Corpse.h" />
     <ClInclude Include="..\Public\BigPressurePlate.h" />
+    <ClInclude Include="..\Public\Big_Laser.h" />
     <ClInclude Include="..\Public\Bomb.h" />
     <ClInclude Include="..\Public\Bombable.h" />
     <ClInclude Include="..\Public\BombableBox.h" />
@@ -597,6 +598,7 @@
     <ClCompile Include="..\Private\Back_WayState.cpp" />
     <ClCompile Include="..\Private\Beetle_Corpse.cpp" />
     <ClCompile Include="..\Private\BigPressurePlate.cpp" />
+    <ClCompile Include="..\Private\Big_Laser.cpp" />
     <ClCompile Include="..\Private\Bomb.cpp" />
     <ClCompile Include="..\Private\Bombable.cpp" />
     <ClCompile Include="..\Private\BombableBox.cpp" />

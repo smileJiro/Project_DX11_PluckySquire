@@ -89,6 +89,15 @@ protected:
 #pragma region 내부 구현할때 편하게 쓰라고 만듬
 
 protected:
+
+	void Init_Step()
+	{
+		m_isStart = false;
+		m_iStep= 0;
+		m_iSubStep = 0;
+		m_fTimer = 0.f;
+	}
+
 	_bool Is_Start() //  1 회 호출 
 	{
 		if (!m_isStart)
@@ -172,11 +181,10 @@ protected:
 	_bool		m_isStart = { false };
 	
 	//임시 데이터들 ...
-	_bool			m_isPlag = { false };
-	CGameObject*	m_pTargetObject = nullptr;
-	CGameObject*	m_pTargetObject_Second = nullptr;
-	CPostit_Page*	m_pPostitPage = nullptr;
-	_int			m_iEventExcuterAction = -1;
+	_bool					m_isPlag = { false };
+	vector<CGameObject*>	m_TargetObjects;
+	CPostit_Page*			m_pPostitPage = nullptr;
+	_int					m_iEventExcuterAction = -1;
 
 public:
 	virtual void Free();
