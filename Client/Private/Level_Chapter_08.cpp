@@ -278,7 +278,7 @@ HRESULT CLevel_Chapter_08::Initialize(LEVEL_ID _eLevelID)
 void CLevel_Chapter_08::Update(_float _fTimeDelta)
 {
 	m_pSneakMinigameManager->Update(_fTimeDelta);
-	m_pFormation_Manager->Update(_fTimeDelta);
+	//m_pFormation_Manager->Update(_fTimeDelta);
 	Uimgr->UI_Update();
 
 	// 피직스 업데이트 
