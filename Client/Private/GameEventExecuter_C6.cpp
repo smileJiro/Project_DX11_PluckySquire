@@ -1233,6 +1233,11 @@ void CGameEventExecuter_C6::Chapter6_FriendEvent_0(_float _fTimeDelta)
 		CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(TEXT("Thrash"));
 		CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(TEXT("Violet"));
 		CFriend_Controller::GetInstance()->Start_Train();
+
+		/* 임시 코드 */
+		//CFriend_Controller::GetInstance()->Erase_Friend(TEXT("Violet"));
+		//Event_DeleteObject(pViolet);
+		/* 임시 코드 */
 		CCamera_Manager::GetInstance()->Start_ResetArm_To_SettingPoint(eCamType, 1.0f);
 		pPlayer->Set_BlockPlayerInput(false);
 		GameEvent_End();

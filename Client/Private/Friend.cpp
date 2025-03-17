@@ -795,6 +795,7 @@ HRESULT CFriend::Ready_PartObjects(FRIEND_DESC* _pDesc)
 
 void CFriend::Free()
 {
+
     Safe_Release(m_pChaseTarget);
 
     __super::Free();

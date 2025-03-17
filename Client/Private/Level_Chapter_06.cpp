@@ -206,7 +206,7 @@ HRESULT CLevel_Chapter_06::Initialize(LEVEL_ID _eLevelID)
 		MSG_BOX(" Failed Ready_Layer_Friends (Level_Chapter_02::Initialize)");
 		assert(nullptr);
 	}
-		if (FAILED(Ready_Layer_Spawner()))
+	if (FAILED(Ready_Layer_Spawner()))
 	{
 		MSG_BOX(" Failed Ready_Layer_Spawner (Level_Chapter_02::Initialize)");
 		assert(nullptr);
