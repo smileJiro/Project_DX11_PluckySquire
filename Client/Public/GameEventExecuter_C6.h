@@ -65,6 +65,7 @@ private:
 	void							Chapter6_FatherGame_Progress_Fatherpart_2(_float _fTimeDelta);
 	void							Chapter6_FatherGame_Progress_Fatherpart_3(_float _fTimeDelta);
 	void							Chapter6_FriendEvent_0(_float _fTimeDelta);
+	void							Chapter6_StorySequence_01(_float _fTimeDelta);
 
 	void							Chapter6_Humgrump_Revolt(_float _fTimeDelta);
 	void							Chapter6_Change_Book_To_Greate_Humgrump(_float _fTimeDelta);
@@ -74,6 +75,7 @@ private:
 private:
 	_float4x4						m_TargetWorldMatrix = {};
 	_uint							m_iDialogueIndex = 0;
+	_float							m_fPlaye2DMoveSpeed = {};
 public:
 	static CGameEventExecuter_C6* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual void Free();

@@ -20,6 +20,16 @@
     ]
   },
   {
+    "Trigger_EventTag": "Chapter6_StorySequence_01",
+    "Actions": [
+      {
+        "ActionTag": "Create_EventExecuter",
+        "EventTag": "Chapter6_StorySequence_01",
+        "Is_Sequence": true
+      }
+    ]
+  },
+  {
     "Trigger_EventTag": "Chapter6_FatherGame_Progress_Start_Clear",
     "Actions": [
       {
