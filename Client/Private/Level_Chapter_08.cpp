@@ -269,6 +269,8 @@ HRESULT CLevel_Chapter_08::Initialize(LEVEL_ID _eLevelID)
 
 	m_pSneakMinigameManager = CMinigame_Sneak::GetInstance();
 	m_pFormation_Manager = CFormation_Manager::GetInstance();
+	if (FAILED(m_pFormation_Manager->Initialize()))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -1133,7 +1135,7 @@ HRESULT CLevel_Chapter_08::Ready_Layer_UI(const _wstring& _strLayerTag)
 	//pDesc.fSizeY = 0.f;
 	//
 	//
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_FloorWord"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_FloorWord"), pDesc.iCurLevelID, TEXT("Layer_FloorWord"), &pDesc)))
 		return E_FAIL;
 
 

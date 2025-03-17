@@ -102,6 +102,7 @@ private:
     void                        Update_Narration(_float _fTimeDelta);
     void                        PaseTokens(const _wstring& _Text, vector<TextTokens>& _OutToken);
     void                        StopNarration();
+    _float3                     SetPlayerPos(wstring _strNarrationID);
 
 
 private:

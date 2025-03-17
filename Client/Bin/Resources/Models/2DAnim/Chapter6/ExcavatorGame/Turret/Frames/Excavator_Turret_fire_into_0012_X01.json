@@ -1,0 +1,65 @@
+[
+  {
+    "Type": "PaperSprite",
+    "Name": "Excavator_Turret_fire_into_0012_X01",
+    "Class": "UScriptClass'PaperSprite'",
+    "Properties": {
+      "BakedSourceUV": {
+        "X": 2433.0,
+        "Y": 1.0
+      },
+      "BakedSourceDimension": {
+        "X": 573.0,
+        "Y": 526.0
+      },
+      "BakedSourceTexture": {
+        "ObjectName": "Texture2D'excavator_turret-0'",
+        "ObjectPath": "/Game/Minigames/ExcavatorBoss/Animation/Turret/Textures/excavator_turret-0.0"
+      },
+      "DefaultMaterial": {
+        "ObjectName": "MaterialInstanceConstant'TranslucentUnlitSpriteMaterial'",
+        "ObjectPath": "/Paper2D/TranslucentUnlitSpriteMaterial.0"
+      },
+      "SpriteCollisionDomain": "ESpriteCollisionMode::None",
+      "PixelsPerUnrealUnit": 1.0,
+      "BakedRenderData": [
+        {
+          "X": 285.0,
+          "Y": 262.0,
+          "Z": 0.7336426,
+          "W": 0.00048828125
+        },
+        {
+          "X": -286.0,
+          "Y": 262.0,
+          "Z": 0.5942383,
+          "W": 0.00048828125
+        },
+        {
+          "X": -286.0,
+          "Y": -262.0,
+          "Z": 0.5942383,
+          "W": 0.12841797
+        },
+        {
+          "X": 285.0,
+          "Y": -262.0,
+          "Z": 0.7336426,
+          "W": 0.12841797
+        },
+        {
+          "X": 285.0,
+          "Y": 262.0,
+          "Z": 0.7336426,
+          "W": 0.00048828125
+        },
+        {
+          "X": -286.0,
+          "Y": -262.0,
+          "Z": 0.5942383,
+          "W": 0.12841797
+        }
+      ]
+    }
+  }
+]

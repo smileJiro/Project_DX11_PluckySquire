@@ -130,7 +130,7 @@ HRESULT CSpear_Soldier::Initialize(void* _pArg)
         if (true == m_isFormationMode)
         {
             m_pFSM->Add_FormationState();
-            m_pFSM->Set_State((_uint)MONSTER_STATE::SNEAK_IDLE);
+            m_pFSM->Set_State((_uint)MONSTER_STATE::FORMATION_IDLE);
         }
         else
         {
@@ -439,6 +439,18 @@ void CSpear_Soldier::Change_Animation()
 
             case MONSTER_STATE::SNEAK_ATTACK:
                 static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(ARREST);
+                break;
+
+            case MONSTER_STATE::FORMATION_IDLE:
+                static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(IDLE);
+                break;
+
+            case MONSTER_STATE::FORMATION_MOVE:
+                static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(WALK);
+                break;
+
+            case MONSTER_STATE::FORMATION_BACK:
+                static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(CHASE);
                 break;
 
             case MONSTER_STATE::HIT:

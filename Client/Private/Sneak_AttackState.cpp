@@ -39,7 +39,12 @@ void CSneak_AttackState::State_Update(_float _fTimeDelta)
 	//컷씬으로 들어가며 초기화
 	//Event_ChangeMonsterState(MONSTER_STATE::STANDBY, m_pFSM);
 	if(m_pOwner->Get_AnimChangeable())
-		Event_ChangeMonsterState(MONSTER_STATE::SNEAK_IDLE, m_pFSM);
+	{
+		if(false == m_pOwner->Is_FormationMode())
+			Event_ChangeMonsterState(MONSTER_STATE::SNEAK_IDLE, m_pFSM);
+		else
+			Event_ChangeMonsterState(MONSTER_STATE::FORMATION_BACK, m_pFSM);
+	}
 }
 
 void CSneak_AttackState::State_Exit()

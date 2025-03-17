@@ -386,6 +386,14 @@ _bool CMonster::Monster_MoveTo(_fvector _vPosition, _float _fTimeDelta)
 	{
 		CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
 
+		if (true == pDynamicActor->Is_Kinematic())
+		{
+			if (true == Move_To_3D(_vPosition, 0.5f, false))
+				return true;
+			else
+				return false;
+		}
+
 		//위치로 이동하는 속도를 세팅하고 StepAssist 수행
 		if (true == Move_To_3D(_vPosition))
 			return true; 
@@ -610,12 +618,24 @@ _bool CMonster::Check_Block(_fvector _vForce, _float _fTimeDelta)
 
 _bool CMonster::Add_To_Formation()
 {
-	return CFormation_Manager::GetInstance()->Add_To_Formation(this, &m_pFormation);
+	if(true == CFormation_Manager::GetInstance()->Add_To_Formation(this, &m_pFormation))
+	{
+		Event_Set_Kinematic(static_cast<CActor_Dynamic*>(Get_ActorCom()), true);
+		return true;
+	}
+
+	return false;
 }
 
 _bool CMonster::Remove_From_Formation()
 {
-	return m_pFormation->Remove_From_Formation(this);
+	if (m_pFormation->Remove_From_Formation(this))
+	{
+		Event_Set_Kinematic(static_cast<CActor_Dynamic*>(Get_ActorCom()), false);
+		return true;
+	}
+
+	return false;
 }
 
 _bool CMonster::Get_Formation_Position(_float3* _vPosition)
