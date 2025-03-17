@@ -39,6 +39,12 @@ HRESULT CNPC_Manager::Level_Exit(_int iCurLevelID, _int _iChangeLevelID, _int _i
 		m_pOnlyNpc = nullptr;
 	}
 
+	if (nullptr != m_pWorldNpc)
+	{
+		Safe_Release(m_pWorldNpc);
+		m_pWorldNpc = nullptr;
+	}
+
 	for (int i = 0; i < m_pNpcSocials.size(); ++i)
 	{
 		Safe_Release(m_pNpcSocials[i]);
@@ -70,6 +76,7 @@ void CNPC_Manager::Free()
 	Safe_Release(m_pGameInstance);
 	Safe_Release(m_pOnlyNpc);
 	Safe_Release(m_pNPC);
+	Safe_Release(m_pWorldNpc);
 
 
 
