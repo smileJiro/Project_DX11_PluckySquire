@@ -125,7 +125,7 @@ HRESULT CProjectile_Monster::Change_Coordinate(COORDINATE _eCoordinate, _float3*
     return S_OK;
 }
 
-void CProjectile_Monster::On_Hit(CGameObject* _pHitter, _float _fDamg, _fvector _vForce)
+void CProjectile_Monster::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
 {
 
 }

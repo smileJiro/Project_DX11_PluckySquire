@@ -1,15 +1,15 @@
 #include "stdafx.h"
 #include "GameInstance.h"
 #include "GameObject.h"
-#include "FormationMoveState.h"
+#include "FormationBackState.h"
 #include "Monster.h"
 #include "FSM.h"
 
-CFormationMoveState::CFormationMoveState()
+CFormationBackState::CFormationBackState()
 {
 }
 
-HRESULT CFormationMoveState::Initialize(void* _pArg)
+HRESULT CFormationBackState::Initialize(void* _pArg)
 {
 	STATEDESC* pDesc = static_cast<STATEDESC*>(_pArg);
 	m_fAlertRange = pDesc->fAlertRange;
@@ -31,12 +31,17 @@ HRESULT CFormationMoveState::Initialize(void* _pArg)
 }
 
 
-void CFormationMoveState::State_Enter()
+void CFormationBackState::State_Enter()
 {
 	m_fAccTime = 0.f;
+	m_pOwner->Add_To_Formation();
+
+	m_fOriginSpeed = m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec();
+	//빠른 속도로 복귀해야하므로 속도 증가
+	m_pOwner->Get_ControllerTransform()->Set_SpeedPerSec(m_fOriginSpeed * 1.5f);
 }
 
-void CFormationMoveState::State_Update(_float _fTimeDelta)
+void CFormationBackState::State_Update(_float _fTimeDelta)
 {
 	if (nullptr == m_pOwner)
 		return;
@@ -88,13 +93,14 @@ void CFormationMoveState::State_Update(_float _fTimeDelta)
 	Move();
 }
 
-void CFormationMoveState::State_Exit()
+void CFormationBackState::State_Exit()
 {
 	m_isTurn = false;
 	m_isMove = false;
+	m_pOwner->Get_ControllerTransform()->Set_SpeedPerSec(m_fOriginSpeed);
 }
 
-void CFormationMoveState::Move()
+void CFormationBackState::Move()
 {
 	_vector vDir = XMLoadFloat3(&m_vNextPos) - m_pOwner->Get_FinalPosition();
 	if (0.1f >= XMVectorGetX(XMVector3Length(vDir)))
@@ -104,7 +110,7 @@ void CFormationMoveState::Move()
 		m_isTurn = false;
 		m_isMove = false;
 
-		Event_ChangeMonsterState(MONSTER_STATE::FORMATION_IDLE, m_pFSM);
+		Event_ChangeMonsterState(MONSTER_STATE::FORMATION_MOVE, m_pFSM);
 	}
 
 	//회전
@@ -130,7 +136,7 @@ void CFormationMoveState::Move()
 	if (true == m_isMove)
 	{
 		//웨이포인트 도달 했는지 체크 후 도달하면 다음 위치 받아옴
-		//포메이션이 멈춰있는 경우 idle로 전환
+		//도착했으면 move로 전환
 
 		//if (m_pOwner->Move_To(XMLoadFloat3(&m_WayPoints[m_PatrolWays[m_iCurWayIndex]].vPosition), 0.3f))
 		if (m_pOwner->Monster_MoveTo(XMLoadFloat3(&m_vNextPos), 0.3f))
@@ -140,26 +146,25 @@ void CFormationMoveState::Move()
 			m_isTurn = false;
 			m_isMove = false;
 
-			if(true == m_pOwner->Is_Formation_Stop())
-				Event_ChangeMonsterState(MONSTER_STATE::FORMATION_IDLE, m_pFSM);
+			Event_ChangeMonsterState(MONSTER_STATE::FORMATION_MOVE, m_pFSM);
 		}
 	}
 }
 
-CFormationMoveState* CFormationMoveState::Create(void* _pArg)
+CFormationBackState* CFormationBackState::Create(void* _pArg)
 {
-	CFormationMoveState* pInstance = new CFormationMoveState();
+	CFormationBackState* pInstance = new CFormationBackState();
 
 	if (FAILED(pInstance->Initialize(_pArg)))
 	{
-		MSG_BOX("Failed to Created : CFormationMoveState");
+		MSG_BOX("Failed to Created : CFormationBackState");
 		Safe_Release(pInstance);
 	}
 
 	return pInstance;
 }
 
-void CFormationMoveState::Free()
+void CFormationBackState::Free()
 {
 	__super::Free();
 }
