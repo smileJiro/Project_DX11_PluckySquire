@@ -45,18 +45,18 @@ HRESULT CGear::Initialize(void* _pArg)
 
 HRESULT CGear::Render()
 {
-	if (KEY_DOWN(KEY::K))
-	{
-		On_Stop();
-		//Set_Position(XMVectorSet(472.f, 185.0f, 0.0f, 1.0f));
-		//m_PartObjects[GEAR_PART_TEETH]->Set_Position(XMVectorSet(447.f, 0.0f, 0.0f, 1.0f));
-	}
-	if (KEY_DOWN(KEY::J))
-	{
-		On_UnStop();
-		//Set_Position(XMVectorSet(472.f, 185.0f, 0.0f, 1.0f));
-		//m_PartObjects[GEAR_PART_TEETH]->Set_Position(XMVectorSet(447.f, 0.0f, 0.0f, 1.0f));
-	}
+	//if (KEY_DOWN(KEY::K))
+	//{
+	//	On_Stop();
+	//	//Set_Position(XMVectorSet(472.f, 185.0f, 0.0f, 1.0f));
+	//	//m_PartObjects[GEAR_PART_TEETH]->Set_Position(XMVectorSet(447.f, 0.0f, 0.0f, 1.0f));
+	//}
+	//if (KEY_DOWN(KEY::J))
+	//{
+	//	On_UnStop();
+	//	//Set_Position(XMVectorSet(472.f, 185.0f, 0.0f, 1.0f));
+	//	//m_PartObjects[GEAR_PART_TEETH]->Set_Position(XMVectorSet(447.f, 0.0f, 0.0f, 1.0f));
+	//}
 #ifdef _DEBUG
 	if (m_p2DColliderComs[0]->Is_Active())
 		m_p2DColliderComs[0]->Render(SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName));
