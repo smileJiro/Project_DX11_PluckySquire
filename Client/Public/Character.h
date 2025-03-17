@@ -159,6 +159,7 @@ public:
 	_bool Is_AutoMoving() { return m_bAutoMoving; }
 	virtual void On_StartAutoMove() {};
 	virtual void On_EndAutoMove() {};
+	virtual void Swicth_Animation(_uint _iAnimIndex);
 private:
 
 	_bool Process_AutoMove(_float _fTimeDelta);
