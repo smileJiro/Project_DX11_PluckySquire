@@ -632,6 +632,13 @@ public:
 	void Set_Animation(_uint _iAnimIndex);
 	void Set_State(STATE _eState);
 	void Set_Mode(PLAYER_MODE _eNewMode);
+	void Set_MoveSpeed(_float _fSpeed, COORDINATE _eCoord) 
+	{
+		if (COORDINATE_2D == _eCoord)
+			m_f2DMoveSpeed = _fSpeed;
+		else
+			m_f3DMoveSpeed = _fSpeed;
+	}
 	void Set_3DTargetDirection(_fvector _vDir);
 	void Set_WallNormal(_fvector _vNormal) { m_vWallNormal = _vNormal; }
 	void Set_ClamberEndPosition(_fvector _vPos) { m_vClamberEndPosition = _vPos; }

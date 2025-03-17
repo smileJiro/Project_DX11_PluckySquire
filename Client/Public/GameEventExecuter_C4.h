@@ -56,6 +56,7 @@ public:
 	virtual void					Late_Update(_float _fTimeDelta) override;
 
 private:
+	void							Chapter4_2D_Intro(_float _fTimeDelta);
 	void							Chapter4_Intro(_float _fTimeDelta);
 	void							Chapter4_Intro_Postit_Sequence(_float _fTimeDelta);
 	void							Chapter4_Ride_Zipline(_float _fTimeDelta);

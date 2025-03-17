@@ -1,26 +1,45 @@
 [
-    {
-        "Collider_Info": {
-            "Position": [
-                -1241.0,
-                -301.0
-            ],
-            "Scale": [
-                22.0,
-                40.0
-            ]
-        },
-        "Fillter_MyGroup": 2,
-        "Fillter_OtherGroupMask": 128,
-        "Trigger_ConditionType": 0,
-        "Trigger_Coordinate": 0,
-        "Trigger_EventTag": "BookSectionChange_Prev",
-        "Trigger_Type": 6,
-		 "MapTrigger_Info": {
-		"Next_Position": [
-                -16.0,
-                667.0
-		]
-		}
+  {
+    "Collider_Info": {
+      "Position": [
+        -1241.0,
+        -301.0
+      ],
+      "Scale": [
+        22.0,
+        40.0
+      ]
+    },
+    "Fillter_MyGroup": 2,
+    "Fillter_OtherGroupMask": 128,
+    "Trigger_ConditionType": 0,
+    "Trigger_Coordinate": 0,
+    "Trigger_EventTag": "BookSectionChange_Prev",
+    "Trigger_Type": 6,
+    "MapTrigger_Info": {
+      "Next_Position": [
+        -16.0,
+        667.0
+      ]
     }
+  },
+  {
+    "Collider_Info": {
+      "Position": [
+        -1141.0,
+        -301.0
+      ],
+      "Scale": [
+        100.0,
+        100.0
+      ]
+    },
+    "Fillter_MyGroup": 2,
+    "Fillter_OtherGroupMask": 128,
+    "Trigger_ConditionType": 0,
+    "Trigger_Coordinate": 0,
+    "Trigger_EventTag": "Chapter6_StorySequence_01",
+    "Trigger_Type": 0,
+	"Trigger_Reusable" : false
+  }
 ]

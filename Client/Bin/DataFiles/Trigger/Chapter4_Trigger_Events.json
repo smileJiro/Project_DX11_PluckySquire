@@ -48,6 +48,16 @@
         "Is_Sequence": true
       }
     ]
+  },  
+  {
+    "Trigger_EventTag": "Chapter4_2D_Intro",
+    "Actions": [
+      {
+        "ActionTag": "Create_EventExecuter",
+        "EventTag": "Chapter4_2D_Intro",
+        "Is_Sequence": true
+      }
+    ]
   },
   {
     "Trigger_EventTag": "Chapter4_Intro_Postit_Sequence",
@@ -176,6 +186,16 @@
         "ActionTag": "Create_EventExecuter",
         "EventTag": "Friend_MapEnter",
         "Is_Sequence": false
+      }
+    ]
+  },
+  {
+    "Trigger_EventTag": "Start_Train",
+    "Actions": [
+      {
+        "ActionTag": "Create_EventExecuter",
+        "EventTag": "Start_Train",
+        "Is_Sequence": true
       }
     ]
   }
