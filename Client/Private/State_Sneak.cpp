@@ -387,6 +387,15 @@ void CState_Sneak::Initialize_PatrolDirections(SNEAKWAYPOINTINDEX _iWayIndex)
 
 void CState_Sneak::Determine_NextDirection(_fvector& _vDestination, _float3* _vDirection)
 {
+	if (m_WayPoints.empty())
+	{
+		_vector vResult = _vDestination - m_pOwner->Get_FinalPosition();
+		if (0.01f >= XMVectorGetY(vResult))
+			XMVectorSetY(vResult, 0.f);
+		XMStoreFloat3(_vDirection, XMVector3Normalize(vResult));
+		return;
+	}
+
 	_float3 vOffset = m_pOwner->Get_RayOffset();
 	_float3 vRayPos; XMStoreFloat3(&vRayPos, XMVector3Transform(XMLoadFloat3(&vOffset), m_pOwner->Get_FinalWorldMatrix()));
 	_vector vRayDir = XMVector3Normalize(XMVectorSetY(_vDestination - XMLoadFloat3(&vRayPos), 0.f));
