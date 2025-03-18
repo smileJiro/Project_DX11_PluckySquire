@@ -43,7 +43,10 @@ void CSneak_AttackState::State_Update(_float _fTimeDelta)
 		if(false == m_pOwner->Is_FormationMode())
 			Event_ChangeMonsterState(MONSTER_STATE::SNEAK_IDLE, m_pFSM);
 		else
+		{
+			m_pOwner->Add_To_Formation();
 			Event_ChangeMonsterState(MONSTER_STATE::FORMATION_BACK, m_pFSM);
+		}
 	}
 }
 

@@ -118,7 +118,6 @@ void CSneak_InvestigateState::State_Update(_float _fTimeDelta)
 			Event_ChangeMonsterState(MONSTER_STATE::SNEAK_AWARE, m_pFSM);
 			return;
 		}
-
 		//È¸Àü
 		if (m_pOwner->Rotate_To_Radians(XMLoadFloat3(&m_vDir), m_pOwner->Get_ControllerTransform()->Get_RotationPerSec()))
 		{

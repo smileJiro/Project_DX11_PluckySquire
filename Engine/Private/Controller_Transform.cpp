@@ -209,7 +209,7 @@ _bool CController_Transform::MoveToTarget(_fvector _vTargetPos, _float _fTimeDel
 	return static_cast<CTransform_3D*>(m_pTransforms[m_eCurCoord])->MoveToTarget(_vTargetPos, _fTimeDelta);
 }
 
-_bool CController_Transform::MoveTo(_fvector _vTargetPos, _float _fTimeDelta)
+_bool CController_Transform::MoveTo(_fvector _vTargetPos, _float _fTimeDelta, _float _fEpsilon)
 {
 	if (COORDINATE_2D == m_eCurCoord)
 		return false;
@@ -217,7 +217,7 @@ _bool CController_Transform::MoveTo(_fvector _vTargetPos, _float _fTimeDelta)
 	if (nullptr == m_pTransforms[m_eCurCoord])
 		return false;
 
-	return static_cast<CTransform_3D*>(m_pTransforms[m_eCurCoord])->MoveTo(_vTargetPos, _fTimeDelta);
+	return static_cast<CTransform_3D*>(m_pTransforms[m_eCurCoord])->MoveTo(_vTargetPos, _fTimeDelta, _fEpsilon);
 }
 
 _bool CController_Transform::Turn_To_DesireDir(_fvector _vStartDir, _fvector _vDesireDir, _float _fRatio)

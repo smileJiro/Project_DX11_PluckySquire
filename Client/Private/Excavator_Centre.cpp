@@ -3,6 +3,7 @@
 #include "GameInstance.h"
 
 #include "Excavator_Switch.h"
+#include "Saw.h"
 
 CExcavator_Centre::CExcavator_Centre(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     :CCharacter(_pDevice, _pContext)
@@ -172,6 +173,11 @@ HRESULT CExcavator_Centre::Ready_PartObjects(CENTRE_DESC* _pDesc)
             return E_FAIL;
         static_cast<CModelObject*>(m_PartObjects[CENTRE_SWITCH_2])->Switch_Animation(0);
     }/* Part CENTRE_SWITCH_2 */
+
+
+
+
+    
     return S_OK;
 }
 

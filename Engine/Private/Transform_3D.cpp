@@ -58,11 +58,11 @@ _bool CTransform_3D::MoveToTarget(_fvector _vTargetPos, _float _fTimeDelta)
     return false;
 }
 
-_bool CTransform_3D::MoveTo(_fvector _vTargetPos, _float _fTimeDelta)
+_bool CTransform_3D::MoveTo(_fvector _vTargetPos, _float _fTimeDelta , _float _fEpsilon)
 {
-    static _float fEpsilon = 0.5f;
+    //static _float fEpsilon = 0.5f;
     _vector vPos = Get_State(STATE_POSITION);
-    if (true == Check_Arrival(_vTargetPos, fEpsilon))
+    if (true == Check_Arrival(_vTargetPos, _fEpsilon))
     {
         Set_State(CTransform_3D::STATE_POSITION, XMVectorSetW(_vTargetPos, 1.0f));
         return true;
