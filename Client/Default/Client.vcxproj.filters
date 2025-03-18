@@ -2040,6 +2040,9 @@
       <Filter>05.MiniGames\ExcavatorGame\Excavator\Saw</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\PlayerState_EngageBoss.h" />
+    <ClInclude Include="..\Public\Rubboink.h">
+      <Filter>02.GameObjects\Monster</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -3272,6 +3275,9 @@
       <Filter>05.MiniGames\ExcavatorGame\Excavator\Saw</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState_EngageBoss.cpp" />
+    <ClCompile Include="..\Private\Rubboink.cpp">
+      <Filter>02.GameObjects\Monster</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
