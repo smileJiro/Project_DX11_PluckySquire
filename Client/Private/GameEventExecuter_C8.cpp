@@ -479,6 +479,15 @@ void CGameEventExecuter_C8::Chapter8_Laser_Stage_2(_float _fTimeDelta)
 
 void CGameEventExecuter_C8::Chapter8_Friend_Appear_Violet(_float _fTimeDelta)
 {
+	_wstring  strFriendTag = L"Pip";
+	CFriend_Pip::FRIEND_DESC PipDesc{};
+	PipDesc.Build_2D_Transform(_float2(600.00f, 145.00f), _float2(1.0f, 1.0f), 400.f);
+	PipDesc.iCurLevelID = m_iCurLevelID;
+	PipDesc.eStartState = CFriend::FRIEND_LAST;
+	PipDesc.eStartDirection = CFriend::DIR_LEFT;
+	PipDesc.iModelTagLevelID = LEVEL_STATIC;
+	PipDesc.iNumDialoguesIndices = 0;
+	PipDesc.strFightLayerTag = TEXT("Layer_Monster");
 }
 
 void CGameEventExecuter_C8::Chapter8_Friend_Appear_Thrash(_float _fTimeDelta)
