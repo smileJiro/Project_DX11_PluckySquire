@@ -115,7 +115,7 @@ void CBoss_Crystal::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
     m_tStat.iHP -= _iDamg;
     if (0 >= m_tStat.iHP && false == Is_Dead())
     {
-        CEffect_Manager::GetInstance()->Active_EffectMatrix(TEXT("Meteorite"), true, m_pControllerTransform->Get_WorldMatrix());
+            CEffect_Manager::GetInstance()->Active_EffectMatrix(TEXT("Meteorite"), true, m_pControllerTransform->Get_WorldMatrix());
 
         Event_DeleteObject(this);
     }

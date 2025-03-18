@@ -78,6 +78,8 @@ HRESULT CBoss_TennisBall::Initialize(void* _pArg)
     if (nullptr != m_pSpawner)
         Safe_AddRef(m_pSpawner);
 
+    
+
 	return S_OK;
 }
 

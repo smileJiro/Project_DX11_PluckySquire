@@ -19,7 +19,7 @@
                 },
                 "Count": 64,
                 "LifeTime": {
-                    "Arg1": 0.2199999988079071,
+                    "Arg1": 0.2800000011920929,
                     "Arg2": 0.0,
                     "SetType": "DIRECTSET"
                 },
@@ -112,7 +112,7 @@
                 },
                 {
                     "Name": "DissolveTimeFactor",
-                    "Value": 0.4000000059604645
+                    "Value": 0.3499999940395355
                 },
                 {
                     "Name": "EdgeWidth",
@@ -238,8 +238,8 @@
                 },
                 "Count": 64,
                 "LifeTime": {
-                    "Arg1": 0.20000000298023224,
-                    "Arg2": 0.23000000417232513,
+                    "Arg1": 0.25,
+                    "Arg2": 0.2800000011920929,
                     "SetType": "RANDOMLINEAR"
                 },
                 "Position": {
@@ -331,7 +331,7 @@
                 },
                 {
                     "Name": "DissolveTimeFactor",
-                    "Value": 0.4000000059604645
+                    "Value": 0.3499999940395355
                 },
                 {
                     "Name": "EdgeWidth",
@@ -457,7 +457,7 @@
                 },
                 "Count": 8,
                 "LifeTime": {
-                    "Arg1": 0.10000000149011612,
+                    "Arg1": 0.15000000596046448,
                     "Arg2": 0.0,
                     "SetType": "DIRECTSET"
                 },
@@ -632,7 +632,7 @@
                 },
                 "Count": 128,
                 "LifeTime": {
-                    "Arg1": 0.23999999463558197,
+                    "Arg1": 0.2800000011920929,
                     "Arg2": 0.0,
                     "SetType": "DIRECTSET"
                 },
