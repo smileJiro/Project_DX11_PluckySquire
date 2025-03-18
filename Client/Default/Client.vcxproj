@@ -347,6 +347,7 @@
     <ClInclude Include="..\Public\Interaction_Key.h" />
     <ClInclude Include="..\Public\TiltSwapCrate.h" />
     <ClInclude Include="..\public\TurnBookEffect.h" />
+    <ClInclude Include="..\public\Turret.h" />
     <ClInclude Include="..\Public\WorldMapNPC.h" />
     <ClInclude Include="..\Public\WorldMapNpc_Jot.h" />
     <ClInclude Include="..\Public\WorldMapNpc_Thrash.h" />
@@ -759,6 +760,7 @@
     <ClCompile Include="..\Private\Interaction_Key.cpp" />
     <ClCompile Include="..\Private\TiltSwapCrate.cpp" />
     <ClCompile Include="..\private\TurnBookEffect.cpp" />
+    <ClCompile Include="..\private\Turret.cpp" />
     <ClCompile Include="..\Private\WorldMapNPC.cpp" />
     <ClCompile Include="..\Private\WorldMapNpc_Jot.cpp" />
     <ClCompile Include="..\Private\WorldMapNpc_Thrash.cpp" />

@@ -1360,7 +1360,7 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Effects2D(const _wstring& _strLayerTag)
 
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("health_pickup_small"), LEVEL_STATIC, 3);
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("health_pickup_large"), LEVEL_STATIC, 3);
-	
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Generic_Explosion"), LEVEL_STATIC, 5);
 	return S_OK;
 }
 

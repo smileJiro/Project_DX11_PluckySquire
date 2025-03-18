@@ -25,3 +25,9 @@ void CPlayerState_Pull::Enter()
 void CPlayerState_Pull::Exit()
 {
 }
+
+void CPlayerState_Pull::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
+{
+	m_pOwner->Get_InteractableObject()->Cancel_Interact(m_pOwner);
+	m_pOwner->Set_State(CPlayer::IDLE);
+}

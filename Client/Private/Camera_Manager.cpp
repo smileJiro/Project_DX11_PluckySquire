@@ -83,6 +83,10 @@ _uint CCamera_Manager::Get_CurCameraMode()
 
 	return _uint();
 }
+void CCamera_Manager::Off_Shake()
+{
+	m_Cameras[m_eCurrentCameraType]->Off_Shake();
+}
 #ifdef _DEBUG
 
 #endif // _DEBUG

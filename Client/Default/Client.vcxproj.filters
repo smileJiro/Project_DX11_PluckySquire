@@ -2043,6 +2043,9 @@
     <ClInclude Include="..\Public\Rubboink.h">
       <Filter>02.GameObjects\Monster</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Turret.h">
+      <Filter>05.MiniGames\ExcavatorGame\Turret</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -3277,6 +3280,9 @@
     <ClCompile Include="..\Private\PlayerState_EngageBoss.cpp" />
     <ClCompile Include="..\Private\Rubboink.cpp">
       <Filter>02.GameObjects\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Turret.cpp">
+      <Filter>05.MiniGames\ExcavatorGame\Turret</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
