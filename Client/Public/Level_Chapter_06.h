@@ -51,8 +51,6 @@ private:
 
 	LEVEL_ID				m_eLevelID;
 
-	CCandle*				m_pCandle = nullptr;
-	CCandleGame*			m_pCandleGame = nullptr;
 public:
 	static CLevel_Chapter_06* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, LEVEL_ID _eLevelID);
 	virtual void			Free() override;

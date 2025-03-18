@@ -461,7 +461,8 @@ void CCharacter::Set_2DDirection(E_DIRECTION _eEDir, _bool _isOnChange)
         case Client::E_DIRECTION::LEFT_UP:
         case Client::E_DIRECTION::LEFT_DOWN:
         {
-            _vector vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
+            _vector vRight = m_PartObjects[PART_BODY]->Get_ControllerTransform()->Get_State(CTransform::STATE_RIGHT);
+
             m_PartObjects[PART_BODY]->Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, -1.f * XMVectorAbs(vRight));
             vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
             break;
@@ -470,7 +471,7 @@ void CCharacter::Set_2DDirection(E_DIRECTION _eEDir, _bool _isOnChange)
         case Client::E_DIRECTION::RIGHT_UP:
         case Client::E_DIRECTION::RIGHT_DOWN:
         {
-            _vector vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
+            _vector vRight = m_PartObjects[PART_BODY]->Get_ControllerTransform()->Get_State(CTransform::STATE_RIGHT);
             m_PartObjects[PART_BODY]->Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, XMVectorAbs(vRight));
             break;
         }
@@ -876,7 +877,7 @@ _bool CCharacter::Process_AutoMove(_float _fTimeDelta)
     //Ω««‡¡ﬂ
     else if (tCommand.Is_RunTime())
     {
-        if(false == bRuntimeBefore)
+        if(false == bRuntimeBefore && nullptr != m_PartObjects[0])
             static_cast<CModelObject*>(m_PartObjects[0])->Switch_Animation(tCommand.iAnimIndex);
         switch (tCommand.eType)
         {

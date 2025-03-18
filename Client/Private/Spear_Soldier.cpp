@@ -722,6 +722,17 @@ void CSpear_Soldier::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
     }
 }
 
+void CSpear_Soldier::Turn_Animation(_bool _isCW)
+{
+    CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
+
+    _uint AnimIdx;
+    AnimIdx = IDLE;
+
+    if (AnimIdx != pModelObject->Get_Model(COORDINATE_3D)->Get_CurrentAnimIndex())
+        pModelObject->Switch_Animation(AnimIdx);
+}
+
 HRESULT CSpear_Soldier::Ready_ActorDesc(void* _pArg)
 {
     CSpear_Soldier::MONSTER_DESC* pDesc = static_cast<CSpear_Soldier::MONSTER_DESC*>(_pArg);

@@ -30,18 +30,12 @@ public:
 
     void Set_VeloState(_fvector _vVelocity);
 private:
-
-
     _bool m_bRifleTriggered = false;
-    _float m_f3DCyberFlySpeed = 7.f;
- 
-
-
 	VELOCITY_STATE m_eVelocityState = VELOCITY_LAST;
 
-
-
-
+    _float m_f3DCyberFlySpeed = 6.f;
+	_float m_f3DCyberCurrentSpeed= 0.f;
+	_float m_f3DCyberLinearDamping = 0.1f;
 };
 
 
@@ -61,9 +55,7 @@ private:
     CActor_Dynamic* m_pDynamicActor = nullptr;
     CCamera_Target* m_pTargetCamera = nullptr;
 
-    _float m_f3DCyberDashForce = 30.f;
 
-    _float m_fEndDashVelocityThreshold = 3.f;
 
 
 };

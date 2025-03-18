@@ -82,7 +82,7 @@ public: /* 3D */
 	void					LookAt_3D(_fvector _vAt, _fvector _vAxis = { 0.f, 1.f, 0.f, 0.f }, _float _fAngle = 0.f); // 타겟의 위치쪽으로 바라보는 (회전하는)
 	void					LookAt_3D(_fvector _vAt, _float _fAngle);												// Look 기준으로 회전하면서 타겟 바라보기
 	_bool					MoveToTarget(_fvector _vTargetPos, _float _fTimeDelta);					//타겟 위치로 이동하면서 회전
-	_bool					MoveTo(_fvector _vTargetPos, _float _fTimeDelta);							//타겟 위치로 이동
+	_bool					MoveTo(_fvector _vTargetPos, _float _fTimeDelta, _float _fEpsilon = 0.5f);							//타겟 위치로 이동
 
 	_bool					Turn_To_DesireDir(_fvector _vStartDir, _fvector _vDesireDir, _float _fRatio);
 

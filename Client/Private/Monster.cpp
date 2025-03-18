@@ -31,6 +31,14 @@ _bool CMonster::Is_Formation_Stop()
 	return m_pFormation->Is_Stop();
 }
 
+_bool CMonster::Is_Formation_Rotate()
+{
+	if (nullptr == m_pFormation)
+		return false;
+
+	return m_pFormation->Is_Rotate();
+}
+
 HRESULT CMonster::Initialize_Prototype()
 {
 	return S_OK;
@@ -623,7 +631,9 @@ _bool CMonster::Add_To_Formation()
 {
 	if(true == CFormation_Manager::GetInstance()->Add_To_Formation(this, &m_pFormation))
 	{
-		Event_Set_Kinematic(static_cast<CActor_Dynamic*>(Get_ActorCom()), true);
+		CActor_Dynamic* pDynamic = static_cast<CActor_Dynamic*>(Get_ActorCom());
+		if (true == pDynamic->Is_Dynamic())
+			Event_Set_Kinematic(pDynamic, true);
 		return true;
 	}
 
@@ -634,7 +644,11 @@ _bool CMonster::Remove_From_Formation()
 {
 	if (m_pFormation->Remove_From_Formation(this))
 	{
-		Event_Set_Kinematic(static_cast<CActor_Dynamic*>(Get_ActorCom()), false);
+		CActor_Dynamic* pDynamic = static_cast<CActor_Dynamic*>(Get_ActorCom());
+		pDynamic->Update(0.f);
+		if (true == pDynamic->Is_Kinematic())
+			pDynamic->Set_Dynamic();
+			//Event_Set_Kinematic(pDynamic, false);
 		return true;
 	}
 
