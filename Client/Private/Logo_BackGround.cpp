@@ -143,7 +143,7 @@ HRESULT CLogo_BackGround::Ready_Objects()
 	switch (m_eBackGroundType) {
 	case MAIN_JOT:
 	{
-		Desc.tTransform2DDesc.vInitialScaling = _float3(1.285f, 1.285f, 1.f);
+		Desc.tTransform2DDesc.vInitialScaling = _float3(1.28f, 1.28f, 1.f);
 		Desc.tTransform2DDesc.vInitialPosition = _float3(330.f, -45.f, 0.f);
 		Desc.strModelPrototypeTag_2D = TEXT("Prototype_Component_Main_Jot");
 	}
@@ -184,7 +184,7 @@ HRESULT CLogo_BackGround::Ready_Objects()
 	case MAIN_JOT:
 	{
 		TextObjDesc.tTransform2DDesc.vInitialPosition = _float3(-15.f, 310.f, 0.f);
-		TextObjDesc.tTransform2DDesc.vInitialScaling = _float3(g_iWinSizeX * 2.2f, g_iWinSizeY, 2.2f);
+		TextObjDesc.tTransform2DDesc.vInitialScaling = _float3(g_iWinSizeX * 2.2f, g_iWinSizeY * 0.7f, 2.2f);
 		TextObjDesc.strModelPrototypeTag_2D = TEXT("Prototype_Logo_TextObject_Jot");
 		TextObjDesc.vColor = _float4(0.f, 0.f, 0.f, 1.f);
 
