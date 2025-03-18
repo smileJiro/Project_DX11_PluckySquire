@@ -834,6 +834,20 @@ void CGameEventExecuter_C4::Change_PlayMap(_float _fStartTime)
 			eCurLevelID, L"Layer_MapGimmick", &DoorRedDesc)))
 			return ;
 
+		DoorRedDesc = {};
+		DoorRedDesc.tTransform2DDesc.vInitialPosition = _float3(-1151.00f, 95.00f, 0.f);
+		DoorRedDesc.iCurLevelID = eCurLevelID;
+		DoorRedDesc.isHorizontal = false;
+		DoorRedDesc.eSize = CDoor_2D::MED;
+		DoorRedDesc.eInitialState = CDoor_2D::CLOSED;
+		DoorRedDesc.strSectionTag = L"Chapter4_P0304";
+		DoorRedDesc.strLayerTag = L"Layer_Monster_Door_Book";
+
+		DoorRedDesc.fTargetDiff = 13.f;
+
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorRed"),
+			eCurLevelID, L"Layer_MapGimmick", &DoorRedDesc)))
+			return ;
 		m_iSubStep++;
 
 
