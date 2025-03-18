@@ -27,8 +27,8 @@ HRESULT CBoss_Crystal::Initialize(void* _pArg)
     BOSS_CRYSTAL_DESC* pDesc = static_cast<BOSS_CRYSTAL_DESC*>(_pArg);
 
 
-    pDesc->_tStat.iMaxHP = 10;
-    pDesc->_tStat.iHP = 10;
+    pDesc->_tStat.iMaxHP = 5;
+    pDesc->_tStat.iHP = 5;
     pDesc->_tStat.iDamg = 1;
 
     if(FAILED(Ready_ActorDesc(pDesc)))
