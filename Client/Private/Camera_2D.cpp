@@ -977,7 +977,7 @@ void CCamera_2D::Find_TargetPos()
 	case (_uint)COORDINATE_2D:
 	{
 #pragma region Book
-		if (CSection_2D::PLAYMAP == m_iPlayType || CSection_2D::WORLDMAP != m_iPlayType) {
+		if (CSection_2D::PLAYMAP == m_iPlayType || CSection_2D::WORLDMAP == m_iPlayType) {
 
 			if (false == Is_Target_In_SketchSpace())
 				break;
@@ -1423,8 +1423,26 @@ void CCamera_2D::Check_WorldPosChaptured()
 	if (false == m_isWolrdPosChaptured) {
 		if (CSection_Manager::GetInstance()->Is_WordPos_Capcher()) {
 			m_isWolrdPosChaptured = true;
-			CGameObject* pPlayer = CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr();
-			Change_Target(pPlayer, 0.5f);
+
+			CSection* pSection = CSection_Manager::GetInstance()->Find_Section(m_strSectionName);
+			m_iPlayType = static_cast<CSection_2D*>(pSection)->Get_Section_2D_PlayType();
+
+			switch (m_iPlayType)
+			{
+			case CSection_2D::WORLDMAP:
+			{
+				CGameObject* pWorldNpc = CNPC_Manager::GetInstance()->Get_WorldmapNpc();
+				Change_Target(pWorldNpc);
+			}
+				break;
+			default:
+			{
+				CGameObject* pPlayer = CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr();
+				Change_Target(pPlayer, 0.5f);
+			}
+				break;
+			}
+	
 			Start_Changing_LengthValue(m_fLengthValue, m_fOriginLengthValue);
 		}
 	}
