@@ -271,6 +271,7 @@
 #include "Excavator_Centre.h"
 #include "Excavator_Switch.h"
 #include "Saw.h"
+#include "Turret.h"
 
 
 
@@ -1697,6 +1698,11 @@ HRESULT CLoader::Loading_Level_Chapter_6(LEVEL_ID _eLoadLevelID)
 
 		/* UI */
 		if (FAILED(UI_Object_Load(_eLoadLevelID)))
+			return E_FAIL;
+
+		/* For. Prototype_GameObject_Turret */
+		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Turret"),
+			CTurret::Create(m_pDevice, m_pContext))))
 			return E_FAIL;
 
 		/* For. Prototype_GameObject_Saw */

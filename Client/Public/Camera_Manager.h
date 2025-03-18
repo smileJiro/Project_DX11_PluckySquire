@@ -36,7 +36,7 @@ public:
 	_uint				Get_CameraType() { return m_eCurrentCameraType; }
 	_uint				Get_CameraMode(_uint _iCameraType);
 	_uint				Get_CurCameraMode();
-
+	void				Off_Shake();
 #ifdef _DEBUG
 
 #endif

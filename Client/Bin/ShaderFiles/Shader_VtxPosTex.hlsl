@@ -28,6 +28,10 @@ int g_isStoppable = 0;
 float4 g_vStoppableColor = float4(1.0f,0.0f,0.0f,1.0f);
 float g_fStoppableRatio = 0.0f;
 
+// Hit
+float g_fHitRatio = 0.0f;
+int g_isHit = 0;
+
 /* ±¸Á¶Ã¼ */
 struct VS_IN
 {
@@ -175,6 +179,15 @@ PS_OUT PS_SPRITE2D(PS_IN In)
         float fStoppableRatio = g_fStoppableRatio * 0.8f;
         float4 vStoppableColor = vDiffuse * g_vStoppableColor * fStoppableRatio;
         vDiffuse.rgb = (vDiffuse.rgb * (1.0f - fStoppableRatio)) + (g_vStoppableColor.rgb * fStoppableRatio);
+
+    }
+    
+    if (0 < g_isHit)
+    {
+        float fHitRatio = g_fHitRatio;
+        fHitRatio = saturate(pow(fHitRatio, 7.f));
+
+        vDiffuse.rgb = (vDiffuse.rgb * fHitRatio) + (float3(1.0f, 1.0f, 1.0f) * 1.0f - fHitRatio);
 
     }
     

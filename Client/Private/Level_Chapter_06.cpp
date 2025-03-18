@@ -1964,7 +1964,7 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Effects2D(const _wstring& _strLayerTag)
 	
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Beam"), LEVEL_CHAPTER_6, 1);
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Humgrump_Ha"), LEVEL_CHAPTER_6, 3);
-	
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Generic_Explosion"), LEVEL_STATIC, 5);
 	return S_OK;
 }
 

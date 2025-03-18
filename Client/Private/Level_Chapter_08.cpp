@@ -1512,7 +1512,7 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Effects2D(const _wstring& _strLayerTag)
 
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Player2dJumpAttackFX"), LEVEL_STATIC, 1);
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Word_HitEffect"), LEVEL_STATIC, 5);
-
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Generic_Explosion"), LEVEL_STATIC, 5);
 	return S_OK;
 }
 

@@ -2039,6 +2039,9 @@
     <ClInclude Include="..\public\Saw.h">
       <Filter>05.MiniGames\ExcavatorGame\Excavator\Saw</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Turret.h">
+      <Filter>05.MiniGames\ExcavatorGame\Turret</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -3269,6 +3272,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Saw.cpp">
       <Filter>05.MiniGames\ExcavatorGame\Excavator\Saw</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Turret.cpp">
+      <Filter>05.MiniGames\ExcavatorGame\Turret</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
