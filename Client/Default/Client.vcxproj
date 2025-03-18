@@ -267,6 +267,7 @@
     <ClInclude Include="..\Public\PlayerBlocker.h" />
     <ClInclude Include="..\Public\PlayerState_BackRoll.h" />
     <ClInclude Include="..\Public\PlayerState_CannonPortal.h" />
+    <ClInclude Include="..\Public\PlayerState_EngageBoss.h" />
     <ClInclude Include="..\Public\PlayerState_Mojam.h" />
     <ClInclude Include="..\Public\Npc_Humgrump.h" />
     <ClInclude Include="..\Public\Npc_MoonBeard.h" />
@@ -286,6 +287,7 @@
     <ClInclude Include="..\public\FatherGame_Progress.h" />
     <ClInclude Include="..\public\FatherGame_Progress_Start.h" />
     <ClInclude Include="..\Public\FatherGame_Progress_ZetPack.h" />
+    <ClInclude Include="..\Public\Rubboink.h" />
     <ClInclude Include="..\public\Saw.h" />
     <ClInclude Include="..\Public\ShopPanel_RenderFont.h" />
     <ClInclude Include="..\Public\SideScroll_AttackState.h" />
@@ -639,6 +641,7 @@
     <ClCompile Include="..\private\Candle_UI.cpp" />
     <ClCompile Include="..\Private\ChaseFlyState.cpp" />
     <ClCompile Include="..\Private\Chase_WayState.cpp" />
+    <ClCompile Include="..\Private\PlayerState_EngageBoss.cpp" />
     <ClCompile Include="..\Private\DefenderCapsule.cpp" />
     <ClCompile Include="..\Private\DefenderMedShip.cpp" />
     <ClCompile Include="..\Private\DefenderPerson.cpp" />
@@ -700,6 +703,7 @@
     <ClCompile Include="..\private\FatherGame_Progress.cpp" />
     <ClCompile Include="..\private\FatherGame_Progress_Start.cpp" />
     <ClCompile Include="..\Private\FatherGame_Progress_ZetPack.cpp" />
+    <ClCompile Include="..\Private\Rubboink.cpp" />
     <ClCompile Include="..\Private\Saw.cpp" />
     <ClCompile Include="..\Private\ShopPanel_RenderFont.cpp" />
     <ClCompile Include="..\Private\SideScroll_AttackState.cpp" />

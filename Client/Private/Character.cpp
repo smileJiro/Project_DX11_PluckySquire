@@ -395,9 +395,13 @@ void CCharacter::KnockBack(_fvector _vForce)
 
     if (COORDINATE_3D == Get_CurCoord())
     {
-        //속도 0으로 만들고 넉백
-        Get_ActorCom()->Set_LinearVelocity(_vForce, 0.f);
-        Add_Impuls(_vForce);
+        if (Is_Dynamic())
+        {
+            //속도 0으로 만들고 넉백
+            Get_ActorCom()->Set_LinearVelocity(_vForce, 0.f);
+            Add_Impuls(_vForce);
+        }
+
     }
     else if (COORDINATE_2D == Get_CurCoord())
     {
