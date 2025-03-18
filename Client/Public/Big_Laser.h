@@ -26,7 +26,7 @@ public:
 	void					Anim_End(COORDINATE _eCoord, _uint iAnimIdx);
 
 	void					Move_Start(_float _fMovePosX, _float _fSpeed);
-
+	void					Set_Beam_Collider(_bool _isBeamCollider);
 	_bool					Is_Move() { return m_isMove; }
 	virtual void					On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject);
 

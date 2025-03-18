@@ -56,7 +56,10 @@ void CFriend::Priority_Update(_float _fTimeDelta)
     if (nullptr != pCurSection)
     {
         CSection_2D::SECTION_2D_PLAY_TYPE ePlayType = pCurSection->Get_Section_2D_PlayType();
-        if (CSection_2D::SECTION_2D_PLAY_TYPE::NARRAION == ePlayType || CSection_2D::SECTION_2D_PLAY_TYPE::WORLDMAP == ePlayType)
+        if (CSection_2D::SECTION_2D_PLAY_TYPE::NARRAION == ePlayType 
+            || CSection_2D::SECTION_2D_PLAY_TYPE::WORLDMAP == ePlayType
+            || CSection_2D::SECTION_2D_PLAY_TYPE::MINIGAME == ePlayType
+            )
             m_isRender = false;
         else
             m_isRender = true;
