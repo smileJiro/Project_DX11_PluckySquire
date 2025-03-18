@@ -126,6 +126,12 @@ void CGameEventExecuter_C6::Chapter6_Intro(_float _fTimeDelta)
 	if (Step_Check(STEP_0))
 	{
 		if (CCamera_Manager::TARGET == CCamera_Manager::GetInstance()->Get_CameraType()) {
+
+			if (FAILED(CFatherGame::GetInstance()->Start_Game(m_pDevice, m_pContext)))
+			{
+				assert(nullptr);
+			}
+
 			Next_Step(true);
 		}
 	}
@@ -162,7 +168,9 @@ void CGameEventExecuter_C6::Chapter6_Intro(_float _fTimeDelta)
 		}
 	}
 	else
+	{
 		GameEvent_End();
+	}
 }
 
 

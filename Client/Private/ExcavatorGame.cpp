@@ -257,6 +257,9 @@ HRESULT CExcavatorGame::Ready_ExcavatorParts()
         Safe_AddRef(m_pTurret_Right);
         m_pTurret_Right->Open_Turret();
     }/* Turret Right */
+
+
+
     return S_OK;
 }
 
