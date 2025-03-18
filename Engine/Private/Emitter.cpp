@@ -237,6 +237,8 @@ void CEmitter::Active_OnDisable()
 
 	m_eNowEvent = NO_EVENT;
 
+	ZeroMemory(&m_WorldMatrices[COORDINATE_3D], sizeof(_float4x4));
+
 }
 
 void CEmitter::Set_Matrix()

@@ -222,6 +222,18 @@ HRESULT CLevel_Chapter_06::Initialize(LEVEL_ID _eLevelID)
 	
 
 #pragma region Test
+
+	{
+		CExcavator_Centre::CENTRE_DESC Desc;
+		Desc.iCurLevelID = LEVEL_CHAPTER_6;
+		Desc.Build_2D_Transform(_float2(0.0f, 360.0f));
+		CGameObject* pGameObject = nullptr;
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_Excavator_Centre"), LEVEL_CHAPTER_6, TEXT("Layer_Excavator"), &pGameObject, &Desc)))
+			return E_FAIL;
+		CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_P0708"), pGameObject);
+
+	}
+
 	{
 		CExcavator_Tread::TREAD_DESC Desc;
 		Desc.iCurLevelID = LEVEL_CHAPTER_6;
@@ -239,16 +251,6 @@ HRESULT CLevel_Chapter_06::Initialize(LEVEL_ID _eLevelID)
 
 	}
 
-	{
-		CExcavator_Centre::CENTRE_DESC Desc;
-		Desc.iCurLevelID = LEVEL_CHAPTER_6;
-		Desc.Build_2D_Transform(_float2(0.0f, 360.0f));
-		CGameObject* pGameObject = nullptr;
-		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_Excavator_Centre"), LEVEL_CHAPTER_6, TEXT("Layer_Excavator"), &pGameObject, &Desc)))
-			return E_FAIL;
-		CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_P0708"), pGameObject);
-
-	}
 #pragma endregion
 
 

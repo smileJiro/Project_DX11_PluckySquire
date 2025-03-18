@@ -3466,7 +3466,7 @@
 						"duration": 1000,
 						"speed": 500
 					},
-					"text": "폐하께서 기다리고 계셨습니다. 안으로 드시지요.",
+					"text": "폐하께서 기다리고 계십니다. 안으로 드시지요.",
 					"Red": 191,
 					"Green": 144,
 					"Blue": 224
@@ -3663,7 +3663,6 @@
 				{
 					"Portrait": 0,
 					"Talker": "크로마 여왕",
-					"TalkerIndex": 0,
 					"BG": 0,
 					"location": 1,
 					"is2D": true,
@@ -3683,7 +3682,6 @@
 								{
 					"Portrait": 0,
 					"Talker": "크로마 여왕",
-					"TalkerIndex": 0,
 					"BG": 0,
 					"location": 1,
 					"is2D": true,
@@ -3723,7 +3721,6 @@
 				{
 					"Portrait": 0,
 					"Talker": "크로마 여왕",
-					"TalkerIndex": 0,
 					"BG": 0,
 					"location": 1,
 					"is2D": true,
@@ -3745,25 +3742,128 @@
 		{
 			"id": "Chapter6_StorySequence_01_04",
 			"Section": "Chapter5_P0304",
+			"isChangeTalker": true,
 			"lines": [
 				{
-          "Portrait": 1,
-          "Talker": "스래쉬",
-          "BG": 2,
-          "location": 1,
-          "is2D": true,
-          "isPortrait": true,
-		  "isLineEnter": true,
-			"TalkerIndex": 0,
-          "animation": {
-            "duration": 1000,
-            "speed": 350
-          },
-          "text": "트라르그에 무슨 일이 생겼나?",
-          "Red": 0,
-          "Green": 0,
-          "Blue": 0
-        }
+					"Portrait": 1,
+					"Talker": "스래쉬",
+					"BG": 2,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": true,
+					"OffsetX": -20.0,
+					"OffsetY": 100.0,
+					"isLineEnter": true,
+					"TalkerIndex": 0,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "트라르그에 무슨 일이 생겼나?",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				}
+			]
+		},
+		{
+			"id": "Chapter6_StorySequence_01_05",
+			"Section": "Chapter5_P0304",
+			"isChangeTalker": true,
+			"lines": [
+				{
+					"Portrait": 1,
+					"Talker": "스래쉬",
+					"BG": 2,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": true,
+					"OffsetX": 0.0,
+					"OffsetY": 50.0,
+					"isLineEnter": true,
+					"TalkerIndex": 0,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "안 돼...\n 내 고향 트라르그가...",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				}
+			]
+		},
+		{
+			"id": "Chapter6_StorySequence_01_06",
+			"Section": "Chapter5_P0304",
+			"isChangeTalker": true,
+			"lines": [
+				{
+					"Portrait": 1,
+					"Talker": "스래쉬",
+					"BG": 2,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": true,
+					"OffsetX": 0.0,
+					"OffsetY": 50.0,
+					"isLineEnter": true,
+					"TalkerIndex": 0,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "무슨 일이 생겼는지 모르겠지만 먼저 실례하겠습니다!",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				}
+			]
+		},
+		{
+			"id": "Chapter6_StorySequence_01_07",
+			"Section": "Chapter5_P0304",
+			"isChangeTalker": true,
+			"lines": [
+				{
+					"Portrait": 0,
+					"Talker": "바이올렛",
+					"BG": 13,
+					"location": 1,
+					"is2D": true,
+					"OffsetX": 0.0,
+					"OffsetY": 200.0,
+					"isPortrait": true,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "저트! 나는 아르티아에 남아 가족들을 지키고 있을게.\n스래쉬를 도와줘!",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 0,
+					"Talker": "크로마 여왕",
+					"TalkerIndex": 0,
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"OffsetX": 0.0,
+					"OffsetY": 200.0,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "험그럼프가 트라르그에서 무슨 짓을 꾸미고 있을지 몰라요.\n 부탁합니다, 저트.",
+					"Red": 252,
+					"Green": 190,
+					"Blue": 203
+				}
 			]
 		}
 	]

@@ -30,8 +30,8 @@ HRESULT C3DMapSkspObject::Initialize(void* _pArg)
     m_strRenderSectionTag = StringToWstring(pDesc->strSkspTag);
 
 
-
-    Register_WorldCapture();
+    if(true == pDesc->isAddActorToScene)
+        Register_WorldCapture();
 
 
 
@@ -71,6 +71,15 @@ HRESULT C3DMapSkspObject::Initialize(void* _pArg)
 
     return hr;
 
+}
+
+void C3DMapSkspObject::After_Initialize()
+{
+    __super::After_Initialize();
+
+    Register_WorldCapture();
+
+    return;
 }
 
 void C3DMapSkspObject::Late_Update(_float _fTimeDelta)

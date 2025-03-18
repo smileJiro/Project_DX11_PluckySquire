@@ -183,6 +183,10 @@ protected:
 	_float4					m_vTrailColor = { 0.0f, 0.909f, 1.0f, 1.0f };
 
 public:
+	void					Set_PosTexColor(const _float4 _vColor) { m_vPosTexColor = _vColor; }
+protected:
+	_float4					m_vPosTexColor = { 1.0f, 1.0f, 1.0f,1.0f };
+public:
 	void					Start_StoppableRender() { m_isStoppable = 1; }
 	void					End_StoppableRender() { m_isStoppable = 0; }
 	void					Action_StoppableRender(_float _fTimeDelta);

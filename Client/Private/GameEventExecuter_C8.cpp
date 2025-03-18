@@ -64,6 +64,9 @@ void CGameEventExecuter_C8::Update(_float _fTimeDelta)
 		case Client::CTrigger_Manager::CHAPTER8_LASER_STAGE:
 			Chapter8_Laser_Stage(_fTimeDelta);
 			break;
+		case Client::CTrigger_Manager::CHAPTER8_LASER_STAGE_2:
+			Chapter8_Laser_Stage_2(_fTimeDelta);
+			break;
 		case Client::CTrigger_Manager::CHAPTER8_INTRO:
 			Chapter8_Intro(_fTimeDelta);
 			break;
@@ -334,6 +337,8 @@ void CGameEventExecuter_C8::Chapter8_Laser_Stage(_float _fTimeDelta)
 					}
 				}
 			}
+			Change_PlayMap(1.f);
+
 			Next_Step_Over(3.4f);
 		}
 		// 찍찍이가 구해주는거. 
@@ -368,10 +373,11 @@ void CGameEventExecuter_C8::Chapter8_Laser_Stage(_float _fTimeDelta)
 			_vector vDir = XMVectorSetW(XMVector2Normalize(vTargetPos - m_TargetObjects[BRIDGE]->Get_FinalPosition()), 0.f);
 			m_TargetObjects[BRIDGE]->Get_ControllerTransform()->Go_Direction(vDir, _fTimeDelta);
 			//static_cast<CModelObject*>(m_TargetObjects[BRIDGE])->Get_ControllerTransform()->MoveTo(vTargetPos,_fTimeDelta);
+
+
 			if(Next_Step(m_TargetObjects[BRIDGE]->Get_ControllerTransform()->Compute_Distance(vTargetPos) < 2.f))
 				m_TargetObjects[PIP]->Set_Active(false);
 		
-			Change_PlayMap(1.f);
 		}
 		else if (Step_Check(STEP_8))
 		{
@@ -392,7 +398,23 @@ void CGameEventExecuter_C8::Chapter8_Laser_Stage(_float _fTimeDelta)
 
 	}
 
+	
 
+}
+
+void CGameEventExecuter_C8::Chapter8_Laser_Stage_2(_float _fTimeDelta)
+{
+	m_fTimer += _fTimeDelta;
+	if (Step_Check(STEP_0))
+	{
+		if (Is_Start())
+		{
+			CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::CUTSCENE);
+			CCamera_Manager::GetInstance()->Set_NextCutSceneData(TEXT("Chapter8_Intro"));
+		}
+
+		Next_Step_Over(2.8f);
+	}
 }
 
 void CGameEventExecuter_C8::Chapter8_Intro(_float _fTimeDelta)
@@ -647,8 +669,8 @@ void CGameEventExecuter_C8::Change_PlayMap(_float _fStartTime)
 	// 맵 설치
 	if (m_fTimer > _fStartTime && 0 == m_iSubStep)
 	{
-		Event_ChangeMapObject(LEVEL_CHAPTER_4, L"Chapter_08_Play_Desk.mchc", L"Layer_MapObject");
-
+		Event_ChangeMapObject(LEVEL_CHAPTER_8, L"Chapter_08_Play_Desk.mchc", L"Layer_MapObject");
+		m_iSubStep++;
 	}
 	//몬스터 추가
 	_fStartTime += 0.1f;
@@ -730,7 +752,9 @@ void CGameEventExecuter_C8::Change_PlayMap(_float _fStartTime)
 		//			return;
 
 		//	}
-		//}
+		//}		
+		m_iSubStep++;
+
 	}
 	_fStartTime += 0.1f;
 
@@ -753,6 +777,7 @@ void CGameEventExecuter_C8::Change_PlayMap(_float _fStartTime)
 		CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)eCurLevelID, TEXT("Sword"), _float3(42.22f, 15.82f, -0.45f), { 2.f,2.f,2.f });
 		CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)eCurLevelID, TEXT("Stop_Stamp"), _float3(45.13f, 50.24f, 23.34f), { 1.f,1.f,1.f });
 		CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)eCurLevelID, TEXT("Tilting_Glove"), _float3(30.55f, 30.98f, 23.34f));
+		m_iSubStep++;
 
 	}
 }

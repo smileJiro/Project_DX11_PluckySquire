@@ -306,6 +306,27 @@ _bool CGameEventExecuter::Next_Event_Process(_float _fTimeDelta)
 	return true;
 }
 
+void CGameEventExecuter::Ready_Action(_wstring _strSectionTag, _uint _iSectionLayerGroup, _uint _MapObjectActiveType, _float _fBright)
+{
+	CSection_2D* pSection = static_cast<CSection_2D*>(SECTION_MGR->Find_Section(_strSectionTag));
+	auto pLayer = pSection->Get_Section_Layer((SECTION_PLAYMAP_2D_RENDERGROUP)_iSectionLayerGroup);
+
+	const auto& Objects = pLayer->Get_GameObjects();
+
+	for_each(Objects.begin(), Objects.end(), [&_MapObjectActiveType, &_fBright](CGameObject* pGameObject) {
+		auto pActionObj = dynamic_cast<C2DMapActionObject*>(pGameObject);
+
+		if (nullptr != pActionObj)
+		{
+			if (C2DMapActionObject::MAPOBJ_2D_ACTION_TYPE(_MapObjectActiveType) == pActionObj->Get_ActionType())
+			{
+				pActionObj->Set_DynamicBackGround_MinBright(_fBright);
+				pActionObj->Ready_Action();
+			}
+		}
+		});
+}
+
 
 void CGameEventExecuter::Free()
 {

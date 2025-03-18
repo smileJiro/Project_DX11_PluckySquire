@@ -18,6 +18,26 @@
     "Trigger_Coordinate": 0,
     "Trigger_EventTag": "Chapter8_Laser_Stage",
     "Trigger_Type": 0
+  },  
+  {
+    "Collider_Info": {
+      "Position": [
+        1061.0,
+        -180.0
+      ],
+      "Scale": [
+        161.0,
+        32.9
+      ]
+    },
+    "Trigger_Reusable": false,
+
+    "Fillter_MyGroup": 2,
+    "Fillter_OtherGroupMask": 128,
+    "Trigger_ConditionType": 0, 
+    "Trigger_Coordinate": 0,
+    "Trigger_EventTag": "Chapter8_Laser_Stage_2",
+    "Trigger_Type": 0
   },
   {
     "Collider_Info": {
