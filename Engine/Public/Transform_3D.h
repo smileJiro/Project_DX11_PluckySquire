@@ -28,7 +28,7 @@ public:
 public:
 	_bool				Check_Arrival(_fvector _vTargetPos, _float _fEpsilon = 0.5f);
 	_bool				MoveToTarget(_fvector _vTargetPos, _float _fTimeDelta);
-	_bool				MoveTo(_fvector _vTargetPos, _float _fTimeDelta);
+	_bool				MoveTo(_fvector _vTargetPos, _float _fTimeDelta, _float _fEpsilon = 0.5f);
 
 public:
 	void				LookAt(_fvector _vAt, _fvector _vAxis = { 0.f, 1.f, 0.f, 0.f }, _float _fAngle = 0.f); // 타겟의 위치쪽으로 바라보는 (회전하는)

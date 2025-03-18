@@ -947,11 +947,8 @@ void CGameEventExecuter_C2::Chapter2_OpenBookEvent(_float _fTimeDelta)
 			//pCamera->Start_PostProcessing_Fade(CCamera::FADE_IN, 0.3f);
 			CPlayer* pPlayer = Get_Player();
 			pPlayer->Set_BlockPlayerInput(false);
+			GameEvent_End();
 		}
-	}
-	else
-	{
-		GameEvent_End();
 	}
 }
 
