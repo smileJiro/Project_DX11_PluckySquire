@@ -70,6 +70,8 @@ HRESULT CExcavator_Switch::Render()
 	if (m_p2DColliderComs[0]->Is_Active())
 		m_p2DColliderComs[0]->Render(SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName));
 #endif // _DEBUG
+
+
 	return __super::Render();
 }
 

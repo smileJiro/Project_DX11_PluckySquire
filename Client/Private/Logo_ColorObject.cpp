@@ -24,7 +24,7 @@ HRESULT CLogo_ColorObject::Initialize(void* _pArg)
 	pDesc->iModelPrototypeLevelID_2D = LEVEL_STATIC;
 
 	m_bPlayingAnim = false;
-	m_vColor = pDesc->vColor;
+	m_vPosTexColor = pDesc->vColor;
 	m_eColorObjectType = pDesc->iColorObjectType;
 	m_isBlinking = pDesc->isBlinking;
 
@@ -50,9 +50,6 @@ void CLogo_ColorObject::Late_Update(_float _fTimeDelta)
 
 HRESULT CLogo_ColorObject::Render()
 {
-	if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_RawValue("g_vColors", &m_vColor, sizeof(_float4))))
-		return E_FAIL;
-	int a = 0;
 	__super::Render();
 
 	_float fAlphaRatio = 1.f;

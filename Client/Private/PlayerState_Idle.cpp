@@ -74,6 +74,11 @@ void CPlayerState_Idle::Enter()
 		m_bPlatformerMode = m_pOwner->Is_PlatformerMode();
 
 		F_DIRECTION eFDir = To_FDirection( m_pOwner->Get_2DDirection());
+		if (F_DIRECTION::F_DIR_LAST == eFDir)
+		{
+			eFDir = F_DIRECTION::DOWN;
+			m_pOwner->Set_2DDirection(eFDir);
+		}
 		Switch_IdleAnimation2D(eFDir);
 	}
 	else
@@ -91,7 +96,10 @@ void CPlayerState_Idle::Exit()
 void CPlayerState_Idle::Switch_IdleAnimation2D(F_DIRECTION _eFDir)
 {
 	if (m_pOwner->Is_CyvberJotMode())
+	{
 		m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_CYBERJOTLITE_RUN_IDLE_TEMP);
+		return;
+	}
 	_bool bSword = m_pOwner->Is_SwordHandling();
 	_bool bCarrying = m_pOwner->Is_CarryingObject();
 	_bool bCyber = m_pOwner->Is_CyvberJotMode();

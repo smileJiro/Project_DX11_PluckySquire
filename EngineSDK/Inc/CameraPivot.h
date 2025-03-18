@@ -32,6 +32,7 @@ public:
 	void					Set_SubTarget(CGameObject* _pSubTarget);
 	void					Set_Ratio(_float _fRatio) { m_fRatio = _fRatio; }
 
+	CGameObject*			Get_MainTarget() { return m_pMainTarget; }
 private:
 	CGameObject*			m_pMainTarget = { nullptr };
 	CGameObject*			m_pSubTarget = { nullptr };
