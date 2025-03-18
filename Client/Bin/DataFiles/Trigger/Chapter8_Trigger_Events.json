@@ -8,6 +8,26 @@
         "Is_Sequence": true
       }
     ]
+  },
+  {
+    "Trigger_EventTag": "Chapter8_Friend_Appear_Violet",
+    "Actions": [
+      {
+        "ActionTag": "Create_EventExecuter",
+        "EventTag": "Chapter8_Friend_Appear_Violet",
+        "Is_Sequence": true
+      }
+    ]
+  },
+  {
+    "Trigger_EventTag": "Chapter8_Friend_Appear_Thrash",
+    "Actions": [
+      {
+        "ActionTag": "Create_EventExecuter",
+        "EventTag": "Chapter8_Friend_Appear_Thrash",
+        "Is_Sequence": true
+      }
+    ]
   },  
   {
     "Trigger_EventTag": "Chapter8_Laser_Stage_2",
