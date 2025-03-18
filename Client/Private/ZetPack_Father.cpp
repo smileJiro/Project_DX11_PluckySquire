@@ -289,10 +289,18 @@ void CZetPack_Father::On_AnimEnd(COORDINATE _eCoord, _uint _iAnimIdx)
 	switch (m_eCurState)
 	{
 	case Client::CZetPack_Father::STATE_FIREENGINE:
+	{
 		CCamera_Manager::GetInstance()->Start_ZoomIn();
 		m_eCurState = STATE_TALK;
 		// TODO:: 도장 튀어 나오게도 해야함. 컵 돌아가면서 
 		CFatherGame::GetInstance()->Start_StopStampMoveWork();
+
+		CZetPack_Child* pZetPack_Child = CFatherGame::GetInstance()->Get_ZetPack_Child();
+		CPlayer* pPlayer = CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr();
+		pPlayer->Set_Mode(CPlayer::PLAYER_MODE_SWORD);
+		pZetPack_Child->ContactPlayer_End();
+		pZetPack_Child->Set_CurState(CZetPack_Child::STATE_IDLE);
+	}
 		break;
 	case Client::CZetPack_Father::STATE_REASSEMBLE:
 		m_eCurState = STATE_HAPPY;

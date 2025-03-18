@@ -9,6 +9,8 @@
 #include "Effect2D_Manager.h"
 #include "Turret.h"
 
+#include "Door_Red.h"
+
 
 IMPLEMENT_SINGLETON(CExcavatorGame)
 CExcavatorGame::CExcavatorGame()
@@ -231,6 +233,67 @@ HRESULT CExcavatorGame::Ready_ExcavatorParts()
 
     }/* Part CENTRE_SAW */
 
+    /* Door Red*/
+    {
+        CDoor_Red* pOutRed;
+        CDoor_Red::DOOR_RED_DESC DoorRedDesc = {};
+        DoorRedDesc.tTransform2DDesc.vInitialPosition = _float3(-450.f, 65.f, 0.f);
+        DoorRedDesc.iCurLevelID = LEVEL_CHAPTER_6;
+        DoorRedDesc.isHorizontal = true;
+        DoorRedDesc.eSize = CDoor_2D::LARGE;
+        DoorRedDesc.eInitialState = CDoor_2D::OPENED;
+        DoorRedDesc.strSectionTag = L"Chapter6_P0708";
+        DoorRedDesc.strLayerTag = L"";
+        DoorRedDesc.isCountLayer = false;
+
+        if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorRed"),
+            LEVEL_CHAPTER_6, L"Layer_MapGimmick", reinterpret_cast<CGameObject**>(&pOutRed), &DoorRedDesc)))
+            return E_FAIL;
+        
+        if (nullptr != pOutRed)
+        {
+            Safe_AddRef(pOutRed);
+            m_Doors.push_back(pOutRed);
+        }
+
+        DoorRedDesc.tTransform2DDesc.vInitialPosition = _float3(-155.f, 65.f, 0.f);
+
+        if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorRed"),
+            LEVEL_CHAPTER_6, L"Layer_MapGimmick", reinterpret_cast<CGameObject**>(&pOutRed), &DoorRedDesc)))
+            return E_FAIL;
+
+        if (nullptr != pOutRed)
+        {
+            Safe_AddRef(pOutRed);
+            m_Doors.push_back(pOutRed);
+        }
+
+        DoorRedDesc.tTransform2DDesc.vInitialPosition = _float3(140.f, 65.f, 0.f);
+
+        if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorRed"),
+            LEVEL_CHAPTER_6, L"Layer_MapGimmick", reinterpret_cast<CGameObject**>(&pOutRed), &DoorRedDesc)))
+            return E_FAIL;
+
+        if (nullptr != pOutRed)
+        {
+            Safe_AddRef(pOutRed);
+            m_Doors.push_back(pOutRed);
+        }
+
+        DoorRedDesc.tTransform2DDesc.vInitialPosition = _float3(435.f, 65.f, 0.f);
+
+        if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorRed"),
+            LEVEL_CHAPTER_6, L"Layer_MapGimmick", reinterpret_cast<CGameObject**>(&pOutRed), &DoorRedDesc)))
+            return E_FAIL;
+
+        if (nullptr != pOutRed)
+        {
+            Safe_AddRef(pOutRed);
+            m_Doors.push_back(pOutRed);
+        }
+    }
+    
+
     {/* Turret Left */
         CTurret::MODELOBJECT_DESC Desc{};
         Desc.iCurLevelID = LEVEL_CHAPTER_6;
@@ -418,6 +481,11 @@ void CExcavatorGame::Free()
     }
     m_ExcavatorParts.clear();
 
+    for (auto& pDoor : m_Doors)
+    {
+        Safe_Release(pDoor);
+    }
+    m_Doors.clear();
 
     Safe_Release(m_pTurret_Left);
     Safe_Release(m_pTurret_Right);
