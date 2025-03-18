@@ -287,6 +287,7 @@
     <ClInclude Include="..\public\FatherGame_Progress.h" />
     <ClInclude Include="..\public\FatherGame_Progress_Start.h" />
     <ClInclude Include="..\Public\FatherGame_Progress_ZetPack.h" />
+    <ClInclude Include="..\Public\Rubboink.h" />
     <ClInclude Include="..\public\Saw.h" />
     <ClInclude Include="..\Public\ShopPanel_RenderFont.h" />
     <ClInclude Include="..\Public\SideScroll_AttackState.h" />
@@ -346,6 +347,7 @@
     <ClInclude Include="..\Public\Interaction_Key.h" />
     <ClInclude Include="..\Public\TiltSwapCrate.h" />
     <ClInclude Include="..\public\TurnBookEffect.h" />
+    <ClInclude Include="..\public\Turret.h" />
     <ClInclude Include="..\Public\WorldMapNPC.h" />
     <ClInclude Include="..\Public\WorldMapNpc_Jot.h" />
     <ClInclude Include="..\Public\WorldMapNpc_Thrash.h" />
@@ -700,6 +702,7 @@
     <ClCompile Include="..\private\FatherGame_Progress.cpp" />
     <ClCompile Include="..\private\FatherGame_Progress_Start.cpp" />
     <ClCompile Include="..\Private\FatherGame_Progress_ZetPack.cpp" />
+    <ClCompile Include="..\Private\Rubboink.cpp" />
     <ClCompile Include="..\Private\Saw.cpp" />
     <ClCompile Include="..\Private\ShopPanel_RenderFont.cpp" />
     <ClCompile Include="..\Private\SideScroll_AttackState.cpp" />
@@ -756,6 +759,7 @@
     <ClCompile Include="..\Private\Interaction_Key.cpp" />
     <ClCompile Include="..\Private\TiltSwapCrate.cpp" />
     <ClCompile Include="..\private\TurnBookEffect.cpp" />
+    <ClCompile Include="..\private\Turret.cpp" />
     <ClCompile Include="..\Private\WorldMapNPC.cpp" />
     <ClCompile Include="..\Private\WorldMapNpc_Jot.cpp" />
     <ClCompile Include="..\Private\WorldMapNpc_Thrash.cpp" />

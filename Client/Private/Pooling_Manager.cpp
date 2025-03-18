@@ -155,7 +155,7 @@ HRESULT CPooling_Manager::Create_Object(const _wstring& _strPoolingTag, COORDINA
 			if (nullptr != _pPosition)
 			{
 				CActorObject* pActorObject = dynamic_cast<CActorObject*>(pGameObject);
-				if (nullptr != pActorObject)
+				if (nullptr != pActorObject && COORDINATE_3D == eCoordinate)
 				{
 					CActor* pActor = pActorObject->Get_ActorCom();
 					if (nullptr != pActor)

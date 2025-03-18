@@ -37,6 +37,10 @@ public:
 	virtual void	Late_Update(_float _fTimeDelta) override;
 	virtual HRESULT Render() override;
 private:
+	virtual void On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
+	virtual void On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
+	virtual void On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
+private:
 	STATE m_ePreState = STATE::STATE_LAST;
 	STATE m_eCurState = STATE::STATE_LAST;
 
