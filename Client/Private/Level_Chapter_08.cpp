@@ -428,7 +428,9 @@ void CLevel_Chapter_08::Update(_float _fTimeDelta)
 			pPivot->Set_MainTarget(pBoss);
 			pPivot->Set_Active(true);
 			CCamera_Manager::GetInstance()->Change_CameraTarget(pPivot, 0.f);
-
+			CCamera_Manager::GetInstance()->Get_CurrentCamera()->Get_Arm()->Set_ArmVector(_vector{0.f,0.f,-1.f});
+			CCamera_Manager::GetInstance()->Get_CurrentCamera()->Set_Position(_vector{ 0.53f, 60.35f, -8.0f });
+			CCamera_Manager::GetInstance()->Get_CurrentCamera()->Get_Arm()->Set_Length(24.6f);
 
 			Event_ChangeMapObject(m_eLevelID, L"Chapter_Boss.mchc", L"Layer_MapObject");
 
@@ -436,7 +438,7 @@ void CLevel_Chapter_08::Update(_float _fTimeDelta)
 			CPlayer* pPlayer = CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr();
 			if (nullptr != pPlayer)
 			{
-				_float3 vPos = _float3(0.53f, 60.35f, -35.0f);
+	/*			_float3 vPos = _float3(0.53f, 60.35f, -50.0f);
 				if(ACTOR_TYPE::DYNAMIC==pPlayer->Get_ActorCom()->Get_ActorType())
 				{
 					pPlayer->Get_ActorCom()->Set_GlobalPose(vPos);
@@ -444,7 +446,7 @@ void CLevel_Chapter_08::Update(_float _fTimeDelta)
 				else if (ACTOR_TYPE::KINEMATIC == pPlayer->Get_ActorCom()->Get_ActorType())
 				{
 					pPlayer->Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSet(vPos.x, vPos.y, vPos.z, 1.f));
-				}
+				}*/
 				pPlayer->Set_Mode(CPlayer::PLAYER_MODE_CYBERJOT);
 				pPlayer->Set_State(CPlayer::CYBER_IDLE);
 			}
@@ -1217,7 +1219,6 @@ HRESULT CLevel_Chapter_08::Ready_Layer_NPC(const _wstring& _strLayerTag)
 		return E_FAIL;
 
 	CNPC_Manager::GetInstance()->Set_OnlyNpc(static_cast<CNPC_OnlySocial*>(pGameObject));
-
 
 
 

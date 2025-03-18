@@ -1518,7 +1518,7 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput_CyberJot()
 	if (KEY_PRESSING(KEY::E))
 		tResult.vDir += _vector{ 0.f, 0.f, 1.f,0.f };
 
-	tResult.vMoveDir = tResult.vDir;
+	tResult.vMoveDir = tResult.vDir = XMVector3Normalize( tResult.vDir);
 	tResult.bInputStates[PLAYER_INPUT_MOVE] = false == XMVector3Equal(tResult.vMoveDir, XMVectorZero());
 
 
@@ -2507,7 +2507,6 @@ void CPlayer::Key_Input(_float _fTimeDelta)
 	}
 	if (KEY_DOWN(KEY::NUM1))
 	{
-		Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_SWORD_RETRIEVE);
 		if (false == m_pDetonator->Is_DetonationMode())
 		{
 			Set_CurrentStampType(PLAYER_PART_STOP_STMAP);
@@ -2555,11 +2554,15 @@ void CPlayer::On_UnStop()
 	//static_cast<CModelObject*>(m_PartObjects[PLAYER_PART_BODY])->End_StoppableRender();
 }
 
-void CPlayer::Move_CyberPlane(_vector _vMoveVelocity, _float _fTimeDelta)
+void CPlayer::Update_CyberJot(_float _fTimeDelta)
 {
+	m_f3DCyberCurrentSpeed -= m_f3DCyberLinearDamping * _fTimeDelta;
+	if(m_f3DCyberCurrentSpeed < 0.f)
+		m_f3DCyberCurrentSpeed = 0.f;
+	m_vCyberPlaneVelocity = m_vCyberPlaneDirection * m_f3DCyberCurrentSpeed;
 
-	m_vCyberPlanePosition += _vMoveVelocity * _fTimeDelta;
-	m_vCyberPlanePosition =XMVectorClamp(m_vCyberPlanePosition, m_vCyberPlaneMinPosition, m_vCyberPlaneMaxPosition);
+	m_vCyberPlanePosition += m_vCyberPlaneVelocity * _fTimeDelta;
+	m_vCyberPlanePosition = XMVectorClamp(m_vCyberPlanePosition, m_vCyberPlaneMinPosition, m_vCyberPlaneMaxPosition);
 
 	_vector vCamTargetPos = { m_pCameraTargetWorldMatrix->_41, m_pCameraTargetWorldMatrix->_42, m_pCameraTargetWorldMatrix->_43, 1.f };
 	_vector vBaseLookVector = XMVector3Normalize(vCamTargetPos - m_pTargetCamera->Get_FinalPosition());
@@ -2572,6 +2575,14 @@ void CPlayer::Move_CyberPlane(_vector _vMoveVelocity, _float _fTimeDelta)
 	_matrix matWorld = XMMatrixMultiply(matBase, matPlane);
 	_float4x4 matWorldFloat4x4; XMStoreFloat4x4(&matWorldFloat4x4, matWorld);
 	Set_WorldMatrix(matWorldFloat4x4);
+
+}
+
+void CPlayer::Set_CyberVelocity(_vector _vMoveVelocity)
+{
+	m_vCyberPlaneDirection = XMVector3Normalize(_vMoveVelocity);
+	m_f3DCyberCurrentSpeed = XMVectorGetX(XMVector3Length(_vMoveVelocity));
+	m_vCyberPlaneVelocity = _vMoveVelocity;
 }
 
 CPlayer* CPlayer::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

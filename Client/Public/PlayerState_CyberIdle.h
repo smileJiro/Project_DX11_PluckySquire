@@ -33,9 +33,8 @@ private:
     _bool m_bRifleTriggered = false;
 	VELOCITY_STATE m_eVelocityState = VELOCITY_LAST;
 
-    _float m_f3DCyberFlySpeed = 6.f;
-	_float m_f3DCyberCurrentSpeed= 0.f;
-	_float m_f3DCyberLinearDamping = 0.1f;
+    _float m_fFlyMotionThreshold = 7.f;
+
 };
 
 
@@ -55,9 +54,8 @@ private:
     CActor_Dynamic* m_pDynamicActor = nullptr;
     CCamera_Target* m_pTargetCamera = nullptr;
 
-
-
-
+	_vector m_vDashVelocity = { 0.f,0.f,0.f };
+    _float m_fDashEndSpeedThreshold = 10.f;
 };
 
 
