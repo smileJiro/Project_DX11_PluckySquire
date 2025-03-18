@@ -142,7 +142,12 @@ HRESULT CLogo_BackGround::Ready_Objects()
 
 	switch (m_eBackGroundType) {
 	case MAIN_JOT:
-		Desc.strModelPrototypeTag_2D = TEXT("Main_Jot");
+	{
+		Desc.tTransform2DDesc.vInitialScaling = _float3(1.285f, 1.285f, 1.f);
+		Desc.tTransform2DDesc.vInitialPosition = _float3(330.f, -45.f, 0.f);
+		Desc.strModelPrototypeTag_2D = TEXT("Prototype_Component_Main_Jot");
+	}
+		
 		break;
 	case MAIN_HUMGRUMP:
 		Desc.strModelPrototypeTag_2D = TEXT("Prototype_Component_Main_Humgrump");
@@ -153,24 +158,47 @@ HRESULT CLogo_BackGround::Ready_Objects()
 		m_iCurLevelID, TEXT("Layer_UI"), &pObject, &Desc)))
 		return E_FAIL;
 
+
+
+		
+
+
 	m_pBackGroundParts[LOGO_CHARACTER] = static_cast<CModelObject*>(pObject);
 	m_pBackGroundParts[LOGO_CHARACTER]->Register_OnAnimEndCallBack(bind(&CLogo_BackGround::On_End_Animation, this, placeholders::_1, placeholders::_2));
 	Safe_AddRef(pObject);
 
+	if (MAIN_JOT == m_eBackGroundType)
+	{
+		_vector vRight = m_pBackGroundParts[LOGO_CHARACTER]->Get_ControllerTransform()->Get_State(CTransform::STATE_RIGHT);
+		m_pBackGroundParts[LOGO_CHARACTER]->Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, -XMVectorAbs(vRight));
+	}
+
+
 	// Logo Text »ý¼º
 	CLogo_ColorObject::COLOROBJECT_DESC TextObjDesc = {};
 	TextObjDesc.iCurLevelID = m_iCurLevelID;
-	TextObjDesc.tTransform2DDesc.vInitialPosition = _float3(-30.f, 50.f, 0.f);
-	TextObjDesc.tTransform2DDesc.vInitialScaling = _float3(g_iWinSizeX * 3.f, g_iWinSizeY, 3.2f);
 	TextObjDesc.iColorObjectType = CLogo_ColorObject::LOGO_TEXTOBJECT;
 
-	switch (m_eBackGroundType) {
+	switch (m_eBackGroundType) 
+	{
 	case MAIN_JOT:
-		TextObjDesc.strModelPrototypeTag_2D = TEXT("Main_Jot");
+	{
+		TextObjDesc.tTransform2DDesc.vInitialPosition = _float3(-15.f, 310.f, 0.f);
+		TextObjDesc.tTransform2DDesc.vInitialScaling = _float3(g_iWinSizeX * 2.2f, g_iWinSizeY, 2.2f);
+		TextObjDesc.strModelPrototypeTag_2D = TEXT("Prototype_Logo_TextObject_Jot");
+		TextObjDesc.vColor = _float4(0.f, 0.f, 0.f, 1.f);
+
+	}
+		
 		break;
 	case MAIN_HUMGRUMP:
+	{
+		TextObjDesc.tTransform2DDesc.vInitialPosition = _float3(-30.f, 50.f, 0.f);
+		TextObjDesc.tTransform2DDesc.vInitialScaling = _float3(g_iWinSizeX * 3.f, g_iWinSizeY, 3.2f);
 		TextObjDesc.strModelPrototypeTag_2D = TEXT("Prototype_Logo_TextObject_Humgrump");
 		TextObjDesc.vColor = _float4(1.f, 1.f, 0.f, 1.f);
+	}
+		
 		break;
 	}
 
@@ -234,6 +262,18 @@ void CLogo_BackGround::On_End_Animation(COORDINATE _eCoordinate, _uint _iAnimInd
 
 		if (nullptr == m_pBackGroundParts[LOGO_TEXT_OBJECT])
 			return;
+
+		if (MAIN_HUMGRUMP != m_eBackGroundType)
+		{
+			if (false == m_pBackGroundParts[LOGO_TEXT_OBJECT]->CBase::Is_Active())
+			{
+				m_pBackGroundParts[LOGO_TEXT_OBJECT]->Set_Active(true);
+				m_isRenderTextObject = true;
+			}
+
+			return;
+		}
+			
 
 		m_pBackGroundParts[LOGO_CHARACTER]->Switch_Animation(BG_CHARACTER_ANIM::LOOP);
 		m_pBackGroundParts[LOGO_TEXT_OBJECT]->Set_Active(true);
