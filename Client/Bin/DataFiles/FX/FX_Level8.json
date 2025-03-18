@@ -46,5 +46,13 @@
     {
         "Name": "Meteorite.json",
         "Count": 1
+    },
+    {
+        "Name": "BossDead1.json",
+        "Count": 4
+    },
+    {
+        "Name": "BossDead2.json",
+        "Count": 4
     }
 ]

@@ -19,6 +19,8 @@
         "../Bin/DataFiles/FX/Level8/RockBroke.json",
         "../Bin/DataFiles/FX/Level8/BulletHitTennis.json",
         "../Bin/DataFiles/FX/Level8/BulletHitShield.json",
-        "../Bin/DataFiles/FX/Level8/Meteorite.json"
+        "../Bin/DataFiles/FX/Level8/Meteorite.json",
+        "../Bin/DataFiles/FX/Level8/BossDead1.json",
+        "../Bin/DataFiles/FX/Level8/BossDead2.json"
     ]
 }
