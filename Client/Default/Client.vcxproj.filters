@@ -790,6 +790,9 @@
     <Filter Include="02.GameObjects\UI\00. GamePlay\08. BossHP_Bar">
       <UniqueIdentifier>{1ce4a394-bcd1-4c25-b21a-bffb1a3e4705}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03.Components\FSM\State\Panic">
+      <UniqueIdentifier>{f2e92573-9798-459e-9e1a-d17917d7e111}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -2040,6 +2043,12 @@
     <ClInclude Include="..\public\Turret.h">
       <Filter>05.MiniGames\ExcavatorGame\Turret</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\PanicState.h">
+      <Filter>03.Components\FSM\State\Panic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Bomb_AlertState.h">
+      <Filter>03.Components\FSM\State\Panic</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -3274,6 +3283,12 @@
     </ClCompile>
     <ClCompile Include="..\private\Turret.cpp">
       <Filter>05.MiniGames\ExcavatorGame\Turret</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PanicState.cpp">
+      <Filter>03.Components\FSM\State\Panic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Bomb_AlertState.cpp">
+      <Filter>03.Components\FSM\State\Panic</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

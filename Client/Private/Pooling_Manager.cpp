@@ -228,7 +228,14 @@ HRESULT CPooling_Manager::Create_Object(const _wstring& _strPoolingTag, COORDINA
 					CActor* pActor = pActorObject->Get_ActorCom();
 					if (nullptr != pActor)
 					{
-						pActor->Set_GlobalPose(*_pPosition);
+						if (nullptr != _pRotation)
+						{
+							pActor->Set_GlobalPose(*_pPosition, *_pRotation);
+						}
+						else
+						{
+							pActor->Set_GlobalPose(*_pPosition);
+						}
 					}
 				}
 				pGameObject->Set_Position(XMLoadFloat3(_pPosition));
