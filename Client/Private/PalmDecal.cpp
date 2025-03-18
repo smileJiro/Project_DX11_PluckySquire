@@ -172,6 +172,7 @@ void CPalmDecal::Place(_fvector _v2DPos, _fvector _v2DDir)
 void CPalmDecal::Erase()
 {
     Set_Active(false);
+    m_p2DColliderComs[0]->Set_Active(false);
     //Áö¿ì±â
     for (auto& pStopped : m_StoppedObjects)
     {

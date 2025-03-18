@@ -1096,7 +1096,10 @@ void CPlayer::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
 			Set_State(DIE);
 		return;
 	}
-
+	else if(Is_CyvberJotMode())
+	{
+		Set_State(CPlayer::CYBER_HIT);
+	}
 	KnockBack(_vForce);
 
 	Start_Invinciblity();
@@ -2033,6 +2036,9 @@ void CPlayer::Set_State(STATE _eState)
 		break;
 	case Client::CPlayer::BACKROLL:
 		m_pStateMachine->Transition_To(new CPlayerState_BackRoll(this));
+		break;
+	case Client::CPlayer::CYBER_HIT:
+		m_pStateMachine->Transition_To(new CPlayerState_CyberHit(this));
 		break;
 	case Client::CPlayer::STATE_LAST:
 		break;
