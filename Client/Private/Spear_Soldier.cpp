@@ -456,6 +456,14 @@ void CSpear_Soldier::Change_Animation()
                 static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(CHASE);
                 break;
 
+            case MONSTER_STATE::BOMB_ALERT:
+                static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(ALERT);
+                break;
+
+            case MONSTER_STATE::PANIC:
+                static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(CHASE);
+                break;
+
             case MONSTER_STATE::HIT:
                 static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(HIT_FRONT);
                 break;

@@ -41,6 +41,7 @@ public:
 	void	Set_Sneak_Patrol_Index(_uint _iIndex);
 	void	Set_Patrol_Way_Index(_uint _iIndex);
 	void Set_SideScroll_PatrolBound();
+	void Set_EvadeTargetPos(_fvector _vEvadeTargetPos);
 
 	_bool Has_State(MONSTER_STATE _eState)
 	{

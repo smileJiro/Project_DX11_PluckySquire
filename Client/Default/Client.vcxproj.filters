@@ -790,6 +790,9 @@
     <Filter Include="05.MiniGames\ExcavatorGame\Excavator\Centre\Switch">
       <UniqueIdentifier>{02fd0af1-caa6-4f7b-82b5-a1a1ebe97d88}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03.Components\FSM\State\Panic">
+      <UniqueIdentifier>{f2e92573-9798-459e-9e1a-d17917d7e111}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -2030,6 +2033,12 @@
     <ClInclude Include="..\Public\PlayerState_BackRoll.h">
       <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\PanicState.h">
+      <Filter>03.Components\FSM\State\Panic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Bomb_AlertState.h">
+      <Filter>03.Components\FSM\State\Panic</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -3254,6 +3263,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState_BackRoll.cpp">
       <Filter>03.Components\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PanicState.cpp">
+      <Filter>03.Components\FSM\State\Panic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Bomb_AlertState.cpp">
+      <Filter>03.Components\FSM\State\Panic</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

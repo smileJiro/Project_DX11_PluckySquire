@@ -222,8 +222,13 @@ void CBomb::Explode()
 	if (COORDINATE_2D == Get_CurCoord())
 	{
 		m_p2DColliderComs[0]->Set_Active(false);
-		m_p2DColliderComs[(_uint)COLLIDER2D_USE::COLLIDER2D_BODY+1]->Set_Active(false);
-		m_p2DColliderComs[(_uint)COLLIDER2D_USE::COLLIDER2D_TRIGGER+1]->Set_Active(true);
+
+		//0번이 carriable이라 1씩 더함
+		_uint iColBodyIndex = (_uint)(COLLIDER2D_USE::COLLIDER2D_BODY)+1;
+		_uint iColTriggerIndex = (_uint)(COLLIDER2D_USE::COLLIDER2D_TRIGGER)+1;
+
+		m_p2DColliderComs[iColBodyIndex]->Set_Active(false);
+		m_p2DColliderComs[iColTriggerIndex]->Set_Active(true);
 
 		CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("Generic_Explosion"), Get_Include_Section_Name(), Get_ControllerTransform()->Get_WorldMatrix());
 	}

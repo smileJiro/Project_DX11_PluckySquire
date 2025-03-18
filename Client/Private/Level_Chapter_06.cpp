@@ -475,8 +475,11 @@ void CLevel_Chapter_06::Update(_float _fTimeDelta)
 
 	if (KEY_DOWN(KEY::F5))
 	{
-		_float3 vPos = { 5.f, 0.35f, -3.f };
-		CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &vPos);
+		//_float3 vPos = { 5.f, 0.35f, -3.f };
+		_float3 vPos = { -22.f, -240.f, 0.f };
+		_wstring strSection=TEXT("Chapter5_P0102");
+		//CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &vPos);
+		CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_2D, &vPos, nullptr, nullptr, &strSection);
 	}
 
 	if (KEY_DOWN(KEY::L)) {
@@ -1639,7 +1642,7 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Monster()
 	//if (FAILED(Ready_Layer_Monster_3D()))
 	//	return E_FAIL;
 
-	//wstring strLayerTag = TEXT("Layer_Monster");
+	wstring strLayerTag = TEXT("Layer_Monster");
 
 	//CSpear_Soldier::MONSTER_DESC Spear_Soldier2D_Desc;
 	//Spear_Soldier2D_Desc.iCurLevelID = m_eLevelID;
@@ -1683,14 +1686,14 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Monster()
 	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_CrossBow_Soldier"), m_eLevelID, _strLayerTag, &CrossBow_Soldier_Desc)))
 	//	return E_FAIL;
 
-	//CBomb_Soldier::MONSTER_DESC Bomb_Soldier_Desc;
-	//Bomb_Soldier_Desc.iCurLevelID = m_eLevelID;
-	//Bomb_Soldier_Desc.eStartCoord = COORDINATE_3D;
-	//Bomb_Soldier_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-	//Bomb_Soldier_Desc.tTransform3DDesc.vInitialPosition = _float3(-5.5f, 0.35f, -13.0f);
+	CBomb_Soldier::MONSTER_DESC Bomb_Soldier_Desc;
+	Bomb_Soldier_Desc.iCurLevelID = m_eLevelID;
+	Bomb_Soldier_Desc.eStartCoord = COORDINATE_3D;
+	Bomb_Soldier_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	Bomb_Soldier_Desc.tTransform3DDesc.vInitialPosition = _float3(-5.5f, 0.35f, -13.0f);
 
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Bomb_Soldier"), m_eLevelID, _strLayerTag, &Bomb_Soldier_Desc)))
-	//	return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Bomb_Soldier"), m_eLevelID, strLayerTag, &Bomb_Soldier_Desc)))
+		return E_FAIL;
 
 	const _wstring _strLayerTag = L"Layer_Monster";
 
