@@ -23,6 +23,12 @@ public:
 private:
 	HRESULT					Ready_PartObjects(CENTRE_DESC* _pDesc);
 
+private: /* Centre Switch Count */
+	void Check_SwitchCount();
+	_bool m_isFirst = false;
+	_int m_iSwitchCount = 0;
+
+
 public:
 	static CExcavator_Centre* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	CGameObject* Clone(void* _pArg) override;

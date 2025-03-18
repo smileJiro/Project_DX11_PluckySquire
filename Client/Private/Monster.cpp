@@ -649,6 +649,14 @@ _bool CMonster::Get_Formation_Position(_float3* _vPosition)
 	return m_pFormation->Get_Formation_Position(this, _vPosition);
 }
 
+_bool CMonster::Get_Formation_NextPosition(_float3* _vPosition)
+{
+	if (nullptr == m_pFormation)
+		return false;
+
+	return m_pFormation->Get_Formation_NextPosition(this, _vPosition);
+}
+
 //void CMonster::Set_2D_Direction(F_DIRECTION _eDir)
 //{
 //	if (_eDir == m_e2DDirection)

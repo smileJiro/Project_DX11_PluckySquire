@@ -1,7 +1,8 @@
 #include "stdafx.h"
 #include "Excavator_Centre.h"
 #include "GameInstance.h"
-#include "ModelObject.h"
+
+#include "Excavator_Switch.h"
 
 CExcavator_Centre::CExcavator_Centre(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     :CCharacter(_pDevice, _pContext)
@@ -40,7 +41,7 @@ void CExcavator_Centre::Priority_Update(_float _fTimeDelta)
 
 void CExcavator_Centre::Update(_float _fTimeDelta)
 {
-
+    Check_SwitchCount();
     __super::Update(_fTimeDelta);
 }
 
@@ -52,6 +53,20 @@ void CExcavator_Centre::Late_Update(_float _fTimeDelta)
 
 HRESULT CExcavator_Centre::Ready_PartObjects(CENTRE_DESC* _pDesc)
 {
+    {/* Part CENTRE_BG */
+        CModelObject::MODELOBJECT_DESC Desc{};
+        Desc.iCurLevelID = m_iCurLevelID;
+        Desc.pParentMatrices[COORDINATE_2D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_2D);
+        Desc.Build_2D_Transform(_float2(0.0f, -100.f), _float2(6000.f, 365.0f));
+        Desc.Build_2D_Model(LEVEL_STATIC, TEXT("Prototype_Model2D_Rectangle"), TEXT("Prototype_Component_Shader_VtxPosTex"), (_uint)PASS_VTXPOSTEX::COLOR_ALPHA);
+        Desc.eStartCoord = COORDINATE_2D;
+        
+        m_PartObjects[CENTRE_BG] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &Desc));
+        if (nullptr == m_PartObjects[CENTRE_BG])
+            return E_FAIL;
+        static_cast<CModelObject*>(m_PartObjects[CENTRE_BG])->Set_PosTexColor(_float4(0.01f, 0.01f, 0.01f,1.0f));
+    }/* Part CENTRE_BG */
+
     {/* Part CENTRE_TROOPER_L */
         CModelObject::MODELOBJECT_DESC Desc{};
         Desc.iCurLevelID = m_iCurLevelID;
@@ -65,7 +80,7 @@ HRESULT CExcavator_Centre::Ready_PartObjects(CENTRE_DESC* _pDesc)
             return E_FAIL;
         static_cast<CModelObject*>(m_PartObjects[CENTRE_TROOPER_L])->Switch_Animation(0);
     }/* Part CENTRE_TROOPER_L */
-
+    
     {/* Part CENTRE_TROOPER_R */
         CModelObject::MODELOBJECT_DESC Desc{};
         Desc.iCurLevelID = m_iCurLevelID;
@@ -121,9 +136,66 @@ HRESULT CExcavator_Centre::Ready_PartObjects(CENTRE_DESC* _pDesc)
             return E_FAIL;
         static_cast<CModelObject*>(m_PartObjects[CENTRE_SUTTER])->Switch_Animation(1);
     }/* Part CENTRE_SUTTER */
-    
 
+    {/* Part CENTRE_SWITCH_0 */
+        CExcavator_Switch::SWITCH_DESC Desc{};
+        Desc.iCurLevelID = m_iCurLevelID;
+        Desc.pParentMatrices[COORDINATE_2D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_2D);
+        Desc.Build_2D_Transform(_float2(-120.0f, -130.0f), _float2(1.0f, 1.0f));
+
+        m_PartObjects[CENTRE_SWITCH_0] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_Excavator_Switch"), &Desc));
+        if (nullptr == m_PartObjects[CENTRE_SWITCH_0])
+            return E_FAIL;
+        static_cast<CModelObject*>(m_PartObjects[CENTRE_SWITCH_0])->Switch_Animation(0);
+    }/* Part CENTRE_SWITCH_0 */
+    
+    {/* Part CENTRE_SWITCH_1 */
+        CExcavator_Switch::SWITCH_DESC Desc{};
+        Desc.iCurLevelID = m_iCurLevelID;
+        Desc.pParentMatrices[COORDINATE_2D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_2D);
+        Desc.Build_2D_Transform(_float2(0.0f, -130.0f), _float2(1.0f, 1.0f));
+
+        m_PartObjects[CENTRE_SWITCH_1] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_Excavator_Switch"), &Desc));
+        if (nullptr == m_PartObjects[CENTRE_SWITCH_1])
+            return E_FAIL;
+        static_cast<CModelObject*>(m_PartObjects[CENTRE_SWITCH_1])->Switch_Animation(0);
+    }/* Part CENTRE_SWITCH_1 */
+
+    {/* Part CENTRE_SWITCH_2 */
+        CExcavator_Switch::SWITCH_DESC Desc{};
+        Desc.iCurLevelID = m_iCurLevelID;
+        Desc.pParentMatrices[COORDINATE_2D] = m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_2D);
+        Desc.Build_2D_Transform(_float2(120.0f, -130.0f), _float2(1.0f, 1.0f));
+
+        m_PartObjects[CENTRE_SWITCH_2] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_Excavator_Switch"), &Desc));
+        if (nullptr == m_PartObjects[CENTRE_SWITCH_2])
+            return E_FAIL;
+        static_cast<CModelObject*>(m_PartObjects[CENTRE_SWITCH_2])->Switch_Animation(0);
+    }/* Part CENTRE_SWITCH_2 */
     return S_OK;
+}
+
+void CExcavator_Centre::Check_SwitchCount()
+{
+    if (true == m_isFirst)
+        return;
+    m_iSwitchCount = 0;
+
+    if (true == m_PartObjects[CENTRE_PART::CENTRE_SWITCH_0]->Is_Active())
+        ++m_iSwitchCount;
+
+    if (true == m_PartObjects[CENTRE_PART::CENTRE_SWITCH_1]->Is_Active())
+        ++m_iSwitchCount;
+
+    if (true == m_PartObjects[CENTRE_PART::CENTRE_SWITCH_2]->Is_Active())
+        ++m_iSwitchCount;
+
+    if (0 == m_iSwitchCount)
+    {
+        m_isFirst = true;
+        static_cast<CModelObject*>(m_PartObjects[CENTRE_PART::CENTRE_SUTTER])->Switch_Animation(0);
+    }
+
 }
 
 CExcavator_Centre* CExcavator_Centre::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

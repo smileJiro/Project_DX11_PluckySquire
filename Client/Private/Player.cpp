@@ -36,6 +36,8 @@
 #include "PlayerState_RetriveSword.h"
 #include "PlayerState_CannonPortal.h"
 #include "PlayerState_Mojam.h"
+#include "PlayerState_Pull.h"
+#include "PlayerState_BackRoll.h"
 #include "Actor_Dynamic.h"
 #include "PlayerSword.h"    
 #include "PlayerBody.h"
@@ -2029,12 +2031,18 @@ void CPlayer::Set_State(STATE _eState)
 	case Client::CPlayer::MOJAM:
 		m_pStateMachine->Transition_To(new CPlayerState_Mojam(this));
 		break;
-		
+	case Client::CPlayer::PULL:
+		m_pStateMachine->Transition_To(new CPlayerState_Pull(this));
+		break;
+	case Client::CPlayer::BACKROLL:
+		m_pStateMachine->Transition_To(new CPlayerState_BackRoll(this));
+		break;
 	case Client::CPlayer::STATE_LAST:
 		break;
 	default:
 		break;
 	}
+
 }
 
 void CPlayer::Set_Mode(PLAYER_MODE _eNewMode)

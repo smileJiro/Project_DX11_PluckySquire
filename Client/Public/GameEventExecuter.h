@@ -65,6 +65,9 @@ protected:
 		STEP_13,
 		STEP_14,
 		STEP_15,
+		STEP_16,
+		STEP_17,
+		STEP_18,
 		STEP_LAST
 	};
 public :

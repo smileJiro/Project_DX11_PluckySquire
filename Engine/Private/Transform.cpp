@@ -154,12 +154,21 @@ _bool CTransform::Turn_To_DesireDir(_fvector _vStartDir, _fvector _vDesireDir, _
             return true;
         }
     }
-
     _float3		vScale = Get_Scale();
 
     //		vLook = Get_State(STATE_LOOK);
 
-    _vector     vLook = XMVectorLerp(_vStartDir, _vDesireDir, _fRatio);
+    _vector     vLook;
+
+    if (-0.999f > XMVectorGetX(XMVector3Dot(_vStartDir, _vDesireDir)))
+    {
+		_vector vRotate = XMQuaternionSlerp(XMQuaternionIdentity(), XMQuaternionRotationAxis(XMVectorSet(0.f, 1.f, 0.f, 0.f), XM_PI), _fRatio);
+		vLook = XMVector3Rotate(_vStartDir, vRotate);
+    }
+    else
+    {
+        vLook = XMVectorLerp(_vStartDir, _vDesireDir, _fRatio);
+    }
 
     _vector		vRight = XMVector3Cross(XMVectorSet(0.f, 1.f, 0.f, 0.f), vLook);
     _vector		vUp = XMVector3Cross(vLook, vRight);

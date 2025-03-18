@@ -41,6 +41,7 @@ private:
 
 public :
 	virtual HRESULT					Initialize(void* _pArg) override;
+	virtual void					After_Initialize() override;
 
 public :
 	virtual void					Late_Update(_float _fTimeDelta) override;

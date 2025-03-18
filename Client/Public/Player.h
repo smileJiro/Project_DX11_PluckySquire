@@ -160,6 +160,8 @@ public:
 		CYBER_HIT,
 		RETRIVE_SWORD,
 		MOJAM,
+		PULL,
+		BACKROLL,
 
 		STATE_LAST
 	};

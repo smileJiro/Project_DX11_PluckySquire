@@ -1628,10 +1628,10 @@ void CGameEventExecuter_C2::Change_PlayMap(_float _fStartTime)
 	// 3D 오브젝트 추가 
 	if (m_fTimer > _fStartTime && 2 == m_iSubStep)
 	{
+		m_iSubStep++;
 
 		LEVEL_ID eCurLevelID = (LEVEL_ID)m_pGameInstance->Get_CurLevelID();
 
-		m_iSubStep++;
 		//주사위
 		CCarriableObject::CARRIABLE_DESC tCarriableDesc{};
 		tCarriableDesc.eStartCoord = COORDINATE_3D;
