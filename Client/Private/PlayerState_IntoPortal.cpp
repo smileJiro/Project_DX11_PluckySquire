@@ -59,6 +59,7 @@ void CPlayerState_JumpToPortal::Enter()
         static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Set_ShapeEnable((_uint)SHAPE_USE::SHAPE_BODY,false);
         if (false == static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Start_ParabolicTo(m_vPortalPos, fYRadian))
         {
+            static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Set_ShapeEnable((_uint)SHAPE_USE::SHAPE_BODY,true);
 			m_pOwner->Set_State(CPlayer::IDLE);
             return;
         }

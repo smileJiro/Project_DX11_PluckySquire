@@ -18,6 +18,7 @@
 #include "Friend.h"
 #include "Friend_Violet.h"
 #include "PlayerData_Manager.h"
+#include "Door_Red.h"
 
 CGameEventExecuter_C4::CGameEventExecuter_C4(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CGameEventExecuter(_pDevice, _pContext)
@@ -790,7 +791,65 @@ void CGameEventExecuter_C4::Change_PlayMap(_float _fStartTime)
 		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DraggableObject"),
 			m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Draggable"), &tDraggableDesc)))
 			return;		
+
+		CDoor_Red::DOOR_RED_DESC DoorRedDesc = {};
+		DoorRedDesc.tTransform2DDesc.vInitialPosition = _float3(1010.f, -530.f, 0.f);
+		DoorRedDesc.iCurLevelID = eCurLevelID;
+		DoorRedDesc.isHorizontal = false;
+		DoorRedDesc.eSize = CDoor_2D::SMALL;
+		DoorRedDesc.eInitialState = CDoor_2D::CLOSED;
+		DoorRedDesc.strSectionTag = L"Chapter4_P0102";
+		DoorRedDesc.strLayerTag = L"Layer_Monster_Door1";
+
+		DoorRedDesc.fTargetDiff = 13.f;
+
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorRed"),
+			eCurLevelID, L"Layer_MapGimmick", &DoorRedDesc)))
+			return;
+
+		DoorRedDesc.tTransform2DDesc.vInitialPosition = _float3(605.f, -200.f, 0.f);
+		DoorRedDesc.iCurLevelID = eCurLevelID;
+		DoorRedDesc.isHorizontal = true;
+		DoorRedDesc.eSize = CDoor_2D::MED;
+		DoorRedDesc.eInitialState = CDoor_2D::CLOSED;
+		DoorRedDesc.strSectionTag = L"Chapter4_SKSP_05";
+		DoorRedDesc.strLayerTag = L"Layer_Monster_Door2";
+		DoorRedDesc.fTargetDiff = 15.f;
+
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorRed"),
+			eCurLevelID, L"Layer_MapGimmick", &DoorRedDesc)))
+			return;
+
+		DoorRedDesc.tTransform2DDesc.vInitialPosition = _float3(-515.f, 80.f, 0.f);
+		DoorRedDesc.iCurLevelID = eCurLevelID;
+		DoorRedDesc.isHorizontal = true;
+		DoorRedDesc.eSize = CDoor_2D::MED;
+		DoorRedDesc.eInitialState = CDoor_2D::CLOSED;
+		DoorRedDesc.strSectionTag = L"Chapter4_SKSP_01";
+		DoorRedDesc.strLayerTag = L"Layer_Monster_Door3";
+
+		DoorRedDesc.fTargetDiff = 15.f;
+
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorRed"),
+			eCurLevelID, L"Layer_MapGimmick", &DoorRedDesc)))
+			return ;
+
+		DoorRedDesc = {};
+		DoorRedDesc.tTransform2DDesc.vInitialPosition = _float3(-1151.00f, 95.00f, 0.f);
+		DoorRedDesc.iCurLevelID = eCurLevelID;
+		DoorRedDesc.isHorizontal = false;
+		DoorRedDesc.eSize = CDoor_2D::MED;
+		DoorRedDesc.eInitialState = CDoor_2D::CLOSED;
+		DoorRedDesc.strSectionTag = L"Chapter4_P0304";
+		DoorRedDesc.strLayerTag = L"Layer_Monster_Door_Book";
+
+		DoorRedDesc.fTargetDiff = 13.f;
+
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorRed"),
+			eCurLevelID, L"Layer_MapGimmick", &DoorRedDesc)))
+			return ;
 		m_iSubStep++;
+
 
 	}
 	_fStartTime += 0.1f;

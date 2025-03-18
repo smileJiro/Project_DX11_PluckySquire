@@ -11,7 +11,6 @@
       ]
     },
     "Trigger_Reusable": false,
-
     "Fillter_MyGroup": 2,
     "Fillter_OtherGroupMask": 128,
     "Trigger_ConditionType": 0,
@@ -23,7 +22,7 @@
     "Collider_Info": {
       "Position": [
         1061.0,
-        -180.0
+        19.0
       ],
       "Scale": [
         161.0,

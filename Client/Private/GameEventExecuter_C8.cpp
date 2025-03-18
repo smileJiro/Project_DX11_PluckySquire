@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "GameEventExecuter_C8.h"
 #include "Trigger_Manager.h"
+#include "Dialog_Manager.h"
+#include "Friend_Controller.h"
 
 #include "Camera_Manager.h"
 #include "Camera_Target.h"
@@ -70,6 +72,12 @@ void CGameEventExecuter_C8::Update(_float _fTimeDelta)
 			break;
 		case Client::CTrigger_Manager::CHAPTER8_LASER_STAGE_2:
 			Chapter8_Laser_Stage_2(_fTimeDelta);
+			break;
+		case Client::CTrigger_Manager::CHAPTER8_FRIEND_APPEAR_VIOLET:
+			Chapter8_Friend_Appear_Violet(_fTimeDelta);
+			break;
+		case Client::CTrigger_Manager::CHAPTER8_FRIEND_APPEAR_THRASH:
+			Chapter8_Friend_Appear_Thrash(_fTimeDelta);
 			break;
 		case Client::CTrigger_Manager::CHAPTER8_INTRO:
 			Chapter8_Intro(_fTimeDelta);
@@ -183,7 +191,7 @@ void CGameEventExecuter_C8::Chapter8_Laser_Stage(_float _fTimeDelta)
 				Desc.iTriggerType = (_uint)TRIGGER_TYPE::EVENT_TRIGGER;
 				Desc.szEventTag = TEXT("Chapter8_Laser_Stage");
 				Desc.eConditionType = CTriggerObject::TRIGGER_ENTER;
-				Desc.isReusable = false; // 한 번 하고 삭제할 때
+				Desc.isReusable = false;
 				Desc.eStartCoord = COORDINATE_2D;
 				Desc.tTransform2DDesc.vInitialPosition = { -806.f,-180.f, 0.f };
 
@@ -344,7 +352,7 @@ void CGameEventExecuter_C8::Chapter8_Laser_Stage(_float _fTimeDelta)
 					}
 				}
 			}
-			Change_PlayMap(1.f);
+			//Change_PlayMap(1.f);
 
 			Next_Step_Over(3.4f);
 		}
@@ -382,7 +390,7 @@ void CGameEventExecuter_C8::Chapter8_Laser_Stage(_float _fTimeDelta)
 			//static_cast<CModelObject*>(m_TargetObjects[BRIDGE])->Get_ControllerTransform()->MoveTo(vTargetPos,_fTimeDelta);
 
 
-			if(Next_Step(m_TargetObjects[BRIDGE]->Get_ControllerTransform()->Compute_Distance(vTargetPos) < 2.f))
+			if(Next_Step(m_TargetObjects[BRIDGE]->Get_ControllerTransform()->Compute_Distance(vTargetPos) < 5.f))
 				m_TargetObjects[PIP]->Set_Active(false);
 		
 		}
@@ -412,16 +420,78 @@ void CGameEventExecuter_C8::Chapter8_Laser_Stage(_float _fTimeDelta)
 void CGameEventExecuter_C8::Chapter8_Laser_Stage_2(_float _fTimeDelta)
 {
 	m_fTimer += _fTimeDelta;
+
+	CPlayer* pPlayer = Get_Player();
+
 	if (Step_Check(STEP_0))
+	{
+
+		if (Is_Start())
+		{
+			pPlayer->Set_BlockPlayerInput(true);
+
+
+			auto pFriend = m_pGameInstance->Get_GameObject_Ptr(m_iCurLevelID, L"Layer_Friend", 0);
+			assert(pFriend);
+
+
+			m_TargetObjects.push_back(pFriend);
+			pFriend->Set_Active(true);
+			pFriend->Set_Position(XMVectorSet(851.f, 130.f, 0.f, 0.f));
+			static_cast<CFriend_Pip*>(pFriend)->Change_CurState(CFriend::FRIEND_IDLE);
+			static_cast<CFriend_Pip*>(pFriend)->Move_Position(_float2(1053.0f, 96.0f), CFriend::DIR_DOWN);
+		}
+
+		Next_Step_Over(1.f);
+	}
+	else if (Step_Check(STEP_1))
 	{
 		if (Is_Start())
 		{
-			CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::CUTSCENE);
-			CCamera_Manager::GetInstance()->Set_NextCutSceneData(TEXT("Chapter8_Intro"));
+			static_cast<CFriend*>(m_TargetObjects[0])->Change_AnyState(CFriend_Pip::PIP_EXCITED_DOWN, false, CFriend::DIR_DOWN);
 		}
 
-		Next_Step_Over(2.8f);
+		Next_Step_Over(1.f);
 	}
+	else if (Step_Check(STEP_2))
+	{
+		if (Is_Start())
+		{
+			CDialog_Manager::GetInstance()->Set_NPC(m_TargetObjects[0]);
+			CDialog_Manager::GetInstance()->Set_DialogId(L"Chapter8_Laser_Stage_2");
+		}
+		else
+			Next_Step(!CDialog_Manager::GetInstance()->Get_DisPlayDialogue());
+	}
+	else 
+	{ 
+		CFriend_Controller::GetInstance()->Register_Friend(TEXT("Pip"), (CFriend*)m_TargetObjects[0]);
+		CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(TEXT("Pip"));
+
+		CFriend_Controller::GetInstance()->Start_Train();
+
+		pPlayer->Set_BlockPlayerInput(false);
+
+		GameEvent_End();
+	}
+	
+}
+
+void CGameEventExecuter_C8::Chapter8_Friend_Appear_Violet(_float _fTimeDelta)
+{
+	_wstring  strFriendTag = L"Pip";
+	CFriend_Pip::FRIEND_DESC PipDesc{};
+	PipDesc.Build_2D_Transform(_float2(600.00f, 145.00f), _float2(1.0f, 1.0f), 400.f);
+	PipDesc.iCurLevelID = m_iCurLevelID;
+	PipDesc.eStartState = CFriend::FRIEND_LAST;
+	PipDesc.eStartDirection = CFriend::DIR_LEFT;
+	PipDesc.iModelTagLevelID = LEVEL_STATIC;
+	PipDesc.iNumDialoguesIndices = 0;
+	PipDesc.strFightLayerTag = TEXT("Layer_Monster");
+}
+
+void CGameEventExecuter_C8::Chapter8_Friend_Appear_Thrash(_float _fTimeDelta)
+{
 }
 
 void CGameEventExecuter_C8::Chapter8_Intro(_float _fTimeDelta)
