@@ -395,9 +395,13 @@ void CCharacter::KnockBack(_fvector _vForce)
 
     if (COORDINATE_3D == Get_CurCoord())
     {
-        //속도 0으로 만들고 넉백
-        Get_ActorCom()->Set_LinearVelocity(_vForce, 0.f);
-        Add_Impuls(_vForce);
+        if (Is_Dynamic())
+        {
+            //속도 0으로 만들고 넉백
+            Get_ActorCom()->Set_LinearVelocity(_vForce, 0.f);
+            Add_Impuls(_vForce);
+        }
+
     }
     else if (COORDINATE_2D == Get_CurCoord())
     {
@@ -461,7 +465,8 @@ void CCharacter::Set_2DDirection(E_DIRECTION _eEDir, _bool _isOnChange)
         case Client::E_DIRECTION::LEFT_UP:
         case Client::E_DIRECTION::LEFT_DOWN:
         {
-            _vector vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
+            _vector vRight = m_PartObjects[PART_BODY]->Get_ControllerTransform()->Get_State(CTransform::STATE_RIGHT);
+
             m_PartObjects[PART_BODY]->Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, -1.f * XMVectorAbs(vRight));
             vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
             break;
@@ -470,7 +475,7 @@ void CCharacter::Set_2DDirection(E_DIRECTION _eEDir, _bool _isOnChange)
         case Client::E_DIRECTION::RIGHT_UP:
         case Client::E_DIRECTION::RIGHT_DOWN:
         {
-            _vector vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
+            _vector vRight = m_PartObjects[PART_BODY]->Get_ControllerTransform()->Get_State(CTransform::STATE_RIGHT);
             m_PartObjects[PART_BODY]->Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, XMVectorAbs(vRight));
             break;
         }
@@ -876,7 +881,7 @@ _bool CCharacter::Process_AutoMove(_float _fTimeDelta)
     //실행중
     else if (tCommand.Is_RunTime())
     {
-        if(false == bRuntimeBefore)
+        if(false == bRuntimeBefore && nullptr != m_PartObjects[0])
             static_cast<CModelObject*>(m_PartObjects[0])->Switch_Animation(tCommand.iAnimIndex);
         switch (tCommand.eType)
         {

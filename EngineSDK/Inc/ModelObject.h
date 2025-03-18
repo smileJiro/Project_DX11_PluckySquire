@@ -196,6 +196,13 @@ protected: /* Stoppable */
 	_float4 m_vStoppableColor = { 1.0f, 0.0f,0.0f,1.0f };
 	_float2 m_vStoppableTime = { 1.0f, 0.0f };
 
+public:
+	void					Start_HitRender() { m_isHitRender = 1; m_vHitRenderTime.y = 0.0f; }
+	void					Action_HitRender(_float _fTimeDelta);
+protected: /* Hit */
+	_int	m_isHitRender = 0;
+	_float2 m_vHitRenderTime = { 0.5f, 0.0f };
+
 protected:
 	virtual HRESULT			Bind_ShaderResources_WVP();
 

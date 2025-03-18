@@ -4,7 +4,7 @@ BEGIN(Client)
 class CExcavator_Centre final : public CCharacter
 {
 public:
-	enum CENTRE_PART { CENTRE_BG, CENTRE_TROOPER_L, CENTRE_TROOPER_R, CENTRE_CENTRE, CENTRE_REGULATOR, CENTRE_SUTTER, CENTRE_SWITCH_0, CENTRE_SWITCH_1, CENTRE_SWITCH_2, CENTRE_SAW, CENTRE_LAST }; // PART인덱스이자 애니메이션 인덱스임
+	enum CENTRE_PART { CENTRE_BG, CENTRE_TROOPER_L, CENTRE_TROOPER_R, CENTRE_CENTRE, CENTRE_REGULATOR, CENTRE_SUTTER, CENTRE_SWITCH_0, CENTRE_SWITCH_1, CENTRE_SWITCH_2, CENTRE_LAST }; // PART인덱스이자 애니메이션 인덱스임
 	typedef struct tagCentreDesc : public CCharacter::CHARACTER_DESC
 	{
 
@@ -19,10 +19,14 @@ public:
 	virtual void			Priority_Update(_float _fTimeDelta)override;
 	virtual void			Update(_float _fTimeDelta) override;
 	virtual void			Late_Update(_float _fTimeDelta) override;
+	virtual	HRESULT			Render() override;
 
+	void					On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce) override;
+	void					Start_Part_HitRender();
+	void					Render_DeadEffect();
 private:
 	HRESULT					Ready_PartObjects(CENTRE_DESC* _pDesc);
-
+	HRESULT					Ready_Components(CENTRE_DESC* _pDesc);
 private: /* Centre Switch Count */
 	void Check_SwitchCount();
 	_bool m_isFirst = false;

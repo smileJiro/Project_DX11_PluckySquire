@@ -24,6 +24,19 @@ CNPC_Social* CNPC_Manager::Find_SocialNPC(wstring _NPCName)
 		return nullptr;
 }
 
+HRESULT CNPC_Manager::ChangeDialogue(_wstring _NPCName, _wstring _DialogueID)
+{
+	CNPC_Social* pSocialNpc = nullptr;
+
+	pSocialNpc = Find_SocialNPC(_NPCName);
+
+	if (nullptr == pSocialNpc)
+		return E_FAIL;
+
+	pSocialNpc->ChangeDialogueID(_DialogueID);
+	return S_OK;
+}
+
 HRESULT CNPC_Manager::Level_Exit(_int iCurLevelID, _int _iChangeLevelID, _int _iNextChangeLevelID)
 {
 

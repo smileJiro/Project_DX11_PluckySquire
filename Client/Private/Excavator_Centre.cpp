@@ -1,8 +1,12 @@
 #include "stdafx.h"
 #include "Excavator_Centre.h"
 #include "GameInstance.h"
+#include "Section_Manager.h"
+#include "ExcavatorGame.h"
+#include "Effect2D_Manager.h"
 
 #include "Excavator_Switch.h"
+#include "Saw.h"
 
 CExcavator_Centre::CExcavator_Centre(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     :CCharacter(_pDevice, _pContext)
@@ -28,6 +32,9 @@ HRESULT CExcavator_Centre::Initialize(void* _pArg)
     if (FAILED(__super::Initialize(pDesc)))
         return E_FAIL;
 
+    if (FAILED(Ready_Components(pDesc)))
+        return E_FAIL;
+
     if (FAILED(Ready_PartObjects(pDesc)))
         return E_FAIL;
     return S_OK;
@@ -49,6 +56,68 @@ void CExcavator_Centre::Late_Update(_float _fTimeDelta)
 {
 
     __super::Late_Update(_fTimeDelta);
+}
+
+HRESULT CExcavator_Centre::Render()
+{
+#ifdef _DEBUG
+    if (m_p2DColliderComs[0]->Is_Active())
+        m_p2DColliderComs[0]->Render(SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName));
+
+#endif // _DEBUG
+
+    return S_OK;
+}
+
+void CExcavator_Centre::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
+{
+    _int iHP = CExcavatorGame::GetInstance()->Minus_HP();
+    if (iHP == 0)
+    {
+        static_cast<CModelObject*>(m_PartObjects[CENTRE_PART::CENTRE_REGULATOR])->Switch_Animation(0); // ±úÁø¸ðµ¨
+    }
+    _matrix matFX =  Get_ControllerTransform()->Get_WorldMatrix();
+    matFX = XMMatrixScaling(1.0f, 1.0f, 1.0f) * XMMatrixTranslation(m_pGameInstance->Compute_Random(-150.f, 150.f), m_pGameInstance->Compute_Random(-170.f, -150.f), 0.0f) * matFX;
+    _wstring strFXTag = L"Generic_Explosion";
+
+    CEffect2D_Manager::GetInstance()->Play_Effect(strFXTag, Get_Include_Section_Name(), matFX); 
+
+    for (_uint i = 0; i < CENTRE_LAST; ++i)
+    {
+        if (i == CENTRE_PART::CENTRE_BG || i == CENTRE_PART::CENTRE_TROOPER_L || i == CENTRE_PART::CENTRE_TROOPER_R)
+        {
+
+        }
+        else
+        {
+            static_cast<CModelObject*>(m_PartObjects[i])->Start_HitRender();
+        }
+    }
+
+}
+
+void CExcavator_Centre::Start_Part_HitRender()
+{
+    for (_uint i = 0; i < CENTRE_LAST; ++i)
+    {
+        if (i == CENTRE_PART::CENTRE_BG || i == CENTRE_PART::CENTRE_TROOPER_L || i == CENTRE_PART::CENTRE_TROOPER_R)
+        {
+
+        }
+        else
+        {
+            static_cast<CModelObject*>(m_PartObjects[i])->Start_HitRender();
+        }
+    }
+}
+
+void CExcavator_Centre::Render_DeadEffect()
+{
+    _matrix matFX = Get_ControllerTransform()->Get_WorldMatrix();
+    matFX = XMMatrixScaling(1.4f, 1.4f, 1.4f) * XMMatrixTranslation(m_pGameInstance->Compute_Random(-600.f, 600.f), m_pGameInstance->Compute_Random(-220.f, -150.f), 0.0f) * matFX;
+    _wstring strFXTag = L"Generic_Explosion";
+
+    CEffect2D_Manager::GetInstance()->Play_Effect(strFXTag, Get_Include_Section_Name(), matFX);
 }
 
 HRESULT CExcavator_Centre::Ready_PartObjects(CENTRE_DESC* _pDesc)
@@ -172,6 +241,31 @@ HRESULT CExcavator_Centre::Ready_PartObjects(CENTRE_DESC* _pDesc)
             return E_FAIL;
         static_cast<CModelObject*>(m_PartObjects[CENTRE_SWITCH_2])->Switch_Animation(0);
     }/* Part CENTRE_SWITCH_2 */
+
+
+
+
+    
+    return S_OK;
+}
+
+HRESULT CExcavator_Centre::Ready_Components(CENTRE_DESC* _pDesc)
+{
+
+    m_p2DColliderComs.resize(1);
+
+    CCollider_Circle::COLLIDER_CIRCLE_DESC Desc = {};
+    Desc.pOwner = this;
+    Desc.fRadius = 200.0f;
+    Desc.vScale = { 1.0f, 1.0f };
+    Desc.vOffsetPosition = { 0.0f, 0.0f };
+    Desc.isBlock = false;
+    Desc.isTrigger = true;
+    Desc.iCollisionGroupID = OBJECT_GROUP::MONSTER;
+    if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
+        TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &Desc)))
+        return E_FAIL;
+
     return S_OK;
 }
 

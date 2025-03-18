@@ -67,6 +67,7 @@ void CModelObject::Late_Update(_float _fTimeDelta)
     /* Update 2D Object FadeAlpha Effect :: еб©У*/
     Action_Fade(_fTimeDelta);
     Action_StoppableRender(_fTimeDelta);
+    Action_HitRender(_fTimeDelta);
     /* Update Parent Matrix */
     __super::Late_Update(_fTimeDelta);
 }
@@ -91,7 +92,7 @@ HRESULT CModelObject::Render()
 {
 
 #ifdef _DEBUG
-    if (m_iInstanceID == 90)
+    if (m_iInstanceID == 3023)
     {
         int a = 0;
         a = 2;
@@ -132,6 +133,11 @@ HRESULT CModelObject::Render()
         pShader->Bind_RawValue("g_vStoppableColor", &m_vStoppableColor, sizeof(_float4));
         _float fStoppableRatio = m_vStoppableTime.y / m_vStoppableTime.x;
         pShader->Bind_RawValue("g_fStoppableRatio", &fStoppableRatio, sizeof(_float));
+
+        /* Hit */
+        pShader->Bind_RawValue("g_isHit", &m_isHitRender, sizeof(_int));
+        _float fHitRatio = m_vHitRenderTime.y / m_vHitRenderTime.x;
+        pShader->Bind_RawValue("g_fHitRatio", &fHitRatio, sizeof(_float));
 
         if(PASS_VTXPOSTEX::COLOR_ALPHA == (PASS_VTXPOSTEX)iShaderPass)
             pShader->Bind_RawValue("g_vColors", &m_vPosTexColor, sizeof(_float4));
@@ -564,6 +570,20 @@ void CModelObject::Action_StoppableRender(_float _fTimeDelta)
         m_vStoppableTime.y = 0.0f;
         m_fUpDownFactor = 1.0f;
     }
+}
+
+void CModelObject::Action_HitRender(_float _fTimeDelta)
+{
+    if (false == m_isHitRender)
+        return;
+
+    m_vHitRenderTime.y += _fTimeDelta;
+    if (m_vHitRenderTime.x <= m_vHitRenderTime.y)
+    {
+        m_vHitRenderTime.y = m_vHitRenderTime.x;
+        m_isHitRender = false;
+    }
+
 }
 
 HRESULT CModelObject::Bind_ShaderResources_WVP()

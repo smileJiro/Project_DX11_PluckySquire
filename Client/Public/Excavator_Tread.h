@@ -21,6 +21,10 @@ public:
 	virtual void			Update(_float _fTimeDelta) override;
 	virtual void			Late_Update(_float _fTimeDelta) override;
 
+public:
+	void Start_Wheel();
+	void Stop_Wheel();
+	void Start_Part_HitRender();
 private:
 	HRESULT					Ready_PartObjects(TREAD_DESC* _pDesc);
 
