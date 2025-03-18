@@ -19,6 +19,15 @@
         "../Bin/DataFiles/FX/Level8/RockBroke.json",
         "../Bin/DataFiles/FX/Level8/BulletHitTennis.json",
         "../Bin/DataFiles/FX/Level8/BulletHitShield.json",
-        "../Bin/DataFiles/FX/Level8/Meteorite.json"
+        "../Bin/DataFiles/FX/Level8/Meteorite.json",
+        "../Bin/DataFiles/FX/Level8/BossDead_1.json",
+        "../Bin/DataFiles/FX/Level8/BossDead_2.json",
+        "../Bin/DataFiles/FX/Level8/BossDead_3.json",
+        "../Bin/DataFiles/FX/Level8/BossDead_4.json",
+        "../Bin/DataFiles/FX/Level8/BossDead_Purple_1.json",
+        "../Bin/DataFiles/FX/Level8/BossDead_Purple_2.json",
+        "../Bin/DataFiles/FX/Level8/BossDead_Red_1.json",
+        "../Bin/DataFiles/FX/Level8/BossDead_Red_2.json",
+        "../Bin/DataFiles/FX/Level8/BossEnd.json"
     ]
 }

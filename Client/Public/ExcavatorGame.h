@@ -64,6 +64,9 @@ private:
 private: /* Turret */
     CTurret* m_pTurret_Left = nullptr;
     CTurret* m_pTurret_Right = nullptr;
+
+    /* Doors */
+    vector<class CDoor_Red*> m_Doors;
 private: /* Excavator State */
     EXCAVATOR_STATE m_ePreState = EXCAVATOR_STATE::STATE_LAST;
     EXCAVATOR_STATE m_eCurState = EXCAVATOR_STATE::STATE_LAST;

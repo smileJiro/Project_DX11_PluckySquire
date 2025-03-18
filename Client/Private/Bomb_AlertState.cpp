@@ -36,6 +36,8 @@ void CBomb_AlertState::State_Enter()
 		if (COORDINATE_2D == m_pOwner->Get_CurCoord())
 			m_pOwner->Change_Dir();
 	}
+
+	m_pOwner->Remove_From_Formation();
 }
 
 void CBomb_AlertState::State_Update(_float _fTimeDelta)
