@@ -135,7 +135,7 @@ private:
     vector<CNarration_Anim*>                m_pCurrentAnimObj;
     map<_uint, vector<CNarration_Anim*>>    m_vAnimObjectsByLine;
 
-    _bool                                   m_isLeftRight; // 카메라를 위한 레프트 라이트
+    _bool                                   m_isLeftRight = { true }; // 카메라를 위한 레프트 라이트
     CAMERAPOS                               m_iCameraPos = { CAMERA_LAST };
 
 protected:

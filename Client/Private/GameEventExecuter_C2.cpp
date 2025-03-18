@@ -375,10 +375,10 @@ void CGameEventExecuter_C2::Chapter2_BookMagic(_float _fTimeDelta)
 		{
 			m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/Chapter2_Bright.json"));
 			m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/Chapter2_Bright.json"));
+			GameEvent_End();
 		}
 	}
-	else
-		GameEvent_End();
+
 }
 
 void CGameEventExecuter_C2::Chapter2_Intro(_float _fTimeDelta)

@@ -98,7 +98,7 @@ HRESULT CSection_2D_Narration::Start_Narration()
 		else if (Get_SectionName() == L"Chapter2_P0506" && false == m_FirstPlay[1])
 		{
 			CUI_Manager::GetInstance()->Set_PlayNarration(TEXT("Chapter2_P0506_Narration_01"));
-			m_FirstPlay[1];
+			m_FirstPlay[1] = true;
 		}
 		//else if (Get_SectionName() == L"Chapter6_P0304" && false == m_FirstPlay[2])
 		//{
