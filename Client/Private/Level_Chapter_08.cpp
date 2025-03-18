@@ -1229,7 +1229,7 @@ HRESULT CLevel_Chapter_08::Ready_Layer_NPC(const _wstring& _strLayerTag)
 	CNpc_Humgrump::HUMGRUMP_DESC HumgrumpDesc = {};
 	HumgrumpDesc.tTransform2DDesc.vInitialPosition = _float3(0.0f, 54.89, 0.03f);
 	HumgrumpDesc.iCurLevelID = m_eLevelID;
-	HumgrumpDesc.strSectionTag = TEXT("Chapter8_P2314");
+	HumgrumpDesc.strSectionTag = TEXT("Chapter8_P2324");
 	HumgrumpDesc.iStartAnimIndex = CNpc_Humgrump::CHAPTER6_IDLE;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Npc_Humgrump"),
