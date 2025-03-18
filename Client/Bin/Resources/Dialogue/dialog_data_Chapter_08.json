@@ -783,25 +783,6 @@
 			"isChangeTalker": true,
 			"lines": [
 				{
-					"Portrait": 0,
-					"Talker": "바이올렛",
-					"TalkerIndex": 0,
-					"BG": 13,
-					"location": 1,
-					"is2D": true,
-					"OffsetX": 0.0,
-					"OffsetY": 0.0,
-					"isPortrait": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "       스래쉬!!!!!!!!",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
 					"Portrait": 1,
 					"Talker": "스래쉬",
 					"TalkerIndex": 2,
@@ -810,7 +791,7 @@
 					"is2D": true,
 					"isPortrait": true,
 					"OffsetX": 0.0,
-					"OffsetY": 0.0,
+					"OffsetY": 50.0,
 					"animation": {
 						"duration": 1000,
 						"speed": 350
@@ -825,7 +806,7 @@
 					"Talker": "바이올렛",
 					"TalkerIndex": 0,
 					"BG": 13,
-					"location": 0,
+					"location": 1,
 					"is2D": true,
 					"OffsetX": 0.0,
 					"OffsetY": 0.0,
@@ -849,7 +830,7 @@
 					"is2D": true,
 					"isPortrait": true,
 					"OffsetX": 0.0,
-					"OffsetY": 0.0,
+					"OffsetY": 50.0,
 					"animation": {
 						"duration": 1000,
 						"speed": 350
@@ -862,7 +843,7 @@
 				{
 					"Portrait": 0,
 					"Talker": "찍찍이",
-					"TalkerIndex": 1,
+					"TalkerIndex": 0,
 					"BG": 0,
 					"location": 0,
 					"OffsetX": 0.0,
@@ -887,7 +868,7 @@
 					"is2D": true,
 					"isPortrait": true,
 					"OffsetX": 0.0,
-					"OffsetY": 0.0,
+					"OffsetY": 50.0,
 					"animation": {
 						"duration": 1000,
 						"speed": 350
@@ -902,7 +883,7 @@
 					"Talker": "바이올렛",
 					"TalkerIndex": 0,
 					"BG": 13,
-					"location": 0,
+					"location": 1,
 					"is2D": true,
 					"OffsetX": 0.0,
 					"OffsetY": 0.0,
@@ -922,7 +903,7 @@
 					"Talker": "바이올렛",
 					"TalkerIndex": 0,
 					"BG": 13,
-					"location": 0,
+					"location": 1,
 					"is2D": true,
 					"OffsetX": 0.0,
 					"OffsetY": 0.0,
@@ -946,7 +927,7 @@
 					"is2D": true,
 					"isPortrait": true,
 					"OffsetX": 0.0,
-					"OffsetY": 0.0,
+					"OffsetY": 50.0,
 					"animation": {
 						"duration": 1000,
 						"speed": 350
@@ -961,7 +942,7 @@
 					"Talker": "바이올렛",
 					"TalkerIndex": 0,
 					"BG": 13,
-					"location": 0,
+					"location": 1,
 					"is2D": true,
 					"OffsetX": 0.0,
 					"OffsetY": 0.0,
@@ -981,7 +962,7 @@
 					"Talker": "찍찍이",
 					"TalkerIndex": 1,
 					"BG": 0,
-					"location": 1,
+					"location": 0,
 					"OffsetX": 0.0,
 					"OffsetY": 0.0,
 					"is2D": true,
@@ -1000,16 +981,40 @@
 					"Talker": "스래쉬",
 					"TalkerIndex": 2,
 					"BG": 2,
-					"location": 0,
+					"location": 1,
 					"is2D": true,
 					"isPortrait": true,
 					"OffsetX": 0.0,
-					"OffsetY": 0.0,
+					"OffsetY": 50.0,
 					"animation": {
 						"duration": 1000,
 						"speed": 350
 					},
 					"text": "그렇다면!",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				}
+			]
+		},
+		{
+			"id": "Mojam",
+			"Section": "Chapter8_P1718",
+			"lines": [
+				{
+					"Portrait": 0,
+					"Talker": "",
+					"BG": 24,
+					"location": 0,
+					"is2D": true,
+					"isPortrait": false,
+					"OffsetX": 0.0,
+					"OffsetY": 60.0,
+					"animation": {
+						"duration": 10,
+						"speed": 700000
+					},
+					"text": "                                             모잼!!!",
 					"Red": 0,
 					"Green": 0,
 					"Blue": 0

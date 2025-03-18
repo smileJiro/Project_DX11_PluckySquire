@@ -185,7 +185,14 @@ void CFriend_Thrash::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 		m_eCurState = FRIEND_IDLE;
 		break;
 	case Client::CFriend::FRIEND_ANY:
-		m_eCurState = FRIEND_IDLE;
+		if (iAnimIdx == ANIM::THRASH_C09_JUMPINGOFFPIPE)
+		{
+			State_Change_Idle();
+			_vector vPos = Get_FinalPosition();
+			Move_Position(_float2(XMVectorGetX(vPos), XMVectorGetY(vPos)), CFriend::DIR_LEFT);
+		}
+		else
+			m_eCurState = FRIEND_IDLE;
 		break;
 	default:
 		m_eCurState = FRIEND_IDLE;
