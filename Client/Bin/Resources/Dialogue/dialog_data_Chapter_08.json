@@ -2214,7 +2214,7 @@
 			]
 		},
 		{
-			"id": "Chapter8_Meet_Humgrump",
+			"id": "Chapter8_Meet_Humgrump_1",
 			"Section": "Chapter6_P2324",
 			"isChangeTalker": true,
 			"lines": [
@@ -2261,7 +2261,14 @@
 					"Red": 10,
 					"Green": 10,
 					"Blue": 10
-				},
+				}
+			]
+		},
+		{
+			"id": "Chapter8_Meet_Humgrump_2",
+			"Section": "Chapter6_P2324",
+			"isChangeTalker": true,
+			"lines": [
 				{
 					"Portrait": 0,
 					"Talker": "험그럼프",

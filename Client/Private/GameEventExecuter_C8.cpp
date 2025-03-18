@@ -1063,7 +1063,7 @@ void CGameEventExecuter_C8::Chapter8_Meet_Humgrump(_float _fTimeDelta)
 			pPlayer->Set_BlockPlayerInput(true);
 
 			// 4. Dialogue 재생
-			CDialog_Manager::GetInstance()->Set_DialogId(L"Dialogue_Meet_Humgrump");
+			CDialog_Manager::GetInstance()->Set_DialogId(L"Dialogue_Meet_Humgrump_1");
 
 			CLayer* pLayer = m_pGameInstance->Find_Layer(m_iCurLevelID, TEXT("Layer_NPC"));
 
@@ -1083,11 +1083,66 @@ void CGameEventExecuter_C8::Chapter8_Meet_Humgrump(_float _fTimeDelta)
 				}
 			}
 
-			// 찍찍이로 말하는 대상 설정, 지금은 Player로 임시 설정함
 			CPlayer* pPlayer = Get_Player();
-			CDialog_Manager::GetInstance()->Set_NPC(pPlayer);
+			//CDialog_Manager::GetInstance()->Set_NPC(pPlayer);
 			m_TargetObjects.push_back(pPlayer);
 	
+			Next_Step(true);
+		}
+	}
+	else if (Step_Check(STEP_2)) {
+
+		if (false == CDialog_Manager::GetInstance()->Get_DisPlayDialogue()) {
+
+			if (Is_Start()) {
+				static_cast<CModelObject*>(m_TargetObjects[0])->Switch_Animation(CNpc_Humgrump::CHAPTER8_TURN);
+			}
+		}
+
+		if (false == static_cast<CModelObject*>(m_TargetObjects[0])->Is_DuringAnimation()) {
+			// 5. Dialogue 재생
+			CDialog_Manager::GetInstance()->Set_DialogId(L"Dialogue_Meet_Humgrump_2");
+			CDialog_Manager::GetInstance()->Set_NPC(m_TargetObjects[0]);
+
+			// 6. 험그럼프 Talk로 변경
+			static_cast<CModelObject*>(m_TargetObjects[0])->Switch_Animation(CNpc_Humgrump::CHAPTER8_TALK_HAPPY);
+
+			// 찍찍이로 말하는 대상 설정, 지금은 Player로 임시 설정함
+			CDialog_Manager::GetInstance()->Set_NPC(m_TargetObjects[1]);
+			Next_Step(true);
+		}
+	}
+	else if (Step_Check(STEP_3)) {
+		if (1 == CDialog_Manager::GetInstance()->Get_CurrentLineIndex()) {
+
+			if (Is_Start()) {
+				// 7. 찍찍이 Animation 변경해야 함
+				static_cast<CModelObject*>(m_TargetObjects[0])->Switch_Animation(CNpc_Humgrump::CHAPTER8_IDLE);
+				//static_cast<CModelObject*>(m_TargetObjects[1])->Switch_Animation(CNpc_MoonBeard::CHAPTER6_GIVE_IT_AREST);
+			}
+		}
+
+		if (3 == CDialog_Manager::GetInstance()->Get_CurrentLineIndex()) {
+			static_cast<CModelObject*>(m_TargetObjects[0])->Switch_Animation(CNpc_Humgrump::CHAPTER8_TALK_HAPPY);
+			//static_cast<CModelObject*>(m_TargetObjects[1])->Switch_Animation(CNpc_MoonBeard::CHAPTER6_GIVE_IT_AREST);
+
+			Next_Step(true);
+		}
+	}
+	else if (Step_Check(STEP_4)) {
+		if (6 == CDialog_Manager::GetInstance()->Get_CurrentLineIndex()) {
+
+			if (Is_Start()) {
+				// 8. 찍찍이 Animation 변경해야 함
+				static_cast<CModelObject*>(m_TargetObjects[0])->Switch_Animation(CNpc_Humgrump::CHAPTER8_IDLE);
+				//static_cast<CModelObject*>(m_TargetObjects[1])->Switch_Animation(CNpc_MoonBeard::CHAPTER6_GIVE_IT_AREST);
+			}
+		}
+
+		if (3 == CDialog_Manager::GetInstance()->Get_CurrentLineIndex()) {
+			static_cast<CModelObject*>(m_TargetObjects[0])->Switch_Animation(CNpc_Humgrump::CHAPTER8_TALK_HAPPY);
+			//static_cast<CModelObject*>(m_TargetObjects[1])->Switch_Animation(CNpc_MoonBeard::CHAPTER6_GIVE_IT_AREST);
+
 			Next_Step(true);
 		}
 	}
