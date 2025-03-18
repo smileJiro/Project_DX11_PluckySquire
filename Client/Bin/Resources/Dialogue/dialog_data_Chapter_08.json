@@ -2212,6 +2212,315 @@
 					"Blue": 234
 				}
 			]
+		},
+		{
+			"id": "Chapter8_Meet_Humgrump",
+			"Section": "Chapter6_P2324",
+			"isChangeTalker": true,
+			"lines": [
+				{
+					"Portrait": 0,
+					"Talker": "험그럼프",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
+					"TalkerIndex": 0,
+					"FontColorR": 255.0,
+					"FontColorG": 255.0,
+					"FontColorB": 0.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "아! 이게 누구야?",
+					"Red": 10,
+					"Green": 10,
+					"Blue": 10
+				},
+				{
+					"Portrait": 0,
+					"Talker": "험그럼프",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
+					"TalkerIndex": 0,
+					"FontColorR": 255.0,
+					"FontColorG": 255.0,
+					"FontColorB": 0.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "4명의 반역자께서 오셨군.",
+					"Red": 10,
+					"Green": 10,
+					"Blue": 10
+				},
+				{
+					"Portrait": 0,
+					"Talker": "험그럼프",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
+					"TalkerIndex": 0,
+					"FontColorR": 255.0,
+					"FontColorG": 255.0,
+					"FontColorB": 0.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "대체 어떤 멍청한 녀석들인지... 얼굴을 좀 봐야겠어.",
+					"Red": 10,
+					"Green": 10,
+					"Blue": 10
+				},
+				{
+					"Portrait": 0,
+					"Talker": "찍찍이",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
+					"TalkerIndex": 1,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "험그럼프!",
+					"Red": 238,
+					"Green": 230,
+					"Blue": 134
+				},
+				{
+					"Portrait": 0,
+					"Talker": "찍찍이",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
+					"TalkerIndex": 1,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "모조의 백성들을 대표해서 왔다!",
+					"Red": 238,
+					"Green": 230,
+					"Blue": 134
+				},
+				{
+					"Portrait": 0,
+					"Talker": "험그럼프",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
+					"TalkerIndex": 0,
+					"FontColorR": 255.0,
+					"FontColorG": 255.0,
+					"FontColorB": 0.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "아, 그러셔?",
+					"Red": 10,
+					"Green": 10,
+					"Blue": 10
+				},
+				{
+					"Portrait": 0,
+					"Talker": "험그럼프",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
+					"TalkerIndex": 0,
+					"FontColorR": 255.0,
+					"FontColorG": 255.0,
+					"FontColorB": 0.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "하지만 조그만 생쥐 녀석이 감히 뭘 한다는 거지?",
+					"Red": 10,
+					"Green": 10,
+					"Blue": 10
+				},
+				{
+					"Portrait": 0,
+					"Talker": "찍찍이",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
+					"TalkerIndex": 1,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "널 끌어내리고 모조 왕국을 되찾을 거다! ",
+					"Red": 238,
+					"Green": 230,
+					"Blue": 134
+				},
+				{
+					"Portrait": 0,
+					"Talker": "험그럼프",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
+					"TalkerIndex": 0,
+					"FontColorR": 255.0,
+					"FontColorG": 255.0,
+					"FontColorB": 0.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "멍청한 녀석들... 나에 대한 이야기는 아직 끝나려면 멀었지... \n아직 멋진 이야기가 많이 남아 있다.",
+					"Red": 10,
+					"Green": 10,
+					"Blue": 10
+				},
+				{
+					"Portrait": 0,
+					"Talker": "험그럼프",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
+					"TalkerIndex": 0,
+					"FontColorR": 255.0,
+					"FontColorG": 255.0,
+					"FontColorB": 0.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "그러나 용감한 견습 기사, 너는 예전에 잘나가지 않았었나?",
+					"Red": 10,
+					"Green": 10,
+					"Blue": 10
+				},
+				{
+					"Portrait": 0,
+					"Talker": "험그럼프",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
+					"TalkerIndex": 0,
+					"FontColorR": 255.0,
+					"FontColorG": 255.0,
+					"FontColorB": 0.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "한때 이 책의 주인공이 아니었냐는 말이다.",
+					"Red": 10,
+					"Green": 10,
+					"Blue": 10
+				},
+				{
+					"Portrait": 0,
+					"Talker": "험그럼프",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
+					"TalkerIndex": 0,
+					"FontColorR": 255.0,
+					"FontColorG": 255.0,
+					"FontColorB": 0.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "그런데 참 재미있지? 고작 페이지 차이로 \n영웅에서 퇴물이 되어 버렸단 말이야.",
+					"Red": 10,
+					"Green": 10,
+					"Blue": 10
+				},
+				{
+					"Portrait": 0,
+					"Talker": "험그럼프",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
+					"TalkerIndex": 0,
+					"FontColorR": 255.0,
+					"FontColorG": 255.0,
+					"FontColorB": 0.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "네 이야기에...",
+					"Red": 10,
+					"Green": 10,
+					"Blue": 10
+				},
+				{
+					"Portrait": 0,
+					"Talker": "험그럼프",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
+					"TalkerIndex": 0,
+					"FontColorR": 255.0,
+					"FontColorG": 255.0,
+					"FontColorB": 0.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "아주 잘 어울리는 결말을 선사하도록 하지.",
+					"Red": 10,
+					"Green": 10,
+					"Blue": 10
+				}
+			]
 		}
 	]
 }
