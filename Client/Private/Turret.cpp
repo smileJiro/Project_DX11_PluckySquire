@@ -2,6 +2,8 @@
 #include "Turret.h"
 #include "GameInstance.h"
 #include "Pooling_Manager.h"
+#include "Bomb.h"
+#include "PlayerData_Manager.h"
 
 CTurret::CTurret(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     :CModelObject(_pDevice, _pContext)
@@ -125,7 +127,8 @@ void CTurret::State_Change_Fire()
    
     CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_2D, &pGameObject, &vPosition, nullptr, nullptr, &m_strSectionName);
 
-    //static_cast<CActorObject*>(pGameObject).
+    _vector vPlayerPos = CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr()->Get_FinalPosition();
+    static_cast<CBomb*>(pGameObject)->Start_Parabola(vPos, vPlayerPos, 1.0f);
 }
 
 void CTurret::State_Change_Fire_Into()
