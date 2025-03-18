@@ -18,7 +18,7 @@ void CPlayerState_CyberIdle::Update(_float _fTimeDelta)
 
 	if (tKeyResult.bInputStates[PLAYER_INPUT_ATTACK])
 	{
-		m_pOwner->Shoot_Rifle();
+		m_pOwner->Shoot_Rifle(_vector{0.f,0.f,0.f});
 	}
 	_vector vVelocity = { 0.f,0.f,0.f };
 	if (tKeyResult.bInputStates[PLAYER_INPUT_MOVE])
@@ -138,7 +138,7 @@ void CPlayerState_CyberDash::Update(_float _fTimeDelta)
 
 	if (tKeyResult.bInputStates[PLAYER_INPUT_ATTACK])
 	{
-		m_pOwner->Shoot_Rifle();
+		m_pOwner->Shoot_Rifle(_vector{0.f,0.f,0.f});
 	}
 
 	if (m_fDashEndSpeedThreshold >= m_pOwner->Get_CyberCurrentSpeed())

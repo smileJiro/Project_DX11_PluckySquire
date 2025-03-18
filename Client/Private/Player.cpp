@@ -1544,11 +1544,11 @@ void CPlayer::ZetPropel(_float _fTimeDelta)
 	}
 }
 
-void CPlayer::Shoot_Rifle()
+void CPlayer::Shoot_Rifle(_fvector _vDirection)
 {
 	if (nullptr == m_pRifle)
 		return;
-	m_pRifle->Shoot();
+	m_pRifle->Shoot(_vDirection);
 }
 
 
