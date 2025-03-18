@@ -513,13 +513,13 @@ void CCamera_Target::Key_Input(_float _fTimeDelta)
 	if (KEY_DOWN(KEY::Y)) {
 		Set_FreezeEnter(FREEZE_X, XMVectorSet(-0.3150f, 0.1552f, -0.9363f, 0.f), 0);
 		Set_FreezeEnter(FREEZE_Z, XMVectorSet(-0.3150f, 0.1552f, -0.9363f, 0.f), 0);
-		Set_FreezeEnter(FREEZE_Y, XMVectorSet(-0.3150f, 0.1552f, -0.9363f, 0.f), 0);
+		//Set_FreezeEnter(FREEZE_Y, XMVectorSet(-0.3150f, 0.1552f, -0.9363f, 0.f), 0);
 		m_isUsingFreezeOffset = true;
 	}
 	if (KEY_DOWN(KEY::I)) {
 		Set_FreezeExit(FREEZE_X, 0);
 		Set_FreezeExit(FREEZE_Z, 0);
-		Set_FreezeExit(FREEZE_Y, 0);
+		//Set_FreezeExit(FREEZE_Y, 0);
 	}
 
 	//static RETURN_ARMDATA tData = {};

@@ -46,7 +46,7 @@ void CPlayerState_CyberIdle::Enter()
 	//m_pDynamicActor = m_pOwner->Get_ActorDynamic();
 	//m_pTargetCamera = static_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_CurrentCamera());
 	//m_pCameraTargetWorldMatrix = m_pTargetCamera->Get_TargetMatrix();
-
+	int a = 0;
 }
 
 void CPlayerState_CyberIdle::Exit()
@@ -63,6 +63,11 @@ void CPlayerState_CyberIdle::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 		//Set_VeloState(m_pDynamicActor->Get_LinearVelocity());
 	}
 
+}
+
+void CPlayerState_CyberIdle::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
+{	
+	m_pOwner->Set_State(CPlayer::CYBER_HIT);
 }
 
 void CPlayerState_CyberIdle::Set_VeloState(_fvector _vVelocity)
@@ -192,6 +197,11 @@ void CPlayerState_CyberDash::Exit()
 
 void CPlayerState_CyberDash::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 {
+}
+
+void CPlayerState_CyberDash::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
+{
+	m_pOwner->Set_State(CPlayer::CYBER_HIT);
 }
 
 
