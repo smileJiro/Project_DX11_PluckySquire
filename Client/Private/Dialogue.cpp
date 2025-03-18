@@ -909,6 +909,13 @@ void CDialog::NextDialogue(_float2 _RTSize)
 	if (!m_isDisplayDialogue)
 		return;
 
+	CPlayer* pPlayer = Uimgr->Get_Player();
+
+	if (false == pPlayer->Is_PlayerInputBlocked())
+	{
+		pPlayer->Set_BlockPlayerInput(true);
+	}
+
 	m_vRTSize = _RTSize;
 
 	// 현재 렌더사이즈 / 2560 의 사이즈의 비율

@@ -412,6 +412,15 @@ HRESULT CUI_Manager::Level_Logo_Exit(_int _iChangeLevelID, _int _iNextChangeLeve
 
 HRESULT CUI_Manager::Level_Enter(_int _iChangeLevelID)
 {
+	//if (LEVEL_ID::LEVEL_CHAPTER_8 == (LEVEL_ID)_iChangeLevelID)
+	//{
+	//	for (int i = 0; i < 2; ++i)
+	//	{
+	//		m_PlayerStampHaves[i] = false;
+	//	}
+	//}
+		
+
 	return S_OK;
 }
 
