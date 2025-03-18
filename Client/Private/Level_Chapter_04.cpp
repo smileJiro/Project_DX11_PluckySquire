@@ -1430,47 +1430,6 @@ HRESULT CLevel_Chapter_04::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 		m_eLevelID, _strLayerTag, &DoorBlueDesc)))
 		return E_FAIL;
 
-	CDoor_Red::DOOR_RED_DESC DoorRedDesc = {};
-	DoorRedDesc.tTransform2DDesc.vInitialPosition = _float3(1010.f, -530.f, 0.f);
-	DoorRedDesc.iCurLevelID = m_eLevelID;
-	DoorRedDesc.isHorizontal = false;
-	DoorRedDesc.eSize = CDoor_2D::SMALL;
-	DoorRedDesc.eInitialState = CDoor_2D::CLOSED;
-	DoorRedDesc.strSectionTag = L"Chapter4_P0102";
-	DoorRedDesc.strLayerTag = L"Layer_Monster_Door1";
-
-	DoorRedDesc.fTargetDiff = 13.f;
-
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorRed"),
-		m_eLevelID, _strLayerTag, &DoorRedDesc)))
-		return E_FAIL;
-
-	DoorRedDesc.tTransform2DDesc.vInitialPosition = _float3(605.f, -200.f, 0.f);
-	DoorRedDesc.iCurLevelID = m_eLevelID;
-	DoorRedDesc.isHorizontal = true;
-	DoorRedDesc.eSize = CDoor_2D::MED;
-	DoorRedDesc.eInitialState = CDoor_2D::CLOSED;
-	DoorRedDesc.strSectionTag = L"Chapter4_SKSP_05";
-	DoorRedDesc.strLayerTag = L"Layer_Monster_Door2";
-	DoorRedDesc.fTargetDiff = 15.f;
-
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorRed"),
-		m_eLevelID, _strLayerTag, &DoorRedDesc)))
-		return E_FAIL;
-
-	DoorRedDesc.tTransform2DDesc.vInitialPosition = _float3(-515.f, 80.f, 0.f);
-	DoorRedDesc.iCurLevelID = m_eLevelID;
-	DoorRedDesc.isHorizontal = true;
-	DoorRedDesc.eSize = CDoor_2D::MED;
-	DoorRedDesc.eInitialState = CDoor_2D::CLOSED;
-	DoorRedDesc.strSectionTag = L"Chapter4_SKSP_01";
-	DoorRedDesc.strLayerTag = L"Layer_Monster_Door3";
-
-	DoorRedDesc.fTargetDiff = 15.f;
-
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorRed"),
-		m_eLevelID, _strLayerTag, &DoorRedDesc)))
-		return E_FAIL;
 
 
 	// Zipline
