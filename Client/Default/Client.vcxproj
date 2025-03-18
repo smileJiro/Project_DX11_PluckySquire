@@ -230,6 +230,7 @@
     <ClInclude Include="..\Public\DefenderPerson.h" />
     <ClInclude Include="..\Public\DynamicCastleGate.h" />
     <ClInclude Include="..\Public\EvictedSword.h" />
+    <ClInclude Include="..\public\ExcavatorGame.h" />
     <ClInclude Include="..\public\Excavator_Centre.h" />
     <ClInclude Include="..\public\Excavator_Switch.h" />
     <ClInclude Include="..\public\Excavator_Tread.h" />
@@ -285,6 +286,7 @@
     <ClInclude Include="..\public\FatherGame_Progress.h" />
     <ClInclude Include="..\public\FatherGame_Progress_Start.h" />
     <ClInclude Include="..\Public\FatherGame_Progress_ZetPack.h" />
+    <ClInclude Include="..\public\Saw.h" />
     <ClInclude Include="..\Public\ShopPanel_RenderFont.h" />
     <ClInclude Include="..\Public\SideScroll_AttackState.h" />
     <ClInclude Include="..\Public\SideScroll_IdleState.h" />
@@ -641,6 +643,7 @@
     <ClCompile Include="..\Private\DefenderPerson.cpp" />
     <ClCompile Include="..\Private\DynamicCastleGate.cpp" />
     <ClCompile Include="..\Private\EvictedSword.cpp" />
+    <ClCompile Include="..\private\ExcavatorGame.cpp" />
     <ClCompile Include="..\private\Excavator_Centre.cpp" />
     <ClCompile Include="..\private\Excavator_Switch.cpp" />
     <ClCompile Include="..\private\Excavator_Tread.cpp" />
@@ -696,6 +699,7 @@
     <ClCompile Include="..\private\FatherGame_Progress.cpp" />
     <ClCompile Include="..\private\FatherGame_Progress_Start.cpp" />
     <ClCompile Include="..\Private\FatherGame_Progress_ZetPack.cpp" />
+    <ClCompile Include="..\Private\Saw.cpp" />
     <ClCompile Include="..\Private\ShopPanel_RenderFont.cpp" />
     <ClCompile Include="..\Private\SideScroll_AttackState.cpp" />
     <ClCompile Include="..\Private\SideScroll_IdleState.cpp" />
