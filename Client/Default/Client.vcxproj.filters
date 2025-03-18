@@ -283,12 +283,6 @@
     <Filter Include="02.GameObjects\NPC\01. LogoNpc">
       <UniqueIdentifier>{c35edf72-37bc-40ea-bfb7-3cbd9b2d2e29}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\UI\03. Logo\00. Logo_BG\03. Logo_Animation">
-      <UniqueIdentifier>{ea4268ec-e206-417e-ae3b-254a0e2ac7a9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\UI\03. Logo\00. Logo_BG\03. Logo_Animation\00. Logo_JotMain">
-      <UniqueIdentifier>{441416e8-4de7-4552-b5ef-b2d6f2278881}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\MapObject\2D\0. Super">
       <UniqueIdentifier>{b9229a37-ad55-422f-9e39-3e7347e6b1e9}</UniqueIdentifier>
     </Filter>
@@ -793,6 +787,9 @@
     <Filter Include="05.MiniGames\ExcavatorGame\Excavator\Saw">
       <UniqueIdentifier>{7f9c88cb-084e-47e1-91c9-149c0ea8edbd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\UI\00. GamePlay\08. BossHP_Bar">
+      <UniqueIdentifier>{1ce4a394-bcd1-4c25-b21a-bffb1a3e4705}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -1120,9 +1117,6 @@
     </ClInclude>
     <ClInclude Include="..\Public\MapObject.h">
       <Filter>02.GameObjects\MapObject\0. Super</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\UI_JotMain.h">
-      <Filter>02.GameObjects\UI\03. Logo\00. Logo_BG\03. Logo_Animation\00. Logo_JotMain</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\MapObjectFactory.h">
       <Filter>92.MapObjectFactory</Filter>
@@ -2043,6 +2037,9 @@
     <ClInclude Include="..\Public\Rubboink.h">
       <Filter>02.GameObjects\Monster</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Turret.h">
+      <Filter>05.MiniGames\ExcavatorGame\Turret</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -2364,9 +2361,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\MapObject.cpp">
       <Filter>02.GameObjects\MapObject\0. Super</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\UI_JotMain.cpp">
-      <Filter>02.GameObjects\UI\03. Logo\00. Logo_BG\03. Logo_Animation\00. Logo_JotMain</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\2DMapActionObject.cpp">
       <Filter>02.GameObjects\MapObject\2D</Filter>
@@ -3277,6 +3271,9 @@
     <ClCompile Include="..\Private\PlayerState_EngageBoss.cpp" />
     <ClCompile Include="..\Private\Rubboink.cpp">
       <Filter>02.GameObjects\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Turret.cpp">
+      <Filter>05.MiniGames\ExcavatorGame\Turret</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

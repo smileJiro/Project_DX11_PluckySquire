@@ -658,6 +658,22 @@ namespace Client
 		return vCalPos;
 	}
 
+	_float3 Lerp(const _float3& _vStartPos, const _float3& _vTargetPos, const _float& _fTimeAcc)
+	{
+		return _float3(_vStartPos.x + (_vTargetPos.x - _vStartPos.x) * _fTimeAcc,
+			_vStartPos.y + (_vTargetPos.y - _vStartPos.y) * _fTimeAcc,
+			_vStartPos.z + (_vTargetPos.z - _vStartPos.z) * _fTimeAcc);
+	}
+
+	_float ParabolicY(_float x, _float z, const _float3& startPos, const _float3& endPos, _float maxHeight, _float curvature)
+	{
+		float t = sqrt(pow(x - startPos.x, 2) + pow(z - startPos.z, 2)) / sqrt(pow(endPos.x - startPos.x, 2) + pow(endPos.z - startPos.z, 2));
+
+		// 포물선의 최고점에서의 y 값을 계산합니다.
+		float a = curvature * maxHeight;  // 포물선의 곡률을 결정
+		return a * t * (1 - t) + startPos.y + t * (endPos.y - startPos.y);
+	}
+
 }
 
 

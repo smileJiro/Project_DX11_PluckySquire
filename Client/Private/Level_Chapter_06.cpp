@@ -250,6 +250,7 @@ HRESULT CLevel_Chapter_06::Initialize(LEVEL_ID _eLevelID)
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::SLIPPERY);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::NPC_EVENT); // ZetPack
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::GIMMICK_OBJECT); // 
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::BOMB);
 	//m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::PORTAL);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_TRIGGER, OBJECT_GROUP::INTERACTION_OBEJCT); //3 8
 
@@ -1964,7 +1965,7 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Effects2D(const _wstring& _strLayerTag)
 	
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Beam"), LEVEL_CHAPTER_6, 1);
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Humgrump_Ha"), LEVEL_CHAPTER_6, 3);
-	
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Generic_Explosion"), LEVEL_STATIC, 5);
 	return S_OK;
 }
 

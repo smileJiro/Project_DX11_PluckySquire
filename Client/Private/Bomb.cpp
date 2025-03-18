@@ -101,8 +101,8 @@ HRESULT CBomb::Initialize(void* _pArg)
 	CircleDesc.fRadius = 30.f;
 	CircleDesc.vScale = { 1.0f, 1.0f };
 	CircleDesc.vOffsetPosition = { 0.f, 0.f };
-	CircleDesc.isBlock = true;
-	CircleDesc.isTrigger = false;
+	CircleDesc.isBlock = false;
+	CircleDesc.isTrigger = true;
 	CircleDesc.iCollisionGroupID = OBJECT_GROUP::MONSTER_PROJECTILE;
 	CircleDesc.iColliderUse = (_uint)COLLIDER2D_USE::COLLIDER2D_BODY;
 	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
@@ -128,7 +128,7 @@ HRESULT CBomb::Initialize(void* _pArg)
 
 	Set_AnimationLoop(COORDINATE_2D, 0, true);
 
-	m_fLifeTime = 1.f;
+	m_fLifeTime = 2.f;
 	m_fExplodeTime = 0.1f;
 
     return S_OK;
@@ -167,6 +167,7 @@ void CBomb::Priority_Update(_float _fTimeDelta)
 
 void CBomb::Update(_float _fTimeDelta)
 {
+	Action_Parabola(_fTimeDelta);
 	__super::Update(_fTimeDelta);
 }
 
@@ -340,6 +341,43 @@ void CBomb::Active_OnDisable()
 	}
 
 	__super::Active_OnDisable();
+}
+
+void CBomb::Action_Parabola(_float _fTimeDelta)
+{
+	if (false == m_isParabolaAction)
+		return;
+
+	m_vParabolaTime.y += _fTimeDelta;
+	if (m_vParabolaTime.x <= m_vParabolaTime.y)
+	{
+		m_vParabolaTime.y = m_vParabolaTime.x;
+		m_isParabolaAction = false;
+		return;
+	}
+	_float fMaxheight = 150.5f;
+	_float fCurv = 5.0f; // °î·ü
+	
+	_float3 vPos = Lerp(m_vStartPos, m_vEndPos, m_vParabolaTime.y);
+
+	vPos.y = ParabolicY(vPos.x, vPos.z, m_vStartPos, m_vEndPos, fMaxheight, fCurv);
+
+	Set_Position(XMVectorSetW(XMLoadFloat3(&vPos), 1.0f));
+}
+
+void CBomb::Start_Parabola(_fvector _vStartPos, _fvector _vEndPos, _float _fParabolaTime)
+{
+	m_isParabolaAction = true;
+	XMStoreFloat3(&m_vStartPos, _vStartPos);
+	XMStoreFloat3(&m_vEndPos, _vEndPos);
+	m_vParabolaTime.x = _fParabolaTime;
+	m_vParabolaTime.y = 0.0f;
+}
+
+void CBomb::Start_Parabola_3D(_fvector _vEndPos, _float _fLaunchAngleRadian, _float _fGravityMag)
+{
+	if(COORDINATE_3D == Get_CurCoord())
+		static_cast<CActor_Dynamic*>(m_pActorCom)->Start_ParabolicTo(_vEndPos, _fLaunchAngleRadian , _fGravityMag);
 }
 
 

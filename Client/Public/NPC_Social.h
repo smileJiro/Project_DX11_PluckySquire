@@ -59,6 +59,7 @@ public:
 	virtual HRESULT				Cleanup_DeadReferences() override; // 참조 중인 게임오브젝트들 중 죽은 Dead상태인 오브젝트를 체크해서 참조해제.(액티브 false인 애들때매 만듬)
 	_bool						is_2D() { return m_is2D; }
 	wstring						Get_NPCName() { return m_strNPCName; }
+	HRESULT						ChangeDialogueID(_wstring _DialogueID) { m_strDialogueID = _DialogueID; return S_OK; }
 
 
 private:

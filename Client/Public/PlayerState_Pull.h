@@ -12,7 +12,7 @@ public:
     void Update(_float _fTimeDelta) override;
     virtual void Enter() override;
     virtual void Exit() override;
-
+    virtual void On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce);
 };
 
 END
