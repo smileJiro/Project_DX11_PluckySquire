@@ -10,6 +10,8 @@
 #include "Target_Manager.h"
 #include "PlayerData_Manager.h"
 
+#include "NPC_Manager.h"
+
 CCamera_2D::CCamera_2D(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CCamera{ pDevice, pContext }
 {
@@ -183,9 +185,18 @@ void CCamera_2D::Switch_CameraView(INITIAL_DATA* _pInitialData)
 	// Sketch Space 면에 따라서 Arm 바꿔 주기
 	if (CSection_Manager::GetInstance()->Is_WordPos_Capcher())
 	{
-		/*if (CSection_2D::WORLDMAP == m_iPlayType) {
+		if (CSection_2D::WORLDMAP == m_iPlayType) {
+
+			CGameObject* pWorldNpc = CNPC_Manager::GetInstance()->Get_WorldmapNpc();
+			Change_Target(pWorldNpc);
 			
-		}*/
+			pair<ARM_DATA*, SUB_DATA*>* pData = nullptr;
+
+			pData = Find_ArmData(TEXT("Book_Horizon"));
+
+			if (nullptr != pData)
+				Set_InitialData(pData);
+		}
 #pragma region Book
 		if (CSection_2D::PLAYMAP == m_iPlayType) { // 일단 Narration이랑 Book이랑 같이 처리
 			
@@ -322,6 +333,13 @@ void CCamera_2D::Switch_CameraView(INITIAL_DATA* _pInitialData)
 	if (nullptr == _pInitialData) {
 		
 		_vector vTargetPos = {};
+
+		// WorldMap으로 처음 Change될 때 타겟을 변경하기 위함
+		if (CSection_2D::WORLDMAP == m_iPlayType) {
+			CGameObject* pWorldNpc = CNPC_Manager::GetInstance()->Get_WorldmapNpc();
+			if(nullptr != pWorldNpc)
+				Change_Target(pWorldNpc);
+		}
 
 		if(COORDINATE_2D ==m_eTargetCoordinate)
 			vTargetPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName, { m_pTargetWorldMatrix->_41, m_pTargetWorldMatrix->_42 });
@@ -623,6 +641,8 @@ void CCamera_2D::Action_SetUp_ByMode()
 				break;
 			case CSection_2D::WORLDMAP:
 			{
+				CGameObject* pWorldNpc = CNPC_Manager::GetInstance()->Get_WorldmapNpc();
+				Change_Target(pWorldNpc);
 			}
 				break;
 			case CSection_2D::SKSP:
@@ -957,7 +977,7 @@ void CCamera_2D::Find_TargetPos()
 	case (_uint)COORDINATE_2D:
 	{
 #pragma region Book
-		if (CSection_2D::PLAYMAP == m_iPlayType || CSection_2D::WORLDMAP) {
+		if (CSection_2D::PLAYMAP == m_iPlayType || CSection_2D::WORLDMAP == m_iPlayType) {
 
 			if (false == Is_Target_In_SketchSpace())
 				break;
@@ -1130,7 +1150,7 @@ void CCamera_2D::Find_TargetPos()
 
 void CCamera_2D::Calculate_Book_Scroll()
 {
-	if ((CSection_2D::PLAYMAP != m_iPlayType && CSection_2D::MINIGAME != m_iPlayType)|| COORDINATE_3D == m_eTargetCoordinate )
+	if ((CSection_2D::PLAYMAP != m_iPlayType && CSection_2D::MINIGAME != m_iPlayType && CSection_2D::WORLDMAP != m_iPlayType)|| COORDINATE_3D == m_eTargetCoordinate )
 		return;
 
 	_float2 fSectionSize = CSection_Manager::GetInstance()->Get_Section_RenderTarget_Size(m_strSectionName);
@@ -1237,7 +1257,7 @@ void CCamera_2D::Change_LengthValue(_float _fTimeDelta)
 
 void CCamera_2D::Check_MagnificationType()
 {
-	if (CSection_2D::PLAYMAP != m_iPlayType && CSection_2D::MINIGAME != m_iPlayType)
+	if (CSection_2D::PLAYMAP != m_iPlayType && CSection_2D::MINIGAME != m_iPlayType && CSection_2D::WORLDMAP != m_iPlayType)
 		return;
 
 	CSection* pSection = CSection_Manager::GetInstance()->Find_Section(m_strSectionName);
@@ -1403,8 +1423,26 @@ void CCamera_2D::Check_WorldPosChaptured()
 	if (false == m_isWolrdPosChaptured) {
 		if (CSection_Manager::GetInstance()->Is_WordPos_Capcher()) {
 			m_isWolrdPosChaptured = true;
-			CGameObject* pPlayer = CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr();
-			Change_Target(pPlayer, 0.5f);
+
+			CSection* pSection = CSection_Manager::GetInstance()->Find_Section(m_strSectionName);
+			m_iPlayType = static_cast<CSection_2D*>(pSection)->Get_Section_2D_PlayType();
+
+			switch (m_iPlayType)
+			{
+			case CSection_2D::WORLDMAP:
+			{
+				CGameObject* pWorldNpc = CNPC_Manager::GetInstance()->Get_WorldmapNpc();
+				Change_Target(pWorldNpc);
+			}
+				break;
+			default:
+			{
+				CGameObject* pPlayer = CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr();
+				Change_Target(pPlayer, 0.5f);
+			}
+				break;
+			}
+	
 			Start_Changing_LengthValue(m_fLengthValue, m_fOriginLengthValue);
 		}
 	}

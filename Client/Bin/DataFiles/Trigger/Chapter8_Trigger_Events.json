@@ -188,5 +188,15 @@
         "Is_Sequence": true
       }
     ]
+  },
+  {
+    "Trigger_EventTag": "Chapter8_Meet_Humgrump",
+    "Actions": [
+      {
+        "ActionTag": "Create_EventExecuter",
+        "EventTag": "Chapter8_Meet_Humgrump",
+        "Is_Sequence": true
+      }
+    ]
   }
 ]

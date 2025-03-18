@@ -38,8 +38,8 @@ public:
 	void								Set_WorldmapNpc(CWorldMapNPC* _WorldNpc) { m_pWorldNpc = _WorldNpc; Safe_AddRef(_WorldNpc); }
 	CWorldMapNPC*						Get_WorldmapNpc()
 	{
-		if (nullptr == m_pWorldNpc)
-			assert(m_pWorldNpc);
+		//if (nullptr == m_pWorldNpc)
+		//	assert(m_pWorldNpc);
 
 		return m_pWorldNpc;
 	}

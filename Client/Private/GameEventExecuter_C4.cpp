@@ -623,6 +623,20 @@ void CGameEventExecuter_C4::Chapter4_3D_Out_02(_float _fTimeDelta)
 		// 카메라 원복
 		CCamera_Manager::GetInstance()->Start_ResetArm_To_SettingPoint(CCamera_Manager::TARGET, 0.5f);
 		Next_Step_Over(0.5f);
+
+		// 3D Trigger 생성
+		CTriggerObject::TRIGGEROBJECT_DESC Desc = {};
+		Desc.vHalfExtents = { 5.f, 5.f, 0.f };
+		Desc.iTriggerType = (_uint)TRIGGER_TYPE::EVENT_TRIGGER;
+		Desc.szEventTag = TEXT("Chapter4_Intro");
+		Desc.eConditionType = CTriggerObject::TRIGGER_ENTER;
+		Desc.isReusable = false; // 한 번 하고 삭제할 때
+		Desc.eStartCoord = COORDINATE_3D;
+		Desc.tTransform3DDesc.vInitialPosition = { -6.71f, 1.07f, -17.2f };
+
+		CSection* pBookSection = CSection_Manager::GetInstance()->Find_Section(TEXT("Chapter4_P0708"));
+		CTrigger_Manager::GetInstance()->Create_TriggerObject(LEVEL_STATIC, LEVEL_CHAPTER_4, &Desc, pBookSection);
+
 	}
 	else
 		GameEvent_End();
