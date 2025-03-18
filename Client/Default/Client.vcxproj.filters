@@ -787,6 +787,9 @@
     <Filter Include="05.MiniGames\ExcavatorGame\Excavator\Saw">
       <UniqueIdentifier>{7f9c88cb-084e-47e1-91c9-149c0ea8edbd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\UI\00. GamePlay\08. BossHP_Bar">
+      <UniqueIdentifier>{1ce4a394-bcd1-4c25-b21a-bffb1a3e4705}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
