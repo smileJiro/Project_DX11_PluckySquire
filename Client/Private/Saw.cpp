@@ -2,6 +2,7 @@
 #include "Saw.h"
 #include "GameInstance.h"
 #include "Section_Manager.h"
+#include "Character.h"
 
 CSaw::CSaw(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     :CModelObject(_pDevice, _pContext)
@@ -26,7 +27,7 @@ HRESULT CSaw::Initialize(void* _pArg)
     // Add Desc
     pDesc->Build_2D_Model(pDesc->iCurLevelID, TEXT("Saw"), TEXT("Prototype_Component_Shader_VtxPosTex"));
     pDesc->eStartCoord = COORDINATE_2D;
-    pDesc->iObjectGroupID = OBJECT_GROUP::MONSTER_PROJECTILE;
+    pDesc->iObjectGroupID = OBJECT_GROUP::MONSTER;
     pDesc->isCoordChangeEnable = false;
     if (FAILED(__super::Initialize(_pArg)))
         return E_FAIL;
@@ -76,6 +77,22 @@ HRESULT CSaw::Render()
 #endif
 
 	return __super::Render();
+}
+
+void CSaw::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
+{
+	if (OBJECT_GROUP::PLAYER & _pOtherObject->Get_ObjectGroupID())
+	{
+		Event_Hit(this, static_cast<CCharacter*>(_pOtherObject), 1, XMVectorSet(0.0f, -500.f, 0.0f, 0.0f));
+	}
+}
+
+void CSaw::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
+{
+}
+
+void CSaw::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
+{
 }
 
 void CSaw::State_Change()
@@ -222,12 +239,12 @@ HRESULT CSaw::Ready_Components(SAW_DESC* _pDesc)
 
 	CCollider_Circle::COLLIDER_CIRCLE_DESC Desc = {};
 	Desc.pOwner = this;
-	Desc.fRadius = 300.0f;
+	Desc.fRadius = 350.0f;
 	Desc.vScale = { 1.0f, 1.0f };
-	Desc.vOffsetPosition = { 0.0f, 0.0f };
-	Desc.isBlock = true;
-	Desc.isTrigger = false;
-	Desc.iCollisionGroupID = OBJECT_GROUP::MONSTER_PROJECTILE;
+	Desc.vOffsetPosition = { 0.0f, Desc.fRadius * 0.5f };
+	Desc.isBlock = false;
+	Desc.isTrigger = true;
+	Desc.iCollisionGroupID = OBJECT_GROUP::MONSTER;
 	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
 		TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &Desc)))
 		return E_FAIL;

@@ -20,6 +20,7 @@ void CPlayerState_CyberIdle::Update(_float _fTimeDelta)
 	{
 		m_pOwner->Shoot_Rifle();
 	}
+	_vector vVelocity = { 0.f,0.f,0.f };
 	if (tKeyResult.bInputStates[PLAYER_INPUT_MOVE])
 	{
 
@@ -30,16 +31,14 @@ void CPlayerState_CyberIdle::Update(_float _fTimeDelta)
 		}
 		else
 		{
-			m_f3DCyberCurrentSpeed = m_f3DCyberFlySpeed;
+			vVelocity = tKeyResult.vMoveDir * m_pOwner->Get_CyberFlySpeed();
 		}
 
 	}
-	m_f3DCyberFlySpeed -= m_f3DCyberLinearDamping * _fTimeDelta;
-	_vector vVelocity = tKeyResult.vMoveDir * m_f3DCyberCurrentSpeed;
 
-	Set_VeloState(tKeyResult.vMoveDir * m_f3DCyberCurrentSpeed);
-	m_pOwner->Move_CyberPlane(tKeyResult.vMoveDir * m_f3DCyberCurrentSpeed, _fTimeDelta);
-	
+	m_pOwner->Set_CyberVelocity(vVelocity);
+	m_pOwner->Update_CyberJot(_fTimeDelta);
+	Set_VeloState(m_pOwner->Get_CyberVelocity());
 }
 
 void CPlayerState_CyberIdle::Enter()
@@ -70,11 +69,7 @@ void CPlayerState_CyberIdle::Set_VeloState(_fvector _vVelocity)
 {
 	_float fVelocity = XMVectorGetX(XMVector2Length(_vVelocity));
 	VELOCITY_STATE eNewVeloState = VELOCITY_STATE::VELOCITY_IDLE;
-	if (fVelocity >= 6.f)
-	{
-		eNewVeloState = VELOCITY_DASH;
-	}
-	else if (fVelocity >= 1.f)
+	if (fVelocity >= m_fFlyMotionThreshold)
 	{
 		F_DIRECTION eFDir = To_FDirection(_vVelocity);
 		switch (eFDir)
@@ -146,6 +141,13 @@ void CPlayerState_CyberDash::Update(_float _fTimeDelta)
 		m_pOwner->Shoot_Rifle();
 	}
 
+	if (m_fDashEndSpeedThreshold >= m_pOwner->Get_CyberCurrentSpeed())
+	{
+		m_pOwner->Set_State(CPlayer::CYBER_IDLE);
+		return;
+	}
+
+	m_pOwner->Update_CyberJot(_fTimeDelta);
 }
 
 void CPlayerState_CyberDash::Enter()
@@ -154,6 +156,8 @@ void CPlayerState_CyberDash::Enter()
 	m_pTargetCamera = static_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_CurrentCamera());
 
 	PLAYER_INPUT_RESULT tKeyResult = m_pOwner->Player_KeyInput_CyberJot();
+	m_vDashVelocity = tKeyResult.vMoveDir * m_pOwner->Get_CyberDashSpeed();
+	m_pOwner->Set_CyberVelocity(m_vDashVelocity);
 	F_DIRECTION eFDirection = To_FDirection(tKeyResult.vMoveDir);
 	switch (eFDirection)
 	{
@@ -176,7 +180,7 @@ void CPlayerState_CyberDash::Enter()
 	_float fG = m_pGameInstance->Compute_Random(0.6, 0.909f);
 	static_cast<CModelObject*>(m_pOwner->Get_PartObject(CPlayer::PART::PART_BODY))->On_Trail(0.05f, 0.5f, _float4(0.0f, fG, 1.0f, 0.7f)/*,_float4(242.f / 255.f, 44.f / 255.f, 103.f / 255.f, 0.9f)*/);
 	static_cast<CModelObject*>(m_pOwner->Get_PartObject(CPlayer::PLAYER_PART::PLAYER_PART_ZETPACK))->On_Trail(0.05f, 0.5f, _float4(0.0f, fG, 1.0f, 0.7f)/*,_float4(242.f / 255.f, 44.f / 255.f, 103.f / 255.f, 0.9f)*/);
-	m_pDynamicActor->Set_LinearDamping(7.5f);
+
 }
 
 void CPlayerState_CyberDash::Exit()
@@ -200,10 +204,14 @@ CPlayerState_CyberHit::CPlayerState_CyberHit(CPlayer* _pOwner)
 void CPlayerState_CyberHit::Update(_float _fTimeDelta)
 {
 	PLAYER_INPUT_RESULT tKeyResult = m_pOwner->Player_KeyInput_CyberJot();
+	_vector vVelocity = { 0.f,0.f,0.f };
 	if (tKeyResult.bInputStates[PLAYER_INPUT_MOVE])
 	{
-
+		vVelocity = tKeyResult.vMoveDir * m_pOwner->Get_CyberFlySpeed();
 	}
+
+	m_pOwner->Set_CyberVelocity(vVelocity);
+	m_pOwner->Update_CyberJot(_fTimeDelta);
 }
 
 void CPlayerState_CyberHit::Enter()

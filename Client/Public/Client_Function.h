@@ -72,5 +72,8 @@ namespace Client
 	_float2		Convert_Pos_ToWindow(_float2 _fProjPos, _float2 _fRenderTargetSize);
 	_float2		Convert_Pos_ToProj(_float2 _fWindowPos, _float2 _fRenderTargetSize);
 
+	_float3 Lerp(const _float3& _vStartPos, const _float3& _vTargetPos, const _float& _fTimeAcc); // 선형보간 함수.,
+
+	_float ParabolicY(_float x, _float z, const _float3& startPos, const _float3& endPos, _float maxHeight, _float curvature = -4.f);
 
 }

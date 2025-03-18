@@ -250,6 +250,8 @@ HRESULT CLevel_Chapter_06::Initialize(LEVEL_ID _eLevelID)
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::SLIPPERY);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::NPC_EVENT); // ZetPack
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::GIMMICK_OBJECT); // 
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::BOMB);
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::EXPLOSION);
 	//m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::PORTAL);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_TRIGGER, OBJECT_GROUP::INTERACTION_OBEJCT); //3 8
 
@@ -266,6 +268,7 @@ HRESULT CLevel_Chapter_06::Initialize(LEVEL_ID _eLevelID)
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::PLAYER_PROJECTILE);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::INTERACTION_OBEJCT);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::BLOCKER);
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::EXPLOSION);
 	
 
 	
@@ -459,8 +462,11 @@ void CLevel_Chapter_06::Update(_float _fTimeDelta)
 
 	if (KEY_DOWN(KEY::F5))
 	{
-		_float3 vPos = { 5.f, 0.35f, -3.f };
-		CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &vPos);
+		//_float3 vPos = { 5.f, 0.35f, -3.f };
+		_float3 vPos = { -22.f, -240.f, 0.f };
+		_wstring strSection=TEXT("Chapter5_P0102");
+		//CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &vPos);
+		CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_2D, &vPos, nullptr, nullptr, &strSection);
 	}
 
 	if (KEY_DOWN(KEY::L)) {
@@ -1674,7 +1680,7 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Monster()
 	//Bomb_Soldier_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 	//Bomb_Soldier_Desc.tTransform3DDesc.vInitialPosition = _float3(-5.5f, 0.35f, -13.0f);
 
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Bomb_Soldier"), m_eLevelID, _strLayerTag, &Bomb_Soldier_Desc)))
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Bomb_Soldier"), m_eLevelID, strLayerTag, &Bomb_Soldier_Desc)))
 	//	return E_FAIL;
 
 	const _wstring _strLayerTag = L"Layer_Monster";
@@ -1964,7 +1970,7 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Effects2D(const _wstring& _strLayerTag)
 	
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Beam"), LEVEL_CHAPTER_6, 1);
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Humgrump_Ha"), LEVEL_CHAPTER_6, 3);
-	
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Generic_Explosion"), LEVEL_STATIC, 5);
 	return S_OK;
 }
 

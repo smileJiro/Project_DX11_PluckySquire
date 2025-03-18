@@ -49,6 +49,32 @@ void CExcavator_Tread::Late_Update(_float _fTimeDelta)
 	__super::Late_Update(_fTimeDelta);
 }
 
+void CExcavator_Tread::Start_Wheel()
+{
+	static_cast<CModelObject*>(m_PartObjects[TREAD_LUGNUTS_L])->Set_PlayingAnim(true);
+	static_cast<CModelObject*>(m_PartObjects[TREAD_LUGNUTS_M])->Set_PlayingAnim(true);
+	static_cast<CModelObject*>(m_PartObjects[TREAD_LUGNUTS_R])->Set_PlayingAnim(true);
+
+	static_cast<CModelObject*>(m_PartObjects[TREAD_LINES])->Set_PlayingAnim(true);
+}
+
+void CExcavator_Tread::Stop_Wheel()
+{
+	static_cast<CModelObject*>(m_PartObjects[TREAD_LUGNUTS_L])->Set_PlayingAnim(false);
+	static_cast<CModelObject*>(m_PartObjects[TREAD_LUGNUTS_M])->Set_PlayingAnim(false);
+	static_cast<CModelObject*>(m_PartObjects[TREAD_LUGNUTS_R])->Set_PlayingAnim(false);
+
+	static_cast<CModelObject*>(m_PartObjects[TREAD_LINES])->Set_PlayingAnim(false);
+}
+
+void CExcavator_Tread::Start_Part_HitRender()
+{
+	for (_uint i = 0; i < TREAD_LAST; ++i)
+	{
+		static_cast<CModelObject*>(m_PartObjects[i])->Start_HitRender();
+	}
+}
+
 HRESULT CExcavator_Tread::Ready_PartObjects(TREAD_DESC* _pDesc)
 {
 	{/* Part Inner */
@@ -91,7 +117,7 @@ HRESULT CExcavator_Tread::Ready_PartObjects(TREAD_DESC* _pDesc)
 		if (nullptr == m_PartObjects[TREAD_LINES])
 			return E_FAIL;
 		static_cast<CModelObject*>(m_PartObjects[TREAD_LINES])->Switch_Animation(TREAD_LINES);
-		static_cast<CModelObject*>(m_PartObjects[TREAD_LINES])->Set_PlayingAnim(true);
+		static_cast<CModelObject*>(m_PartObjects[TREAD_LINES])->Set_PlayingAnim(false);
 	}/* Part Lines */
 
 	{/* Part Wheel_L */
@@ -148,7 +174,7 @@ HRESULT CExcavator_Tread::Ready_PartObjects(TREAD_DESC* _pDesc)
 		if (nullptr == m_PartObjects[TREAD_LUGNUTS_L])
 			return E_FAIL;
 		static_cast<CModelObject*>(m_PartObjects[TREAD_LUGNUTS_L])->Switch_Animation(TREAD_LUGNUTS_L);
-		static_cast<CModelObject*>(m_PartObjects[TREAD_LUGNUTS_L])->Set_PlayingAnim(true);
+		static_cast<CModelObject*>(m_PartObjects[TREAD_LUGNUTS_L])->Set_PlayingAnim(false);
 	}/* Part Lugnuts_L */
 
 	{/* Part Lugnuts_M */
@@ -163,7 +189,7 @@ HRESULT CExcavator_Tread::Ready_PartObjects(TREAD_DESC* _pDesc)
 		if (nullptr == m_PartObjects[TREAD_LUGNUTS_M])
 			return E_FAIL;
 		static_cast<CModelObject*>(m_PartObjects[TREAD_LUGNUTS_M])->Switch_Animation(TREAD_LUGNUTS_L);
-		static_cast<CModelObject*>(m_PartObjects[TREAD_LUGNUTS_M])->Set_PlayingAnim(true);
+		static_cast<CModelObject*>(m_PartObjects[TREAD_LUGNUTS_M])->Set_PlayingAnim(false);
 	}/* Part Lugnuts_M */
 
 	{/* Part Lugnuts_R */
@@ -178,7 +204,7 @@ HRESULT CExcavator_Tread::Ready_PartObjects(TREAD_DESC* _pDesc)
 		if (nullptr == m_PartObjects[TREAD_LUGNUTS_R])
 			return E_FAIL;
 		static_cast<CModelObject*>(m_PartObjects[TREAD_LUGNUTS_R])->Switch_Animation(TREAD_LUGNUTS_L);
-		static_cast<CModelObject*>(m_PartObjects[TREAD_LUGNUTS_R])->Set_PlayingAnim(true);
+		static_cast<CModelObject*>(m_PartObjects[TREAD_LUGNUTS_R])->Set_PlayingAnim(false);
 	}/* Part Lugnuts_R */
 	
 

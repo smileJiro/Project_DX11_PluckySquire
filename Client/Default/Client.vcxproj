@@ -201,6 +201,7 @@
     <ClInclude Include="..\Public\BombStamp.h" />
     <ClInclude Include="..\Public\BombSwitch.h" />
     <ClInclude Include="..\Public\BombSwitchStopper.h" />
+    <ClInclude Include="..\Public\Bomb_AlertState.h" />
     <ClInclude Include="..\Public\BossDeadState.h" />
     <ClInclude Include="..\Public\BossHitState.h" />
     <ClInclude Include="..\Public\BossMoveState.h" />
@@ -263,10 +264,12 @@
     <ClInclude Include="..\Public\MonsterJumpState.h" />
     <ClInclude Include="..\Public\MonsterMoveState.h" />
     <ClInclude Include="..\public\Mug_Alien.h" />
+    <ClInclude Include="..\Public\PanicState.h" />
     <ClInclude Include="..\Public\Patrol_WayState.h" />
     <ClInclude Include="..\Public\PlayerBlocker.h" />
     <ClInclude Include="..\Public\PlayerState_BackRoll.h" />
     <ClInclude Include="..\Public\PlayerState_CannonPortal.h" />
+    <ClInclude Include="..\Public\PlayerState_EngageBoss.h" />
     <ClInclude Include="..\Public\PlayerState_Mojam.h" />
     <ClInclude Include="..\Public\Npc_Humgrump.h" />
     <ClInclude Include="..\Public\Npc_MoonBeard.h" />
@@ -286,6 +289,7 @@
     <ClInclude Include="..\public\FatherGame_Progress.h" />
     <ClInclude Include="..\public\FatherGame_Progress_Start.h" />
     <ClInclude Include="..\Public\FatherGame_Progress_ZetPack.h" />
+    <ClInclude Include="..\Public\Rubboink.h" />
     <ClInclude Include="..\public\Saw.h" />
     <ClInclude Include="..\Public\ShopPanel_RenderFont.h" />
     <ClInclude Include="..\Public\SideScroll_AttackState.h" />
@@ -345,6 +349,7 @@
     <ClInclude Include="..\Public\Interaction_Key.h" />
     <ClInclude Include="..\Public\TiltSwapCrate.h" />
     <ClInclude Include="..\public\TurnBookEffect.h" />
+    <ClInclude Include="..\public\Turret.h" />
     <ClInclude Include="..\Public\WorldMapNPC.h" />
     <ClInclude Include="..\Public\WorldMapNpc_Jot.h" />
     <ClInclude Include="..\Public\WorldMapNpc_Thrash.h" />
@@ -579,7 +584,6 @@
     <ClInclude Include="..\public\Player.h" />
     <ClInclude Include="..\public\TestTerrain.h" />
     <ClInclude Include="..\Public\UI.h" />
-    <ClInclude Include="..\Public\UI_JotMain.h" />
     <ClInclude Include="..\public\UI_Manager.h" />
     <ClInclude Include="..\Public\Word.h" />
     <ClInclude Include="..\Public\WordGame_Generator.h" />
@@ -613,6 +617,7 @@
     <ClCompile Include="..\Private\BombStamp.cpp" />
     <ClCompile Include="..\Private\BombSwitch.cpp" />
     <ClCompile Include="..\Private\BombSwitchStopper.cpp" />
+    <ClCompile Include="..\Private\Bomb_AlertState.cpp" />
     <ClCompile Include="..\Private\BossDeadState.cpp" />
     <ClCompile Include="..\Private\BossHitState.cpp" />
     <ClCompile Include="..\Private\BossMoveState.cpp" />
@@ -638,6 +643,7 @@
     <ClCompile Include="..\private\Candle_UI.cpp" />
     <ClCompile Include="..\Private\ChaseFlyState.cpp" />
     <ClCompile Include="..\Private\Chase_WayState.cpp" />
+    <ClCompile Include="..\Private\PlayerState_EngageBoss.cpp" />
     <ClCompile Include="..\Private\DefenderCapsule.cpp" />
     <ClCompile Include="..\Private\DefenderMedShip.cpp" />
     <ClCompile Include="..\Private\DefenderPerson.cpp" />
@@ -676,6 +682,7 @@
     <ClCompile Include="..\Private\MonsterJumpState.cpp" />
     <ClCompile Include="..\Private\MonsterMoveState.cpp" />
     <ClCompile Include="..\private\Mug_Alien.cpp" />
+    <ClCompile Include="..\Private\PanicState.cpp" />
     <ClCompile Include="..\Private\Patrol_WayState.cpp" />
     <ClCompile Include="..\Private\PlayerBlocker.cpp" />
     <ClCompile Include="..\Private\PlayerState_BackRoll.cpp" />
@@ -699,6 +706,7 @@
     <ClCompile Include="..\private\FatherGame_Progress.cpp" />
     <ClCompile Include="..\private\FatherGame_Progress_Start.cpp" />
     <ClCompile Include="..\Private\FatherGame_Progress_ZetPack.cpp" />
+    <ClCompile Include="..\Private\Rubboink.cpp" />
     <ClCompile Include="..\Private\Saw.cpp" />
     <ClCompile Include="..\Private\ShopPanel_RenderFont.cpp" />
     <ClCompile Include="..\Private\SideScroll_AttackState.cpp" />
@@ -755,6 +763,7 @@
     <ClCompile Include="..\Private\Interaction_Key.cpp" />
     <ClCompile Include="..\Private\TiltSwapCrate.cpp" />
     <ClCompile Include="..\private\TurnBookEffect.cpp" />
+    <ClCompile Include="..\private\Turret.cpp" />
     <ClCompile Include="..\Private\WorldMapNPC.cpp" />
     <ClCompile Include="..\Private\WorldMapNpc_Jot.cpp" />
     <ClCompile Include="..\Private\WorldMapNpc_Thrash.cpp" />
@@ -992,7 +1001,6 @@
     <ClCompile Include="..\private\TestTerrain.cpp" />
     <ClCompile Include="..\Private\Transition.cpp" />
     <ClCompile Include="..\Private\UI.cpp" />
-    <ClCompile Include="..\Private\UI_JotMain.cpp" />
     <ClCompile Include="..\private\UI_Manager.cpp" />
     <ClCompile Include="..\Private\Word.cpp" />
     <ClCompile Include="..\Private\WordGame_Generator.cpp" />

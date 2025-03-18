@@ -38,6 +38,8 @@
 #include "Neutral_PatrolState.h"
 #include "Neutral_Patrol_JumpState.h"
 #include "C6_IdleState.h"
+#include "Bomb_AlertState.h"
+#include "PanicState.h"
 
 CFSM::CFSM(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CComponent(_pDevice, _pContext)
@@ -92,6 +94,11 @@ void CFSM::Set_Patrol_Way_Index(_uint _iIndex)
 void CFSM::Set_SideScroll_PatrolBound()
 {
 	static_cast<CSideScroll_PatrolState*>(m_States[(_uint)MONSTER_STATE::SIDESCROLL_PATROL])->Initialize_SideScroll_PatrolBound(m_eSideScroll_Bound);
+}
+
+void CFSM::Set_EvadeTargetPos(_fvector _vEvadeTargetPos)
+{
+	static_cast<CPanicState*>(m_States[(_uint)MONSTER_STATE::PANIC])->Set_EvadeTargetPos(_vEvadeTargetPos);
 }
 
 HRESULT CFSM::Initialize_Prototype()
@@ -816,6 +823,19 @@ HRESULT CFSM::Add_FormationState()
 	pState->Set_FSM(this);
 	m_States.emplace((_uint)MONSTER_STATE::FORMATION_BACK, pState);
 
+	pState = CBomb_AlertState::Create(&Desc);
+	if (nullptr == pState)
+		return E_FAIL;
+	pState->Set_Owner(m_pOwner);
+	pState->Set_FSM(this);
+	m_States.emplace((_uint)MONSTER_STATE::BOMB_ALERT, pState);
+
+	pState = CPanicState::Create(&Desc);
+	if (nullptr == pState)
+		return E_FAIL;
+	pState->Set_Owner(m_pOwner);
+	pState->Set_FSM(this);
+	m_States.emplace((_uint)MONSTER_STATE::PANIC, pState);
 
 
 	pState = CSneak_AwareState::Create(&Desc);

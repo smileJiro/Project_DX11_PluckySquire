@@ -8,7 +8,7 @@ END
 BEGIN(Client)
 class CExcavator_Tread;
 class CExcavator_Centre;
-
+class CTurret;
 class CExcavatorGame : public CBase
 {
     DECLARE_SINGLETON(CExcavatorGame)
@@ -35,10 +35,10 @@ public:
     
 private:
     _bool   Update_Progress(_float _fTimeDelta);
-    _bool    Update_Progress_1(_float _fTimeDelta);
-    _bool    Update_Progress_2(_float _fTimeDelta);
-    _bool    Update_Progress_3(_float _fTimeDelta);
-    _bool    Update_Progress_4(_float _fTimeDelta);
+    _bool   Update_Progress_1(_float _fTimeDelta);
+    _bool   Update_Progress_2(_float _fTimeDelta);
+    _bool   Update_Progress_3(_float _fTimeDelta);
+    _bool   Update_Progress_4(_float _fTimeDelta);
 
     void    Enter_Progress();
     void    Exit_Progress();
@@ -48,12 +48,24 @@ private:
     ID3D11DeviceContext* m_pContext = nullptr;
     CGameInstance* m_pGameInstance = nullptr;
 
+public:
+    _int Minus_HP();
+
+private:
+    _int        m_iHP = 5;
+
 private:
     _bool                   m_isPlaying = false;
     _bool                   m_isGameEnd = false;
     _uint                   m_iCurProgress = (_uint)PROGRESS::PROGRESS_1;
     _uint                   m_iSwitchCount = 0;
     vector<CCharacter*>     m_ExcavatorParts{};
+
+private: /* Turret */
+    CTurret* m_pTurret_Left = nullptr;
+    CTurret* m_pTurret_Right = nullptr;
+
+    /* Doors */
     vector<class CDoor_Red*> m_Doors;
 private: /* Excavator State */
     EXCAVATOR_STATE m_ePreState = EXCAVATOR_STATE::STATE_LAST;

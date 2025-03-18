@@ -19,10 +19,14 @@ public:
 	virtual void			Priority_Update(_float _fTimeDelta)override;
 	virtual void			Update(_float _fTimeDelta) override;
 	virtual void			Late_Update(_float _fTimeDelta) override;
+	virtual	HRESULT			Render() override;
 
+	void					On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce) override;
+	void					Start_Part_HitRender();
+	void					Render_DeadEffect();
 private:
 	HRESULT					Ready_PartObjects(CENTRE_DESC* _pDesc);
-
+	HRESULT					Ready_Components(CENTRE_DESC* _pDesc);
 private: /* Centre Switch Count */
 	void Check_SwitchCount();
 	_bool m_isFirst = false;

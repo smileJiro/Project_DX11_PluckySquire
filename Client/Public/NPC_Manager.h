@@ -44,6 +44,8 @@ public:
 		return m_pWorldNpc;
 	}
 
+	HRESULT								ChangeDialogue(_wstring _NPCName, _wstring _DialogueID);
+
 
 public:
 	HRESULT								Level_Exit(_int iCurLevelID, _int _iChangeLevelID, _int _iNextChangeLevelID);

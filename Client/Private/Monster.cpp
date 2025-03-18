@@ -12,6 +12,7 @@
 #include "PlayerData_Manager.h"
 #include "Formation.h"
 #include "Formation_Manager.h"
+#include "ModelObject.h"
 
 CMonster::CMonster(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CCharacter(_pDevice, _pContext)
@@ -161,6 +162,11 @@ void CMonster::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, co
 		//XMVectorSetY( vRepulse , -1.f);
 		//Event_KnockBack(static_cast<CCharacter*>(_Other.pActorUserData->pOwner), vRepulse);
 	}
+
+	if (OBJECT_GROUP::MAPOBJECT & _Other.pActorUserData->iObjectGroup)
+	{
+		m_isContact_Block = true;
+	}
 }
 
 void CMonster::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
@@ -169,7 +175,10 @@ void CMonster::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, con
 
 void CMonster::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
 {
-
+	if (OBJECT_GROUP::MAPOBJECT & _Other.pActorUserData->iObjectGroup)
+	{
+		m_isContact_Block = false;
+	}
 }
 
 void CMonster::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
@@ -273,6 +282,7 @@ void CMonster::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
 				m_p2DColliderComs[0]->Set_Active(false);
 			}
 
+			static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Start_HitRender();
 			Event_ChangeMonsterState(MONSTER_STATE::DEAD, m_pFSM);
 		}
 
@@ -301,6 +311,8 @@ void CMonster::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
 
 		else if (COORDINATE_2D == Get_CurCoord())
 		{
+
+			static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Start_HitRender();
 			_matrix matFX = Get_ControllerTransform()->Get_WorldMatrix();
 
 			_wstring strFXTag = L"Hit_FX";
@@ -651,6 +663,7 @@ _bool CMonster::Remove_From_Formation()
 			//Event_Set_Kinematic(pDynamic, false);
 		return true;
 	}
+	m_pFormation = nullptr;
 
 	return false;
 }

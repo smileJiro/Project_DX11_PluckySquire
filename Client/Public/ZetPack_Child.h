@@ -69,6 +69,7 @@ public:
 	void									Set_CurState(STATE _eState) { m_eCurState = _eState; }
 	void									Set_DialogueIndex(_int _iIndex) { m_iDialogueIndex = _iIndex; }
 	void									Plus_DialogueIndex() { ++m_iDialogueIndex; }
+	void									ContactPlayer_End() { m_isContactPlayer = false; }
 private:
 	CPlayer*								m_pPlayer = nullptr;
 

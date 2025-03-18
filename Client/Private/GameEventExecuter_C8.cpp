@@ -326,6 +326,7 @@ void CGameEventExecuter_C8::Chapter8_Laser_Stage(_float _fTimeDelta)
 			if (Is_Start())
 			{
 				static_cast<CBig_Laser*>(m_TargetObjects[LASER])->Move_Start(1800.f, 100.f);
+				static_cast<CBig_Laser*>(m_TargetObjects[LASER])->Set_Beam_Collider(true);
 				pPlayer->Set_BlockPlayerInput(false);
 			}
 			Next_Step_Over(4.5f);
@@ -392,21 +393,23 @@ void CGameEventExecuter_C8::Chapter8_Laser_Stage(_float _fTimeDelta)
 			//static_cast<CModelObject*>(m_TargetObjects[BRIDGE])->Get_ControllerTransform()->MoveTo(vTargetPos,_fTimeDelta);
 
 
-			if(Next_Step(m_TargetObjects[BRIDGE]->Get_ControllerTransform()->Compute_Distance(vTargetPos) < 5.f))
-				m_TargetObjects[PIP]->Set_Active(false);
-		
+			Next_Step(m_TargetObjects[BRIDGE]->Get_ControllerTransform()->Compute_Distance(vTargetPos) < 10.f);
 		}
 		else if (Step_Check(STEP_8))
 		{
 			if (Is_Start())
 			{
 				Event_DeleteObject(m_TargetObjects[BLOCKER]);
+				m_TargetObjects[BLOCKER] = nullptr;
 			}
-			Next_Step(true);
-		}
-		else if (Step_Check(STEP_9))
-		{
-			Next_Step_Over(5.f);
+
+			if (1.5f < m_fTimer && true == m_TargetObjects[PIP]->Is_Active() && false == m_isPlag)
+			{
+				m_TargetObjects[PIP]->Set_Active(false);
+				m_isPlag = true;
+			}
+
+			Next_Step(false == static_cast<CBig_Laser*>(m_TargetObjects[LASER])->Is_Move());
 		}
 		else
 		{
@@ -441,7 +444,8 @@ void CGameEventExecuter_C8::Chapter8_Laser_Stage_2(_float _fTimeDelta)
 			pFriend->Set_Active(true);
 			pFriend->Set_Position(XMVectorSet(851.f, 130.f, 0.f, 0.f));
 			static_cast<CFriend_Pip*>(pFriend)->Change_CurState(CFriend::FRIEND_IDLE);
-			static_cast<CFriend_Pip*>(pFriend)->Move_Position(_float2(1053.0f, 96.0f), CFriend::DIR_DOWN);
+			_vector vPlayerPos = pPlayer->Get_FinalPosition();
+			static_cast<CFriend_Pip*>(pFriend)->Move_Position(_float2(XMVectorGetX(vPlayerPos), 96.0f), CFriend::DIR_DOWN);
 		}
 
 		Next_Step_Over(1.f);
@@ -463,10 +467,11 @@ void CGameEventExecuter_C8::Chapter8_Laser_Stage_2(_float _fTimeDelta)
 			CDialog_Manager::GetInstance()->Set_DialogId(L"Chapter8_Laser_Stage_2");
 		}
 		else
-			Next_Step(!CDialog_Manager::GetInstance()->Get_DisPlayDialogue());
+			if(Next_Step(!CDialog_Manager::GetInstance()->Get_DisPlayDialogue()))
+				pPlayer->Set_BlockPlayerInput(true);
 	}
-	else 
-	{ 
+	else
+	{
 		CFriend_Controller::GetInstance()->Register_Friend(TEXT("Pip"), (CFriend*)m_TargetObjects[0]);
 		CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(TEXT("Pip"));
 
@@ -476,7 +481,7 @@ void CGameEventExecuter_C8::Chapter8_Laser_Stage_2(_float _fTimeDelta)
 
 		GameEvent_End();
 	}
-	
+
 }
 
 void CGameEventExecuter_C8::Chapter8_Friend_Appear_Violet(_float _fTimeDelta)
@@ -494,6 +499,8 @@ void CGameEventExecuter_C8::Chapter8_Friend_Appear_Violet(_float _fTimeDelta)
 	{
 		if (Is_Start())
 		{
+			m_TargetObjects.resize(LAST);
+
 			pPlayer->Set_BlockPlayerInput(true);
 			CFriend_Controller::GetInstance()->End_Train();
 
@@ -526,7 +533,8 @@ void CGameEventExecuter_C8::Chapter8_Friend_Appear_Violet(_float _fTimeDelta)
 			CModelObject::MODELOBJECT_DESC Desc = {};
 
 			Desc.Build_2D_Model(m_iCurLevelID, L"Violet_Hat", L"Prototype_Component_Shader_VtxPosTex");
-			Desc.Build_2D_Transform({ -272.f,0.f });
+			Desc.iModelPrototypeLevelID_2D = LEVEL_STATIC;
+			Desc.Build_2D_Transform({ -272.f,20.f });
 			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC,
 				TEXT("Prototype_GameObject_ModelObject"), m_iCurLevelID,
 				L"Layer_Friend", &pGameObject, &Desc)))
@@ -539,10 +547,9 @@ void CGameEventExecuter_C8::Chapter8_Friend_Appear_Violet(_float _fTimeDelta)
 
 
 
-			static_cast<CFriend*>(m_TargetObjects[0])->Change_AnyState(CFriend_Violet::VIOLET_C09_LYINGDESPONDENT, true, CFriend::DIR_RIGHT);
+			static_cast<CFriend*>(m_TargetObjects[VIOLET])->Change_AnyState(CFriend_Violet::VIOLET_C09_LYINGDESPONDENT, true, CFriend::DIR_RIGHT);
 
 
-			m_TargetObjects.resize(LAST);
 			m_TargetObjects[PIP] = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Pip"));
 		}
 		Next_Step_Over(1.f);
@@ -555,14 +562,14 @@ void CGameEventExecuter_C8::Chapter8_Friend_Appear_Violet(_float _fTimeDelta)
 			{
 				static_cast<CFriend_Pip*>(m_TargetObjects[PIP])->Move_Position(_float2(-185.f, -8.f), CFriend::DIR_LEFT);
 			}
-
+			pPlayer->Set_2DDirection(F_DIRECTION::LEFT);
 			AUTOMOVE_COMMAND AutoMove{};
 			AutoMove.eType = AUTOMOVE_TYPE::MOVE_TO;
 			AutoMove.fPostDelayTime = 0.0f;
 			AutoMove.fPreDelayTime = 0.0f;
 			AutoMove.fMoveSpeedMag = 2.f;
 			AutoMove.iAnimIndex = (_uint)CPlayer::ANIM_STATE_2D::PLAYER_RUN_RIGHT;
-			AutoMove.vTarget = XMVectorSet(-175.f,33.f,0.f,0.f);
+			AutoMove.vTarget = XMVectorSet(-175.f, 33.f, 0.f, 0.f);
 
 			AUTOMOVE_COMMAND AutoMove2{};
 			AutoMove2.eType = AUTOMOVE_TYPE::LOOK_DIRECTION;
@@ -596,7 +603,8 @@ void CGameEventExecuter_C8::Chapter8_Friend_Appear_Violet(_float _fTimeDelta)
 			CDialog_Manager::GetInstance()->Set_DialogId(L"Chapter8_Friend_Appear_Violet_01");
 		}
 		else
-			Next_Step(!CDialog_Manager::GetInstance()->Get_DisPlayDialogue());
+			if (Next_Step(!CDialog_Manager::GetInstance()->Get_DisPlayDialogue()))
+				pPlayer->Set_BlockPlayerInput(true);
 	}
 	else if (Step_Check(STEP_4))
 	{
@@ -605,13 +613,13 @@ void CGameEventExecuter_C8::Chapter8_Friend_Appear_Violet(_float _fTimeDelta)
 			static_cast<CFriend*>(m_TargetObjects[VIOLET])->Change_AnyState(CFriend_Violet::VIOLET_C09_JUMPINGOFFBED, false, CFriend::DIR_RIGHT);
 		}
 
-		if (nullptr != m_TargetObjects[HAT] && m_fTimer > 3.5f)
+		if (nullptr != m_TargetObjects[HAT] && m_fTimer > 6.535f)
 		{
-		
-		
+			Event_DeleteObject(m_TargetObjects[HAT]);
+			m_TargetObjects[HAT] = nullptr;
 		}
 
-		Next_Step_Over(7.f);
+		Next_Step_Over(8.f);
 	}
 	else if (Step_Check(STEP_5))
 	{
@@ -622,7 +630,12 @@ void CGameEventExecuter_C8::Chapter8_Friend_Appear_Violet(_float _fTimeDelta)
 			CDialog_Manager::GetInstance()->Set_DialogId(L"Chapter8_Friend_Appear_Violet_02");
 		}
 		else
-			Next_Step(!CDialog_Manager::GetInstance()->Get_DisPlayDialogue());
+			if (Next_Step(!CDialog_Manager::GetInstance()->Get_DisPlayDialogue()))
+				pPlayer->Set_BlockPlayerInput(true);
+		if (KEY_DOWN(KEY::Q))
+		{
+			static_cast<CFriend*>(m_TargetObjects[VIOLET])->Change_AnyState(CFriend_Violet::VIOLET_C09_JUMPINGOFFBED, false, CFriend::DIR_RIGHT);
+		}
 	}
 	else
 	{
@@ -661,7 +674,7 @@ void CGameEventExecuter_C8::Chapter8_Friend_Appear_Thrash(_float _fTimeDelta)
 			CGameObject* pGameObject = nullptr;
 
 			CFriend_Thrash::FRIEND_DESC ThrashDesc{};
-			ThrashDesc.Build_2D_Transform(_float2(471.0f, 21.0f), _float2(1.0f, 1.0f), 400.f);
+			ThrashDesc.Build_2D_Transform(_float2(351.0f, -21.0f), _float2(1.0f, 1.0f), 400.f);
 			ThrashDesc.iCurLevelID = m_iCurLevelID;
 			ThrashDesc.eStartState = CFriend::FRIEND_LAST;
 			ThrashDesc.eStartDirection = CFriend::DIR_LEFT;
@@ -685,7 +698,7 @@ void CGameEventExecuter_C8::Chapter8_Friend_Appear_Thrash(_float _fTimeDelta)
 			static_cast<CFriend*>(m_TargetObjects[THRASH])->Change_AnyState(CFriend_Thrash::THRASH_C09_TAPPING, true, CFriend::DIR_UP);
 
 		}
-		Next_Step_Over(0.5f);
+		Next_Step_Over(0.8f);
 	}
 	else if (Step_Check(STEP_1))
 	{
@@ -693,12 +706,12 @@ void CGameEventExecuter_C8::Chapter8_Friend_Appear_Thrash(_float _fTimeDelta)
 		{
 			if (m_TargetObjects[PIP] != nullptr)
 			{
-				static_cast<CFriend*>(m_TargetObjects[PIP])->Move_Position(_float2(315.0f,21.0f), CFriend::DIR_RIGHT);
+				static_cast<CFriend*>(m_TargetObjects[PIP])->Move_Position(_float2(235.0f, -71.0f), CFriend::DIR_RIGHT);
 			}
-			
+
 			if (m_TargetObjects[VIOLET] != nullptr)
 			{
-				static_cast<CFriend*>(m_TargetObjects[PIP])->Move_Position(_float2(315.0f,81.0f), CFriend::DIR_RIGHT);
+				static_cast<CFriend*>(m_TargetObjects[VIOLET])->Move_Position(_float2(235.0f, 61.0f), CFriend::DIR_RIGHT);
 			}
 
 			AUTOMOVE_COMMAND AutoMove{};
@@ -707,7 +720,7 @@ void CGameEventExecuter_C8::Chapter8_Friend_Appear_Thrash(_float _fTimeDelta)
 			AutoMove.fPreDelayTime = 0.0f;
 			AutoMove.fMoveSpeedMag = 2.f;
 			AutoMove.iAnimIndex = (_uint)CPlayer::ANIM_STATE_2D::PLAYER_RUN_RIGHT;
-			AutoMove.vTarget = XMVectorSet(324.0f, -13.0f, 0.f, 0.f);
+			AutoMove.vTarget = XMVectorSet(275.0f, -17.0f, 0.f, 0.f);
 
 			AUTOMOVE_COMMAND AutoMove2{};
 			AutoMove2.eType = AUTOMOVE_TYPE::LOOK_DIRECTION;
@@ -733,13 +746,14 @@ void CGameEventExecuter_C8::Chapter8_Friend_Appear_Thrash(_float _fTimeDelta)
 			CDialog_Manager::GetInstance()->Set_DialogId(L"Chapter8_Friend_Appear_Thrash_01");
 		}
 		else
-			Next_Step(!CDialog_Manager::GetInstance()->Get_DisPlayDialogue());
+			if (Next_Step(!CDialog_Manager::GetInstance()->Get_DisPlayDialogue()))
+				pPlayer->Set_BlockPlayerInput(true);
 	}
 	else if (Step_Check(STEP_3))
 	{
 		if (Is_Start())
 		{
-			static_cast<CFriend*>(m_TargetObjects[VIOLET])->Change_AnyState(CFriend_Thrash::THRASH_C09_JUMPINGOFFPIPE, false, CFriend::DIR_UP);
+			static_cast<CFriend*>(m_TargetObjects[THRASH])->Change_AnyState(CFriend_Thrash::THRASH_C09_JUMPINGOFFPIPE, false, CFriend::DIR_RIGHT);
 		}
 
 		Next_Step_Over(5.f);
@@ -754,12 +768,23 @@ void CGameEventExecuter_C8::Chapter8_Friend_Appear_Thrash(_float _fTimeDelta)
 			CDialog_Manager::GetInstance()->Set_DialogId(L"Chapter8_Friend_Appear_Thrash_02");
 		}
 		else
-			Next_Step(!CDialog_Manager::GetInstance()->Get_DisPlayDialogue());
+			if (Next_Step(!CDialog_Manager::GetInstance()->Get_DisPlayDialogue()))
+				pPlayer->Set_BlockPlayerInput(true);
 	}
 	else if (Step_Check(STEP_5))
 	{
+		if (Is_Start())
+		{
+			pPlayer->Set_State(CPlayer::MOJAM);
+			static_cast<CFriend*>(m_TargetObjects[VIOLET])->Change_CurState(CFriend::FRIEND_MOJAM);
+			static_cast<CFriend*>(m_TargetObjects[PIP])->Change_CurState(CFriend::FRIEND_MOJAM);
+			static_cast<CFriend*>(m_TargetObjects[THRASH])->Change_CurState(CFriend::FRIEND_MOJAM);
+		}
 		// ¸ðÀë?
-		Next_Step(true);
+		else if (!CDialog_Manager::GetInstance()->Get_DisPlayDialogue() && CPlayer::STATE::IDLE == pPlayer->Get_CurrentStateID())
+		{
+			Next_Step(true);
+		}
 	}
 	else
 	{
@@ -1045,7 +1070,7 @@ void CGameEventExecuter_C8::Chapter8_Meet_Humgrump(_float _fTimeDelta)
 		// 2. Áß¾ÓÀ¸·Î Å¸°Ù Ä«¸Þ¶ó º¯°æ
 		if (m_fTimer > 0.8f) {
 			static _float4x4 matCenter = {};
-			_vector vCenter = XMVectorSet(0.f, -106.36, 0.f, 1.f);
+			_vector vCenter = XMVectorSet(0.f, -106.36f, 0.f, 1.f);
 
 			memcpy(&matCenter.m[3], &vCenter, sizeof(_float4));
 
