@@ -102,6 +102,8 @@ HRESULT CTrigger_Manager::Mapping_ExecuterTag()
 
 	m_EventExecuterTags[CHAPTER8_LASER_STAGE] = L"Chapter8_Laser_Stage";
 	m_EventExecuterTags[CHAPTER8_LASER_STAGE_2] = L"Chapter8_Laser_Stage_2";
+	m_EventExecuterTags[CHAPTER8_FRIEND_APPEAR_VIOLET] = L"Chapter8_Friend_Appear_Violet";
+	m_EventExecuterTags[CHAPTER8_FRIEND_APPEAR_THRASH] = L"Chapter8_Friend_Appear_Thrash";
 	m_EventExecuterTags[CHAPTER8_INTRO] = L"Chapter8_Intro";
 	m_EventExecuterTags[CHAPTER8_MAP_INTRO] = L"Chapter8_Map_Intro";
 	m_EventExecuterTags[CHAPTER8_INTRO_POSTIT_SEQUENCE] = L"Chapter8_Intro_Postit_Sequence";

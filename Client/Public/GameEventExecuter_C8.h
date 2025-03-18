@@ -57,6 +57,8 @@ public:
 
 	void Chapter8_Laser_Stage(_float _fTimeDelta);
 	void Chapter8_Laser_Stage_2(_float _fTimeDelta);
+	void Chapter8_Friend_Appear_Violet(_float _fTimeDelta);
+	void Chapter8_Friend_Appear_Thrash(_float _fTimeDelta);
 	void Chapter8_Intro(_float _fTimeDelta);
 	void Chapter8_Map_Intro(_float _fTimeDelta);
 	void Chapter8_Intro_Postit_Sequence(_float _fTimeDelta);

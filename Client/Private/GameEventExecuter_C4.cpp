@@ -18,6 +18,7 @@
 #include "Friend.h"
 #include "Friend_Violet.h"
 #include "PlayerData_Manager.h"
+#include "Door_Red.h"
 
 CGameEventExecuter_C4::CGameEventExecuter_C4(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CGameEventExecuter(_pDevice, _pContext)
@@ -623,10 +624,12 @@ void CGameEventExecuter_C4::Chapter4_3D_Out_02(_float _fTimeDelta)
 		// 카메라 원복
 		CCamera_Manager::GetInstance()->Start_ResetArm_To_SettingPoint(CCamera_Manager::TARGET, 0.5f);
 		Next_Step_Over(0.5f);
-
+	}
+	else if (Step_Check(STEP_3))
+	{
 		// 3D Trigger 생성
 		CTriggerObject::TRIGGEROBJECT_DESC Desc = {};
-		Desc.vHalfExtents = { 5.f, 5.f, 0.f };
+		Desc.vHalfExtents = { 3.f, 3.f, 3.f };
 		Desc.iTriggerType = (_uint)TRIGGER_TYPE::EVENT_TRIGGER;
 		Desc.szEventTag = TEXT("Chapter4_Intro");
 		Desc.eConditionType = CTriggerObject::TRIGGER_ENTER;
@@ -634,12 +637,11 @@ void CGameEventExecuter_C4::Chapter4_3D_Out_02(_float _fTimeDelta)
 		Desc.eStartCoord = COORDINATE_3D;
 		Desc.tTransform3DDesc.vInitialPosition = { -6.71f, 1.07f, -17.2f };
 
-		CSection* pBookSection = CSection_Manager::GetInstance()->Find_Section(TEXT("Chapter4_P0708"));
-		CTrigger_Manager::GetInstance()->Create_TriggerObject(LEVEL_STATIC, LEVEL_CHAPTER_4, &Desc, pBookSection);
+		CTrigger_Manager::GetInstance()->Create_TriggerObject(LEVEL_STATIC, LEVEL_CHAPTER_4, &Desc);
 
-	}
-	else
 		GameEvent_End();
+	}
+		
 }
 
 void CGameEventExecuter_C4::Friend_MapEnter(_float _fTimeDelta)
@@ -789,7 +791,51 @@ void CGameEventExecuter_C4::Change_PlayMap(_float _fStartTime)
 		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DraggableObject"),
 			m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Draggable"), &tDraggableDesc)))
 			return;		
+
+		CDoor_Red::DOOR_RED_DESC DoorRedDesc = {};
+		DoorRedDesc.tTransform2DDesc.vInitialPosition = _float3(1010.f, -530.f, 0.f);
+		DoorRedDesc.iCurLevelID = eCurLevelID;
+		DoorRedDesc.isHorizontal = false;
+		DoorRedDesc.eSize = CDoor_2D::SMALL;
+		DoorRedDesc.eInitialState = CDoor_2D::CLOSED;
+		DoorRedDesc.strSectionTag = L"Chapter4_P0102";
+		DoorRedDesc.strLayerTag = L"Layer_Monster_Door1";
+
+		DoorRedDesc.fTargetDiff = 13.f;
+
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorRed"),
+			eCurLevelID, L"Layer_MapGimmick", &DoorRedDesc)))
+			return;
+
+		DoorRedDesc.tTransform2DDesc.vInitialPosition = _float3(605.f, -200.f, 0.f);
+		DoorRedDesc.iCurLevelID = eCurLevelID;
+		DoorRedDesc.isHorizontal = true;
+		DoorRedDesc.eSize = CDoor_2D::MED;
+		DoorRedDesc.eInitialState = CDoor_2D::CLOSED;
+		DoorRedDesc.strSectionTag = L"Chapter4_SKSP_05";
+		DoorRedDesc.strLayerTag = L"Layer_Monster_Door2";
+		DoorRedDesc.fTargetDiff = 15.f;
+
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorRed"),
+			eCurLevelID, L"Layer_MapGimmick", &DoorRedDesc)))
+			return;
+
+		DoorRedDesc.tTransform2DDesc.vInitialPosition = _float3(-515.f, 80.f, 0.f);
+		DoorRedDesc.iCurLevelID = eCurLevelID;
+		DoorRedDesc.isHorizontal = true;
+		DoorRedDesc.eSize = CDoor_2D::MED;
+		DoorRedDesc.eInitialState = CDoor_2D::CLOSED;
+		DoorRedDesc.strSectionTag = L"Chapter4_SKSP_01";
+		DoorRedDesc.strLayerTag = L"Layer_Monster_Door3";
+
+		DoorRedDesc.fTargetDiff = 15.f;
+
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorRed"),
+			eCurLevelID, L"Layer_MapGimmick", &DoorRedDesc)))
+			return ;
+
 		m_iSubStep++;
+
 
 	}
 	_fStartTime += 0.1f;
