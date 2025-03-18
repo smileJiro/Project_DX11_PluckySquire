@@ -255,14 +255,15 @@ HRESULT CPlayer::Initialize(void* _pArg)
 	Set_PlatformerMode(false);
 
 	m_pActorCom->Set_ShapeEnable(PLAYER_SHAPE_USE::BODYGUARD, false);
-	static_cast<CActor_Dynamic*> (m_pActorCom)->Set_Gravity(false);
 	Set_State(CPlayer::IDLE);
 
 	// PlayerData Manager 등록
 	CPlayerData_Manager::GetInstance()->Register_Player(PLAYABLE_ID::NORMAL, this);
 
 
-
+	//Carriable이 2D에서 시작했는데도 3D랑 충돌돼서 2D면 false해줌.
+	 if (nullptr != m_pActorCom && COORDINATE_2D == pDesc->eStartCoord)
+		 m_pActorCom->Set_Active(false);
 	return S_OK;
 }
 
@@ -529,6 +530,8 @@ HRESULT CPlayer::Ready_PartObjects()
 	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_3DAnimationTransitionTime((_uint)ANIM_STATE_3D::CYBERJOT_ANIM_FLYING_UP_DASH, 1.f);
 	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_3DAnimationTransitionTime((_uint)ANIM_STATE_3D::CYBERJOT_ANIM_FLYING_DOWN_DASH, 1.f);*/
 	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_3DAnimationTransitionTime((_uint)ANIM_STATE_3D::CYBERJOT_ANIM_FLYING_IDLE, 0.5f);
+
+
 	return S_OK;
 }
 
@@ -1132,7 +1135,7 @@ HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
 	//Late_Update : ACtorCom에서 getGlobalPos로ㅜ 위치를 받고 TraNSFORM에 동기화
 		//근데 getGlobalPos로 받은 위치가 이미 밑에 있음.
 
-	static_cast<CActor_Dynamic*> (m_pActorCom)->Set_Gravity(true);
+	//static_cast<CActor_Dynamic*> (m_pActorCom)->Set_Gravity(true);
 	m_pInteractableObject = nullptr;
 
 	if (COORDINATE_2D == _eCoordinate)
