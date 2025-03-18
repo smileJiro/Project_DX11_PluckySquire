@@ -8,7 +8,7 @@ public :
 	{
 		GameOver_Pip_Idle,
 		GameOver_Pip_Recover,
-		PIP_BUTTONPUSH,
+		PIP_BUTTONPUSH,					//C09
 		PIP_C09_MOJAM,					//Mojam
 		Pip_C09_Mojam_09_5152,
 		Pip_C09_Mojam_10_0910,
@@ -23,8 +23,8 @@ public :
 		PIP_ATTACK_DOWN,				  // ATTACK
 		PIP_ATTACK_RIGHT,				  // ATTACK
 		PIP_ATTACK_UP,					  // ATTACK
-		Pip_excited_down,
-		Pip_excited_into,
+		PIP_EXCITED_DOWN,				   //C09
+		PIP_EXCITED_INTO,				   //C09
 		PIP_HAPPY,						  // HAPPY
 		PIP_HAPPY_DOWN,					  // HAPPY
 		PIP_HIT_DOWN,					  // HIT
@@ -33,8 +33,8 @@ public :
 		PIP_IDLE_DOWN,					  // IDLE
 		PIP_IDLE_RIGHT,					  // IDLE
 		PIP_IDLE_UP,					  // IDLE
-		PIP_C09_JUMPUP,
-		PIP_C09_JUMPUP_IDLE,
+		PIP_C09_JUMPUP,					  // C09
+		PIP_C09_JUMPUP_IDLE,			  // C09
 		Pip_knockedback_End,
 		Pip_knockedback_Loop,
 		Pip_released,

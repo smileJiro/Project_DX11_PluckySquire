@@ -1510,7 +1510,7 @@ void CGameEventExecuter_C6::Chapter6_StorySequence_01(_float _fTimeDelta)
 			pThrash->Move_Position(_float2(XMVectorGetX(vThrashPos), XMVectorGetY(vThrashPos)), CFriend::DIR_UP);
 		}
 
-		if (Next_Step(0.7f))
+		if (Next_Step_Over(0.7f))
 			pThrash->Set_2DDirection(F_DIRECTION::UP);
 	}
 	else  if (Step_Check(STEP_11))

@@ -64,6 +64,9 @@ void CGameEventExecuter_C8::Update(_float _fTimeDelta)
 		case Client::CTrigger_Manager::CHAPTER8_LASER_STAGE:
 			Chapter8_Laser_Stage(_fTimeDelta);
 			break;
+		case Client::CTrigger_Manager::CHAPTER8_LASER_STAGE_2:
+			Chapter8_Laser_Stage_2(_fTimeDelta);
+			break;
 		case Client::CTrigger_Manager::CHAPTER8_INTRO:
 			Chapter8_Intro(_fTimeDelta);
 			break;
@@ -395,7 +398,23 @@ void CGameEventExecuter_C8::Chapter8_Laser_Stage(_float _fTimeDelta)
 
 	}
 
+	
 
+}
+
+void CGameEventExecuter_C8::Chapter8_Laser_Stage_2(_float _fTimeDelta)
+{
+	m_fTimer += _fTimeDelta;
+	if (Step_Check(STEP_0))
+	{
+		if (Is_Start())
+		{
+			CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::CUTSCENE);
+			CCamera_Manager::GetInstance()->Set_NextCutSceneData(TEXT("Chapter8_Intro"));
+		}
+
+		Next_Step_Over(2.8f);
+	}
 }
 
 void CGameEventExecuter_C8::Chapter8_Intro(_float _fTimeDelta)
