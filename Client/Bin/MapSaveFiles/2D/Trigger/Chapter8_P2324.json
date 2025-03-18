@@ -1,0 +1,21 @@
+[
+  {
+    "Collider_Info": {
+      "Position": [
+        -1.0,
+        -433.0
+      ],
+      "Scale": [
+        180.0,
+        40.0
+      ]
+    },
+    "Trigger_Reusable": false,
+    "Fillter_MyGroup": 2,
+    "Fillter_OtherGroupMask": 128,
+    "Trigger_ConditionType": 0,
+    "Trigger_Coordinate": 0,
+    "Trigger_EventTag": "Chapter8_Meet_Humgrump",
+    "Trigger_Type": 0
+  }
+]

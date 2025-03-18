@@ -112,6 +112,7 @@ HRESULT CTrigger_Manager::Mapping_ExecuterTag()
 	m_EventExecuterTags[CHAPTER8_BOMB_STAMP] = 	L"Chapter8_Bomb_Stamp";
 	m_EventExecuterTags[CHAPTER8_TILTING_GLOVE] = 	L"Chapter8_Tilting_Glove";
 	m_EventExecuterTags[CHAPTER8_OUTRO_POSTIT_SEQUENCE] = 	L"Chapter8_Outro_Postit_Sequence";
+	m_EventExecuterTags[CHAPTER8_MEET_HUMGRUMP] = 	L"Chapter8_Meet_Humgrump";
 
 	return S_OK;
 }
@@ -364,18 +365,6 @@ void CTrigger_Manager::Register_TriggerEvent(_wstring _TriggerEventTag, _int _iT
 	}
 
 	m_iTriggerID = _iTriggerID;
-
-	// 진행할 이벤트를 True로 만들어 준다
-	_uint iCount = 0;
-
-	for (auto& EventExecuterTag : m_EventExecuterTags) {
-		if (EventExecuterTag == _TriggerEventTag) {
-			m_isRunningEvents[iCount] = true;
-			return;
-		}
-
-		++iCount;
-	}
 }
 
 HRESULT CTrigger_Manager::Fill_Trigger_3D_Desc(json _TriggerJson, CTriggerObject::TRIGGEROBJECT_DESC& _tDesc)
@@ -810,6 +799,17 @@ void CTrigger_Manager::Register_Trigger_Action()
 		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_pGameInstance->Get_CurLevelID(), TEXT("Prototype_GameObject_GameEventExecuter"),
 			m_pGameInstance->Get_CurLevelID(), L"Layer_Event_Executer", &Desc)))
 			return;
+
+		// 진행할 이벤트를 True로 만들어 준다
+		_uint iCount = 0;
+		for (auto& EventExecuterTag : m_EventExecuterTags) {
+			if (EventExecuterTag == _wszEventTag) {
+				m_isRunningEvents[iCount] = true;
+				return;
+			}
+
+			++iCount;
+		}
 	};
 	m_Actions[TEXT("Next_Chapter_Event")] = [this](_wstring _wszEventTag)
 		{

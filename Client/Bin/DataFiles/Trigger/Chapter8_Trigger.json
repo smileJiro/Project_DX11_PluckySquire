@@ -1557,7 +1557,8 @@
             ],
             "ShapeType": 0
         },
-        "Fillter_MyGroup": 128,
+      "Fillter_MyGroup": 128,
+        "Trigger_Reusable" : false,
         "Fillter_OtherGroupMask": 2,
         "Trigger_ConditionType": 3,
         "Trigger_Coordinate": 1,

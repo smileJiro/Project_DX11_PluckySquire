@@ -245,7 +245,7 @@ void CUI_Manager::UI_Update()
 		{
 			if (nullptr == Uimgr->Get_Player()->Get_InteractableObject())
 			{
-				return;
+				
 			}
 			else
 				m_pInteractionE->CBase::Set_Active(true);
@@ -257,7 +257,10 @@ void CUI_Manager::UI_Update()
 		if (false == m_pInteractionHeart->CBase::Is_Active())
 		{
 			if (true == m_pInteractionHeart->Get_InteractionHeartRender())
-				return;
+			{
+
+			}
+				
 			else
 				m_pInteractionHeart->CBase::Set_Active(true);
 		}
