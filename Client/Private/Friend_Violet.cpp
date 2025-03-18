@@ -188,6 +188,16 @@ void CFriend_Violet::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 		if (iAnimIdx == ANIM::VIOLET_MAGIC02_INTO_RIGHT)
 		{
 			Change_AnyState(CFriend_Violet::VIOLET_MAGIC02_LOOP_RIGHT, true, CFriend::DIR_LEFT);
+		}		
+		else if (iAnimIdx == ANIM::VIOLET_C09_LYINGTOSITTINGUP)
+		{
+			Change_AnyState(CFriend_Violet::VIOLET_C09_SITTINGIDLE, true, CFriend::DIR_RIGHT);
+		}
+		else if (iAnimIdx == ANIM::VIOLET_C09_JUMPINGOFFBED)
+		{
+			State_Change_Idle();
+			_vector vPos = Get_FinalPosition();
+			Move_Position(_float2(XMVectorGetX(vPos), XMVectorGetY(vPos)), CFriend::DIR_RIGHT);
 		}
 		//m_eCurState = FRIEND_IDLE;
 		break;

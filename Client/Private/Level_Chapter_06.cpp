@@ -96,6 +96,10 @@
 #include "Excavator_Centre.h"
 #include "Excavator_Tread.h"
 
+
+// Excavator 
+#include "ExcavatorGame.h"
+
 CLevel_Chapter_06::CLevel_Chapter_06(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:
 	m_eLevelID(LEVEL_CHAPTER_6)
@@ -223,33 +227,7 @@ HRESULT CLevel_Chapter_06::Initialize(LEVEL_ID _eLevelID)
 
 #pragma region Test
 
-	{
-		CExcavator_Centre::CENTRE_DESC Desc;
-		Desc.iCurLevelID = LEVEL_CHAPTER_6;
-		Desc.Build_2D_Transform(_float2(0.0f, 360.0f));
-		CGameObject* pGameObject = nullptr;
-		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_Excavator_Centre"), LEVEL_CHAPTER_6, TEXT("Layer_Excavator"), &pGameObject, &Desc)))
-			return E_FAIL;
-		CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_P0708"), pGameObject);
 
-	}
-
-	{
-		CExcavator_Tread::TREAD_DESC Desc;
-		Desc.iCurLevelID = LEVEL_CHAPTER_6;
-		Desc.Build_2D_Transform(_float2(-800.0f, 360.0f));
-		CGameObject* pGameObject = nullptr;
-		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_Excavator_Tread"), LEVEL_CHAPTER_6, TEXT("Layer_Excavator"), &pGameObject, &Desc)))
-			return E_FAIL;
-		CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_P0708"), pGameObject);
-
-		Desc.Build_2D_Transform(_float2(800.0f, 360.0f));
-		pGameObject = nullptr;
-		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_Excavator_Tread"), LEVEL_CHAPTER_6, TEXT("Layer_Excavator"), &pGameObject, &Desc)))
-			return E_FAIL;
-		CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_P0708"), pGameObject);
-
-	}
 
 #pragma endregion
 
@@ -341,7 +319,13 @@ HRESULT CLevel_Chapter_06::Initialize(LEVEL_ID _eLevelID)
 
 void CLevel_Chapter_06::Update(_float _fTimeDelta)
 {
+	if (KEY_DOWN(KEY::K))
+	{
+		CExcavatorGame::GetInstance()->Start_Game(m_pDevice, m_pContext);
+	}
 	CFatherGame::GetInstance()->Update();
+	CExcavatorGame::GetInstance()->Update(_fTimeDelta);
+
 	Uimgr->UI_Update();
 
 	// 피직스 업데이트 
@@ -987,8 +971,8 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Book(const _wstring& _strLayerTag)
 
 	tPortalDesc.iCurLevelID = (LEVEL_ID)CSection_Manager::GetInstance()->Get_SectionLeveID();
 	tPortalDesc.fTriggerRadius = 1.0f;
-	tPortalDesc.iPortalIndex = 0;
-	tPortalDesc.isFirstActive = true;
+	tPortalDesc.iPortalIndex = 1;
+	tPortalDesc.isFirstActive = false;
 	tPortalDesc.Build_2D_Transform(_float2{ -416.f, -121.f }, _float2{1.f,1.f});
 	CGameObject* pGameObject = nullptr;
 	m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC,
@@ -1003,6 +987,7 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Book(const _wstring& _strLayerTag)
 
 
 	tPortalDesc.Build_2D_Transform(_float2{ 386, -105}, _float2{ 1.f,1.f });
+	tPortalDesc.iPortalIndex = 2;
 	m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC,
 		TEXT("Prototype_GameObject_Portal_Cannon"),
 		Desc.iCurLevelID,
@@ -2107,6 +2092,7 @@ void CLevel_Chapter_06::Free()
 {
 	//Safe_Release(m_pCandleGame);
 	CFatherGame::GetInstance()->DestroyInstance();
+	CExcavatorGame::GetInstance()->DestroyInstance();
 
 	m_pGameInstance->End_BGM();
 

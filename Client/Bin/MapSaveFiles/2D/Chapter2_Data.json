@@ -90,6 +90,7 @@
 		"Section_Type": 4,
 		"Section_Default": 0,
 		"Section_Info": {
+			"Camera_Zoom_Ratio": 1.5,
 			"Next_Page_Tag": "Chapter2_P0304",
 			"Pre_Page_Tag": "Chapter2_P0102"
 		}

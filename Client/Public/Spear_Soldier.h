@@ -156,6 +156,8 @@ public:
 	virtual void Change_Animation() override;
 	void Animation_End(COORDINATE _eCoord, _uint iAnimIdx);
 
+	virtual void Turn_Animation(_bool _isCW) override;
+
 private:
 	_bool m_isDash = { false };
 	_bool m_isJump = { false };

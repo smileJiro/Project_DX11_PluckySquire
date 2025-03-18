@@ -790,6 +790,9 @@
     <Filter Include="05.MiniGames\ExcavatorGame\Excavator\Centre\Switch">
       <UniqueIdentifier>{02fd0af1-caa6-4f7b-82b5-a1a1ebe97d88}</UniqueIdentifier>
     </Filter>
+    <Filter Include="05.MiniGames\ExcavatorGame\Excavator\Saw">
+      <UniqueIdentifier>{7f9c88cb-084e-47e1-91c9-149c0ea8edbd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -2030,6 +2033,13 @@
     <ClInclude Include="..\Public\PlayerState_BackRoll.h">
       <Filter>03.Components\PlayerState</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\ExcavatorGame.h">
+      <Filter>05.MiniGames\ExcavatorGame</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Saw.h">
+      <Filter>05.MiniGames\ExcavatorGame\Excavator\Saw</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_EngageBoss.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -3255,6 +3265,13 @@
     <ClCompile Include="..\Private\PlayerState_BackRoll.cpp">
       <Filter>03.Components\PlayerState</Filter>
     </ClCompile>
+    <ClCompile Include="..\private\ExcavatorGame.cpp">
+      <Filter>05.MiniGames\ExcavatorGame</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Saw.cpp">
+      <Filter>05.MiniGames\ExcavatorGame\Excavator\Saw</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_EngageBoss.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

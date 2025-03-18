@@ -3,6 +3,7 @@
 BEGIN(Client)
 class CFriend_Thrash final : public CFriend
 {
+public :
 	enum ANIM
 	{
 		Thrash_C06_End01,
@@ -26,8 +27,8 @@ class CFriend_Thrash final : public CFriend
 		Thrash_C08V02_Idle03,
 		Thrash_C08V02_Jump,
 		Thrash_C08V02_Talk01,
-		Thrash_C09_JumpingOffPipe,
-		Thrash_C09_Tapping,
+		THRASH_C09_JUMPINGOFFPIPE,	   //C09
+		THRASH_C09_TAPPING,			   //C09
 		Thrash_Elec,
 		Thrash_Elec_ow_0001_X,
 		Thrash_Elec_ow_loop,

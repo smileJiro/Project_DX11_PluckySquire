@@ -48,6 +48,7 @@ void CPartObject::Update(_float _fTimeDelta)
     }
 	if (nullptr != m_pParentMatrices[eCurCoord])
         matWorld *= XMLoadFloat4x4(m_pParentMatrices[eCurCoord]);
+
     XMStoreFloat4x4(&m_WorldMatrices[eCurCoord], matWorld);
      __super::Update(_fTimeDelta);
 }

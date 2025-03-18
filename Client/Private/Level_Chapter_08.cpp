@@ -263,8 +263,8 @@ HRESULT CLevel_Chapter_08::Initialize(LEVEL_ID _eLevelID)
 	//CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("Tilting_Glove"), _float3(30.55f, 30.98f, 23.34f));
 
 	// Intro 시작
-	CTrigger_Manager::GetInstance()->Register_TriggerEvent(TEXT("Chapter8_Intro"), 50);
-	CCamera_Manager::GetInstance()->Start_FadeIn(3.f);
+	//CTrigger_Manager::GetInstance()->Register_TriggerEvent(TEXT("Chapter8_Intro"), 50);
+	//CCamera_Manager::GetInstance()->Start_FadeIn(3.f);
 
 	/* Set Shader PlayerHideColor */
 	m_pGameInstance->Set_PlayerHideColor(_float3(0.8f, 0.8f, 0.8f), true);
@@ -423,12 +423,14 @@ void CLevel_Chapter_08::Update(_float _fTimeDelta)
 			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_ButterGrump"), m_eLevelID, TEXT("Layer_Monster"), &pBoss, &Boss_Desc)))
 				return;
 
-			// Pivot에 Boss 넣기(효림)
+	
 			CCameraPivot*  pPivot = static_cast<CCameraPivot*>(m_pGameInstance->Get_GameObject_Ptr(m_eLevelID, TEXT("Layer_CameraPivot"), 0));
 			pPivot->Set_MainTarget(pBoss);
 			pPivot->Set_Active(true);
 			CCamera_Manager::GetInstance()->Change_CameraTarget(pPivot, 0.f);
-
+			CCamera_Manager::GetInstance()->Get_CurrentCamera()->Get_Arm()->Set_ArmVector(_vector{0.f,0.f,-1.f});
+			CCamera_Manager::GetInstance()->Get_CurrentCamera()->Set_Position(_vector{ 0.53f, 60.35f, -8.0f });
+			CCamera_Manager::GetInstance()->Get_CurrentCamera()->Get_Arm()->Set_Length(24.6f);
 
 			Event_ChangeMapObject(m_eLevelID, L"Chapter_Boss.mchc", L"Layer_MapObject");
 
@@ -436,7 +438,7 @@ void CLevel_Chapter_08::Update(_float _fTimeDelta)
 			CPlayer* pPlayer = CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr();
 			if (nullptr != pPlayer)
 			{
-				_float3 vPos = _float3(0.53f, 60.35f, -35.0f);
+	/*			_float3 vPos = _float3(0.53f, 60.35f, -50.0f);
 				if(ACTOR_TYPE::DYNAMIC==pPlayer->Get_ActorCom()->Get_ActorType())
 				{
 					pPlayer->Get_ActorCom()->Set_GlobalPose(vPos);
@@ -444,7 +446,7 @@ void CLevel_Chapter_08::Update(_float _fTimeDelta)
 				else if (ACTOR_TYPE::KINEMATIC == pPlayer->Get_ActorCom()->Get_ActorType())
 				{
 					pPlayer->Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSet(vPos.x, vPos.y, vPos.z, 1.f));
-				}
+				}*/
 				pPlayer->Set_Mode(CPlayer::PLAYER_MODE_CYBERJOT);
 				pPlayer->Set_State(CPlayer::CYBER_IDLE);
 			}
@@ -757,6 +759,7 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Player(const _wstring& _strLayerTag, CGam
 	Desc.tTransform3DDesc.vInitialPosition = { -90.f, 67.f, 18.3f };   // TODO ::임시 위치
 	//Desc.tTransform2DDesc.vInitialPosition = { 409.f, 102.f, 0.f };   // TODO ::임시 위치
 	Desc.tTransform2DDesc.vInitialPosition = { -808.1f, 192.f, 0.f };   // TODO ::임시 위치
+	//Desc.tTransform2DDesc.vInitialPosition = { 808.1f, -192.f, 0.f };   // TODO ::임시 위치
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_TestPlayer"), m_eLevelID, _strLayerTag, _ppOut, &Desc)))
 		return E_FAIL;
@@ -774,7 +777,7 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Player(const _wstring& _strLayerTag, CGam
 	CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(pPlayer, SECTION_2D_PLAYMAP_OBJECT);
 	pPlayer->Set_Mode(CPlayer::PLAYER_MODE_SNEAK);
 	//pPlayer->Equip_Part(CPlayer::PLAYER_PART_ZETPACK);
-
+	pPlayer->Set_State(CPlayer::IDLE);
 	CPlayerData_Manager::GetInstance()->Set_CurrentPlayer(PLAYABLE_ID::NORMAL);
 
 
@@ -1216,7 +1219,6 @@ HRESULT CLevel_Chapter_08::Ready_Layer_NPC(const _wstring& _strLayerTag)
 		return E_FAIL;
 
 	CNPC_Manager::GetInstance()->Set_OnlyNpc(static_cast<CNPC_OnlySocial*>(pGameObject));
-
 
 
 
