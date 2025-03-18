@@ -95,6 +95,11 @@ void CPalmDecal::Priority_Update(_float _fTimeDelta)
 
 void CPalmDecal::Update(_float _fTimeDelta)
 {
+    if(m_bPlacedFrame)
+    {
+        Event_SetActive(m_p2DColliderComs[0], false);
+        m_bPlacedFrame = false;
+    }
     __super::Update(_fTimeDelta);
 }
 
@@ -132,7 +137,7 @@ void CPalmDecal::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOthe
     }
 
 
-    Event_SetActive( m_p2DColliderComs[0], false);
+
 }
 
 void CPalmDecal::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
@@ -160,8 +165,8 @@ void CPalmDecal::Place(_fvector _v2DPos, _fvector _v2DDir)
     _vector v3DPos = m_pSectionMgr->Get_WorldPosition_FromWorldPosMap(m_strSectionName, { XMVectorGetX(_v2DPos),XMVectorGetY(_v2DPos) });
     m_pControllerTransform->Get_Transform(COORDINATE_3D)->Set_State(CTransform::STATE_POSITION, v3DPos);
     m_pActorCom->Update(0.f);
-
-    Event_SetActive(m_p2DColliderComs[0], true);
+    m_bPlacedFrame = true;
+    m_p2DColliderComs[0]->Set_Active(true);
 }
 
 void CPalmDecal::Erase()
