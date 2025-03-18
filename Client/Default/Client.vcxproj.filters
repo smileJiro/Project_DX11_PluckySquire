@@ -283,12 +283,6 @@
     <Filter Include="02.GameObjects\NPC\01. LogoNpc">
       <UniqueIdentifier>{c35edf72-37bc-40ea-bfb7-3cbd9b2d2e29}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\UI\03. Logo\00. Logo_BG\03. Logo_Animation">
-      <UniqueIdentifier>{ea4268ec-e206-417e-ae3b-254a0e2ac7a9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\UI\03. Logo\00. Logo_BG\03. Logo_Animation\00. Logo_JotMain">
-      <UniqueIdentifier>{441416e8-4de7-4552-b5ef-b2d6f2278881}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\MapObject\2D\0. Super">
       <UniqueIdentifier>{b9229a37-ad55-422f-9e39-3e7347e6b1e9}</UniqueIdentifier>
     </Filter>
@@ -1120,9 +1114,6 @@
     </ClInclude>
     <ClInclude Include="..\Public\MapObject.h">
       <Filter>02.GameObjects\MapObject\0. Super</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\UI_JotMain.h">
-      <Filter>02.GameObjects\UI\03. Logo\00. Logo_BG\03. Logo_Animation\00. Logo_JotMain</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\MapObjectFactory.h">
       <Filter>92.MapObjectFactory</Filter>
@@ -2361,9 +2352,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\MapObject.cpp">
       <Filter>02.GameObjects\MapObject\0. Super</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\UI_JotMain.cpp">
-      <Filter>02.GameObjects\UI\03. Logo\00. Logo_BG\03. Logo_Animation\00. Logo_JotMain</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\2DMapActionObject.cpp">
       <Filter>02.GameObjects\MapObject\2D</Filter>

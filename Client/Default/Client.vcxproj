@@ -580,7 +580,6 @@
     <ClInclude Include="..\public\Player.h" />
     <ClInclude Include="..\public\TestTerrain.h" />
     <ClInclude Include="..\Public\UI.h" />
-    <ClInclude Include="..\Public\UI_JotMain.h" />
     <ClInclude Include="..\public\UI_Manager.h" />
     <ClInclude Include="..\Public\Word.h" />
     <ClInclude Include="..\Public\WordGame_Generator.h" />
@@ -994,7 +993,6 @@
     <ClCompile Include="..\private\TestTerrain.cpp" />
     <ClCompile Include="..\Private\Transition.cpp" />
     <ClCompile Include="..\Private\UI.cpp" />
-    <ClCompile Include="..\Private\UI_JotMain.cpp" />
     <ClCompile Include="..\private\UI_Manager.cpp" />
     <ClCompile Include="..\Private\Word.cpp" />
     <ClCompile Include="..\Private\WordGame_Generator.cpp" />

@@ -314,6 +314,11 @@ void CLogo_BackGround::Render_Font()
 
 	_float fRatio = m_fFontFadeTime.y / m_fFontFadeTime.x;
 	
+	if (MAIN_JOT == m_eBackGroundType)
+	{
+		m_pGameInstance->Render_Font(TEXT("Font40"), TEXT("쥬신 게임 아카데미 147기 제작"), _float2(g_iWinSizeX - (g_iWinSizeX * 0.95f), g_iWinSizeY - (g_iWinSizeY * 0.12f)), XMVectorSet(0.0f, 0.0f, 0.0f, fRatio));
+	}
+	else
 	m_pGameInstance->Render_Font(TEXT("Font40"), TEXT("One Possible Future 제작"), _float2(g_iWinSizeX - (g_iWinSizeX * 0.95f), g_iWinSizeY - (g_iWinSizeY * 0.12f)), XMVectorSet(0.0f, 0.0f, 0.0f, fRatio));
 }
 
