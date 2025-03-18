@@ -210,22 +210,7 @@ void CGameEventExecuter_C2::Chapter2_BookMagic(_float _fTimeDelta)
 	{
 		if (Is_Start())
 		{
-			CSection_2D* pSection = static_cast<CSection_2D*>(SECTION_MGR->Find_Section(SECTION_MGR->Get_Cur_Section_Key()));
-
-
-			auto pLayer = pSection->Get_Section_Layer(SECTION_PLAYMAP_2D_RENDERGROUP::SECTION_2D_PLAYMAP_BACKGROUND);
-
-			const auto& Objects = pLayer->Get_GameObjects();
-
-			for_each(Objects.begin(), Objects.end(), [](CGameObject* pGameObject) {
-				auto pActionObj = dynamic_cast<C2DMapActionObject*>(pGameObject);
-
-				if (nullptr != pActionObj)
-				{
-					if (C2DMapActionObject::ACTIVE_TYPE_DYNAMIC_BACKGROUND == pActionObj->Get_ActionType())
-						pActionObj->Ready_Action();
-				}
-				});
+			Ready_Action(SECTION_MGR->Get_Cur_Section_Key(), SECTION_2D_PLAYMAP_BACKGROUND, C2DMapActionObject::ACTIVE_TYPE_DYNAMIC_BACKGROUND);
 		}
 
 		Next_Step_Over(2.2f);
@@ -305,22 +290,7 @@ void CGameEventExecuter_C2::Chapter2_BookMagic(_float _fTimeDelta)
 	{
 		if (Is_Start())
 		{
-			CSection_2D* pSection = static_cast<CSection_2D*>(SECTION_MGR->Find_Section(SECTION_MGR->Get_Cur_Section_Key()));
-
-
-			auto pLayer = pSection->Get_Section_Layer(SECTION_PLAYMAP_2D_RENDERGROUP::SECTION_2D_PLAYMAP_OBJECT);
-
-			const auto& Objects = pLayer->Get_GameObjects();
-
-			for_each(Objects.begin(), Objects.end(), [](CGameObject* pGameObject) {
-				auto pActionObj = dynamic_cast<C2DMapActionObject*>(pGameObject);
-
-				if (nullptr != pActionObj)
-				{
-					if (C2DMapActionObject::ACTIVE_TYPE_ACTIONANIM == pActionObj->Get_ActionType())
-						pActionObj->Ready_Action();
-				}
-				});
+			Ready_Action(SECTION_MGR->Get_Cur_Section_Key(), SECTION_2D_PLAYMAP_OBJECT, C2DMapActionObject::ACTIVE_TYPE_ACTIONANIM);
 		}
 
 		if (m_iSubStep == 0 && m_fTimer > 0.6f)
@@ -375,10 +345,10 @@ void CGameEventExecuter_C2::Chapter2_BookMagic(_float _fTimeDelta)
 		{
 			m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/Chapter2_Bright.json"));
 			m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/Chapter2_Bright.json"));
+			GameEvent_End();
 		}
 	}
-	else
-		GameEvent_End();
+
 }
 
 void CGameEventExecuter_C2::Chapter2_Intro(_float _fTimeDelta)
@@ -977,11 +947,8 @@ void CGameEventExecuter_C2::Chapter2_OpenBookEvent(_float _fTimeDelta)
 			//pCamera->Start_PostProcessing_Fade(CCamera::FADE_IN, 0.3f);
 			CPlayer* pPlayer = Get_Player();
 			pPlayer->Set_BlockPlayerInput(false);
+			GameEvent_End();
 		}
-	}
-	else
-	{
-		GameEvent_End();
 	}
 }
 
@@ -1118,6 +1085,8 @@ void CGameEventExecuter_C2::Chapter2_StorySequence(_float _fTimeDelta)
 						pActionObj->Ready_Action();
 				}
 				});
+			//Ready_Action(SECTION_MGR->Get_Cur_Section_Key(), SECTION_2D_PLAYMAP_OBJECT, C2DMapActionObject::ACTIVE_TYPE_DYNAMIC_BACKGROUND);
+
 
 
 			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_TargetObjects[0]);
@@ -1628,10 +1597,10 @@ void CGameEventExecuter_C2::Change_PlayMap(_float _fStartTime)
 	// 3D 오브젝트 추가 
 	if (m_fTimer > _fStartTime && 2 == m_iSubStep)
 	{
+		m_iSubStep++;
 
 		LEVEL_ID eCurLevelID = (LEVEL_ID)m_pGameInstance->Get_CurLevelID();
 
-		m_iSubStep++;
 		//주사위
 		CCarriableObject::CARRIABLE_DESC tCarriableDesc{};
 		tCarriableDesc.eStartCoord = COORDINATE_3D;

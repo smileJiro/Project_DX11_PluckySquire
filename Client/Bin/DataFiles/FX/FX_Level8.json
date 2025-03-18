@@ -21,14 +21,30 @@
     },
     {
         "Name": "YellowHit.json",
-        "Count": 2
+        "Count": 3
     },
     {
         "Name": "PurpleHit.json",
-        "Count": 2
+        "Count": 3
     },
     {
         "Name": "HomingHit.json",
-        "Count": 2
+        "Count": 3
+    },
+    {
+        "Name": "RockBroke.json",
+        "Count": 4
+    },
+    {
+        "Name": "BulletHitTennis.json",
+        "Count": 6
+    },
+    {
+        "Name": "BulletHitShield.json",
+        "Count": 6
+    },
+    {
+        "Name": "Meteorite.json",
+        "Count": 1
     }
 ]

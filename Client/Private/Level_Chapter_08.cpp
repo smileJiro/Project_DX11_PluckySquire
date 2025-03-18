@@ -87,6 +87,8 @@
 
 #include "Room_Door.h"
 
+#include "Npc_Humgrump.h"
+
 CLevel_Chapter_08::CLevel_Chapter_08(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:
 	m_eLevelID(LEVEL_CHAPTER_8)
@@ -261,8 +263,8 @@ HRESULT CLevel_Chapter_08::Initialize(LEVEL_ID _eLevelID)
 	//CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("Tilting_Glove"), _float3(30.55f, 30.98f, 23.34f));
 
 	// Intro 시작
-	CTrigger_Manager::GetInstance()->Register_TriggerEvent(TEXT("Chapter8_Intro"), 50);
-	CCamera_Manager::GetInstance()->Start_FadeIn(3.f);
+	//CTrigger_Manager::GetInstance()->Register_TriggerEvent(TEXT("Chapter8_Intro"), 50);
+	//CCamera_Manager::GetInstance()->Start_FadeIn(3.f);
 
 	/* Set Shader PlayerHideColor */
 	m_pGameInstance->Set_PlayerHideColor(_float3(0.8f, 0.8f, 0.8f), true);
@@ -613,8 +615,8 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Map()
 			return E_FAIL;
 		break;
 	case Client::LEVEL_CHAPTER_8:
-		if (FAILED(Map_Object_Create(L"Chapter8_Intro.mchc")))
-		//if (FAILED(Map_Object_Create(L"Chapter_08_Play_Desk.mchc")))
+		//if (FAILED(Map_Object_Create(L"Chapter8_Intro.mchc")))
+		if (FAILED(Map_Object_Create(L"Chapter_08_Play_Desk.mchc")))
 			return E_FAIL;
 		break;
 	case Client::LEVEL_CHAPTER_TEST:
@@ -755,6 +757,7 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Player(const _wstring& _strLayerTag, CGam
 	Desc.tTransform3DDesc.vInitialPosition = { -90.f, 67.f, 18.3f };   // TODO ::임시 위치
 	//Desc.tTransform2DDesc.vInitialPosition = { 409.f, 102.f, 0.f };   // TODO ::임시 위치
 	Desc.tTransform2DDesc.vInitialPosition = { -808.1f, 192.f, 0.f };   // TODO ::임시 위치
+	//Desc.tTransform2DDesc.vInitialPosition = { 808.1f, -192.f, 0.f };   // TODO ::임시 위치
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_TestPlayer"), m_eLevelID, _strLayerTag, _ppOut, &Desc)))
 		return E_FAIL;
@@ -1222,6 +1225,18 @@ HRESULT CLevel_Chapter_08::Ready_Layer_NPC(const _wstring& _strLayerTag)
 	PostitDesc.strInitSkspName = L"Chapter8_SKSP_Postit";
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Postit_Page"), m_eLevelID, _strLayerTag, &PostitDesc)))
 		return E_FAIL;
+
+	// Humgrump
+	CNpc_Humgrump::HUMGRUMP_DESC HumgrumpDesc = {};
+	HumgrumpDesc.tTransform2DDesc.vInitialPosition = _float3(0.0f, 54.89, 0.03f);
+	HumgrumpDesc.iCurLevelID = m_eLevelID;
+	HumgrumpDesc.strSectionTag = TEXT("Chapter8_P2324");
+	HumgrumpDesc.iStartAnimIndex = CNpc_Humgrump::CHAPTER6_IDLE;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Npc_Humgrump"),
+		m_eLevelID, _strLayerTag, &HumgrumpDesc)))
+		return E_FAIL;
+
 
 	return S_OK;
 

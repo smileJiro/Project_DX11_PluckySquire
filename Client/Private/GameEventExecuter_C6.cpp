@@ -1093,7 +1093,14 @@ void CGameEventExecuter_C6::Chapter6_Change_Book_To_Greate_Humgrump(_float _fTim
 {
 	m_fTimer += _fTimeDelta;
 
-	if (Step_Check(STEP_0)) {
+
+	if (Step_Check(STEP_0))
+	{
+		if (true == CUI_Manager::GetInstance()->is_PlayNarration()) {
+			Next_Step(true);
+		}
+	}
+	else if (Step_Check(STEP_1)) {
 		// 1. Narration이 끝났을 때 Book으로(가운데) 타겟 변경
 		if (true == CUI_Manager::GetInstance()->is_EndNarration()) {
 
@@ -1109,7 +1116,7 @@ void CGameEventExecuter_C6::Chapter6_Change_Book_To_Greate_Humgrump(_float _fTim
 			Next_Step(true);
 		}
 	}
-	else if (Step_Check(STEP_1)) {
+	else if (Step_Check(STEP_2)) {
 
 		// 2. 책 덮기
 		if (m_fTimer >= 1.f && 0 == m_iSubStep) {
@@ -1138,7 +1145,7 @@ void CGameEventExecuter_C6::Chapter6_Change_Book_To_Greate_Humgrump(_float _fTim
 			}
 		}
 	}
-	else if (Step_Check(STEP_2)) {
+	else if (Step_Check(STEP_3)) {
 		// 3. 험그럼프 책으로 변경
 		if (m_fTimer >= 1.f) {
 			CBook* pBook = static_cast<CBook*>(m_pGameInstance->Get_GameObject_Ptr(LEVEL_CHAPTER_6, TEXT("Layer_Book"), 0));
@@ -1147,7 +1154,7 @@ void CGameEventExecuter_C6::Chapter6_Change_Book_To_Greate_Humgrump(_float _fTim
 			Next_Step(true);
 		}
 	}
-	else if (Step_Check(STEP_3)) {
+	else if (Step_Check(STEP_4)) {
 		// 4. CutScene Camera로 변경
 		if (m_fTimer >= 4.f) {
 			CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::CUTSCENE, true, 0.2f);
@@ -1156,7 +1163,7 @@ void CGameEventExecuter_C6::Chapter6_Change_Book_To_Greate_Humgrump(_float _fTim
 			Next_Step(true);
 		}
 	}
-	else if (Step_Check(STEP_4)) {
+	else if (Step_Check(STEP_5)) {
 		// 5. Level 변경
 		if (m_fTimer >= 5.f) {
 			CTrigger_Manager::GetInstance()->Register_TriggerEvent(L"Next_Chapter_Event", 0);
@@ -1293,7 +1300,7 @@ void CGameEventExecuter_C6::Chapter6_FriendEvent_0(_float _fTimeDelta)
 			pThrash->Move_Position(_float2(XMVectorGetX(vThrashPos), XMVectorGetY(vThrashPos)), CFriend::DIR_UP);
 			pViolet->Move_Position(_float2(XMVectorGetX(vVioletPos), XMVectorGetY(vVioletPos)), CFriend::DIR_UP);
 
-			CCamera_Manager::GetInstance()->Set_ResetData(eCamType);
+			//CCamera_Manager::GetInstance()->Set_ResetData(eCamType);
 			m_iDialogueIndex = 0;
 		}
 		Next_Step_Over(2.0f);
@@ -1329,7 +1336,7 @@ void CGameEventExecuter_C6::Chapter6_FriendEvent_0(_float _fTimeDelta)
 		//CFriend_Controller::GetInstance()->Erase_Friend(TEXT("Violet"));
 		//Event_DeleteObject(pViolet);
 		/* 임시 코드 */
-		CCamera_Manager::GetInstance()->Start_ResetArm_To_SettingPoint(eCamType, 1.0f);
+		//CCamera_Manager::GetInstance()->Start_ResetArm_To_SettingPoint(eCamType, 1.0f);
 		pPlayer->Set_BlockPlayerInput(false);
 		GameEvent_End();
 	}
@@ -1496,8 +1503,8 @@ void CGameEventExecuter_C6::Chapter6_StorySequence_01(_float _fTimeDelta)
 		if (Is_Start())
 		{
 			_vector vPos = static_cast<C2DMapActionObject*>(m_TargetObjects[0])->Get_FinalPosition();
-			CEffect2D_Manager::GetInstance()->Play_Effect(L"Ch05_MountainExp_SmokeInto", SECTION_MGR->Get_Cur_Section_Key(), XMMatrixTranslation(XMVectorGetX(vPos), XMVectorGetY(vPos), 0.f), 0.f, 0, false);
-			CEffect2D_Manager::GetInstance()->Play_Effect(L"Ch05_MountainExp_SmokeLoop", SECTION_MGR->Get_Cur_Section_Key(), XMMatrixTranslation(XMVectorGetX(vPos), XMVectorGetY(vPos), 0.f), 1.8f, 0);
+			CEffect2D_Manager::GetInstance()->Play_Effect(L"Ch05_MountainExp_SmokeInto", SECTION_MGR->Get_Cur_Section_Key(), XMMatrixTranslation(-454.f, 334.f, 0.f), 0.f, 0, false);
+			CEffect2D_Manager::GetInstance()->Play_Effect(L"Ch05_MountainExp_SmokeLoop", SECTION_MGR->Get_Cur_Section_Key(), XMMatrixTranslation(-454.f, 334.f, 0.f), 1.8f, 0,true, 999.f);
 		}
 
 		Next_Step_Over(0.7f);
@@ -1506,11 +1513,11 @@ void CGameEventExecuter_C6::Chapter6_StorySequence_01(_float _fTimeDelta)
 	{
 		if (Is_Start())
 		{
-			_vector vThrashPos = XMVectorSet(-200.f, 48.f, 0.f, 0.f);;
-			pThrash->Move_Position(_float2(XMVectorGetX(vThrashPos), XMVectorGetY(vThrashPos)), CFriend::DIR_LEFT);
+			_vector vThrashPos = XMVectorSet(-512.f, -157.f, 0.f, 0.f);;
+			pThrash->Move_Position(_float2(XMVectorGetX(vThrashPos), XMVectorGetY(vThrashPos)), CFriend::DIR_UP);
 		}
 
-		if (Next_Step(0.7f))
+		if (Next_Step_Over(0.7f))
 			pThrash->Set_2DDirection(F_DIRECTION::UP);
 	}
 	else  if (Step_Check(STEP_11))
@@ -1530,17 +1537,100 @@ void CGameEventExecuter_C6::Chapter6_StorySequence_01(_float _fTimeDelta)
 		{
 			_vector vPos = static_cast<C2DMapActionObject*>(m_TargetObjects[0])->Get_FinalPosition();
 
-			CEffect2D_Manager::GetInstance()->Play_Effect(L"Ch05_MountainExp_ExpSmall", SECTION_MGR->Get_Cur_Section_Key(), XMMatrixTranslation(XMVectorGetX(vPos), XMVectorGetY(vPos), 0.f), 0.f, 0, false);
-			CEffect2D_Manager::GetInstance()->Play_Effect(L"Ch05_MountainExp_ExpBig", SECTION_MGR->Get_Cur_Section_Key(), XMMatrixTranslation(XMVectorGetX(vPos), XMVectorGetY(vPos), 0.f), 1.8f, 0, false, 999.f);
-			CEffect2D_Manager::GetInstance()->Play_Effect(L"Ch05_MountainExp_Thoom", SECTION_MGR->Get_Cur_Section_Key(), XMMatrixTranslation(XMVectorGetX(vPos), XMVectorGetY(vPos), 0.f), 1.8f, 0);
+			CEffect2D_Manager::GetInstance()->Play_Effect(L"Ch05_MountainExp_ExpSmall", SECTION_MGR->Get_Cur_Section_Key(), XMMatrixTranslation(-459.f, 254.f, 0.f), 0.f, 0, false);
+			CEffect2D_Manager::GetInstance()->Play_Effect(L"Ch05_MountainExp_ExpBig", SECTION_MGR->Get_Cur_Section_Key(), XMMatrixTranslation(-399.f, 254.f, 0.f), 1.8f, 0, false, 999.f);
+			CEffect2D_Manager::GetInstance()->Play_Effect(L"Ch05_MountainExp_Thoom", SECTION_MGR->Get_Cur_Section_Key(), XMMatrixTranslation(-459.f, 224.f, 0.f), 1.9f, 0);
 		}
 		else
-			Next_Step_Over(1.5f);
+			Next_Step_Over(2.2f);
 	}
+	else  if (Step_Check(STEP_13))
+	{
+		if (Is_Start())
+		{
+			CDialog_Manager::GetInstance()->Set_NPC(pThrash);
+			CDialog_Manager::GetInstance()->Set_DialogId(L"Chapter6_StorySequence_01_05");
+		}
+		else
+			Next_Step(!CDialog_Manager::GetInstance()->Get_DisPlayDialogue());
+	}
+	else  if (Step_Check(STEP_14))
+	{
+		if (Is_Start())
+		{
+			_vector vThrashPos = XMVectorSet(-226.f, -195.f, 0.f, 0.f);;
+			_vector vVioletPos = pViolet->Get_FinalPosition();
+			pThrash->Move_Position(_float2(XMVectorGetX(vThrashPos), XMVectorGetY(vThrashPos)), CFriend::DIR_RIGHT);
+			pQueen->Set_2D_Direction(F_DIRECTION::LEFT);
+			pQueen->Swicth_Animation(1);
+			pMural->Set_2D_Direction(F_DIRECTION::LEFT);
+			pMural->Swicth_Animation(6);
+			pViolet->Move_Position(_float2(XMVectorGetX(vVioletPos), XMVectorGetY(vVioletPos)), CFriend::DIR_LEFT);
+			
+			
+			pPlayer->Set_2DDirection(F_DIRECTION::LEFT);
+			pPlayer->Swicth_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_IDLE_RIGHT);
+		}
+		Next_Step_Over(1.f);
+	}
+	else  if (Step_Check(STEP_15))
+	{
+		if (Is_Start())
+		{
+			CDialog_Manager::GetInstance()->Set_NPC(pThrash);
+			CDialog_Manager::GetInstance()->Set_DialogId(L"Chapter6_StorySequence_01_06");
+		}
+		else
+			Next_Step(!CDialog_Manager::GetInstance()->Get_DisPlayDialogue());
+	}
+	else  if (Step_Check(STEP_16))
+	{
+		if (Is_Start())
+		{
+			_vector vThrashPos = XMVectorSet(-1355.f, -322.f, 0.f, 0.f);;
+			pThrash->Move_Position(_float2(XMVectorGetX(vThrashPos), XMVectorGetY(vThrashPos)), CFriend::DIR_LEFT);
+			CCamera_Manager::GetInstance()->Change_CameraTarget(pPlayer);
+		}
+		Next_Step_Over(1.f);
+	}
+	else  if (Step_Check(STEP_17))
+	{
+		if (Is_Start())
+		{
+			_vector vVioletPos = pViolet->Get_FinalPosition();
+
+			pViolet->Move_Position(_float2(XMVectorGetX(vVioletPos), XMVectorGetY(vVioletPos)), CFriend::DIR_RIGHT);
+
+			CDialog_Manager::GetInstance()->Set_NPC(pPlayer);
+			CDialog_Manager::GetInstance()->Set_DialogId(L"Chapter6_StorySequence_01_07");
+		}
+		else
+			Next_Step(!CDialog_Manager::GetInstance()->Get_DisPlayDialogue());
+	}
+	else  if (Step_Check(STEP_18))
+	{
+		if (Is_Start())
+		{
+			_vector vPlayerPos = XMVectorSet(-1355.f, -322.f, 0.f, 0.f);
+			AUTOMOVE_COMMAND AutoMove = {};
+			AutoMove.eType = AUTOMOVE_TYPE::MOVE_TO;
+			AutoMove.fPostDelayTime = 0.0f;
+			AutoMove.fPreDelayTime = 0.0f;
+			AutoMove.iAnimIndex = (_uint)CPlayer::ANIM_STATE_2D::PLAYER_RUN_RIGHT;
+			AutoMove.vTarget = vPlayerPos;
+			AutoMove.fMoveSpeedMag = 2.5f;
+			pPlayer->Add_AutoMoveCommand(AutoMove);
+			pPlayer->Start_AutoMove(true);
+		}
+			Next_Step_Over(1.8f);
+		}
 	else
 	{
+		pPlayer->Stop_AutoMove();
+		pPlayer->Set_State(CPlayer::IDLE);
+		_float3 fDefaultPos = {};
 
-		pPlayer->Set_BlockPlayerInput(false);
+		Event_Book_Main_Section_Change_Start(1, &fDefaultPos);
 		GameEvent_End();
 	}
 

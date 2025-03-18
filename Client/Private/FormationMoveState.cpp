@@ -79,9 +79,10 @@ void CFormationMoveState::State_Update(_float _fTimeDelta)
 	}
 
 	//포메이션으로부터 목표 위치 받아서 이동
-	if (false == m_isTurn)
+	//if (false == m_isTurn)
+	if(false == m_pOwner->Is_Formation_Stop() || true == m_pOwner->Is_Formation_Rotate())
 	{
-		m_pOwner->Get_Formation_Position(&m_vNextPos);
+		m_pOwner->Get_Formation_NextPosition(&m_vNextPos);
 		m_isTurn = true;
 	}
 
@@ -105,44 +106,63 @@ void CFormationMoveState::Move(_float _fTimeDelta)
 		m_isMove = false;
 
 		Event_ChangeMonsterState(MONSTER_STATE::FORMATION_IDLE, m_pFSM);
+		return;
 	}
+
+	if (false == m_isMove)
+	{
+		if (true == m_pOwner->Is_Formation_Stop() && false == m_pOwner->Is_Formation_Rotate())
+		{
+			Event_ChangeMonsterState(MONSTER_STATE::FORMATION_IDLE, m_pFSM);
+			return;
+		}
+	}
+
 
 	//회전
 	if (true == m_isTurn && false == m_isMove)
 	{
-		if (true == m_pOwner->Rotate_To_Radians(vDir, m_pOwner->Get_ControllerTransform()->Get_RotationPerSec() * _fTimeDelta))
+		if(true == m_pOwner->Is_Formation_Rotate())
 		{
-			m_isMove = true;
-			//m_pOwner->Change_Animation();
+			if (true == m_pOwner->Rotate_To_Radians(vDir, m_pOwner->Get_ControllerTransform()->Get_RotationPerSec() * _fTimeDelta))
+			{
+				m_pOwner->Set_FormationRotateDone(true);
+				m_isMove = true;
+				m_pOwner->Change_Animation();
+			}
+			else
+			{
+				_bool isCW = true;
+				_float fResult = XMVectorGetY(XMVector3Cross(m_pOwner->Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK), XMLoadFloat3(&m_vNextPos)));
+				if (fResult < 0)
+					isCW = false;
+			
+				m_pOwner->Turn_Animation(isCW);
+			}
 		}
-		//else
-		//{
-		//	_bool isCW = true;
-		//	_float fResult = XMVectorGetY(XMVector3Cross(m_pOwner->Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK), XMLoadFloat3(&m_vNextPos)));
-		//	if (fResult < 0)
-		//		isCW = false;
 
-		//	m_pOwner->Turn_Animation(isCW);
-		//}
 	}
 
 	//이동
 	if (true == m_isMove)
 	{
-		//웨이포인트 도달 했는지 체크 후 도달하면 다음 위치 받아옴
-		//포메이션이 멈춰있는 경우 idle로 전환
+		//if (true == m_pOwner->Is_Formation_Stop())
+		//{
+		//	//Event_ChangeMonsterState(MONSTER_STATE::FORMATION_IDLE, m_pFSM);
+		//	return;
+		//}
 
-		//if (m_pOwner->Move_To(XMLoadFloat3(&m_vNextPos), 0.3f))
-		if (m_pOwner->Monster_MoveTo(XMLoadFloat3(&m_vNextPos), 0.3f))
+		_vector v = m_pOwner->Get_FinalPosition();
+		if (true == m_pOwner->Get_ControllerTransform()->MoveTo(XMLoadFloat3(&m_vNextPos), _fTimeDelta, 0.1f))
+		//if (m_pOwner->Monster_MoveTo(XMLoadFloat3(&m_vNextPos), 0.3f))
 		{
 			//m_pOwner->Stop_Rotate();
 			//m_pOwner->Stop_Move();
 			m_isTurn = false;
 			m_isMove = false;
-
-			if(true == m_pOwner->Is_Formation_Stop())
-				Event_ChangeMonsterState(MONSTER_STATE::FORMATION_IDLE, m_pFSM);
 		}
+		v = m_pOwner->Get_FinalPosition();
+		int a = 1;
 	}
 }
 

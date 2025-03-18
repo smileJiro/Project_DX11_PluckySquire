@@ -109,6 +109,16 @@ public:
 		return m_isFormationMode;
 	}
 
+	void Set_FormationRotateDone(_bool _isFormationRotateDone)
+	{
+		m_isFormationRotateDone = _isFormationRotateDone;
+	}
+
+	_bool Is_FormationRotateDone()
+	{
+		return m_isFormationRotateDone;
+	}
+
 	_bool IsDelay() 
 	{
 		return m_isDelay;
@@ -154,6 +164,7 @@ public:
 
 
 	_bool Is_Formation_Stop();
+	_bool Is_Formation_Rotate();
 
 public:
 	virtual HRESULT Initialize_Prototype() override;
@@ -214,6 +225,7 @@ public:
 	_bool						Add_To_Formation();
 	_bool						Remove_From_Formation();
 	_bool							Get_Formation_Position(_float3* _vPosition);
+	_bool							Get_Formation_NextPosition(_float3* _vPosition);
 
 protected:
 	void Delay_On() 
@@ -288,6 +300,8 @@ protected:
 	_bool m_isCombatMode = { false };
 	//대열 모드
 	_bool m_isFormationMode = { false };
+	//대열에서 회전이 끝났는지 체크
+	_bool m_isFormationRotateDone = { false };
 
 	//장애물 탐지
 	SNEAKWAYPOINTINDEX m_eWayIndex;

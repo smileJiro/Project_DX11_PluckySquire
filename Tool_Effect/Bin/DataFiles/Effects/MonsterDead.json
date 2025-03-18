@@ -301,6 +301,7 @@
                 }
             },
             "DelayTime": 0.11999999731779099,
+            "DissolveTexture": "../Bin/Resources/Textures/Effects/T_FX_CMN_Noise_05.dds",
             "Event": 0,
             "Float": [
                 {
@@ -314,6 +315,18 @@
                 {
                     "Name": "ColorScale",
                     "Value": 50.0
+                },
+                {
+                    "Name": "DissolveFactor",
+                    "Value": -1.0
+                },
+                {
+                    "Name": "DissolveTimeFactor",
+                    "Value": 2.0999999046325684
+                },
+                {
+                    "Name": "EdgeWidth",
+                    "Value": 0.15000000596046448
                 },
                 {
                     "Name": "MaskBrightness",
@@ -334,6 +347,24 @@
                     "Value": [
                         0.0,
                         0.0,
+                        0.0,
+                        0.0
+                    ]
+                },
+                {
+                    "Name": "EdgeColor",
+                    "Value": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                    ]
+                },
+                {
+                    "Name": "NoiseUVScale",
+                    "Value": [
+                        1.0,
+                        1.0,
                         0.0,
                         0.0
                     ]
@@ -383,7 +414,7 @@
                         "Float": [
                             {
                                 "Name": "Amount",
-                                "Value": 1.0
+                                "Value": 1.5
                             }
                         ],
                         "Float3": [
@@ -401,29 +432,10 @@
                     "Module": "POINT_VELOCITY",
                     "Order": 1,
                     "Type": "MODULE_TRANSLATION"
-                },
-                {
-                    "Apply": "TRANSLATION",
-                    "Datas": {
-                        "Float3": [
-                            {
-                                "Name": "Amount",
-                                "Value": [
-                                    0.0,
-                                    -200.0,
-                                    0.0
-                                ]
-                            }
-                        ]
-                    },
-                    "Init": false,
-                    "Module": "GRAVITY",
-                    "Order": 3,
-                    "Type": "MODULE_TRANSLATION"
                 }
             ],
             "Pooling": "KILL",
-            "ShaderPass": "VELOCITY_BILLBOARD_SUBCOLORBLOOM",
+            "ShaderPass": "VEL_SUB_DISSOLVE",
             "SpawnPosition": "RELATIVE_WORLD",
             "SpawnType": "BURST_SPAWN",
             "Texture": "../Bin/Resources/Textures/Effects/T_FX_CMN_Dust2x2_01_2.dds",

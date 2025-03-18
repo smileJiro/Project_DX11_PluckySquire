@@ -261,7 +261,9 @@ HRESULT CPlayer::Initialize(void* _pArg)
 	CPlayerData_Manager::GetInstance()->Register_Player(PLAYABLE_ID::NORMAL, this);
 
 
-
+	//Carriable이 2D에서 시작했는데도 3D랑 충돌돼서 2D면 false해줌.
+	 if (nullptr != m_pActorCom && COORDINATE_2D == pDesc->eStartCoord)
+		 m_pActorCom->Set_Active(false);
 	return S_OK;
 }
 
@@ -528,6 +530,8 @@ HRESULT CPlayer::Ready_PartObjects()
 	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_3DAnimationTransitionTime((_uint)ANIM_STATE_3D::CYBERJOT_ANIM_FLYING_UP_DASH, 1.f);
 	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_3DAnimationTransitionTime((_uint)ANIM_STATE_3D::CYBERJOT_ANIM_FLYING_DOWN_DASH, 1.f);*/
 	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_3DAnimationTransitionTime((_uint)ANIM_STATE_3D::CYBERJOT_ANIM_FLYING_IDLE, 0.5f);
+
+
 	return S_OK;
 }
 
@@ -1093,8 +1097,8 @@ void CPlayer::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
 		return;
 	}
 	m_tStat.iHP -= _iDamg;
-	m_pStateMachine->Get_CurrentState()->On_Hit(_pHitter, _iDamg, _vForce);
 	COORDINATE eCoord = Get_CurCoord();
+	m_pStateMachine->Get_CurrentState()->On_Hit(_pHitter, _iDamg, _vForce);
 
 	Uimgr->Set_PlayerOnHit(true);
 
@@ -1124,8 +1128,14 @@ HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
 		m_pCarryingObject->Change_Coordinate((COORDINATE)eCoord);
 	}
 
-	if (FAILED(__super::Change_Coordinate(_eCoordinate, _pNewPosition)))
+ 	if (FAILED(__super::Change_Coordinate(_eCoordinate, _pNewPosition)))
 		return E_FAIL;
+	//Transform (3D)에 Position 대입
+	//Update : 아무ㅏ것도 안함
+	//Late_Update : ACtorCom에서 getGlobalPos로ㅜ 위치를 받고 TraNSFORM에 동기화
+		//근데 getGlobalPos로 받은 위치가 이미 밑에 있음.
+
+	//static_cast<CActor_Dynamic*> (m_pActorCom)->Set_Gravity(true);
 	m_pInteractableObject = nullptr;
 
 	if (COORDINATE_2D == _eCoordinate)
@@ -2387,7 +2397,7 @@ void CPlayer::Key_Input(_float _fTimeDelta)
 		_float3 vNewPos = _float3(0.0f, 0.0f, 0.0f);
 		_vector vPos = Get_FinalPosition((COORDINATE)iCurCoord);
 
-		XMStoreFloat3(&vNewPos, vPos);
+		XMStoreFloat3(&vNewPos, vPos + _vector{0.f,1.f,0.f});
 
 
 		if (iCurCoord == COORDINATE_2D)

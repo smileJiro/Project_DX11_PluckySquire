@@ -29,7 +29,11 @@ public:
 	_bool Has_EmptySlot();
 	_bool Is_Stop()
 	{
-		return m_isDelay;
+		return !m_isMove;
+	}
+	_bool Is_Rotate()
+	{
+		return m_isRotate;
 	}
 
 public:
@@ -48,6 +52,7 @@ public:
 	_bool Remove_From_Formation(CMonster* _pMember);
 
 	_bool Get_Formation_Position(CMonster* _pMember, _float3* _vPosition);
+	_bool Get_Formation_NextPosition(CMonster* _pMember, _float3* _vPosition);
 
 
 private:
@@ -60,6 +65,9 @@ private:
 	_float m_fRow_Interval = { 1.5f };
 	_float m_fColumn_Interval = { 1.5f };
 
+	_bool m_isTurn = { false };
+	_bool m_isMove = { false };
+	_bool m_isRotate = { true };
 	_uint m_iPatrolIndex = { 0 };
 	_bool m_isBack = { false };
 	_bool m_isDelay = { false };

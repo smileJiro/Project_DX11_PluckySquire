@@ -225,7 +225,7 @@
             "SpawnPosition": "RELATIVE_WORLD",
             "SpawnType": "BURST_SPAWN",
             "Texture": "../Bin/Resources/Textures/Effects/T_FX_CMN_Fire2x2_01.dds",
-            "Time": 3.0,
+            "Time": 0.5,
             "Transform": [
                 1.0,
                 0.0,
@@ -444,7 +444,7 @@
             "SpawnPosition": "RELATIVE_WORLD",
             "SpawnType": "BURST_SPAWN",
             "Texture": "../Bin/Resources/Textures/Effects/T_FX_CMN_Circle_02.dds",
-            "Time": 3.0,
+            "Time": 0.5,
             "Transform": [
                 1.0,
                 0.0,

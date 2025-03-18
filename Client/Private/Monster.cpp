@@ -31,6 +31,14 @@ _bool CMonster::Is_Formation_Stop()
 	return m_pFormation->Is_Stop();
 }
 
+_bool CMonster::Is_Formation_Rotate()
+{
+	if (nullptr == m_pFormation)
+		return false;
+
+	return m_pFormation->Is_Rotate();
+}
+
 HRESULT CMonster::Initialize_Prototype()
 {
 	return S_OK;
@@ -288,7 +296,8 @@ void CMonster::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
 		//Effect
 		if (COORDINATE_3D == Get_CurCoord())
 			//CEffect_Manager::GetInstance()->Active_Effect(TEXT("MonsterDead"), true, m_pControllerTransform->Get_WorldMatrix_Ptr());
-			CEffect_Manager::GetInstance()->Active_Effect(TEXT("MonsterHit"), true, m_pControllerTransform->Get_WorldMatrix_Ptr());
+			//CEffect_Manager::GetInstance()->Active_Effect(TEXT("MonsterHit"), true, m_pControllerTransform->Get_WorldMatrix_Ptr());
+			CEffect_Manager::GetInstance()->Active_EffectMatrix(TEXT("MonsterHit"), true, m_pControllerTransform->Get_WorldMatrix());
 
 		else if (COORDINATE_2D == Get_CurCoord())
 		{
@@ -332,7 +341,8 @@ void CMonster::Monster_Death()
 	if(COORDINATE_3D == Get_CurCoord())
 	{
 		//CEffect_Manager::GetInstance()->Active_Effect(TEXT("MonsterDead"), true, m_pControllerTransform->Get_WorldMatrix_Ptr());
-		CEffect_Manager::GetInstance()->Active_EffectPosition(TEXT("MonsterDead"), true, m_pControllerTransform->Get_State(CTransform::STATE_POSITION));
+		//CEffect_Manager::GetInstance()->Active_EffectPosition(TEXT("MonsterDead"), true, m_pControllerTransform->Get_State(CTransform::STATE_POSITION));
+		CEffect_Manager::GetInstance()->Active_EffectMatrix(TEXT("MonsterDead"), true, m_pControllerTransform->Get_WorldMatrix());
 
 		//확률로 전구 생성
 			if (2 == (_int)ceil(m_pGameInstance->Compute_Random(0.f, 3.f)))
@@ -621,7 +631,9 @@ _bool CMonster::Add_To_Formation()
 {
 	if(true == CFormation_Manager::GetInstance()->Add_To_Formation(this, &m_pFormation))
 	{
-		Event_Set_Kinematic(static_cast<CActor_Dynamic*>(Get_ActorCom()), true);
+		CActor_Dynamic* pDynamic = static_cast<CActor_Dynamic*>(Get_ActorCom());
+		if (true == pDynamic->Is_Dynamic())
+			Event_Set_Kinematic(pDynamic, true);
 		return true;
 	}
 
@@ -632,7 +644,11 @@ _bool CMonster::Remove_From_Formation()
 {
 	if (m_pFormation->Remove_From_Formation(this))
 	{
-		Event_Set_Kinematic(static_cast<CActor_Dynamic*>(Get_ActorCom()), false);
+		CActor_Dynamic* pDynamic = static_cast<CActor_Dynamic*>(Get_ActorCom());
+		pDynamic->Update(0.f);
+		if (true == pDynamic->Is_Kinematic())
+			pDynamic->Set_Dynamic();
+			//Event_Set_Kinematic(pDynamic, false);
 		return true;
 	}
 
@@ -645,6 +661,14 @@ _bool CMonster::Get_Formation_Position(_float3* _vPosition)
 		return false;
 
 	return m_pFormation->Get_Formation_Position(this, _vPosition);
+}
+
+_bool CMonster::Get_Formation_NextPosition(_float3* _vPosition)
+{
+	if (nullptr == m_pFormation)
+		return false;
+
+	return m_pFormation->Get_Formation_NextPosition(this, _vPosition);
 }
 
 //void CMonster::Set_2D_Direction(F_DIRECTION _eDir)

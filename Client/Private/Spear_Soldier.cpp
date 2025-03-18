@@ -131,6 +131,9 @@ HRESULT CSpear_Soldier::Initialize(void* _pArg)
         {
             m_pFSM->Add_FormationState();
             m_pFSM->Set_State((_uint)MONSTER_STATE::FORMATION_IDLE);
+
+            Get_ControllerTransform()->Set_SpeedPerSec(pDesc->tTransform3DDesc.fSpeedPerSec);
+            Get_ControllerTransform()->Set_RotationPerSec(pDesc->tTransform3DDesc.fRotationPerSec);
         }
         else
         {
@@ -717,6 +720,17 @@ void CSpear_Soldier::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
             break;
         }
     }
+}
+
+void CSpear_Soldier::Turn_Animation(_bool _isCW)
+{
+    CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
+
+    _uint AnimIdx;
+    AnimIdx = IDLE;
+
+    if (AnimIdx != pModelObject->Get_Model(COORDINATE_3D)->Get_CurrentAnimIndex())
+        pModelObject->Switch_Animation(AnimIdx);
 }
 
 HRESULT CSpear_Soldier::Ready_ActorDesc(void* _pArg)

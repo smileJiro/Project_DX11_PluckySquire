@@ -353,7 +353,7 @@ HRESULT CLevel_EffectTool::Ready_Layer_ShadingModel(const _wstring& _strLayerTag
 	Desc.iCurLevelID = LEVEL_TOOL;
 	Desc.iModelPrototypeLevelID_3D = LEVEL_TOOL;
 	Desc.strModelPrototypeTag_3D = L"Prototype_Model_Sphere";
-	Desc.iShaderPass_3D = 13;
+	Desc.iShaderPass_3D = 12;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_TestShadingModel"),
 		LEVEL_TOOL, _strLayerTag, reinterpret_cast<CGameObject**>(&pOut), &Desc)))

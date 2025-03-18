@@ -123,6 +123,23 @@ void CEffect_Manager::Active_EffectID(const _tchar* _szEffectTag, _bool _isReset
 		m_UpdateSystems.push_back(pEffect);
 }
 
+void CEffect_Manager::Active_EffectMatrix(const _tchar* _szEffectTag, _bool _isReset, _fmatrix _fMatrix)
+{
+	_bool _isActive;
+
+	CEffect_System* pEffect = Find_Effect(_szEffectTag, &_isActive);
+
+	if (nullptr == pEffect)
+		return;
+
+	pEffect->Set_EffectMatrix(_fMatrix);
+	pEffect->Set_Active(true);
+	pEffect->Active_All(_isReset);
+
+	if (false == _isActive)
+		m_UpdateSystems.push_back(pEffect);
+}
+
 void CEffect_Manager::InActive_Effect(const _tchar* _szEffectTag)
 {
 	for (auto iter = m_UpdateSystems.begin(); iter != m_UpdateSystems.end(); )
