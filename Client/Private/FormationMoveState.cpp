@@ -79,9 +79,10 @@ void CFormationMoveState::State_Update(_float _fTimeDelta)
 	}
 
 	//포메이션으로부터 목표 위치 받아서 이동
-	if (false == m_isTurn)
+	//if (false == m_isTurn)
+	if(false == m_pOwner->Is_Formation_Stop())
 	{
-		m_pOwner->Get_Formation_Position(&m_vNextPos);
+		m_pOwner->Get_Formation_NextPosition(&m_vNextPos);
 		m_isTurn = true;
 	}
 
@@ -106,6 +107,13 @@ void CFormationMoveState::Move(_float _fTimeDelta)
 
 		Event_ChangeMonsterState(MONSTER_STATE::FORMATION_IDLE, m_pFSM);
 	}
+
+	if (false == m_isMove)
+	{
+		if (true == m_pOwner->Is_Formation_Stop())
+			Event_ChangeMonsterState(MONSTER_STATE::FORMATION_IDLE, m_pFSM);
+	}
+
 
 	//회전
 	if (true == m_isTurn && false == m_isMove)
@@ -132,16 +140,13 @@ void CFormationMoveState::Move(_float _fTimeDelta)
 		//웨이포인트 도달 했는지 체크 후 도달하면 다음 위치 받아옴
 		//포메이션이 멈춰있는 경우 idle로 전환
 
-		//if (m_pOwner->Move_To(XMLoadFloat3(&m_vNextPos), 0.3f))
-		if (m_pOwner->Monster_MoveTo(XMLoadFloat3(&m_vNextPos), 0.3f))
+		if (true == m_pOwner->Get_ControllerTransform()->MoveTo(XMLoadFloat3(&m_vNextPos), _fTimeDelta))
+		//if (m_pOwner->Monster_MoveTo(XMLoadFloat3(&m_vNextPos), 0.3f))
 		{
 			//m_pOwner->Stop_Rotate();
 			//m_pOwner->Stop_Move();
 			m_isTurn = false;
 			m_isMove = false;
-
-			if(true == m_pOwner->Is_Formation_Stop())
-				Event_ChangeMonsterState(MONSTER_STATE::FORMATION_IDLE, m_pFSM);
 		}
 	}
 }

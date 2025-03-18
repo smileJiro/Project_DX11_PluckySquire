@@ -2021,7 +2021,15 @@
     <ClInclude Include="..\public\Excavator_Centre.h">
       <Filter>05.MiniGames\ExcavatorGame\Excavator\Centre</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\Excavator_Switch.h" />
+    <ClInclude Include="..\public\Excavator_Switch.h">
+      <Filter>05.MiniGames\ExcavatorGame\Excavator\Centre\Switch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_Pull.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_BackRoll.h">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -3238,7 +3246,15 @@
     <ClCompile Include="..\private\Excavator_Centre.cpp">
       <Filter>05.MiniGames\ExcavatorGame\Excavator\Centre</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\Excavator_Switch.cpp" />
+    <ClCompile Include="..\private\Excavator_Switch.cpp">
+      <Filter>05.MiniGames\ExcavatorGame\Excavator\Centre\Switch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_Pull.cpp">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_BackRoll.cpp">
+      <Filter>03.Components\PlayerState</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

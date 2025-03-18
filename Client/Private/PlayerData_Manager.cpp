@@ -100,7 +100,30 @@ HRESULT CPlayerData_Manager::Spawn_PlayerItem(_uint _iPrototypeLevelID, _uint _i
 
 HRESULT CPlayerData_Manager::Spawn_Bulb(_uint _iPrototypeLevelID, _uint _iLevelID)
 {
-	ifstream file(TEXT("../Bin/DataFiles/Trigger/Bulb/Bulb_Position.json"));
+
+	_wstring strJsonPath = L"";
+	switch (_iLevelID)
+	{
+	case Client::LEVEL_CHAPTER_2:
+		strJsonPath = TEXT("../Bin/DataFiles/Trigger/Bulb/Bulb_Position.json");
+		break;
+	case Client::LEVEL_CHAPTER_4:
+		//strJsonPath = TEXT("../Bin/DataFiles/Trigger/Bulb/Bulb_Position.json");
+		break;
+	case Client::LEVEL_CHAPTER_6:
+		//strJsonPath = TEXT("../Bin/DataFiles/Trigger/Bulb/Bulb_Position.json");
+		break;
+	case Client::LEVEL_CHAPTER_8:
+		//strJsonPath = TEXT("../Bin/DataFiles/Trigger/Bulb/Bulb_Position.json");
+		break;
+	default:
+		break;
+	}
+
+	if (strJsonPath == L"")
+		return S_OK;
+
+	ifstream file(strJsonPath);
 
 	if (!file.is_open())
 	{

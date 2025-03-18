@@ -36,6 +36,8 @@
 #include "PlayerState_RetriveSword.h"
 #include "PlayerState_CannonPortal.h"
 #include "PlayerState_Mojam.h"
+#include "PlayerState_Pull.h"
+#include "PlayerState_BackRoll.h"
 #include "Actor_Dynamic.h"
 #include "PlayerSword.h"    
 #include "PlayerBody.h"
@@ -253,6 +255,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
 	Set_PlatformerMode(false);
 
 	m_pActorCom->Set_ShapeEnable(PLAYER_SHAPE_USE::BODYGUARD, false);
+	static_cast<CActor_Dynamic*> (m_pActorCom)->Set_Gravity(false);
 	Set_State(CPlayer::IDLE);
 
 	// PlayerData Manager 등록
@@ -703,7 +706,21 @@ void CPlayer::Update(_float _fTimeDelta)
 			m_fInvincibleTImeAcc = 0;
 		}
 	}
+	if (Is_CyvberJotMode())
+	{
 
+		_vector vCamTargetPos = { m_pCameraTargetWorldMatrix->_41, m_pCameraTargetWorldMatrix->_42, m_pCameraTargetWorldMatrix->_43, 1.f };
+		_vector vBaseLookVector = XMVector4Normalize(vCamTargetPos - m_pTargetCamera->Get_FinalPosition() );
+		_vector vBaseRightVector = XMVector3Cross(vBaseLookVector, { 0,1,0,0 });
+		_vector vBaseUpVector = XMVector3Cross(vBaseRightVector, vBaseLookVector);
+		_vector vBasePosition = m_pTargetCamera->Get_FinalPosition();
+		_matrix matBase = { vBaseRightVector, vBaseUpVector, vBaseLookVector, vBasePosition };
+		_vector vPlanePostition = m_vCyberPlanePosition + vBaseLookVector * m_fDistanceFromCamearPlane;
+		_matrix matPlane = XMMatrixTranslationFromVector(vPlanePostition);
+		_matrix matWorld = XMMatrixMultiply(matBase, matPlane);
+		_float4x4 matWorldFloat4x4; XMStoreFloat4x4(&matWorldFloat4x4, matWorld);
+		Set_WorldMatrix(matWorldFloat4x4);
+	}
 	__super::Update(_fTimeDelta); /* Part Object Update */
 	if (m_pInteractableObject && false == dynamic_cast<CBase*>(m_pInteractableObject)->Is_Active())
 		m_pInteractableObject = nullptr;
@@ -1078,6 +1095,7 @@ void CPlayer::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
 	}
 	m_tStat.iHP -= _iDamg;
 	COORDINATE eCoord = Get_CurCoord();
+	m_pStateMachine->Get_CurrentState()->On_Hit(_pHitter, _iDamg, _vForce);
 
 	Uimgr->Set_PlayerOnHit(true);
 
@@ -1107,8 +1125,14 @@ HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
 		m_pCarryingObject->Change_Coordinate((COORDINATE)eCoord);
 	}
 
-	if (FAILED(__super::Change_Coordinate(_eCoordinate, _pNewPosition)))
+ 	if (FAILED(__super::Change_Coordinate(_eCoordinate, _pNewPosition)))
 		return E_FAIL;
+	//Transform (3D)에 Position 대입
+	//Update : 아무ㅏ것도 안함
+	//Late_Update : ACtorCom에서 getGlobalPos로ㅜ 위치를 받고 TraNSFORM에 동기화
+		//근데 getGlobalPos로 받은 위치가 이미 밑에 있음.
+
+	static_cast<CActor_Dynamic*> (m_pActorCom)->Set_Gravity(true);
 	m_pInteractableObject = nullptr;
 
 	if (COORDINATE_2D == _eCoordinate)
@@ -2014,12 +2038,18 @@ void CPlayer::Set_State(STATE _eState)
 	case Client::CPlayer::MOJAM:
 		m_pStateMachine->Transition_To(new CPlayerState_Mojam(this));
 		break;
-		
+	case Client::CPlayer::PULL:
+		m_pStateMachine->Transition_To(new CPlayerState_Pull(this));
+		break;
+	case Client::CPlayer::BACKROLL:
+		m_pStateMachine->Transition_To(new CPlayerState_BackRoll(this));
+		break;
 	case Client::CPlayer::STATE_LAST:
 		break;
 	default:
 		break;
 	}
+
 }
 
 void CPlayer::Set_Mode(PLAYER_MODE _eNewMode)
@@ -2068,9 +2098,12 @@ void CPlayer::Set_Mode(PLAYER_MODE _eNewMode)
 		if (COORDINATE_2D == eCoord)
 			break;
 		cout << "PLAYER_MODE_CYBERJOT" << endl;
-		Set_Kinematic(false);
-		Get_ActorDynamic()->Set_Gravity(false);
-		Get_ActorDynamic()->Set_LinearDamping(2.f);
+
+		m_pTargetCamera = static_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET));
+		m_pCameraTargetWorldMatrix = m_pTargetCamera->Get_TargetMatrix();
+		Set_Kinematic(true);
+		//Get_ActorDynamic()->Set_Gravity(false);
+		//Get_ActorDynamic()->Set_LinearDamping(2.f);
 		Equip_Part(PLAYER_PART_RIFLE);
 		Equip_Part(PLAYER_PART_VISOR);
 		Equip_Part(PLAYER_PART_ZETPACK);
@@ -2361,7 +2394,7 @@ void CPlayer::Key_Input(_float _fTimeDelta)
 		_float3 vNewPos = _float3(0.0f, 0.0f, 0.0f);
 		_vector vPos = Get_FinalPosition((COORDINATE)iCurCoord);
 
-		XMStoreFloat3(&vNewPos, vPos);
+		XMStoreFloat3(&vNewPos, vPos + _vector{0.f,1.f,0.f});
 
 
 		if (iCurCoord == COORDINATE_2D)
@@ -2520,6 +2553,13 @@ void CPlayer::On_Stop()
 void CPlayer::On_UnStop()
 {
 	//static_cast<CModelObject*>(m_PartObjects[PLAYER_PART_BODY])->End_StoppableRender();
+}
+
+void CPlayer::Move_CyberPlane(_vector _vMoveVelocity, _float _fTimeDelta)
+{
+
+	m_vCyberPlanePosition += _vMoveVelocity * _fTimeDelta;
+	m_vCyberPlanePosition =XMVectorClamp(m_vCyberPlanePosition, m_vCyberPlaneMinPosition, m_vCyberPlaneMaxPosition);
 }
 
 CPlayer* CPlayer::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

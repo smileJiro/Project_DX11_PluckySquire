@@ -288,7 +288,8 @@ void CMonster::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
 		//Effect
 		if (COORDINATE_3D == Get_CurCoord())
 			//CEffect_Manager::GetInstance()->Active_Effect(TEXT("MonsterDead"), true, m_pControllerTransform->Get_WorldMatrix_Ptr());
-			CEffect_Manager::GetInstance()->Active_Effect(TEXT("MonsterHit"), true, m_pControllerTransform->Get_WorldMatrix_Ptr());
+			//CEffect_Manager::GetInstance()->Active_Effect(TEXT("MonsterHit"), true, m_pControllerTransform->Get_WorldMatrix_Ptr());
+			CEffect_Manager::GetInstance()->Active_EffectMatrix(TEXT("MonsterHit"), true, m_pControllerTransform->Get_WorldMatrix());
 
 		else if (COORDINATE_2D == Get_CurCoord())
 		{
@@ -332,7 +333,8 @@ void CMonster::Monster_Death()
 	if(COORDINATE_3D == Get_CurCoord())
 	{
 		//CEffect_Manager::GetInstance()->Active_Effect(TEXT("MonsterDead"), true, m_pControllerTransform->Get_WorldMatrix_Ptr());
-		CEffect_Manager::GetInstance()->Active_EffectPosition(TEXT("MonsterDead"), true, m_pControllerTransform->Get_State(CTransform::STATE_POSITION));
+		//CEffect_Manager::GetInstance()->Active_EffectPosition(TEXT("MonsterDead"), true, m_pControllerTransform->Get_State(CTransform::STATE_POSITION));
+		CEffect_Manager::GetInstance()->Active_EffectMatrix(TEXT("MonsterDead"), true, m_pControllerTransform->Get_WorldMatrix());
 
 		//확률로 전구 생성
 			if (2 == (_int)ceil(m_pGameInstance->Compute_Random(0.f, 3.f)))
@@ -645,6 +647,14 @@ _bool CMonster::Get_Formation_Position(_float3* _vPosition)
 		return false;
 
 	return m_pFormation->Get_Formation_Position(this, _vPosition);
+}
+
+_bool CMonster::Get_Formation_NextPosition(_float3* _vPosition)
+{
+	if (nullptr == m_pFormation)
+		return false;
+
+	return m_pFormation->Get_Formation_NextPosition(this, _vPosition);
 }
 
 //void CMonster::Set_2D_Direction(F_DIRECTION _eDir)

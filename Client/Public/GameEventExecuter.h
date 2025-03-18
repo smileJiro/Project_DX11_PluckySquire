@@ -65,6 +65,9 @@ protected:
 		STEP_13,
 		STEP_14,
 		STEP_15,
+		STEP_16,
+		STEP_17,
+		STEP_18,
 		STEP_LAST
 	};
 public :
@@ -83,7 +86,7 @@ public :
 	virtual void					Update(_float _fTimeDelta)  abstract;
 
 	virtual void					GameEvent_End();
-	virtual void					Change_PlayMap() {};
+	virtual void					Change_PlayMap(_float _fStartTime) {};
 
 protected:
 	void							Start_Train(_float _fTimeDelta);
@@ -160,6 +163,8 @@ protected:
 	_bool Setting_Postit_Page(const _wstring& _strPostItSectionTag);
 
 	_bool Next_Event_Process(_float _fTimeDelta);
+
+	void  Ready_Action(_wstring _strSectionTag, _uint _iSectionLayerGroup, _uint _MapObjectActiveType, _float _fBright = 0.1f);
 
 #pragma endregion
 

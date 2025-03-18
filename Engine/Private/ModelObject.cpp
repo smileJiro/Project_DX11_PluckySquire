@@ -132,6 +132,9 @@ HRESULT CModelObject::Render()
         pShader->Bind_RawValue("g_vStoppableColor", &m_vStoppableColor, sizeof(_float4));
         _float fStoppableRatio = m_vStoppableTime.y / m_vStoppableTime.x;
         pShader->Bind_RawValue("g_fStoppableRatio", &fStoppableRatio, sizeof(_float));
+
+        if(PASS_VTXPOSTEX::COLOR_ALPHA == (PASS_VTXPOSTEX)iShaderPass)
+            pShader->Bind_RawValue("g_vColors", &m_vPosTexColor, sizeof(_float4));
     }
 
     m_pControllerModel->Render(pShader, iShaderPass);

@@ -8,6 +8,9 @@ class CProjectile_Monster abstract : public CCharacter
 public:
 	typedef struct tagProjectile_Monster_Desc : public CCharacter::CHARACTER_DESC
 	{
+		_float3 vSpawnScale = tTransform3DDesc.vInitialScaling;
+		_float3 vSpawnScaling = { 0.f, 0.f, 0.f };
+
 		_float fLifeTime;
 	}PROJECTILE_MONSTER_DESC;
 
@@ -55,6 +58,11 @@ protected:
 	_bool m_isStop = {};
 	_bool m_isFirstLoop = { true };
 	_bool m_isTimeOver = { false };
+	
+	// 처음 스폰시 크기
+	_bool m_isSpawned = { false };
+	_float3 m_vSpawnScale = { 1.f, 1.f, 1.f };
+	_float3 m_vSpawnScaling = { 1.f, 1.f, 1.f };
 
 private:
 	//virtual HRESULT					Ready_ActorDesc(void* _pArg);

@@ -110,7 +110,7 @@ void CBoss_PurpleBall::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _O
                 Event_Hit(this, static_cast<CCharacter*>(_Other.pActorUserData->pOwner), 1, vRepulse);
                 Event_DeleteObject(this);
                 // Effect
-                CEffect_Manager::GetInstance()->Active_EffectPosition(TEXT("PurpleHit"), true, m_pControllerTransform->Get_State(CTransform::STATE_POSITION));
+                CEffect_Manager::GetInstance()->Active_EffectMatrix(TEXT("PurpleHit"), true, m_pControllerTransform->Get_WorldMatrix());
             }
         }
 

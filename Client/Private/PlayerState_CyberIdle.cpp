@@ -22,12 +22,6 @@ void CPlayerState_CyberIdle::Update(_float _fTimeDelta)
 	}
 	if (tKeyResult.bInputStates[PLAYER_INPUT_MOVE])
 	{
-		_vector vCamTargetPos = { m_pCameraTargetWorldMatrix->_41, m_pCameraTargetWorldMatrix->_42, m_pCameraTargetWorldMatrix->_43, 1.f };
-		_vector vBaseLookVector = XMVector4Normalize( m_pTargetCamera->Get_FinalPosition() - vCamTargetPos);
-		_vector vBaseRightVector = XMVector3Cross(vBaseLookVector, { 0,1,0,0 });
-		_vector vBaseUpVector = XMVector3Cross(vBaseRightVector, vBaseLookVector);
-		_matrix matBase = { vBaseRightVector, vBaseUpVector, vBaseLookVector, {0,0,0,1} };
-		_vector vMoveDir = XMVector3TransformNormal(tKeyResult.vMoveDir, matBase);
 
 		if (tKeyResult.bInputStates[PLAYER_INPUT_ROLL])
 		{
@@ -36,14 +30,15 @@ void CPlayerState_CyberIdle::Update(_float _fTimeDelta)
 		}
 		else
 		{
-			m_pDynamicActor->Set_LinearVelocity(vMoveDir * m_f3DCyberFlySpeed);
+			//m_pDynamicActor->Set_LinearVelocity(vPlaneMoveDir * m_f3DCyberFlySpeed);
+			m_pOwner->Move_CyberPlane(tKeyResult.vMoveDir * m_f3DCyberFlySpeed, _fTimeDelta);
 		}
 
 	}
-	_vector vVelocity = m_pDynamicActor->Get_LinearVelocity();
+	//_vector vVelocity = m_pDynamicActor->Get_LinearVelocity();
 
 	//cout << "Velocity : " << vVelocity << endl;
-	Set_VeloState(vVelocity);
+	Set_VeloState({ 0.f,0.f,0.f });
 
 
 
@@ -53,18 +48,9 @@ void CPlayerState_CyberIdle::Update(_float _fTimeDelta)
 
 void CPlayerState_CyberIdle::Enter()
 {
-	m_pDynamicActor = m_pOwner->Get_ActorDynamic();
-	m_pTargetCamera = static_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_CurrentCamera());
-	m_pCameraTargetWorldMatrix = m_pTargetCamera->Get_TargetMatrix();
-	//PLAYER_INPUT_RESULT tKeyResult = m_pOwner->Player_KeyInput_CyberJot();
-	//if (false == m_bRifleTriggered && tKeyResult.bInputStates[PLAYER_INPUT_ATTACK])
-	//{
-	//	m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::CYBERJOT_ANIM_SHOOT);
-	//}
-	//else if (m_bRifleTriggered && false == tKeyResult.bInputStates[PLAYER_INPUT_ATTACK])
-	//{
-	//	m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::CYBERJOT_ANIM_FLYING_IDLE);
-	//}
+	//m_pDynamicActor = m_pOwner->Get_ActorDynamic();
+	//m_pTargetCamera = static_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_CurrentCamera());
+	//m_pCameraTargetWorldMatrix = m_pTargetCamera->Get_TargetMatrix();
 
 }
 
@@ -79,7 +65,7 @@ void CPlayerState_CyberIdle::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 		|| (_uint)CPlayer::ANIM_STATE_3D::CYBERJOT_ANIM_FLYING_LEFT_DASH == iAnimIdx
 		|| (_uint)CPlayer::ANIM_STATE_3D::CYBERJOT_ANIM_FLYING_DOWN_DASH== iAnimIdx)
 	{
-		Set_VeloState(m_pDynamicActor->Get_LinearVelocity());
+		//Set_VeloState(m_pDynamicActor->Get_LinearVelocity());
 	}
 
 }
@@ -92,7 +78,7 @@ void CPlayerState_CyberIdle::Set_VeloState(_fvector _vVelocity)
 	{
 		eNewVeloState = VELOCITY_DASH;
 	}
-	else if (fVelocity >= m_fRunVelocityThreshold)
+	else if (fVelocity >= 1.f)
 	{
 		F_DIRECTION eFDir = To_FDirection(_vVelocity);
 		switch (eFDir)

@@ -29,7 +29,7 @@ HRESULT CMagic_Hand::Initialize(void* _pArg)
     if (FAILED(Ready_PartObjects()))
         return E_FAIL;
 
-    m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(2.f, 0.4f, -17.3f, 1.f));
+   // m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(2.f, 0.4f, -17.3f, 1.f));
 
     m_pEffectSystem->Active_All(true);
 

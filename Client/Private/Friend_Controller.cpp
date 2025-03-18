@@ -109,6 +109,7 @@ HRESULT CFriend_Controller::Start_Train()
     }
 
     m_isTrain = true;
+    return S_OK;
 }
 
 HRESULT CFriend_Controller::End_Train()

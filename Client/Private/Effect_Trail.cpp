@@ -45,18 +45,18 @@ void CEffect_Trail::Update(_float _fTimeDelta)
 {   
     __super::Update(_fTimeDelta);
 
-#ifdef _DEBUG
-    ImGui::Begin("Set Trail Effect");
-
-    ImGui::DragFloat4("Color", (_float*)(&m_vColor), 0.01f);
-    ImGui::DragFloat("Length", &m_fLength);
-    ImGui::DragFloat3("Add Point", (_float*)&m_vAddPoint);
-    ImGui::DragFloat("Add Time", &m_fAddTime);
-    ImGui::DragFloat("Delete Time", &m_fTrailLifeTime);
-
-
-    ImGui::End();
-#endif
+//#ifdef _DEBUG
+//    ImGui::Begin("Set Trail Effect");
+//
+//    ImGui::DragFloat4("Color", (_float*)(&m_vColor), 0.01f);
+//    ImGui::DragFloat("Length", &m_fLength);
+//    ImGui::DragFloat3("Add Point", (_float*)&m_vAddPoint);
+//    ImGui::DragFloat("Add Time", &m_fAddTime);
+//    ImGui::DragFloat("Delete Time", &m_fTrailLifeTime);
+//
+//
+//    ImGui::End();
+//#endif
 
     // 추가될 정점으로 update 합니다.
     if (m_isAddUpdate)

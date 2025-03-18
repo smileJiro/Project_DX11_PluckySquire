@@ -60,7 +60,7 @@ public:
 	virtual void					On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject) override;
 	virtual void					On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject) override;
 
-
+	void							Set_DynamicBackGround_MinBright(_float _fBright) { m_fDynamicBackGround_MinBright = _fBright; }
 
 private :
 	void							Spike_Pattern_UpdateProcess(_float _fTimeDelta);
@@ -74,6 +74,7 @@ private:
 	_float							m_fAlpha = 1.f;
 	_float							m_fFadeOutSecond = 0.3f;
 	_float							m_fAccTime = 0.f;
+	_float							m_fDynamicBackGround_MinBright = 0.1f;
 	_uint							m_eCurPattern;
 public:
 	static C2DMapActionObject*	Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
