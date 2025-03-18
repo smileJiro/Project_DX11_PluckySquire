@@ -125,7 +125,7 @@ void CTurret::State_Change_Fire()
    
     CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_2D, &pGameObject, &vPosition, nullptr, nullptr, &m_strSectionName);
 
-    static_cast<CActorObject*>(pGameObject).
+    //static_cast<CActorObject*>(pGameObject).
 }
 
 void CTurret::State_Change_Fire_Into()
