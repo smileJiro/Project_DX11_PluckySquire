@@ -24,6 +24,10 @@
 #include "PlayerData_Manager.h"
 
 #include "PlayerBody.h"
+#include "DraggableObject.h"
+
+#include "Dialog_Manager.h"
+#include "Npc_Humgrump.h"
 
 CGameEventExecuter_C8::CGameEventExecuter_C8(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CGameEventExecuter(_pDevice, _pContext)
@@ -93,6 +97,9 @@ void CGameEventExecuter_C8::Update(_float _fTimeDelta)
 			break;
 		case Client::CTrigger_Manager::START_TRAIN:
 			Start_Train(_fTimeDelta);
+			break;
+		case Client::CTrigger_Manager::CHAPTER8_MEET_HUMGRUMP:
+			Chapter8_Meet_Humgrump(_fTimeDelta);
 			break;
 		default:
 			break;
@@ -482,20 +489,15 @@ void CGameEventExecuter_C8::Chapter8_Map_Intro(_float _fTimeDelta)
 			// 1. Player 움직임 막기
 			pPlayer->Set_BlockPlayerInput(true);
 
-			// 2. 어리둥절 애니메이션 재생
-			pPlayer->Swicth_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_IDLE_NERVOUS_TURN_01_GT);
-		}
-		
-		
-		if (false == static_cast<CPlayerBody*>(pPlayer->Get_Body())->Is_DuringAnimation() &&
-			m_fTimer >= 0.7f) {
 			Next_Step(true);
+
 		}
+		
 	}
 	else if (Step_Check(STEP_1)) {
 		// 3. CutScene 재생
 		CCamera_Manager::GetInstance()->Set_NextCutSceneData(TEXT("Chapter8_Map_Intro"));
-		CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::CUTSCENE, true, 0.8f);
+		CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::CUTSCENE, true, 1.8f);
 		Next_Step(true);
 	}
 	else if (Step_Check(STEP_2)) {
@@ -659,6 +661,87 @@ void CGameEventExecuter_C8::Chapter8_Tilting_Glove(_float _fTimeDelta)
 	if (true == Postit_Process(L"Chapter8_SKSP_Postit", L"Chapter8_Tilting_Glove", 1.f, CPostit_Page::POSTIT_PAGE_POSTION_TYPE_A, false, fCamerafunc))
 	{
 		GameEvent_End();
+	}
+}
+
+void CGameEventExecuter_C8::Chapter8_Meet_Humgrump(_float _fTimeDelta)
+{
+	m_fTimer += _fTimeDelta;
+
+	if (Step_Check(STEP_0))
+	{
+		if (Is_Start()) {
+			// 1. Player 자동 이동
+			CPlayer* pPlayer = Get_Player();
+
+			AUTOMOVE_COMMAND tCommand = {};
+			tCommand.eType = AUTOMOVE_TYPE::MOVE_TO;
+			tCommand.iAnimIndex = (_uint)CPlayer::ANIM_STATE_2D::PLAYER_RUN_SWORD_UP;
+			tCommand.vTarget = XMVectorSet(0.f, -287.33f, 0.0f, 1.f);
+			tCommand.fPreDelayTime = 0.7f;
+			tCommand.fPostDelayTime = 0.f;
+
+			pPlayer->Add_AutoMoveCommand(tCommand);
+
+			tCommand.eType = AUTOMOVE_TYPE::LOOK_DIRECTION;
+			tCommand.iAnimIndex = (_uint)CPlayer::ANIM_STATE_2D::PLAYER_IDLE_SWORD_UP;
+			tCommand.vTarget = XMVectorSet(0.f, 0.f, 0.0f, 1.f);
+			tCommand.fPreDelayTime = 0.0f;
+			tCommand.fPostDelayTime = 1.f;
+
+			pPlayer->Add_AutoMoveCommand(tCommand);
+
+			pPlayer->Start_AutoMove(true);
+		}
+
+		// 2. 중앙으로 타겟 카메라 변경
+		if (m_fTimer > 0.8f) {
+			static _float4x4 matCenter = {};
+			_vector vCenter = XMVectorSet(0.f, -106.36, 0.f, 1.f);
+
+			memcpy(&matCenter.m[3], &vCenter, sizeof(_float4));
+
+			CCamera_Manager::GetInstance()->Change_CameraTarget(&matCenter, 0.5f);
+
+			Next_Step(true);
+		}
+	}
+	else if (Step_Check(STEP_1)) {
+
+		CPlayer* pPlayer = Get_Player();
+
+		if (false == pPlayer->Is_AutoMoving()) {
+			// 3. Player Input Lock
+			pPlayer->Set_BlockPlayerInput(true);
+
+			// 4. Dialogue 재생
+			CDialog_Manager::GetInstance()->Set_DialogId(L"Dialogue_Meet_Humgrump");
+
+			CLayer* pLayer = m_pGameInstance->Find_Layer(m_iCurLevelID, TEXT("Layer_NPC"));
+
+			list<CGameObject*> pObjects = pLayer->Get_GameObjects();
+
+			// 4. TargetObjects Humgrump와 찍찍이 지정
+			for (auto& pObject : pObjects) {
+				CModelObject* pModel = dynamic_cast<CModelObject*>(pObject);
+
+				if (nullptr == pModel)
+					continue;
+
+				if (TEXT("Humgrump") == pModel->Get_ModelPrototypeTag(COORDINATE_2D)) {
+					pModel->Switch_Animation(CNpc_Humgrump::CHAPTER6_TALK);
+					CDialog_Manager::GetInstance()->Set_NPC(pModel);
+					m_TargetObjects.push_back(pObject);
+				}
+			}
+
+			// 찍찍이로 말하는 대상 설정, 지금은 Player로 임시 설정함
+			CPlayer* pPlayer = Get_Player();
+			CDialog_Manager::GetInstance()->Set_NPC(pPlayer);
+			m_TargetObjects.push_back(pPlayer);
+	
+			Next_Step(true);
+		}
 	}
 }
 
