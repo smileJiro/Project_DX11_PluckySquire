@@ -38,6 +38,7 @@
 #include "PlayerState_Mojam.h"
 #include "PlayerState_Pull.h"
 #include "PlayerState_BackRoll.h"
+#include "PlayerState_EngageBoss.h"
 #include "Actor_Dynamic.h"
 #include "PlayerSword.h"    
 #include "PlayerBody.h"
@@ -581,7 +582,7 @@ HRESULT CPlayer::Ready_Components()
 	tStateMachineDesc.pOwner = this;
 
 	m_pStateMachine = static_cast<CStateMachine*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, LEVEL_STATIC, TEXT("Prototype_Component_StateMachine"), &tStateMachineDesc));
-	m_pStateMachine->Transition_To(new CPlayerState_Idle(this));
+	//m_pStateMachine->Transition_To(new CPlayerState_Idle(this));
 	Add_Component(TEXT("1StateMachine"), m_pStateMachine);
 	Safe_AddRef(m_pStateMachine);
 
@@ -2039,6 +2040,9 @@ void CPlayer::Set_State(STATE _eState)
 		break;
 	case Client::CPlayer::CYBER_HIT:
 		m_pStateMachine->Transition_To(new CPlayerState_CyberHit(this));
+		break;
+	case Client::CPlayer::ENGAGE_BOSS:
+		m_pStateMachine->Transition_To(new CPlayerState_EngageBoss(this));
 		break;
 	case Client::CPlayer::STATE_LAST:
 		break;

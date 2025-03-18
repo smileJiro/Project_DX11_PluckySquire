@@ -2039,6 +2039,7 @@
     <ClInclude Include="..\public\Saw.h">
       <Filter>05.MiniGames\ExcavatorGame\Excavator\Saw</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\PlayerState_EngageBoss.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -3270,6 +3271,7 @@
     <ClCompile Include="..\Private\Saw.cpp">
       <Filter>05.MiniGames\ExcavatorGame\Excavator\Saw</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\PlayerState_EngageBoss.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

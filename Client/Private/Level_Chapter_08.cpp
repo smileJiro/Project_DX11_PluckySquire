@@ -777,7 +777,7 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Player(const _wstring& _strLayerTag, CGam
 	CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(pPlayer, SECTION_2D_PLAYMAP_OBJECT);
 	pPlayer->Set_Mode(CPlayer::PLAYER_MODE_SNEAK);
 	//pPlayer->Equip_Part(CPlayer::PLAYER_PART_ZETPACK);
-
+	pPlayer->Set_State(CPlayer::IDLE);
 	CPlayerData_Manager::GetInstance()->Set_CurrentPlayer(PLAYABLE_ID::NORMAL);
 
 

@@ -267,6 +267,7 @@
     <ClInclude Include="..\Public\PlayerBlocker.h" />
     <ClInclude Include="..\Public\PlayerState_BackRoll.h" />
     <ClInclude Include="..\Public\PlayerState_CannonPortal.h" />
+    <ClInclude Include="..\Public\PlayerState_EngageBoss.h" />
     <ClInclude Include="..\Public\PlayerState_Mojam.h" />
     <ClInclude Include="..\Public\Npc_Humgrump.h" />
     <ClInclude Include="..\Public\Npc_MoonBeard.h" />
@@ -638,6 +639,7 @@
     <ClCompile Include="..\private\Candle_UI.cpp" />
     <ClCompile Include="..\Private\ChaseFlyState.cpp" />
     <ClCompile Include="..\Private\Chase_WayState.cpp" />
+    <ClCompile Include="..\Private\PlayerState_EngageBoss.cpp" />
     <ClCompile Include="..\Private\DefenderCapsule.cpp" />
     <ClCompile Include="..\Private\DefenderMedShip.cpp" />
     <ClCompile Include="..\Private\DefenderPerson.cpp" />
