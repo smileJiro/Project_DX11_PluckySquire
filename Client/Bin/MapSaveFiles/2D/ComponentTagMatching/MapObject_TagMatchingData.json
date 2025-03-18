@@ -4307,7 +4307,20 @@
    "ActiveType": 10
   },
   "BackGround": false,
-  "Collider": false,
+  "Collider": true,
+  "ColliderPropertis": {
+   "ColliderInfo": {
+    "Collider_Extent": {
+     "X": 1120.0,
+     "Y": 1747.0
+    },
+    "Collider_Offset_Pos": {
+     "X": 0.0,
+     "Y": 0.0
+    }
+   },
+   "ColliderType": 1
+  },
   "ModelType": 0,
   "SearchTag": "09_1112_01_Sprite",
   "Sorting": false,

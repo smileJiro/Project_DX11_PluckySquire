@@ -53,6 +53,7 @@
 #include "PlayerData_Manager.h"
 #include "Friend_Controller.h"
 
+#include "CameraPivot.h"
 #include "Collider_Fan.h"
 #include "Collider_AABB.h"
 #include "Interactable.h"
@@ -261,7 +262,9 @@ HRESULT CPlayer::Initialize(void* _pArg)
 	CPlayerData_Manager::GetInstance()->Register_Player(PLAYABLE_ID::NORMAL, this);
 
 
-
+	//Carriable이 2D에서 시작했는데도 3D랑 충돌돼서 2D면 false해줌.
+	 if (nullptr != m_pActorCom && COORDINATE_2D == pDesc->eStartCoord)
+		 m_pActorCom->Set_Active(false);
 	return S_OK;
 }
 
@@ -528,6 +531,8 @@ HRESULT CPlayer::Ready_PartObjects()
 	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_3DAnimationTransitionTime((_uint)ANIM_STATE_3D::CYBERJOT_ANIM_FLYING_UP_DASH, 1.f);
 	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_3DAnimationTransitionTime((_uint)ANIM_STATE_3D::CYBERJOT_ANIM_FLYING_DOWN_DASH, 1.f);*/
 	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_3DAnimationTransitionTime((_uint)ANIM_STATE_3D::CYBERJOT_ANIM_FLYING_IDLE, 0.5f);
+
+
 	return S_OK;
 }
 
@@ -705,21 +710,7 @@ void CPlayer::Update(_float _fTimeDelta)
 			m_fInvincibleTImeAcc = 0;
 		}
 	}
-	if (Is_CyvberJotMode())
-	{
 
-		_vector vCamTargetPos = { m_pCameraTargetWorldMatrix->_41, m_pCameraTargetWorldMatrix->_42, m_pCameraTargetWorldMatrix->_43, 1.f };
-		_vector vBaseLookVector = XMVector4Normalize(vCamTargetPos - m_pTargetCamera->Get_FinalPosition() );
-		_vector vBaseRightVector = XMVector3Cross(vBaseLookVector, { 0,1,0,0 });
-		_vector vBaseUpVector = XMVector3Cross(vBaseRightVector, vBaseLookVector);
-		_vector vBasePosition = m_pTargetCamera->Get_FinalPosition();
-		_matrix matBase = { vBaseRightVector, vBaseUpVector, vBaseLookVector, vBasePosition };
-		_vector vPlanePostition = m_vCyberPlanePosition + vBaseLookVector * m_fDistanceFromCamearPlane;
-		_matrix matPlane = XMMatrixTranslationFromVector(vPlanePostition);
-		_matrix matWorld = XMMatrixMultiply(matBase, matPlane);
-		_float4x4 matWorldFloat4x4; XMStoreFloat4x4(&matWorldFloat4x4, matWorld);
-		Set_WorldMatrix(matWorldFloat4x4);
-	}
 	__super::Update(_fTimeDelta); /* Part Object Update */
 	if (m_pInteractableObject && false == dynamic_cast<CBase*>(m_pInteractableObject)->Is_Active())
 		m_pInteractableObject = nullptr;
@@ -1093,8 +1084,8 @@ void CPlayer::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
 		return;
 	}
 	m_tStat.iHP -= _iDamg;
-	m_pStateMachine->Get_CurrentState()->On_Hit(_pHitter, _iDamg, _vForce);
 	COORDINATE eCoord = Get_CurCoord();
+	m_pStateMachine->Get_CurrentState()->On_Hit(_pHitter, _iDamg, _vForce);
 
 	Uimgr->Set_PlayerOnHit(true);
 
@@ -1105,7 +1096,10 @@ void CPlayer::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
 			Set_State(DIE);
 		return;
 	}
-
+	else if(Is_CyvberJotMode())
+	{
+		Set_State(CPlayer::CYBER_HIT);
+	}
 	KnockBack(_vForce);
 
 	Start_Invinciblity();
@@ -1124,8 +1118,14 @@ HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
 		m_pCarryingObject->Change_Coordinate((COORDINATE)eCoord);
 	}
 
-	if (FAILED(__super::Change_Coordinate(_eCoordinate, _pNewPosition)))
+ 	if (FAILED(__super::Change_Coordinate(_eCoordinate, _pNewPosition)))
 		return E_FAIL;
+	//Transform (3D)에 Position 대입
+	//Update : 아무ㅏ것도 안함
+	//Late_Update : ACtorCom에서 getGlobalPos로ㅜ 위치를 받고 TraNSFORM에 동기화
+		//근데 getGlobalPos로 받은 위치가 이미 밑에 있음.
+
+	//static_cast<CActor_Dynamic*> (m_pActorCom)->Set_Gravity(true);
 	m_pInteractableObject = nullptr;
 
 	if (COORDINATE_2D == _eCoordinate)
@@ -2037,6 +2037,9 @@ void CPlayer::Set_State(STATE _eState)
 	case Client::CPlayer::BACKROLL:
 		m_pStateMachine->Transition_To(new CPlayerState_BackRoll(this));
 		break;
+	case Client::CPlayer::CYBER_HIT:
+		m_pStateMachine->Transition_To(new CPlayerState_CyberHit(this));
+		break;
 	case Client::CPlayer::STATE_LAST:
 		break;
 	default:
@@ -2087,13 +2090,16 @@ void CPlayer::Set_Mode(PLAYER_MODE _eNewMode)
 		Equip_Part(PLAYER_PART_ZETPACK);
 		break;
 	case Client::CPlayer::PLAYER_MODE::PLAYER_MODE_CYBERJOT:
+	{
 		UnEquip_All();
 		if (COORDINATE_2D == eCoord)
 			break;
 		cout << "PLAYER_MODE_CYBERJOT" << endl;
 
 		m_pTargetCamera = static_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET));
-		m_pCameraTargetWorldMatrix = m_pTargetCamera->Get_TargetMatrix();
+		CCameraPivot* pPivot = static_cast<CCameraPivot*>(m_pGameInstance->Get_GameObject_Ptr(m_iCurLevelID, TEXT("Layer_CameraPivot"), 0));
+		m_pCameraTargetWorldMatrix = pPivot->Get_MainTarget()->Get_ControllerTransform()->Get_WorldMatrix_Ptr();
+
 		Set_Kinematic(true);
 		//Get_ActorDynamic()->Set_Gravity(false);
 		//Get_ActorDynamic()->Set_LinearDamping(2.f);
@@ -2105,6 +2111,7 @@ void CPlayer::Set_Mode(PLAYER_MODE _eNewMode)
 			m_pZetPack->Switch_State(CZetPack::STATE_CYBER);
 
 		break;
+	}
 	default:
 		break;
 	}
@@ -2387,7 +2394,7 @@ void CPlayer::Key_Input(_float _fTimeDelta)
 		_float3 vNewPos = _float3(0.0f, 0.0f, 0.0f);
 		_vector vPos = Get_FinalPosition((COORDINATE)iCurCoord);
 
-		XMStoreFloat3(&vNewPos, vPos);
+		XMStoreFloat3(&vNewPos, vPos + _vector{0.f,1.f,0.f});
 
 
 		if (iCurCoord == COORDINATE_2D)
@@ -2553,6 +2560,18 @@ void CPlayer::Move_CyberPlane(_vector _vMoveVelocity, _float _fTimeDelta)
 
 	m_vCyberPlanePosition += _vMoveVelocity * _fTimeDelta;
 	m_vCyberPlanePosition =XMVectorClamp(m_vCyberPlanePosition, m_vCyberPlaneMinPosition, m_vCyberPlaneMaxPosition);
+
+	_vector vCamTargetPos = { m_pCameraTargetWorldMatrix->_41, m_pCameraTargetWorldMatrix->_42, m_pCameraTargetWorldMatrix->_43, 1.f };
+	_vector vBaseLookVector = XMVector3Normalize(vCamTargetPos - m_pTargetCamera->Get_FinalPosition());
+	_vector vBaseRightVector = XMVector3Normalize(XMVector3Cross({ 0,1,0,0 }, vBaseLookVector));
+	_vector vBaseUpVector = XMVector3Normalize(XMVector3Cross(vBaseLookVector, vBaseRightVector));
+	_vector vBasePosition = m_pTargetCamera->Get_FinalPosition();
+	_matrix matBase = { vBaseRightVector, vBaseUpVector, vBaseLookVector, vBasePosition };
+	_vector vPlanePostition = m_vCyberPlanePosition + vBaseLookVector * m_fDistanceFromCamearPlane;
+	_matrix matPlane = XMMatrixTranslationFromVector(vPlanePostition);
+	_matrix matWorld = XMMatrixMultiply(matBase, matPlane);
+	_float4x4 matWorldFloat4x4; XMStoreFloat4x4(&matWorldFloat4x4, matWorld);
+	Set_WorldMatrix(matWorldFloat4x4);
 }
 
 CPlayer* CPlayer::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

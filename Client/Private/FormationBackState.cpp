@@ -34,7 +34,6 @@ HRESULT CFormationBackState::Initialize(void* _pArg)
 void CFormationBackState::State_Enter()
 {
 	m_fAccTime = 0.f;
-	m_pOwner->Add_To_Formation();
 
 	m_fOriginSpeed = m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec();
 	//빠른 속도로 복귀해야하므로 속도 증가
@@ -46,6 +45,8 @@ void CFormationBackState::State_Update(_float _fTimeDelta)
 	if (nullptr == m_pOwner)
 		return;
 
+	cout << m_pOwner->Get_ActorCom()->Is_Kinematic() << endl;
+
 	if (nullptr != m_pTarget)
 	{
 		if(m_pTarget->Get_CurCoord() == m_pOwner->Get_CurCoord())
@@ -56,8 +57,8 @@ void CFormationBackState::State_Update(_float _fTimeDelta)
 			{
 				if (true == Check_Target3D(true))
 				{
-					m_pOwner->Stop_Rotate();
-					m_pOwner->Stop_Move();
+					//m_pOwner->Stop_Rotate();
+					//m_pOwner->Stop_Move();
 
 					m_pOwner->Remove_From_Formation();
 
@@ -72,8 +73,8 @@ void CFormationBackState::State_Update(_float _fTimeDelta)
 				//플레이어가 인식되지 않았을 경우 소리가 나면 대열에서 빠지고 경계로 전환 
 				if (m_pOwner->IsTarget_In_Sneak_Detection())
 				{
-					m_pOwner->Stop_Rotate();
-					m_pOwner->Stop_Move();
+					//m_pOwner->Stop_Rotate();
+					//m_pOwner->Stop_Move();
 					m_pFSM->Set_Sneak_AwarePos(m_pTarget->Get_FinalPosition());
 					m_pOwner->Remove_From_Formation();
 					Event_ChangeMonsterState(MONSTER_STATE::SNEAK_AWARE, m_pFSM);
@@ -90,7 +91,7 @@ void CFormationBackState::State_Update(_float _fTimeDelta)
 		m_isTurn = true;
 	}
 
-	Move();
+	Move(_fTimeDelta);
 }
 
 void CFormationBackState::State_Exit()
@@ -100,36 +101,37 @@ void CFormationBackState::State_Exit()
 	m_pOwner->Get_ControllerTransform()->Set_SpeedPerSec(m_fOriginSpeed);
 }
 
-void CFormationBackState::Move()
+void CFormationBackState::Move(_float _fTimeDelta)
 {
-	_vector vDir = XMLoadFloat3(&m_vNextPos) - m_pOwner->Get_FinalPosition();
+	_vector vDir = XMVectorSetW(XMLoadFloat3(&m_vNextPos) - m_pOwner->Get_FinalPosition(), 0.f);
 	if (0.1f >= XMVectorGetX(XMVector3Length(vDir)))
 	{
-		m_pOwner->Stop_Rotate();
-		m_pOwner->Stop_Move();
+		//m_pOwner->Stop_Rotate();
+		//m_pOwner->Stop_Move();
 		m_isTurn = false;
 		m_isMove = false;
 
 		Event_ChangeMonsterState(MONSTER_STATE::FORMATION_MOVE, m_pFSM);
+		return;
 	}
 
 	//회전
 	if (true == m_isTurn && false == m_isMove)
 	{
-		if (m_pOwner->Rotate_To_Radians(vDir, m_pOwner->Get_ControllerTransform()->Get_RotationPerSec()))
+		if (m_pOwner->Rotate_To_Radians(vDir, m_pOwner->Get_ControllerTransform()->Get_RotationPerSec() * _fTimeDelta))
 		{
 			m_isMove = true;
-			//m_pOwner->Change_Animation();
+			m_pOwner->Change_Animation();
 		}
-		//else
-		//{
-		//	_bool isCW = true;
-		//	_float fResult = XMVectorGetY(XMVector3Cross(m_pOwner->Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK), XMLoadFloat3(&m_vNextPos)));
-		//	if (fResult < 0)
-		//		isCW = false;
+		else
+		{
+			_bool isCW = true;
+			_float fResult = XMVectorGetY(XMVector3Cross(m_pOwner->Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK), XMLoadFloat3(&m_vNextPos)));
+			if (fResult < 0)
+				isCW = false;
 
-		//	m_pOwner->Turn_Animation(isCW);
-		//}
+			m_pOwner->Turn_Animation(isCW);
+		}
 	}
 
 	//이동
@@ -139,14 +141,15 @@ void CFormationBackState::Move()
 		//도착했으면 move로 전환
 
 		//if (m_pOwner->Move_To(XMLoadFloat3(&m_WayPoints[m_PatrolWays[m_iCurWayIndex]].vPosition), 0.3f))
-		if (m_pOwner->Monster_MoveTo(XMLoadFloat3(&m_vNextPos), 0.3f))
+		if (m_pOwner->Get_ControllerTransform()->MoveTo(XMLoadFloat3(&m_vNextPos), _fTimeDelta, 0.1f))
 		{
-			m_pOwner->Stop_Rotate();
-			m_pOwner->Stop_Move();
+			//m_pOwner->Stop_Rotate();
+			//m_pOwner->Stop_Move();
 			m_isTurn = false;
 			m_isMove = false;
 
 			Event_ChangeMonsterState(MONSTER_STATE::FORMATION_MOVE, m_pFSM);
+			return;
 		}
 	}
 }

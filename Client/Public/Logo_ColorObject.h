@@ -34,7 +34,6 @@ public:
 	virtual HRESULT Render() override;
 
 private:
-	_float4			m_vColor = {};
 	_uint			m_eColorObjectType = {};
 
 	_bool			m_isBlinking = {};

@@ -132,7 +132,7 @@ void C2DMapActionObject::Update(_float _fTimeDelta)
     case Client::C2DMapActionObject::ACTIVE_TYPE_DYNAMIC_BACKGROUND:
 
         if (true == m_isAction)
-            m_fAlpha = std::fmax(m_fAlpha - (_fTimeDelta / m_fFadeOutSecond), 0.01f);
+            m_fAlpha = std::fmax(m_fAlpha - (_fTimeDelta / m_fFadeOutSecond), m_fDynamicBackGround_MinBright);
 
         break;
     case Client::C2DMapActionObject::ACTIVE_TYPE_SPIKE:

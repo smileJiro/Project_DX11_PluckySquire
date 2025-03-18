@@ -66,8 +66,12 @@ void CExcavator_Switch::Late_Update(_float _fTimeDelta)
 
 HRESULT CExcavator_Switch::Render()
 {
+#ifdef _DEBUG
 	if (m_p2DColliderComs[0]->Is_Active())
 		m_p2DColliderComs[0]->Render(SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName));
+#endif // _DEBUG
+
+
 	return __super::Render();
 }
 

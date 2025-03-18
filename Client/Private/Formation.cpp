@@ -65,11 +65,13 @@ void CFormation::Update(_float _fTimeDelta)
 		{
 			m_fAccTime = 0.f;
 			m_isDelay = false;
+			m_isRotate = true;
 
 			if (true == m_isBack)
 				--m_iPatrolIndex;
 			else
 				++m_iPatrolIndex;
+
 
 			if (m_PatrolPoints.size()-1 <= m_iPatrolIndex)
 			{
@@ -85,15 +87,38 @@ void CFormation::Update(_float _fTimeDelta)
 	}
 	else
 	{
-		if(false == m_isMove)
+		if(true == m_isRotate)
 		{
-			_vector vDir = XMLoadFloat3(&m_PatrolPoints[m_iPatrolIndex]) - Get_FinalPosition();
-			if (true == Get_ControllerTransform()->Turn_To_DesireDir(Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK), vDir, Get_ControllerTransform()->Get_RotationPerSec() * _fTimeDelta))
+			//멤버들이 회전 끝났는지 체크하고 이동
+			_bool isRotateDone = true;
+			for (auto pMember : m_Members)
+			{
+				if (nullptr == pMember)
+					continue;
+
+				isRotateDone = isRotateDone && pMember->Is_FormationRotateDone();
+				if (false == isRotateDone)
+					break;
+			}
+			if(true ==isRotateDone)
 			{
 				m_isMove = true;
+				m_isRotate = false;
+				for (auto pMember : m_Members)
+				{
+					if (nullptr == pMember)
+						continue;
+
+					pMember->Set_FormationRotateDone(false);
+				}
 			}
+			//_vector vDir = XMLoadFloat3(&m_PatrolPoints[m_iPatrolIndex]) - Get_FinalPosition();
+			//if (true == Get_ControllerTransform()->Turn_To_DesireDir(Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK), vDir, Get_ControllerTransform()->Get_RotationPerSec() * _fTimeDelta))
+			//{
+			//	m_isMove = true;
+			//}
 		}
-		else
+		if (true == m_isMove)
 		{
 			if (true == Get_ControllerTransform()->MoveTo(XMLoadFloat3(&m_PatrolPoints[m_iPatrolIndex]), _fTimeDelta))
 			{
@@ -270,10 +295,11 @@ _bool CFormation::Remove_From_Formation(CMonster* _pMember)
 	{
 		if (_pMember == m_Members[iIndex])
 		{
+			Safe_Release(m_Members[iIndex]);
+			m_Members[iIndex] = nullptr;
+
 			if (false == m_EmptySlots.insert(iIndex).second)
 			{
-				Safe_Release(m_Members[iIndex]);
-				m_Members[iIndex] = nullptr;
 				continue;
 			}
 			else
@@ -286,6 +312,9 @@ _bool CFormation::Remove_From_Formation(CMonster* _pMember)
 
 _bool CFormation::Get_Formation_Position(CMonster* _pMember, _float3* _vPosition)
 {
+	if (nullptr == _pMember)
+		return false;
+
 	_float3 vPos;
 	XMStoreFloat3(&vPos, Get_FinalPosition());
 	for (_uint i = 0; i < m_Members.size(); ++i)
@@ -303,6 +332,9 @@ _bool CFormation::Get_Formation_Position(CMonster* _pMember, _float3* _vPosition
 
 _bool CFormation::Get_Formation_NextPosition(CMonster* _pMember, _float3* _vPosition)
 {
+	if (nullptr == _pMember)
+		return false;
+
 	_float3 vPos;
 	for (_uint i = 0; i < m_Members.size(); ++i)
 	{

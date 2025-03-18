@@ -45,17 +45,17 @@ public :
 		Violet_C08V02_Talk04,
 		Violet_C08V02_Turn,
 		Violet_C09_Hat,
-		Violet_C09_JumpingOffBed,
-		Violet_C09_LyingDespondent,
-		Violet_C09_LyingToSittingUp,
+		VIOLET_C09_JUMPINGOFFBED,		  //C09
+		VIOLET_C09_LYINGDESPONDENT,		  //C09
+		VIOLET_C09_LYINGTOSITTINGUP,	  //C09
 		Violet_C09_Nod,
 		Violet_C09_ReceivingWand,
 		Violet_C09_ReturnToIdle,
-		Violet_C09_SittingIdle,
-		Violet_C09_SittingTalkingA,
-		Violet_C09_SittingTalkingAIdle,
-		Violet_C09_SittingTalkingB,
-		Violet_C09_SittingTalkingBIdle,
+		VIOLET_C09_SITTINGIDLE,				//C09
+		VIOLET_C09_SITTINGTALKINGA,			//C09
+		VIOLET_C09_SITTINGTALKINGAIDLE,		//C09
+		VIOLET_C09_SITTINGTALKINGB,			//C09
+		VIOLET_C09_SITTINGTALKINGBIDLE,		//C09
 		Violet_C09_StandingTalking,
 		Violet_CliffCrumble,
 		Violet_CliffCrumble_airloop,

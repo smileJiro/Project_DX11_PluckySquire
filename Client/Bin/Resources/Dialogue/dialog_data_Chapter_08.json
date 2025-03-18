@@ -1,6 +1,1022 @@
 {
 	"dialogs": [
 		{
+			"id": "Chapter8_Laser_Stage_2",
+			"Section": "Chapter8_P1112",
+			"isChangeTalker": true,
+			"lines": [
+				{
+					"Portrait": 0,
+					"Talker": "찍찍이",
+					"TalkerIndex": 0,
+					"BG": 0,
+					"location": 1,
+					"OffsetX": -100.0,
+					"OffsetY": 0.0,
+					"is2D": true,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "저트!!!",
+					"Red": 254,
+					"Green": 234,
+					"Blue": 157
+				},
+				{
+					"Portrait": 0,
+					"Talker": "찍찍이",
+					"TalkerIndex": 0,
+					"BG": 0,
+					"location": 1,
+					"OffsetX": -100.0,
+					"OffsetY": 0.0,
+					"is2D": true,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "살아 있었구나!!",
+					"Red": 254,
+					"Green": 234,
+					"Blue": 157
+				},
+				{
+					"Portrait": 0,
+					"Talker": "찍찍이",
+					"TalkerIndex": 0,
+					"BG": 0,
+					"location": 1,
+					"OffsetX": -100.0,
+					"OffsetY": 0.0,
+					"is2D": true,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "다시 보니까 진짜 반갑다!",
+					"Red": 254,
+					"Green": 234,
+					"Blue": 157
+				},
+				{
+					"Portrait": 0,
+					"Talker": "찍찍이",
+					"TalkerIndex": 0,
+					"BG": 0,
+					"location": 1,
+					"OffsetX": -100.0,
+					"OffsetY": 0.0,
+					"is2D": true,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "내가 널 찾으려고 축축한 복도를\n몇 개나 돌아다닌 줄 알아??",
+					"Red": 254,
+					"Green": 234,
+					"Blue": 157
+				},
+				{
+					"Portrait": 0,
+					"Talker": "찍찍이",
+					"TalkerIndex": 0,
+					"BG": 0,
+					"location": 1,
+					"OffsetX": -100.0,
+					"OffsetY": 0.0,
+					"is2D": true,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "어쨌든 무사해서 다행이야.",
+					"Red": 254,
+					"Green": 234,
+					"Blue": 157
+				},
+				{
+					"Portrait": 0,
+					"Talker": "찍찍이",
+					"TalkerIndex": 0,
+					"BG": 0,
+					"location": 1,
+					"OffsetX": -100.0,
+					"OffsetY": 0.0,
+					"is2D": true,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "그런데, 솔직히 우리 상황이 좋진 않아...",
+					"Red": 254,
+					"Green": 234,
+					"Blue": 157
+				},
+				{
+					"Portrait": 0,
+					"Talker": "찍찍이",
+					"TalkerIndex": 0,
+					"BG": 0,
+					"location": 1,
+					"OffsetX": -100.0,
+					"OffsetY": 0.0,
+					"is2D": true,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "달수염 할아버지는... 이제 없고,\n험그럼프가 이야기를 빼앗았어.",
+					"Red": 254,
+					"Green": 234,
+					"Blue": 157
+				},
+				{
+					"Portrait": 0,
+					"Talker": "찍찍이",
+					"TalkerIndex": 0,
+					"BG": 0,
+					"location": 1,
+					"OffsetX": -100.0,
+					"OffsetY": 0.0,
+					"is2D": true,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "험그럼프를 물리치고 이야기를 되찾아야 하는데,\n저트 너 검이 없구나...",
+					"Red": 254,
+					"Green": 234,
+					"Blue": 157
+				},
+				{
+					"Portrait": 0,
+					"Talker": "찍찍이",
+					"TalkerIndex": 0,
+					"BG": 0,
+					"location": 1,
+					"OffsetX": -100.0,
+					"OffsetY": 0.0,
+					"is2D": true,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "저기, 내가 여기 오면서\n병사들이 말하는 걸 엿들었는데...",
+					"Red": 254,
+					"Green": 234,
+					"Blue": 157
+				},
+				{
+					"Portrait": 0,
+					"Talker": "찍찍이",
+					"TalkerIndex": 0,
+					"BG": 0,
+					"location": 1,
+					"OffsetX": -100.0,
+					"OffsetY": 0.0,
+					"is2D": true,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "네 장비는 전부 '책 바깥' 어딘가로 가져갔대.",
+					"Red": 254,
+					"Green": 234,
+					"Blue": 157
+				},
+				{
+					"Portrait": 0,
+					"Talker": "찍찍이",
+					"TalkerIndex": 0,
+					"BG": 0,
+					"location": 1,
+					"OffsetX": -100.0,
+					"OffsetY": 0.0,
+					"is2D": true,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "그 말인 즉슨, 감옥에는 네 장비가 없다는 거겠지.",
+					"Red": 254,
+					"Green": 234,
+					"Blue": 157
+				},
+				{
+					"Portrait": 0,
+					"Talker": "찍찍이",
+					"TalkerIndex": 0,
+					"BG": 0,
+					"location": 1,
+					"OffsetX": -100.0,
+					"OffsetY": 0.0,
+					"is2D": true,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "하지만 여기 어딘가에... 바이올렛이랑 스래쉬는 있을 거야.",
+					"Red": 254,
+					"Green": 234,
+					"Blue": 157
+				},
+				{
+					"Portrait": 0,
+					"Talker": "찍찍이",
+					"TalkerIndex": 0,
+					"BG": 0,
+					"location": 1,
+					"OffsetX": -100.0,
+					"OffsetY": 0.0,
+					"is2D": true,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "근처에 잡혀 있는 것 같거든.",
+					"Red": 254,
+					"Green": 234,
+					"Blue": 157
+				},
+				{
+					"Portrait": 0,
+					"Talker": "찍찍이",
+					"TalkerIndex": 0,
+					"BG": 0,
+					"location": 1,
+					"OffsetX": -100.0,
+					"OffsetY": 0.0,
+					"is2D": true,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "가자. 둘을 찾은 다음 다시 뭉치는 거야!",
+					"Red": 254,
+					"Green": 234,
+					"Blue": 157
+				}
+			]
+		},
+		{
+			"id": "Chapter8_Friend_Appear_Violet_01",
+			"Section": "Chapter8_P1718",
+			"isChangeTalker": true,
+			"lines": [
+				{
+					"Portrait": 0,
+					"Talker": "바이올렛",
+					"TalkerIndex": 0,
+					"BG": 13,
+					"location": 1,
+					"is2D": true,
+					"OffsetX": 0.0,
+					"OffsetY": 0.0,
+					"isPortrait": true,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "...",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 0,
+					"Talker": "바이올렛",
+					"TalkerIndex": 0,
+					"BG": 13,
+					"location": 1,
+					"is2D": true,
+					"OffsetX": 0.0,
+					"OffsetY": 0.0,
+					"isPortrait": true,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "...",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 0,
+					"Talker": "바이올렛",
+					"TalkerIndex": 0,
+					"BG": 13,
+					"location": 1,
+					"is2D": true,
+					"OffsetX": 0.0,
+					"OffsetY": 0.0,
+					"isPortrait": true,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "어라",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 0,
+					"Talker": "바이올렛",
+					"TalkerIndex": 0,
+					"BG": 13,
+					"location": 1,
+					"is2D": true,
+					"OffsetX": 0.0,
+					"OffsetY": 0.0,
+					"isPortrait": true,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "또 이상한 꿈이네.",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 0,
+					"Talker": "바이올렛",
+					"TalkerIndex": 0,
+					"BG": 13,
+					"location": 1,
+					"is2D": true,
+					"OffsetX": 0.0,
+					"OffsetY": 0.0,
+					"isPortrait": true,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "찍찍이랑 저트가 내 감방에 서 있다니.",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 0,
+					"Talker": "찍찍이",
+					"TalkerIndex": 1,
+					"BG": 0,
+					"location": 0,
+					"OffsetX": 0.0,
+					"OffsetY": 0.0,
+					"is2D": true,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "바이올렛... 꿈이 아니야! 정말 우리라고!",
+					"Red": 254,
+					"Green": 234,
+					"Blue": 157
+				},
+				{
+					"Portrait": 0,
+					"Talker": "찍찍이",
+					"TalkerIndex": 1,
+					"BG": 0,
+					"location": 0,
+					"OffsetX": 0.0,
+					"OffsetY": 0.0,
+					"is2D": true,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "널 구해주러 온 거야! 여긴 험그럼프의 감옥이고.",
+					"Red": 254,
+					"Green": 234,
+					"Blue": 157
+				},
+				{
+					"Portrait": 0,
+					"Talker": "찍찍이",
+					"TalkerIndex": 1,
+					"BG": 0,
+					"location": 0,
+					"OffsetX": 0.0,
+					"OffsetY": 0.0,
+					"is2D": true,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "그 멍텅구리가 이야기를 점령해 버렸어...",
+					"Red": 254,
+					"Green": 234,
+					"Blue": 157
+				},
+				{
+					"Portrait": 0,
+					"Talker": "찍찍이",
+					"TalkerIndex": 1,
+					"BG": 0,
+					"location": 0,
+					"OffsetX": 0.0,
+					"OffsetY": 0.0,
+					"is2D": true,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "얼른 그 녀석에게 가서 이야기를 되돌려 놓아야 해! ",
+					"Red": 254,
+					"Green": 234,
+					"Blue": 157
+				},
+				{
+					"Portrait": 0,
+					"Talker": "바이올렛",
+					"TalkerIndex": 0,
+					"BG": 13,
+					"location": 1,
+					"is2D": true,
+					"OffsetX": 0.0,
+					"OffsetY": 0.0,
+					"isPortrait": true,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "저... 정말 너희들 맞아?",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 0,
+					"Talker": "찍찍이",
+					"TalkerIndex": 1,
+					"BG": 0,
+					"location": 0,
+					"OffsetX": 0.0,
+					"OffsetY": 0.0,
+					"is2D": true,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "물론이지... 나도 저트도 아주 멀쩡하다고!",
+					"Red": 254,
+					"Green": 234,
+					"Blue": 157
+				},
+				{
+					"Portrait": 0,
+					"Talker": "바이올렛",
+					"TalkerIndex": 0,
+					"BG": 13,
+					"location": 1,
+					"is2D": true,
+					"OffsetX": 0.0,
+					"OffsetY": 0.0,
+					"isPortrait": true,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "달수염 할아버지는?",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 0,
+					"Talker": "찍찍이",
+					"TalkerIndex": 1,
+					"BG": 0,
+					"location": 0,
+					"OffsetX": 0.0,
+					"OffsetY": 0.0,
+					"is2D": true,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "...",
+					"Red": 254,
+					"Green": 234,
+					"Blue": 157
+				},
+				{
+					"Portrait": 0,
+					"Talker": "찍찍이",
+					"TalkerIndex": 1,
+					"BG": 0,
+					"location": 0,
+					"OffsetX": 0.0,
+					"OffsetY": 0.0,
+					"is2D": true,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "미안해, 바이올렛. 할아버지는 이제 안 계셔.",
+					"Red": 254,
+					"Green": 234,
+					"Blue": 157
+				},
+				{
+					"Portrait": 0,
+					"Talker": "바이올렛",
+					"TalkerIndex": 0,
+					"BG": 13,
+					"location": 1,
+					"is2D": true,
+					"OffsetX": 0.0,
+					"OffsetY": 0.0,
+					"isPortrait": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "그렇구나... 모두 내 탓이야. 내가 조금만 더 강했어도...",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 0,
+					"Talker": "찍찍이",
+					"TalkerIndex": 1,
+					"BG": 0,
+					"location": 0,
+					"OffsetX": 0.0,
+					"OffsetY": 0.0,
+					"is2D": true,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "바이올렛, 그건 네 잘못이 아니야!\n모두 험그럼프 때문이지.",
+					"Red": 254,
+					"Green": 234,
+					"Blue": 157
+				},
+				{
+					"Portrait": 0,
+					"Talker": "찍찍이",
+					"TalkerIndex": 1,
+					"BG": 0,
+					"location": 0,
+					"OffsetX": 0.0,
+					"OffsetY": 0.0,
+					"is2D": true,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "이미 일어난 일은 바꾸지 못해.\n중요한 건 지금부터 뭘 하느냐야.",
+					"Red": 254,
+					"Green": 234,
+					"Blue": 157
+				},
+				{
+					"Portrait": 0,
+					"Talker": "바이올렛",
+					"TalkerIndex": 0,
+					"BG": 13,
+					"location": 1,
+					"is2D": true,
+					"OffsetX": 0.0,
+					"OffsetY": 0.0,
+					"isPortrait": true,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "...",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				}
+			]
+		},
+		{
+			"id": "Chapter8_Friend_Appear_Violet_02",
+			"Section": "Chapter8_P1718",
+			"isChangeTalker": true,
+			"lines": [
+				{
+					"Portrait": 0,
+					"Talker": "바이올렛",
+					"TalkerIndex": 0,
+					"BG": 13,
+					"location": 1,
+					"is2D": true,
+					"OffsetX": 0.0,
+					"OffsetY": 0.0,
+					"isPortrait": true,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "네 말이 맞아, 찍찍아.",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 0,
+					"Talker": "바이올렛",
+					"TalkerIndex": 0,
+					"BG": 13,
+					"location": 1,
+					"is2D": true,
+					"OffsetX": 0.0,
+					"OffsetY": 0.0,
+					"isPortrait": true,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "정말...",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 0,
+					"Talker": "바이올렛",
+					"TalkerIndex": 0,
+					"BG": 13,
+					"location": 1,
+					"is2D": true,
+					"OffsetX": 0.0,
+					"OffsetY": 0.0,
+					"isPortrait": true,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "이렇게 다시 만나서 다행이다. 찍찍아, 저트.",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 0,
+					"Talker": "찍찍이",
+					"TalkerIndex": 1,
+					"BG": 0,
+					"location": 0,
+					"OffsetX": 0.0,
+					"OffsetY": 0.0,
+					"is2D": true,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "우리도 그렇게 생각해. 바이올렛.",
+					"Red": 254,
+					"Green": 234,
+					"Blue": 157
+				},
+				{
+					"Portrait": 0,
+					"Talker": "찍찍이",
+					"TalkerIndex": 1,
+					"BG": 0,
+					"location": 0,
+					"OffsetX": 0.0,
+					"OffsetY": 0.0,
+					"is2D": true,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "얼른 스래쉬도 데리고\n험그럼프를 물리치러 가자!",
+					"Red": 254,
+					"Green": 234,
+					"Blue": 157
+				}
+			]
+		},
+		{
+			"id": "Chapter8_Friend_Appear_Thrash_01",
+			"Section": "Chapter8_P1718",
+			"isChangeTalker": true,
+			"lines": [
+				{
+					"Portrait": 0,
+					"Talker": "바이올렛",
+					"TalkerIndex": 0,
+					"BG": 13,
+					"location": 1,
+					"is2D": true,
+					"OffsetX": 0.0,
+					"OffsetY": 0.0,
+					"isPortrait": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "       스래쉬!!!!!!!!",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				}
+			]
+		},
+		{
+			"id": "Chapter8_Friend_Appear_Thrash_02",
+			"Section": "Chapter8_P1718",
+			"isChangeTalker": true,
+			"lines": [
+				{
+					"Portrait": 0,
+					"Talker": "바이올렛",
+					"TalkerIndex": 0,
+					"BG": 13,
+					"location": 1,
+					"is2D": true,
+					"OffsetX": 0.0,
+					"OffsetY": 0.0,
+					"isPortrait": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "       스래쉬!!!!!!!!",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 1,
+					"Talker": "스래쉬",
+					"TalkerIndex": 2,
+					"BG": 2,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": true,
+					"OffsetX": 0.0,
+					"OffsetY": 0.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "뭐야!? 너희들 어떻게 들어왔어?",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 0,
+					"Talker": "바이올렛",
+					"TalkerIndex": 0,
+					"BG": 13,
+					"location": 0,
+					"is2D": true,
+					"OffsetX": 0.0,
+					"OffsetY": 0.0,
+					"isPortrait": true,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "저트와 찍찍이가 우릴 구하러 와줬어.\n나는 옆 방에 갇혀 있었고.",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 1,
+					"Talker": "스래쉬",
+					"TalkerIndex": 2,
+					"BG": 2,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": true,
+					"OffsetX": 0.0,
+					"OffsetY": 0.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "옆 방에 네가 있었다고?\n상심에 잠겨서 리듬을 타느라 몰랐어...",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 0,
+					"Talker": "찍찍이",
+					"TalkerIndex": 1,
+					"BG": 0,
+					"location": 0,
+					"OffsetX": 0.0,
+					"OffsetY": 0.0,
+					"is2D": true,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "어쨌든 무사해서 다행이다, 스래쉬!",
+					"Red": 254,
+					"Green": 234,
+					"Blue": 157
+				},
+				{
+					"Portrait": 1,
+					"Talker": "스래쉬",
+					"TalkerIndex": 2,
+					"BG": 2,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": true,
+					"OffsetX": 0.0,
+					"OffsetY": 0.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "너희도 무사해서 참 다행이다!",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 0,
+					"Talker": "바이올렛",
+					"TalkerIndex": 0,
+					"BG": 13,
+					"location": 0,
+					"is2D": true,
+					"OffsetX": 0.0,
+					"OffsetY": 0.0,
+					"isPortrait": true,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "우리 모잼 일당을 누가 막겠어?",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 0,
+					"Talker": "바이올렛",
+					"TalkerIndex": 0,
+					"BG": 13,
+					"location": 0,
+					"is2D": true,
+					"OffsetX": 0.0,
+					"OffsetY": 0.0,
+					"isPortrait": true,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "아무렴! 절대 못 막지! 심지어 그...\n어쨌든 아무도!",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 1,
+					"Talker": "스래쉬",
+					"TalkerIndex": 2,
+					"BG": 2,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": true,
+					"OffsetX": 0.0,
+					"OffsetY": 0.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "방금 모잼이라고 했어?",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 0,
+					"Talker": "바이올렛",
+					"TalkerIndex": 0,
+					"BG": 13,
+					"location": 0,
+					"is2D": true,
+					"OffsetX": 0.0,
+					"OffsetY": 0.0,
+					"isPortrait": true,
+					"isLineEnter": true,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "그랬어!",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				},
+				{
+					"Portrait": 0,
+					"Talker": "찍찍이",
+					"TalkerIndex": 1,
+					"BG": 0,
+					"location": 1,
+					"OffsetX": 0.0,
+					"OffsetY": 0.0,
+					"is2D": true,
+					"isPortrait": false,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "그랬대!",
+					"Red": 254,
+					"Green": 234,
+					"Blue": 157
+				},
+				{
+					"Portrait": 1,
+					"Talker": "스래쉬",
+					"TalkerIndex": 2,
+					"BG": 2,
+					"location": 0,
+					"is2D": true,
+					"isPortrait": true,
+					"OffsetX": 0.0,
+					"OffsetY": 0.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 350
+					},
+					"text": "그렇다면!",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
+				}
+			]
+		},
+		{
 			"id": "Chapter8_Intro_Postit_Sequence",
 			"lines": [
 				{
@@ -1194,6 +2210,322 @@
 					"Red": 161,
 					"Green": 210,
 					"Blue": 234
+				}
+			]
+		},
+		{
+			"id": "Chapter8_Meet_Humgrump_1",
+			"Section": "Chapter6_P2324",
+			"isChangeTalker": true,
+			"lines": [
+				{
+					"Portrait": 0,
+					"Talker": "험그럼프",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
+					"TalkerIndex": 0,
+					"FontColorR": 255.0,
+					"FontColorG": 255.0,
+					"FontColorB": 0.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "아! 이게 누구야?",
+					"Red": 10,
+					"Green": 10,
+					"Blue": 10
+				},
+				{
+					"Portrait": 0,
+					"Talker": "험그럼프",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
+					"TalkerIndex": 0,
+					"FontColorR": 255.0,
+					"FontColorG": 255.0,
+					"FontColorB": 0.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "4명의 반역자께서 오셨군.",
+					"Red": 10,
+					"Green": 10,
+					"Blue": 10
+				}
+			]
+		},
+		{
+			"id": "Chapter8_Meet_Humgrump_2",
+			"Section": "Chapter6_P2324",
+			"isChangeTalker": true,
+			"lines": [
+				{
+					"Portrait": 0,
+					"Talker": "험그럼프",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
+					"TalkerIndex": 0,
+					"FontColorR": 255.0,
+					"FontColorG": 255.0,
+					"FontColorB": 0.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "대체 어떤 멍청한 녀석들인지... 얼굴을 좀 봐야겠어.",
+					"Red": 10,
+					"Green": 10,
+					"Blue": 10
+				},
+				{
+					"Portrait": 0,
+					"Talker": "찍찍이",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
+					"TalkerIndex": 1,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "험그럼프!",
+					"Red": 238,
+					"Green": 230,
+					"Blue": 134
+				},
+				{
+					"Portrait": 0,
+					"Talker": "찍찍이",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
+					"TalkerIndex": 1,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "모조의 백성들을 대표해서 왔다!",
+					"Red": 238,
+					"Green": 230,
+					"Blue": 134
+				},
+				{
+					"Portrait": 0,
+					"Talker": "험그럼프",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
+					"TalkerIndex": 0,
+					"FontColorR": 255.0,
+					"FontColorG": 255.0,
+					"FontColorB": 0.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "아, 그러셔?",
+					"Red": 10,
+					"Green": 10,
+					"Blue": 10
+				},
+				{
+					"Portrait": 0,
+					"Talker": "험그럼프",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
+					"TalkerIndex": 0,
+					"FontColorR": 255.0,
+					"FontColorG": 255.0,
+					"FontColorB": 0.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "하지만 조그만 생쥐 녀석이 감히 뭘 한다는 거지?",
+					"Red": 10,
+					"Green": 10,
+					"Blue": 10
+				},
+				{
+					"Portrait": 0,
+					"Talker": "찍찍이",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
+					"TalkerIndex": 1,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "널 끌어내리고 모조 왕국을 되찾을 거다! ",
+					"Red": 238,
+					"Green": 230,
+					"Blue": 134
+				},
+				{
+					"Portrait": 0,
+					"Talker": "험그럼프",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
+					"TalkerIndex": 0,
+					"FontColorR": 255.0,
+					"FontColorG": 255.0,
+					"FontColorB": 0.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "멍청한 녀석들... 나에 대한 이야기는 아직 끝나려면 멀었지... \n아직 멋진 이야기가 많이 남아 있다.",
+					"Red": 10,
+					"Green": 10,
+					"Blue": 10
+				},
+				{
+					"Portrait": 0,
+					"Talker": "험그럼프",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
+					"TalkerIndex": 0,
+					"FontColorR": 255.0,
+					"FontColorG": 255.0,
+					"FontColorB": 0.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "그러나 용감한 견습 기사, 너는 예전에 잘나가지 않았었나?",
+					"Red": 10,
+					"Green": 10,
+					"Blue": 10
+				},
+				{
+					"Portrait": 0,
+					"Talker": "험그럼프",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
+					"TalkerIndex": 0,
+					"FontColorR": 255.0,
+					"FontColorG": 255.0,
+					"FontColorB": 0.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "한때 이 책의 주인공이 아니었냐는 말이다.",
+					"Red": 10,
+					"Green": 10,
+					"Blue": 10
+				},
+				{
+					"Portrait": 0,
+					"Talker": "험그럼프",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
+					"TalkerIndex": 0,
+					"FontColorR": 255.0,
+					"FontColorG": 255.0,
+					"FontColorB": 0.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "그런데 참 재미있지? 고작 페이지 차이로 \n영웅에서 퇴물이 되어 버렸단 말이야.",
+					"Red": 10,
+					"Green": 10,
+					"Blue": 10
+				},
+				{
+					"Portrait": 0,
+					"Talker": "험그럼프",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
+					"TalkerIndex": 0,
+					"FontColorR": 255.0,
+					"FontColorG": 255.0,
+					"FontColorB": 0.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "네 이야기에...",
+					"Red": 10,
+					"Green": 10,
+					"Blue": 10
+				},
+				{
+					"Portrait": 0,
+					"Talker": "험그럼프",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
+					"TalkerIndex": 0,
+					"FontColorR": 255.0,
+					"FontColorG": 255.0,
+					"FontColorB": 0.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "아주 잘 어울리는 결말을 선사하도록 하지.",
+					"Red": 10,
+					"Green": 10,
+					"Blue": 10
 				}
 			]
 		}

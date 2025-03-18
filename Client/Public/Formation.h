@@ -29,7 +29,11 @@ public:
 	_bool Has_EmptySlot();
 	_bool Is_Stop()
 	{
-		return m_isDelay;
+		return !m_isMove;
+	}
+	_bool Is_Rotate()
+	{
+		return m_isRotate;
 	}
 
 public:
@@ -63,6 +67,7 @@ private:
 
 	_bool m_isTurn = { false };
 	_bool m_isMove = { false };
+	_bool m_isRotate = { true };
 	_uint m_iPatrolIndex = { 0 };
 	_bool m_isBack = { false };
 	_bool m_isDelay = { false };

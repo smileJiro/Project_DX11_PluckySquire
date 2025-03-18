@@ -56,6 +56,9 @@ public:
 	virtual void					Late_Update(_float _fTimeDelta) override;
 
 	void Chapter8_Laser_Stage(_float _fTimeDelta);
+	void Chapter8_Laser_Stage_2(_float _fTimeDelta);
+	void Chapter8_Friend_Appear_Violet(_float _fTimeDelta);
+	void Chapter8_Friend_Appear_Thrash(_float _fTimeDelta);
 	void Chapter8_Intro(_float _fTimeDelta);
 	void Chapter8_Map_Intro(_float _fTimeDelta);
 	void Chapter8_Intro_Postit_Sequence(_float _fTimeDelta);
@@ -64,6 +67,8 @@ public:
 	void Chapter8_Stop_Stamp(_float _fTimeDelta);
 	void Chapter8_Bomb_Stamp(_float _fTimeDelta);
 	void Chapter8_Tilting_Glove(_float _fTimeDelta);
+	void Chapter8_Meet_Humgrump(_float _fTimeDelta);
+
 	virtual void							Change_PlayMap(_float _fStartTime) override;
 
 

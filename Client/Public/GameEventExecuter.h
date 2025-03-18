@@ -164,6 +164,8 @@ protected:
 
 	_bool Next_Event_Process(_float _fTimeDelta);
 
+	void  Ready_Action(_wstring _strSectionTag, _uint _iSectionLayerGroup, _uint _MapObjectActiveType, _float _fBright = 0.1f);
+
 #pragma endregion
 
 protected:

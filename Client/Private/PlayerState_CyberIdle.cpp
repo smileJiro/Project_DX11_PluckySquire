@@ -30,19 +30,15 @@ void CPlayerState_CyberIdle::Update(_float _fTimeDelta)
 		}
 		else
 		{
-			//m_pDynamicActor->Set_LinearVelocity(vPlaneMoveDir * m_f3DCyberFlySpeed);
-			m_pOwner->Move_CyberPlane(tKeyResult.vMoveDir * m_f3DCyberFlySpeed, _fTimeDelta);
+			m_f3DCyberCurrentSpeed = m_f3DCyberFlySpeed;
 		}
 
 	}
-	//_vector vVelocity = m_pDynamicActor->Get_LinearVelocity();
+	m_f3DCyberFlySpeed -= m_f3DCyberLinearDamping * _fTimeDelta;
+	_vector vVelocity = tKeyResult.vMoveDir * m_f3DCyberCurrentSpeed;
 
-	//cout << "Velocity : " << vVelocity << endl;
-	Set_VeloState({ 0.f,0.f,0.f });
-
-
-
-	//m_pOwner->Position_To_FrontCamera(4.f);
+	Set_VeloState(tKeyResult.vMoveDir * m_f3DCyberCurrentSpeed);
+	m_pOwner->Move_CyberPlane(tKeyResult.vMoveDir * m_f3DCyberCurrentSpeed, _fTimeDelta);
 	
 }
 
@@ -149,10 +145,7 @@ void CPlayerState_CyberDash::Update(_float _fTimeDelta)
 	{
 		m_pOwner->Shoot_Rifle();
 	}
-	_vector vVelocity = m_pDynamicActor->Get_LinearVelocity();
-	_float fVelocity = XMVectorGetX(XMVector2Length(vVelocity));
-	if(fVelocity <= m_fEndDashVelocityThreshold)
-		m_pOwner->Set_State(CPlayer::CYBER_IDLE);
+
 }
 
 void CPlayerState_CyberDash::Enter()
@@ -161,10 +154,7 @@ void CPlayerState_CyberDash::Enter()
 	m_pTargetCamera = static_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_CurrentCamera());
 
 	PLAYER_INPUT_RESULT tKeyResult = m_pOwner->Player_KeyInput_CyberJot();
-	_float3 vForce;
-	XMStoreFloat3(&vForce, tKeyResult.vMoveDir * m_f3DCyberDashForce);
 	F_DIRECTION eFDirection = To_FDirection(tKeyResult.vMoveDir);
-	m_pDynamicActor->Add_Impulse(vForce);
 	switch (eFDirection)
 	{
 	case Client::F_DIRECTION::LEFT:
@@ -212,26 +202,6 @@ void CPlayerState_CyberHit::Update(_float _fTimeDelta)
 	PLAYER_INPUT_RESULT tKeyResult = m_pOwner->Player_KeyInput_CyberJot();
 	if (tKeyResult.bInputStates[PLAYER_INPUT_MOVE])
 	{
-
-		_vector vCamTargetPos = { m_pCameraTargetWorldMatrix->_41, m_pCameraTargetWorldMatrix->_42, m_pCameraTargetWorldMatrix->_43, 1.f };
-		_vector vBaseLookVector = XMVector4Normalize(m_pTargetCamera->Get_FinalPosition() - vCamTargetPos);
-		_vector vBaseRightVector = XMVector3Cross(vBaseLookVector, { 0,1,0,0 });
-		_vector vBaseUpVector = XMVector3Cross(vBaseRightVector, vBaseLookVector);
-		_matrix matBase = { vBaseRightVector, vBaseUpVector, vBaseLookVector, {0,0,0,1} };
-		_vector vMoveDir = XMVector3TransformNormal(tKeyResult.vMoveDir, matBase);
-
-
-
-		if (tKeyResult.bInputStates[PLAYER_INPUT_ROLL])
-		{
-			m_pOwner->Set_State(CPlayer::CYBER_DASH);
-			return;
-		}
-		else
-		{
-
-			m_pDynamicActor->Set_LinearVelocity(tKeyResult.vMoveDir * m_f3DCyberFlySpeed);
-		}
 
 	}
 }
