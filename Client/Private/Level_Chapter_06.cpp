@@ -987,8 +987,8 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Book(const _wstring& _strLayerTag)
 
 	tPortalDesc.iCurLevelID = (LEVEL_ID)CSection_Manager::GetInstance()->Get_SectionLeveID();
 	tPortalDesc.fTriggerRadius = 1.0f;
-	tPortalDesc.iPortalIndex = 0;
-	tPortalDesc.isFirstActive = true;
+	tPortalDesc.iPortalIndex = 1;
+	tPortalDesc.isFirstActive = false;
 	tPortalDesc.Build_2D_Transform(_float2{ -416.f, -121.f }, _float2{1.f,1.f});
 	CGameObject* pGameObject = nullptr;
 	m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC,
@@ -1003,6 +1003,7 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Book(const _wstring& _strLayerTag)
 
 
 	tPortalDesc.Build_2D_Transform(_float2{ 386, -105}, _float2{ 1.f,1.f });
+	tPortalDesc.iPortalIndex = 2;
 	m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC,
 		TEXT("Prototype_GameObject_Portal_Cannon"),
 		Desc.iCurLevelID,
