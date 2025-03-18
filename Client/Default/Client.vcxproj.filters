@@ -3189,7 +3189,6 @@
       <Filter>02.GameObjects\UI\03. Logo\01. Logo_Background</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Logo_ColorObject.cpp" />
-    <ClCompile Include="..\Private\State_Sneak.cpp" />
     <ClCompile Include="..\Private\Loading_Book.cpp">
       <Filter>02.GameObjects\UI\04. Loading</Filter>
     </ClCompile>
@@ -3289,6 +3288,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Bomb_AlertState.cpp">
       <Filter>03.Components\FSM\State\Panic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Sneak.cpp">
+      <Filter>03.Components\FSM\State</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

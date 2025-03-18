@@ -407,6 +407,13 @@ void CLevel_Chapter_08::Update(_float _fTimeDelta)
 		int a = 0;
 	}
 
+	if (KEY_DOWN(KEY::F5))
+	{
+		_float3 vPos = { 37.f, 34.f, 10.5f };
+		CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &vPos);
+	}
+
+
 
 	if (KEY_PRESSING(KEY::CTRL))
 	{
@@ -1417,6 +1424,16 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Monster_Projectile(const _wstring& _strLa
 	BombDesc->iCurLevelID = m_eLevelID;
 
 	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Bomb"), Pooling_Desc, BombDesc);
+
+
+	_float3 vPos = { 50.5f, 30.3f, 10.f };
+	CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &vPos);
+	vPos = { 50.5f, 30.3f, 8.5f };
+	CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &vPos);
+	vPos = { 50.5f, 32.f, 10.f };
+	CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &vPos);
+	vPos = { 50.5f, 32.f, 8.5f };
+	CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &vPos);
 
 	return S_OK;
 }
