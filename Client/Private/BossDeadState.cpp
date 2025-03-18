@@ -43,36 +43,167 @@ void CBossDeadState::State_Update(_float _fTimeDelta)
 	case 0:
 		if (0.f <= m_fAccTime)
 		{
-			CEffect_Manager::GetInstance()->Active_EffectMatrix(TEXT("BossDead1"), true, matWorld);
+			matWorld.r[3] += XMVectorSet(0.f, 17.f, 0.f, 0.f);
+			CEffect_Manager::GetInstance()->Active_EffectMatrix(TEXT("BossDead_4"), true, matWorld);
+			matWorld.r[3] += XMVectorSet(-6.f, 0.f, 0.f, 0.f);
+			CEffect_Manager::GetInstance()->Active_EffectMatrix(TEXT("BossDead_1"), true, matWorld);
+			matWorld.r[3] += XMVectorSet(9.f, 0.f, 4.f, 0.f);
+			CEffect_Manager::GetInstance()->Active_EffectMatrix(TEXT("BossDead_2"), true, matWorld);
+			matWorld.r[3] += XMVectorSet(-3.f, 2.f, -3.f, 0.f);
+			CEffect_Manager::GetInstance()->Active_EffectMatrix(TEXT("BossDead_3"), true, matWorld);
 			++m_iEffectCount;
 		}
 		break;
-	case 1:
-		if (0.45f <= m_fAccTime)
+	case 1 :
+		if (0.55f <= m_fAccTime)
 		{
-			matWorld *= XMMatrixRotationAxis(XMVectorSet(0.f, 1.f, 0.f, 0.f), 90.f);
-			matWorld.r[3] += XMVectorSet(0.f, 0.f, -3.5f, 0.f);
-			CEffect_Manager::GetInstance()->Active_EffectMatrix(TEXT("BossDead1"), true, matWorld);
+			matWorld.r[3] += XMVectorSet(0.f, 11.f, 0.f, 0.f);
+			CEffect_Manager::GetInstance()->Active_EffectMatrix(TEXT("BossDead_4"), true, matWorld);
+			matWorld.r[3] += XMVectorSet(7.f, 5.f, 0.f, 0.f);
+			CEffect_Manager::GetInstance()->Active_EffectMatrix(TEXT("BossDead_1"), true, matWorld);
+			matWorld.r[3] += XMVectorSet(-5.f, -2.f, 3.f, 0.f);
+			CEffect_Manager::GetInstance()->Active_EffectMatrix(TEXT("BossDead_2"), true, matWorld);
+			matWorld.r[3] += XMVectorSet(-3.f, 0.f, 0.f, 0.f);
+			CEffect_Manager::GetInstance()->Active_EffectMatrix(TEXT("BossDead_3"), true, matWorld);
 			++m_iEffectCount;
 		}
 		break;
 	case 2:
-		if (0.9f <= m_fAccTime)
+		if (1.1f <= m_fAccTime)
 		{
-			matWorld *= XMMatrixRotationAxis(XMVectorSet(0.f, 1.f, 0.f, 0.f), 160.f);
-			matWorld.r[3] += XMVectorSet(1.5f, 3.f, -1.f, 0.f);
-			CEffect_Manager::GetInstance()->Active_EffectMatrix(TEXT("BossDead1"), true, matWorld);
+			matWorld.r[3] += XMVectorSet(0.f, 13.f, 0.f, 0.f);
+			CEffect_Manager::GetInstance()->Active_EffectMatrix(TEXT("BossDead_4"), true, matWorld);
+			matWorld.r[3] += XMVectorSet(-8.f, 0.f, 0.f, 0.f);
+			CEffect_Manager::GetInstance()->Active_EffectMatrix(TEXT("BossDead_1"), true, matWorld);
+			matWorld.r[3] += XMVectorSet(13.f, -1.f, 3.f, 0.f);
+			CEffect_Manager::GetInstance()->Active_EffectMatrix(TEXT("BossDead_2"), true, matWorld);
+			matWorld.r[3] += XMVectorSet(0.f, 2.f, 0.f, 0.f);
+			CEffect_Manager::GetInstance()->Active_EffectMatrix(TEXT("BossDead_3"), true, matWorld);
 			++m_iEffectCount;
 		}
+		break;
 	case 3:
 	{
-		if (1.35f <= m_fAccTime)
+		if (1.65f <= m_fAccTime)
 		{
-			matWorld *= XMMatrixRotationAxis(XMVectorSet(0.f, 1.f, 0.f, 0.f), 225.f);
-			matWorld.r[3] += XMVectorSet(0.f, 2.f, -4.f, 0.f);
-			CEffect_Manager::GetInstance()->Active_EffectMatrix(TEXT("BossDead1"), true, matWorld);
+			matWorld.r[3] += XMVectorSet(0.f, 12.f, 0.f, 0.f);
+			CEffect_Manager::GetInstance()->Active_EffectMatrix(TEXT("BossDead_4"), true, matWorld);
+			CEffect_Manager::GetInstance()->Active_EffectMatrix(TEXT("BossDead_1"), true, matWorld);
+			matWorld.r[3] += XMVectorSet(0.f, 0.f, 2.f, 0.f);
+			CEffect_Manager::GetInstance()->Active_EffectMatrix(TEXT("BossDead_2"), true, matWorld);
+			matWorld.r[3] += XMVectorSet(-5.f, 0.f, 1.f, 0.f);
+			CEffect_Manager::GetInstance()->Active_EffectMatrix(TEXT("BossDead_3"), true, matWorld);
 			++m_iEffectCount;
 		}
+		break;
+	}
+	case 4:
+	{
+		if (2.2f <= m_fAccTime)
+		{
+			matWorld.r[3] += XMVectorSet(0.f, -3.f, 0.f, 0.f);
+			CEffect_Manager::GetInstance()->Active_EffectMatrix(TEXT("BossDead_Red_1"), true, matWorld);
+			CEffect_Manager::GetInstance()->Active_EffectMatrix(TEXT("BossDead_Red_2"), true, matWorld);
+
+			matWorld.r[3] += XMVectorSet(0.f, 4.f, 0.f, 0.f);
+			CEffect_Manager::GetInstance()->Active_EffectMatrix(TEXT("BossDead_4"), true, matWorld);
+			matWorld.r[3] += XMVectorSet(-3.f, -3.f, 1.f, 0.f);
+			CEffect_Manager::GetInstance()->Active_EffectMatrix(TEXT("BossDead_1"), true, matWorld);
+			
+
+			++m_iEffectCount;
+		}
+		break;
+	}
+	case 5:
+	{
+		if (2.75f <= m_fAccTime)
+		{
+			matWorld.r[3] += XMVectorSet(0.f, 5.f, 0.f, 0.f);
+			CEffect_Manager::GetInstance()->Active_EffectMatrix(TEXT("BossDead_Purple_1"), true, matWorld);
+			CEffect_Manager::GetInstance()->Active_EffectMatrix(TEXT("BossDead_Purple_2"), true, matWorld);
+
+			matWorld.r[3] += XMVectorSet(0.f, 1.f, 2.f, 0.f);
+			CEffect_Manager::GetInstance()->Active_EffectMatrix(TEXT("BossDead_4"), true, matWorld);
+			CEffect_Manager::GetInstance()->Active_EffectMatrix(TEXT("BossDead_2"), true, matWorld);
+
+
+			++m_iEffectCount;
+		}
+		break;
+	}
+	case 6:
+	{
+		if (3.3f <= m_fAccTime)
+		{
+			matWorld.r[3] += XMVectorSet(0.f, 8.f, 0.f, 0.f);
+			CEffect_Manager::GetInstance()->Active_EffectMatrix(TEXT("BossDead_4"), true, matWorld);
+			matWorld.r[3] += XMVectorSet(0.f, 1.f, 0.f, 0.f);
+			CEffect_Manager::GetInstance()->Active_EffectMatrix(TEXT("BossDead_3"), true, matWorld);			
+			matWorld.r[3] += XMVectorSet(0.f, 3.f, -3.f, 0.f);
+			CEffect_Manager::GetInstance()->Active_EffectMatrix(TEXT("BossDead_2"), true, matWorld);
+			matWorld.r[3] += XMVectorSet(4.f, 0.f, 0.f, 0.f);
+			CEffect_Manager::GetInstance()->Active_EffectMatrix(TEXT("BossDead_1"), true, matWorld);
+
+			++m_iEffectCount;
+		}
+
+		break;
+	}
+	case 7:
+		if (3.85f <= m_fAccTime)
+		{
+			matWorld.r[3] += XMVectorSet(0.f, 7.f, 0.f, 0.f);
+			CEffect_Manager::GetInstance()->Active_EffectMatrix(TEXT("BossDead_4"), true, matWorld);
+			matWorld.r[3] += XMVectorSet(0.f, 3.f, -3.f, 0.f);
+			CEffect_Manager::GetInstance()->Active_EffectMatrix(TEXT("BossDead_3"), true, matWorld);
+			matWorld.r[3] += XMVectorSet(3.f, 3.f, 3.f, 0.f);
+			CEffect_Manager::GetInstance()->Active_EffectMatrix(TEXT("BossDead_2"), true, matWorld);
+			matWorld.r[3] += XMVectorSet(2.f, 0.f, -2.f, 0.f);
+			CEffect_Manager::GetInstance()->Active_EffectMatrix(TEXT("BossDead_1"), true, matWorld);
+			++m_iEffectCount;
+		}
+		break;
+	case 8:
+	{
+		if (4.3f <= m_fAccTime)
+		{
+			matWorld.r[3] += XMVectorSet(0.f, 6.f, 0.f, 0.f);
+			CEffect_Manager::GetInstance()->Active_EffectMatrix(TEXT("BossDead_4"), true, matWorld);
+			matWorld.r[3] += XMVectorSet(0.f, 0.f, -3.f, 0.f);
+			CEffect_Manager::GetInstance()->Active_EffectMatrix(TEXT("BossDead_3"), true, matWorld);
+			matWorld.r[3] += XMVectorSet(0.f, 3.f, -2.f, 0.f);
+			CEffect_Manager::GetInstance()->Active_EffectMatrix(TEXT("BossDead_2"), true, matWorld);
+			matWorld.r[3] += XMVectorSet(2.f, -2.f, -1.f, 0.f);
+			CEffect_Manager::GetInstance()->Active_EffectMatrix(TEXT("BossDead_1"), true, matWorld);
+			++m_iEffectCount;
+		}
+			break;
+	}
+	case 9:
+	{
+		if (4.85f <= m_fAccTime)
+		{
+			matWorld.r[3] += XMVectorSet(0.f, 7.f, 0.f, 0.f);
+			CEffect_Manager::GetInstance()->Active_EffectMatrix(TEXT("BossDead_4"), true, matWorld);
+			matWorld.r[3] += XMVectorSet(2.f, 0.f, -3.f, 0.f);
+			CEffect_Manager::GetInstance()->Active_EffectMatrix(TEXT("BossDead_3"), true, matWorld);
+			matWorld.r[3] += XMVectorSet(-2.f, -1.f, 5.f, 0.f);
+			CEffect_Manager::GetInstance()->Active_EffectMatrix(TEXT("BossDead_2"), true, matWorld);
+			matWorld.r[3] += XMVectorSet(6.f, 2.f, 1.f, 0.f);
+			CEffect_Manager::GetInstance()->Active_EffectMatrix(TEXT("BossDead_1"), true, matWorld);
+			++m_iEffectCount;
+		}
+		break;
+	}
+	case 10:
+	{
+		if (5.4f <= m_fAccTime)
+		{
+			CEffect_Manager::GetInstance()->Active_EffectMatrix(TEXT("BossEnd"), true, matWorld);
+			++m_iEffectCount;
+		}
+		break;
 	}
 	default:
 		break;

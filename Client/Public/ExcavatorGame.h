@@ -54,7 +54,7 @@ private:
     _uint                   m_iCurProgress = (_uint)PROGRESS::PROGRESS_1;
     _uint                   m_iSwitchCount = 0;
     vector<CCharacter*>     m_ExcavatorParts{};
-
+    vector<class CDoor_Red*> m_Doors;
 private: /* Excavator State */
     EXCAVATOR_STATE m_ePreState = EXCAVATOR_STATE::STATE_LAST;
     EXCAVATOR_STATE m_eCurState = EXCAVATOR_STATE::STATE_LAST;
