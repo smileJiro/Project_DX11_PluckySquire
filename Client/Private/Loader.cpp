@@ -60,7 +60,6 @@
 #include "FloorWord.h"
 #include "PrintFloorWord.h"
 #include "Npc_Logo.h"
-#include "UI_JotMain.h"
 #include "Narration.h"
 #include "Narration_Anim.h"
 #include "Interaction_E.h"
@@ -648,8 +647,16 @@ HRESULT CLoader::Loading_Level_Static()
 		C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Models/2DAnim/Static/Main_Logo/Main_Humgrump/Main_Humgrump.model2D"), (_uint)LEVEL_STATIC, false, false))))
 		return E_FAIL;
 
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Main_Jot"),
+		C2DModel::Create(m_pDevice, m_pContext, ("../Bin/Resources/Models/2DAnim/Static/Main_Logo/Main_Jot/Main_Jot.model2D"), (_uint)LEVEL_STATIC, false, false))))
+		return E_FAIL;
+
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Logo_TextObject_Humgrump"),
 		C2DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Textures/Main_Logo/Main_TextObject/title_screen_tmh_KOR.dds", LEVEL_STATIC, true, false))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Logo_TextObject_Jot"),
+		C2DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Textures/Main_Logo/Main_TextObject/title_screen_tps_KOR.dds", LEVEL_STATIC, true, false))))
 		return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Logo_TextObject_Button"),
@@ -1189,8 +1196,8 @@ HRESULT CLoader::Loading_Level_Logo()
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_UIObejct_NPC_Logo"), CNPC_Logo::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_UIObejct_JOT"), CUI_JotMain::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_UIObejct_JOT"), CUI_JotMain::Create(m_pDevice, m_pContext))))
+	//	return E_FAIL;
 #pragma endregion
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
