@@ -235,7 +235,8 @@ void CBomb::Explode()
 	}
 	else if (COORDINATE_3D == Get_CurCoord())
 	{
-		static_cast<CActor_Dynamic*>(Get_ActorCom())->Set_Kinematic();
+		//static_cast<CActor_Dynamic*>(Get_ActorCom())->Set_Kinematic();
+		Set_Kinematic(true);
 		Get_ActorCom()->Set_ShapeEnable((_int)SHAPE_USE::SHAPE_BODY, false);
 		Get_ActorCom()->Set_ShapeEnable((_int)SHAPE_USE::SHAPE_TRIGER, true);
 
@@ -318,6 +319,12 @@ void CBomb::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherColli
 void CBomb::Active_OnEnable()
 {
 	__super::Active_OnEnable();
+
+	if (COORDINATE_3D == Get_CurCoord())
+	{
+		Set_Kinematic(false);
+	}
+
 	Set_Render(true);
 	Set_Time_On();
 	//CActor_Dynamic* pDynamic = static_cast<CActor_Dynamic*>(Get_ActorCom());

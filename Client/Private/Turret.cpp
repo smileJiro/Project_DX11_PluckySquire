@@ -146,8 +146,7 @@ void CTurret::State_Change_Fire()
             _vector v3DPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(_float2(XMVectorGetX(vPos), XMVectorGetY(vPos)));
             XMStoreFloat3(&vPosition, v3DPos + XMVectorSet(0.0f, 0.7f, 0.0f, 1.0f));
             CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &pGameObject, &vPosition);
-            CBomb* pBomb = static_cast<CBomb*>(pGameObject); 
-            pBomb->Set_Kinematic(false);
+            CBomb* pBomb = static_cast<CBomb*>(pGameObject);
             pBomb->Start_Parabola_3D(vPlayerPos, XMConvertToRadians(30.f));
         }
     }

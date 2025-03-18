@@ -251,6 +251,7 @@ HRESULT CLevel_Chapter_06::Initialize(LEVEL_ID _eLevelID)
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::NPC_EVENT); // ZetPack
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::GIMMICK_OBJECT); // 
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::BOMB);
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::EXPLOSION);
 	//m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::PORTAL);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_TRIGGER, OBJECT_GROUP::INTERACTION_OBEJCT); //3 8
 
@@ -267,6 +268,7 @@ HRESULT CLevel_Chapter_06::Initialize(LEVEL_ID _eLevelID)
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::PLAYER_PROJECTILE);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::INTERACTION_OBEJCT);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::BLOCKER);
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::EXPLOSION);
 	
 
 	
@@ -1628,7 +1630,7 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Monster()
 	//if (FAILED(Ready_Layer_Monster_3D()))
 	//	return E_FAIL;
 
-	wstring strLayerTag = TEXT("Layer_Monster");
+	//wstring strLayerTag = TEXT("Layer_Monster");
 
 	//CSpear_Soldier::MONSTER_DESC Spear_Soldier2D_Desc;
 	//Spear_Soldier2D_Desc.iCurLevelID = m_eLevelID;
@@ -1672,14 +1674,14 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Monster()
 	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_CrossBow_Soldier"), m_eLevelID, _strLayerTag, &CrossBow_Soldier_Desc)))
 	//	return E_FAIL;
 
-	CBomb_Soldier::MONSTER_DESC Bomb_Soldier_Desc;
-	Bomb_Soldier_Desc.iCurLevelID = m_eLevelID;
-	Bomb_Soldier_Desc.eStartCoord = COORDINATE_3D;
-	Bomb_Soldier_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-	Bomb_Soldier_Desc.tTransform3DDesc.vInitialPosition = _float3(-5.5f, 0.35f, -13.0f);
+	//CBomb_Soldier::MONSTER_DESC Bomb_Soldier_Desc;
+	//Bomb_Soldier_Desc.iCurLevelID = m_eLevelID;
+	//Bomb_Soldier_Desc.eStartCoord = COORDINATE_3D;
+	//Bomb_Soldier_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	//Bomb_Soldier_Desc.tTransform3DDesc.vInitialPosition = _float3(-5.5f, 0.35f, -13.0f);
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Bomb_Soldier"), m_eLevelID, strLayerTag, &Bomb_Soldier_Desc)))
-		return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Bomb_Soldier"), m_eLevelID, strLayerTag, &Bomb_Soldier_Desc)))
+	//	return E_FAIL;
 
 	const _wstring _strLayerTag = L"Layer_Monster";
 
