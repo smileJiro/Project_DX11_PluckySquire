@@ -114,7 +114,7 @@ void CBoss_HomingBall::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _O
                 //Event_KnockBack(static_cast<CCharacter*>(_My.pActorUserData->pOwner), vRepulse);
                 Event_DeleteObject(this);
                 // Effect
-                CEffect_Manager::GetInstance()->Active_EffectPosition(TEXT("HomingHit"), true, m_pControllerTransform->Get_State(CTransform::STATE_POSITION));
+                CEffect_Manager::GetInstance()->Active_EffectMatrix(TEXT("HomingHit"), true, m_pControllerTransform->Get_WorldMatrix());
             }
         }
 

@@ -85,11 +85,22 @@ void CFormation::Update(_float _fTimeDelta)
 	}
 	else
 	{
-		//포인트로 이동 (회전하면서 이동하는거라 이상한지 체크해봐야함)
-		if (true == Get_ControllerTransform()->MoveTo(XMLoadFloat3(&m_PatrolPoints[m_iPatrolIndex]), _fTimeDelta))
+		if(false == m_isMove)
 		{
-			//도착하면 딜레이 동안 대기 하다가 다시 이동
-			m_isDelay = true;
+			_vector vDir = XMLoadFloat3(&m_PatrolPoints[m_iPatrolIndex]) - Get_FinalPosition();
+			if (true == Get_ControllerTransform()->Turn_To_DesireDir(Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK), vDir, Get_ControllerTransform()->Get_RotationPerSec() * _fTimeDelta))
+			{
+				m_isMove = true;
+			}
+		}
+		else
+		{
+			if (true == Get_ControllerTransform()->MoveTo(XMLoadFloat3(&m_PatrolPoints[m_iPatrolIndex]), _fTimeDelta))
+			{
+				//도착하면 딜레이 동안 대기 하다가 다시 이동
+				m_isDelay = true;
+				m_isMove = false;
+			}
 		}
 	}
 }
@@ -119,6 +130,8 @@ HRESULT CFormation::Initialize_Members(void* _pArg)
 			XMStoreFloat3(&vPos, Get_FinalPosition() + XMLoadFloat3(&m_OffSets[i * m_iColumn + j]));
 			
 			Monster_Desc.tTransform3DDesc.vInitialPosition = vPos;
+			Monster_Desc.tTransform3DDesc.fSpeedPerSec = pDesc->tTransform3DDesc.fSpeedPerSec;
+			Monster_Desc.tTransform3DDesc.fRotationPerSec = pDesc->tTransform3DDesc.fRotationPerSec;
 			//Monster_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER8_1;
 			Monster_Desc.isFormationMode = true;
 			Monster_Desc.pFormation = this;
@@ -132,7 +145,6 @@ HRESULT CFormation::Initialize_Members(void* _pArg)
 				m_Members.push_back(pMonster);
 				Safe_AddRef(pObject);
 				Event_Set_Kinematic(static_cast<CActor_Dynamic*>(pMonster->Get_ActorCom()), true);
-				return S_OK;
 			}
 		}
 	}
@@ -286,6 +298,21 @@ _bool CFormation::Get_Formation_Position(CMonster* _pMember, _float3* _vPosition
 		}
 	}
 
+	return false;
+}
+
+_bool CFormation::Get_Formation_NextPosition(CMonster* _pMember, _float3* _vPosition)
+{
+	_float3 vPos;
+	for (_uint i = 0; i < m_Members.size(); ++i)
+	{
+		if (_pMember == m_Members[i])
+		{
+			XMStoreFloat3(&vPos, XMLoadFloat3(&m_PatrolPoints[m_iPatrolIndex]) + XMLoadFloat3(&m_OffSets[i]));
+			*_vPosition = vPos;
+			return true;
+		}
+	}
 	return false;
 }
 
