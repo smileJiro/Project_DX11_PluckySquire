@@ -40,10 +40,10 @@ void CFormation_Manager::Initialize_Formation_PatrolPoints(_uint _iIndex, CForma
 	switch (Formation_PatrolPoint(_iIndex))
 	{
 	case Client::CFormation_Manager::FORMATION1:
-		_pFormation->Add_Formation_PatrolPoints(_float3(-104.f, 65.37f, 20.13f));
-		_pFormation->Add_Formation_PatrolPoints(_float3(-100.f, 65.37f, 20.13f));
-		//_pFormation->Add_Formation_PatrolPoints(_float3(34.f, 24.37f, 4.f));
-		//_pFormation->Add_Formation_PatrolPoints(_float3(38.f, 24.37f, 4.f));
+		//_pFormation->Add_Formation_PatrolPoints(_float3(-104.f, 65.37f, 20.13f));
+		//_pFormation->Add_Formation_PatrolPoints(_float3(-100.f, 65.37f, 20.13f));
+		_pFormation->Add_Formation_PatrolPoints(_float3(34.f, 24.37f, 4.f));
+		_pFormation->Add_Formation_PatrolPoints(_float3(38.f, 24.37f, 4.f));
 		break;
 	case Client::CFormation_Manager::FORMATION2:
 		_pFormation->Add_Formation_PatrolPoints(_float3(34.f, 24.37f, 10.5f));
@@ -88,8 +88,8 @@ HRESULT CFormation_Manager::Ready_Chapter8_Formation()
 	FormationDesc.iCurLevelID = LEVEL_CHAPTER_8;
 	FormationDesc.eStartCoord = COORDINATE_3D;
 	FormationDesc.isCoordChangeEnable = false;
-	//FormationDesc.tTransform3DDesc.vInitialPosition = _float3(36.f, 24.37f, 4.f);
-	FormationDesc.tTransform3DDesc.vInitialPosition = _float3(-102.f, 65.37f, 20.13f);
+	FormationDesc.tTransform3DDesc.vInitialPosition = _float3(36.f, 24.37f, 4.f);
+	//FormationDesc.tTransform3DDesc.vInitialPosition = _float3(-102.f, 65.37f, 20.13f);
 	FormationDesc.tTransform3DDesc.fRotationPerSec = XMConvertToRadians(360.f);
 	FormationDesc.tTransform3DDesc.fSpeedPerSec = 4.f;
 
