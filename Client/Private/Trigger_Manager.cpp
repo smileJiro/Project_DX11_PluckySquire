@@ -101,6 +101,9 @@ HRESULT CTrigger_Manager::Mapping_ExecuterTag()
 
 
 	m_EventExecuterTags[CHAPTER8_LASER_STAGE] = L"Chapter8_Laser_Stage";
+	m_EventExecuterTags[CHAPTER8_LASER_STAGE_2] = L"Chapter8_Laser_Stage_2";
+	m_EventExecuterTags[CHAPTER8_FRIEND_APPEAR_VIOLET] = L"Chapter8_Friend_Appear_Violet";
+	m_EventExecuterTags[CHAPTER8_FRIEND_APPEAR_THRASH] = L"Chapter8_Friend_Appear_Thrash";
 	m_EventExecuterTags[CHAPTER8_INTRO] = L"Chapter8_Intro";
 	m_EventExecuterTags[CHAPTER8_MAP_INTRO] = L"Chapter8_Map_Intro";
 	m_EventExecuterTags[CHAPTER8_INTRO_POSTIT_SEQUENCE] = L"Chapter8_Intro_Postit_Sequence";
@@ -109,6 +112,7 @@ HRESULT CTrigger_Manager::Mapping_ExecuterTag()
 	m_EventExecuterTags[CHAPTER8_BOMB_STAMP] = 	L"Chapter8_Bomb_Stamp";
 	m_EventExecuterTags[CHAPTER8_TILTING_GLOVE] = 	L"Chapter8_Tilting_Glove";
 	m_EventExecuterTags[CHAPTER8_OUTRO_POSTIT_SEQUENCE] = 	L"Chapter8_Outro_Postit_Sequence";
+	m_EventExecuterTags[CHAPTER8_MEET_HUMGRUMP] = 	L"Chapter8_Meet_Humgrump";
 
 	return S_OK;
 }
@@ -361,18 +365,6 @@ void CTrigger_Manager::Register_TriggerEvent(_wstring _TriggerEventTag, _int _iT
 	}
 
 	m_iTriggerID = _iTriggerID;
-
-	// 진행할 이벤트를 True로 만들어 준다
-	_uint iCount = 0;
-
-	for (auto& EventExecuterTag : m_EventExecuterTags) {
-		if (EventExecuterTag == _TriggerEventTag) {
-			m_isRunningEvents[iCount] = true;
-			return;
-		}
-
-		++iCount;
-	}
 }
 
 HRESULT CTrigger_Manager::Fill_Trigger_3D_Desc(json _TriggerJson, CTriggerObject::TRIGGEROBJECT_DESC& _tDesc)
@@ -807,6 +799,17 @@ void CTrigger_Manager::Register_Trigger_Action()
 		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_pGameInstance->Get_CurLevelID(), TEXT("Prototype_GameObject_GameEventExecuter"),
 			m_pGameInstance->Get_CurLevelID(), L"Layer_Event_Executer", &Desc)))
 			return;
+
+		// 진행할 이벤트를 True로 만들어 준다
+		_uint iCount = 0;
+		for (auto& EventExecuterTag : m_EventExecuterTags) {
+			if (EventExecuterTag == _wszEventTag) {
+				m_isRunningEvents[iCount] = true;
+				return;
+			}
+
+			++iCount;
+		}
 	};
 	m_Actions[TEXT("Next_Chapter_Event")] = [this](_wstring _wszEventTag)
 		{

@@ -24,19 +24,19 @@ CBoss_TennisBall::CBoss_TennisBall(const CBoss_TennisBall& _Prototype)
 HRESULT CBoss_TennisBall::Initialize_Prototype()
 {
     FRESNEL_INFO tBulletFresnelInfo = {};
-    tBulletFresnelInfo.fBaseReflect = 0.22f;
-    tBulletFresnelInfo.fExp = 0.49f;
-    tBulletFresnelInfo.vColor = { 0.263f, 1.f, 0.f, 1.f };
+    tBulletFresnelInfo.fBaseReflect = 0.27f;
+    tBulletFresnelInfo.fExp = 1.48f;
+    tBulletFresnelInfo.vColor = { 0.f, 2.f, 0.8f, 1.f };
     tBulletFresnelInfo.fStrength = 1.f; // 안씀.
-    m_pGameInstance->CreateConstBuffer(tBulletFresnelInfo, D3D11_USAGE_DEFAULT, &m_pFresnelBuffer);
+    m_pGameInstance->CreateConstBuffer(tBulletFresnelInfo, D3D11_USAGE_DYNAMIC, &m_pFresnelBuffer);
 
 
     COLORS_INFO tColorsInfo = {};
-    tColorsInfo.vDiffuseColor = _float4(0.006f, 0.311f, 0.f, 1.0f);
-    tColorsInfo.vBloomColor = _float4(0.014f, 0.031f, 0.f, 0.03f);
+    tColorsInfo.vDiffuseColor = _float4(0.0f, 0.05f, 0.f, 1.0f);
+    tColorsInfo.vBloomColor = _float4(0.f, 0.f, 0.f, 0.f);
     tColorsInfo.vSubColor = _float4(0.38f, 0.1f, 0.15f, 0.89f); // 필요 없음
     tColorsInfo.vInnerColor = _float4(0.2f, 0.f, 0.23f, 1.f); // 필요 없음
-    m_pGameInstance->CreateConstBuffer(tColorsInfo, D3D11_USAGE_DEFAULT, &m_pColorBuffer);
+    m_pGameInstance->CreateConstBuffer(tColorsInfo, D3D11_USAGE_DYNAMIC, &m_pColorBuffer);
 
 	return S_OK;
 }
@@ -45,8 +45,8 @@ HRESULT CBoss_TennisBall::Initialize(void* _pArg)
 {
     BOSS_TENNISBALL_DESC* pDesc = static_cast<BOSS_TENNISBALL_DESC*>(_pArg);
 
-    pDesc->_tStat.iMaxHP = 30;
-    pDesc->_tStat.iHP = 30;
+    pDesc->_tStat.iMaxHP = 10;
+    pDesc->_tStat.iHP = 10;
     pDesc->_tStat.iDamg = 1;
 
     if (FAILED(Ready_ActorDesc(pDesc)))
@@ -77,6 +77,8 @@ HRESULT CBoss_TennisBall::Initialize(void* _pArg)
 
     if (nullptr != m_pSpawner)
         Safe_AddRef(m_pSpawner);
+
+    
 
 	return S_OK;
 }

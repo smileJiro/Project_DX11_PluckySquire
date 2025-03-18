@@ -179,6 +179,16 @@ void CFriend_Pip::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 		m_eCurState = FRIEND_IDLE;
 		break;
 	case Client::CFriend::FRIEND_ANY:
+	{
+		if (iAnimIdx == ANIM::PIP_EXCITED_DOWN)
+		{
+			Switch_PartAnim(PART_BODY, ANIM::PIP_EXCITED_INTO, false);
+		}
+		else if (iAnimIdx == ANIM::PIP_EXCITED_INTO)
+		{
+			Change_CurState(CFriend::FRIEND_IDLE);
+		}
+	}
 		//m_eCurState = FRIEND_IDLE;
 		break;
 	default:
