@@ -374,6 +374,12 @@ void CBomb::Start_Parabola(_fvector _vStartPos, _fvector _vEndPos, _float _fPara
 	m_vParabolaTime.y = 0.0f;
 }
 
+void CBomb::Start_Parabola_3D(_fvector _vEndPos, _float _fLaunchAngleRadian, _float _fGravityMag)
+{
+	if(COORDINATE_3D == Get_CurCoord())
+		static_cast<CActor_Dynamic*>(m_pActorCom)->Start_ParabolicTo(_vEndPos, _fLaunchAngleRadian , _fGravityMag);
+}
+
 
 CBomb* CBomb::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
