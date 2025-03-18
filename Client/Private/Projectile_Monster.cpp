@@ -30,6 +30,8 @@ HRESULT CProjectile_Monster::Initialize(void* _pArg)
 
     m_fLifeTime = pDesc->fLifeTime;
 
+    m_vSpawnScaling = pDesc->vSpawnScaling;
+    m_vSpawnScale = pDesc->vSpawnScale;
 
    /* if (FAILED(Ready_ActorDesc(pDesc)))
         return E_FAIL;*/
@@ -74,6 +76,12 @@ void CProjectile_Monster::Update(_float _fTimeDelta)
         m_isTimeOver = true;
         Event_DeleteObject(this);
     }
+    
+    // TODO : Spawn시 크기 커지기.
+    /*if (m_isSpawned)
+    {
+        _float3 vScale = m_pControllerTransform->Get_Scale();
+    }*/
 
     __super::Update(_fTimeDelta);
 }
@@ -188,6 +196,10 @@ void CProjectile_Monster::Active_OnEnable()
     m_isStop = false;
     m_isFirstLoop = true;
     m_isTimeOver = false;
+
+    // 처음 크기로 설정
+    m_isSpawned = true;
+    m_pControllerTransform->Set_Scale(m_vSpawnScale);
 	//if (COORDINATE_3D == Get_CurCoord())
  //       m_pActorCom->Set_ShapeEnable((_int)SHAPE_USE::SHAPE_BODY, true);
 }

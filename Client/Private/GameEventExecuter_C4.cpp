@@ -361,7 +361,7 @@ void CGameEventExecuter_C4::Chapter4_GateEvent(_float _fTimeDelta)
 		if (Is_Start())
 		{
 			CPlayer* pPlayer = Get_Player();
-			pPlayer->Set_Position({ 0.f, 0.f, 0.f });
+			pPlayer->Set_Position({ -139.f, -544.f, 0.f });
 
 			static_cast<CSection_2D_PlayMap*>(SECTION_MGR->Find_Section(L"Chapter4_SKSP_04"))->Set_PortalActive(true);
 
@@ -555,24 +555,7 @@ void CGameEventExecuter_C4::Chapter4_3D_Out_01(_float _fTimeDelta)
 	{
 		if (Is_Start())
 		{
-			CSection_2D* pSection = static_cast<CSection_2D*>(SECTION_MGR->Find_Section(L"Chapter4_P0708"));
-
-			auto pLayer = pSection->Get_Section_Layer(SECTION_PLAYMAP_2D_RENDERGROUP::SECTION_2D_PLAYMAP_BACKGROUND);
-
-			const auto& Objects = pLayer->Get_GameObjects();
-
-			for_each(Objects.begin(), Objects.end(), [](CGameObject* pGameObject) {
-				auto pActionObj = dynamic_cast<C2DMapActionObject*>(pGameObject);
-
-				//섹션에 있는 액션맵오브젝트 남김없이 액션 실행(애니메이션 재생!)
-				if (nullptr != pActionObj)
-				{
-					if (C2DMapActionObject::ACTIVE_TYPE_ACTIONANIM == pActionObj->Get_ActionType())
-						pActionObj->Ready_Action();
-				}
-
-				});
-
+			Ready_Action(L"Chapter4_P0708", SECTION_2D_PLAYMAP_BACKGROUND, C2DMapActionObject::ACTIVE_TYPE_ACTIONANIM);
 		}
 		Change_PlayMap(1.f);
 

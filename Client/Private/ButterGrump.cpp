@@ -50,8 +50,8 @@ HRESULT CButterGrump::Initialize(void* _pArg)
 
     pDesc->iObjectGroupID = OBJECT_GROUP::BOSS;
 
-    m_tStat.iHP = 500;
-    m_tStat.iMaxHP = 500;
+    m_tStat.iHP = 250;
+    m_tStat.iMaxHP = 250;
     m_tStat.iDamg = 1;
 
     m_fDelayTime = 0.5f;
@@ -81,11 +81,11 @@ HRESULT CButterGrump::Initialize(void* _pArg)
     m_pBossFSM->Add_State((_uint)BOSS_STATE::IDLE);
     m_pBossFSM->Add_State((_uint)BOSS_STATE::MOVE);
     m_pBossFSM->Add_State((_uint)BOSS_STATE::HOMINGBALL);
-    //m_pBossFSM->Add_State((_uint)BOSS_STATE::YELLOWBALL);
-    //m_pBossFSM->Add_State((_uint)BOSS_STATE::PURPLEBALL);
-    //m_pBossFSM->Add_State((_uint)BOSS_STATE::WINGSLAM);
-    //m_pBossFSM->Add_State((_uint)BOSS_STATE::ROCKVOLLEY);
-    //m_pBossFSM->Add_State((_uint)BOSS_STATE::WINGSLICE);
+    m_pBossFSM->Add_State((_uint)BOSS_STATE::YELLOWBALL);
+    m_pBossFSM->Add_State((_uint)BOSS_STATE::PURPLEBALL);
+    m_pBossFSM->Add_State((_uint)BOSS_STATE::WINGSLAM);
+    m_pBossFSM->Add_State((_uint)BOSS_STATE::ROCKVOLLEY);
+    m_pBossFSM->Add_State((_uint)BOSS_STATE::WINGSLICE);
     m_pBossFSM->Add_State((_uint)BOSS_STATE::SHIELD);
     m_pBossFSM->Add_State((_uint)BOSS_STATE::HIT);
     m_pBossFSM->Add_State((_uint)BOSS_STATE::DEAD);

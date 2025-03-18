@@ -210,22 +210,7 @@ void CGameEventExecuter_C2::Chapter2_BookMagic(_float _fTimeDelta)
 	{
 		if (Is_Start())
 		{
-			CSection_2D* pSection = static_cast<CSection_2D*>(SECTION_MGR->Find_Section(SECTION_MGR->Get_Cur_Section_Key()));
-
-
-			auto pLayer = pSection->Get_Section_Layer(SECTION_PLAYMAP_2D_RENDERGROUP::SECTION_2D_PLAYMAP_BACKGROUND);
-
-			const auto& Objects = pLayer->Get_GameObjects();
-
-			for_each(Objects.begin(), Objects.end(), [](CGameObject* pGameObject) {
-				auto pActionObj = dynamic_cast<C2DMapActionObject*>(pGameObject);
-
-				if (nullptr != pActionObj)
-				{
-					if (C2DMapActionObject::ACTIVE_TYPE_DYNAMIC_BACKGROUND == pActionObj->Get_ActionType())
-						pActionObj->Ready_Action();
-				}
-				});
+			Ready_Action(SECTION_MGR->Get_Cur_Section_Key(), SECTION_2D_PLAYMAP_BACKGROUND, C2DMapActionObject::ACTIVE_TYPE_DYNAMIC_BACKGROUND);
 		}
 
 		Next_Step_Over(2.2f);
@@ -305,22 +290,7 @@ void CGameEventExecuter_C2::Chapter2_BookMagic(_float _fTimeDelta)
 	{
 		if (Is_Start())
 		{
-			CSection_2D* pSection = static_cast<CSection_2D*>(SECTION_MGR->Find_Section(SECTION_MGR->Get_Cur_Section_Key()));
-
-
-			auto pLayer = pSection->Get_Section_Layer(SECTION_PLAYMAP_2D_RENDERGROUP::SECTION_2D_PLAYMAP_OBJECT);
-
-			const auto& Objects = pLayer->Get_GameObjects();
-
-			for_each(Objects.begin(), Objects.end(), [](CGameObject* pGameObject) {
-				auto pActionObj = dynamic_cast<C2DMapActionObject*>(pGameObject);
-
-				if (nullptr != pActionObj)
-				{
-					if (C2DMapActionObject::ACTIVE_TYPE_ACTIONANIM == pActionObj->Get_ActionType())
-						pActionObj->Ready_Action();
-				}
-				});
+			Ready_Action(SECTION_MGR->Get_Cur_Section_Key(), SECTION_2D_PLAYMAP_OBJECT, C2DMapActionObject::ACTIVE_TYPE_ACTIONANIM);
 		}
 
 		if (m_iSubStep == 0 && m_fTimer > 0.6f)
@@ -1118,6 +1088,8 @@ void CGameEventExecuter_C2::Chapter2_StorySequence(_float _fTimeDelta)
 						pActionObj->Ready_Action();
 				}
 				});
+			//Ready_Action(SECTION_MGR->Get_Cur_Section_Key(), SECTION_2D_PLAYMAP_OBJECT, C2DMapActionObject::ACTIVE_TYPE_DYNAMIC_BACKGROUND);
+
 
 
 			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_TargetObjects[0]);
