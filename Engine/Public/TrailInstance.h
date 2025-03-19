@@ -13,6 +13,9 @@ public:
 		_float fTrailTime = 0.0f;
 		_int iNumMeshes = 0;
 		_float4 vTrailColor = {};
+		_float4 vOuterColor = {};
+		_float fBaseReflect = {0.f};
+		_float fExp = {0.f};
 		vector<array<_float4x4, 256>> MeshesBoneMatrices;
 	}TRAIL_DESC;
 private:
@@ -42,6 +45,9 @@ private:
 	_float2 m_vTrailTime = {};
 	_float4 m_vTrailColor = { 1.0f, 1.0f, 1.0f, 1.0f };
 	_float m_iNumMeshes = {};
+	_float4 m_vOuterColor = { 1.f, 1.f, 1.f, 1.f };
+	_float m_fBaseReflect = { 0.f };
+	_float m_fExp = { 0.f };
 	vector<array<_float4x4, 256>> m_MeshesBoneMatrices;
 
 public:

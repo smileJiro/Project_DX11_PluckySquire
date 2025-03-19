@@ -28,6 +28,7 @@
         "../Bin/DataFiles/FX/Level8/BossDead_Purple_2.json",
         "../Bin/DataFiles/FX/Level8/BossDead_Red_1.json",
         "../Bin/DataFiles/FX/Level8/BossDead_Red_2.json",
-        "../Bin/DataFiles/FX/Level8/BossEnd.json"
+        "../Bin/DataFiles/FX/Level8/BossEnd.json",
+        "../Bin/DataFiles/FX/Level8/BossRoar.json"
     ]
 }
