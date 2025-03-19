@@ -90,6 +90,8 @@ HRESULT CTrigger_Manager::Mapping_ExecuterTag()
 	m_EventExecuterTags[CHAPTER6_INTRO] = L"Chapter6_Intro";
 	m_EventExecuterTags[CHAPTER6_START_3D] = L"Chapter6_Start_3D";
 	m_EventExecuterTags[ARTIA_PIGEVENT_START] = L"Artia_PigEvent_Start";
+	m_EventExecuterTags[ARTIA_PIGEVENT_ENCOUNTER] = L"Artia_PigEvent_Encounter";
+	m_EventExecuterTags[ARTIA_PIGEVENT_ENCOUNTER_OUT] = L"Artia_PigEvent_Encounter_Out";
 	m_EventExecuterTags[ARTIA_PIGEVENT_END] = L"Artia_PigEvent_End";
 	m_EventExecuterTags[ARTIA_EXIT] = L"Artia_Exit";
 	m_EventExecuterTags[CHAPTER6_FATHERGAME_PROGRESS_START_CLEAR] = L"Chapter6_FatherGame_Progress_Start_Clear";

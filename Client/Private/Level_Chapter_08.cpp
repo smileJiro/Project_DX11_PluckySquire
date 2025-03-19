@@ -1236,7 +1236,7 @@ HRESULT CLevel_Chapter_08::Ready_Layer_NPC(const _wstring& _strLayerTag)
 
 	// Humgrump
 	CNpc_Humgrump::HUMGRUMP_DESC HumgrumpDesc = {};
-	HumgrumpDesc.tTransform2DDesc.vInitialPosition = _float3(0.0f, 54.89, 0.03f);
+	HumgrumpDesc.tTransform2DDesc.vInitialPosition = _float3(0.0f, 54.89f, 0.03f);
 	HumgrumpDesc.iCurLevelID = m_eLevelID;
 	HumgrumpDesc.strSectionTag = TEXT("Chapter8_P2324");
 	HumgrumpDesc.iStartAnimIndex = CNpc_Humgrump::CHAPTER8_IDLE_UP;

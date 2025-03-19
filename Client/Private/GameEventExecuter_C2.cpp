@@ -365,7 +365,7 @@ void CGameEventExecuter_C2::Chapter2_Intro(_float _fTimeDelta)
 
 		if (CSection_Manager::GetInstance()->Is_WordPos_Capcher()) {
 			CBook* pBook = static_cast<CBook*>(m_pGameInstance->Get_GameObject_Ptr(LEVEL_CHAPTER_2, TEXT("Layer_Book"), 0));
-			pBook->Set_Animation(CBook::CLOSED_IDLE);
+			pBook->Switch_Animation(CBook::CLOSED_IDLE);
 
 			Next_Step(true);
 		}
@@ -404,7 +404,7 @@ void CGameEventExecuter_C2::Chapter2_Intro(_float _fTimeDelta)
 		if (true == pCamera->Is_Finish_CutScene()) {
 			if (m_fTimer >= 1.3f) {
 				CBook* pBook = static_cast<CBook*>(m_pGameInstance->Get_GameObject_Ptr(LEVEL_CHAPTER_2, TEXT("Layer_Book"), 0));
-				pBook->Set_Animation(CBook::OPEN_TO_FLAT);
+				pBook->Switch_Animation(CBook::OPEN_TO_FLAT);
 				Next_Step(true);
 			}
 		}
