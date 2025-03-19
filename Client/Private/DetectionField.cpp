@@ -27,6 +27,7 @@ HRESULT CDetectionField::Initialize(void* _pArg)
 	m_fFOVX = pDesc->fFOVX;
 	m_fFOVY = pDesc->fFOVY;
 	m_fOffset = pDesc->fOffset;
+	m_vPosOffset = pDesc->vPosOffset;
 	m_pOwner = pDesc->pOwner;
 	m_pTarget = pDesc->pTarget;
 
@@ -71,6 +72,8 @@ HRESULT CDetectionField::Render()
 	m_pGameInstance->MatrixDecompose(&vScale, &vRot, &vPos, m_pOwner->Get_WorldMatrix());
 	Near = vScale.z;
 
+	XMStoreFloat3(&vPos, XMLoadFloat3(&vPos) + XMLoadFloat3(&m_vPosOffset));
+
 	_float fRightSlope = tanf(XMConvertToRadians(m_fFOVX * 0.5f));
 	_float fTopSlope = tanf(XMConvertToRadians(m_fFOVY * 0.5f));
 	BoundingFrustum Frustum(vPos, vRot, fRightSlope, -1.f * fRightSlope, fTopSlope, -1.f * fTopSlope, m_fOffset, m_fOffset + m_fRange);	//근평면 거리 다시 잡아야할듯
@@ -94,12 +97,14 @@ _bool CDetectionField::IsTarget_In_Detection()
 		Safe_AddRef(m_pTarget);
 	}
 
+	_vector vPosition = m_pOwner->Get_FinalPosition() + XMLoadFloat3(&m_vPosOffset);
+
 	//거리 먼저 판단(일단 오프셋 적용안했음)
-	if (m_fRange >= m_pOwner->Get_ControllerTransform()->Compute_Distance(m_pTarget->Get_FinalPosition()))
+	if (m_fRange >= XMVectorGetX(XMVector3Length(m_pTarget->Get_FinalPosition() - vPosition)))
 	{
 		//이후 각도로 판단 (예외처리는....)
-		_float fAngleX = m_pGameInstance->Get_Angle_Between_Vectors(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMVectorSet(0.f, 0.f, 1.f, 0.f), XMVectorSetY(m_pTarget->Get_FinalPosition() - m_pOwner->Get_FinalPosition(), 0.f));
-		_float fAngleY = m_pGameInstance->Get_Angle_Between_Vectors(XMVectorSet(1.f, 0.f, 0.f, 0.f), XMVectorSet(0.f, 0.f, 1.f, 0.f), XMVectorSetX(m_pTarget->Get_FinalPosition() - m_pOwner->Get_FinalPosition(), 0.f));
+		_float fAngleX = m_pGameInstance->Get_Angle_Between_Vectors(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMVectorSet(0.f, 0.f, 1.f, 0.f), XMVectorSetY(m_pTarget->Get_FinalPosition() - vPosition, 0.f));
+		_float fAngleY = m_pGameInstance->Get_Angle_Between_Vectors(XMVectorSet(1.f, 0.f, 0.f, 0.f), XMVectorSet(0.f, 0.f, 1.f, 0.f), XMVectorSetX(m_pTarget->Get_FinalPosition() - vPosition, 0.f));
 		_float fLookAngleX = m_pGameInstance->Get_Angle_Between_Vectors(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMVectorSet(0.f, 0.f, 1.f, 0.f), XMVectorSetY(m_pOwner->Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK), 0.f));
 		_float fLookAngleY = m_pGameInstance->Get_Angle_Between_Vectors(XMVectorSet(1.f, 0.f, 0.f, 0.f), XMVectorSet(0.f, 0.f, 1.f, 0.f), XMVectorSetX(m_pOwner->Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK), 0.f));
 		_float fRightAngle = m_pGameInstance->Clamp_Degrees(fLookAngleX + m_fFOVX / 2.f);

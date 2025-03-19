@@ -204,6 +204,8 @@
     <ClInclude Include="..\Public\Bomb_AlertState.h" />
     <ClInclude Include="..\Public\BossDeadState.h" />
     <ClInclude Include="..\Public\BossHitState.h" />
+    <ClInclude Include="..\Public\BossHP.h" />
+    <ClInclude Include="..\Public\BossHPBar.h" />
     <ClInclude Include="..\Public\BossMoveState.h" />
     <ClInclude Include="..\Public\BossRockVolleyState.h" />
     <ClInclude Include="..\Public\BossShieldState.h" />
@@ -226,6 +228,7 @@
     <ClInclude Include="..\public\Candle_Body.h" />
     <ClInclude Include="..\public\Candle_UI.h" />
     <ClInclude Include="..\Public\Chase_WayState.h" />
+    <ClInclude Include="..\Public\CyberCursor.h" />
     <ClInclude Include="..\Public\DefenderCapsule.h" />
     <ClInclude Include="..\Public\DefenderMedShip.h" />
     <ClInclude Include="..\Public\DefenderPerson.h" />
@@ -620,6 +623,8 @@
     <ClCompile Include="..\Private\Bomb_AlertState.cpp" />
     <ClCompile Include="..\Private\BossDeadState.cpp" />
     <ClCompile Include="..\Private\BossHitState.cpp" />
+    <ClCompile Include="..\Private\BossHP.cpp" />
+    <ClCompile Include="..\Private\BossHPBar.cpp" />
     <ClCompile Include="..\Private\BossMoveState.cpp" />
     <ClCompile Include="..\Private\BossRockVolleyState.cpp" />
     <ClCompile Include="..\Private\BossShieldState.cpp" />
@@ -643,6 +648,7 @@
     <ClCompile Include="..\private\Candle_UI.cpp" />
     <ClCompile Include="..\Private\ChaseFlyState.cpp" />
     <ClCompile Include="..\Private\Chase_WayState.cpp" />
+    <ClCompile Include="..\Private\CyberCursor.cpp" />
     <ClCompile Include="..\Private\PlayerState_EngageBoss.cpp" />
     <ClCompile Include="..\Private\DefenderCapsule.cpp" />
     <ClCompile Include="..\Private\DefenderMedShip.cpp" />

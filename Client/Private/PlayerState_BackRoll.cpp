@@ -11,7 +11,7 @@ void CPlayerState_BackRoll::Update(_float _fTimeDelta)
 	if (true == m_isRollLoop)
 	{
 		m_vRollTime.y += _fTimeDelta;
-		m_pOwner->Move(XMVectorSet(0.0f, -100.f, 0.0f, 0.0f), _fTimeDelta);
+		m_pOwner->Move(XMVectorSet(0.0f, -250.f, 0.0f, 0.0f), _fTimeDelta);
 		if (m_vRollTime.x <= m_vRollTime.y)
 		{
 			m_vRollTime.y = 0.0f;

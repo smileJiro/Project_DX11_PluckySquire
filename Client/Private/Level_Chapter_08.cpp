@@ -88,6 +88,7 @@
 #include "Room_Door.h"
 
 #include "Npc_Humgrump.h"
+#include "Gear.h"
 
 CLevel_Chapter_08::CLevel_Chapter_08(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:
@@ -123,7 +124,7 @@ HRESULT CLevel_Chapter_08::Initialize(LEVEL_ID _eLevelID)
 		MSG_BOX(" Failed Ready_Layer_MainTable (Level_Chapter_08::Initialize)");
 		assert(nullptr);
 	}
-	if (FAILED(Ready_Layer_Book(TEXT("Layer_Terrain"))))
+	if (FAILED(Ready_Layer_Book(TEXT("Layer_Book"))))
 	{
 		MSG_BOX(" Failed Ready_Layer_Book (Level_Chapter_08::Initialize)");
 		assert(nullptr);
@@ -195,6 +196,12 @@ HRESULT CLevel_Chapter_08::Initialize(LEVEL_ID _eLevelID)
 		assert(nullptr);
 	}
 
+	if (FAILED(Ready_Layer_Gear(TEXT("Layer_Gear"))))
+	{
+		MSG_BOX(" Failed Ready_Layer_Gear (Level_Chapter_08::Initialize)");
+		assert(nullptr);
+	}
+	
 	/* Collision Check Matrix */
 	// 그룹필터 추가 >> 중복해서 넣어도 돼 내부적으로 걸러줌 알아서 Door_Yellow
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::MONSTER);
@@ -430,7 +437,11 @@ void CLevel_Chapter_08::Update(_float _fTimeDelta)
 			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_ButterGrump"), m_eLevelID, TEXT("Layer_Boss"), &pBoss, &Boss_Desc)))
 				return;
 
-	
+			
+			
+
+
+
 			CCameraPivot*  pPivot = static_cast<CCameraPivot*>(m_pGameInstance->Get_GameObject_Ptr(m_eLevelID, TEXT("Layer_CameraPivot"), 0));
 			pPivot->Set_MainTarget(pBoss);
 			pPivot->Set_Active(true);
@@ -472,6 +483,15 @@ void CLevel_Chapter_08::Update(_float _fTimeDelta)
 			SECTION_MGR->Remove_Section(L"Chapter8_SKSP_09");
 			SECTION_MGR->Remove_Section(L"Chapter8_SKSP_10");
 				//});
+
+			// 보스 체력바 관련
+			CUI::UIOBJDESC pDesc = {};
+			pDesc.iCurLevelID = m_eLevelID;
+
+			Uimgr->Set_BossForUI(static_cast<CButterGrump*>(pBoss));
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_BossHP"), pDesc.iCurLevelID, TEXT("Layer_UI"), &pDesc)))
+				return;
+
 		}
 	}
 
@@ -807,7 +827,7 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Player(const _wstring& _strLayerTag, CGam
 
 HRESULT CLevel_Chapter_08::Ready_Layer_Book(const _wstring& _strLayerTag)
 {
-	CGameObject* pBook = nullptr;
+	CGameObject* pGameObject = nullptr;
 	//TODO :: SAMPLE
 	CBook::BOOK_DESC Desc = {};
 	Desc.iCurLevelID = m_eLevelID;
@@ -815,12 +835,15 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Book(const _wstring& _strLayerTag)
 	Desc.tTransform3DDesc.vInitialPosition = _float3(-90.f, 64.7f, 19.0f);
 	Desc.tTransform3DDesc.vInitialScaling = _float3(1.0f, 1.0f, 1.0f);
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Book"),
-		m_eLevelID, L"Layer_Book", &pBook, &Desc)))
+		m_eLevelID, L"Layer_Book", &pGameObject, &Desc)))
 		return E_FAIL;
 
+	CBook* pBook = static_cast<CBook*>(pGameObject);
 
+	Uimgr->Set_Book(pBook);
 
-	Uimgr->Set_Book(static_cast<CBook*>(pBook));
+	pBook->Set_BlendingRatio(1.f);
+	pBook->Set_Droppable(true);
 
 	return S_OK;
 }
@@ -1173,6 +1196,13 @@ HRESULT CLevel_Chapter_08::Ready_Layer_UI(const _wstring& _strLayerTag)
 
 	Uimgr->Set_Narration(static_cast<CNarration*>(pGameObject));
 
+
+
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_BossHP"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
+	//	return E_FAIL;
+
+
+	
 	return S_OK;
 }
 
@@ -1180,7 +1210,7 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Item(const _wstring& _strLayerTag)
 {
 	// Test(PlayerItem: Glove, Stamp)
 	//CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("Flipping_Glove"), _float3(59.936f, 6.273f, -19.097f));
-	//CPlayerData_Manager::GetInstance()->Spawn_Bulb(LEVEL_STATIC, (LEVEL_ID)m_eLevelID);
+	CPlayerData_Manager::GetInstance()->Spawn_Bulb(LEVEL_STATIC, (LEVEL_ID)m_eLevelID);
 
 
 
@@ -1236,7 +1266,7 @@ HRESULT CLevel_Chapter_08::Ready_Layer_NPC(const _wstring& _strLayerTag)
 
 	// Humgrump
 	CNpc_Humgrump::HUMGRUMP_DESC HumgrumpDesc = {};
-	HumgrumpDesc.tTransform2DDesc.vInitialPosition = _float3(0.0f, 54.89, 0.03f);
+	HumgrumpDesc.tTransform2DDesc.vInitialPosition = _float3(0.0f, 54.89f, 0.03f);
 	HumgrumpDesc.iCurLevelID = m_eLevelID;
 	HumgrumpDesc.strSectionTag = TEXT("Chapter8_P2324");
 	HumgrumpDesc.iStartAnimIndex = CNpc_Humgrump::CHAPTER8_IDLE_UP;
@@ -1426,14 +1456,27 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Monster_Projectile(const _wstring& _strLa
 	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Bomb"), Pooling_Desc, BombDesc);
 
 
-	_float3 vPos = { 50.5f, 30.3f, 10.f };
-	CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &vPos);
-	vPos = { 50.5f, 30.3f, 8.5f };
-	CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &vPos);
-	vPos = { 50.5f, 32.f, 10.f };
-	CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &vPos);
-	vPos = { 50.5f, 32.f, 8.5f };
-	CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &vPos);
+	CGameObject* pObject = nullptr;
+
+	_float3 vPos = { 50.5f, 30.3f, 9.f };
+	CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &pObject, &vPos);
+	//static_cast<CBomb*>(pObject)->Set_Time_Off();
+	static_cast<CBomb*>(pObject)->Set_LifeTime(5.f);
+
+	vPos = { 50.5f, 30.3f, 8.f };
+	CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &pObject, &vPos);
+	//static_cast<CBomb*>(pObject)->Set_Time_Off();
+	static_cast<CBomb*>(pObject)->Set_LifeTime(5.f);
+
+	vPos = { 49.5f, 30.3f, 9.f };
+	CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &pObject, &vPos);
+	//static_cast<CBomb*>(pObject)->Set_Time_Off();
+	static_cast<CBomb*>(pObject)->Set_LifeTime(5.f);
+
+	vPos = { 49.5f, 30.3f, 8.f };
+	CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &pObject, &vPos);
+	//static_cast<CBomb*>(pObject)->Set_Time_Off();
+	static_cast<CBomb*>(pObject)->Set_LifeTime(5.f);
 
 	return S_OK;
 }
@@ -1945,6 +1988,23 @@ HRESULT CLevel_Chapter_08::Ready_Layer_RoomDoor(const _wstring& _strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Room_Door"),
 		m_eLevelID, _strLayerTag, &Desc)))
 		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Chapter_08::Ready_Layer_Gear(const _wstring& _strLayerTag)
+{
+	{// Chapter_8 FirstGear
+		CGear::GEAR_DESC Desc;
+		Desc.iCurLevelID = LEVEL_CHAPTER_8;
+		Desc.Build_2D_Transform(_float2(-442.f, 180.0f), _float2(0.99f, 1.0f));
+
+		CGameObject* pGameObject = nullptr;
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_Gear"), LEVEL_CHAPTER_8, _strLayerTag, &pGameObject, &Desc)))
+			return E_FAIL;
+
+		CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter8_P1920"), pGameObject);
+	}// Chapter_8 FirstGear
 
 	return S_OK;
 }

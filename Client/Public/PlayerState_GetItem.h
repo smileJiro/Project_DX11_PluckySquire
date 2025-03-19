@@ -1,6 +1,7 @@
 #pragma once
 #include "PlayerState.h"
 BEGIN(Client)
+
 class CPlayerState_GetItem :
     public CPlayerState
 {
@@ -13,7 +14,9 @@ public:
     virtual void Exit() override;
     virtual void On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx) override;
 
+private:
 
+	CModelObject* m_pFX = nullptr;
 };
 
 END

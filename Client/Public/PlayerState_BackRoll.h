@@ -16,7 +16,7 @@ public:
 
 private:
     _bool m_isRollLoop = false;
-    _float2 m_vRollTime = { 1.5f, 0.0f };
+    _float2 m_vRollTime = { 0.75f, 0.0f };
 };
 
 END

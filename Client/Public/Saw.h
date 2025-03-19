@@ -36,10 +36,17 @@ public:
 	virtual void	Update(_float _fTimeDelta) override;
 	virtual void	Late_Update(_float _fTimeDelta) override;
 	virtual HRESULT Render() override;
+
 private:
 	virtual void On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
 	virtual void On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
 	virtual void On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
+public:
+	_int Get_AttackCount() const { return m_iAttackCount; }
+	void Set_CurState(STATE _eState) { m_eCurState = _eState; State_Change(); }
+
+public:
+	_bool Is_Stoppable() { return m_eCurState == STATE_STOP; }
 private:
 	STATE m_ePreState = STATE::STATE_LAST;
 	STATE m_eCurState = STATE::STATE_LAST;
@@ -49,8 +56,8 @@ private:
 	_float2 m_vMinMaxOffset_X = { -500.f, 500.f };
 	_float2 m_vMinMaxOffset_Y = { -70.f, 170.f };
 	_float2 m_vOffset = { 0.0f, 170.f };
-	_float2 m_vMoveSpeed = { 300.f, 50.f };
-
+	_float2 m_vMoveSpeed = { 400.f, 50.f };
+	_int m_iAttackCount = 0;
 private:
 	void State_Change();
 	void State_Chage_Hide();

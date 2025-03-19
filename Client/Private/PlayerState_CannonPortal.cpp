@@ -28,21 +28,18 @@ void CPlayerState_CannonPortal::Update(_float _fTimeDelta)
 	INTERACT_RESULT eResult = m_pOwner->Try_Interact(_fTimeDelta);
 	if (INTERACT_RESULT::CHARGE_CANCEL == eResult)
 	{
-		if(false == Is_ChargeCompleted())
-		{
-			m_pPortal->Set_PortalState(CPortal_Cannon::IDLE);
-			m_pOwner->Set_State(CPlayer::IDLE);
-		}
-		else
-			Set_SubState(SUB_SHOOT_READY);
-		return;
+		m_pPortal->Set_PortalState(CPortal_Cannon::IDLE);
+		m_pOwner->Set_State(CPlayer::IDLE);
 	}
+	else if (INTERACT_RESULT::SUCCESS == eResult)
+		Set_SubState(SUB_SHOOT_READY);
 	if (SUB_INTO == m_eSubState)
 	{
 		//CHARGING인 동안에는 포탈을 향해 이동,
 		//도착하면 SUB_SPIN_CHARGE 상태로 전환
 		if (INTERACT_RESULT::CHARGING == eResult
-			|| INTERACT_RESULT::INTERACT_START == eResult)
+			|| INTERACT_RESULT::INTERACT_START == eResult
+			|| INTERACT_RESULT::CHARGE_COMPLETE == eResult)
 		{
 			if (m_pOwner->Move_To(m_vPortalPos, _fTimeDelta))
 				Set_SubState(SUB_SPIN_CHARGE);
@@ -50,7 +47,7 @@ void CPlayerState_CannonPortal::Update(_float _fTimeDelta)
 	}
 	else if (SUB_SPIN_CHARGE == m_eSubState)
 	{
-		if (INTERACT_RESULT::SUCCESS == eResult)
+		if (INTERACT_RESULT::CHARGE_COMPLETE == eResult)
 		{
 			Set_SubState(SUB_SPIN_CHARGE_COMPLETE);
 			return;
@@ -92,9 +89,9 @@ void CPlayerState_CannonPortal::Update(_float _fTimeDelta)
 
 		if (m_pTargetPortal)
 		{
+			_float fUpForce = m_pOwner->Get_UpForce();
 			_float fDistance = XMVector3Length(m_pTargetPortal->Get_FinalPosition() - m_pOwner->Get_FinalPosition()).m128_f32[0];
-			cout << fDistance << endl;
-			if (fDistance < 0.3f)
+			if (fUpForce < 0.f && fDistance < 0.3f)
 			{
 				Set_SubState(SUB_GOAL_IN_READY);
 

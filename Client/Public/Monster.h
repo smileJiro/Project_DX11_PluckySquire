@@ -73,6 +73,8 @@ public:
 		return m_isAnimChangeable;
 	}
 
+	void Set_Target(CGameObject* _pGameObject);
+
 	//void Set_2D_Direction(F_DIRECTION _eDir);
 	//F_DIRECTION Get_2DDirection() 
 	//{ 
@@ -290,6 +292,7 @@ protected:
 	_float m_fFOVY = { 0.f };
 
 	_float m_fHalfBodySize = { 0.f };
+	_float m_fHalfBodyHeight = { 0.f };
 
 	_float3 m_vRayOffset = { 0.f,0.f,0.f };
 	_float m_fRayHalfWidth = {};

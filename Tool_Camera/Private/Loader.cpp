@@ -160,7 +160,7 @@ HRESULT CLoader::Loading_Level_Static()
         return E_FAIL;
 
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("LightbulbPickup_01"),
-        C3DModel::Create(m_pDevice, m_pContext, "../../Client/Bin/Resources/Models/NonAnim/LightbulbPickup_01/LightbulbPickup_01.model", matPretransform))))
+        C3DModel::Create(m_pDevice, m_pContext, "../../Client/Bin/Resources/Models/3DObject/Static/LightbulbPickup_01/LightbulbPickup_01.model", matPretransform))))
         return E_FAIL;
 
 
@@ -346,7 +346,7 @@ HRESULT CLoader::Loading_Level_Trigger_Tool()
         C3DModel::Create(m_pDevice, m_pContext, "../../Client/Bin/Resources/Models/NonAnim/SM_desk_split_topboard_02/SM_desk_split_topboard_02.model", matPretransform))))
         return E_FAIL;
 
-    if (FAILED(Load_Models_FromJson(LEVEL_TRIGGER_TOOL, MAP_3D_DEFAULT_PATH, L"Chapter_08_Play_Desk.json", matPretransform)))
+    if (FAILED(Load_Models_FromJson(LEVEL_TRIGGER_TOOL, MAP_3D_DEFAULT_PATH, L"Chapter_06_Play_Desk.json", matPretransform)))
         return E_FAIL;
 
     if (FAILED(Load_Dirctory_Models_Recursive(LEVEL_TRIGGER_TOOL,
@@ -406,7 +406,7 @@ HRESULT CLoader::Loading_Level_Trigger_Tool()
     //    CBook::Create(m_pDevice, m_pContext))))
     //    return E_FAIL;
 
-    Map_Object_Create(LEVEL_TRIGGER_TOOL, LEVEL_TRIGGER_TOOL, L"Chapter_08_Play_Desk.mchc");
+    Map_Object_Create(LEVEL_TRIGGER_TOOL, LEVEL_TRIGGER_TOOL, L"Chapter_06_Play_Desk.mchc");
 
     //Map_Object_Create(LEVEL_STATIC, LEVEL_TRIGGER_TOOL, L"Room_Enviroment.mchc");
 

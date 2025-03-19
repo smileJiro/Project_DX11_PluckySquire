@@ -3164,11 +3164,11 @@
    "ColliderInfo": {
     "Collider_Extent": {
      "X": 1293.0,
-     "Y": 1293.0
+     "Y": 735.0
     },
     "Collider_Offset_Pos": {
      "X": 0.0,
-     "Y": 0.0
+     "Y": 253.0
     }
    },
    "ColliderType": 1

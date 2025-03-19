@@ -17,6 +17,8 @@
 #include "Effect_Manager.h"
 #include "Section_2D_PlayMap.h"
 #include "TiltSwapCrate.h"
+#include "PlayerData_Manager.h"
+#include "Trigger_Manager.h"
 
 CBook::CBook(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CModelObject(_pDevice, _pContext)
@@ -160,6 +162,12 @@ HRESULT CBook::Initialize(void* _pArg)
 	m_eInteractType = INTERACT_TYPE::NORMAL;
 	m_eInteractKey = KEY::Q;
 
+	if (m_iCurLevelID == LEVEL_CHAPTER_8)
+	{
+		if (FAILED(Add_Component(LEVEL_CHAPTER_8, TEXT("Prototype_Component_Texture_Book_Freezing"),
+			TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
+			return E_FAIL;
+	} 
 	return S_OK;
 }
 
@@ -193,7 +201,7 @@ void CBook::Update(_float _fTimeDelta)
 			||
 			pGameObject->Get_CurCoord() == COORDINATE_3D
 			||
-			CCamera_2D::PAUSE == CCamera_Manager::GetInstance()->Get_CurCameraMode()
+			(CCamera_2D::PAUSE == CCamera_Manager::GetInstance()->Get_CurCameraMode())
 			)
 		{
 			if (m_eCurAction == NEXT)
@@ -285,8 +293,6 @@ HRESULT CBook::Render()
 			case Client::CBook::CUR_RIGHT:
 			case Client::CBook::CUR_LEFT:
 		{
-
-
 	#pragma region 현재 페이지인지, 다음 페이지인지 확인하고 SRV 가져오기.
 
 			CSection* pTargetSection = nullptr;
@@ -361,6 +367,21 @@ HRESULT CBook::Render()
 				}
 				else
 					MSG_BOX("Book Mesh Binding Error - Book.cpp");
+
+				// 프리징 상태라면, 현재 페이지에 덧그리기. 0.7 정도로...
+				if (true == m_isFreezing) 
+				{
+					if (CUR_LEFT == i || CUR_RIGHT == i)
+					{
+						_float fBlend = 0.7f;
+						if (FAILED(pShader->Bind_RawValue("g_fBlendingRatio", &fBlend, sizeof(_float))))
+							return E_FAIL;
+
+						m_pTextureCom->Bind_ShaderResource(pShader, "g_BlendingTexture", 0);
+						iShaderPass = (_uint)PASS_VTXANIMMESH::TEXTUREBLENDING;
+					
+					}
+				}
 #pragma endregion
 
 
@@ -571,7 +592,9 @@ void CBook::PageAction_End(COORDINATE _eCoord, _uint iAnimIdx)
 {
 #pragma region 책 넘기는 Action
 
-	if (ACTION_LAST != m_eCurAction)
+	if (ACTION_LAST != m_eCurAction
+		//&& iAnimIdx == ACTION
+		)
 	{
 		if (NEXT == m_eCurAction)
 		{
@@ -783,9 +806,21 @@ void CBook::Interact(CPlayer* _pUser)
 
 _bool CBook::Is_Interactable(CPlayer* _pUser)
 {
-	return (m_isPlayerAround || m_isPlayerAbove) 
-		&& (false == _pUser->Is_CarryingObject())
-		&& COORDINATE_3D == _pUser->Get_CurCoord();
+	_bool bPossible = (false == _pUser->Is_CarryingObject())&& COORDINATE_3D == _pUser->Get_CurCoord();
+
+	CPlayerData_Manager* pPDM = CPlayerData_Manager::GetInstance();
+	if (m_isPlayerAround)
+	{
+		//bPossible &= (pPDM->Is_Own(CPlayerData_Manager::FLIPPING_GLOVE) || pPDM->Is_Own(CPlayerData_Manager::TILTING_GLOVE));
+
+	}
+	else if (m_isPlayerAbove)
+	{
+		//bPossible &= (pPDM->Is_Own(CPlayerData_Manager::STOP_STAMP) || pPDM->Is_Own(CPlayerData_Manager::BOMB_STAMP));
+	}
+
+
+	return bPossible;
 }
 
 _float CBook::Get_Distance(COORDINATE _eCoord, CPlayer* _pUser)
@@ -977,6 +1012,7 @@ void CBook::Start_DropBook()
 	pActor->Freeze_Rotation(true, true, false);
 	pActor->Freeze_Position(false, false, false);
 
+	m_isDroppable = false;
 }
 
 void CBook::End_DropBook()
@@ -1068,6 +1104,7 @@ CGameObject* CBook::Clone(void* _pArg)
 
 void CBook::Free()
 {
+	Safe_Release(m_pTextureCom);
 	Safe_Release(m_pAnimEventGenerator);
 	__super::Free();
 }

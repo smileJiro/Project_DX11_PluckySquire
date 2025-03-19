@@ -69,6 +69,8 @@
 #include "WorldMapNpc_Thrash.h"
 #include "WorldMapNpc_Violet.h"
 #include "Loading_Book.h"
+#include "BossHP.h"
+#include "BossHPBar.h"
 
 #include "Logo_BackGround.h"
 #include "Logo_ColorObject.h"
@@ -111,6 +113,7 @@
 #include "RabbitLunch.h"
 #include "Bomb.h"
 #include "BombableBox.h"
+#include "CyberCursor.h"
 #include "TiltSwapPusher.h"
 #include "TiltSwapCrate.h"
 #include "BigPressurePlate.h"
@@ -1952,8 +1955,6 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Effects/T_FX_CMN_Mask_05_270.dds")))))
 		return E_FAIL;
 	
-	
-
 	#pragma endregion
 	
 	#pragma region Chapter 8 - Texture Load
@@ -1963,6 +1964,11 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 		/* 공통 UI Texture */
 		if (FAILED(UI_Texture_Load(_eLoadLevelID)))
 			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(eResourceLevelID, TEXT("Prototype_Component_Texture_Book_Freezing"),
+			CTexture::Create(m_pDevice, m_pContext, TEXT("..//Bin/Resources/Textures/Object/3DObject/Book_Freezing_Texture.dds"), 1))))
+			return E_FAIL;
+
 	
 	#pragma endregion
 	
@@ -2014,6 +2020,9 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_Model2D_End_Narration_ENDWord"),
 		C2DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DAnim/Chapter8/Narration/Chpater8_End/END.dds", _eLoadLevelID, true, true))))
 		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_Model2D_CyberCursor"),
+		C2DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Textures/UI/CyberJot/cyberjot_3d_cursor.dds", _eLoadLevelID, true, true))))
+		return E_FAIL;
 
 #pragma endregion
 
@@ -2023,6 +2032,11 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 
 	/* UI */
 	if (FAILED(UI_Object_Load(_eLoadLevelID)))
+		return E_FAIL;
+
+	/* For. Prototype_GameObject_Gear */
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Gear"),
+		CGear::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For. Prototype_GameObject_GameEventExecuter */
@@ -2114,6 +2128,16 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Formation"),
 		CFormation::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_BossHP"),
+		CBossHP::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_BossHPBar"),
+		CBossHPBar::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_CyberCursor"),
+		CCyberCursor::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 #pragma endregion
 
@@ -2429,7 +2453,7 @@ HRESULT CLoader::Model_Load(LEVEL_ID _eResourceLevelID, LEVEL_ID _eLoadLevelID)
 			return E_FAIL;
 		break;
 	case LEVEL_CAMERA_TOOL:
-		str3DMapProtoJsonName = L"Chapter_08_Play_Desk.json";
+		str3DMapProtoJsonName = L"Chapter_Boss.json";
 		strChapterName += L"Chapter8";
 		break;
 	default:
@@ -2605,7 +2629,15 @@ HRESULT CLoader::UI_Texture_Load(LEVEL_ID _eLevelID)
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_Component_Texture_ItemSelectedBG"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Menu/Shop/shop_ui_panel_item_selected._testtga.dds"), 1))))
 		return E_FAIL;
-
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_Component_Texture_ItemSelectedBG"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/Menu/Shop/shop_ui_panel_item_selected._testtga.dds"), 1))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_Component_Texture_BossHPBorder"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/BossHP/Butter_Health_Bar_Base.dds"), 1))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_Component_Texture_BossHPBar"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/GamePlay/BossHP/Butter_Health_Bar_%d.dds"), 2))))
+		return E_FAIL;
 
 	///// 상점 관련
 

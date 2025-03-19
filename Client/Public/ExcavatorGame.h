@@ -9,12 +9,15 @@ BEGIN(Client)
 class CExcavator_Tread;
 class CExcavator_Centre;
 class CTurret;
+class CDoor_Red;
+class CFriend_Thrash;
+class CSaw;
 class CExcavatorGame : public CBase
 {
     DECLARE_SINGLETON(CExcavatorGame)
 
 public:
-    enum EXCAVATOR_PART { EXCAVATOR_CENTRE, EXCAVATOR_TREAD_L, EXCAVATOR_TREAD_R, EXCAVATOR_SAW, EXCAVATOR_LAST };
+    enum EXCAVATOR_PART { EXCAVATOR_CENTRE, EXCAVATOR_TREAD_L, EXCAVATOR_TREAD_R, EXCAVATOR_LAST };
     // 첫 시작, 첫 전투 대기, 톱니 가동, 맞을때, 죽을때
     enum EXCAVATOR_STATE { STATE_MOVE_R, STATE_IDLE, STATE_SAW, STATE_HIT, STATE_DEAD, STATE_LAST };
     enum PROGRESS 
@@ -23,6 +26,8 @@ public:
         PROGRESS_2, // DOORCLOSE >> MONSTER 2 BATTLE >> DOOR OPEN >> SWITCH 실패 카운트 검사 >> 문다시 닫힘 (SWITCH 실패 카운트1 일때 PROGRESS3으로 전환)
         PROGRESS_3, // DOORCLOSE >> MONSTER 2 BATTLE >> DOOR OPEN >> THRASH TALK >> PORTAL ON >> TURRET ON >> STOPPABLE >> THRASH PULL ( SWITCH 1 일때 PROGRESS 4)
         PROGRESS_4, // DOORCLOSE >> MONSTER 2 BATTLE >> DOOR OPEN >> STOPPABLE >> THRASH PULL >> ATTACK REGULATOR >> EXCAVATOR STATE DEAD (DEAD일때 프로그래스 종료)
+        PROGRESS_5, 
+        PROGRESS_6, 
         PROGRESS_LAST, // DOORCLOSE >> MONSTER 2 BATTLE >> DOOR OPEN >> STOPPABLE >> THRASH PULL >> ATTACK REGULATOR >> EXCAVATOR STATE DEAD (DEAD일때 프로그래스 종료)
     };
 private:
@@ -30,7 +35,8 @@ private:
     virtual ~CExcavatorGame() = default;
 
 public:
-    HRESULT Start_Game(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
+    HRESULT Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
+    HRESULT Start_Game();
     void    Update(_float _fTimeDelta);
     
 private:
@@ -39,14 +45,23 @@ private:
     _bool   Update_Progress_2(_float _fTimeDelta);
     _bool   Update_Progress_3(_float _fTimeDelta);
     _bool   Update_Progress_4(_float _fTimeDelta);
+    _bool   Update_Progress_5(_float _fTimeDelta);
+    _bool   Update_Progress_6(_float _fTimeDelta);
 
     void    Enter_Progress();
     void    Exit_Progress();
     void    Game_End();
+
+private:
+    void    OpenDoors();
+    void    CloseDoors();
+
 private:
     ID3D11Device* m_pDevice = nullptr;
     ID3D11DeviceContext* m_pContext = nullptr;
     CGameInstance* m_pGameInstance = nullptr;
+    _wstring m_strMonsterLayerTag;
+    _int m_iProgressLevel = 0;
 
 public:
     _int Minus_HP();
@@ -59,14 +74,17 @@ private:
     _bool                   m_isGameEnd = false;
     _uint                   m_iCurProgress = (_uint)PROGRESS::PROGRESS_1;
     _uint                   m_iSwitchCount = 0;
+
+private: /* Excavator Parts */
     vector<CCharacter*>     m_ExcavatorParts{};
 
 private: /* Turret */
     CTurret* m_pTurret_Left = nullptr;
     CTurret* m_pTurret_Right = nullptr;
 
-    /* Doors */
-    vector<class CDoor_Red*> m_Doors;
+private: /* Doors */
+    vector<CDoor_Red*> m_Doors;
+
 private: /* Excavator State */
     EXCAVATOR_STATE m_ePreState = EXCAVATOR_STATE::STATE_LAST;
     EXCAVATOR_STATE m_eCurState = EXCAVATOR_STATE::STATE_LAST;
@@ -75,6 +93,12 @@ private: /* Move_R */
     _float2 m_vMoveTime = { 1.0f, 0.0f };
     _float2 m_vMoveSpeed = { 1000.f, 0.0f };
 
+private:
+    CSaw* m_pSaw = nullptr;
+    CFriend_Thrash* m_pThrash = nullptr;
+
+private:
+    _float m_fDelayTime = 0.0f;
 private:
     HRESULT Ready_ExcavatorParts();
 

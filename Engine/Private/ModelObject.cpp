@@ -148,6 +148,42 @@ HRESULT CModelObject::Render()
     return S_OK;
 }
 
+HRESULT CModelObject::Bind_ShaderResources_WVP()
+{
+    switch (m_pControllerTransform->Get_CurCoord())
+    {
+    case Engine::COORDINATE_2D:
+        _matrix matLocal = *static_cast<C2DModel*>(m_pControllerModel->Get_Model(COORDINATE_2D))->Get_CurrentSpriteTransform();
+        _matrix matRatioScalling = XMMatrixScaling((_float)RATIO_BOOK2D_X, (_float)RATIO_BOOK2D_Y, 1.f);
+        matLocal *= matRatioScalling;
+
+        _matrix matWorld = matLocal * XMLoadFloat4x4(&m_WorldMatrices[COORDINATE_2D]);
+
+        _float4x4 matWorld4x4;
+        XMStoreFloat4x4(&matWorld4x4, matWorld);
+        if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_Matrix("g_WorldMatrix", &matWorld4x4)))
+            return E_FAIL;
+        // 뷰, 투영 액세스 금지 !
+        break;
+    case Engine::COORDINATE_3D:
+        if (FAILED(m_pShaderComs[COORDINATE_3D]->Bind_Matrix("g_WorldMatrix", &m_WorldMatrices[COORDINATE_3D])))
+            return E_FAIL;
+
+        if (FAILED(m_pShaderComs[COORDINATE_3D]->Bind_Matrix("g_ViewMatrix", &m_pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_VIEW))))
+            return E_FAIL;
+
+        if (FAILED(m_pShaderComs[COORDINATE_3D]->Bind_Matrix("g_ProjMatrix", &m_pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_PROJ))))
+            return E_FAIL;
+
+        break;
+    default:
+        break;
+    }
+
+    return S_OK;
+}
+
+
 HRESULT CModelObject::Render_Shadow(_float4x4* _pViewMatrix, _float4x4* _pProjMatrix)
 {
     COORDINATE eCoord = m_pControllerTransform->Get_CurCoord();
@@ -600,42 +636,6 @@ void CModelObject::Action_HitRender(_float _fTimeDelta)
     }
 
 }
-
-HRESULT CModelObject::Bind_ShaderResources_WVP()
-{
-    switch (m_pControllerTransform->Get_CurCoord())
-    {
-    case Engine::COORDINATE_2D:
-        _matrix matLocal = *static_cast<C2DModel*>(m_pControllerModel->Get_Model(COORDINATE_2D))->Get_CurrentSpriteTransform();
-        _matrix matRatioScalling = XMMatrixScaling((_float)RATIO_BOOK2D_X, (_float)RATIO_BOOK2D_Y, 1.f);
-        matLocal *= matRatioScalling;
-
-        _matrix matWorld = matLocal*XMLoadFloat4x4( &m_WorldMatrices[COORDINATE_2D]) ;
-
-        _float4x4 matWorld4x4;
-        XMStoreFloat4x4(&matWorld4x4 ,matWorld);
-        if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_Matrix("g_WorldMatrix", &matWorld4x4)))
-            return E_FAIL;
-        // 뷰, 투영 액세스 금지 !
-        break;
-    case Engine::COORDINATE_3D:
-        if (FAILED(m_pShaderComs[COORDINATE_3D]->Bind_Matrix("g_WorldMatrix", &m_WorldMatrices[COORDINATE_3D])))
-            return E_FAIL;
-
-        if (FAILED(m_pShaderComs[COORDINATE_3D]->Bind_Matrix("g_ViewMatrix", &m_pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_VIEW))))
-            return E_FAIL;
-
-        if (FAILED(m_pShaderComs[COORDINATE_3D]->Bind_Matrix("g_ProjMatrix", &m_pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_PROJ))))
-            return E_FAIL;
-
-        break;
-    default:
-        break;
-    }
-
-    return S_OK;
-}
-
 
 
 _uint CModelObject::Get_TextureIdx(_uint _eTextureType, _uint _iMaterialIndex)

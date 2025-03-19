@@ -26,6 +26,7 @@
 /* Camera */
 #include "Camera_CutScene.h"
 #include "Camera_2D.h"
+#include "Camera_Target.h"
 
 /* Friend */
 #include "Friend_Controller.h"
@@ -34,6 +35,9 @@
 /* Npc */
 #include "Npc_Humgrump.h"
 #include "Npc_MoonBeard.h"
+
+/* Chapter6 Boss */
+#include "ExcavatorGame.h"
 
 CGameEventExecuter_C6::CGameEventExecuter_C6(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CGameEventExecuter(_pDevice, _pContext)
@@ -74,6 +78,27 @@ void CGameEventExecuter_C6::Update(_float _fTimeDelta)
 		case Client::CTrigger_Manager::CHAPTER6_INTRO:
 			Chapter6_Intro(_fTimeDelta);
 			break;
+		case Client::CTrigger_Manager::ARTIA_PIGEVENT_START:
+			Artia_PigEvent_Start(_fTimeDelta);
+			break;		
+		case Client::CTrigger_Manager::ARTIA_PIGEVENT_ENCOUNTER:
+			Artia_PigEvent_Encounter(_fTimeDelta);
+			break;		
+		case Client::CTrigger_Manager::ARTIA_PIGEVENT_ENCOUNTER_OUT:
+			Artia_PigEvent_Encounter_Out(_fTimeDelta);
+			break;		
+		case Client::CTrigger_Manager::ARTIA_PIGEVENT_END:
+			Artia_PigEvent_End(_fTimeDelta);
+			break;
+		case Client::CTrigger_Manager::ARTIA_EXIT:
+			Artia_Exit(_fTimeDelta);
+			break;
+		case Client::CTrigger_Manager::CHAPTER6_CANDLE_IN:
+			Chapter6_Candle_In(_fTimeDelta);
+			break;
+		case Client::CTrigger_Manager::CHAPTER6_CANDLE_OUT:
+			Chapter6_Candle_Out(_fTimeDelta);
+			break;
 		case Client::CTrigger_Manager::CHAPTER6_FATHERGAME_PROGRESS_START_CLEAR:
 			//Chapter6_FatherGame_Progress_Fatherpart_2(_fTimeDelta);
 			Chapter6_FatherGame_Progress_Start_Clear(_fTimeDelta);
@@ -107,6 +132,12 @@ void CGameEventExecuter_C6::Update(_float _fTimeDelta)
 			break;
 		case Client::CTrigger_Manager::CHAPTER6_START_3D:
 			Chapter6_Start_3D(_fTimeDelta);
+			break;
+		case Client::CTrigger_Manager::CHAPTER6_BOSS_START:
+			Chapter6_Boss_Start(_fTimeDelta);
+			break;
+		case Client::CTrigger_Manager::CHAPTER6_BOSS_PROGRESS1_END:
+			Chapter6_Boss_Progress1_End(_fTimeDelta);
 			break;
 		default:
 			break;
@@ -173,6 +204,523 @@ void CGameEventExecuter_C6::Chapter6_Intro(_float _fTimeDelta)
 	}
 }
 
+void CGameEventExecuter_C6::Artia_PigEvent_Start(_float _fTimeDelta)
+{
+	m_fTimer += _fTimeDelta;
+
+	enum APPEAR_VIOLET_STAGE {
+		VIOLET,
+		THRASH,
+		ERAY,
+		LAST
+	};
+	CPlayer* pPlayer = Get_Player();
+
+	if (pPlayer == nullptr)
+		return;
+	if (Step_Check(STEP_0))
+	{
+		if (Is_Start())
+		{
+			m_TargetObjects.resize(LAST);
+			auto pEray = CNPC_Manager::GetInstance()->Find_SocialNPC(L"Eray");
+			m_TargetObjects[ERAY] = pEray;
+			m_TargetObjects[THRASH] = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Thrash"));
+			m_TargetObjects[VIOLET] = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Violet"));
+			
+			for (_uint i = 0; i < LAST; i++)
+				assert(m_TargetObjects[i]);
+
+
+			CFriend_Controller::GetInstance()->End_Train();
+			pPlayer->Set_BlockPlayerInput(true);
+
+
+			CCamera_Manager::GetInstance()->Change_CameraTarget(pEray,0.5f);
+		}
+
+		Next_Step_Over(0.5f);
+	}
+	else if (Step_Check(STEP_1))
+	{
+		if (Is_Start())
+		{
+			static_cast<CNPC*>(m_TargetObjects[ERAY])->Set_2DDirection(F_DIRECTION::DOWN);
+			static_cast<CNPC*>(m_TargetObjects[ERAY])->Swicth_Animation(0);
+
+			CDialog_Manager::GetInstance()->Set_NPC(m_TargetObjects[ERAY]);
+			CDialog_Manager::GetInstance()->Set_DialogId(L"Artia_PigEvent_01");
+		}
+		else
+			if (Next_Step(!CDialog_Manager::GetInstance()->Get_DisPlayDialogue()))
+				pPlayer->Set_BlockPlayerInput(true);
+	}	
+	else if (Step_Check(STEP_2))
+	{
+		if (Is_Start())
+		{
+
+			_vector vTargetPosition = m_TargetObjects[ERAY]->Get_FinalPosition();
+			_vector vPlayerPos = vTargetPosition + XMVectorSet(0.f, -120.f, 0.0f, 0.0f);
+			_vector vThrashPos = vTargetPosition + XMVectorSet(-80.f, -150.f, 0.0f, 0.0f);
+			_vector vVioletPos = vTargetPosition + XMVectorSet(80.f, -150.f, 0.0f, 0.0f);
+
+			_vector vDir = XMVector2Normalize(vTargetPosition - pPlayer->Get_FinalPosition());
+			CPlayer::ANIM_STATE_2D eAnim = CPlayer::ANIM_STATE_2D::PLAYER_RUN_RIGHT;
+/*			if (XMVectorGetX(vDir) > 0.5f)
+				eDir = F_DIRECTION::RIGHT;
+			else if (XMVectorGetX(vDir) < -0.5f)
+				eDir = F_DIRECTION::LEFT;
+			else */
+			if (XMVectorGetY(vDir) > 0.5f)
+				eAnim = CPlayer::ANIM_STATE_2D::PLAYER_RUN_UP;
+			else if (XMVectorGetY(vDir) < -0.5f)
+				eAnim = CPlayer::ANIM_STATE_2D::PLAYER_RUN_DOWN;
+
+
+			AUTOMOVE_COMMAND AutoMove{};
+			AutoMove = {};
+			AutoMove.eType = AUTOMOVE_TYPE::MOVE_TO;
+			AutoMove.fPostDelayTime = 0.0f;
+			AutoMove.fPreDelayTime = 0.0f;
+			AutoMove.iAnimIndex = (_uint)eAnim;
+			AutoMove.vTarget = vPlayerPos;
+			AutoMove.fMoveSpeedMag = 1.8f;
+			AUTOMOVE_COMMAND AutoMove2{};
+			AutoMove2.eType = AUTOMOVE_TYPE::LOOK_DIRECTION;
+			AutoMove2.fPostDelayTime = 0.0f;
+			AutoMove2.fPreDelayTime = 0.0f;
+			AutoMove2.vTarget = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+			AutoMove2.iAnimIndex = (_uint)CPlayer::ANIM_STATE_2D::PLAYER_IDLE_UP;
+			pPlayer->Add_AutoMoveCommand(AutoMove);
+			pPlayer->Add_AutoMoveCommand(AutoMove2);
+			pPlayer->Start_AutoMove(true);
+			static_cast<CFriend*>(m_TargetObjects[THRASH])->Move_Position(_float2(XMVectorGetX(vThrashPos), XMVectorGetY(vThrashPos)), CFriend::DIR_UP);
+			static_cast<CFriend*>(m_TargetObjects[VIOLET])->Move_Position(_float2(XMVectorGetX(vVioletPos), XMVectorGetY(vVioletPos)), CFriend::DIR_UP);
+		}
+		
+		Next_Step_Over(3.f);
+	}
+	else if (Step_Check(STEP_3))
+	{
+		if (Is_Start())
+		{
+			static_cast<CNPC*>(m_TargetObjects[ERAY])->Set_2DDirection(F_DIRECTION::DOWN);
+			static_cast<CNPC*>(m_TargetObjects[ERAY])->Swicth_Animation(6);
+
+			CDialog_Manager::GetInstance()->Set_NPC(m_TargetObjects[ERAY]);
+			CDialog_Manager::GetInstance()->Set_NPC(m_TargetObjects[VIOLET]);
+			CDialog_Manager::GetInstance()->Set_NPC(m_TargetObjects[THRASH]);
+			CDialog_Manager::GetInstance()->Set_DialogId(L"Artia_PigEvent_02");
+		}
+		else
+			if (Next_Step(!CDialog_Manager::GetInstance()->Get_DisPlayDialogue()))
+				pPlayer->Set_BlockPlayerInput(true);
+	}
+	else if (Step_Check(STEP_4))
+	{
+		// 게임 실제 진행 ?
+		if (Is_Start())
+		{
+			CTriggerObject::TRIGGEROBJECT_DESC Desc = {};
+			Desc.vHalfExtents = { 20.f, 120.f, 0.5f };
+			Desc.iTriggerType = (_uint)TRIGGER_TYPE::EVENT_TRIGGER;
+			Desc.szEventTag = TEXT("Artia_PigEvent_Encounter");
+			Desc.eConditionType = CTriggerObject::TRIGGER_ENTER;
+			Desc.isReusable = false;
+			Desc.eStartCoord = COORDINATE_2D;
+			Desc.Build_2D_Transform({ 1007.0f, 409.0f }, { 1.f,1.f });
+
+			CSection* pBookSection = CSection_Manager::GetInstance()->Find_Section(TEXT("Chapter5_P0102"));
+			CTrigger_Manager::GetInstance()->Create_TriggerObject(LEVEL_STATIC, LEVEL_CHAPTER_6, &Desc, pBookSection);
+
+			// 돼지 트리거 생성?
+		}
+		Next_Step(true);
+	}
+	else
+	{
+		CCamera_Manager::GetInstance()->Change_CameraTarget(pPlayer, 0.5f);
+		static_cast<CNPC*>(m_TargetObjects[ERAY])->Set_2DDirection(F_DIRECTION::DOWN);
+		static_cast<CNPC*>(m_TargetObjects[ERAY])->Swicth_Animation(5);
+		CFriend_Controller::GetInstance()->Start_Train();
+		pPlayer->Set_BlockPlayerInput(false);
+
+		GameEvent_End();
+	}
+
+}
+
+void CGameEventExecuter_C6::Artia_PigEvent_Encounter(_float _fTimeDelta)
+{
+	m_fTimer += _fTimeDelta;
+
+	enum APPEAR_VIOLET_STAGE {
+		PIG,
+		VIOLET,
+		THRASH,
+		LAST
+	};
+	CPlayer* pPlayer = Get_Player();
+
+	if (pPlayer == nullptr)
+		return;
+	if (Step_Check(STEP_0))
+	{
+		if (Is_Start())
+		{
+			m_TargetObjects.resize(LAST);
+			
+			auto pPig = m_pGameInstance->Get_GameObject_Ptr(m_iCurLevelID, L"Layer_Slippery", 0);
+			m_TargetObjects[PIG] = pPig;
+			m_TargetObjects[THRASH] = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Thrash"));
+			m_TargetObjects[VIOLET] = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Violet"));
+
+			for (_uint i = 0; i < LAST; i++)
+				assert(m_TargetObjects[i]);
+
+
+			CFriend_Controller::GetInstance()->End_Train();
+			pPlayer->Set_BlockPlayerInput(true);
+
+			CCamera_Manager::GetInstance()->Change_CameraTarget(pPig, 0.5f);
+		}
+
+		Next_Step_Over(0.5f);
+	}
+	else if (Step_Check(STEP_1))
+	{
+		if (Is_Start())
+		{
+
+			_vector vTargetPosition = m_TargetObjects[PIG]->Get_FinalPosition();
+			_vector vPlayerPos = vTargetPosition + XMVectorSet(0.f, -70.f, 0.0f, 0.0f);
+			_vector vThrashPos = vTargetPosition + XMVectorSet(-80.f, -120.f, 0.0f, 0.0f);
+			_vector vVioletPos = vTargetPosition + XMVectorSet(80.f, -120.f, 0.0f, 0.0f);
+
+			_vector vDir = XMVector2Normalize(vTargetPosition - pPlayer->Get_FinalPosition());
+			CPlayer::ANIM_STATE_2D eAnim = CPlayer::ANIM_STATE_2D::PLAYER_RUN_RIGHT;
+
+			if (XMVectorGetY(vDir) > 0.5f)
+				eAnim = CPlayer::ANIM_STATE_2D::PLAYER_RUN_UP;
+			else if (XMVectorGetY(vDir) < -0.5f)
+				eAnim = CPlayer::ANIM_STATE_2D::PLAYER_RUN_DOWN;
+
+
+			AUTOMOVE_COMMAND AutoMove{};
+			AutoMove = {};
+			AutoMove.eType = AUTOMOVE_TYPE::MOVE_TO;
+			AutoMove.fPostDelayTime = 0.0f;
+			AutoMove.fPreDelayTime = 0.0f;
+			AutoMove.iAnimIndex = (_uint)eAnim;
+			AutoMove.vTarget = vPlayerPos;
+			AutoMove.fMoveSpeedMag = 1.8f;
+			AUTOMOVE_COMMAND AutoMove2{};
+			AutoMove2.eType = AUTOMOVE_TYPE::LOOK_DIRECTION;
+			AutoMove2.fPostDelayTime = 0.0f;
+			AutoMove2.fPreDelayTime = 0.0f;
+			AutoMove2.vTarget = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+			AutoMove2.iAnimIndex = (_uint)CPlayer::ANIM_STATE_2D::PLAYER_IDLE_UP;
+			pPlayer->Add_AutoMoveCommand(AutoMove);
+			pPlayer->Add_AutoMoveCommand(AutoMove2);
+			pPlayer->Start_AutoMove(true);
+			static_cast<CFriend*>(m_TargetObjects[THRASH])->Move_Position(_float2(XMVectorGetX(vThrashPos), XMVectorGetY(vThrashPos)), CFriend::DIR_UP);
+			static_cast<CFriend*>(m_TargetObjects[VIOLET])->Move_Position(_float2(XMVectorGetX(vVioletPos), XMVectorGetY(vVioletPos)), CFriend::DIR_UP);
+		}
+
+		Next_Step_Over(2.f);
+	}
+	else if (Step_Check(STEP_2))
+	{
+		if (Is_Start())
+		{
+			CDialog_Manager::GetInstance()->Set_NPC(m_TargetObjects[VIOLET]);
+			CDialog_Manager::GetInstance()->Set_NPC(m_TargetObjects[THRASH]);
+			CDialog_Manager::GetInstance()->Set_DialogId(L"Artia_PigEvent_03");
+		}
+		else
+			if (Next_Step(!CDialog_Manager::GetInstance()->Get_DisPlayDialogue()))
+				pPlayer->Set_BlockPlayerInput(true);
+	}
+	else
+	{
+		CCamera_Manager::GetInstance()->Change_CameraTarget(pPlayer, 0.5f);
+
+		CFriend_Controller::GetInstance()->Start_Train();
+		pPlayer->Set_BlockPlayerInput(false);
+
+		GameEvent_End();
+	}
+}
+
+void CGameEventExecuter_C6::Artia_PigEvent_Encounter_Out(_float _fTimeDelta)
+{
+	m_fTimer += _fTimeDelta;
+
+	enum APPEAR_VIOLET_STAGE {
+		VIOLET,
+		THRASH,
+		LAST
+	};
+	CPlayer* pPlayer = Get_Player();
+
+	if (pPlayer == nullptr)
+		return;
+	if (Step_Check(STEP_0))
+	{
+		if (Is_Start())
+		{
+			m_TargetObjects.resize(LAST);
+
+			m_TargetObjects[THRASH] = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Thrash"));
+			m_TargetObjects[VIOLET] = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Violet"));
+
+			for (_uint i = 0; i < LAST; i++)
+				assert(m_TargetObjects[i]);
+
+
+			CFriend_Controller::GetInstance()->End_Train();
+			pPlayer->Set_BlockPlayerInput(true);
+		
+		}
+		Next_Step_Over(0.5f);
+	}
+	else if (Step_Check(STEP_1))
+	{
+		if (Is_Start())
+		{
+			CDialog_Manager::GetInstance()->Set_NPC(m_TargetObjects[VIOLET]);
+			CDialog_Manager::GetInstance()->Set_NPC(m_TargetObjects[THRASH]);
+			CDialog_Manager::GetInstance()->Set_DialogId(L"Artia_PigEvent_04");
+		}
+		else
+			if (Next_Step(!CDialog_Manager::GetInstance()->Get_DisPlayDialogue()))
+				pPlayer->Set_BlockPlayerInput(true);
+	}
+	else 
+	{ 
+		CTriggerObject::TRIGGEROBJECT_DESC Desc = {};
+		Desc.vHalfExtents = { 150.f, 100.f, 0.5f };
+		Desc.iTriggerType = (_uint)TRIGGER_TYPE::EVENT_TRIGGER;
+		Desc.szEventTag = TEXT("Artia_PigEvent_End");
+		Desc.eConditionType = CTriggerObject::TRIGGER_ENTER;
+		Desc.isReusable = false;
+		Desc.eStartCoord = COORDINATE_2D;
+		Desc.Build_2D_Transform({ -1171.0f, -220.0f }, { 1.f,1.f });
+
+		CSection* pBookSection = CSection_Manager::GetInstance()->Find_Section(TEXT("Chapter5_P0102"));
+		CTrigger_Manager::GetInstance()->Create_TriggerObject(LEVEL_STATIC, LEVEL_CHAPTER_6, &Desc, pBookSection);
+
+
+		CFriend_Controller::GetInstance()->Start_Train();
+		pPlayer->Set_BlockPlayerInput(false);
+		GameEvent_End();
+	}
+}
+
+void CGameEventExecuter_C6::Artia_PigEvent_End(_float _fTimeDelta)
+{
+	m_fTimer += _fTimeDelta;
+
+	enum APPEAR_VIOLET_STAGE {
+		VIOLET,
+		THRASH,
+		ERAY,
+		LAST
+	};
+	CPlayer* pPlayer = Get_Player();
+
+	if (pPlayer == nullptr)
+		return;
+	if (Step_Check(STEP_0))
+	{
+		if (Is_Start())
+		{
+			m_TargetObjects.resize(LAST);
+			auto pEray = CNPC_Manager::GetInstance()->Find_SocialNPC(L"Eray");
+			m_TargetObjects[ERAY] = pEray;
+			m_TargetObjects[THRASH] = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Thrash"));
+			m_TargetObjects[VIOLET] = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Violet"));
+
+			for (_uint i = 0; i < LAST; i++)
+				assert(m_TargetObjects[i]);
+
+
+			CFriend_Controller::GetInstance()->End_Train();
+			pPlayer->Set_BlockPlayerInput(true);
+
+
+			CCamera_Manager::GetInstance()->Change_CameraTarget(pEray, 0.5f);
+		}
+
+		Next_Step(true);
+	}
+	else if (Step_Check(STEP_1))
+	{
+		if (Is_Start())
+		{
+
+			_vector vTargetPosition = m_TargetObjects[ERAY]->Get_FinalPosition();
+			_vector vPlayerPos = vTargetPosition + XMVectorSet(0.f, -120.f, 0.0f, 0.0f);
+			_vector vThrashPos = vTargetPosition + XMVectorSet(-80.f, -150.f, 0.0f, 0.0f);
+			_vector vVioletPos = vTargetPosition + XMVectorSet(80.f, -150.f, 0.0f, 0.0f);
+
+			_vector vDir = XMVector2Normalize(vTargetPosition - pPlayer->Get_FinalPosition());
+			CPlayer::ANIM_STATE_2D eAnim = CPlayer::ANIM_STATE_2D::PLAYER_RUN_RIGHT;
+			if (XMVectorGetY(vDir) > 0.5f)
+				eAnim = CPlayer::ANIM_STATE_2D::PLAYER_RUN_UP;
+			else if (XMVectorGetY(vDir) < -0.5f)
+				eAnim = CPlayer::ANIM_STATE_2D::PLAYER_RUN_DOWN;
+
+
+			AUTOMOVE_COMMAND AutoMove{};
+			AutoMove = {};
+			AutoMove.eType = AUTOMOVE_TYPE::MOVE_TO;
+			AutoMove.fPostDelayTime = 0.0f;
+			AutoMove.fPreDelayTime = 0.0f;
+			AutoMove.iAnimIndex = (_uint)eAnim;
+			AutoMove.vTarget = vPlayerPos;
+			AutoMove.fMoveSpeedMag = 1.8f;
+			AUTOMOVE_COMMAND AutoMove2{};
+			AutoMove2.eType = AUTOMOVE_TYPE::LOOK_DIRECTION;
+			AutoMove2.fPostDelayTime = 0.0f;
+			AutoMove2.fPreDelayTime = 0.0f;
+			AutoMove2.vTarget = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+			AutoMove2.iAnimIndex = (_uint)CPlayer::ANIM_STATE_2D::PLAYER_IDLE_UP;
+			pPlayer->Add_AutoMoveCommand(AutoMove);
+			pPlayer->Add_AutoMoveCommand(AutoMove2);
+			pPlayer->Start_AutoMove(true);
+			static_cast<CFriend*>(m_TargetObjects[THRASH])->Move_Position(_float2(XMVectorGetX(vThrashPos), XMVectorGetY(vThrashPos)), CFriend::DIR_UP);
+			static_cast<CFriend*>(m_TargetObjects[VIOLET])->Move_Position(_float2(XMVectorGetX(vVioletPos), XMVectorGetY(vVioletPos)), CFriend::DIR_UP);
+		}
+
+		Next_Step_Over(2.f);
+	}
+	else if (Step_Check(STEP_2))
+	{
+		if (Is_Start())
+		{
+			static_cast<CNPC*>(m_TargetObjects[ERAY])->Set_2DDirection(F_DIRECTION::DOWN);
+			static_cast<CNPC*>(m_TargetObjects[ERAY])->Swicth_Animation(6);
+
+			CDialog_Manager::GetInstance()->Set_NPC(m_TargetObjects[ERAY]);
+			CDialog_Manager::GetInstance()->Set_NPC(m_TargetObjects[VIOLET]);
+			CDialog_Manager::GetInstance()->Set_NPC(m_TargetObjects[THRASH]);
+			CDialog_Manager::GetInstance()->Set_DialogId(L"Artia_PigEvent_05");
+		}
+		else
+			if (Next_Step(!CDialog_Manager::GetInstance()->Get_DisPlayDialogue()))
+				pPlayer->Set_BlockPlayerInput(true);
+	}
+	else if (Step_Check(STEP_3))
+	{
+		if (Is_Start())
+		{
+			CNPC_Manager::GetInstance()->ChangeDialogue(L"Eray", L"Eray_Dialogue_02");
+			// 실질 END 처리
+			//{
+			//	"Collider_Info": {
+			//		"Position": [
+			//			-16.0,
+			//			717.0
+			//		] ,
+			//			"Scale" : [
+			//				114.0,
+			//				18.0
+			//			]
+			//	},
+			//		"Fillter_MyGroup": 2,
+			//		"Fillter_OtherGroupMask" : 128,
+			//		"Trigger_ConditionType" : 0,
+			//		"Trigger_Coordinate" : 0,
+			//		"Trigger_EventTag" : "BookSectionChange_Next",
+			//		"Trigger_Type" : 6,
+			//		"MapTrigger_Info" : {
+			//		"Next_Position": [
+			//			-1181.0,
+			//			-301.0
+			//		]
+			//	}
+			//},
+
+
+			CTriggerObject::TRIGGEROBJECT_DESC Desc = {};
+			Desc.vHalfExtents = { 0.5f, 0.5f, 0.5f };
+			Desc.iTriggerType = (_uint)TRIGGER_TYPE::EVENT_TRIGGER;
+			Desc.szEventTag = TEXT("Artia_Exit");
+			Desc.eConditionType = CTriggerObject::TRIGGER_ENTER;
+			Desc.isReusable = false;
+			Desc.eStartCoord = COORDINATE_2D;
+			Desc.Build_2D_Transform({ -16.0f, 697.0f }, { 114.0f,18.0f });
+
+			CSection* pBookSection = CSection_Manager::GetInstance()->Find_Section(TEXT("Chapter5_P0102"));
+			CTrigger_Manager::GetInstance()->Create_TriggerObject(LEVEL_STATIC, LEVEL_CHAPTER_6, &Desc, pBookSection);
+
+
+
+		}
+		Next_Step(true);
+	}
+	else
+	{
+		CCamera_Manager::GetInstance()->Change_CameraTarget(pPlayer, 0.5f);
+
+		CFriend_Controller::GetInstance()->Start_Train();
+		pPlayer->Set_BlockPlayerInput(false);
+
+		GameEvent_End();
+	}
+}
+
+void CGameEventExecuter_C6::Artia_Exit(_float _fTimeDelta)
+{
+
+	if (Is_Start())
+	{
+	
+		_float3 fNextPos = {-1181.0f,-301.f,0.f };
+		Event_Book_Main_Section_Change_Start(1, &fNextPos);
+	}
+}
+
+void CGameEventExecuter_C6::Chapter6_Candle_In(_float _fTimeDelta)
+{
+	m_fTimer += _fTimeDelta;
+
+	if (Step_Check(STEP_0)) {
+		// Layer 0번 감옥 Candle
+		// 74.f, 1.5f, -2.f
+
+		//_vector vCandlePos = { 74.f, 1.5f, -2.f };
+		//XMStoreFloat4x4(&m_TargetWorldMatrix, XMMatrixTranslationFromVector(XMVectorSetW(vCandlePos, 1.0f)));
+
+		CGameObject* pCandle = m_pGameInstance->Get_GameObject_Ptr(m_iCurLevelID, TEXT("Layer_Candle"), 0);
+
+		if (nullptr == pCandle) {
+			GameEvent_End();
+			return;
+		}
+
+		CCamera_Manager::GetInstance()->Change_CameraTarget(pCandle, 0.f);
+		CCamera_Manager::GetInstance()->Start_Turn_ArmVector(CCamera_Manager::TARGET, 0.f, XMVectorSet(0.f, 0.2594f, -0.9658f, 0.f), EASE_IN_OUT);
+	
+		GameEvent_End();
+	}
+}
+
+void CGameEventExecuter_C6::Chapter6_Candle_Out(_float _fTimeDelta)
+{
+	m_fTimer += _fTimeDelta;
+
+	if (Step_Check(STEP_0)) {
+		// Player로 다시 Target Change
+		CCamera_Manager::GetInstance()->Change_CameraTarget(Get_Player(), 2.0f);
+		CCamera_Manager::GetInstance()->Set_NextArmData(TEXT("Chapter8_3"), 0.f);
+		CCamera_Manager::GetInstance()->Change_CameraMode(CCamera_Target::MOVE_TO_NEXTARM);
+
+		GameEvent_End();
+	}
+}
 
 void CGameEventExecuter_C6::Chapter6_FatherGame_Progress_Start_Clear(_float _fTimeDelta)
 {
@@ -1263,6 +1811,93 @@ void CGameEventExecuter_C6::Chapter6_Start_3D(_float _fTimeDelta)
 	}
 }
 
+void CGameEventExecuter_C6::Chapter6_Boss_Start(_float _fTimeDelta)
+{
+	m_fTimer += _fTimeDelta;
+	CCamera_Manager::CAMERA_TYPE eCamType = CCamera_Manager::TARGET_2D;
+	CPlayer* pPlayer = Get_Player();
+	CFriend* pThrash = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Thrash"));
+	if (nullptr == pPlayer)
+	{
+		GameEvent_End();
+		return;
+	}
+
+	if (Step_Check(STEP_0))
+	{
+		/* 1. Save Reset ArmData */
+		if (Is_Start())
+		{
+			// Boss 전 시작.
+			CExcavatorGame::GetInstance()->Initialize(m_pDevice, m_pContext);
+
+			/* 기차놀이 해제 */
+			CFriend_Controller::GetInstance()->End_Train();
+
+			/* 플레이어 인풋락  */
+			pPlayer->Set_BlockPlayerInput(true);
+			pPlayer->Set_2DDirection(F_DIRECTION::UP);
+			_vector vPlayerPos = pPlayer->Get_FinalPosition() + XMVectorSet(50.0f, 250.f, 0.0f, 0.0f);
+			_vector vThrashPos = pPlayer->Get_FinalPosition() + XMVectorSet(-50.0f, 250.f, 0.0f, 0.0f);
+
+			AUTOMOVE_COMMAND AutoMove{};
+			AutoMove.eType = AUTOMOVE_TYPE::MOVE_TO;
+			AutoMove.fPostDelayTime = 0.0f;
+			AutoMove.fPreDelayTime = 0.0f;
+			AutoMove.iAnimIndex = (_uint)CPlayer::ANIM_STATE_2D::PLAYER_RUN_UP;
+			AutoMove.vTarget = vPlayerPos;
+			AutoMove.fMoveSpeedMag = 2.0f;
+
+			AUTOMOVE_COMMAND AutoMove2{};
+			AutoMove2.eType = AUTOMOVE_TYPE::LOOK_DIRECTION;
+			AutoMove2.fPostDelayTime = 0.0f;
+			AutoMove2.fPreDelayTime = 0.0f;
+			AutoMove2.vTarget = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+			AutoMove2.iAnimIndex = (_uint)CPlayer::ANIM_STATE_2D::PLAYER_IDLE_UP;
+
+			pPlayer->Add_AutoMoveCommand(AutoMove);
+			pPlayer->Add_AutoMoveCommand(AutoMove2);
+			pPlayer->Start_AutoMove(true);
+
+			pThrash->Move_Position(_float2(XMVectorGetX(vThrashPos), XMVectorGetY(vThrashPos)), CFriend::DIR_UP);
+
+			m_iDialogueIndex = 0;
+		}
+		Next_Step_Over(1.0f);
+	}
+	else if (Step_Check(STEP_1)) // 1. 다이얼로그 시작.
+	{
+		if (Is_Start())
+		{
+			// Friend 대화 시작.
+			_wstring strDialogueTag = TEXT("Chapter6_Boss_Start");
+			CDialog_Manager::GetInstance()->Set_DialogId(strDialogueTag.c_str());
+
+			CFriend* pThrash = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Thrash"));
+			CDialog_Manager::GetInstance()->Set_NPC(pThrash);
+		}
+
+		/* 6. 다이얼로그 종료 체크 */
+		if (false == CDialog_Manager::GetInstance()->Get_DisPlayDialogue())
+		{
+			Next_Step(true);
+		}
+
+	}
+	else
+	{
+		CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(TEXT("Thrash"));
+		pPlayer->Set_BlockPlayerInput(false);
+		CExcavatorGame::GetInstance()->Start_Game();
+		GameEvent_End();
+	}
+}
+
+void CGameEventExecuter_C6::Chapter6_Boss_Progress1_End(_float _fTimeDelta)
+{
+
+}
+
 void CGameEventExecuter_C6::Chapter6_FriendEvent_0(_float _fTimeDelta)
 {
 	m_fTimer += _fTimeDelta;
@@ -1330,6 +1965,20 @@ void CGameEventExecuter_C6::Chapter6_FriendEvent_0(_float _fTimeDelta)
 		/* 6. 다이얼로그 종료 체크 */
 		if (false == CDialog_Manager::GetInstance()->Get_DisPlayDialogue())
 		{
+			//{ 451.0f, 272.7f };
+			CTriggerObject::TRIGGEROBJECT_DESC Desc = {};
+			Desc.vHalfExtents = { 150.f, 100.f, 0.5f };
+			Desc.iTriggerType = (_uint)TRIGGER_TYPE::EVENT_TRIGGER;
+			Desc.szEventTag = TEXT("Artia_PigEvent_Start");
+			Desc.eConditionType = CTriggerObject::TRIGGER_ENTER;
+			Desc.isReusable = false;
+			Desc.eStartCoord = COORDINATE_2D;
+			Desc.Build_2D_Transform({ -1171.0f, -220.0f }, { 1.f,1.f });
+
+			CSection* pBookSection = CSection_Manager::GetInstance()->Find_Section(TEXT("Chapter5_P0102"));
+			CTrigger_Manager::GetInstance()->Create_TriggerObject(LEVEL_STATIC, LEVEL_CHAPTER_6, &Desc, pBookSection);
+
+
 			Next_Step(true);
 		}
 

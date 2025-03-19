@@ -55,7 +55,7 @@ HRESULT CPortal_Cannon::Initialize(void* _pArg)
 	Safe_AddRef(m_pDetectCollider);
 
     m_fInteractChargeTime =0.6f;
-    m_eInteractType = INTERACT_TYPE::CHARGE;
+    m_eInteractType = INTERACT_TYPE::CHARGE_UP;
     m_eInteractID = INTERACT_ID::PORTAL;
     m_pBody->Register_OnAnimEndCallBack(bind(&CPortal_Cannon::On_AnimEnd, this, placeholders::_1, placeholders::_2));
 
@@ -174,7 +174,8 @@ void CPortal_Cannon::Shoot_Ground(CPlayer* _pUser, E_DIRECTION _e2DLookDir )
         _pUser->LookDirectionXZ_Dynamic(m_vShootDirection);
         _float fYRadian = XMConvertToRadians(70.f);
         _vector vTargetPos = v3DPos + m_vShootDirection * m_fShootDistance;
-        while (false == _pUser->Get_ActorDynamic()->Start_ParabolicTo(vTargetPos, fYRadian))
+        while (false == _pUser->Get_ActorDynamic()->Start_ParabolicTo(vTargetPos, fYRadian)
+            && fYRadian <= XMConvertToRadians(90.f))
             fYRadian += XMConvertToRadians(1.f);
     }
     m_pBody->Switch_Animation(ANIM_LAUNCH);
@@ -182,14 +183,24 @@ void CPortal_Cannon::Shoot_Ground(CPlayer* _pUser, E_DIRECTION _e2DLookDir )
 
 void CPortal_Cannon::Shoot_Target(CPlayer* _pUser, CPortal_Cannon* _vTarget)
 {
-    _vector vTargetPos = _vTarget->Get_FinalPosition();
-	_vector vDir = XMVector3Normalize(vTargetPos - Get_FinalPosition()) ;
-	vDir = XMVectorSetY(vDir, 0.f);
-	vDir = XMVectorSetW(vDir, 0.f);
-	_pUser->LookDirectionXZ_Dynamic(vDir);
-    _float fYRadian = XMConvertToRadians(70.f);
-    while (false == _pUser->Get_ActorDynamic()->Start_ParabolicTo(vTargetPos, fYRadian))
-        fYRadian += XMConvertToRadians(1.f);
+    if (this == _vTarget)
+    {
+        _pUser->Add_Impuls(_vector{ 0.f,1.f,0.f } *20.f);
+        _vector vLook = EDir_To_Vector(E_DIRECTION::DOWN);
+        swap(vLook.m128_f32[1], vLook.m128_f32[2]);
+        _pUser->LookDirectionXZ_Dynamic(vLook);
+    }
+    else
+    {
+        _vector vTargetPos = _vTarget->Get_FinalPosition();
+        _vector vDir = XMVector3Normalize(vTargetPos - Get_FinalPosition());
+        vDir = XMVectorSetY(vDir, 0.f);
+        vDir = XMVectorSetW(vDir, 0.f);
+	    _pUser->LookDirectionXZ_Dynamic(vDir);
+        _float fYRadian = XMConvertToRadians(70.f);
+        while (false == _pUser->Get_ActorDynamic()->Start_ParabolicTo(vTargetPos, fYRadian))
+            fYRadian += XMConvertToRadians(1.f);
+    }
 
     m_pBody->Switch_Animation(ANIM_LAUNCH);
 }
@@ -296,6 +307,10 @@ void CPortal_Cannon::On_InteractionStart(CPlayer* _pPlayer)
 void CPortal_Cannon::On_Pressing(CPlayer* _pPlayer, _float _fTimeDelta)
 {
 
+}
+
+void CPortal_Cannon::On_ChargeComplete(CPlayer* _pPlayer)
+{
 }
 
 void CPortal_Cannon::On_InteractionEnd(CPlayer* _pPlayer)

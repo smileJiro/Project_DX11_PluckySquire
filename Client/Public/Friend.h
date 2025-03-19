@@ -15,7 +15,7 @@ class CFriend abstract : public CCharacter
 {
 public:
 	enum FRIEND_MODE { MODE_DEFAULT, MODE_FIGHT, MODE_BOSS };
-	enum FRIEND_STATE { FRIEND_IDLE, FRIEND_MOVE, FRIEND_CHASE, FRIEND_ATTACK, FRIEND_TALK, FRIEND_MOJAM, FRIEND_HIT, FRIEND_ANY, FRIEND_LAST };
+	enum FRIEND_STATE { FRIEND_IDLE, FRIEND_MOVE, FRIEND_CHASE, FRIEND_ATTACK, FRIEND_TALK, FRIEND_MOJAM, FRIEND_HIT, FRIEND_PULL, FRIEND_BACKROLL, FRIEND_ANY, FRIEND_LAST };
 	enum COLLIDER_USE { COL_BODY, COL_ATTACK, COL_INTERACT, COL_LAST };
 	enum DIRECTION 
 	{
@@ -85,6 +85,8 @@ public:
 		m_ePreState = FRIEND_LAST;
 		State_Change();
 	}
+
+	void					Set_CurState(FRIEND_STATE _eState) { m_eCurState = _eState; State_Change(); }
 protected:
 	FRIEND_MODE				m_eCurMode = FRIEND_MODE::MODE_DEFAULT;
 	FRIEND_STATE			m_eCurState = FRIEND_STATE::FRIEND_LAST;
@@ -136,6 +138,10 @@ protected: /* State_Talk */
 	_int					m_iNumDialogueIndices = 0;
 
 protected:
+	_float2					m_vPullTime = { 1.5f, 0.0f };
+	_bool					m_isBackRollLoop = false;
+	_float2					m_vBackRollTime = { 0.75f, 0.0f };
+protected:
 	virtual void			State_Change();
 	virtual void			State_Change_Idle();
 	virtual void			State_Change_Move();
@@ -144,6 +150,8 @@ protected:
 	virtual void			State_Change_Talk();
 	virtual void			State_Change_Mojam();
 	virtual void			State_Change_Hit();
+	virtual void			State_Change_Pull();
+	virtual void			State_Change_BackRoll();
 	virtual void			State_Change_Any();
 
 protected:
@@ -155,12 +163,20 @@ protected:
 	virtual void			Action_State_Talk(_float _fTimeDelta);
 	virtual void			Action_State_Mojam(_float _fTimeDelta);
 	virtual void			Action_State_Hit(_float _fTimeDelta);
+	virtual void			Action_State_Pull(_float _fTimeDelta);
+	virtual void			Action_State_BackRoll(_float _fTimeDelta);
 	virtual void			Action_State_Any(_float _fTimeDelta);
+
+protected:
+	virtual void			Action_State_Boss(_float _fTimeDelta) {};
+	virtual void			State_Change_Boss() {};
+
 
 protected:
 	virtual void			Finished_DialogueAction() = 0;
 	virtual void			On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx) = 0;
 	virtual void			Switch_AnimIndex_State() = 0;
+	virtual void			Move_Arrival();
 private:
 	HRESULT					Ready_Components(); // 콜라이더, 중력 컴포넌트 필요
 	HRESULT					Ready_PartObjects(FRIEND_DESC* _pDesc); // Body 필요.
