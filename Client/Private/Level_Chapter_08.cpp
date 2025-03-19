@@ -427,10 +427,14 @@ void CLevel_Chapter_08::Update(_float _fTimeDelta)
 			Boss_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 			Boss_Desc.tTransform3DDesc.vInitialPosition = _float3(0.53f, 60.35f, -8.0f);
 
-			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_ButterGrump"), m_eLevelID, TEXT("Layer_Monster"), &pBoss, &Boss_Desc)))
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_ButterGrump"), m_eLevelID, TEXT("Layer_Boss"), &pBoss, &Boss_Desc)))
 				return;
 
-	
+			
+			
+
+
+
 			CCameraPivot*  pPivot = static_cast<CCameraPivot*>(m_pGameInstance->Get_GameObject_Ptr(m_eLevelID, TEXT("Layer_CameraPivot"), 0));
 			pPivot->Set_MainTarget(pBoss);
 			pPivot->Set_Active(true);
@@ -472,6 +476,15 @@ void CLevel_Chapter_08::Update(_float _fTimeDelta)
 			SECTION_MGR->Remove_Section(L"Chapter8_SKSP_09");
 			SECTION_MGR->Remove_Section(L"Chapter8_SKSP_10");
 				//});
+
+			// 보스 체력바 관련
+			CUI::UIOBJDESC pDesc = {};
+			pDesc.iCurLevelID = m_eLevelID;
+
+			Uimgr->Set_BossForUI(static_cast<CButterGrump*>(pBoss));
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_BossHP"), pDesc.iCurLevelID, TEXT("Layer_UI"), &pDesc)))
+				return;
+
 		}
 	}
 
@@ -1173,6 +1186,13 @@ HRESULT CLevel_Chapter_08::Ready_Layer_UI(const _wstring& _strLayerTag)
 
 	Uimgr->Set_Narration(static_cast<CNarration*>(pGameObject));
 
+
+
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_BossHP"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
+	//	return E_FAIL;
+
+
+	
 	return S_OK;
 }
 
@@ -1426,14 +1446,27 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Monster_Projectile(const _wstring& _strLa
 	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Bomb"), Pooling_Desc, BombDesc);
 
 
-	_float3 vPos = { 50.5f, 30.3f, 10.f };
-	CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &vPos);
-	vPos = { 50.5f, 30.3f, 8.5f };
-	CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &vPos);
-	vPos = { 50.5f, 32.f, 10.f };
-	CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &vPos);
-	vPos = { 50.5f, 32.f, 8.5f };
-	CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &vPos);
+	CGameObject* pObject = nullptr;
+
+	_float3 vPos = { 50.5f, 30.3f, 9.f };
+	CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &pObject, &vPos);
+	//static_cast<CBomb*>(pObject)->Set_Time_Off();
+	static_cast<CBomb*>(pObject)->Set_LifeTime(5.f);
+
+	vPos = { 50.5f, 30.3f, 8.f };
+	CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &pObject, &vPos);
+	//static_cast<CBomb*>(pObject)->Set_Time_Off();
+	static_cast<CBomb*>(pObject)->Set_LifeTime(5.f);
+
+	vPos = { 49.5f, 30.3f, 9.f };
+	CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &pObject, &vPos);
+	//static_cast<CBomb*>(pObject)->Set_Time_Off();
+	static_cast<CBomb*>(pObject)->Set_LifeTime(5.f);
+
+	vPos = { 49.5f, 30.3f, 8.f };
+	CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &pObject, &vPos);
+	//static_cast<CBomb*>(pObject)->Set_Time_Off();
+	static_cast<CBomb*>(pObject)->Set_LifeTime(5.f);
 
 	return S_OK;
 }

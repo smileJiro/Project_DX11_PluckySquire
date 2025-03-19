@@ -35,6 +35,9 @@
 #include "Npc_Humgrump.h"
 #include "Npc_MoonBeard.h"
 
+/* Chapter6 Boss */
+#include "ExcavatorGame.h"
+
 CGameEventExecuter_C6::CGameEventExecuter_C6(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CGameEventExecuter(_pDevice, _pContext)
 {
@@ -122,6 +125,12 @@ void CGameEventExecuter_C6::Update(_float _fTimeDelta)
 			break;
 		case Client::CTrigger_Manager::CHAPTER6_START_3D:
 			Chapter6_Start_3D(_fTimeDelta);
+			break;
+		case Client::CTrigger_Manager::CHAPTER6_BOSS_START:
+			Chapter6_Boss_Start(_fTimeDelta);
+			break;
+		case Client::CTrigger_Manager::CHAPTER6_BOSS_PROGRESS1_END:
+			Chapter6_Boss_Progress1_End(_fTimeDelta);
 			break;
 		default:
 			break;
@@ -1707,6 +1716,93 @@ void CGameEventExecuter_C6::Chapter6_Start_3D(_float _fTimeDelta)
 		pPlayer->Set_BlockPlayerInput(false);
 		GameEvent_End();
 	}
+}
+
+void CGameEventExecuter_C6::Chapter6_Boss_Start(_float _fTimeDelta)
+{
+	m_fTimer += _fTimeDelta;
+	CCamera_Manager::CAMERA_TYPE eCamType = CCamera_Manager::TARGET_2D;
+	CPlayer* pPlayer = Get_Player();
+	CFriend* pThrash = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Thrash"));
+	if (nullptr == pPlayer)
+	{
+		GameEvent_End();
+		return;
+	}
+
+	if (Step_Check(STEP_0))
+	{
+		/* 1. Save Reset ArmData */
+		if (Is_Start())
+		{
+			// Boss 전 시작.
+			CExcavatorGame::GetInstance()->Initialize(m_pDevice, m_pContext);
+
+			/* 기차놀이 해제 */
+			CFriend_Controller::GetInstance()->End_Train();
+
+			/* 플레이어 인풋락  */
+			pPlayer->Set_BlockPlayerInput(true);
+			pPlayer->Set_2DDirection(F_DIRECTION::UP);
+			_vector vPlayerPos = pPlayer->Get_FinalPosition() + XMVectorSet(50.0f, 250.f, 0.0f, 0.0f);
+			_vector vThrashPos = pPlayer->Get_FinalPosition() + XMVectorSet(-50.0f, 250.f, 0.0f, 0.0f);
+
+			AUTOMOVE_COMMAND AutoMove{};
+			AutoMove.eType = AUTOMOVE_TYPE::MOVE_TO;
+			AutoMove.fPostDelayTime = 0.0f;
+			AutoMove.fPreDelayTime = 0.0f;
+			AutoMove.iAnimIndex = (_uint)CPlayer::ANIM_STATE_2D::PLAYER_RUN_UP;
+			AutoMove.vTarget = vPlayerPos;
+			AutoMove.fMoveSpeedMag = 2.0f;
+
+			AUTOMOVE_COMMAND AutoMove2{};
+			AutoMove2.eType = AUTOMOVE_TYPE::LOOK_DIRECTION;
+			AutoMove2.fPostDelayTime = 0.0f;
+			AutoMove2.fPreDelayTime = 0.0f;
+			AutoMove2.vTarget = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+			AutoMove2.iAnimIndex = (_uint)CPlayer::ANIM_STATE_2D::PLAYER_IDLE_UP;
+
+			pPlayer->Add_AutoMoveCommand(AutoMove);
+			pPlayer->Add_AutoMoveCommand(AutoMove2);
+			pPlayer->Start_AutoMove(true);
+
+			pThrash->Move_Position(_float2(XMVectorGetX(vThrashPos), XMVectorGetY(vThrashPos)), CFriend::DIR_UP);
+
+			m_iDialogueIndex = 0;
+		}
+		Next_Step_Over(1.0f);
+	}
+	else if (Step_Check(STEP_1)) // 1. 다이얼로그 시작.
+	{
+		if (Is_Start())
+		{
+			// Friend 대화 시작.
+			_wstring strDialogueTag = TEXT("Chapter6_Boss_Start");
+			CDialog_Manager::GetInstance()->Set_DialogId(strDialogueTag.c_str());
+
+			CFriend* pThrash = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Thrash"));
+			CDialog_Manager::GetInstance()->Set_NPC(pThrash);
+		}
+
+		/* 6. 다이얼로그 종료 체크 */
+		if (false == CDialog_Manager::GetInstance()->Get_DisPlayDialogue())
+		{
+			Next_Step(true);
+		}
+
+	}
+	else
+	{
+		CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(TEXT("Thrash"));
+		pPlayer->Set_BlockPlayerInput(false);
+		CExcavatorGame::GetInstance()->Start_Game();
+		GameEvent_End();
+	}
+}
+
+void CGameEventExecuter_C6::Chapter6_Boss_Progress1_End(_float _fTimeDelta)
+{
+
 }
 
 void CGameEventExecuter_C6::Chapter6_FriendEvent_0(_float _fTimeDelta)

@@ -1,6 +1,7 @@
 #pragma once
 #include "Friend.h"
 BEGIN(Client)
+class CExcavator_Switch;
 class CFriend_Thrash final : public CFriend
 {
 public :
@@ -130,7 +131,7 @@ public :
 	{
 
 	}FRIEND_THRASH_DESC;
-
+	enum FRIEND_STATE  {};
 protected:
 	CFriend_Thrash(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	CFriend_Thrash(const CFriend& _Prototype);
@@ -152,8 +153,20 @@ public:
 public:
 	ANIM					Get_CurAnimIndex() const { return m_eCurAnimIndex; }
 
+
+
 private:
 	ANIM					m_eCurAnimIndex = ANIM::ANIM_LAST;
+
+public:
+	void					Go_Switch(CExcavator_Switch* _pSwitch);
+
+private:
+	CExcavator_Switch*		m_pSwitch = nullptr;
+	_bool					m_isGoSwitch = false;
+
+private:
+	virtual void			Move_Arrival() override;
 
 public:
 	static CFriend_Thrash* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

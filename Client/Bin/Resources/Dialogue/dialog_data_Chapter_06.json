@@ -4564,6 +4564,230 @@
           "Blue": 203
         }
       ]
+    },
+
+    {
+      "id": "Chapter6_Boss_Start",
+      "Section": "Chapter6_P0708",
+      "isChangeTalker": true,
+      "lines": [
+        {
+          "Portrait": 0,
+          "Talker": "스래쉬",
+          "TalkerIndex": 0,
+          "BG": 0,
+          "location": 0,
+          "is2D": true,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "맙소사! 뭐 저런 고약한 기계가 다있지...?",
+          "Red": 190,
+          "Green": 218,
+          "Blue": 186
+        },
+        {
+          "Portrait": 0,
+          "Talker": "스래쉬",
+          "TalkerIndex": 0,
+          "BG": 0,
+          "location": 0,
+          "is2D": true,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "우리 둘 다 덤벼야 물리칠 수 있을 것 같아!",
+          "Red": 190,
+          "Green": 218,
+          "Blue": 186
+        }
+
+      ]
+    },
+    {
+      "id": "Chapter6_Boss_Progress1_End",
+      "Section": "Chapter6_P0708",
+      "isChangeTalker": true,
+      "lines": [
+        {
+          "Portrait": 1,
+          "Talker": "스래쉬",
+          "TalkerIndex": 0,
+          "BG": 0,
+          "location": 0,
+          "is2D": true,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "이런... 녀석이 화났나봐!",
+          "Red": 190,
+          "Green": 218,
+          "Blue": 186
+        }
+      ]
+    },
+    {
+      "id": "Chapter6_Boss_Progress2_End",
+      "Section": "Chapter6_P0708",
+      "isChangeTalker": true,
+      "lines": [
+        {
+          "Portrait": 1,
+          "Talker": "스래쉬",
+          "TalkerIndex": 0,
+          "BG": 0,
+          "location": 0,
+          "is2D": true,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "소용없어! 톱날이 너무 빨라...",
+          "Red": 190,
+          "Green": 218,
+          "Blue": 186
+        }
+      ]
+    },
+    {
+      "id": "Chapter6_Boss_Progress3_End",
+      "Section": "Chapter6_P0708",
+      "isChangeTalker": true,
+      "lines": [
+        {
+          "Portrait": 1,
+          "Talker": "스래쉬",
+          "TalkerIndex": 0,
+          "BG": 0,
+          "location": 0,
+          "is2D": true,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "힘을 합쳐야 돼!",
+          "Red": 190,
+          "Green": 218,
+          "Blue": 186
+        },
+        {
+          "Portrait": 1,
+          "Talker": "스래쉬",
+          "TalkerIndex": 0,
+          "BG": 0,
+          "location": 0,
+          "is2D": true,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "네가 그 물건을 멈추는 능력으로 톱날을 세워...",
+          "Red": 190,
+          "Green": 218,
+          "Blue": 186
+        },
+        {
+          "Portrait": 1,
+          "Talker": "스래쉬",
+          "TalkerIndex": 0,
+          "BG": 0,
+          "location": 0,
+          "is2D": true,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "그러면 내가 잠금장치를 부술게!",
+          "Red": 190,
+          "Green": 218,
+          "Blue": 186
+        }
+      ]
+    },
+    {
+      "id": "Chapter6_Boss_Progress5_End",
+      "Section": "Chapter6_P0708",
+      "isChangeTalker": true,
+      "lines": [
+        {
+          "Portrait": 1,
+          "Talker": "스래쉬",
+          "TalkerIndex": 0,
+          "BG": 0,
+          "location": 0,
+          "is2D": true,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "저트! 조절장치가 드러났어!",
+          "Red": 190,
+          "Green": 218,
+          "Blue": 186
+        },
+        {
+          "Portrait": 1,
+          "Talker": "스래쉬",
+          "TalkerIndex": 0,
+          "BG": 0,
+          "location": 0,
+          "is2D": true,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "있는 힘껏 때려!!!",
+          "Red": 190,
+          "Green": 218,
+          "Blue": 186
+        }
+      ]
+    },
+    {
+      "id": "Chapter6_Boss_Progress6_End",
+      "Section": "Chapter6_P0708",
+      "isChangeTalker": true,
+      "lines": [
+        {
+          "Portrait": 1,
+          "Talker": "스래쉬",
+          "TalkerIndex": 0,
+          "BG": 0,
+          "location": 0,
+          "is2D": true,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "기차가 폭주한다!!!",
+          "Red": 190,
+          "Green": 218,
+          "Blue": 186
+        }
+      ]
     }
   ]
 }

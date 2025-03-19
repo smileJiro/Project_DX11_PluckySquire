@@ -84,6 +84,7 @@ void CSaw::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherColli
 	if (OBJECT_GROUP::PLAYER & _pOtherObject->Get_ObjectGroupID())
 	{
 		Event_Hit(this, static_cast<CCharacter*>(_pOtherObject), 1, XMVectorSet(0.0f, -500.f, 0.0f, 0.0f));
+		m_iAttackCount++;
 	}
 }
 

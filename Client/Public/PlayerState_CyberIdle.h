@@ -27,6 +27,7 @@ public:
     virtual void Enter() override;
     virtual void Exit() override;
     virtual void On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx) override;
+    virtual void On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce) override;
 
     void Set_VeloState(_fvector _vVelocity);
 private:
@@ -49,6 +50,7 @@ public:
     virtual void Enter() override;
     virtual void Exit() override;
     virtual void On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx) override;
+    virtual void On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce) override;
 
 private:
     CActor_Dynamic* m_pDynamicActor = nullptr;

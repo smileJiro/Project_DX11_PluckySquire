@@ -88,7 +88,7 @@
                     ]
                 }
             },
-            "DelayTime": 0.5,
+            "DelayTime": 1.2000000476837158,
             "Event": 0,
             "Float": [
                 {
@@ -339,7 +339,7 @@
                     ]
                 }
             },
-            "DelayTime": 0.6000000238418579,
+            "DelayTime": 1.2999999523162842,
             "DissolveTexture": "../Bin/Resources/Textures/Effects/T_FX_CMN_Flash_03.dds",
             "Event": 0,
             "Float": [
@@ -477,7 +477,7 @@
                 1.0,
                 1.0
             ],
-            "DelayTime": 0.5199999809265137,
+            "DelayTime": 1.2200000286102295,
             "Event": 0,
             "Float": [
                 {
@@ -1017,7 +1017,7 @@
                     ]
                 }
             },
-            "DelayTime": 0.6499999761581421,
+            "DelayTime": 1.350000023841858,
             "DissolveTexture": "../Bin/Resources/Textures/Effects/T_FX_CMN_Dirt_01.dds",
             "Event": 0,
             "Float": [
@@ -1489,7 +1489,7 @@
                     ]
                 }
             },
-            "DelayTime": 0.800000011920929,
+            "DelayTime": 1.399999976158142,
             "DissolveTexture": "../Bin/Resources/Textures/Effects/T_FX_CMN_Noise_08.dds",
             "Event": 0,
             "Float": [
@@ -1735,7 +1735,7 @@
                     ]
                 }
             },
-            "DelayTime": 0.7799999713897705,
+            "DelayTime": 1.2999999523162842,
             "DissolveTexture": "../Bin/Resources/Textures/Effects/T_FX_CMN_Noise_07.dds",
             "Event": 0,
             "Float": [
@@ -1943,7 +1943,7 @@
                         1.0
                     ],
                     "Shape": "SPHERE",
-                    "Sphere_Radius": 8.0,
+                    "Sphere_Radius": 24.0,
                     "Sphere_Surface": 0.0
                 },
                 "UVSet": {
@@ -1954,7 +1954,7 @@
                     ]
                 }
             },
-            "DelayTime": 0.800000011920929,
+            "DelayTime": 1.2999999523162842,
             "DissolveTexture": "../Bin/Resources/Textures/Effects/T_FX_CMN_Noise_07_s.dds",
             "Event": 0,
             "Float": [
@@ -2060,7 +2060,7 @@
             "Pooling": "KILL",
             "ShaderPass": "ROT2_SUB_DISSOLVE",
             "SpawnPosition": "RELATIVE_WORLD",
-            "SpawnType": "BURST_SPAWN",
+            "SpawnType": "SPAWN_RATE",
             "Texture": "../Bin/Resources/Textures/Effects/T_FX_CMN_Explosion8x8_03_D.dds",
             "Time": 3.0,
             "Transform": [
@@ -2085,5 +2085,5 @@
         }
     ],
     "Name": "BossEnd",
-    "ToolLoopTime": 2.0
+    "ToolLoopTime": 4.0
 }
