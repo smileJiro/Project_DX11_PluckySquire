@@ -338,16 +338,17 @@ HRESULT CLevel_Camera_Tool_Client::Ready_Layer_TestTerrain(const _wstring& _strL
 	//m_ModelObjects.push_back(pOut);
 
 	// Humgrump
-	CGameObject* pBoss = nullptr;
 	CButterGrump::MONSTER_DESC Boss_Desc;
 	Boss_Desc.iCurLevelID = m_eLevelID;
 	Boss_Desc.eStartCoord = COORDINATE_3D;
 	Boss_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 	Boss_Desc.tTransform3DDesc.vInitialPosition = _float3(0.53f, 60.35f, -8.0f);
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_ButterGrump"), m_eLevelID, TEXT("Layer_Boss"), &pBoss, &Boss_Desc)))
-		return;
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_ButterGrump"), m_eLevelID, TEXT("Layer_Boss"), reinterpret_cast<CGameObject**>(&pOut), &Boss_Desc)))
+		return E_FAIL;
+	m_ModelObjects.push_back(pOut);
 
+	// 
 	// Player	
 	CPlayer* pPlayer = static_cast<CPlayer*>(m_pGameInstance->Get_GameObject_Ptr(LEVEL_CAMERA_TOOL, TEXT("Layer_Player"), 0));
 	CModelObject* pPlayerBody = static_cast<CModelObject*>(pPlayer->Get_PlayerPartObject(CPlayer::PLAYER_PART_BODY));
