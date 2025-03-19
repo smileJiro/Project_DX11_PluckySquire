@@ -85,6 +85,8 @@ public:
 		m_ePreState = FRIEND_LAST;
 		State_Change();
 	}
+
+	void					Set_CurState(FRIEND_STATE _eState) { m_eCurState = _eState; State_Change(); }
 protected:
 	FRIEND_MODE				m_eCurMode = FRIEND_MODE::MODE_DEFAULT;
 	FRIEND_STATE			m_eCurState = FRIEND_STATE::FRIEND_LAST;

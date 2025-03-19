@@ -98,8 +98,8 @@ HRESULT CFormation_Manager::Ready_Chapter8_Formation()
 	FormationDesc.fDelayTime = 2.f;
 
 	//Å×½ºÆ®
-	FormationDesc.iRow = 3;
-	FormationDesc.iColumn = 4;
+	FormationDesc.iRow = 1;
+	FormationDesc.iColumn = 1;
 
 	pFormation = static_cast<CFormation*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_Formation"), &FormationDesc));
 	if (nullptr == pFormation)

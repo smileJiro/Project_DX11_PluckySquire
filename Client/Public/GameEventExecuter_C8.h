@@ -63,6 +63,12 @@ public:
 	void Chapter8_Map_Intro(_float _fTimeDelta);
 	void Chapter8_Intro_Postit_Sequence(_float _fTimeDelta);
 	void Chapter8_Outro_Postit_Sequence(_float _fTimeDelta);
+	
+	void Chapter8_3D_Out_01(_float _fTimeDelta);
+	void Chapter8_3D_Out_02(_float _fTimeDelta);
+
+
+
 	void Chapter8_Sword(_float _fTimeDelta);
 	void Chapter8_Stop_Stamp(_float _fTimeDelta);
 	void Chapter8_Bomb_Stamp(_float _fTimeDelta);

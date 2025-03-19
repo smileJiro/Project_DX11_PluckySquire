@@ -22,5 +22,43 @@
         -316.0
       ]
     }
+  },
+  {
+    "Collider_Info": {
+      "Position": [
+        8.0,
+        -314.0
+      ],
+      "Scale": [
+        100.0,
+        100.0
+      ]
+    },
+    "Trigger_Reusable": false,
+    "Fillter_MyGroup": 2,
+    "Fillter_OtherGroupMask": 128,
+    "Trigger_ConditionType": 0,
+    "Trigger_Coordinate": 0,
+    "Trigger_EventTag": "Chapter8_3D_Out_01",
+    "Trigger_Type": 0
+  },
+  {
+    "Collider_Info": {
+      "Position": [
+        -800.0,
+        304.0
+      ],
+      "Scale": [
+        100.0,
+        100.0
+      ]
+    },
+    "Trigger_Reusable": false,
+    "Fillter_MyGroup": 2,
+    "Fillter_OtherGroupMask": 128,
+    "Trigger_ConditionType": 0,
+    "Trigger_Coordinate": 0,
+    "Trigger_EventTag": "Chapter8_3D_Out_02",
+    "Trigger_Type": 0
   }
 ]
