@@ -63,7 +63,7 @@ public:
 	const _float4x4*		Get_BoneMatrix(const _char* pBoneName) const;
 	class CBone*			Get_Bone(const _char* pBoneName) const;
 	const vector<CMesh*>&	Get_Meshes() { return m_Meshes; }
-
+	_bool					Is_AnimTransition() { return m_iCurrentAnimIndex != m_iPrevAnimIndex; }
 	//Get
 	virtual _uint			Get_AnimCount() override;
 	virtual _uint			Get_CurrentAnimIndex() override { return m_iCurrentAnimIndex; }
