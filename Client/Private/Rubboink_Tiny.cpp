@@ -5,6 +5,9 @@
 #include "ModelObject.h"
 #include "GameInstance.h"
 #include "Section_Manager.h"
+#include "Trigger_Manager.h"
+#include "Friend_Controller.h"
+#include "Friend.h"
 
 CRubboink_Tiny::CRubboink_Tiny(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CSlipperyObject(_pDevice, _pContext)
@@ -138,6 +141,27 @@ void CRubboink_Tiny::On_Impact(CGameObject* _pOtherObject)
 	m_pFace->Set_Render(false);
 	m_p2DColliderComs[0]->Set_Offset(_float2{-200.f,50.f});
 	m_p2DColliderComs[0]->Set_Block(true);
+
+
+	_vector vPos = {};
+	auto pThrash = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Thrash"));
+
+	if (nullptr != pThrash)
+	{
+		vPos = pThrash->Get_FinalPosition();
+	}
+
+	// Trigger
+	CTriggerObject::TRIGGEROBJECT_DESC Desc = {};
+	Desc.vHalfExtents = { 100.f, 100.f, 0.5f };
+	Desc.iTriggerType = (_uint)TRIGGER_TYPE::EVENT_TRIGGER;
+	Desc.szEventTag = TEXT("Artia_PigEvent_Encounter_Out");
+	Desc.eConditionType = CTriggerObject::TRIGGER_ENTER;
+	Desc.isReusable = false;
+	Desc.eStartCoord = COORDINATE_2D;
+	Desc.Build_2D_Transform({ XMVectorGetX(vPos),XMVectorGetY(vPos) }, {1.f,1.f});
+	CSection* pBookSection = CSection_Manager::GetInstance()->Find_Section(TEXT("Chapter5_P0102"));
+	CTrigger_Manager::GetInstance()->Create_TriggerObject(LEVEL_STATIC, LEVEL_CHAPTER_6, &Desc, pBookSection);
 
 }
 

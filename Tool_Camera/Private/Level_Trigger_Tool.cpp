@@ -1388,7 +1388,7 @@ void CLevel_Trigger_Tool::Save_TriggerData()
 		_string szEventTag = m_pGameInstance->WStringToString(dynamic_cast<CTriggerObject*>(Trigger.second)->Get_TriggerEventTag());
 		Trigger_json["Trigger_EventTag"] = szEventTag;
 		Trigger_json["Trigger_Coordinate"] = Trigger.second->Get_CurCoord();
-		Trigger_json["Trigger_ConditionType"] = Trigger.second->Get_ConditionType();
+		Trigger_json["Trigger_ConditionType"] = CTriggerObject::TRIGGER_ENTER;
 
 		Collider_Json["Position"] = { vPosition.x, vPosition.y, vPosition.z };
 

@@ -794,6 +794,7 @@ HRESULT CEvent_Manager::Execute_Trigger_Exit(const EVENT& _tEvent)
 	case (_uint)TRIGGER_TYPE::TELEPORT_TRIGGER:
 		break;
 	case (_uint)TRIGGER_TYPE::EVENT_TRIGGER:
+		CTrigger_Manager::GetInstance()->Register_TriggerEvent(*pStr, iTriggerID);
 		break;
 	}
 
