@@ -193,7 +193,7 @@ void CBook::Update(_float _fTimeDelta)
 			||
 			pGameObject->Get_CurCoord() == COORDINATE_3D
 			||
-			CCamera_2D::PAUSE == CCamera_Manager::GetInstance()->Get_CurCameraMode()
+			(CCamera_2D::PAUSE == CCamera_Manager::GetInstance()->Get_CurCameraMode())
 			)
 		{
 			if (m_eCurAction == NEXT)
@@ -571,7 +571,9 @@ void CBook::PageAction_End(COORDINATE _eCoord, _uint iAnimIdx)
 {
 #pragma region 책 넘기는 Action
 
-	if (ACTION_LAST != m_eCurAction)
+	if (ACTION_LAST != m_eCurAction
+		//&& iAnimIdx == ACTION
+		)
 	{
 		if (NEXT == m_eCurAction)
 		{

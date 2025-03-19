@@ -68,6 +68,8 @@ public :
 		//CHAPTER4_2D_IN,				// 폭탄 도장 얻고나서의 이벤트 
 
 		ARTIA_PIGEVENT_START,	
+		ARTIA_PIGEVENT_ENCOUNTER,
+		ARTIA_PIGEVENT_ENCOUNTER_OUT,
 		ARTIA_PIGEVENT_END,		
 		ARTIA_EXIT,				
 
@@ -76,7 +78,8 @@ public :
 		/* Friend Event */
 
 		CHAPTER6_START_3D,			// 톱니 앞에서 3D 진입 전
-		CHAPTER6_INTRO,				// Intro
+		CHAPTER6_CANDLE_IN,			// 감옥 속 촛불 특수 처리
+		CHAPTER6_CANDLE_OUT,		// 감옥 속 촛불 특수 처리
 
 		/* Father Game Start */
 		CHAPTER6_FATHERGAME_PROGRESS_START_CLEAR,
@@ -109,6 +112,7 @@ public :
 		CHAPTER8_BOMB_STAMP,
 		CHAPTER8_TILTING_GLOVE,
 		CHAPTER8_MEET_HUMGRUMP,
+		CHAPTER8_POSTIT_ARM_CHANGING,
 	
 		EVENT_EXECUTER_ACTION_TYPE_LAST
 	};

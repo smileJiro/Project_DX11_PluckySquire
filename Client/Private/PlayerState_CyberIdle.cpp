@@ -18,9 +18,8 @@ void CPlayerState_CyberIdle::Update(_float _fTimeDelta)
 
 	if (tKeyResult.bInputStates[PLAYER_INPUT_ATTACK])
 	{
-		_vector vShootDir = XMVector3Normalize( m_pOwner->Get_CyberCursorOffset());
-		vShootDir = XMVectorSetW(vShootDir, 0.f);
-		m_pOwner->Shoot_Rifle(vShootDir);
+
+		m_pOwner->Shoot_Rifle(m_pOwner->Get_CyberCursorWorldPosition());
 	}
 	_vector vVelocity = { 0.f,0.f,0.f };
 	if (tKeyResult.bInputStates[PLAYER_INPUT_MOVE])
@@ -146,9 +145,7 @@ void CPlayerState_CyberDash::Update(_float _fTimeDelta)
 
 	if (tKeyResult.bInputStates[PLAYER_INPUT_ATTACK])
 	{
-		_vector vShootDir = XMVector3Normalize(m_pOwner->Get_CyberCursorOffset());
-		vShootDir = XMVectorSetW(vShootDir, 0.f);
-		m_pOwner->Shoot_Rifle(vShootDir);
+		m_pOwner->Shoot_Rifle(m_pOwner->Get_CyberCursorWorldPosition());
 	}
 
 	if (m_fDashEndSpeedThreshold >= m_pOwner->Get_CyberCurrentSpeed())

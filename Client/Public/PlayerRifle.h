@@ -26,7 +26,7 @@ public:
 	virtual void Update(_float _fTimeDelta) override;
 	virtual void Late_Update(_float _fTimeDelta) override;
 
-	void Shoot(_fvector _vDirection);
+	void Shoot(_fvector _vTargetPosition);
 private:
 	CPlayer* m_pPlayer = nullptr;
 	_float m_fShhotDelay = 0.1f;

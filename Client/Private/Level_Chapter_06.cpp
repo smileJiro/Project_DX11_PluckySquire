@@ -225,32 +225,32 @@ HRESULT CLevel_Chapter_06::Initialize(LEVEL_ID _eLevelID)
 	}
 	
 
-#pragma region Test
-
-	//_wstring strFriendTag = L"Thrash";
-	//{ /* Friend_Thrash */
-	//	CFriend_Thrash::FRIEND_DESC Desc{};
-	//	Desc.Build_2D_Transform(_float2(-24.f, -330.f), _float2(1.0f, 1.0f), 400.f);
-	//	Desc.iCurLevelID = LEVEL_CHAPTER_6;
-	//	Desc.eStartState = CFriend::FRIEND_IDLE;
-	//	Desc.eStartDirection = CFriend::DIR_UP;
-	//	Desc.iModelTagLevelID = LEVEL_STATIC;
-	//	Desc.iNumDialoguesIndices = 0;
-	//	Desc.strFightLayerTag = TEXT("Layer_Boss_Soldier");
-
-	//	CGameObject* pGameObject = nullptr;
-	//	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Friend_Thrash"), LEVEL_CHAPTER_6, TEXT("Layer_Freinds"), &pGameObject, &Desc)))
-	//		return E_FAIL;
-
-	//	if (FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_P0708"), pGameObject)))
-	//		return E_FAIL;
-
-	//	CFriend_Controller::GetInstance()->Register_Friend(strFriendTag, static_cast<CFriend*>(pGameObject));
-	//	CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(strFriendTag);
-	//	CFriend_Controller::GetInstance()->Start_Train();
-	//} /* Friend_Thrash */
-
-#pragma endregion
+//#pragma region Test
+//
+//	_wstring strFriendTag = L"Thrash";
+//	{ /* Friend_Thrash */
+//		CFriend_Thrash::FRIEND_DESC Desc{};
+//		Desc.Build_2D_Transform(_float2(-24.f, -330.f), _float2(1.0f, 1.0f), 400.f);
+//		Desc.iCurLevelID = LEVEL_CHAPTER_6;
+//		Desc.eStartState = CFriend::FRIEND_IDLE;
+//		Desc.eStartDirection = CFriend::DIR_UP;
+//		Desc.iModelTagLevelID = LEVEL_STATIC;
+//		Desc.iNumDialoguesIndices = 0;
+//		Desc.strFightLayerTag = TEXT("Layer_Boss_Soldier");
+//
+//		CGameObject* pGameObject = nullptr;
+//		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Friend_Thrash"), LEVEL_CHAPTER_6, TEXT("Layer_Freinds"), &pGameObject, &Desc)))
+//			return E_FAIL;
+//
+//		if (FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_P0708"), pGameObject)))
+//			return E_FAIL;
+//
+//		CFriend_Controller::GetInstance()->Register_Friend(strFriendTag, static_cast<CFriend*>(pGameObject));
+//		CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(strFriendTag);
+//		CFriend_Controller::GetInstance()->Start_Train();
+//	} /* Friend_Thrash */
+//
+//#pragma endregion
 
 
 
@@ -2006,7 +2006,7 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Slippery()
 	CModelObject::MODELOBJECT_DESC tModelDesc = {};
 	tModelDesc.iCurLevelID = m_eLevelID;
 	CMudPit* pMudpit = static_cast<CMudPit*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_eLevelID, TEXT("Prototype_GameObject_MudPit"), &tModelDesc));
-	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Layer_Slippery"), pMudpit);
+	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Layer_MudPit"), pMudpit);
 	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter5_P0102"), pMudpit, SECTION_2D_PLAYMAP_OBJECT);
 
 

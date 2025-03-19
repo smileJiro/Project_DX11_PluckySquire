@@ -2,20 +2,19 @@
   {
     "Collider_Info": {
       "Position": [
-        -15.0,
-        -649.0
+        40.0,
+        0.0
       ],
       "Scale": [
-        100.0,
-        31.0
+        200.0,
+        27.0
       ]
     },
-    "Trigger_Reusable": false,
     "Fillter_MyGroup": 2,
     "Fillter_OtherGroupMask": 128,
     "Trigger_ConditionType": 0,
     "Trigger_Coordinate": 0,
-    "Trigger_EventTag": "Chapter6_FriendEvent_0",
+    "Trigger_EventTag": "Chapter8_Postit_Arm_Changing",
     "Trigger_Type": 0
   }
 ]

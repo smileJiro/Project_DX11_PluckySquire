@@ -45,6 +45,7 @@
 #include "StopStamp.h"
 #include "BombStamp.h"
 #include "Detonator.h"
+#include "CyberCursor.h"
 #include "ZetPack.h"
 #include "PlayerRifle.h"
 #include "Section_Manager.h"
@@ -492,6 +493,23 @@ HRESULT CPlayer::Ready_PartObjects()
 		return E_FAIL;
 	m_pTurnBookEffect->Set_Active(false);
 	Safe_AddRef(m_pTurnBookEffect);
+
+
+	if (LEVEL_CHAPTER_8 == m_iCurLevelID)
+	{
+		//	CyberCursor
+		CCyberCursor::MODELOBJECT_DESC tCyberCursorDesc = {};
+		tCyberCursorDesc.iCurLevelID = m_iCurLevelID;
+		tCyberCursorDesc.isCoordChangeEnable = false;
+		tCyberCursorDesc.eStartCoord = COORDINATE_3D;
+
+		m_PartObjects[PLAYER_PART_CYBERCURSOR] = m_pCyberCursor = static_cast<CCyberCursor*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_CyberCursor"), &tCyberCursorDesc));
+		if (nullptr == m_pCyberCursor)
+			return E_FAIL;
+		m_pCyberCursor->Set_Active(true);
+		Safe_AddRef(m_pCyberCursor);
+	}
+
 
 	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CPlayer::On_AnimEnd, this, placeholders::_1, placeholders::_2));
 	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE::COORDINATE_2D, (_uint)ANIM_STATE_2D::PLAYER_IDLE_RIGHT, true);
@@ -1543,11 +1561,11 @@ void CPlayer::ZetPropel(_float _fTimeDelta)
 	}
 }
 
-void CPlayer::Shoot_Rifle(_fvector _vDirection)
+void CPlayer::Shoot_Rifle(_fvector _vTargetPosition)
 {
 	if (nullptr == m_pRifle)
 		return;
-	m_pRifle->Shoot(_vDirection);
+	m_pRifle->Shoot(_vTargetPosition);
 }
 
 
@@ -2109,6 +2127,7 @@ void CPlayer::Set_Mode(PLAYER_MODE _eNewMode)
 		Equip_Part(PLAYER_PART_RIFLE);
 		Equip_Part(PLAYER_PART_VISOR);
 		Equip_Part(PLAYER_PART_ZETPACK);
+		Equip_Part(PLAYER_PART_CYBERCURSOR);
 
 		if (nullptr != m_pZetPack)
 			m_pZetPack->Switch_State(CZetPack::STATE_CYBER);
@@ -2500,7 +2519,7 @@ void CPlayer::Key_Input(_float _fTimeDelta)
 		//tCommand.fMoveSpeedMag = 4.f;
 		//Add_AutoMoveCommand(tCommand);
   //      Start_AutoMove(true);
-		Set_State(CPlayer::TRANSFORM_IN);
+		//Set_State(CPlayer::TRANSFORM_IN);
 	}
 	if (m_pActorCom->Is_Kinematic())
 	{
@@ -2567,6 +2586,15 @@ void CPlayer::Update_CyberJot(_float _fTimeDelta)
 
 	m_vCyberPlanePosition += m_vCyberPlaneVelocity * _fTimeDelta;
 	m_vCyberPlanePosition = XMVectorClamp(m_vCyberPlanePosition, m_vCyberPlaneMinPosition, m_vCyberPlaneMaxPosition);
+
+	_float fPlaneBodyRatioX = (XMVectorGetX(m_vCyberPlanePosition) - XMVectorGetX(m_vCyberPlaneMinPosition)) / (XMVectorGetX(m_vCyberPlaneMaxPosition) - XMVectorGetX(m_vCyberPlaneMinPosition));
+	_float fPlaneBodyRatioY = (XMVectorGetY(m_vCyberPlanePosition) - XMVectorGetY(m_vCyberPlaneMinPosition)) / (XMVectorGetY(m_vCyberPlaneMaxPosition) - XMVectorGetY(m_vCyberPlaneMinPosition));
+	_float fTargetBoardWidth = XMVectorGetX(m_vTargetBoardMax) - XMVectorGetX(m_vTargetBoardMin);
+	_float fTargetBoardHeight = XMVectorGetY(m_vTargetBoardMax) - XMVectorGetY(m_vTargetBoardMin);
+	m_vCyberCursorBasePosition.m128_f32[0] =  fPlaneBodyRatioX * fTargetBoardWidth + m_vTargetBoardMin.m128_f32[0];
+	m_vCyberCursorBasePosition.m128_f32[1] = fPlaneBodyRatioY * fTargetBoardHeight - m_vTargetBoardMin.m128_f32[1];
+	m_vCyberCursorBasePosition.m128_f32[2] = m_f3DCyberCursorDistance;
+
 	if (m_pCameraTargetWorldMatrix && m_pTargetCamera)
 	{
 		_vector vCamPosition = m_pTargetCamera->Get_FinalPosition();
@@ -2582,9 +2610,10 @@ void CPlayer::Update_CyberJot(_float _fTimeDelta)
 		_matrix matWorld = XMMatrixMultiply(matPlane,matBase);
 		_float4x4 matWorldFloat4x4; XMStoreFloat4x4(&matWorldFloat4x4, matWorld);
 		Set_WorldMatrix(matWorldFloat4x4);
+		m_vCyberCursorWorldPosition = XMVector3Transform(Get_CyberCursorPosition(), matWorld);
 	}
-
-
+	
+	m_pCyberCursor->Set_CursorPos(Get_CyberCursorWorldPosition());
 }
 
 void CPlayer::Set_CyberVelocity(_vector _vMoveVelocity)
@@ -2596,8 +2625,10 @@ void CPlayer::Set_CyberVelocity(_vector _vMoveVelocity)
 
 void CPlayer::Move_CyberCursor(_vector _vMove)
 {
+	//cout << "_vMove :" << VectorToString(_vMove) << endl;
 	m_vCyberCursorOffset += _vMove;
 	m_vCyberCursorOffset = XMVectorClamp(m_vCyberCursorOffset, m_vCyberCursorMinOffset, m_vCyberCursorMaxOffset);
+	//cout << "m_vCyberCursorOffset :" << VectorToString(m_vCyberCursorOffset) << endl;
 }
 
 CPlayer* CPlayer::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -2643,6 +2674,7 @@ void CPlayer::Free()
 	Safe_Release(m_pDetonator);
 	Safe_Release(m_pZetPack);
 	Safe_Release(m_pRifle);
+	Safe_Release(m_pCyberCursor);
 
 	Safe_Release(m_pCarryingObject);
 	Safe_Release(m_pTurnBookEffect);
