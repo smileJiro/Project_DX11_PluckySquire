@@ -691,15 +691,30 @@ HRESULT CBook::Init_RT_RenderPos_Capcher()
 	m_pGameInstance->Add_RenderObject_New(RG_WORLDPOSMAP, PRWORLD_MAINBOOK, this);
 
 	// 따로 찍어야할 섹션을 확인후 레지스터.
-	SECTION_MGR->Register_WorldCapture(L"Chapter2_P0102", this);
-	SECTION_MGR->Register_WorldCapture(L"Chapter4_P0102", this);
-	SECTION_MGR->Register_WorldCapture(L"Chapter4_P0304", this);
-	SECTION_MGR->Register_WorldCapture(L"Chapter4_P0506", this);
-	SECTION_MGR->Register_WorldCapture(L"Chapter5_P0102", this);
-	SECTION_MGR->Register_WorldCapture(L"Chapter6_P1112", this);
-	SECTION_MGR->Register_WorldCapture(L"Chapter6_P1314", this);
-	SECTION_MGR->Register_WorldCapture(L"Chapter8_P2122", this);
-	SECTION_MGR->Register_WorldCapture(L"Chapter8_P2324", this);
+	
+	switch (m_iCurLevelID)
+	{
+	case Client::LEVEL_CHAPTER_2:
+		SECTION_MGR->Register_WorldCapture(L"Chapter2_P0102", this);
+		break;
+	case Client::LEVEL_CHAPTER_4:
+		SECTION_MGR->Register_WorldCapture(L"Chapter4_P0102", this);
+		SECTION_MGR->Register_WorldCapture(L"Chapter4_P0304", this);
+		SECTION_MGR->Register_WorldCapture(L"Chapter4_P0506", this);
+		break;
+	case Client::LEVEL_CHAPTER_6:
+		SECTION_MGR->Register_WorldCapture(L"Chapter5_P0102", this);
+		SECTION_MGR->Register_WorldCapture(L"Chapter6_P1112", this);
+		SECTION_MGR->Register_WorldCapture(L"Chapter6_P1314", this);
+		break;
+	case Client::LEVEL_CHAPTER_8:
+		SECTION_MGR->Register_WorldCapture(L"Chapter8_P2122", this);
+		SECTION_MGR->Register_WorldCapture(L"Chapter8_P2324", this);
+		break;
+	default:
+		break;
+	}
+
 
 	return S_OK;
 }
@@ -1033,6 +1048,12 @@ void CBook::End_DropBook()
 	pActor->Set_Gravity(false);
 	pActor->Freeze_Rotation(true, true, true);
 	pActor->Freeze_Position(false, false, false);
+}
+
+void CBook::Set_Freezing(_bool _isFreezing)
+{
+	m_isFreezing = _isFreezing;
+
 }
 
 //void CBook::Calc_Page3DWorldMinMax()

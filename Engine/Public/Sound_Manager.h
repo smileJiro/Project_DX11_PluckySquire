@@ -38,6 +38,10 @@ public:
 	void			Start_SFX_Delay(const wstring& strSFXTag, _float _fDelayTime, _float _fVolume = 70.f, _bool _isLoop = false);
 	void			Stop_SFX(const wstring& strSFXTag); // 일시정지 
 	void			End_SFX(const wstring& strSFXTag); // 완전 재생 종료
+
+	void			Start_SFX_Distance(const _wstring& strSFXTag, _fvector _vPosition, _float _fMaxVolume = 70.f, _float _fMinVolume = 0.f, _float _fMaxVolumeDist = 10.f, _float _fFactor = 0.5f, _bool _isLoop = false);
+	void			Start_SFX_Distance_Delay(const _wstring& strSFXTag, _fvector _vPosition, _float _fDelayTime, _float _fMaxVolume = 70.f, _float _fMaxVolumeDist = 0.f, _float _fMinDist = 10.f, _float _fFactor = 0.5f, _bool _isLoop = false);
+
 	HRESULT			Pulling_SFX(_int _iNumPullings, const wstring& strSFXTag, vector<CSound*>* _pPullingSFXs);
 	_float			Get_SFXTrackPosition(const wstring& strSFXTag);
 	_bool			Is_SFXPlaying(const wstring& strSFXTag);
@@ -49,6 +53,7 @@ public:
 
 
 private:
+	class CGameInstance* m_pGameInstance = { nullptr };
 	LPDIRECTSOUND8	m_pSoundDevice = nullptr;	// 사운드카드 대표 객체
 	map<_wstring, CSound*> m_BGMs;
 	map<_wstring, vector<CSound*>> m_SFXs;
