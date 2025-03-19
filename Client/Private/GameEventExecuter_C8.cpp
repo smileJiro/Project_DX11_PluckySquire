@@ -30,6 +30,7 @@
 
 #include "PlayerBody.h"
 #include "DraggableObject.h"
+#include "UI_Manager.h"
 
 #include "Dialog_Manager.h"
 #include "Npc_Humgrump.h"
@@ -122,6 +123,9 @@ void CGameEventExecuter_C8::Update(_float _fTimeDelta)
 			break;
 		case Client::CTrigger_Manager::CHAPTER8_POSTIT_ARM_CHANGING:
 			Chapter8_Postit_Arm_Changing(_fTimeDelta);
+			break;		
+		case Client::CTrigger_Manager::CHAPTER8_BOOKDROP:
+			Chapter8_BookDrop(_fTimeDelta);
 			break;
 		default:
 			break;
@@ -1231,6 +1235,9 @@ void CGameEventExecuter_C8::Chapter8_Tilting_Glove(_float _fTimeDelta)
 		};
 	if (true == Postit_Process(L"Chapter8_SKSP_Postit", L"Chapter8_Tilting_Glove", 1.f, CPostit_Page::POSTIT_PAGE_POSTION_TYPE_A, false, fCamerafunc))
 	{
+		auto pBook = Get_Book();
+		if (nullptr != pBook)
+			pBook->Set_Freezing(true);
 		GameEvent_End();
 	}
 }
@@ -1874,6 +1881,91 @@ void CGameEventExecuter_C8::Chapter8_Postit_Arm_Changing(_float _fTimeDelta)
 			GameEvent_End();
 		}
 	}
+}
+
+void CGameEventExecuter_C8::Chapter8_BookDrop(_float _fTimeDelta)
+{
+	m_fTimer += _fTimeDelta;
+	CPlayer* pPlayer = Get_Player();
+	auto pBook = Get_Book();
+
+	if (Step_Check(STEP_0))
+	{
+		if (Is_Start())
+		{
+			pPlayer->Set_BlockPlayerInput(true);
+
+			CCamera_Manager::GetInstance()->Set_ResetData(CCamera_Manager::TARGET);
+			CCamera_Manager::GetInstance()->Change_CameraTarget(pPlayer);
+		}
+		Next_Step_Over(1.1f);
+	}
+	if (Step_Check(STEP_1))
+	{
+		if (Is_Start())
+		{
+			if (nullptr != pBook)
+				pBook->Start_DropBook();
+			// 암 x3 y2 이동
+			CCamera_Manager::GetInstance()->Start_Changing_AtOffset(CCamera_Manager::TARGET,
+				1.f,
+				XMVectorSet(4.f, 2.f, 0.f, 0.f),
+				EASE_IN_OUT
+			);
+			// 암 1 땡기기
+			CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Increase(CCamera_Manager::TARGET, 2.f,
+				10.f, EASE_IN_OUT);
+			CCamera_Manager::GetInstance()->Start_Turn_AxisRight(CCamera_Manager::TARGET, 1.f, XMConvertToRadians(-30.f), XMConvertToRadians(-4.f));
+
+		}
+
+		if (m_isPlag == false && m_fTimer > 2.f)
+		{
+			CCamera_Manager::GetInstance()->Start_FadeIn(1.f);
+			m_isPlag = true;
+		}
+
+
+		if (Next_Step_Over(3.f))
+		{
+		}
+	}
+	if (Step_Check(STEP_2))
+	{
+		if(Is_Start()) 
+		{
+			// 포지션 다시 잡아주기.
+			///pBook->Set_Position(XMVectorSet(2.f, 0.4f, -17.3f, 1.f));
+			Event_DeleteObject(pBook);
+			CGameObject* pGameObject = nullptr;
+			CBook::BOOK_DESC Desc = {};
+			Desc.iCurLevelID = m_iCurLevelID;
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Book"),
+				m_iCurLevelID, L"Layer_Book", &pGameObject, &Desc)))
+				return ;
+
+			pBook = static_cast<CBook*>(pGameObject);
+
+			Uimgr->Set_Book(pBook);
+
+			pBook->Set_BlendingRatio(1.f);
+			CCamera_Manager::GetInstance()->Start_ResetArm_To_SettingPoint(CCamera_Manager::TARGET, 0.1f);
+		}
+		if (Next_Step_Over(0.5f))
+		{
+			CCamera_Manager::GetInstance()->Start_FadeOut(0.5f);
+		}
+	}	
+	else
+	{
+
+		if (nullptr != pBook)
+			pBook->Set_Freezing(false);
+
+		pPlayer->Set_BlockPlayerInput(false);
+		GameEvent_End();
+	}
+
 }
 
 void CGameEventExecuter_C8::Change_PlayMap(_float _fStartTime)
