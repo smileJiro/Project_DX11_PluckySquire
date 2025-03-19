@@ -13,6 +13,11 @@ CSection_2D_PlayMap_Book::CSection_2D_PlayMap_Book(ID3D11Device* _pDevice, ID3D1
 {
 }
 
+HRESULT CSection_2D_PlayMap_Book::Section_Enter(const _wstring& _strPreSectionTag)
+{
+	return S_OK;
+}
+
 CSection_2D_PlayMap_Book* CSection_2D_PlayMap_Book::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, void* _pDesc)
 {
 	CSection_2D_PlayMap_Book* pInstance = new CSection_2D_PlayMap_Book(_pDevice, _pContext);

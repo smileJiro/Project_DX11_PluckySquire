@@ -304,6 +304,8 @@ void CSpear_Soldier::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _p
 
 void CSpear_Soldier::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
 {
+    m_pGameInstance->Start_SFX(_wstring(L"A_sfx_sword_hit_speartrooper_") + to_wstring(rand() % 7), 50.f);
+
     //챕터 6 보스전에서는 hit 상태와 넉백 없음
     if ((_uint)MONSTER_STATE::DEAD == m_iState)
         return;

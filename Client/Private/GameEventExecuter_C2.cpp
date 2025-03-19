@@ -212,9 +212,12 @@ void CGameEventExecuter_C2::Chapter2_BookMagic(_float _fTimeDelta)
 	// æÓµŒøˆ¡ˆ±‚
 	else if (Step_Check(STEP_1))
 	{
+
 		if (Is_Start())
 		{
 			Ready_Action(SECTION_MGR->Get_Cur_Section_Key(), SECTION_2D_PLAYMAP_BACKGROUND, C2DMapActionObject::ACTIVE_TYPE_DYNAMIC_BACKGROUND);
+			m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_C1_Lightning_Sequence"), 0.5f, 50.f);
+
 		}
 
 		Next_Step_Over(2.2f);
@@ -224,6 +227,7 @@ void CGameEventExecuter_C2::Chapter2_BookMagic(_float _fTimeDelta)
 	{
 		if (Is_Start())
 		{
+
 			// µÙ≈Ω, ¿Œµ¶Ω∫, ∑Á«¡, ∂Û¿Ã«¡≈∏¿” 
 			CEffect2D_Manager::GetInstance()->Play_Effect(L"beam", SECTION_MGR->Get_Cur_Section_Key(), XMMatrixTranslation(-236.f, 217.f, 0.f), 2.8f, 0, true, 999.f);// ∫ˆΩÓ¥¬∞≈
 			CEffect2D_Manager::GetInstance()->Play_Effect(L"EffectBack", SECTION_MGR->Get_Cur_Section_Key(), XMMatrixTranslation(-276.f, 181.4f, 0.f), 0.f, 0); // πÈ Ω√¿€
