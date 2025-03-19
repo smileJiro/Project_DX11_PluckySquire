@@ -136,8 +136,6 @@ void CPalmDecal::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOthe
         m_StoppedObjects.insert(_pOtherObject);
     }
 
-
-
 }
 
 void CPalmDecal::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)

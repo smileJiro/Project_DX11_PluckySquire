@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "Friend_Thrash.h"
 #include "GameInstance.h"
+#include "ExcavatorGame.h"
+#include "Excavator_Switch.h"
 
 CFriend_Thrash::CFriend_Thrash(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     :CFriend(_pDevice, _pContext)
@@ -184,6 +186,23 @@ void CFriend_Thrash::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 	case Client::CFriend::FRIEND_HIT:
 		m_eCurState = FRIEND_IDLE;
 		break;
+	case Client::CFriend::FRIEND_BACKROLL:
+	{
+		if (ANIM::THRASH_ROLL_INTO == iAnimIdx)
+		{
+			Switch_PartAnim(PART_BODY, ANIM::THRASH_ROLL_LOOP);
+			m_isBackRollLoop = true;
+			m_pSwitch->Set_CurState(CExcavator_Switch::STATE_OPEN);
+			Safe_Release(m_pSwitch);
+			m_pSwitch = nullptr;
+		}
+		else if (ANIM::THRASH_ROLL_OUT == iAnimIdx)
+		{
+			m_eCurState = FRIEND_IDLE;
+			
+		}
+	}
+		break;
 	case Client::CFriend::FRIEND_ANY:
 		if (iAnimIdx == ANIM::THRASH_C09_JUMPINGOFFPIPE)
 		{
@@ -199,6 +218,32 @@ void CFriend_Thrash::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 		break;
 	}
 
+}
+
+void CFriend_Thrash::Go_Switch(CExcavator_Switch* _pSwitch)
+{
+	if (nullptr != m_pSwitch)
+		Safe_Release(m_pSwitch);
+	m_pSwitch = _pSwitch;
+	Safe_AddRef(m_pSwitch);
+
+	m_isGoSwitch = true;
+	m_isBackRollLoop = false;
+	m_vPullTime.y = 0.0f;
+	m_vBackRollTime.y = 0.0f;
+	_vector vSwitchPos = m_pSwitch->Get_FinalPosition() + XMVectorSet(0.0f, -50.f, 0.0f, 0.0f);
+	Move_Position(_float2(XMVectorGetX(vSwitchPos), XMVectorGetY(vSwitchPos)), DIRECTION::DIR_UP);
+}
+
+
+
+void CFriend_Thrash::Move_Arrival()
+{
+	if (true == m_isGoSwitch)
+	{
+		m_eCurState = FRIEND_PULL;
+		m_isGoSwitch = false;
+	}
 }
 
 CFriend_Thrash* CFriend_Thrash::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -248,7 +293,24 @@ void CFriend_Thrash::Switch_AnimIndex_State()
 	case Client::CFriend::FRIEND_MOJAM:
 		Switch_PartAnim(PART_BODY, ANIM::THRASH_MOJAM_INTO, false);
 		break;
-
+	case Client::CFriend::FRIEND_PULL:
+		Switch_PartAnim(PART_BODY, ANIM::THRASH_PULL_LOOP, false);
+		break;
+	case Client::CFriend::FRIEND_BACKROLL:
+	{
+		if (true == m_isBackRollLoop)
+		{
+			Switch_PartAnim(PART_BODY, ANIM::THRASH_ROLL_OUT, false);
+			m_isBackRollLoop = false;
+		}
+		else
+		{
+			Switch_PartAnim(PART_BODY, ANIM::THRASH_ROLL_INTO, false);
+		}
+	}
+		
+		break;
+		
 	default:
 		break;
 	}
@@ -261,3 +323,4 @@ void CFriend_Thrash::Switch_PartAnim(_uint _iPartIndex, _uint _iAnimIndex, _bool
 
 	__super::Switch_PartAnim(_iPartIndex, _iAnimIndex, _isLoop);
 }
+
