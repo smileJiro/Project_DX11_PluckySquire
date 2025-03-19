@@ -53,7 +53,7 @@ void CArrowForStamp::Late_Update(_float _fTimeDelta)
 	CBook* pBook = Uimgr->Get_Book();
 
 	if (nullptr == pBook)
-		assert(pBook);
+		return;
 
 	CPlayerData_Manager* pPDM = CPlayerData_Manager::GetInstance();
 

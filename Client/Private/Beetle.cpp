@@ -89,6 +89,7 @@ HRESULT CBeetle::Initialize(void* _pArg)
     pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, RUN, true);
     pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, TURN_LEFT, true);
     pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, TURN_RIGHT, true);
+    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, CAUGHTLOOP, true);
     pModelObject->Set_Animation(IDLE);
 
     pModelObject->Register_OnAnimEndCallBack(bind(&CBeetle::Animation_End, this, placeholders::_1, placeholders::_2));
@@ -241,6 +242,8 @@ void CBeetle::Change_Animation()
 
         case MONSTER_STATE::HIT:
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(DAMAGE);
+            m_pGameInstance->Start_SFX(_wstring(L"A_sfx_sword_hit_beetle-") + to_wstring(rand() % 5), 50.f);
+
             break;
 
         case MONSTER_STATE::DEAD:
@@ -355,6 +358,7 @@ void CBeetle::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
 
     case CAUGHT:
         //Set_AnimChangeable(true);
+        pModelObject->Switch_Animation(CAUGHTLOOP);
         break;
 
     case DAMAGE:

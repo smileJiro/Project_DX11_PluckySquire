@@ -49,7 +49,7 @@ void CInteraction_Key::Update(_float _fTimeDelta)
 		CBook* pBook = Uimgr->Get_Book();
 
 		if (nullptr == pBook)
-			assert(pBook);
+			return;
 
 		if (true == pBook->Get_PlayerAbove())
 		{
@@ -115,7 +115,7 @@ void CInteraction_Key::Late_Update(_float _fTimeDelta)
 	CBook* pBook = Uimgr->Get_Book();
 
 	if (nullptr == pBook)
-		assert(pBook);
+		return;
 
 
 

@@ -38,7 +38,7 @@ HRESULT CPortal::Initialize(void* _pArg)
     pDesc->iNumPartObjects = PORTAL_PART_LAST;
     pDesc->eStartCoord = COORDINATE_3D;
     pDesc->isCoordChangeEnable = true;
-    pDesc->iObjectGroupID = OBJECT_GROUP::INTERACTION_OBEJCT;
+    pDesc->iObjectGroupID = OBJECT_GROUP::INTERACTION_PORTAL;
     m_isFirstActive = pDesc->isFirstActive;
     m_fTriggerRadius = pDesc->fTriggerRadius;
 
@@ -100,7 +100,7 @@ HRESULT CPortal::Setup_3D_Postion()
             m_Components.erase(iter);
         }
         Safe_Release(m_pActorCom);
-    
+
     }
 
     _vector f2DPosition = Get_ControllerTransform()->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION);
@@ -155,7 +155,7 @@ HRESULT CPortal::Init_Actor()
 
     /* 충돌 필터에 대한 세팅 ()*/
 
-    ActorDesc.tFilterData.MyGroup = m_iObjectGroupID = OBJECT_GROUP::INTERACTION_OBEJCT;
+    ActorDesc.tFilterData.MyGroup = m_iObjectGroupID = OBJECT_GROUP::INTERACTION_PORTAL;
     ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::PLAYER | OBJECT_GROUP::PLAYER_TRIGGER;
 
     ActorObjectDesc.pActorDesc = &ActorDesc;
@@ -173,7 +173,7 @@ void CPortal::Use_Portal(CPlayer* _pUser)
     _vector vPos = Get_FinalPosition(COORDINATE_2D);
 
     _vector v3DPos = Get_FinalPosition(COORDINATE_3D);
-    
+
     _int iCurCoord = (_int)_pUser->Get_CurCoord();
     (_int)iCurCoord ^= 1;
     _float3 vNewPos = _float3(0.0f, 0.0f, 0.0f);
@@ -212,7 +212,8 @@ HRESULT CPortal::Ready_Components(PORTAL_DESC* _pDesc)
     CircleDesc.fRadius = 100.f;
     CircleDesc.vScale = { 1.f, 1.f };
     CircleDesc.isBlock = false;
-    CircleDesc.iCollisionGroupID = OBJECT_GROUP::INTERACTION_OBEJCT;
+    CircleDesc.isTrigger = true;
+    CircleDesc.iCollisionGroupID = OBJECT_GROUP::INTERACTION_PORTAL;
     if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
         TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&pCollider), &CircleDesc)))
         return E_FAIL;

@@ -133,6 +133,8 @@ void CCrossBow_Arrow::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Ot
         {
             __super::OnTrigger_Enter(_My, _Other);
 
+            m_pGameInstance->Start_SFX(_wstring(L"A_sfx_crossbow_trooper_arrow_destroyed-") + to_wstring(rand() % 4), 50.f);
+
         }
 
     }

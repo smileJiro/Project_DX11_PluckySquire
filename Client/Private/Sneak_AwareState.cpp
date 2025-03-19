@@ -35,7 +35,8 @@ void CSneak_AwareState::State_Enter()
 	m_fAccTime = 0.f;
 	m_isRenew = false;
 	m_isTurn = true;
-	cout << "Aware" << endl;
+	if (true == m_pOwner->Is_FormationMode())
+		m_pOwner->Add_To_Formation();
 }
 
 void CSneak_AwareState::State_Update(_float _fTimeDelta)
@@ -58,30 +59,43 @@ void CSneak_AwareState::State_Update(_float _fTimeDelta)
 	if (nullptr != m_pTarget)
 	{
 		//소리난 위치로 회전
-		_vector vDir = XMVector3Normalize(XMLoadFloat3(&m_vSneakPos) - m_pOwner->Get_FinalPosition());
+		_vector vDir = XMVectorSetW(XMVector3Normalize(XMLoadFloat3(&m_vSneakPos) - m_pOwner->Get_FinalPosition()), 0.f);
 
 		if(true == m_isTurn)
 		{
-			if (true == m_pOwner->Rotate_To_Radians(XMVectorSetY(vDir, 0.f), m_pOwner->Get_ControllerTransform()->Get_RotationPerSec()))
+			_float fRotateSpeed= m_pOwner->Get_ControllerTransform()->Get_RotationPerSec();
+			if (false == m_pOwner->Is_Dynamic())
+				fRotateSpeed *= _fTimeDelta;
+			if (true == m_pOwner->Rotate_To_Radians(XMVectorSetY(vDir, 0.f), fRotateSpeed))
 				m_isTurn = false;
 		}
 
 		//몬스터 인식 범위 안에 들어오면 인식상태로 전환
 		if (true == Check_Target3D(true))
 		{
-			m_pOwner->Stop_Rotate();
-			m_pOwner->Stop_Move();
+			if(true == m_pOwner->Is_FormationMode())
+				m_pOwner->Remove_From_Formation();
+			else
+			{
+				m_pOwner->Stop_Rotate();
+				m_pOwner->Stop_Move();
+			}
 
 			_vector vDir = XMVectorSetY(m_pTarget->Get_FinalPosition() - m_pOwner->Get_FinalPosition(), 0.f);
 			_float fDis = XMVectorGetX(XMVector3Length((vDir)));
 			//공격 범위 안일 경우 바로 공격으로 전환
 			if (fDis <= Get_CurCoordRange(MONSTER_STATE::ATTACK))
+			{
 				Event_ChangeMonsterState(MONSTER_STATE::SNEAK_ATTACK, m_pFSM);
+			}
 
 			return;
 		}
 		if (m_isConvert == true)
 		{
+			if (true == m_pOwner->Is_FormationMode())
+				m_pOwner->Remove_From_Formation();
+
 			Event_ChangeMonsterState(MONSTER_STATE::SNEAK_INVESTIGATE, m_pFSM);
 			return;
 		}
@@ -101,7 +115,7 @@ void CSneak_AwareState::State_Update(_float _fTimeDelta)
 				Event_ChangeMonsterState(MONSTER_STATE::SNEAK_BACK, m_pFSM);
 			else
 			{
-				m_pOwner->Add_To_Formation();
+				//m_pOwner->Add_To_Formation();
 				Event_ChangeMonsterState(MONSTER_STATE::FORMATION_BACK, m_pFSM);
 			}
 		}

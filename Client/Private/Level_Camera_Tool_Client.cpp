@@ -272,7 +272,7 @@ HRESULT CLevel_Camera_Tool_Client::Ready_Layer_Player(const _wstring& _strLayerT
 
 	CPlayer::CONTAINEROBJ_DESC PlayerDesc = {};
 	PlayerDesc.iCurLevelID = m_eLevelID;
-	PlayerDesc.tTransform3DDesc.vInitialPosition = { -9.7f, 4.2f, 10.66f };   // TODO ::임시 위치
+	PlayerDesc.tTransform3DDesc.vInitialPosition = { -10.0362425f, 5.76746035f, 11.9308004f };   // TODO ::임시 위치
 	PlayerDesc.tTransform3DDesc.vInitialRotation = { 0.f, XMConvertToRadians(180.f), 0.f};   // TODO ::임시 위치
 	PlayerDesc.eStartCoord = COORDINATE_3D;
 	_int a = sizeof(CPlayer::CONTAINEROBJ_DESC);
@@ -344,7 +344,7 @@ HRESULT CLevel_Camera_Tool_Client::Ready_Layer_TestTerrain(const _wstring& _strL
 	Boss_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 	Boss_Desc.tTransform3DDesc.vInitialPosition = _float3(0.53f, 60.35f, -8.0f);
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_ButterGrump"), m_eLevelID, TEXT("Layer_Boss"), reinterpret_cast<CGameObject**>(&pOut), &Boss_Desc)))
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CAMERA_TOOL, TEXT("Prototype_GameObject_ButterGrump"), m_eLevelID, TEXT("Layer_Boss"), reinterpret_cast<CGameObject**>(&pOut), &Boss_Desc)))
 		return E_FAIL;
 	m_ModelObjects.push_back(pOut);
 
@@ -353,6 +353,8 @@ HRESULT CLevel_Camera_Tool_Client::Ready_Layer_TestTerrain(const _wstring& _strL
 	CPlayer* pPlayer = static_cast<CPlayer*>(m_pGameInstance->Get_GameObject_Ptr(LEVEL_CAMERA_TOOL, TEXT("Layer_Player"), 0));
 	CModelObject* pPlayerBody = static_cast<CModelObject*>(pPlayer->Get_PlayerPartObject(CPlayer::PLAYER_PART_BODY));
 	m_ModelObjects.push_back(pPlayerBody);
+
+	pPlayer->Set_Kinematic(true);
 
 	return S_OK;
 }
@@ -651,6 +653,14 @@ void CLevel_Camera_Tool_Client::Show_CameraZoomInfo()
 
 void CLevel_Camera_Tool_Client::Show_AnimModel(_float _fTimeDelta)
 {
+	static _float2 fPlayTimer = {};
+	static _bool isPlay = false;
+
+	if(true == isPlay && fPlayTimer.y <= 50.f)
+		fPlayTimer.y += _fTimeDelta;
+
+	ImGui::Text("Time: %.2f", fPlayTimer);
+
 	ImGui::Begin("Control Model");
 
 	//static _int iModelIndex = {};
@@ -758,6 +768,38 @@ void CLevel_Camera_Tool_Client::Show_AnimModel(_float _fTimeDelta)
 		ImGui::Text("Max Anim %d, Cur Time: %.2f", Greater.second, m_fAnimTime);
 	}
 
+	if (true == ImGui::Button("Play Cyber Jot CutSceneAnim")) {
+
+		CPlayer* pPlayer = static_cast<CPlayer*>(m_pGameInstance->Get_GameObject_Ptr(m_eLevelID, TEXT("Layer_Player"), 0));
+		pPlayer->Set_State(CPlayer::ENGAGE_BOSS);
+		
+		
+	}
+
+	if (true == ImGui::Button("Stop Jot")) {
+
+		CPlayer* pPlayer = static_cast<CPlayer*>(m_pGameInstance->Get_GameObject_Ptr(m_eLevelID, TEXT("Layer_Player"), 0));
+		pPlayer->Set_PlayingAnim(false);
+		isPlay = false;
+	}
+
+	ImGui::SameLine();
+
+	if (true == ImGui::Button("Replay Jot")) {
+
+		CPlayer* pPlayer = static_cast<CPlayer*>(m_pGameInstance->Get_GameObject_Ptr(m_eLevelID, TEXT("Layer_Player"), 0));
+		pPlayer->Set_PlayingAnim(true);
+		isPlay = true;
+	}
+
+	ImGui::SameLine();
+
+	if (true == ImGui::Button("Return To Origin Pos")) {
+
+		CPlayer* pPlayer = static_cast<CPlayer*>(m_pGameInstance->Get_GameObject_Ptr(m_eLevelID, TEXT("Layer_Player"), 0));
+		pPlayer->Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSet(-10.0362425f, 5.76746035f, 11.9308004f, 1.f));
+
+	}
 
 	ImGui::End();
 }

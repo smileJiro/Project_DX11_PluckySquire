@@ -49,7 +49,7 @@ void CStampKey_1::Update(_float _fTimeDelta)
 	CBook* pBook = Uimgr->Get_Book();
 	CPlayerData_Manager* pPDM = CPlayerData_Manager::GetInstance();
 	if (nullptr == pBook)
-		assert(pBook);
+		return;
 
 	if (true == pBook->Get_PlayerAbove())
 	{
@@ -66,7 +66,7 @@ void CStampKey_1::Late_Update(_float _fTimeDelta)
 	CBook* pBook = Uimgr->Get_Book();
 	CPlayerData_Manager* pPDM = CPlayerData_Manager::GetInstance();
 	if (nullptr == pBook)
-		assert(pBook);
+		return;
 
 	if (true == pBook->Get_PlayerAbove())
 	{

@@ -596,6 +596,7 @@
     <ClInclude Include="..\Public\Word_Controller.h" />
     <ClInclude Include="..\Public\ZetPack.h" />
     <ClInclude Include="..\Public\Zippy.h" />
+    <ClInclude Include="..\Public\Zip_C8.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Client_Etc.h" />
     <ClInclude Include="PlayerState_PlatformJumpAttack.h" />
@@ -1017,6 +1018,7 @@
     <ClCompile Include="..\Private\Word_Controller.cpp" />
     <ClCompile Include="..\Private\ZetPack.cpp" />
     <ClCompile Include="..\Private\Zippy.cpp" />
+    <ClCompile Include="..\Private\Zip_C8.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="PlayerState_PlatformJumpAttack.cpp" />
     <ClCompile Include="stdafx.cpp">
