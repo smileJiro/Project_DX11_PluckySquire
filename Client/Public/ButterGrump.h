@@ -143,7 +143,7 @@ public:
 	void Shield_Break();
 	void Activate_Invinciblility(_bool _isActivate);
 	void	Animation_End(COORDINATE _eCoord, _uint iAnimIdx);
-	void Play_Intro();
+	void Play_Intro(_uint _iIndex);
 
 	virtual void	On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)override;
 	void Hit();

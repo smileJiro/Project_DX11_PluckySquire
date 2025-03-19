@@ -90,7 +90,8 @@ HRESULT CButterGrump::Initialize(void* _pArg)
     m_pBossFSM->Add_State((_uint)BOSS_STATE::HIT);
     m_pBossFSM->Add_State((_uint)BOSS_STATE::DEAD);
 
-    m_pBossFSM->Set_State((_uint)BOSS_STATE::IDLE);
+    m_pBossFSM->Set_State((_uint)BOSS_STATE::SCENE);
+    //m_pBossFSM->Set_State((_uint)BOSS_STATE::IDLE);
 
     CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
 
@@ -251,7 +252,7 @@ void CButterGrump::Change_Animation()
         switch ((BOSS_STATE)m_iState)
         {
         case BOSS_STATE::SCENE:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(LB_INTRO_SH01);
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(IDLE);
             break;
 
         case BOSS_STATE::TRANSITION:
@@ -810,11 +811,16 @@ void CButterGrump::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
     switch ((CButterGrump::Animation)pModelObject->Get_Model(COORDINATE_3D)->Get_CurrentAnimIndex())
     {
     case LB_INTRO_SH01 :
-        pModelObject->Switch_Animation(LB_INTRO_SH04);
+        //pModelObject->Switch_Animation(LB_INTRO_SH04);
+        Set_AnimChangeable(true);
+        if ((_uint)BOSS_STATE::SCENE == m_iState)
+            pModelObject->Switch_Animation(IDLE);
         break;
 
     case LB_INTRO_SH04 :
         Set_AnimChangeable(true);
+        if ((_uint)BOSS_STATE::SCENE == m_iState)
+            pModelObject->Switch_Animation(IDLE);
         break;
 
     case EXPLOSION_INTO:
@@ -901,8 +907,23 @@ void CButterGrump::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
 //    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(LB_INTRO_SH04);
 //}
 
-void CButterGrump::Play_Intro()
+void CButterGrump::Play_Intro(_uint _iIndex)
 {
+    switch (_iIndex)
+    {
+    case 0:
+        Set_AnimChangeable(false);
+        static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(LB_INTRO_SH01);
+        break;
+    case 1:
+        Set_AnimChangeable(false);
+        static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(LB_INTRO_SH04);
+        break;
+    case 2:
+        Set_AnimChangeable(false);
+        static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(ROAR);
+        break;
+    }
 }
 
 void CButterGrump::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)

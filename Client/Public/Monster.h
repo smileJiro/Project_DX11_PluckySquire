@@ -211,6 +211,7 @@ public:
 
 public:
 	virtual void				Change_Animation() {};
+	virtual void				Animation_End(COORDINATE _eCoord, _uint iAnimIdx) {};
 	virtual HRESULT				Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition = nullptr) override;
 	void						Change_Dir(_bool _isOnChange = true);
 	_bool						IsTarget_In_Detection();
@@ -226,7 +227,8 @@ public:
 								//비어있는 대열로 추가
 	_bool						Add_To_Formation();
 	_bool						Remove_From_Formation();
-	_bool							Get_Formation_Position(_float3* _vPosition);
+	_bool						Remove_From_Formation_ReserveSlot();
+	_bool							Get_Formation_Position(_float3* _vPosition, _float _fTimeDelta);
 	_bool							Get_Formation_NextPosition(_float3* _vPosition);
 
 protected:

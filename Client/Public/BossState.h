@@ -30,7 +30,6 @@ protected:
 	}
 
 protected:
-	_float m_fDelayTime = {};
 	_float m_fAccTime = { 0.f };
 	_uint	 m_iAttackCount = { 0 };
 	_bool m_isDelay = { false };
