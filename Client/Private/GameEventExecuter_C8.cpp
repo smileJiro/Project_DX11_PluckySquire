@@ -1124,11 +1124,23 @@ void CGameEventExecuter_C8::Chapter8_3D_Out_02(_float _fTimeDelta)
 		else
 			if (Next_Step(!CDialog_Manager::GetInstance()->Get_DisPlayDialogue()))
 				pPlayer->Set_BlockPlayerInput(true);
+	}	
+	else if (Step_Check(STEP_3))
+	{
+		if (Is_Start())
+		{
+			pPlayer->Set_BlockPlayerInput(false);
+		}
+		else
+			if (Next_Step(COORDINATE_3D == pPlayer->Get_CurCoord()))
+			{
+				int a = 1;
+				//TODO :: 애님메시 셰이더 변경 		
+			}
 	}
 	else
 	{
 		// 6. Player 움직임 풀기
-		pPlayer->Set_BlockPlayerInput(false);
 		//CFriend_Controller::GetInstance()->Start_Train();
 
 		GameEvent_End();
