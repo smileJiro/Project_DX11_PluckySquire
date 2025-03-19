@@ -6,6 +6,7 @@
 #include "FSM.h"
 
 #include "Effect_Manager.h"
+#include "Camera_Manager.h"
 
 CBossDeadState::CBossDeadState()
 {
@@ -25,6 +26,14 @@ HRESULT CBossDeadState::Initialize(void* _pArg)
 void CBossDeadState::State_Enter()
 {
 	m_pOwner->Set_AnimChangeable(false);
+
+	//CCamera_Manager::GetInstance()->Start_Turn_AxisRight(CCamera_Manager::TARGET, 5.5f, XMConvertToRadians(-10.f), (_uint)RATIO_TYPE::EASE_IN);
+	CCamera_Manager::GetInstance()->Start_Turn_AxisY(CCamera_Manager::TARGET, 4.5f, XMConvertToRadians(-75.f), (_uint)RATIO_TYPE::EASE_IN);
+	CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Increase(CCamera_Manager::TARGET, 4.5f, 7.f, (_uint)RATIO_TYPE::EASE_IN);
+	CCamera_Manager::GetInstance()->Start_Changing_AtOffset(CCamera_Manager::TARGET, 4.5f, XMVectorSet(0.0f, -4.f, 8.0f, 1.0f), (_uint)RATIO_TYPE::EASE_IN);
+	CCamera_Manager::GetInstance()->Start_Shake_ByCount(CCamera_Manager::TARGET, 7.5f, 0.8f, 90000, CCamera::SHAKE_Y, 0.0f);
+	//_int iZoomLevel = CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET)->Get_CurrentZoomLevel();
+	//CCamera_Manager::GetInstance()->Start_Zoom(CCamera_Manager::TARGET, 3.0f, max(iZoomLevel - 3, 0), (_uint)RATIO_TYPE::EASE_IN);
 }
 
 void CBossDeadState::State_Update(_float _fTimeDelta)
@@ -145,6 +154,7 @@ void CBossDeadState::State_Update(_float _fTimeDelta)
 			matWorld.r[3] += XMVectorSet(4.f, 0.f, 0.f, 0.f);
 			CEffect_Manager::GetInstance()->Active_EffectMatrix(TEXT("BossDead_1"), true, matWorld);
 
+
 			++m_iEffectCount;
 		}
 
@@ -192,6 +202,7 @@ void CBossDeadState::State_Update(_float _fTimeDelta)
 			CEffect_Manager::GetInstance()->Active_EffectMatrix(TEXT("BossDead_2"), true, matWorld);
 			matWorld.r[3] += XMVectorSet(6.f, 2.f, 1.f, 0.f);
 			CEffect_Manager::GetInstance()->Active_EffectMatrix(TEXT("BossDead_1"), true, matWorld);
+
 			++m_iEffectCount;
 		}
 		break;
@@ -201,6 +212,9 @@ void CBossDeadState::State_Update(_float _fTimeDelta)
 		if (5.4f <= m_fAccTime)
 		{
 			CEffect_Manager::GetInstance()->Active_EffectMatrix(TEXT("BossEnd"), true, matWorld);
+
+			///* ÅÂ¿õ Ãß°¡ */
+			CCamera_Manager::GetInstance()->Start_FadeOut_White(1.0f);
 			++m_iEffectCount;
 		}
 		break;
