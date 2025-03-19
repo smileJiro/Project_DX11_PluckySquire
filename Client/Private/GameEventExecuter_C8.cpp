@@ -6,6 +6,7 @@
 
 #include "Camera_Manager.h"
 #include "Camera_Target.h"
+#include "Camera_2D.h"
 #include "Section_2D_PlayMap.h"
 #include "Section_Manager.h"
 #include "Player.h"
@@ -112,6 +113,9 @@ void CGameEventExecuter_C8::Update(_float _fTimeDelta)
 			break;
 		case Client::CTrigger_Manager::CHAPTER8_MEET_HUMGRUMP:
 			Chapter8_Meet_Humgrump(_fTimeDelta);
+			break;
+		case Client::CTrigger_Manager::CHAPTER8_POSTIT_ARM_CHANGING:
+			Chapter8_Postit_Arm_Changing(_fTimeDelta);
 			break;
 		default:
 			break;
@@ -1598,6 +1602,81 @@ void CGameEventExecuter_C8::Chapter8_Meet_Humgrump(_float _fTimeDelta)
 				
 				GameEvent_End();
 			}
+		}
+	}
+}
+
+void CGameEventExecuter_C8::Chapter8_Postit_Arm_Changing(_float _fTimeDelta)
+{
+	m_fTimer += _fTimeDelta;
+
+	if (Step_Check(STEP_0)) {
+
+		// 1. 현재 카메라 데이터 저장 후 Arm, Length, AtOffset 변경
+		CCamera_Manager::GetInstance()->Set_ResetData(CCamera_Manager::TARGET_2D);
+		CCamera_Manager::GetInstance()->Start_Changing_ArmLength(CCamera_Manager::TARGET_2D, 1.5f, 95.70, EASE_IN_OUT);
+		CCamera_Manager::GetInstance()->Start_Turn_ArmVector(CCamera_Manager::TARGET_2D, 1.5f, XMVectorSet(-0.3410f, 0.6239f, -0.7032, 0.f), EASE_IN_OUT);
+		CCamera_Manager::GetInstance()->Start_Changing_AtOffset(CCamera_Manager::TARGET_2D, 1.5f, XMVectorSet(0.f, 20.f, 0.f, 0.f), EASE_IN_OUT);
+	
+		// 1. Camera Tracking Time 변경
+		CCamera_2D* pCamera = static_cast<CCamera_2D*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D));
+
+		pCamera->Set_TrackingTime(1.f);
+
+		// 3. 플레이어 인풋락
+		CPlayer* pPlayer = Get_Player();
+		pPlayer->Set_BlockPlayerInput(true);
+
+		_vector vPos = pPlayer->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION);
+
+		E_DIRECTION eDir = pPlayer->Get_2DDirection();
+
+		switch ((_uint)eDir) {
+		case (_uint)E_DIRECTION::DOWN:
+			pPlayer->Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSetW(XMVectorSetY(vPos, -120.f), 1.f));
+			break;
+		case (_uint)E_DIRECTION::UP:
+			//pPlayer->Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSetW(XMVectorSetY(vPos, 120.f), 1.f));
+			break;
+		}
+
+		Next_Step(true);
+	}
+	else if (Step_Check(STEP_1)) {
+		if (m_fTimer >= 2.f) {
+
+			// 4. Camera Arm 원상 복구
+			CCamera_Manager::GetInstance()->Start_ResetArm_To_SettingPoint(CCamera_Manager::TARGET_2D, 1.5f);
+
+			CPlayer* pPlayer = Get_Player();
+
+			_vector vPos = pPlayer->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION);
+
+			E_DIRECTION eDir = pPlayer->Get_2DDirection();
+			
+			switch ((_uint)eDir) {
+			case (_uint)E_DIRECTION::DOWN:
+				//pPlayer->Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSetW(XMVectorSetY(vPos, -120.f), 1.f));
+				break;
+			case (_uint)E_DIRECTION::UP:
+				pPlayer->Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSetW(XMVectorSetY(vPos, 120.f), 1.f));
+				break;
+			}
+
+			Next_Step(true);
+		}
+	}
+	else if (Step_Check(STEP_2)) {
+		if (m_fTimer >= 1.7f) {
+			CPlayer* pPlayer = Get_Player();
+
+			pPlayer->Set_BlockPlayerInput(false);
+			// 1. Camera Tracking Time 변경
+			CCamera_2D* pCamera = static_cast<CCamera_2D*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D));
+
+			pCamera->Set_TrackingTime(0.3f);
+
+			GameEvent_End();
 		}
 	}
 }

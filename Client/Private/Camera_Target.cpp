@@ -662,7 +662,7 @@ void CCamera_Target::Look_Target(_fvector _vTargetPos, _float fTimeDelta)
 		
 		if (true == m_isUsingFreezeOffset) {
 			if (true == m_isTargetChanged) {
-				_float fRatio = m_fTargetChangingTime.y / m_fTargetChangingTime.x;
+				_float fRatio = clamp(m_fTargetChangingTime.y / m_fTargetChangingTime.x, 0.f, 1.f);
 				vFreezeOffset = XMVectorLerp(XMVectorZero(), -XMLoadFloat3(&m_vPreFreezeOffset), fRatio);
 			}
 			else
@@ -670,7 +670,7 @@ void CCamera_Target::Look_Target(_fvector _vTargetPos, _float fTimeDelta)
 		}
 		else {
 			if (true == m_isTargetChanged) {
-				_float fRatio = m_fTargetChangingTime.y / m_fTargetChangingTime.x;
+				_float fRatio = clamp(m_fTargetChangingTime.y / m_fTargetChangingTime.x, 0.f, 1.f);
 				vFreezeOffset = XMVectorLerp(-XMLoadFloat3(&m_vPreFreezeOffset), XMVectorZero(), fRatio);
 			}
 			else

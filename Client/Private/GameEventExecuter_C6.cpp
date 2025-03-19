@@ -26,6 +26,7 @@
 /* Camera */
 #include "Camera_CutScene.h"
 #include "Camera_2D.h"
+#include "Camera_Target.h"
 
 /* Friend */
 #include "Friend_Controller.h"
@@ -181,10 +182,41 @@ void CGameEventExecuter_C6::Chapter6_Intro(_float _fTimeDelta)
 
 void CGameEventExecuter_C6::Chapter6_Candle_In(_float _fTimeDelta)
 {
+	m_fTimer += _fTimeDelta;
+
+	if (Step_Check(STEP_0)) {
+		// Layer 0번 감옥 Candle
+		// 74.f, 1.5f, -2.f
+
+		//_vector vCandlePos = { 74.f, 1.5f, -2.f };
+		//XMStoreFloat4x4(&m_TargetWorldMatrix, XMMatrixTranslationFromVector(XMVectorSetW(vCandlePos, 1.0f)));
+
+		CGameObject* pCandle = m_pGameInstance->Get_GameObject_Ptr(m_iCurLevelID, TEXT("Layer_Candle"), 0);
+
+		if (nullptr == pCandle) {
+			GameEvent_End();
+			return;
+		}
+
+		CCamera_Manager::GetInstance()->Change_CameraTarget(pCandle, 0.f);
+		CCamera_Manager::GetInstance()->Start_Turn_ArmVector(CCamera_Manager::TARGET, 0.f, XMVectorSet(0.f, 0.2594f, -0.9658f, 0.f), EASE_IN_OUT);
+	
+		GameEvent_End();
+	}
 }
 
 void CGameEventExecuter_C6::Chapter6_Candle_Out(_float _fTimeDelta)
 {
+	m_fTimer += _fTimeDelta;
+
+	if (Step_Check(STEP_0)) {
+		// Player로 다시 Target Change
+		CCamera_Manager::GetInstance()->Change_CameraTarget(Get_Player(), 2.0f);
+		CCamera_Manager::GetInstance()->Set_NextArmData(TEXT("Chapter8_3"), 0.f);
+		CCamera_Manager::GetInstance()->Change_CameraMode(CCamera_Target::MOVE_TO_NEXTARM);
+
+		GameEvent_End();
+	}
 }
 
 void CGameEventExecuter_C6::Chapter6_FatherGame_Progress_Start_Clear(_float _fTimeDelta)
