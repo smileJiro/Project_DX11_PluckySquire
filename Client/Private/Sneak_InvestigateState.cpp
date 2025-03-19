@@ -118,20 +118,25 @@ void CSneak_InvestigateState::State_Update(_float _fTimeDelta)
 			Event_ChangeMonsterState(MONSTER_STATE::SNEAK_AWARE, m_pFSM);
 			return;
 		}
-		//회전
-		if (m_pOwner->Rotate_To_Radians(XMLoadFloat3(&m_vDir), m_pOwner->Get_ControllerTransform()->Get_RotationPerSec()))
+		if (true == m_isTurn && false == m_isMove)
 		{
-			m_isMove = true;
-			//m_pOwner->Change_Animation();
-		}
-		else
-		{
-			_bool isCW = true;
-			_float fResult = XMVectorGetY(XMVector3Cross(m_pOwner->Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK), XMLoadFloat3(&m_vDir)));
-			if (fResult < 0)
-				isCW = false;
+			//회전
+			if (m_pOwner->Rotate_To_Radians(XMLoadFloat3(&m_vDir), m_pOwner->Get_ControllerTransform()->Get_RotationPerSec()))
+			{
+				m_isMove = true;
+				m_pOwner->Stop_Rotate();
+				m_pOwner->Stop_Move();
+				m_pOwner->Change_Animation();
+			}
+			else
+			{
+				_bool isCW = true;
+				_float fResult = XMVectorGetY(XMVector3Cross(m_pOwner->Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK), XMLoadFloat3(&m_vDir)));
+				if (fResult < 0)
+					isCW = false;
 
-			m_pOwner->Turn_Animation(isCW);
+				m_pOwner->Turn_Animation(isCW);
+			}
 		}
 
 

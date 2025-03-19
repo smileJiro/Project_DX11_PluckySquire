@@ -18,6 +18,7 @@ public:
 		_float fFOVX;
 		_float fFOVY;
 		_float fOffset;
+		_float3 vPosOffset = { 0.f,0.f,0.f };
 		CMonster* pOwner;
 		CGameObject* pTarget;
 #ifdef _DEBUG
@@ -48,6 +49,7 @@ private:
 	_float m_fFOVX = { 0.f };
 	_float m_fFOVY = { 0.f };
 	_float m_fOffset = { 0.f };
+	_float3 m_vPosOffset = {};
 	CMonster* m_pOwner = { nullptr };
 	CGameObject* m_pTarget = { nullptr };
 	_bool		m_isColl = { false };
