@@ -437,6 +437,8 @@ void CSpear_Soldier::Change_Animation()
 
             case MONSTER_STATE::ATTACK:
                 static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(DASH_ATTACK_STARTUP);
+                m_pGameInstance->Start_SFX(_wstring(L"A_sfx_speartrooper_swipe_attack_") + to_wstring(rand() % 3), 50.f);
+
                 break;
 
             case MONSTER_STATE::SNEAK_IDLE:
@@ -467,6 +469,8 @@ void CSpear_Soldier::Change_Animation()
 
             case MONSTER_STATE::SNEAK_ATTACK:
                 static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(ARREST);
+                m_pGameInstance->Start_SFX(_wstring(L"A_sfx_speartrooper_swipe_attack_") + to_wstring(rand() % 3), 50.f);
+
                 break;
 
             case MONSTER_STATE::FORMATION_IDLE:
@@ -495,6 +499,8 @@ void CSpear_Soldier::Change_Animation()
 
             case MONSTER_STATE::DEAD:
                 static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(DEATH_01);
+                m_pGameInstance->Start_SFX(_wstring(L"A_sfx_speartrooper_death_") + to_wstring(rand() % 8), 50.f);
+
                 break;
 
             default:
@@ -578,6 +584,8 @@ void CSpear_Soldier::Change_Animation()
                 else if (E_DIRECTION::RIGHT == Get_2DDirection() || E_DIRECTION::LEFT == Get_2DDirection())
                     eAnim = DASHATTACK_INTO_RIGHT;
                 break;
+                m_pGameInstance->Start_SFX(_wstring(L"A_sfx_speartrooper_swipe_attack_") + to_wstring(rand() % 3), 50.f);
+
 
             case MONSTER_STATE::HIT:
                 if (E_DIRECTION::UP == Get_2DDirection())
@@ -595,6 +603,8 @@ void CSpear_Soldier::Change_Animation()
                     eAnim = DEATH_DOWN;
                 else if (E_DIRECTION::RIGHT == Get_2DDirection() || E_DIRECTION::LEFT == Get_2DDirection())
                     eAnim = DEATH_RIGHT;
+                m_pGameInstance->Start_SFX(_wstring(L"A_sfx_speartrooper_death_") + to_wstring(rand() % 8), 50.f);
+
                 break;
 
             default:

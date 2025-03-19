@@ -148,6 +148,13 @@ HRESULT CBirdMonster::Render()
     return S_OK;
 }
 
+void CBirdMonster::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
+{
+    __super::On_Hit(_pHitter, _iDamg, _vForce);
+
+    m_pGameInstance->Start_SFX(_wstring(L"A_sfx_sword_hit_namastarling_") + to_wstring(rand() % 3), 50.f);
+}
+
 void CBirdMonster::Change_Animation()
 {
     if(m_iState != m_iPreState)
@@ -159,6 +166,8 @@ void CBirdMonster::Change_Animation()
             break;
 
         case MONSTER_STATE::ALERT:
+            m_pGameInstance->Start_SFX(_wstring(L"A_sfx_namastarling_alert_") + to_wstring(rand() % 4), 50.f);
+
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(ALERT_EDIT);
             break;
 
@@ -184,6 +193,8 @@ void CBirdMonster::Change_Animation()
 
         case MONSTER_STATE::DEAD:
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(DIE);
+            m_pGameInstance->Start_SFX(_wstring(L"A_sfx_namastarling_death_") + to_wstring(rand() % 3), 50.f);
+
             break;
 
         default:
@@ -257,18 +268,18 @@ void CBirdMonster::Attack()
             //공격 위치 맞추기
             switch (Get_2DDirection())
             {
-            case Client::F_DIRECTION::LEFT:
+            case Client::E_DIRECTION::LEFT:
                 vPosition.x -= 50.f;
                 vPosition.y += 20.f;
                 break;
-            case Client::F_DIRECTION::RIGHT:
+            case Client::E_DIRECTION::RIGHT:
                 vPosition.x += 50.f;
                 vPosition.y += 40.f;
                 break;
-            case Client::F_DIRECTION::UP:
+            case Client::E_DIRECTION::UP:
                 vPosition.y += 70.f;
                 break;
-            case Client::F_DIRECTION::DOWN:
+            case Client::E_DIRECTION::DOWN:
                 vPosition.y -= 30.f;
                 break;
             default:
@@ -285,6 +296,9 @@ void CBirdMonster::Attack()
         ++m_iAttackCount;
 
     }
+
+    m_pGameInstance->Start_SFX(_wstring(L"A_sfx_NamaStarling_fire_seed_") + to_wstring(rand() % 2), 50.f);
+
 }
 
 HRESULT CBirdMonster::Ready_ActorDesc(void* _pArg)
