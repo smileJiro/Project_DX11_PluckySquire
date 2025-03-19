@@ -120,6 +120,31 @@ void CExcavator_Centre::Render_DeadEffect()
     CEffect2D_Manager::GetInstance()->Play_Effect(strFXTag, Get_Include_Section_Name(), matFX);
 }
 
+CExcavator_Switch* CExcavator_Centre::Get_ActiveSwitch()
+{
+    for (_uint i = CENTRE_PART::CENTRE_SWITCH_0; i < CENTRE_PART::CENTRE_LAST; ++i)
+    {
+        if (true == m_PartObjects[i]->Is_Active())
+        {
+            return dynamic_cast<CExcavator_Switch*>(m_PartObjects[i]);
+        }
+    }
+    return nullptr;
+}
+
+_int CExcavator_Centre::Get_NumActiveSwitches()
+{
+    _int iNumActiveSwitches = 0;
+    for (_uint i = CENTRE_PART::CENTRE_SWITCH_0; i < CENTRE_PART::CENTRE_LAST; ++i)
+    {
+        if (true == m_PartObjects[i]->Is_Active())
+        {
+            ++iNumActiveSwitches;
+        }
+    }
+    return iNumActiveSwitches;
+}
+
 HRESULT CExcavator_Centre::Ready_PartObjects(CENTRE_DESC* _pDesc)
 {
     {/* Part CENTRE_BG */

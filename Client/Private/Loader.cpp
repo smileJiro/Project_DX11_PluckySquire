@@ -2003,6 +2003,9 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_Model2D_End_Narration_ENDWord"),
 		C2DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DAnim/Chapter8/Narration/Chpater8_End/END.dds", _eLoadLevelID, true, true))))
 		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_Model2D_CyberCursor"),
+		C2DModel::Create(m_pDevice, m_pContext, "../Bin/Resources/Textures/UI/CyberJot/cyberjot_3d_cursor.dds", _eLoadLevelID, true, true))))
+		return E_FAIL;
 
 #pragma endregion
 

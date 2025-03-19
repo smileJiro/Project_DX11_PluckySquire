@@ -1,8 +1,9 @@
 #pragma once
 #include "ModelObject.h"
+#include "Stoppable.h"
 
 BEGIN(Client)
-class CTurret final : public CModelObject
+class CTurret final : public CModelObject, public IStoppable
 {
 public:
 	enum STATE { STATE_CLOSE, STATE_LOWER, STATE_OPEN, STATE_RISE, STATE_FIRE, STATE_FIRE_INTO, STATE_LAST };
@@ -24,8 +25,20 @@ public:
 	virtual HRESULT Render() override;
 
 public:
-	void Open_Turret() { m_eCurState = STATE_RISE; State_Change(); }
-	void Close_Turret() { m_eCurState = STATE_LOWER; State_Change(); }
+	void Open_Turret() 
+	{
+		if (true == m_isStoppable)
+			return; 
+		m_eCurState = STATE_RISE; 
+		State_Change(); 
+	}
+	void Close_Turret() 
+	{
+		if (true == m_isStoppable)
+			return; 
+		m_eCurState = STATE_LOWER;
+		State_Change(); 
+	}
 
 private:
 	STATE		m_ePreState = STATE::STATE_LAST;
@@ -35,30 +48,39 @@ private:
 	_float2		m_vBombCoolTime = { 4.0f, 0.0f };
 
 private:
-	void State_Change(); 
-	void State_Change_Close();		// 항상 닫혀있는
-	void State_Change_Lower();		// 닫히는 모션
-	void State_Change_Open();		// 항상 열려있는
-	void State_Change_Rise();		// 열리는 모션
-	void State_Change_Fire();		// 발사 
-	void State_Change_Fire_Into();	// 긴 발사 준비 
+	void					State_Change(); 
+	void					State_Change_Close();		// 항상 닫혀있는
+	void					State_Change_Lower();		// 닫히는 모션
+	void					State_Change_Open();		// 항상 열려있는
+	void					State_Change_Rise();		// 열리는 모션
+	void					State_Change_Fire();		// 발사 
+	void					State_Change_Fire_Into();	// 긴 발사 준비 
 
 private:
-	void Action_State(_float _fTimeDelta);
-	void Action_State_Close(_float _fTimeDelta); // 아무것도 안함.
-	void Action_State_Lower(_float _fTimeDelta); 
-	void Action_State_Open(_float _fTimeDelta); // 열려있는 상태 >>> 대포 발사 쿨타임 계산후 fire into로 변경
-	void Action_State_Rise(_float _fTimeDelta); 
-	void Action_State_Fire(_float _fTimeDelta); // 대포 생성 
-	void Action_State_Fire_Into(_float _fTimeDelta); 
+	void					Action_State(_float _fTimeDelta);
+	void					Action_State_Close(_float _fTimeDelta); // 아무것도 안함.
+	void					Action_State_Lower(_float _fTimeDelta); 
+	void					Action_State_Open(_float _fTimeDelta); // 열려있는 상태 >>> 대포 발사 쿨타임 계산후 fire into로 변경
+	void					Action_State_Rise(_float _fTimeDelta); 
+	void					Action_State_Fire(_float _fTimeDelta); // 대포 생성 
+	void					Action_State_Fire_Into(_float _fTimeDelta); 
 
 private:
 	void					On_AnimEnd(COORDINATE _eCoord, _uint _iAnimIdx);
 
+private:
+	void					On_Stop() override;	   
+	void					On_UnStop() override;  
+
+private:
+	_bool					m_isStoppable = false;
+
+private:
+	HRESULT					Ready_Components(TURRET_DESC* _pDesc);
 public:
-	static CTurret* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
-	CGameObject* Clone(void* _pArg);
-	void Free() override;
+	static CTurret*			Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
+	CGameObject*			Clone(void* _pArg);
+	void					Free() override;
 };
 
 END
