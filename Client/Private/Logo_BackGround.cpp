@@ -229,21 +229,17 @@ HRESULT CLogo_BackGround::Ready_Objects()
 	Safe_AddRef(pObject);
 
 	// Logo FadeUI »ý¼º
-	Desc.eStartCoord = COORDINATE_2D;
-	Desc.isCoordChangeEnable = false;
-	Desc.strShaderPrototypeTag_2D = TEXT("Prototype_Component_Shader_VtxPosTex");
-	Desc.iShaderPass_2D = (_uint)PASS_VTXPOSTEX::COLOR_ALPHA;
+	TextObjDesc.iCurLevelID = m_iCurLevelID;
+	TextObjDesc.tTransform2DDesc.vInitialPosition = _float3(0.f, 0.f, 0.f);
+	TextObjDesc.tTransform2DDesc.vInitialScaling = _float3(g_iWinSizeX * 3.f, g_iWinSizeY * 3.f, 1.f);
+	TextObjDesc.iColorObjectType = CLogo_ColorObject::DEFAULT;
 
-	Desc.tTransform2DDesc.vInitialScaling = _float3(g_iWinSizeX * 3.f, g_iWinSizeY * 3.f, 1.f);
-	Desc.tTransform2DDesc.vInitialPosition = _float3(0.f, 0.f, 0.f);
+	TextObjDesc.strModelPrototypeTag_2D = TEXT("Prototype_Logo_FadeUI");
+	TextObjDesc.vColor = _float4(0.f, 0.f, 0.f, 1.f);
+	TextObjDesc.isBlinking = false;
 
-	Desc.iModelPrototypeLevelID_2D = LEVEL_STATIC;
-
-	Desc.iCurLevelID = m_iCurLevelID;
-	Desc.strModelPrototypeTag_2D = TEXT("Prototype_Logo_FadeUI");
-
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"),
-		m_iCurLevelID, TEXT("Layer_UI"), &pObject, &Desc)))
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Logo_ColorObject"),
+		m_iCurLevelID, TEXT("Layer_UI"), &pObject, &TextObjDesc)))
 		return E_FAIL;
 
 	m_pBackGroundParts[LOGO_FADEUI] = static_cast<CModelObject*>(pObject);

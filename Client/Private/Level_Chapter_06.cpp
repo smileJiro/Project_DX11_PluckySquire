@@ -310,9 +310,9 @@ HRESULT CLevel_Chapter_06::Initialize(LEVEL_ID _eLevelID)
 	
 
 
-	/* Test FatherGame Progress */
-	if (FAILED(CFatherGame::GetInstance()->Start_Game(m_pDevice, m_pContext)))
-		return E_FAIL;
+	///* Test FatherGame Progress */
+	//if (FAILED(CFatherGame::GetInstance()->Start_Game(m_pDevice, m_pContext)))
+	//	return E_FAIL;
 #pragma endregion // TestCode
 	
 	/* Chapter6 Intro Trigger 悼利 积己 烙矫 内靛*/
