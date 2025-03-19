@@ -22,6 +22,9 @@ public:
 	virtual void				Update(_float _fTimeDelta) override;
 	virtual void				Late_Update(_float _fTimeDelta) override;
 	virtual HRESULT				Render() override;
+
+public:
+	void Set_CurState(STATE _eState) { m_eCurState = _eState; State_Change(); };
 private:
 	STATE						m_ePreState = STATE::STATE_LAST;
 	STATE						m_eCurState = STATE::STATE_LAST;

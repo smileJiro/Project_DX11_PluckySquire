@@ -1,6 +1,7 @@
 #pragma once
 #include "Character.h"
 BEGIN(Client)
+class CExcavator_Switch;
 class CExcavator_Centre final : public CCharacter
 {
 public:
@@ -24,6 +25,9 @@ public:
 	void					On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce) override;
 	void					Start_Part_HitRender();
 	void					Render_DeadEffect();
+public:
+	CExcavator_Switch*		Get_ActiveSwitch();
+	_int					Get_NumActiveSwitches();
 private:
 	HRESULT					Ready_PartObjects(CENTRE_DESC* _pDesc);
 	HRESULT					Ready_Components(CENTRE_DESC* _pDesc);
