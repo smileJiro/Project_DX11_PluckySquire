@@ -42,6 +42,7 @@
 			"PosX": -76.8,
 			"PosY": -20.4,
 			"strSFX": "Chapter8_P1920",
+			"isLengthCheck": false,
 			"Text": "아주 빨리 달려가면\n벨트 사이를\n무사히 통과할 수\n있을 것 같았어요",
 			"highlight": {
 				"substring": "",
