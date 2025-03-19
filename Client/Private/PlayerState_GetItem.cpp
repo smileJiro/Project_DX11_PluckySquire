@@ -39,8 +39,7 @@ void CPlayerState_GetItem::Update(_float _fTimeDelta)
 	{
 		if (0.5f <= fProgress)
 		{
-				m_pItemImg->Set_Active(false);
-				
+			m_pItemImg->Set_Active(false);
 		}
 
 	}

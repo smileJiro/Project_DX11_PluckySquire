@@ -47,7 +47,7 @@ public:
 public: /* 2D, 3D */
 	void			Play_Animation(_float fTimeDelta, _bool _bReverse = false);
 	void			Register_OnAnimEndCallBack(const function<void(COORDINATE,_uint)>& fCallback) { m_listAnimEndCallBack.push_back(fCallback); }
-	void			Remove_OnAnimEndCallBack(const function<void(COORDINATE,_uint)>& fCallback) { /*m_listAnimEndCallBack.remove(fCallback); */}
+	void			Remove_OnAnimEndCallBack(const function<void(COORDINATE, _uint)>& fCallback);
 	void			Invoke_OnAnimEndCallBack(COORDINATE _eCoord, _uint iAnimIdx);
 	//Get
 	CModel*			Get_Model(COORDINATE _eCoord) {return m_ModelComs[_eCoord];}

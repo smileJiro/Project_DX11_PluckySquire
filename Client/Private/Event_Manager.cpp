@@ -102,6 +102,7 @@ void CEvent_Manager::Update(_float _fTimeDelta)
 			Safe_Release(pMapObject);
 		}
 		m_ThreadCreateMapObjects.clear();
+		m_isMapLoad = true;
 	}
 	for (auto& Pair : m_DelayActiveList)
 	{
@@ -1034,6 +1035,8 @@ HRESULT CEvent_Manager::Client_Level_Enter(_int _iChangeLevelID)
 	CDialog_Manager::GetInstance()->Level_Enter(_iChangeLevelID);
 	CNPC_Manager::GetInstance()->Level_Enter(_iChangeLevelID);
 	CFriend_Controller::GetInstance()->Level_Enter();
+
+	m_isMapLoad = false;
 	return S_OK;
 }
 
