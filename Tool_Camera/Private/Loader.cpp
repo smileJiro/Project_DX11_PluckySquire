@@ -160,7 +160,7 @@ HRESULT CLoader::Loading_Level_Static()
         return E_FAIL;
 
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("LightbulbPickup_01"),
-        C3DModel::Create(m_pDevice, m_pContext, "../../Client/Bin/Resources/Models/NonAnim/LightbulbPickup_01/LightbulbPickup_01.model", matPretransform))))
+        C3DModel::Create(m_pDevice, m_pContext, "../../Client/Bin/Resources/Models/3DObject/Static/LightbulbPickup_01/LightbulbPickup_01.model", matPretransform))))
         return E_FAIL;
 
 

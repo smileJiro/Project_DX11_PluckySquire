@@ -497,6 +497,8 @@ void CLevel_Trigger_Tool::Show_BulbInfo()
 			break;
 		case CREATED_BYPOINT:
 			ImGui::Text("Created By: POINT");
+			_vector vPos = m_pCurBulb->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION);
+			ImGui::Text("Cur Pos: %.2f, %.2f, %.2f", XMVectorGetX(vPos), XMVectorGetY(vPos), XMVectorGetZ(vPos));
 			break;
 		}
 	}
@@ -1678,14 +1680,22 @@ void CLevel_Trigger_Tool::Create_Bulb_ByPoint()
 
 void CLevel_Trigger_Tool::Edit_Bulb()
 {
-	if (nullptr == m_pCurBulbLine.first)
-		return;
-
 	if (KEY_PRESSING(KEY::SPACE)) {
 	
-		m_pCurBulbLine.second->Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSetW(XMLoadFloat3(&m_vPosition), 1.f));
-		
-		m_pCurBulbLine.first->Edit_BulbInfo();
+		if (CREATED_BYLINE == m_iCurBulbCreateType) {
+			if (nullptr == m_pCurBulbLine.first)
+				return;
+
+			m_pCurBulbLine.second->Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSetW(XMLoadFloat3(&m_vPosition), 1.f));
+
+			m_pCurBulbLine.first->Edit_BulbInfo();
+		}
+		else if (CREATED_BYPOINT == m_iCurBulbCreateType) {
+			if (nullptr == m_pCurBulb)
+				return;
+
+			m_pCurBulb->Get_ActorCom()->Set_GlobalPose(m_vPosition);
+		}
 	}
 }
 
