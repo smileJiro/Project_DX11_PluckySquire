@@ -77,13 +77,18 @@ HRESULT CPlayerData_Manager::Spawn_PlayerItem(_uint _iPrototypeLevelID, _uint _i
 	Desc.tTransform3DDesc.vInitialPosition = _vPos;
 	Desc.tTransform3DDesc.vInitialScaling = _vScale;
 
+	_uint iItemCount = {};
+
 	for (auto& ItemTag : m_ItemTags) {
 		if (ItemTag.first == _szItemTag) {
 			Desc.szModelTag = ItemTag.second;
 			Desc.szItemTag = ItemTag.first;
 			Desc.szEventTag = strPrevText + ItemTag.first;
+			Desc.iItemType = iItemCount;
 			break;
 		}
+
+		iItemCount++;
 	}
 
 	CGameObject* pPlayerItem;

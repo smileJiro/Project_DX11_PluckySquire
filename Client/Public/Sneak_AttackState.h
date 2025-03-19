@@ -21,7 +21,7 @@ public:
 
 
 private:
-	_float2			m_fSneakFadeTime = { 4.f, 0.f };
+	_float2			m_fSneakFadeTime = { 2.f, 0.f };
 	_bool			m_isStartFade = { false };
 
 

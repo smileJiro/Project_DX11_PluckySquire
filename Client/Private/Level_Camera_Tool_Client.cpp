@@ -354,6 +354,8 @@ HRESULT CLevel_Camera_Tool_Client::Ready_Layer_TestTerrain(const _wstring& _strL
 	CModelObject* pPlayerBody = static_cast<CModelObject*>(pPlayer->Get_PlayerPartObject(CPlayer::PLAYER_PART_BODY));
 	m_ModelObjects.push_back(pPlayerBody);
 
+	pPlayer->Set_Kinematic(true);
+
 	return S_OK;
 }
 
@@ -651,6 +653,14 @@ void CLevel_Camera_Tool_Client::Show_CameraZoomInfo()
 
 void CLevel_Camera_Tool_Client::Show_AnimModel(_float _fTimeDelta)
 {
+	static _float2 fPlayTimer = {};
+	static _bool isPlay = false;
+
+	if(true == isPlay && fPlayTimer.y <= 50.f)
+		fPlayTimer.y += _fTimeDelta;
+
+	ImGui::Text("Time: %.2f", fPlayTimer);
+
 	ImGui::Begin("Control Model");
 
 	//static _int iModelIndex = {};
@@ -758,6 +768,38 @@ void CLevel_Camera_Tool_Client::Show_AnimModel(_float _fTimeDelta)
 		ImGui::Text("Max Anim %d, Cur Time: %.2f", Greater.second, m_fAnimTime);
 	}
 
+	if (true == ImGui::Button("Play Cyber Jot CutSceneAnim")) {
+
+		CPlayer* pPlayer = static_cast<CPlayer*>(m_pGameInstance->Get_GameObject_Ptr(m_eLevelID, TEXT("Layer_Player"), 0));
+		pPlayer->Set_State(CPlayer::ENGAGE_BOSS);
+		
+		
+	}
+
+	if (true == ImGui::Button("Stop Jot")) {
+
+		CPlayer* pPlayer = static_cast<CPlayer*>(m_pGameInstance->Get_GameObject_Ptr(m_eLevelID, TEXT("Layer_Player"), 0));
+		pPlayer->Set_PlayingAnim(false);
+		isPlay = false;
+	}
+
+	ImGui::SameLine();
+
+	if (true == ImGui::Button("Replay Jot")) {
+
+		CPlayer* pPlayer = static_cast<CPlayer*>(m_pGameInstance->Get_GameObject_Ptr(m_eLevelID, TEXT("Layer_Player"), 0));
+		pPlayer->Set_PlayingAnim(true);
+		isPlay = true;
+	}
+
+	ImGui::SameLine();
+
+	if (true == ImGui::Button("Return To Origin Pos")) {
+
+		CPlayer* pPlayer = static_cast<CPlayer*>(m_pGameInstance->Get_GameObject_Ptr(m_eLevelID, TEXT("Layer_Player"), 0));
+		pPlayer->Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSet(-10.0362425f, 5.76746035f, 11.9308004f, 1.f));
+
+	}
 
 	ImGui::End();
 }

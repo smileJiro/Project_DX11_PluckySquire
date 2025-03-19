@@ -24,6 +24,7 @@ public:
 	{
 		_wstring		szModelTag = {};
 		_wstring		szItemTag = {};
+		_uint			iItemType = {};
 	}PLAYERITEM_DESC;
 
 private:
@@ -41,6 +42,9 @@ public:
 
 public:
 	void						Change_Mode(_uint _iItemMode);
+
+public:
+	_uint						Get_ItemType() { return m_iItemType; }
 
 private:
 	CShader*					m_pShaderCom = { nullptr };
