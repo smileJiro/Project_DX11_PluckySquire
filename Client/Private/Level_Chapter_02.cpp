@@ -1304,8 +1304,8 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Monster()
 	if (FAILED(Ready_Layer_Monster_2D()))
 		return E_FAIL;
 
-	//if (FAILED(Ready_Layer_Monster_3D()))
-	//	return E_FAIL;
+	if (FAILED(Ready_Layer_Monster_3D()))
+		return E_FAIL;
 
 	return S_OK;
 }

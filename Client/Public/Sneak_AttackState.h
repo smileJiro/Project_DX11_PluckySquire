@@ -19,9 +19,20 @@ public:
 	virtual void State_Update(_float _fTimeDelta) override;
 	virtual void State_Exit() override;
 
+
 private:
-	void After_Attack();
-	void Beetle_CutScene();
+	_float2			m_fSneakFadeTime = { 4.f, 0.f };
+	_bool			m_isStartFade = { false };
+
+
+
+private:
+	void			After_Attack();
+	void			Beetle_CutScene();
+	void			FadeInOut(_float _fTimeDelta);
+
+	void			On_Player_AnimEnd(COORDINATE _eCoordinate, _uint _iAnimIndex);
+	void			On_Beetle_AnimEnd(COORDINATE _eCoordinate, _uint _iAnimIndex);
 
 public:
 	static CSneak_AttackState* Create(void* _pArg);
