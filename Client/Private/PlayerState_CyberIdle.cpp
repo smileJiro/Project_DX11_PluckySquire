@@ -18,7 +18,7 @@ void CPlayerState_CyberIdle::Update(_float _fTimeDelta)
 
 	if (tKeyResult.bInputStates[PLAYER_INPUT_ATTACK])
 	{
-		_vector vShootDir = XMVector3Normalize( m_pOwner->Get_CyberCursorOffset());
+		_vector vShootDir = XMVector3Normalize( m_pOwner->Get_CyberCursorPosition());
 		vShootDir = XMVectorSetW(vShootDir, 0.f);
 		m_pOwner->Shoot_Rifle(vShootDir);
 	}
@@ -146,7 +146,7 @@ void CPlayerState_CyberDash::Update(_float _fTimeDelta)
 
 	if (tKeyResult.bInputStates[PLAYER_INPUT_ATTACK])
 	{
-		_vector vShootDir = XMVector3Normalize(m_pOwner->Get_CyberCursorOffset());
+		_vector vShootDir = XMVector3Normalize(m_pOwner->Get_CyberCursorPosition());
 		vShootDir = XMVectorSetW(vShootDir, 0.f);
 		m_pOwner->Shoot_Rifle(vShootDir);
 	}

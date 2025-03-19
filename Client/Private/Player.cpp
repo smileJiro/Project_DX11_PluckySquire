@@ -2567,6 +2567,14 @@ void CPlayer::Update_CyberJot(_float _fTimeDelta)
 
 	m_vCyberPlanePosition += m_vCyberPlaneVelocity * _fTimeDelta;
 	m_vCyberPlanePosition = XMVectorClamp(m_vCyberPlanePosition, m_vCyberPlaneMinPosition, m_vCyberPlaneMaxPosition);
+
+	_float fPlaneBodyRatioX = (XMVectorGetX(m_vCyberPlanePosition) - XMVectorGetX(m_vCyberPlaneMinPosition)) / (XMVectorGetX(m_vCyberPlaneMaxPosition) - XMVectorGetX(m_vCyberPlaneMinPosition));
+	_float fPlaneBodyRatioY = (XMVectorGetY(m_vCyberPlanePosition) - XMVectorGetY(m_vCyberPlaneMinPosition)) / (XMVectorGetY(m_vCyberPlaneMaxPosition) - XMVectorGetY(m_vCyberPlaneMinPosition));
+	_float fTargetBoardWidth = XMVectorGetX(m_vTargetBoardMax) - XMVectorGetX(m_vTargetBoardMin);
+	_float fTargetBoardHeight = XMVectorGetY(m_vTargetBoardMax) - XMVectorGetY(m_vTargetBoardMin);
+	m_vCyberCursorBasePosition.m128_f32[0] =  fPlaneBodyRatioX * fTargetBoardWidth- fTargetBoardWidth*0.5f;
+	m_vCyberCursorBasePosition.m128_f32[1] = fPlaneBodyRatioY * fTargetBoardHeight - fTargetBoardHeight * 0.5f;
+
 	if (m_pCameraTargetWorldMatrix && m_pTargetCamera)
 	{
 		_vector vCamPosition = m_pTargetCamera->Get_FinalPosition();
