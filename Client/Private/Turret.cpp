@@ -140,6 +140,7 @@ void CTurret::State_Change_Fire()
             CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_2D, &pGameObject, &vPosition, nullptr, nullptr, &m_strSectionName);
             CBomb* pBomb = static_cast<CBomb*>(pGameObject);
             static_cast<CBomb*>(pGameObject)->Start_Parabola(vPos, vPlayerPos, 1.0f);
+            pBomb->Set_Time_On();
         }
         else
         {
@@ -148,6 +149,7 @@ void CTurret::State_Change_Fire()
             CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &pGameObject, &vPosition);
             CBomb* pBomb = static_cast<CBomb*>(pGameObject);
             pBomb->Start_Parabola_3D(vPlayerPos, XMConvertToRadians(30.f));
+            pBomb->Set_Time_On();
         }
     }
 

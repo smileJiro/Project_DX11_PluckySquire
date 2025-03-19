@@ -50,6 +50,7 @@ public:
 	virtual void Active_OnDisable() override;
 
 	virtual void On_PickUpStart(CPlayer* _pPalyer, _fmatrix _matPlayerOffset) override;
+	virtual void On_Throw(_fvector _vForce) override;
 
 public:
 	void Start_Parabola(_fvector _vStartPos, _fvector _vEndPos, _float _fParabolaTime);
