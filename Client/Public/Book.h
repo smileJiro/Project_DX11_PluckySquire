@@ -6,6 +6,7 @@
 
 BEGIN(Engine)
 class CAnimEventGenerator;
+class CTexture;
 END
 
 BEGIN(Client)
@@ -122,15 +123,21 @@ public:
 	void					Set_BlendingRatio(_float _fRatio) { m_fBlendingRatio = _fRatio; }
 	void					Start_DropBook();
 	void					End_DropBook();
+
+
+	void					Set_Freezing(_bool _isFreezing) { m_isFreezing = _isFreezing; }
+	_bool					Is_Freezing() { return m_isFreezing; }	
 private:
 	//void					Calc_Page3DWorldMinMax();	
 
 private :
 	CAnimEventGenerator*	m_pAnimEventGenerator = { nullptr };
+	CTexture*				m_pTextureCom = { nullptr };
 	BOOK_PAGE_ACTION		m_eCurAction = ACTION_LAST;
 	BOOK_ANIM_ACTION		m_eAnimAction = ANIM_ACTION_NONE;
 	_float					m_fAccAnimTime = 0.f;
 	_float3					m_fNextPos = {};
+	_bool					m_isFreezing = { false };
 	_bool					m_isAction = { false };
 	_bool					m_isPlayerAround= { false };
 	_bool					m_isPlayerAbove= { false };
