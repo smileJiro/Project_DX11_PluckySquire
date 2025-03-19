@@ -362,6 +362,9 @@ void CBomb::Active_OnEnable()
 	if (nullptr != m_pFuseEffect)
 		m_pFuseEffect->Active_Effect(true);
 
+	//m_pFuseEffect->Inactive_All();
+	//m_pFuseEffect->Stop_Spawn(0.5f);
+
 	m_p2DColliderComs[0]->Set_Active(true);
 	m_p2DColliderComs[2]->Set_Active(false);
 }
