@@ -10,8 +10,8 @@
 			"vPositionX": 616.0,
 			"vPositionY": -29.0,
 			"vPositionZ": 0.0,
-			"CollisionScaleX": 70.0,
-			"CollisionScaleY": 70.0,
+			"CollisionScaleX": 20.0,
+			"CollisionScaleY": 20.0,
 			"isInteractable": true,
 			"isDialog": true,
 			"is2D": true
@@ -26,8 +26,8 @@
 			"vPositionX": 615.0,
 			"vPositionY": -139.0,
 			"vPositionZ": 0.0,
-			"CollisionScaleX": 70.0,
-			"CollisionScaleY": 70.0,
+			"CollisionScaleX": 20.0,
+			"CollisionScaleY": 20.0,
 			"isInteractable": true,
 			"isDialog": true,
 			"is2D": true
@@ -42,8 +42,8 @@
 			"vPositionX": 70.0,
 			"vPositionY": 116.5,
 			"vPositionZ": 0.0,
-			"CollisionScaleX": 70.0,
-			"CollisionScaleY": 170.0,
+			"CollisionScaleX": 20.0,
+			"CollisionScaleY": 300.0,
 			"isInteractable": true,
 			"isDialog": true,
 			"is2D": true
@@ -57,8 +57,8 @@
 			"vPositionX": -95.7,
 			"vPositionY": 183.2,
 			"vPositionZ": 0.0,
-			"CollisionScaleX": 70.0,
-			"CollisionScaleY": 70.0,
+			"CollisionScaleX": 20.0,
+			"CollisionScaleY": 20.0,
 			"isInteractable": false,
 			"isDialog": false,
 			"is2D": true
