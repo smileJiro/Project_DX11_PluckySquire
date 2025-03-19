@@ -2017,6 +2017,11 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 	if (FAILED(UI_Object_Load(_eLoadLevelID)))
 		return E_FAIL;
 
+	/* For. Prototype_GameObject_Gear */
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Gear"),
+		CGear::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 	/* For. Prototype_GameObject_GameEventExecuter */
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_GameEventExecuter"),
 		CGameEventExecuter_C8::Create(m_pDevice, m_pContext))))

@@ -36,7 +36,7 @@ public:
 	HRESULT					Ready_Layer_PortalLocker(const _wstring& _strLayerTag);
 	HRESULT					Ready_Layer_MapGimmick(const _wstring& _strLayerTag);
 	HRESULT					Ready_Layer_RoomDoor(const _wstring& _strLayerTag);
-
+	HRESULT					Ready_Layer_Gear(const _wstring& _strLayerTag);
 private:
 	class CMinigame_Sneak* m_pSneakMinigameManager = { nullptr };
 	CFormation_Manager* m_pFormation_Manager = { nullptr };

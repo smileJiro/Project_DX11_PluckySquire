@@ -50,10 +50,8 @@ HRESULT CExcavatorGame::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* 
 
 HRESULT CExcavatorGame::Start_Game()
 {
-
     m_iCurProgress = PROGRESS_1;
     Enter_Progress();
-
 
     return S_OK;
 }
@@ -66,15 +64,6 @@ void CExcavatorGame::Update(_float _fTimeDelta)
     if (true == m_isGameEnd)
         return;
 
-    if (KEY_DOWN(KEY::H))
-    {
-        CExcavator_Switch* pSwitch = static_cast<CExcavator_Centre*>(m_ExcavatorParts[EXCAVATOR_CENTRE])->Get_ActiveSwitch();
-        if (nullptr != pSwitch)
-        {
-            m_pThrash->Go_Switch(pSwitch);
-        }
-        
-    }
     Action_State(_fTimeDelta);
 
     if (true == Update_Progress(_fTimeDelta))
@@ -398,12 +387,22 @@ _bool CExcavatorGame::Update_Progress_6(_float _fTimeDelta)
 {
     if (m_iProgressLevel == 0)
     {
-        m_pThrash->Move_Position(_float2(50.0f, -50.0f), CFriend::DIR_UP);
-        ++m_iProgressLevel;
+        CLayer* pLayer = m_pGameInstance->Find_Layer(LEVEL_CHAPTER_6, m_strMonsterLayerTag);
+        assert(pLayer);
+        list<CGameObject*> GameObjects = pLayer->Get_GameObjects();
+        if (true == GameObjects.empty())
+        {
+            CPlayer* pPlayer = CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr();
+            pPlayer->ErasePalm();
+            m_pSaw->Set_CurState(CSaw::STATE_HIDE);
+            m_pThrash->Move_Position(_float2(50.0f, -50.0f), CFriend::DIR_UP);
+            ++m_iProgressLevel;
+        }
+
     }
     else if (m_iProgressLevel == 1)
     {
-        if (m_iHP <= 0)
+        if (m_eCurState == STATE_DEAD)
         {
             m_pTurret_Left->Close_Turret();
             m_pTurret_Right->Close_Turret();
@@ -415,14 +414,14 @@ _bool CExcavatorGame::Update_Progress_6(_float _fTimeDelta)
         }
 
     }
-    else if (m_iProgressLevel == 1)
+    else if (m_iProgressLevel == 2)
     {
         if (false == CDialog_Manager::GetInstance()->Get_DisPlayDialogue())
         {
             m_pThrash->Move_Position(_float2(150.f, 30.f), CFriend::DIR_RIGHT);
 
             CPlayer* pPlayer = CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr();
-            _vector vPlayerPos = { -100.f, 50.0f, 0.0f, 1.0f };
+            _vector vPlayerPos = { 100.f, 50.0f, 0.0f, 1.0f };
             AUTOMOVE_COMMAND AutoMove{};
             AutoMove.eType = AUTOMOVE_TYPE::MOVE_TO;
             AutoMove.fPostDelayTime = 0.0f;
@@ -435,8 +434,8 @@ _bool CExcavatorGame::Update_Progress_6(_float _fTimeDelta)
             AutoMove2.eType = AUTOMOVE_TYPE::LOOK_DIRECTION;
             AutoMove2.fPostDelayTime = 0.0f;
             AutoMove2.fPreDelayTime = 0.0f;
-            AutoMove2.vTarget = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
-            AutoMove2.iAnimIndex = (_uint)CPlayer::ANIM_STATE_2D::PLAYER_IDLE_UP;
+            AutoMove2.vTarget = XMVectorSet(1.0f, 0.0f, 0.0f, 0.0f);
+            AutoMove2.iAnimIndex = (_uint)CPlayer::ANIM_STATE_2D::PLAYER_IDLE_RIGHT;
 
             pPlayer->Add_AutoMoveCommand(AutoMove);
             pPlayer->Add_AutoMoveCommand(AutoMove2);
@@ -447,18 +446,39 @@ _bool CExcavatorGame::Update_Progress_6(_float _fTimeDelta)
         }
 
     }
-    else if (m_iProgressLevel == 2)
+    else if (m_iProgressLevel == 3)
+    {
+        m_fDelayTime += _fTimeDelta;
+        if (4.0f < m_fDelayTime)
+        {
+            CPlayer* pPlayer = CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr();
+            pPlayer->Set_State(CPlayer::IDLE);
+            pPlayer->Set_BlockPlayerInput(false);
+            _float3 fDefaultPos = {};
+            Event_Book_Main_Section_Change_Start(1, &fDefaultPos);
+
+
+            m_fDelayTime = 0.0f;
+            ++m_iProgressLevel;
+        }
+    }
+    else if (m_iProgressLevel == 4)
     {
         m_fDelayTime += _fTimeDelta;
         if (3.0f < m_fDelayTime)
         {
-            CPlayer* pPlayer = CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr();
+            CFriend* pViolet = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Violet"));
+            _wstring strCurSection = pViolet->Get_Include_Section_Name();
+            CSection_Manager::GetInstance()->Remove_GameObject_FromSectionLayer(strCurSection, pViolet);
+            CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(pViolet);
+            pViolet->Set_CurState(CFriend::FRIEND_CHASE);
 
-            pPlayer->Set_State(CPlayer::IDLE);
-            _float3 fDefaultPos = {};
-            Event_Book_Main_Section_Change_Start(1, &fDefaultPos);
-
-            m_iProgressLevel = 0;
+            m_pThrash->Change_Mode(CFriend::MODE_DEFAULT);
+            m_pThrash->Set_CurState(CFriend::FRIEND_CHASE);
+            CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(TEXT("Violet"));
+            CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(TEXT("Thrash"));
+            CFriend_Controller::GetInstance()->Start_Train();
+            //m_iProgressLevel = 0;
             return true;
         }
     }
@@ -475,7 +495,9 @@ void CExcavatorGame::Enter_Progress()
     {
         /* 문 닫기 */
         CloseDoors();
-
+        m_pThrash = dynamic_cast<CFriend_Thrash*>(CFriend_Controller::GetInstance()->Find_Friend(TEXT("Thrash")));
+        assert(m_pThrash);
+        Safe_AddRef(m_pThrash);
         /* 몬스터 2마리 생성 */
         m_strMonsterLayerTag = TEXT("Layer_Boss_Soldier");
         { /* Left >> Right */
@@ -494,6 +516,7 @@ void CExcavatorGame::Enter_Progress()
                 return;
 
             CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_P0708"), pGameObject);
+            static_cast<CMonster*>(pGameObject)->Set_Target(m_pThrash);
         } /* Left >> Right */
 
                 /* 몬스터 2마리 생성 */
@@ -513,11 +536,9 @@ void CExcavatorGame::Enter_Progress()
                 return;
 
             CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_P0708"), pGameObject);
+            static_cast<CMonster*>(pGameObject)->Set_Target(m_pThrash);
         } /* Left >> Right */
 
-        m_pThrash = dynamic_cast<CFriend_Thrash*>(CFriend_Controller::GetInstance()->Find_Friend(TEXT("Thrash")));
-        assert(m_pThrash);
-        Safe_AddRef(m_pThrash);
         m_pThrash->Set_FightLayerTag(m_strMonsterLayerTag);
         m_pThrash->Change_Mode(CFriend::MODE_FIGHT);
     }
@@ -545,6 +566,7 @@ void CExcavatorGame::Enter_Progress()
                 return;
 
             CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_P0708"), pGameObject);
+            static_cast<CMonster*>(pGameObject)->Set_Target(m_pThrash);
         } /* Left >> Right */
 
                 /* 몬스터 2마리 생성 */
@@ -564,6 +586,7 @@ void CExcavatorGame::Enter_Progress()
                 return;
 
             CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_P0708"), pGameObject);
+            static_cast<CMonster*>(pGameObject)->Set_Target(m_pThrash);
         } /* Left >> Right */
 
         m_pThrash->Change_Mode(CFriend::MODE_FIGHT);
@@ -592,6 +615,7 @@ void CExcavatorGame::Enter_Progress()
                 return;
 
             CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_P0708"), pGameObject);
+            static_cast<CMonster*>(pGameObject)->Set_Target(m_pThrash);
         } /* Left >> Right */
 
                 /* 몬스터 2마리 생성 */
@@ -611,6 +635,7 @@ void CExcavatorGame::Enter_Progress()
                 return;
 
             CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_P0708"), pGameObject);
+            static_cast<CMonster*>(pGameObject)->Set_Target(m_pThrash);
         } /* Left >> Right */
         m_pThrash->Change_Mode(CFriend::MODE_FIGHT);
 
@@ -652,6 +677,7 @@ void CExcavatorGame::Enter_Progress()
                 return;
 
             CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_P0708"), pGameObject);
+            static_cast<CMonster*>(pGameObject)->Set_Target(m_pThrash);
         } /* Left >> Right */
 
                 /* 몬스터 2마리 생성 */
@@ -671,6 +697,7 @@ void CExcavatorGame::Enter_Progress()
                 return;
 
             CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_P0708"), pGameObject);
+            static_cast<CMonster*>(pGameObject)->Set_Target(m_pThrash);
         } /* Left >> Right */
 
         CPlayer* pPlayer = CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr();
@@ -701,6 +728,8 @@ void CExcavatorGame::Enter_Progress()
                 return;
 
             CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_P0708"), pGameObject);
+            static_cast<CMonster*>(pGameObject)->Set_Target(m_pThrash);
+            
         } /* Left >> Right */
 
         { /* Left >> Right */
@@ -719,7 +748,8 @@ void CExcavatorGame::Enter_Progress()
                 return;
 
             CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_P0708"), pGameObject);
-            //static_cast<CMonster*>(pGameObject).set_
+            static_cast<CMonster*>(pGameObject)->Set_Target(m_pThrash);
+            
         } /* Left >> Right */
 
         CPlayer* pPlayer = CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr();
@@ -791,7 +821,7 @@ _int CExcavatorGame::Minus_HP()
     if (STATE_DEAD == m_eCurState)
         return 0;
    
-    if (0 >= m_iHP)
+    if (0 == m_iHP)
     {
         m_eCurState = STATE_DEAD;
         State_Change();
@@ -1001,7 +1031,7 @@ void CExcavatorGame::State_Change_Dead()
     static_cast<CExcavator_Tread*>(m_ExcavatorParts[EXCAVATOR_PART::EXCAVATOR_TREAD_R])->Start_Wheel();
 
     CCamera_Manager::GetInstance()->Off_Shake();
-    CCamera_Manager::GetInstance()->Start_Shake_ByCount(CCamera_Manager::TARGET_2D, 4.f, 0.8f, 2000, CCamera::SHAKE_Y, 0.0f);
+    CCamera_Manager::GetInstance()->Start_Shake_ByCount(CCamera_Manager::TARGET_2D, 8.f, 0.8f, 2000, CCamera::SHAKE_Y, 0.0f);
 
     m_vMoveTime.x = 7.f;
     m_vMoveTime.y = 0.f;
