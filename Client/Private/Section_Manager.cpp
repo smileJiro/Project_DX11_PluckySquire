@@ -536,7 +536,6 @@ void CSection_Manager::Set_BookWorldPosMapTexture(ID3D11Texture2D* _pBookWorldPo
 			}
 		}
 	}
-
 }
 
 HRESULT CSection_Manager::Word_Action_To_Section(const _wstring& _strSectionTag, _uint _iControllerIndex, _uint _iContainerIndex, _uint _iWordType, _bool _isRegistered)

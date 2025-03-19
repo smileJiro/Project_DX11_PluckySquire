@@ -214,6 +214,7 @@ HRESULT CLevel_Chapter_08::Initialize(LEVEL_ID _eLevelID)
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::SLIPPERY);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::PLAYER_BLOCKER);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::DOOR);
+
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_PROJECTILE, OBJECT_GROUP::BLOCKER);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_PROJECTILE, OBJECT_GROUP::MAPOBJECT);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_PROJECTILE, OBJECT_GROUP::GIMMICK_OBJECT);
@@ -222,6 +223,7 @@ HRESULT CLevel_Chapter_08::Initialize(LEVEL_ID _eLevelID)
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_PROJECTILE, OBJECT_GROUP::WORD_GAME);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_TRIGGER, OBJECT_GROUP::WORD_GAME);
 	//m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::PORTAL);
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_TRIGGER, OBJECT_GROUP::INTERACTION_PORTAL); //3 8
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_TRIGGER, OBJECT_GROUP::INTERACTION_OBEJCT); //3 8
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_TRIGGER, OBJECT_GROUP::GIMMICK_OBJECT); //3 8
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::INTERACTION_OBEJCT, OBJECT_GROUP::WORD_GAME);
@@ -657,7 +659,6 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Map()
 		break;
 	case Client::LEVEL_CHAPTER_8:
 		if (FAILED(Map_Object_Create(L"Chapter8_Intro.mchc")))
-		//if (FAILED(Map_Object_Create(L"Chapter_08_Play_Desk.mchc")))
 			return E_FAIL;
 		break;
 	case Client::LEVEL_CHAPTER_TEST:
@@ -798,7 +799,6 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Player(const _wstring& _strLayerTag, CGam
 	Desc.tTransform3DDesc.vInitialPosition = { -90.f, 67.f, 18.3f };   // TODO ::임시 위치
 	//Desc.tTransform2DDesc.vInitialPosition = { 409.f, 102.f, 0.f };   // TODO ::임시 위치
 	Desc.tTransform2DDesc.vInitialPosition = { -808.1f, 192.f, 0.f };   // TODO ::임시 위치
-	//Desc.tTransform2DDesc.vInitialPosition = { 808.1f, -192.f, 0.f };   // TODO ::임시 위치
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_TestPlayer"), m_eLevelID, _strLayerTag, _ppOut, &Desc)))
 		return E_FAIL;
@@ -1625,6 +1625,7 @@ HRESULT CLevel_Chapter_08::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 	Desc.tTransform2DDesc.vInitialPosition = _float3(265.f, 306.8f, 0.f);
 	Desc.iCurLevelID = m_eLevelID;
 	Desc.isHorizontal = true;
+	Desc.isPressurePlate = true;
 	Desc.eSize = CDoor_2D::MED;
 	Desc.eInitialState = CDoor_2D::CLOSED;
 	Desc.vPressurePlatePos = _float3(243.5, -113.f, 0.f);
@@ -1637,9 +1638,10 @@ HRESULT CLevel_Chapter_08::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 	Desc.tTransform2DDesc.vInitialPosition = _float3(260.f, -716.8f, 0.f);
 	Desc.iCurLevelID = m_eLevelID;
 	Desc.isHorizontal = true;
+	Desc.isPressurePlate = true;
 	Desc.eSize = CDoor_2D::MED;
 	Desc.eInitialState = CDoor_2D::CLOSED;
-	Desc.vPressurePlatePos = _float3(-30.5f, -686.f, 0.f);
+	Desc.vPressurePlatePos = _float3(-30.5f, -756.f, 0.f);
 	Desc.strSectionTag = L"Chapter8_SKSP_02";
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorYellow"),
@@ -1649,6 +1651,7 @@ HRESULT CLevel_Chapter_08::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 	Desc.tTransform2DDesc.vInitialPosition = _float3(-5.f, 1086.f, 0.f);
 	Desc.iCurLevelID = m_eLevelID;
 	Desc.isHorizontal = true;
+	Desc.isPressurePlate = true;
 	Desc.eSize = CDoor_2D::MED;
 	Desc.eInitialState = CDoor_2D::CLOSED;
 	Desc.vPressurePlatePos = _float3(-280.5f, 936.f, 0.f);
@@ -1671,7 +1674,7 @@ HRESULT CLevel_Chapter_08::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 	CarriDesc = {};
 
 	CarriDesc.iCurLevelID = m_eLevelID;
-	CarriDesc.Build_2D_Transform({ -230.f, -1377.f });
+	CarriDesc.Build_2D_Transform({ -230.f, -1227.f });
 	CarriDesc.strInitialSectionTag = L"Chapter8_SKSP_02";
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_C08Box"),
 		m_eLevelID, _strLayerTag, &CarriDesc)))
@@ -1692,7 +1695,7 @@ HRESULT CLevel_Chapter_08::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 	LaserDesc.iCurLevelID = m_eLevelID;
 	LaserDesc.fStartPos = { -380.35f ,-1113.24f };
 	LaserDesc.fEndPos = { -380.35f,-1443.24f };
-	LaserDesc.fMoveSpeed = 150.f;
+	LaserDesc.fMoveSpeed = 120.f;
 	LaserDesc.eDir = F_DIRECTION::RIGHT;
 	LaserDesc.strInitSectionTag = L"Chapter8_SKSP_02";
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Laser_Container"),
@@ -1702,7 +1705,7 @@ HRESULT CLevel_Chapter_08::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 	LaserDesc.iCurLevelID = m_eLevelID;
 	LaserDesc.fStartPos = { -366.74f,249.43f };
 	LaserDesc.fEndPos = { -366.74f,-483.90f };
-	LaserDesc.fMoveSpeed = 150.f;
+	LaserDesc.fMoveSpeed = 120.f;
 	LaserDesc.eDir = F_DIRECTION::RIGHT;
 	LaserDesc.strInitSectionTag = L"Chapter8_SKSP_02";
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Laser_Container"),
@@ -1712,7 +1715,7 @@ HRESULT CLevel_Chapter_08::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 	LaserDesc.iCurLevelID = m_eLevelID;
 	LaserDesc.fStartPos = { 4.29f,-10.38f };
 	LaserDesc.fEndPos = { 4.29f, -360.f };
-	LaserDesc.fMoveSpeed = 150.f;
+	LaserDesc.fMoveSpeed = 120.f;
 	LaserDesc.eDir = F_DIRECTION::LEFT;
 	LaserDesc.strInitSectionTag = L"Chapter8_SKSP_03";
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Laser_Container"),
@@ -1722,7 +1725,7 @@ HRESULT CLevel_Chapter_08::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 	LaserDesc.iCurLevelID = m_eLevelID;
 	LaserDesc.fStartPos = { -410.19f,1027.82f };
 	LaserDesc.fEndPos = { -410.19f,574.48f };
-	LaserDesc.fMoveSpeed = 150.f;
+	LaserDesc.fMoveSpeed = 120.f;
 	LaserDesc.eDir = F_DIRECTION::RIGHT;
 	LaserDesc.isPressurePlate = true;
 	LaserDesc.fPressurePlatePos = _float2(-280.5f, 686.f);
@@ -1736,7 +1739,7 @@ HRESULT CLevel_Chapter_08::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 	LaserDesc.iCurLevelID = m_eLevelID;
 	LaserDesc.fStartPos = { -302.00f, -1110.68f };
 	LaserDesc.fEndPos = { -410.19f,574.48f };
-	LaserDesc.fMoveSpeed = 150.f;
+	LaserDesc.fMoveSpeed = 120.f;
 	LaserDesc.eDir = F_DIRECTION::RIGHT;
 	LaserDesc.isPressurePlate = false;
 	LaserDesc.isMove = false;
@@ -1853,7 +1856,7 @@ HRESULT CLevel_Chapter_08::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 	LaserDesc.iCurLevelID = m_eLevelID;
 	LaserDesc.fStartPos = { -1298.52f ,956.33f };
 	LaserDesc.fEndPos = { -957.00f,956.33f };
-	LaserDesc.fMoveSpeed = 150.f;
+	LaserDesc.fMoveSpeed = 120.f;
 	LaserDesc.isMove = true;
 
 	LaserDesc.eDir = F_DIRECTION::DOWN;
@@ -1866,7 +1869,7 @@ HRESULT CLevel_Chapter_08::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 	LaserDesc.iCurLevelID = m_eLevelID;
 	LaserDesc.fStartPos = { -471.57f ,956.33f };
 	LaserDesc.fEndPos = { 165.,956.33f };
-	LaserDesc.fMoveSpeed = 150.f;
+	LaserDesc.fMoveSpeed = 120.f;
 	LaserDesc.eDir = F_DIRECTION::DOWN;
 	LaserDesc.strInitSectionTag = L"Chapter8_SKSP_09";
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Laser_Container"),
@@ -1878,7 +1881,7 @@ HRESULT CLevel_Chapter_08::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 	LaserDesc.iCurLevelID = m_eLevelID;
 	LaserDesc.fStartPos = { 251.f ,956.33f };
 	LaserDesc.fEndPos = { 911.f,956.33f };
-	LaserDesc.fMoveSpeed = 150.f;
+	LaserDesc.fMoveSpeed = 120.f;
 	LaserDesc.isMove = true;
 	LaserDesc.eDir = F_DIRECTION::DOWN;
 	LaserDesc.strInitSectionTag = L"Chapter8_SKSP_09";

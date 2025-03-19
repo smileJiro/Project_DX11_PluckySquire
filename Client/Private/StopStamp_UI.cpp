@@ -91,7 +91,7 @@ void CStopStamp_UI::Late_Update(_float _fTimeDelta)
 	CBook* pBook = Uimgr->Get_Book();
 
 	if (nullptr == pBook)
-		assert(pBook);
+		return;
 
 	if (true == pBook->Get_PlayerAbove())
 		__super::Late_Update(_fTimeDelta);

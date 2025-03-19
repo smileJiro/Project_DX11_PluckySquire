@@ -206,7 +206,11 @@ HRESULT CPlayer::Initialize(void* _pArg)
 	ShapeData.isTrigger = true;
 	XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(0, m_f3DCenterYOffset, 0));
 	ShapeData.FilterData.MyGroup = OBJECT_GROUP::PLAYER_TRIGGER;
-	ShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::DYNAMIC_OBJECT | OBJECT_GROUP::INTERACTION_OBEJCT;
+	ShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | 
+		OBJECT_GROUP::DYNAMIC_OBJECT | 
+		OBJECT_GROUP::INTERACTION_OBEJCT |
+		OBJECT_GROUP::INTERACTION_PORTAL
+		;
 	ActorDesc.ShapeDatas[ShapeData.iShapeUse] = ShapeData;
 
 	//상호작용 구 (트리거)
@@ -826,7 +830,7 @@ void CPlayer::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)
 	if (PLAYER_SHAPE_USE::INTERACTION == (PLAYER_SHAPE_USE)_My.pShapeUserData->iShapeUse)
 	{
 		OBJECT_GROUP eOtehrGroup = (OBJECT_GROUP)_Other.pActorUserData->pOwner->Get_ObjectGroupID();
-		if (OBJECT_GROUP::INTERACTION_OBEJCT == eOtehrGroup)
+		if (OBJECT_GROUP::INTERACTION_OBEJCT == eOtehrGroup || OBJECT_GROUP::INTERACTION_PORTAL == eOtehrGroup )
 		{
 			IInteractable* pInteractable = dynamic_cast<IInteractable*> (_Other.pActorUserData->pOwner);
 			if (Check_ReplaceInteractObject(pInteractable))
@@ -973,7 +977,7 @@ void CPlayer::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCol
 	OBJECT_GROUP eGroup = (OBJECT_GROUP)_pOtherObject->Get_ObjectGroupID();
 	if (_pMyCollider == m_pBody2DTriggerCom)
 	{
-		if (OBJECT_GROUP::INTERACTION_OBEJCT == eGroup)
+		if (OBJECT_GROUP::INTERACTION_OBEJCT == eGroup || OBJECT_GROUP::INTERACTION_PORTAL == eGroup)
 		{
 			IInteractable* pInteractable = dynamic_cast<IInteractable*> (_pOtherObject);
 			if (nullptr != pInteractable && static_cast<CCollider_Circle*>(_pMyCollider)->Is_ContainsPoint(_pOtherCollider->Get_Position()))
