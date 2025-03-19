@@ -184,16 +184,16 @@ void CPlayerState_CyberDash::Enter()
 		break;
 	}
 
-	_float fG = m_pGameInstance->Compute_Random(0.6, 0.909f);
-	static_cast<CModelObject*>(m_pOwner->Get_PartObject(CPlayer::PART::PART_BODY))->On_Trail(0.05f, 0.5f, _float4(0.0f, fG, 1.0f, 0.7f)/*,_float4(242.f / 255.f, 44.f / 255.f, 103.f / 255.f, 0.9f)*/);
-	static_cast<CModelObject*>(m_pOwner->Get_PartObject(CPlayer::PLAYER_PART::PLAYER_PART_ZETPACK))->On_Trail(0.05f, 0.5f, _float4(0.0f, fG, 1.0f, 0.7f)/*,_float4(242.f / 255.f, 44.f / 255.f, 103.f / 255.f, 0.9f)*/);
+	_float fG = m_pGameInstance->Compute_Random(0.6f, 0.909f);
+	static_cast<CModelObject*>(m_pOwner->Get_PartObject(CPlayer::PART::PART_BODY))->On_Trail(0.025f, 0.5f, _float4(0.0f, fG, 1.0f, 0.7f), _float4(1.f, 1.f, 1.f, 1.f), 0.f, 1.5f);/*,_float4(242.f / 255.f, 44.f / 255.f, 103.f / 255.f, 0.9f)*/
+//	static_cast<CModelObject*>(m_pOwner->Get_PartObject(CPlayer::PLAYER_PART::PLAYER_PART_ZETPACK))->On_Trail(0.05f, 0.5f, _float4(0.0f, fG, 1.0f, 0.7f)/*,_float4(242.f / 255.f, 44.f / 255.f, 103.f / 255.f, 0.9f)*/);
 
 }
 
 void CPlayerState_CyberDash::Exit()
 {
 	static_cast<CModelObject*>(m_pOwner->Get_PartObject(CPlayer::PART::PART_BODY))->Off_Trail();
-	static_cast<CModelObject*>(m_pOwner->Get_PartObject(CPlayer::PLAYER_PART::PLAYER_PART_ZETPACK))->Off_Trail();
+	//static_cast<CModelObject*>(m_pOwner->Get_PartObject(CPlayer::PLAYER_PART::PLAYER_PART_ZETPACK))->Off_Trail();
 	m_pDynamicActor->Set_LinearDamping(5.f);
 }
 

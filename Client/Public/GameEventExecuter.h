@@ -97,6 +97,7 @@ protected:
 
 	void Init_Step()
 	{
+		m_isPlag = false;
 		m_isStart = false;
 		m_iStep= 0;
 		m_iSubStep = 0;
@@ -116,6 +117,7 @@ protected:
 	{
 		if (_isNextStep)
 		{
+			m_isPlag = false;
 			m_isStart = false;
 			m_iStep++;
 			m_iSubStep = 0;

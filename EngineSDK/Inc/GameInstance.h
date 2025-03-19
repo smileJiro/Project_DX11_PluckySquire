@@ -126,6 +126,7 @@ public: /* For. PipeLine */
 	_matrix				Get_TransformInverseMatrix(CPipeLine::D3DTRANSFORMSTATE _eState);
 	_float4x4			Get_TransformInverseFloat4x4(CPipeLine::D3DTRANSFORMSTATE _eState);
 	const _float4*		Get_CamPosition() const;
+	_vector Get_vCamPosition();
 	_float2				Transform_WorldToScreen(_fvector _vWorldPos, _float2 _fScreenSize);
 	void				Set_NearFarZ(_float2 _vNearFarZ);
 	_float*				Get_NearZ();
@@ -204,6 +205,10 @@ public: /* For. Sound_Manager */
 	void				Stop_SFX(const wstring& strSFXTag); // 일시정지 
 	void				End_SFX(const wstring& strSFXTag); // 완전 재생 종료
 	_float				Get_SFXTrackPosition(const wstring& strSFXTag);
+
+	void				Start_SFX_Distance(const _wstring& strSFXTag, _fvector _vPosition, _float _fMaxVolume = 70.f, _float _fMinVolume = 0.f, _float _fMaxVolumeDist = 10.f, _float _fFactor = 0.5f, _bool _isLoop = false);
+	void				Start_SFX_Distance_Delay(const _wstring& strSFXTag, _fvector _vPosition, _float _fDelayTime, _float _fMaxVolume = 70.f, _float _fMinVolume = 0.f, _float _fMaxVolumeDist = 10.f, _float _fFactor = 0.5f, _bool _isLoop = false);
+
 	_bool				Is_SFXPlaying(const wstring& strSFXTag);
 	_float				Get_SFXVolume(const wstring& strSFXTag);
 	void				Set_SFXVolume(const wstring& strSFXTag, _float _fVolume);

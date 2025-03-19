@@ -27,6 +27,13 @@ class CPlayerBody;
 class CDefenderPlayer;
 class CPlayerRifle;
 class CTurnBookEffect;
+enum class PLAYER_2D_ITEM_ID
+{
+	FATHER_BODY,
+	FATHER_WING,
+	FATER_HEAD,
+	LAST
+};
 enum PLAYER_INPUT
 {
 	PLAYER_INPUT_MOVE,
@@ -561,6 +568,7 @@ public:
 	void ReFuel();
 	void ZetPropel(_float _fTimeDelta);
 	void Shoot_Rifle(_fvector _vDirection);
+	void Acquire_Item(PLAYER_2D_ITEM_ID _eItemID);
 
 	_bool Check_ReplaceInteractObject(IInteractable* _pObj);
 

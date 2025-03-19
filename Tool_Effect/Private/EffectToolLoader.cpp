@@ -172,14 +172,17 @@ HRESULT CEffectToolLoader::Loading_Level_Tool()
     //matPretransform *= XMMatrixRotationAxis(_vector{ 0,1,0,0 }, XMConvertToRadians(90.f));
 
 
+    //if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Model_Sphere"),
+    //    C3DModel::Create(m_pDevice, m_pContext,
+    //        ("../Bin/Resources/Models/3DAnim/buttergrump_Rig/Projectiles/TennisBall_01.model"
+    //            ), matPretransform))))
+    //    return E_FAIL;
+
     if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Model_Sphere"),
         C3DModel::Create(m_pDevice, m_pContext,
-            ("../Bin/Resources/Models/3DAnim/buttergrump_Rig/Projectiles/TennisBall_01.model"
+            ("../Bin/Resources/Models/Nonanim/LightbulbPickup_01/LightbulbPickup_01.model"
                 ), matPretransform))))
-        return E_FAIL;
-
-
-    
+        return E_FAIL; 
 
 
     

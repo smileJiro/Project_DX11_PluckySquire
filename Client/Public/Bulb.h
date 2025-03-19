@@ -11,12 +11,6 @@ END
 BEGIN(Client)
 class CBulb  final : public CTriggerObject
 {
-	typedef struct tagFresnels
-	{
-		FRESNEL_INFO tInner;
-		FRESNEL_INFO tOuter;
-	} MULTI_FRESNEL_INFO;
-
 public:	
 	typedef struct tagBulbDesc : public CTriggerObject::TRIGGEROBJECT_DESC
 	{
@@ -75,9 +69,9 @@ private:
 	C2DModel*				m_p2DModelCom = { nullptr };
 	CShader*				m_p3DShaderCom = { nullptr };
 	CShader*				m_p2DShaderCom = { nullptr };
-	ID3D11Buffer*			m_pFresnelBuffer = { nullptr };
 
-	MULTI_FRESNEL_INFO			m_tFresnelInfo;
+	ID3D11Buffer*			m_pFresnelBuffer = { nullptr };
+	ID3D11Buffer*			m_pColorBuffer = { nullptr };
 
 private:
 	const _float4x4*		m_pTargetWorld = { nullptr };

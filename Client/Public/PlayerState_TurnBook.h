@@ -65,7 +65,7 @@ private:
 	_float m_fTiltIdleTime = 0.5f;
 	_float m_fTiltIdleTimeAcc = 0.f;
 	_float m_fSlidProgress = 0.16f;
-
+	_bool m_isDropp = false;
 	// ´ÝÈù »óÅÂ¿¡¼­ ¿­±â
 	//_bool				m_is
 private:

@@ -60,7 +60,10 @@ public:
 	_bool						is_2D() { return m_is2D; }
 	wstring						Get_NPCName() { return m_strNPCName; }
 	HRESULT						ChangeDialogueID(_wstring _DialogueID) { m_strDialogueID = _DialogueID; return S_OK; }
-
+	_bool						is_DisplayHumgrump() { return m_isDialgPlayForHumgrump; }
+	void						Set_DisplayHumgrump(_bool _display) { m_isDialgPlayForHumgrump = _display; }
+	void						Set_WaitHumgrumpDialog(_bool _WaitDialog) { m_WaitHumgrumpDialog = _WaitDialog; }
+	_bool						Get_WaitHugrumpDialog() { return m_WaitHumgrumpDialog; }
 
 private:
 	void						On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx);
@@ -94,6 +97,10 @@ private:
 
 	wstring			m_strNPCName = { TEXT("") };
 
+	_bool			m_isEndAnimationChange = { true };
+	_bool			m_isDialgPlayForHumgrump = { true };
+	_bool			m_WaitHumgrumpDialog = { true };
+	_float			m_fWaitTimeHumgrumpDialog = { 0.f };
 
 
 };

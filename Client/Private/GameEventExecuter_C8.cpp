@@ -1124,11 +1124,23 @@ void CGameEventExecuter_C8::Chapter8_3D_Out_02(_float _fTimeDelta)
 		else
 			if (Next_Step(!CDialog_Manager::GetInstance()->Get_DisPlayDialogue()))
 				pPlayer->Set_BlockPlayerInput(true);
+	}	
+	else if (Step_Check(STEP_3))
+	{
+		if (Is_Start())
+		{
+			pPlayer->Set_BlockPlayerInput(false);
+		}
+		else
+			if (Next_Step(COORDINATE_3D == pPlayer->Get_CurCoord()))
+			{
+				int a = 1;
+				//TODO :: 애님메시 셰이더 변경 		
+			}
 	}
 	else
 	{
 		// 6. Player 움직임 풀기
-		pPlayer->Set_BlockPlayerInput(false);
 		//CFriend_Controller::GetInstance()->Start_Train();
 
 		GameEvent_End();
@@ -1895,12 +1907,12 @@ void CGameEventExecuter_C8::Chapter8_BookDrop(_float _fTimeDelta)
 		{
 			pPlayer->Set_BlockPlayerInput(true);
 
-			CCamera_Manager::GetInstance()->Set_ResetData(CCamera_Manager::TARGET);
-			CCamera_Manager::GetInstance()->Change_CameraTarget(pPlayer);
+			//CCamera_Manager::GetInstance()->Set_ResetData(CCamera_Manager::TARGET);
+			CCamera_Manager::GetInstance()->Change_CameraTarget(pPlayer,1.f);
 		}
-		Next_Step_Over(1.1f);
+		Next_Step_Over(1.2f);
 	}
-	if (Step_Check(STEP_1))
+	else if (Step_Check(STEP_1))
 	{
 		if (Is_Start())
 		{
@@ -1909,28 +1921,28 @@ void CGameEventExecuter_C8::Chapter8_BookDrop(_float _fTimeDelta)
 			// 암 x3 y2 이동
 			CCamera_Manager::GetInstance()->Start_Changing_AtOffset(CCamera_Manager::TARGET,
 				1.f,
-				XMVectorSet(4.f, 2.f, 0.f, 0.f),
+				XMVectorSet(4.f, 5.f, 0.f, 0.f),
 				EASE_IN_OUT
 			);
 			// 암 1 땡기기
 			CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Increase(CCamera_Manager::TARGET, 2.f,
-				10.f, EASE_IN_OUT);
-			CCamera_Manager::GetInstance()->Start_Turn_AxisRight(CCamera_Manager::TARGET, 1.f, XMConvertToRadians(-30.f), XMConvertToRadians(-4.f));
+				15.f, EASE_IN_OUT);
+			CCamera_Manager::GetInstance()->Start_Turn_AxisRight(CCamera_Manager::TARGET, 1.5f, XMConvertToRadians(20.f), XMConvertToRadians(30.f));
 
 		}
 
-		if (m_isPlag == false && m_fTimer > 2.f)
+		if (m_isPlag == false && m_fTimer > 1.f)
 		{
-			CCamera_Manager::GetInstance()->Start_FadeIn(1.f);
+			CCamera_Manager::GetInstance()->Start_FadeOut(1.f);
 			m_isPlag = true;
 		}
 
 
-		if (Next_Step_Over(3.f))
+		if (Next_Step_Over(2.f))
 		{
 		}
 	}
-	if (Step_Check(STEP_2))
+	else if (Step_Check(STEP_2))
 	{
 		if(Is_Start()) 
 		{
@@ -1939,6 +1951,10 @@ void CGameEventExecuter_C8::Chapter8_BookDrop(_float _fTimeDelta)
 			Event_DeleteObject(pBook);
 			CGameObject* pGameObject = nullptr;
 			CBook::BOOK_DESC Desc = {};
+
+			Desc.isInitOverride = true;
+			Desc.tTransform3DDesc.vInitialPosition = _float3(-50.f, 0.4f, 19.0f);
+			Desc.tTransform3DDesc.vInitialScaling = _float3(1.0f, 1.0f, 1.0f);
 			Desc.iCurLevelID = m_iCurLevelID;
 			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Book"),
 				m_iCurLevelID, L"Layer_Book", &pGameObject, &Desc)))
@@ -1951,9 +1967,17 @@ void CGameEventExecuter_C8::Chapter8_BookDrop(_float _fTimeDelta)
 			pBook->Set_BlendingRatio(1.f);
 			CCamera_Manager::GetInstance()->Start_ResetArm_To_SettingPoint(CCamera_Manager::TARGET, 0.1f);
 		}
-		if (Next_Step_Over(0.5f))
+
+
+		if (m_isPlag == false && m_fTimer > 0.5f)
 		{
-			CCamera_Manager::GetInstance()->Start_FadeOut(0.5f);
+			pBook->Set_Animation(CBook::CLOSED_IDLE);
+			m_isPlag = true;
+		}
+
+		if (Next_Step_Over(1.f))
+		{
+			CCamera_Manager::GetInstance()->Start_FadeIn(0.5f);
 		}
 	}	
 	else
