@@ -45,7 +45,8 @@ void CFormationBackState::State_Update(_float _fTimeDelta)
 	if (nullptr == m_pOwner)
 		return;
 
-	cout << m_pOwner->Get_ActorCom()->Is_Kinematic() << endl;
+	if (true == m_pOwner->Get_ActorCom()->Is_Dynamic())
+		return;
 
 	if (nullptr != m_pTarget)
 	{
@@ -85,11 +86,16 @@ void CFormationBackState::State_Update(_float _fTimeDelta)
 	}
 
 	//포메이션으로부터 목표 위치 받아서 이동
-	if (false == m_isTurn)
-	{
-		m_pOwner->Get_Formation_Position(&m_vNextPos);
-		m_isTurn = true;
-	}
+	if (false == m_pOwner->Get_Formation_Position(&m_vNextPos))
+		return;
+	m_isTurn = true;
+
+	//if (false == m_isTurn)
+	//{
+	//	if (false == m_pOwner->Get_Formation_Position(&m_vNextPos))d
+	//		return;
+	//	m_isTurn = true;
+	//}
 
 	Move(_fTimeDelta);
 }

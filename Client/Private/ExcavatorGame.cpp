@@ -5,6 +5,11 @@
 #include "Excavator_Tread.h"
 #include "Excavator_Centre.h"
 #include "Saw.h"
+#include "Camera_Manager.h"
+#include "Effect2D_Manager.h"
+#include "Turret.h"
+
+#include "Door_Red.h"
 
 
 IMPLEMENT_SINGLETON(CExcavatorGame)
@@ -25,11 +30,13 @@ HRESULT CExcavatorGame::Start_Game(ID3D11Device* _pDevice, ID3D11DeviceContext* 
     if (FAILED(Ready_ExcavatorParts()))
         return E_FAIL;
 
+
+
     m_isPlaying = true;
     m_iCurProgress = PROGRESS_1;
     m_iSwitchCount = 0;
 
-    m_eCurState = STATE_IDLE;
+    m_eCurState = STATE_MOVE_R;
     State_Change();
     return S_OK;
 }
@@ -56,10 +63,7 @@ void CExcavatorGame::Update(_float _fTimeDelta)
         }
         Enter_Progress();
     }
-    if (KEY_DOWN(KEY::J))
-    {
-        m_eCurState = STATE_MOVE_R;
-    }
+
     State_Change();
 }
 
@@ -149,6 +153,32 @@ void CExcavatorGame::Exit_Progress()
 void CExcavatorGame::Game_End()
 {
     /* 멤버 정리. */
+    for (auto& pExcavatorPart : m_ExcavatorParts)
+    {
+        Event_SetActive(pExcavatorPart, false);
+    }
+
+    m_isGameEnd = true;
+}
+
+_int CExcavatorGame::Minus_HP()
+{
+    if (STATE_DEAD == m_eCurState)
+        return 0;
+   
+    if (0 >= m_iHP)
+    {
+        m_eCurState = STATE_DEAD;
+        State_Change();
+    }
+    else
+    {
+        m_iHP -= 1;
+        static_cast<CExcavator_Tread*>(m_ExcavatorParts[EXCAVATOR_PART::EXCAVATOR_TREAD_L])->Start_Part_HitRender();
+        static_cast<CExcavator_Tread*>(m_ExcavatorParts[EXCAVATOR_PART::EXCAVATOR_TREAD_R])->Start_Part_HitRender();
+    }
+
+    return m_iHP;
 }
 
 HRESULT CExcavatorGame::Ready_ExcavatorParts()
@@ -203,6 +233,96 @@ HRESULT CExcavatorGame::Ready_ExcavatorParts()
 
     }/* Part CENTRE_SAW */
 
+    /* Door Red*/
+    {
+        CDoor_Red* pOutRed;
+        CDoor_Red::DOOR_RED_DESC DoorRedDesc = {};
+        DoorRedDesc.tTransform2DDesc.vInitialPosition = _float3(-450.f, 65.f, 0.f);
+        DoorRedDesc.iCurLevelID = LEVEL_CHAPTER_6;
+        DoorRedDesc.isHorizontal = true;
+        DoorRedDesc.eSize = CDoor_2D::LARGE;
+        DoorRedDesc.eInitialState = CDoor_2D::OPENED;
+        DoorRedDesc.strSectionTag = L"Chapter6_P0708";
+        DoorRedDesc.strLayerTag = L"";
+        DoorRedDesc.isCountLayer = false;
+
+        if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorRed"),
+            LEVEL_CHAPTER_6, L"Layer_MapGimmick", reinterpret_cast<CGameObject**>(&pOutRed), &DoorRedDesc)))
+            return E_FAIL;
+        
+        if (nullptr != pOutRed)
+        {
+            Safe_AddRef(pOutRed);
+            m_Doors.push_back(pOutRed);
+        }
+
+        DoorRedDesc.tTransform2DDesc.vInitialPosition = _float3(-155.f, 65.f, 0.f);
+
+        if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorRed"),
+            LEVEL_CHAPTER_6, L"Layer_MapGimmick", reinterpret_cast<CGameObject**>(&pOutRed), &DoorRedDesc)))
+            return E_FAIL;
+
+        if (nullptr != pOutRed)
+        {
+            Safe_AddRef(pOutRed);
+            m_Doors.push_back(pOutRed);
+        }
+
+        DoorRedDesc.tTransform2DDesc.vInitialPosition = _float3(140.f, 65.f, 0.f);
+
+        if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorRed"),
+            LEVEL_CHAPTER_6, L"Layer_MapGimmick", reinterpret_cast<CGameObject**>(&pOutRed), &DoorRedDesc)))
+            return E_FAIL;
+
+        if (nullptr != pOutRed)
+        {
+            Safe_AddRef(pOutRed);
+            m_Doors.push_back(pOutRed);
+        }
+
+        DoorRedDesc.tTransform2DDesc.vInitialPosition = _float3(435.f, 65.f, 0.f);
+
+        if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorRed"),
+            LEVEL_CHAPTER_6, L"Layer_MapGimmick", reinterpret_cast<CGameObject**>(&pOutRed), &DoorRedDesc)))
+            return E_FAIL;
+
+        if (nullptr != pOutRed)
+        {
+            Safe_AddRef(pOutRed);
+            m_Doors.push_back(pOutRed);
+        }
+    }
+    
+
+    {/* Turret Left */
+        CTurret::MODELOBJECT_DESC Desc{};
+        Desc.iCurLevelID = LEVEL_CHAPTER_6;
+        Desc.Build_2D_Transform(_float2(-780.f, -50.0f), _float2(1.0f, 1.0f));
+        CGameObject* pGameObject = nullptr;
+        if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_Turret"), LEVEL_CHAPTER_6, TEXT("Layer_Excavator"), &pGameObject, &Desc)))
+            return E_FAIL;
+
+        CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_P0708"), pGameObject);
+        m_pTurret_Left = static_cast<CTurret*>(pGameObject);
+        Safe_AddRef(m_pTurret_Left);
+    }/* Turret Left */
+    
+    {/* Turret Right */
+        CTurret::MODELOBJECT_DESC Desc{};
+        Desc.iCurLevelID = LEVEL_CHAPTER_6;
+        Desc.Build_2D_Transform(_float2(780.f, -50.0f), _float2(1.0f, 1.0f));
+        CGameObject* pGameObject = nullptr;
+        if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_Turret"), LEVEL_CHAPTER_6, TEXT("Layer_Excavator"), &pGameObject, &Desc)))
+            return E_FAIL;
+
+        CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_P0708"), pGameObject);
+        m_pTurret_Right = static_cast<CTurret*>(pGameObject);
+        Safe_AddRef(m_pTurret_Right);
+        m_pTurret_Right->Open_Turret();
+    }/* Turret Right */
+
+
+
     return S_OK;
 }
 
@@ -239,11 +359,16 @@ void CExcavatorGame::State_Change_Move_R()
 {
     /* Parts 우측 이동 */
     m_vMoveTime.y = 0.0f;
+    static_cast<CExcavator_Tread*>(m_ExcavatorParts[EXCAVATOR_PART::EXCAVATOR_TREAD_L])->Start_Wheel();
+    static_cast<CExcavator_Tread*>(m_ExcavatorParts[EXCAVATOR_PART::EXCAVATOR_TREAD_R])->Start_Wheel();
 }
 
 void CExcavatorGame::State_Change_Idle()
 {
     /* 셰이크 되며 제자리에 가만히 */
+
+    static_cast<CExcavator_Tread*>(m_ExcavatorParts[EXCAVATOR_PART::EXCAVATOR_TREAD_L])->Stop_Wheel();
+    static_cast<CExcavator_Tread*>(m_ExcavatorParts[EXCAVATOR_PART::EXCAVATOR_TREAD_R])->Stop_Wheel();
 }
 
 void CExcavatorGame::State_Change_Saw()
@@ -259,6 +384,14 @@ void CExcavatorGame::State_Change_Hit()
 void CExcavatorGame::State_Change_Dead()
 {
     /* 폭파 이펙트 왕창 재생 하며 우측으로 이동 .*/
+    static_cast<CExcavator_Tread*>(m_ExcavatorParts[EXCAVATOR_PART::EXCAVATOR_TREAD_L])->Start_Wheel();
+    static_cast<CExcavator_Tread*>(m_ExcavatorParts[EXCAVATOR_PART::EXCAVATOR_TREAD_R])->Start_Wheel();
+
+    CCamera_Manager::GetInstance()->Off_Shake();
+    CCamera_Manager::GetInstance()->Start_Shake_ByCount(CCamera_Manager::TARGET_2D, 4.f, 0.7f, 2000, CCamera::SHAKE_Y, 0.0f);
+
+    m_vMoveTime.x = 7.f;
+    m_vMoveTime.y = 0.f;
 }
 
 void CExcavatorGame::Action_State(_float _fTimeDelta)
@@ -316,6 +449,31 @@ void CExcavatorGame::Action_State_Hit(_float _fTimeDelta)
 
 void CExcavatorGame::Action_State_Dead(_float _fTimeDelta)
 {
+    m_vMoveTime.y += _fTimeDelta;
+    if (m_vMoveTime.x <= m_vMoveTime.y)
+    {
+        m_vMoveTime.y = 0.0f;
+
+
+        Game_End();
+       
+    }
+    else
+    {
+        _int iRand = rand();
+        if (iRand % 3 == 0)
+        {
+            static_cast<CExcavator_Centre*>(m_ExcavatorParts[EXCAVATOR_PART::EXCAVATOR_CENTRE])->Render_DeadEffect();
+        }
+        for (auto& pPart : m_ExcavatorParts)
+        {
+            pPart->Move(XMLoadFloat2(&m_vMoveSpeed), _fTimeDelta);
+
+            static_cast<CExcavator_Tread*>(m_ExcavatorParts[EXCAVATOR_PART::EXCAVATOR_TREAD_L])->Start_Part_HitRender();
+            static_cast<CExcavator_Tread*>(m_ExcavatorParts[EXCAVATOR_PART::EXCAVATOR_TREAD_R])->Start_Part_HitRender();
+            static_cast<CExcavator_Centre*>(m_ExcavatorParts[EXCAVATOR_PART::EXCAVATOR_CENTRE])->Start_Part_HitRender();
+        }
+    }
 }
 
 void CExcavatorGame::Free()
@@ -326,6 +484,14 @@ void CExcavatorGame::Free()
     }
     m_ExcavatorParts.clear();
 
+    for (auto& pDoor : m_Doors)
+    {
+        Safe_Release(pDoor);
+    }
+    m_Doors.clear();
+
+    Safe_Release(m_pTurret_Left);
+    Safe_Release(m_pTurret_Right);
 
     Safe_Release(m_pGameInstance);
     Safe_Release(m_pContext);

@@ -191,7 +191,7 @@ HRESULT CLevel_Chapter_04::Initialize(LEVEL_ID _eLevelID)
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::FALLINGROCK_BASIC);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::DOOR);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::FRIEND);
-
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::BOMB);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_TRIGGER, OBJECT_GROUP::WORD_GAME);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_PROJECTILE, OBJECT_GROUP::WORD_GAME);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_PROJECTILE, OBJECT_GROUP::MAPOBJECT);
@@ -1360,7 +1360,7 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Effects2D(const _wstring& _strLayerTag)
 
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("health_pickup_small"), LEVEL_STATIC, 3);
 	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("health_pickup_large"), LEVEL_STATIC, 3);
-	
+	CEffect2D_Manager::GetInstance()->Register_EffectPool(TEXT("Generic_Explosion"), LEVEL_STATIC, 5);
 	return S_OK;
 }
 
@@ -1481,6 +1481,22 @@ HRESULT CLevel_Chapter_04::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_DynamicCastleGate"), m_eLevelID, _strLayerTag, &tGateDesc)))
 		return E_FAIL;
 
+
+	// temp
+	//CDoor_Red::DOOR_RED_DESC DoorRedDesc = {};
+	//DoorRedDesc.tTransform2DDesc.vInitialPosition = _float3(0.f, 100.f, 0.f);
+	//DoorRedDesc.iCurLevelID = m_eLevelID;
+	//DoorRedDesc.isHorizontal = true;
+	//DoorRedDesc.eSize = CDoor_2D::LARGE;
+	//DoorRedDesc.eInitialState = CDoor_2D::OPENED;
+	//DoorRedDesc.strSectionTag = L"Chapter4_P0102";
+	//DoorRedDesc.strLayerTag = L"";
+	//DoorRedDesc.isCountLayer = false;
+
+
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorRed"),
+	//	m_eLevelID, L"Layer_MapGimmick", &DoorRedDesc)))
+	//	return E_FAIL;
 
 
 

@@ -42,8 +42,9 @@ void CBig_Laser::Update(_float _fTimeDelta)
         _vector vTargetPos = XMLoadFloat2(&m_fTargetPos);
         _vector vDir = XMVectorSetW(XMVector2Normalize(vTargetPos - Get_FinalPosition()),0.f);
         Get_ControllerTransform()->Go_Direction(vDir, _fTimeDelta);
-        if (Get_ControllerTransform()->Compute_Distance(vTargetPos) < 2.f)
+        if (Get_ControllerTransform()->Compute_Distance(vTargetPos) < 5.f)
         {
+            Set_Beam_Collider(false);
             m_isMove = false;
             if (Get_CurrentAnimIndex() == LASER_LOOP)
             {
@@ -101,6 +102,15 @@ void CBig_Laser::Move_Start(_float _fMovePosX, _float _fSpeed)
     XMStoreFloat2(&m_fTargetPos, XMVectorSetX(vPos, XMVectorGetX(vPos) + _fMovePosX));
     Get_ControllerTransform()->Set_SpeedPerSec(_fSpeed);
     m_isMove = true;
+}
+
+void CBig_Laser::Set_Beam_Collider(_bool _isBeamCollider)
+{
+    if (false == m_p2DColliderComs.empty())
+    {
+        for (auto pCollider : m_p2DColliderComs)
+            pCollider->Set_Active(_isBeamCollider);
+    }
 }
 
 void CBig_Laser::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)

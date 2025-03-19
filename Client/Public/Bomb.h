@@ -14,7 +14,7 @@ public:
 	virtual void		Update(_float _fTimeDelta) override;
 	virtual void		Late_Update(_float _fTimeDelta) override;
 	virtual HRESULT Render() override;
-	
+
 public:
 	void Set_Time_On();
 	void Set_Time_Off();
@@ -42,6 +42,17 @@ public:
 
 	virtual void Active_OnEnable() override;
 	virtual void Active_OnDisable() override;
+
+public:
+	void Start_Parabola(_fvector _vStartPos, _fvector _vEndPos, _float _fParabolaTime);
+	void Start_Parabola_3D(_fvector _vEndPos, _float _fLaunchAngleRadian, _float _fGravityMag = 9.81f * 3.0f);
+private:
+	void Action_Parabola(_float _fTimeDelta);
+private:
+	_bool m_isParabolaAction = false;
+	_float3 m_vStartPos = {};
+	_float3 m_vEndPos = {};
+	_float2 m_vParabolaTime = { 1.0f, 0.0f };
 
 private:
 	_float m_fAccTime = { 0.f };

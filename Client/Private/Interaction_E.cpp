@@ -580,6 +580,10 @@ void CInteraction_E::Display_Text(_float3 _vPos, _float2 _vRTSize, IInteractable
 		m_strDisplayText = TEXT("점프");
 		break;
 
+	case INTERACT_ID::EXCAVATOR_SWITCH:
+		m_strDisplayText = TEXT("잡기");
+		break;
+
 
 
 	default:

@@ -18,6 +18,9 @@ public:
 	virtual void State_Update(_float _fTimeDelta) override;
 	virtual void State_Exit() override;
 
+private:
+	_uint			m_iEffectCount = { 0 };
+
 public:
 	static CBossDeadState* Create(void* _pArg);
 

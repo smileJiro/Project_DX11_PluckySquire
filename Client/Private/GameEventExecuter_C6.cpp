@@ -126,6 +126,12 @@ void CGameEventExecuter_C6::Chapter6_Intro(_float _fTimeDelta)
 	if (Step_Check(STEP_0))
 	{
 		if (CCamera_Manager::TARGET == CCamera_Manager::GetInstance()->Get_CameraType()) {
+
+			if (FAILED(CFatherGame::GetInstance()->Start_Game(m_pDevice, m_pContext)))
+			{
+				assert(nullptr);
+			}
+
 			Next_Step(true);
 		}
 	}
@@ -162,7 +168,9 @@ void CGameEventExecuter_C6::Chapter6_Intro(_float _fTimeDelta)
 		}
 	}
 	else
+	{
 		GameEvent_End();
+	}
 }
 
 
@@ -1623,14 +1631,28 @@ void CGameEventExecuter_C6::Chapter6_StorySequence_01(_float _fTimeDelta)
 			pPlayer->Start_AutoMove(true);
 		}
 			Next_Step_Over(1.8f);
+	}
+	else if(Step_Check(STEP_19))
+	{
+		if (Is_Start())
+		{
+			pPlayer->Stop_AutoMove();
+			pPlayer->Set_State(CPlayer::IDLE);
+			_float3 fDefaultPos = {};
+			Event_Book_Main_Section_Change_Start(1, &fDefaultPos);
 		}
+		Next_Step_Over(1.5f);
+	}
 	else
 	{
-		pPlayer->Stop_AutoMove();
-		pPlayer->Set_State(CPlayer::IDLE);
-		_float3 fDefaultPos = {};
+		pPlayer->Set_BlockPlayerInput(false); 
+		pPlayer->Clear_AutoMove();
+		pPlayer->Set_2DDirection(E_DIRECTION::RIGHT);
+		pThrash->Set_Direction(CFriend::DIR_RIGHT);
+		CFriend_Controller::GetInstance()->Erase_Friend_FromTrainList(TEXT("Violet"));
+		CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(TEXT("Thrash"));
+		CFriend_Controller::GetInstance()->Start_Train();
 
-		Event_Book_Main_Section_Change_Start(1, &fDefaultPos);
 		GameEvent_End();
 	}
 

@@ -161,6 +161,7 @@ public:
 		RETRIVE_SWORD,
 		MOJAM,
 		PULL,
+		ENGAGE_BOSS,
 		BACKROLL,
 
 		STATE_LAST
@@ -776,8 +777,15 @@ private:
 
 // CyberJot¿ë
 public:
+	void Update_CyberJot(_float _fTimeDelta);
+	//Get
 	_vector Get_CyberPlanePosition() { return m_vCyberPlanePosition; }
-	void Move_CyberPlane(_vector _vMoveVelocity, _float _fTimeDelta);
+	_float Get_CyberFlySpeed() { return m_f3DCyberFlySpeed; }
+	_float Get_CyberDashSpeed() { return m_f3DCyberDashSpeed; }
+	_float Get_CyberCurrentSpeed() { return m_f3DCyberCurrentSpeed; }
+	_vector Get_CyberVelocity() { return m_vCyberPlaneVelocity; }
+	//Set
+	void Set_CyberVelocity(_vector _vMoveVelocity);
 private:
 	CActor_Dynamic* m_pDynamicActor = nullptr;
 	class CCamera_Target* m_pTargetCamera = nullptr;
@@ -786,6 +794,12 @@ private:
 	_vector m_vCyberPlanePosition = { 0.f,0.f };
 	_vector m_vCyberPlaneMaxPosition = { 4.f,2.5f};
 	_vector m_vCyberPlaneMinPosition = { -4.f,-3.f};
+	_vector m_vCyberPlaneDirection = { 0.f,0.f };
+	_vector m_vCyberPlaneVelocity = { 0.f,0.f };
+	_float m_f3DCyberCurrentSpeed = 0.f;
+	_float m_f3DCyberFlySpeed = 6.f;
+	_float m_f3DCyberDashSpeed = 25.f;
+	_float m_f3DCyberLinearDamping = 75.f;
 public:
 	static CPlayer*		Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject*	Clone(void* _pArg) override;

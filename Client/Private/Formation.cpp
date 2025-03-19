@@ -269,10 +269,10 @@ _bool CFormation::Add_To_Formation(CMonster* _pMember, CFormation** _pFormation)
 		return false;
 
 	_uint iIndex = *(m_EmptySlots.begin());
+	m_EmptySlots.erase(iIndex);
 
 	if (nullptr != m_Members[iIndex])
 	{
-		m_EmptySlots.erase(iIndex);
 		return Add_To_Formation(_pMember, _pFormation);
 	}
 	else
