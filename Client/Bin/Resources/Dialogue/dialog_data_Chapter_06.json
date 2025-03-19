@@ -553,6 +553,7 @@
           "is2D": true,
           "isPortrait": false,
           "isLineEnter": true,
+          "TalkerIndex": 0,
           "iAnimationIndex": 1,
           "animation": {
             "duration": 1000,
@@ -570,7 +571,7 @@
           "location": 1,
           "is2D": true,
           "isPortrait": false,
-          "isLineEnter": true,
+          "TalkerIndex": 0,
           "iAnimationIndex": 1,
           "animation": {
             "duration": 1000,
@@ -588,7 +589,7 @@
           "location": 1,
           "is2D": true,
           "isPortrait": false,
-          "isLineEnter": true,
+          "TalkerIndex": 0,
           "iAnimationIndex": 1,
           "animation": {
             "duration": 1000,
@@ -606,7 +607,7 @@
           "location": 1,
           "is2D": true,
           "isPortrait": false,
-          "isLineEnter": true,
+          "TalkerIndex": 0,
           "iAnimationIndex": 1,
           "animation": {
             "duration": 1000,
@@ -621,17 +622,17 @@
           "Portrait": 0,
           "Talker": "바이올렛",
           "BG": 13,
-          "location": 1,
+          "location": 0,
           "is2D": true,
           "OffsetX": 0.0,
-          "OffsetY": 200.0,
+          "OffsetY": 0.0,
+          "TalkerIndex": 1,
           "isPortrait": true,
-          "isLineEnter": true,
           "animation": {
             "duration": 1000,
             "speed": 350
           },
-          "text": "별 말씀을요. 사실 우리 저트가 전부 다 했어요.",
+          "text": "별 말씀을요. 사실 우리 저트가 전부 다 했어요!",
           "Red": 0,
           "Green": 0,
           "Blue": 0
@@ -643,7 +644,7 @@
           "location": 1,
           "is2D": true,
           "isPortrait": false,
-          "isLineEnter": true,
+          "TalkerIndex": 0,
           "iAnimationIndex": 1,
           "animation": {
             "duration": 1000,
@@ -658,12 +659,12 @@
           "Portrait": 0,
           "Talker": "바이올렛",
           "BG": 13,
-          "location": 1,
+          "location": 0,
           "is2D": true,
           "OffsetX": 0.0,
-          "OffsetY": 200.0,
+          "OffsetY": 0.0,
+          "TalkerIndex": 1,
           "isPortrait": true,
-          "isLineEnter": true,
           "animation": {
             "duration": 1000,
             "speed": 350
@@ -733,6 +734,30 @@
             "speed": 350
           },
           "text": "지우개꿀꿀이는 도시 오른쪽 클로버 밭에 있어.\n잘 부탁한다!",
+          "Red": 255,
+          "Green": 255,
+          "Blue": 242
+        }
+      ]
+    },    
+    {
+      "id": "Eray_Dialogue_02",
+      "Section": "Chapter5_P0102",
+      "lines": [
+        {
+          "Portrait": 2,
+          "Talker": "엄버",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "iAnimationIndex": 1,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "오늘은 밤에 지우개꿀꿀이를 꼭 껴안고 자야겠어.",
           "Red": 255,
           "Green": 255,
           "Blue": 242
@@ -4103,7 +4128,7 @@
             "duration": 1000,
             "speed": 500
           },
-          "text": "아르티아는 예술인들의 도시야. 왕궁에 들르기 전에 잠깐 구경하고 갈래?",
+          "text": "아르티아는 예술인들의 도시야.\n왕궁에 들르기 전에 잠깐 구경하고 갈래?",
           "Red": 191,
           "Green": 144,
           "Blue": 224
@@ -4121,7 +4146,7 @@
             "duration": 1000,
             "speed": 500
           },
-          "text": "잠깐 삼촌께도 인사 드리고 싶은데, 괜찮을까?",
+          "text": "잠깐 삼촌한테도 인사 드리고 싶은데, 괜찮을까?",
           "Red": 191,
           "Green": 144,
           "Blue": 224
@@ -4139,7 +4164,7 @@
             "duration": 1000,
             "speed": 500
           },
-          "text": "당연하지! 가자, 바이올렛, 저트!",
+          "text": "당연하지!\n가자, 바이올렛, 저트!",
           "Red": 190,
           "Green": 218,
           "Blue": 186
