@@ -423,7 +423,11 @@ void CLevel_Chapter_08::Update(_float _fTimeDelta)
 			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_ButterGrump"), m_eLevelID, TEXT("Layer_Monster"), &pBoss, &Boss_Desc)))
 				return;
 
-	
+			
+			
+
+
+
 			CCameraPivot*  pPivot = static_cast<CCameraPivot*>(m_pGameInstance->Get_GameObject_Ptr(m_eLevelID, TEXT("Layer_CameraPivot"), 0));
 			pPivot->Set_MainTarget(pBoss);
 			pPivot->Set_Active(true);
@@ -465,6 +469,15 @@ void CLevel_Chapter_08::Update(_float _fTimeDelta)
 			SECTION_MGR->Remove_Section(L"Chapter8_SKSP_09");
 			SECTION_MGR->Remove_Section(L"Chapter8_SKSP_10");
 				//});
+
+			// 보스 체력바 관련
+			CUI::UIOBJDESC pDesc = {};
+			pDesc.iCurLevelID = m_eLevelID;
+
+			Uimgr->Set_BossForUI(static_cast<CButterGrump*>(pBoss));
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_BossHP"), pDesc.iCurLevelID, TEXT("Layer_UI"), &pDesc)))
+				return;
+
 		}
 	}
 
@@ -1166,6 +1179,13 @@ HRESULT CLevel_Chapter_08::Ready_Layer_UI(const _wstring& _strLayerTag)
 
 	Uimgr->Set_Narration(static_cast<CNarration*>(pGameObject));
 
+
+
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_BossHP"), pDesc.iCurLevelID, _strLayerTag, &pDesc)))
+	//	return E_FAIL;
+
+
+	
 	return S_OK;
 }
 

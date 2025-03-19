@@ -389,6 +389,12 @@ HRESULT CUI_Manager::Level_Exit(_int iCurLevelID, _int _iChangeLevelID, _int _iN
 		m_pBook = nullptr;
 	}
 
+	if (nullptr != m_pBoss)
+	{
+		Safe_Release(m_pBoss);
+		m_pBoss = nullptr;
+	}
+
 
 	return S_OK;
 
@@ -432,6 +438,7 @@ void CUI_Manager::Free()
 	Safe_Release(m_pDiagloue);
 	Safe_Release(m_pInteractionE);
 	Safe_Release(m_pBook);
+	Safe_Release(m_pBoss);
 
 	for (auto iter : m_pSettingPanels)
 	{

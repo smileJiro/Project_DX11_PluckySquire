@@ -790,6 +790,9 @@
     <Filter Include="02.GameObjects\UI\00. GamePlay\08. BossHP_Bar">
       <UniqueIdentifier>{1ce4a394-bcd1-4c25-b21a-bffb1a3e4705}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\UI\00. GamePlay\08. BossHP_Bar\00.BossHP_Bar_Texture">
+      <UniqueIdentifier>{4e9152f4-cf93-4b33-af69-9254a2fa6e41}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -2040,6 +2043,12 @@
     <ClInclude Include="..\public\Turret.h">
       <Filter>05.MiniGames\ExcavatorGame\Turret</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\BossHP.h">
+      <Filter>02.GameObjects\UI\00. GamePlay\08. BossHP_Bar</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossHPBar.h">
+      <Filter>02.GameObjects\UI\00. GamePlay\08. BossHP_Bar\00.BossHP_Bar_Texture</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -3274,6 +3283,12 @@
     </ClCompile>
     <ClCompile Include="..\private\Turret.cpp">
       <Filter>05.MiniGames\ExcavatorGame\Turret</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossHP.cpp">
+      <Filter>02.GameObjects\UI\00. GamePlay\08. BossHP_Bar</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossHPBar.cpp">
+      <Filter>02.GameObjects\UI\00. GamePlay\08. BossHP_Bar\00.BossHP_Bar_Texture</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
