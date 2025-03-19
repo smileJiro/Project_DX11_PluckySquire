@@ -498,16 +498,16 @@ HRESULT CPlayer::Ready_PartObjects()
 	if (LEVEL_CHAPTER_8 == m_iCurLevelID)
 	{
 		//CyberCursor
-		CCyberCursor::MODELOBJECT_DESC tCyberCursorDesc = {};
-		tCyberCursorDesc.iCurLevelID = m_iCurLevelID;
-		tCyberCursorDesc.isCoordChangeEnable = false;
-		tCyberCursorDesc.eStartCoord = COORDINATE_3D;
+		//CCyberCursor::MODELOBJECT_DESC tCyberCursorDesc = {};
+		//tCyberCursorDesc.iCurLevelID = m_iCurLevelID;
+		//tCyberCursorDesc.isCoordChangeEnable = false;
+		//tCyberCursorDesc.eStartCoord = COORDINATE_3D;
 
-		m_PartObjects[PLAYER_PART_CYBERCURSOR] = m_pCyberCursor = static_cast<CCyberCursor*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_CyberCursor"), &tCyberCursorDesc));
-		if (nullptr == m_pCyberCursor)
-			return E_FAIL;
-		m_pCyberCursor->Set_Active(false);
-		Safe_AddRef(m_pCyberCursor);
+		//m_PartObjects[PLAYER_PART_CYBERCURSOR] = m_pCyberCursor = static_cast<CCyberCursor*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_CyberCursor"), &tCyberCursorDesc));
+		//if (nullptr == m_pCyberCursor)
+		//	return E_FAIL;
+		//m_pCyberCursor->Set_Active(false);
+		//Safe_AddRef(m_pCyberCursor);
 	}
 
 
