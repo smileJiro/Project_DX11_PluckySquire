@@ -95,10 +95,15 @@ void CPalmDecal::Priority_Update(_float _fTimeDelta)
 
 void CPalmDecal::Update(_float _fTimeDelta)
 {
-    if(m_bPlacedFrame)
+    if (m_fStamping)
     {
-        Event_SetActive(m_p2DColliderComs[0], false);
-        m_bPlacedFrame = false;
+        m_fStampTimeAcc += _fTimeDelta;
+        if (m_fStampTimeAcc >= m_fStampTime)
+        {
+            m_fStamping = false;
+            m_fStampTimeAcc = 0.f;
+			m_p2DColliderComs[0]->Set_Active(false);
+        }
     }
     __super::Update(_fTimeDelta);
 }
@@ -129,12 +134,7 @@ _matrix CPalmDecal::Get_FinalWorldMatrix()
 
 void CPalmDecal::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-    IStoppable* pStop = dynamic_cast<IStoppable*>(_pOtherObject);
-    if (pStop)
-    {
-        pStop->Stop();
-        m_StoppedObjects.insert(_pOtherObject);
-    }
+
 
 
 
@@ -142,7 +142,12 @@ void CPalmDecal::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOthe
 
 void CPalmDecal::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-
+    IStoppable* pStop = dynamic_cast<IStoppable*>(_pOtherObject);
+    if (pStop && m_StoppedObjects.find(_pOtherObject) == m_StoppedObjects.end())
+    {
+        pStop->Stop();
+        m_StoppedObjects.insert(_pOtherObject);
+    }
 }
 
 void CPalmDecal::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
@@ -164,8 +169,7 @@ void CPalmDecal::Place(_fvector _v2DPos, _fvector _v2DDir)
 
     _vector v3DPos = m_pSectionMgr->Get_WorldPosition_FromWorldPosMap(m_strSectionName, { XMVectorGetX(_v2DPos),XMVectorGetY(_v2DPos) });
     m_pControllerTransform->Get_Transform(COORDINATE_3D)->Set_State(CTransform::STATE_POSITION, v3DPos);
-    m_pActorCom->Update(0.f);
-    m_bPlacedFrame = true;
+    m_fStamping = true;
     m_p2DColliderComs[0]->Set_Active(true);
 }
 

@@ -93,7 +93,7 @@ void CPlayerRifle::Late_Update(_float _fTimeDelta)
 		m_pShotEffect->Late_Update(_fTimeDelta);
 }
 
-void CPlayerRifle::Shoot()
+void CPlayerRifle::Shoot(_fvector _vDir)
 {
 	if (m_fShhotDelay <= m_fShootTimeAcc)
 	{

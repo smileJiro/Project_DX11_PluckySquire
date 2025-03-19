@@ -56,12 +56,14 @@ HRESULT CLogo_ColorObject::Render()
 
 	if (FAILED(m_pShaderComs[COORDINATE_2D]->Bind_RawValue("g_fSprite2DFadeAlphaRatio", &fAlphaRatio, sizeof(_float))))
 		return E_FAIL;
+
 	return S_OK;
 }
 
 void CLogo_ColorObject::Active_OnEnable()
 {
-	Start_FadeAlphaIn(3.f);
+	if(DEFAULT != m_eColorObjectType)
+		Start_FadeAlphaIn(3.f);
 
 	__super::Active_OnEnable();
 }

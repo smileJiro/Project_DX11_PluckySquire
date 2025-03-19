@@ -559,7 +559,7 @@ public:
 	void Revive();
 	void ReFuel();
 	void ZetPropel(_float _fTimeDelta);
-	void Shoot_Rifle();
+	void Shoot_Rifle(_fvector _vDirection);
 
 	_bool Check_ReplaceInteractObject(IInteractable* _pObj);
 

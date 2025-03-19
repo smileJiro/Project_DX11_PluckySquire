@@ -792,7 +792,10 @@ void CLevel_EffectTool::Tool_ControlModel(_float _fTimeDelta)
 
 			if (ImGui::Button("Connect to Bone"))
 			{
-				m_pNowItem->Set_SpawnMatrix(static_cast<C3DModel*>(pModel->Get_Model(COORDINATE_3D))->Get_BoneMatrix(szInputBoneName));
+				const _float4x4* pMatrix = static_cast<C3DModel*>(pModel->Get_Model(COORDINATE_3D))->Get_BoneMatrix(szInputBoneName);
+				if (nullptr == pMatrix)
+					MSG_BOX("NO BONE MATRIX");
+				m_pNowItem->Set_SpawnMatrix(pMatrix);
 			}
 
 			if (ImGui::Button("Detach Effect"))

@@ -1097,10 +1097,7 @@ void CPlayer::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
 			Set_State(DIE);
 		return;
 	}
-	else if(Is_CyvberJotMode())
-	{
-		Set_State(CPlayer::CYBER_HIT);
-	}
+
 	KnockBack(_vForce);
 
 	Start_Invinciblity();
@@ -1144,7 +1141,7 @@ HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
 
 	}
 
-
+	Set_Mode(m_ePlayerMode);
 	return S_OK;
 }
 
@@ -1544,11 +1541,11 @@ void CPlayer::ZetPropel(_float _fTimeDelta)
 	}
 }
 
-void CPlayer::Shoot_Rifle()
+void CPlayer::Shoot_Rifle(_fvector _vDirection)
 {
 	if (nullptr == m_pRifle)
 		return;
-	m_pRifle->Shoot();
+	m_pRifle->Shoot(_vDirection);
 }
 
 
@@ -2501,6 +2498,7 @@ void CPlayer::Key_Input(_float _fTimeDelta)
 		//tCommand.fMoveSpeedMag = 4.f;
 		//Add_AutoMoveCommand(tCommand);
   //      Start_AutoMove(true);
+		Set_State(CPlayer::TRANSFORM_IN);
 	}
 	if (m_pActorCom->Is_Kinematic())
 	{

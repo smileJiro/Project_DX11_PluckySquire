@@ -427,7 +427,7 @@ void CLevel_Chapter_08::Update(_float _fTimeDelta)
 			Boss_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 			Boss_Desc.tTransform3DDesc.vInitialPosition = _float3(0.53f, 60.35f, -8.0f);
 
-			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_ButterGrump"), m_eLevelID, TEXT("Layer_Monster"), &pBoss, &Boss_Desc)))
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_ButterGrump"), m_eLevelID, TEXT("Layer_Boss"), &pBoss, &Boss_Desc)))
 				return;
 
 	
@@ -1239,7 +1239,7 @@ HRESULT CLevel_Chapter_08::Ready_Layer_NPC(const _wstring& _strLayerTag)
 	HumgrumpDesc.tTransform2DDesc.vInitialPosition = _float3(0.0f, 54.89, 0.03f);
 	HumgrumpDesc.iCurLevelID = m_eLevelID;
 	HumgrumpDesc.strSectionTag = TEXT("Chapter8_P2324");
-	HumgrumpDesc.iStartAnimIndex = CNpc_Humgrump::CHAPTER6_IDLE;
+	HumgrumpDesc.iStartAnimIndex = CNpc_Humgrump::CHAPTER8_IDLE_UP;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Npc_Humgrump"),
 		m_eLevelID, _strLayerTag, &HumgrumpDesc)))

@@ -1,6 +1,8 @@
 #pragma once
 #include "CarriableObject.h"
-
+BEGIN(Engine)
+class CEffect_System;
+END
 BEGIN(Client)
 class CBomb : public CCarriableObject
 {
@@ -66,6 +68,8 @@ private:
 	_float m_fExplodeTime = { 0.f };
 	_bool m_isExplode = { false };
 	_bool m_isOn = { true }; //심지에 불 붙은 상태
+
+	class CEffect_System* m_pFuseEffect = { nullptr };
 
 public:
 	static CBomb* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
