@@ -1141,7 +1141,7 @@ HRESULT CPlayer::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPositi
 
 	}
 
-
+	Set_Mode(m_ePlayerMode);
 	return S_OK;
 }
 

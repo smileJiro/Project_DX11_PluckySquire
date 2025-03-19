@@ -68,6 +68,7 @@ protected:
 		STEP_16,
 		STEP_17,
 		STEP_18,
+		STEP_19,
 		STEP_LAST
 	};
 public :
@@ -192,6 +193,7 @@ protected:
 	CPostit_Page*			m_pPostitPage = nullptr;
 	_int					m_iEventExcuterAction = -1;
 
+	_float4x4				m_TargetWorldMatrix = {};
 public:
 	virtual void Free();
 

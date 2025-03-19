@@ -31,6 +31,9 @@ void CFormationIdleState::State_Update(_float _fTimeDelta)
 	if (nullptr == m_pOwner)
 		return;
 
+	if (true == m_pOwner->Get_ActorCom()->Is_Dynamic())
+		return;
+
 	if (nullptr != m_pTarget)
 	{
 		if(m_pTarget->Get_CurCoord() == m_pOwner->Get_CurCoord())

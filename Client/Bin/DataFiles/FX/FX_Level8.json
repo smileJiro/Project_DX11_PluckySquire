@@ -46,5 +46,42 @@
     {
         "Name": "Meteorite.json",
         "Count": 1
+    },
+    {
+        "Name": "BossDead_1.json",
+        "Count": 4
+    },
+    {
+        "Name": "BossDead_2.json",
+        "Count": 4
+    },
+    {
+        "Name": "BossDead_3.json",
+        "Count": 4
+    },
+    {
+        "Name": "BossDead_4.json",
+        "Count": 4
+    },
+    {
+        "Name": "BossDead_Red_1.json",
+        "Count": 4
+    },
+    {
+        "Name": "BossDead_Red_2.json",
+        "Count": 4
+    },
+    {
+        "Name": "BossDead_Purple_1.json",
+        "Count": 4
+    },
+    {
+        "Name": "BossDead_Purple_2.json",
+        "Count": 4
+    },
+    {
+        "Name": "BossEnd.json",
+        "Count": 1
     }
+
 ]

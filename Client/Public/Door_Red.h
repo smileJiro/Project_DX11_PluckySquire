@@ -7,6 +7,7 @@ class CDoor_Red : public CDoor_2D
 public:
 	typedef struct tagDoorRedDesc : public CDoor_2D::DOOR_2D_DESC
 	{
+		_bool			 isCountLayer = true;
 		_float		     fTargetDiff = -1.f;
 		_wstring		 strLayerTag;
 	}DOOR_RED_DESC;
@@ -19,7 +20,7 @@ public:
 	virtual HRESULT Initialize(void* _pArg) override;
 	virtual void	Update(_float _fTimeDelta) override;
 
-
+	void	Set_OpeningDoor();
 	void	Set_ClosingDoor();
 
 
@@ -27,6 +28,7 @@ public:
 	void			On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx);
 
 private:
+	_bool					m_isCountLayer = { false };
 	_bool					m_isStartClose = { false };
 	_bool					m_isStartOpen = { false };
 	_float					m_fTargetDiff = { -1.f };

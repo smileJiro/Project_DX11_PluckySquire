@@ -37,7 +37,9 @@ public:
 private:
 	set<CGameObject*> m_StoppedObjects;
 	CSection_Manager* m_pSectionMgr = nullptr;
-	_bool m_bPlacedFrame = false;
+	_float m_fStampTime = 1.f;
+	_float m_fStampTimeAcc = 1.f;
+	_bool m_fStamping = false;
 public:
 	static CPalmDecal* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject* Clone(void* _pArg) override;

@@ -428,6 +428,7 @@ HRESULT CParticle_Sprite_Emitter::Bind_ShaderValue_ByPass()
     case DISSOLVE_SUBCOLORBLOOM:
     case ROT_SUB_DISSOLVE:
     case VEL_SUB_DISSOLVE:
+    case ROT2_SUB_DISSOLVE:
     {
         if (FAILED(Bind_Float4("NoiseUVScale", "g_vNoiseUVScale")))
             return E_FAIL;
@@ -778,7 +779,7 @@ void CParticle_Sprite_Emitter::Tool_Update(_float _fTimeDelta)
             "VELOCITY_BILLBOARD_BLOOM", "SUBCOLOR_BLOOM",
             "DEFAULT_DISSOLVE", "VELOCITY_BILLBOARD_SUBCOLORBLOOM",
             "DISSOLVE_SUBCOLORBLOOM", "FIRESMOKE", "FIRE", "ROTATION_BILLBOARD_SUBBLOOM",
-            "ROT_SUB_DISSOLVE", "VEL_SUB_DISSOLVE"
+            "ROT_SUB_DISSOLVE", "VEL_SUB_DISSOLVE", "ROT2_SUB_DISSOLVE"
         };
         static _int item_selected_idx = 0;
         const char* combo_preview_value = items[item_selected_idx];

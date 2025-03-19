@@ -428,6 +428,8 @@ void CCamera_Target::Set_PreArmDataState(_int _iTriggerID, _bool _isReturn)
 
 void CCamera_Target::Key_Input(_float _fTimeDelta)
 {
+	Imgui(_fTimeDelta);
+
 #ifdef _DEBUG
 
 #pragma region RB 카메라 Arm 회전
@@ -508,7 +510,6 @@ void CCamera_Target::Key_Input(_float _fTimeDelta)
 	pCamera->Start_Changing_AtOffset(3.f, XMVectorSet(-0.7f, 2.f, 0.f, 0.f), EASE_IN_OUT);*/
 #pragma endregion
 	 
-	Imgui(_fTimeDelta);
 
 	if (KEY_DOWN(KEY::Y)) {
 		Set_FreezeEnter(FREEZE_X, XMVectorSet(-0.3150f, 0.1552f, -0.9363f, 0.f), 0);
@@ -917,7 +918,7 @@ void CCamera_Target::Change_FreezeOffset(_float _fTimeDelta)
 	XMStoreFloat3(&m_vFreezeOffset, vFreezeOffset);
 }
 
-#ifdef _DEBUG
+//#ifdef _DEBUG
 
 void CCamera_Target::Imgui(_float _fTimeDelta)
 {
@@ -1028,7 +1029,7 @@ void CCamera_Target::Imgui(_float _fTimeDelta)
 
 	ImGui::End();
 }
-#endif // DEBUG
+//#endif // DEBUG
 
 void CCamera_Target::Load_InitialArmTag()
 {
