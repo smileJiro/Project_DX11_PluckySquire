@@ -1012,6 +1012,15 @@ void CBook::Start_DropBook()
 	pActor->Freeze_Rotation(true, true, false);
 	pActor->Freeze_Position(false, false, false);
 
+
+	_vector vForcDir = { 0.f,-1.f,0.f };
+	_float fForce = 10.f;
+	_vector vForce = vForcDir * fForce;
+	_vector vTorque = XMVector3Cross(vForce, { 10.f,0.f,0.f });
+	CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
+	_float3 vTorq; XMStoreFloat3(&vTorq, vTorque);
+	pDynamicActor->Add_Torque(vTorq);
+
 	m_isDroppable = false;
 }
 
