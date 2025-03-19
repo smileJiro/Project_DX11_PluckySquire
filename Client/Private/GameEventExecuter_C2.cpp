@@ -183,6 +183,9 @@ void CGameEventExecuter_C2::C020910_Monster_Spawn(_float _fTimeDelta)
 
 	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strSectionKey, pObject);
 
+	m_pGameInstance->Start_SFX(_wstring(L"A_sfx_electric_bolt_spawn_") + to_wstring(rand() % 3), 50.f);
+
+	
 	GameEvent_End();
 }
 

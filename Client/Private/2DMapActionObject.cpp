@@ -260,6 +260,9 @@ void C2DMapActionObject::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider
                 strFXTag += to_wstring((_int)ceil(m_pGameInstance->Compute_Random(0.f, 2.f)));
                 CEffect2D_Manager::GetInstance()->Play_Effect(strFXTag, m_strSectionName, matFX);
 
+                m_pGameInstance->Start_SFX(_wstring(L"A_sfx_hit_bushes-") + to_wstring(rand() % 8), 50.f);
+
+
             }
             // 나무통 죽는이펙트
             else if (true == ContainWstring(m_strModelPrototypeTag[COORDINATE_2D], L"barrel"))
@@ -267,6 +270,8 @@ void C2DMapActionObject::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider
                 matFX = Get_ControllerTransform()->Get_WorldMatrix();
                 strFXTag = L"Barrel_Break";
                 CEffect2D_Manager::GetInstance()->Play_Effect(strFXTag, m_strSectionName, matFX);
+                m_pGameInstance->Start_SFX(_wstring(L"A_sfx_sword_hit_barrel_") + to_wstring(rand() % 4), 50.f);
+
             }
 
             //확률로 전구 생성

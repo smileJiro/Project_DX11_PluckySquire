@@ -148,6 +148,9 @@ void CBomb_Soldier::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
     {
         Event_DeleteObject(m_PartObjects[PART_RIGHT_WEAPON]);
     }
+
+    m_pGameInstance->Start_SFX(_wstring(L"A_sfx_sword_hit_bomb_trooper-") + to_wstring(rand() % 7), 50.f);
+
 }
 
 void CBomb_Soldier::Attack()
@@ -219,6 +222,8 @@ void CBomb_Soldier::Change_Animation()
 
         case MONSTER_STATE::DEAD:
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(DEATH_02_EDIT);
+            m_pGameInstance->Start_SFX(_wstring(L"A_sfx_bomb_trooper_death-") + to_wstring(rand() % 4), 50.f);
+
             break;
 
         default:

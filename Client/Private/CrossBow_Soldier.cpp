@@ -145,6 +145,9 @@ void CCrossBow_Soldier::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vFo
     
     m_iAttackCount = 0;
     CoolTime_Off();
+
+    m_pGameInstance->Start_SFX(_wstring(L"A_sfx_sword_hit_crossbow_trooper-") + to_wstring(rand() % 6), 50.f);
+
 }
 
 void CCrossBow_Soldier::Attack()
@@ -169,6 +172,9 @@ void CCrossBow_Soldier::Attack()
         }
 
         ++m_iAttackCount;
+
+        m_pGameInstance->Start_SFX(_wstring(L"A_sfx_crossbow_trooper_fire-") + to_wstring(rand() % 5), 50.f);
+
     }
 }
 
@@ -208,6 +214,8 @@ void CCrossBow_Soldier::Change_Animation()
             break;
 
         case MONSTER_STATE::DEAD:
+            m_pGameInstance->Start_SFX(_wstring(L"A_sfx_crossbow_trooper_death-") + to_wstring(rand() % 3), 50.f);
+
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(CROSSBOW_DEATH);
             break;
 
