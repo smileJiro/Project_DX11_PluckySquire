@@ -88,7 +88,7 @@ HRESULT CNewRenderer::Draw_RenderObject()
 			Pair.second->Render(m_pShader, m_pVIBuffer);
 	}
 
-#ifdef NDEBUG
+#ifdef _DEBUG
 	if (true == m_isDebugRender)
 	{
 		if (FAILED(Render_Debug()))
@@ -298,7 +298,7 @@ HRESULT CNewRenderer::Load_IBL(const _wstring& _strIBLJsonPath)
 	return S_OK;
 }
 
-#ifdef NDEBUG
+#ifdef _DEBUG
 void CNewRenderer::Update_Imgui()
 {
 	for (auto& Pair : m_RenderGroups)
@@ -329,8 +329,22 @@ void CNewRenderer::Set_PlayerHideColor(const _float3 _vPlayerHideColor, _bool _i
 		m_pShader->Bind_RawValue("g_vHideColor", &m_vPlayerHideColor, sizeof(_float3));
 }
 
+void CNewRenderer::Set_GrayScale_VtxMesh(_int _isGrayScale)
+{
+	m_isGray_VtxMesh = 0 < _isGrayScale ? 1 : 0;
 
-#ifdef NDEBUG
+	m_pVtxMesh->Bind_RawValue("g_isGrayScale", &m_isGray_VtxMesh, sizeof(_int));
+}
+
+void CNewRenderer::Set_GrayScale_VtxAnimMesh(_int _isGrayScale)
+{
+	m_isGray_VtxAnimMesh = 0 < _isGrayScale ? 1 : 0;
+
+	m_pVtxAnimMesh->Bind_RawValue("g_isGrayScale", &m_isGray_VtxAnimMesh, sizeof(_int));
+}
+
+
+#ifdef _DEBUG
 
 HRESULT CNewRenderer::Render_Debug()
 {
@@ -429,7 +443,7 @@ void CNewRenderer::Free()
 		Safe_Release(Pair.second);
 	}
 	m_DSVs.clear();
-#ifdef NDEBUG
+#ifdef _DEBUG
 	for (auto& pDebugComponent : m_DebugComponents)
 	{
 		Safe_Release(pDebugComponent);
@@ -443,6 +457,8 @@ void CNewRenderer::Free()
 	
 #endif // _DEBUG
 
+	Safe_Release(m_pVtxMesh);
+	Safe_Release(m_pVtxAnimMesh);
 	Safe_Release(m_pGlobalIBLConstBuffer);
 	Safe_Release(m_pVIBuffer);
 	Safe_Release(m_pShader);

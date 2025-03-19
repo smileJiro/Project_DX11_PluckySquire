@@ -51,7 +51,7 @@ public:
 		// 일반적으로 SRV는 이곳이 원본일 것임. AddRef() 안한다.
 		return S_OK;
 	}
-#ifdef NDEBUG
+#ifdef _DEBUG
 	HRESULT Add_Texture(aiTextureType _eTextureType)
 	{
 		if (nullptr != m_MaterialTextures[_eTextureType])

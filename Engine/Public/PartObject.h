@@ -46,7 +46,7 @@ public:
 	virtual void			Free() override;
 	HRESULT					Cleanup_DeadReferences() override; 
 
-#ifdef NDEBUG
+#ifdef _DEBUG
 public:
 	HRESULT Imgui_Render_ObjectInfos() override;
 #endif // _DEBUG

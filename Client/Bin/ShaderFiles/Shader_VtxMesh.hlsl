@@ -70,6 +70,9 @@ float2 g_fEndUV;
 float4 g_vTrailColor;
 float2 g_vTrailTime;
 
+/* Gray Scale */
+int g_isGrayScale = 0;
+float g_fGrayScaleColorFactor = 0.12f;
 /* ±¸Á¶Ã¼ */
 struct VS_IN
 {
@@ -277,8 +280,12 @@ PS_OUT PS_MAIN(PS_IN In)
     }
     
         
+    if (g_isGrayScale == 1)
+    {
+        vAlbedo *= Material.MultipleAlbedo;
+        vAlbedo.rgb = dot(vAlbedo.rgb, float3(0.299f, 0.587f, 0.114f)) + (vAlbedo.rgb * g_fGrayScaleColorFactor);
+    }
     
-    vAlbedo.rgb = dot(vAlbedo.rgb, float3(0.299f, 0.587f, 0.114f)) + (vAlbedo.rgb * 0.1f);
    if (vAlbedo.a < 0.01f)
        discard;
 

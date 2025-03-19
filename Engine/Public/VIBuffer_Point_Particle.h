@@ -57,7 +57,7 @@ public:
 	virtual CComponent* Clone(void* _pArg);
 	virtual void Free() override;
 
-#ifdef NDEBUG
+#ifdef _DEBUG
 public:
 	virtual void		 Tool_Setting() override;
 	virtual void		 Tool_Reset_Buffers(_float _fSpawnRate, CCompute_Shader* _pCShader, vector<class CEffect_Module*>& _Modules);

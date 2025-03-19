@@ -107,7 +107,6 @@ HRESULT CLevel_Chapter_08::Initialize(LEVEL_ID _eLevelID)
 		assert(nullptr);
 	}
 
-
 	if (FAILED(Ready_Lights()))
 	{
 		MSG_BOX(" Failed Ready_Lights (Level_Chapter_08::Initialize)");
@@ -298,24 +297,35 @@ void CLevel_Chapter_08::Update(_float _fTimeDelta)
 
 	if (KEY_DOWN(KEY::NUM6))
 	{
+		static _int i = 0;
+		i ^= 1;
+		m_pGameInstance->Set_GrayScale_VtxAnimMesh(i);
+		//m_pGameInstance->Set_GrayScale_VtxMesh(i);
+		if (i == 1)
+		{
+			m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/Chapter8_GrayScale.json"));
+		}
+		else
+		{
 
-		// DXGI 팩토리 생성
-		IDXGIFactory4* pFactory;
-		CreateDXGIFactory1(__uuidof(IDXGIFactory4), (void**)&pFactory);
+		}
+		//// DXGI 팩토리 생성
+		//IDXGIFactory4* pFactory;
+		//CreateDXGIFactory1(__uuidof(IDXGIFactory4), (void**)&pFactory);
 
-		// 기본 GPU 어댑터 가져오기
-		IDXGIAdapter3* pAdapter;
-		pFactory->EnumAdapters1(0, (IDXGIAdapter1**)&pAdapter);
+		//// 기본 GPU 어댑터 가져오기
+		//IDXGIAdapter3* pAdapter;
+		//pFactory->EnumAdapters1(0, (IDXGIAdapter1**)&pAdapter);
 
-		// VRAM 사용c량 쿼리
-		DXGI_QUERY_VIDEO_MEMORY_INFO memoryInfo;
-		pAdapter->QueryVideoMemoryInfo(0, DXGI_MEMORY_SEGMENT_GROUP_LOCAL, &memoryInfo);
+		//// VRAM 사용c량 쿼리
+		//DXGI_QUERY_VIDEO_MEMORY_INFO memoryInfo;
+		//pAdapter->QueryVideoMemoryInfo(0, DXGI_MEMORY_SEGMENT_GROUP_LOCAL, &memoryInfo);
 
-		// 결과 출력 (MB 단위)
-		SIZE_T currentUsageMB = memoryInfo.CurrentUsage / (1024 * 1024); // 현재 사용량
-		SIZE_T availableMB = memoryInfo.AvailableForReservation / (1024 * 1024); // 예약 가능량
+		//// 결과 출력 (MB 단위)
+		//SIZE_T currentUsageMB = memoryInfo.CurrentUsage / (1024 * 1024); // 현재 사용량
+		//SIZE_T availableMB = memoryInfo.AvailableForReservation / (1024 * 1024); // 예약 가능량
 
-		int a = 0;
+		//int a = 0;
 	}
 
 	// Change Camera Free  Or Target
@@ -542,11 +552,13 @@ HRESULT CLevel_Chapter_08::Ready_Lights()
 {
 #ifdef _DEBUG
 	m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/DirectionalTest2.json"));
+	m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/DirectionalTest2.json"));
 #elif NDEBUG
-	m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/Chapter6_2.json"));
+	m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/Chapter8_GrayScale.json"));
+	m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/Chapter8_GrayScale.json"));
+	m_pGameInstance->Set_GrayScale_VtxAnimMesh(1);
+	m_pGameInstance->Set_GrayScale_VtxMesh(1);
 #endif // _DEBUG
-
-	m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/Chapter6.json"));
 
 	//CONST_LIGHT LightDesc{};
 
