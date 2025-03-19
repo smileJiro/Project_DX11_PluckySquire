@@ -75,13 +75,16 @@ public:
 	void Chapter8_Tilting_Glove(_float _fTimeDelta);
 	void Chapter8_Meet_Humgrump(_float _fTimeDelta);
 	void Chapter8_Postit_Arm_Changing(_float _fTimeDelta);
-	void Chapter8_BookDrop(_float _fTimeDelta);
 
-	virtual void				Change_PlayMap(_float _fStartTime) override;
+	void Chapter8_BookDrop(_float _fTimeDelta);
+	void Chapter8_BookFreezing_Off(_float _fTimeDelta);
+
+	virtual _bool	Change_PlayMap(_float _fStartTime) override;
 
 
 private:
 	_bool				m_isPlayerFirstDead = false;
+	RETURN_ARMDATA		m_tReturnArmData;
 public:
 	static CGameEventExecuter_C8* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual void Free();

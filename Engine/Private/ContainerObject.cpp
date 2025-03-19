@@ -182,6 +182,13 @@ void CContainerObject::Set_PartActive(_uint _iPartID, _bool _bValue)
        m_PartObjects[_iPartID]->Set_Active(_bValue);
 }
 
+void CContainerObject::Set_PartAnimPlaying(_uint _iPartID, _bool _bValue)
+{
+    if (_iPartID >= m_PartObjects.size() || m_PartObjects[_iPartID] == nullptr)
+        return;
+    static_cast<CModelObject*>(m_PartObjects[_iPartID])->Set_PlayingAnim(_bValue);
+}
+
 CGameObject* CContainerObject::Get_PartObject(_int _iPartObjectIndex)
 {
     if (_iPartObjectIndex >= m_PartObjects.size())

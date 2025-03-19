@@ -18,7 +18,6 @@ public :
 		PORTAL_CANNON,
 		PORTAL_LAST
 	};
-protected : 
 	enum PORTAL_PART
 	{
 		PORTAL_PART_2D = 1,

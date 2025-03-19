@@ -618,6 +618,28 @@ HRESULT CGameInstance::Clear_ShadowLight()
 	return m_pNewRenderer->Clear_ShadowLight();
 }
 
+void CGameInstance::Set_VtxMesh(CShader* _pShader)
+{
+	assert(_pShader);
+	m_pNewRenderer->Set_VtxMesh(_pShader);
+}
+
+void CGameInstance::Set_VtxAnimMesh(CShader* _pShader)
+{
+	assert(_pShader);
+	m_pNewRenderer->Set_VtxAnimMesh(_pShader);
+}
+
+void CGameInstance::Set_GrayScale_VtxMesh(_int _isGrayScale)
+{
+	m_pNewRenderer->Set_GrayScale_VtxMesh(_isGrayScale);
+}
+
+void CGameInstance::Set_GrayScale_VtxAnimMesh(_int _isGrayScale)
+{
+	m_pNewRenderer->Set_GrayScale_VtxAnimMesh(_isGrayScale);
+}
+
 #ifdef _DEBUG
 
 HRESULT CGameInstance::Add_DebugComponent_New(CComponent* _pDebugCom)

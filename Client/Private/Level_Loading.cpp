@@ -37,8 +37,10 @@ void CLevel_Loading::Update(_float _fTimeDelta)
 {
     if (true == m_pLoader->isFinished())
     {
-        if (LEVEL_CHAPTER_8 == m_eNextLevelID) {
-            if (nullptr != m_pBackGround && m_pBackGround->Is_EndFadeOut()) {
+        if (LEVEL_CHAPTER_8 == m_eNextLevelID) 
+        {
+            if (nullptr != m_pBackGround && m_pBackGround->Is_EndFadeOut()) 
+            {
                 Event_LevelChange(m_eNextLevelID);
             }
         }
@@ -46,8 +48,16 @@ void CLevel_Loading::Update(_float _fTimeDelta)
         {
             if (nullptr != m_pBackGround && m_pBackGround->Is_EndFadeOut())
             {
+                /* Renderer¿¡ Shader µî·Ï VtxMesh, VtxAnimMesh */
+                CShader* pVtxMesh = static_cast<CShader*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxMesh"), nullptr));
+                CShader* pVtxAnimMesh = static_cast<CShader*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxAnimMesh"), nullptr));
+                m_pGameInstance->Set_VtxMesh(pVtxMesh);
+                m_pGameInstance->Set_VtxAnimMesh(pVtxAnimMesh);
+
                 Event_LevelChange(m_eNextLevelID);
             }
+
+
         }
         else 
         {
