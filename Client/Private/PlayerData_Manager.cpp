@@ -172,6 +172,7 @@ void CPlayerData_Manager::Get_PlayerItem(_wstring _szItemTag)
 		return;
 
 	// Player에게 이거 가지고 있다고 넘겨주기
+	//pPlayer->On_GainPlayerItem();
 }
 
 void CPlayerData_Manager::Change_PlayerItemMode(_uint _iPlayerItemType, _uint _iItemMode)

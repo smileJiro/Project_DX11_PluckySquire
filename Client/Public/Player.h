@@ -3,6 +3,7 @@
 #include "AnimEventReceiver.h"
 #include "Interactable.h"
 #include "Gravity.h"
+#include "PlayerData_Manager.h"
 
 BEGIN(Engine)
 class CAnimEventGenerator;
@@ -541,6 +542,7 @@ public:
 
 	void On_Stop() override;
 	void On_UnStop() override;
+	void On_GainPlayerItem(CPlayerData_Manager::PLAYERITEM_TYPE _eItem);
 public:
 
 	void Move_Attack_3D();
