@@ -8,6 +8,7 @@
 
 #include "Effect_Manager.h"
 #include "TurnBookEffect.h"
+#include "Trigger_Manager.h"
 
 CPlayerState_TurnBook::CPlayerState_TurnBook(CPlayer* _pOwner)
 	:CPlayerState(_pOwner, CPlayer::TURN_BOOK)
@@ -267,7 +268,14 @@ void CPlayerState_TurnBook::On_StateChange(BOOK_STATE _eNewState)
 			break;
 		case Client::CPlayerState_TurnBook::CLOSED_RIGHT:
 			m_pBook->Decalcomani_LToR();
-			m_pBook->Start_DropBook();
+			{
+				if (m_pBook->Is_Droppable())
+				{
+					CTrigger_Manager::GetInstance()->Register_TriggerEvent(L"Chapter8_BookDrop", 0);
+
+					m_pOwner->Set_State(CPlayer::IDLE);
+				}
+			}
 			break;
 		default:
 			break;

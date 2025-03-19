@@ -30,6 +30,7 @@
 
 #include "PlayerBody.h"
 #include "DraggableObject.h"
+#include "UI_Manager.h"
 
 #include "Dialog_Manager.h"
 #include "Npc_Humgrump.h"
@@ -122,6 +123,9 @@ void CGameEventExecuter_C8::Update(_float _fTimeDelta)
 			break;
 		case Client::CTrigger_Manager::CHAPTER8_POSTIT_ARM_CHANGING:
 			Chapter8_Postit_Arm_Changing(_fTimeDelta);
+			break;		
+		case Client::CTrigger_Manager::CHAPTER8_BOOKDROP:
+			Chapter8_BookDrop(_fTimeDelta);
 			break;
 		default:
 			break;
@@ -624,8 +628,13 @@ void CGameEventExecuter_C8::Chapter8_Friend_Appear_Violet(_float _fTimeDelta)
 
 		if (nullptr != m_TargetObjects[HAT] && m_fTimer > 5.535f)
 		{
-			Event_DeleteObject(m_TargetObjects[HAT]);
-			m_TargetObjects[HAT] = nullptr;
+			_float fProgress = static_cast<CContainerObject*>(m_TargetObjects[VIOLET])->Get_Part_AnimProgress(CContainerObject::PART_BODY);
+
+				if (0.663f < fProgress)
+				{
+					Event_DeleteObject(m_TargetObjects[HAT]);
+					m_TargetObjects[HAT] = nullptr;
+				}
 		}
 
 		Next_Step_Over(8.f);
@@ -966,10 +975,10 @@ void CGameEventExecuter_C8::Chapter8_3D_Out_01(_float _fTimeDelta)
 		{
 			pPlayer->Set_2DDirection(F_DIRECTION::UP);
 			CFriend_Controller::GetInstance()->End_Train();
-			_vector vPlayerPos = pPlayer->Get_FinalPosition() + XMVectorSet(0.0f, 60.f, 0.0f, 0.0f);
-			_vector vThrashPos = pThrash->Get_FinalPosition() + XMVectorSet(-60.0f, 60.f, 0.0f, 0.0f);
-			_vector vVioletPos = pViolet->Get_FinalPosition() + XMVectorSet(60.0f, 60.f, 0.0f, 0.0f);
-			_vector vPipPos = pPip->Get_FinalPosition() + XMVectorSet(-120.0f, 60.f, 0.0f, 0.0f);
+			_vector vPlayerPos = pPlayer->Get_FinalPosition() + XMVectorSet(0.0f, 30.f, 0.0f, 0.0f);
+			_vector vThrashPos = pThrash->Get_FinalPosition() + XMVectorSet(-60.0f, 30.f, 0.0f, 0.0f);
+			_vector vVioletPos = pViolet->Get_FinalPosition() + XMVectorSet(60.0f, 30.f, 0.0f, 0.0f);
+			_vector vPipPos = pPip->Get_FinalPosition() + XMVectorSet(-120.0f, 30.f, 0.0f, 0.0f);
 			AUTOMOVE_COMMAND AutoMove{};
 			AutoMove.eType = AUTOMOVE_TYPE::MOVE_TO;
 			AutoMove.fPostDelayTime = 0.0f;
@@ -1026,7 +1035,7 @@ void CGameEventExecuter_C8::Chapter8_3D_Out_01(_float _fTimeDelta)
 				}
 			}
 		}
-		Next_Step_Over(3.f);
+		Next_Step_Over(6.f);
 	}
 	else if (Step_Check(STEP_4)) {
 		if (Is_Start())
@@ -1050,6 +1059,80 @@ void CGameEventExecuter_C8::Chapter8_3D_Out_01(_float _fTimeDelta)
 
 void CGameEventExecuter_C8::Chapter8_3D_Out_02(_float _fTimeDelta)
 {
+	m_fTimer += _fTimeDelta;
+	CPlayer* pPlayer = Get_Player();
+	CFriend* pThrash = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Thrash"));
+	CFriend* pPip = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Pip"));
+	CFriend* pViolet = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Violet"));
+	if (Step_Check(STEP_0))
+	{
+		if (Is_Start())
+		{
+			CFriend_Controller::GetInstance()->End_Train();
+			pPlayer->Set_BlockPlayerInput(true);
+
+		}
+		Next_Step_Over(0.5f);
+
+	}
+	else if (Step_Check(STEP_1))
+	{
+		if (Is_Start())
+		{
+			CSection* pSection = SECTION_MGR->Find_Section(L"Chapter8_P1920");
+
+			if (nullptr != pSection)
+				static_cast<CSection_2D_PlayMap*>(pSection)->Set_PortalActive(true);
+
+			pPlayer->Set_2DDirection(F_DIRECTION::UP);
+			CFriend_Controller::GetInstance()->End_Train();
+			_vector vPlayerPos = XMVectorSet(-1004.0, 50.f, 0.0f, 0.0f);
+			_vector vThrashPos = vPlayerPos + XMVectorSet(-40.0f, -90.f, 0.0f, 0.0f);
+			_vector vVioletPos = vPlayerPos + XMVectorSet(40.0f, -90.f, 0.0f, 0.0f);
+			_vector vPipPos = vPlayerPos + XMVectorSet(0.0f, -130.f, 0.0f, 0.0f);
+			AUTOMOVE_COMMAND AutoMove{};
+			AutoMove.eType = AUTOMOVE_TYPE::MOVE_TO;
+			AutoMove.fPostDelayTime = 0.0f;
+			AutoMove.fPreDelayTime = 0.0f;
+			AutoMove.iAnimIndex = (_uint)CPlayer::ANIM_STATE_2D::PLAYER_RUN_UP;
+			AutoMove.vTarget = vPlayerPos;
+
+			AUTOMOVE_COMMAND AutoMove2{};
+			AutoMove2.eType = AUTOMOVE_TYPE::LOOK_DIRECTION;
+			AutoMove2.fPostDelayTime = 0.0f;
+			AutoMove2.fPreDelayTime = 0.0f;
+			AutoMove2.fMoveSpeedMag = 2.f;
+			AutoMove2.vTarget = XMVectorSet(0.0f, -1.0f, 0.0f, 0.0f);
+			AutoMove2.iAnimIndex = (_uint)CPlayer::ANIM_STATE_2D::PLAYER_IDLE_UP;
+			pPlayer->Add_AutoMoveCommand(AutoMove);
+			pPlayer->Add_AutoMoveCommand(AutoMove2);
+			pPlayer->Start_AutoMove(true);
+			pThrash->Move_Position(_float2(XMVectorGetX(vThrashPos), XMVectorGetY(vThrashPos)), CFriend::DIR_UP);
+			pViolet->Move_Position(_float2(XMVectorGetX(vVioletPos), XMVectorGetY(vVioletPos)), CFriend::DIR_UP);
+			pPip->Move_Position(_float2(XMVectorGetX(vPipPos), XMVectorGetY(vPipPos)), CFriend::DIR_UP);
+		}
+		Next_Step_Over(0.5f);
+	}
+	else if (Step_Check(STEP_2))
+	{
+		if (Is_Start())
+		{
+			pPlayer->Set_2DDirection(F_DIRECTION::DOWN);
+
+			CDialog_Manager::GetInstance()->Set_DialogId(L"Chapter8_3D_Out_02");
+		}
+		else
+			if (Next_Step(!CDialog_Manager::GetInstance()->Get_DisPlayDialogue()))
+				pPlayer->Set_BlockPlayerInput(true);
+	}
+	else
+	{
+		// 6. Player 움직임 풀기
+		pPlayer->Set_BlockPlayerInput(false);
+		//CFriend_Controller::GetInstance()->Start_Train();
+
+		GameEvent_End();
+	}
 }
 
 void CGameEventExecuter_C8::Chapter8_Sword(_float _fTimeDelta)
@@ -1152,6 +1235,9 @@ void CGameEventExecuter_C8::Chapter8_Tilting_Glove(_float _fTimeDelta)
 		};
 	if (true == Postit_Process(L"Chapter8_SKSP_Postit", L"Chapter8_Tilting_Glove", 1.f, CPostit_Page::POSTIT_PAGE_POSTION_TYPE_A, false, fCamerafunc))
 	{
+		auto pBook = Get_Book();
+		if (nullptr != pBook)
+			pBook->Set_Freezing(true);
 		GameEvent_End();
 	}
 }
@@ -1795,6 +1881,91 @@ void CGameEventExecuter_C8::Chapter8_Postit_Arm_Changing(_float _fTimeDelta)
 			GameEvent_End();
 		}
 	}
+}
+
+void CGameEventExecuter_C8::Chapter8_BookDrop(_float _fTimeDelta)
+{
+	m_fTimer += _fTimeDelta;
+	CPlayer* pPlayer = Get_Player();
+	auto pBook = Get_Book();
+
+	if (Step_Check(STEP_0))
+	{
+		if (Is_Start())
+		{
+			pPlayer->Set_BlockPlayerInput(true);
+
+			CCamera_Manager::GetInstance()->Set_ResetData(CCamera_Manager::TARGET);
+			CCamera_Manager::GetInstance()->Change_CameraTarget(pPlayer);
+		}
+		Next_Step_Over(1.1f);
+	}
+	if (Step_Check(STEP_1))
+	{
+		if (Is_Start())
+		{
+			if (nullptr != pBook)
+				pBook->Start_DropBook();
+			// 암 x3 y2 이동
+			CCamera_Manager::GetInstance()->Start_Changing_AtOffset(CCamera_Manager::TARGET,
+				1.f,
+				XMVectorSet(4.f, 2.f, 0.f, 0.f),
+				EASE_IN_OUT
+			);
+			// 암 1 땡기기
+			CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Increase(CCamera_Manager::TARGET, 2.f,
+				10.f, EASE_IN_OUT);
+			CCamera_Manager::GetInstance()->Start_Turn_AxisRight(CCamera_Manager::TARGET, 1.f, XMConvertToRadians(-30.f), XMConvertToRadians(-4.f));
+
+		}
+
+		if (m_isPlag == false && m_fTimer > 2.f)
+		{
+			CCamera_Manager::GetInstance()->Start_FadeIn(1.f);
+			m_isPlag = true;
+		}
+
+
+		if (Next_Step_Over(3.f))
+		{
+		}
+	}
+	if (Step_Check(STEP_2))
+	{
+		if(Is_Start()) 
+		{
+			// 포지션 다시 잡아주기.
+			///pBook->Set_Position(XMVectorSet(2.f, 0.4f, -17.3f, 1.f));
+			Event_DeleteObject(pBook);
+			CGameObject* pGameObject = nullptr;
+			CBook::BOOK_DESC Desc = {};
+			Desc.iCurLevelID = m_iCurLevelID;
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Book"),
+				m_iCurLevelID, L"Layer_Book", &pGameObject, &Desc)))
+				return ;
+
+			pBook = static_cast<CBook*>(pGameObject);
+
+			Uimgr->Set_Book(pBook);
+
+			pBook->Set_BlendingRatio(1.f);
+			CCamera_Manager::GetInstance()->Start_ResetArm_To_SettingPoint(CCamera_Manager::TARGET, 0.1f);
+		}
+		if (Next_Step_Over(0.5f))
+		{
+			CCamera_Manager::GetInstance()->Start_FadeOut(0.5f);
+		}
+	}	
+	else
+	{
+
+		if (nullptr != pBook)
+			pBook->Set_Freezing(false);
+
+		pPlayer->Set_BlockPlayerInput(false);
+		GameEvent_End();
+	}
+
 }
 
 void CGameEventExecuter_C8::Change_PlayMap(_float _fStartTime)

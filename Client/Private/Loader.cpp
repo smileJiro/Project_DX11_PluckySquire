@@ -1953,6 +1953,11 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 		/* °øÅë UI Texture */
 		if (FAILED(UI_Texture_Load(_eLoadLevelID)))
 			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(eResourceLevelID, TEXT("Prototype_Component_Texture_Book_Freezing"),
+			CTexture::Create(m_pDevice, m_pContext, TEXT("..//Bin/Resources/Textures/Object/3DObject/Book_Freezing_Texture.dds"), 1))))
+			return E_FAIL;
+
 	
 	#pragma endregion
 	
@@ -2437,7 +2442,7 @@ HRESULT CLoader::Model_Load(LEVEL_ID _eResourceLevelID, LEVEL_ID _eLoadLevelID)
 			return E_FAIL;
 		break;
 	case LEVEL_CAMERA_TOOL:
-		str3DMapProtoJsonName = L"Chapter_08_Play_Desk.json";
+		str3DMapProtoJsonName = L"Chapter_Boss.json";
 		strChapterName += L"Chapter8";
 		break;
 	default:

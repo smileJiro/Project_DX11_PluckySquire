@@ -97,7 +97,9 @@ public:
 	STAMP								Get_StampIndex() { return m_eStampIndex; }
 	void								Set_StampIndex(STAMP _Stamp) { m_eStampIndex = _Stamp; }
 
-	void								Set_Book(CBook* _pBook) { m_pBook = _pBook; Safe_AddRef(_pBook); }
+	void								Set_Book(CBook* _pBook) {
+		Safe_Release(m_pBook);
+		m_pBook = _pBook; Safe_AddRef(_pBook); }
 	CBook* Get_Book()
 	{
 		if (nullptr == m_pBook)

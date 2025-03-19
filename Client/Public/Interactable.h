@@ -10,6 +10,7 @@ enum class INTERACT_RESULT
 	SUCCESS,//Interact가 호출됨.
 	FAIL,//Charging도 아닌데 Interact가 호출되지 않음.
 	CHARGING,//Charging 중
+	CHARGE_COMPLETE,//Charging 완료. ChargeUp에서만 사용.
 	CHARGE_CANCEL,//Charging 중
 	NO_INPUT,
 	PLAYER_INTERACT_RESULT_LAST
@@ -38,6 +39,7 @@ public:
 	{
 		NORMAL,//키가 눌리면 Interact 호출
 		CHARGE, // 키가 일정시간 이상 눌리면 Interact 호출
+		CHARGE_UP, // 키가 일정시간 이상 눌린 후 떼었을 때 Interact 호출
 		HOLDING, // 키가 눌리는 동안 매 번 Interact 호출
 		INTERACT_TYPE_LAST
 	};
@@ -67,8 +69,11 @@ public:
 	}
 	void Pressing(CPlayer* _pPlayer, _float _fTimeDelta)
 	{
+		_bool bChargeCompleteBefore =Is_ChargeCompleted();
 		m_fInteractTimeAcc += _fTimeDelta;
-		m_bInteracting = true;
+		_bool bChargeCompleteNow = Is_ChargeCompleted();
+		if (false == bChargeCompleteBefore && true == bChargeCompleteNow)
+			On_ChargeComplete(_pPlayer);
 		On_Pressing(_pPlayer, _fTimeDelta);
 	}
 	void End_Interact(CPlayer* _pPlayer)
@@ -93,6 +98,7 @@ protected:
 	virtual void On_InteractionEnd(CPlayer* _pPlayer) {}
 	//플레이어가 상호작용을 취소했을 때 호출.(Charge Type만 불릴듯?)
 	virtual void On_InteractionCancel(CPlayer* _pPlayer) {}
+	virtual void On_ChargeComplete(CPlayer* _pPlayer) {}
 protected:
 	//차징하는 데 걸리는 시간. 차징 타입이 아니면 0으로 두기.
 	_float m_fInteractChargeTime = 0.0f;

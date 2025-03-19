@@ -144,7 +144,6 @@ HRESULT CPlayer::Initialize(void* _pArg)
 	m_iCurLevelID = pDesc->iCurLevelID;
 	pDesc->_fStepHeightThreshold = 0.225f;
 	pDesc->_fStepSlopeThreshold = 0.45f;
-	pDesc->eStartCoord = COORDINATE_2D;
 
     pDesc->iNumPartObjects = CPlayer::PLAYER_PART_LAST;
     //pDesc->eStartCoord = COORDINATE_2D;
@@ -1471,36 +1470,41 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput_ControlBook()
 		return tResult;
 	if (false == bIsTurningBook)
 		return tResult;
-	if (KEY_PRESSING(KEY::A))
+	CPlayerData_Manager* pPDM = CPlayerData_Manager::GetInstance();
+
+	if (true/*pPDM->Is_Own(CPlayerData_Manager::FLIPPING_GLOVE)*/)
 	{
-		tResult.bInputStates[PLAYER_INPUT_TURNBOOK_LEFT] = true;
-	}
-	else if (KEY_PRESSING(KEY::D))
-	{
-		tResult.bInputStates[PLAYER_INPUT_TURNBOOK_RIGHT] = true;
-	}
-	else if (KEY_PRESSING(KEY::Z))
-	{
-		tResult.bInputStates[PLAYER_INPUT_TILTBOOK_LEFT] = true;
-	}
-	else if (KEY_PRESSING(KEY::X))
-	{
-		tResult.bInputStates[PLAYER_INPUT_TILTBOOK_RIGHT] = true;
-	}
-	else
-	{
-		if (MOUSE_DOWN(MOUSE_KEY::LB)
-			|| MOUSE_DOWN(MOUSE_KEY::RB)
-			|| KEY_DOWN(KEY::SPACE)
-			|| KEY_DOWN(KEY::LSHIFT)
-			|| KEY_DOWN(KEY::Q))
+		if (KEY_PRESSING(KEY::A))
 		{
-			tResult.bInputStates[PLAYER_INPUT_TURNBOOK_END] = true;
+			tResult.bInputStates[PLAYER_INPUT_TURNBOOK_LEFT] = true;
+		}
+		else if (KEY_PRESSING(KEY::D))
+		{
+			tResult.bInputStates[PLAYER_INPUT_TURNBOOK_RIGHT] = true;
 		}
 	}
+	if (true/*pPDM->Is_Own(CPlayerData_Manager::TILTING_GLOVE)*/)
+	{
+		if (KEY_PRESSING(KEY::Z))
+		{
+			tResult.bInputStates[PLAYER_INPUT_TILTBOOK_LEFT] = true;
+		}
+		else if (KEY_PRESSING(KEY::X))
+		{
+			tResult.bInputStates[PLAYER_INPUT_TILTBOOK_RIGHT] = true;
+		}
 
+	}
 
-	return tResult;
+	if (MOUSE_DOWN(MOUSE_KEY::LB)
+		|| MOUSE_DOWN(MOUSE_KEY::RB)
+		|| KEY_DOWN(KEY::SPACE)
+		|| KEY_DOWN(KEY::LSHIFT)
+		|| KEY_DOWN(KEY::Q))
+	{
+		tResult.bInputStates[PLAYER_INPUT_TURNBOOK_END] = true;
+	}
+
 
 	return tResult;
 }
@@ -1712,6 +1716,37 @@ INTERACT_RESULT CPlayer::Try_Interact(_float _fTimeDelta)
 		{
 			m_pInteractableObject->Cancel_Interact(this);
 			return INTERACT_RESULT::CHARGE_CANCEL;
+		}
+		break;
+	case Client::IInteractable::CHARGE_UP:
+		if (KEY_DOWN(eInteractKey))
+		{
+			m_pInteractableObject->Start_Interact(this);
+			return INTERACT_RESULT::INTERACT_START;
+		}
+		else if (KEY_PRESSING(eInteractKey))
+		{
+			if (m_pInteractableObject->Is_ChargeCompleted())
+				return INTERACT_RESULT::CHARGE_COMPLETE;
+			else
+			{
+				m_pInteractableObject->Pressing(this, _fTimeDelta);
+				return INTERACT_RESULT::CHARGING;
+			}
+		}
+		else if (KEY_UP(eInteractKey))
+		{
+			if (m_pInteractableObject->Is_ChargeCompleted())
+			{
+				m_pInteractableObject->Interact(this);
+				m_pInteractableObject->End_Interact(this);
+				return INTERACT_RESULT::SUCCESS;
+			}
+			else
+			{
+				m_pInteractableObject->Cancel_Interact(this);
+				return INTERACT_RESULT::CHARGE_CANCEL;
+			}
 		}
 		break;
 	case Client::IInteractable::HOLDING:
