@@ -69,7 +69,9 @@ float2 g_vTrailTime;
 /* Texture Blending */
 Texture2D g_BlendingTexture;
 float g_fBlendingRatio;
-
+/* Gray Scale */
+int g_isGrayScale = 0;
+float g_fGrayScaleColorFactor = 0.12f;
 // Vertex Shader //
 struct VS_IN
 {
@@ -278,11 +280,17 @@ PS_OUT PS_MAIN(PS_IN In)
         vORMH.b = useMetallicMap ? g_MetallicTexture.Sample(LinearSampler, In.vTexcoord).r : Material.Metallic;
     }
 
-    if (vAlbedo.a < 0.1f)
+    if (g_isGrayScale == 1)
+    {
+        vAlbedo *= Material.MultipleAlbedo;
+        vAlbedo.rgb = dot(vAlbedo.rgb, float3(0.299f, 0.587f, 0.114f)) + (vAlbedo.rgb * g_fGrayScaleColorFactor);
+    }
+    
+    if (vAlbedo.a < 0.01f)
         discard;
     
+    Out.vDiffuse = vAlbedo;
     
-    Out.vDiffuse = vAlbedo * Material.MultipleAlbedo;
     // 1,0,0 
     // 1, 0.5, 0.5 (양의 x 축)
     // 0, 0.5, 0.5 (음의 x 축)
@@ -314,7 +322,16 @@ PS_OUT PS_MAIN_NONDISCARD(PS_IN In)
         vORMH.b = useMetallicMap ? g_MetallicTexture.Sample(LinearSampler, In.vTexcoord).r : Material.Metallic;
     }
     
-    Out.vDiffuse = vAlbedo * Material.MultipleAlbedo;
+    if (g_isGrayScale == 1)
+    {
+        vAlbedo *= Material.MultipleAlbedo;
+        vAlbedo.rgb = dot(vAlbedo.rgb, float3(0.299f, 0.587f, 0.114f)) + (vAlbedo.rgb * g_fGrayScaleColorFactor);
+    }
+    
+    if (vAlbedo.a < 0.01f)
+        discard;
+    
+    Out.vDiffuse = vAlbedo;
     // 1,0,0 
     // 1, 0.5, 0.5 (양의 x 축)
     // 0, 0.5, 0.5 (음의 x 축)
