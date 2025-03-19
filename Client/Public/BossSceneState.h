@@ -7,7 +7,7 @@ BEGIN(Client)
 class CBossSceneState final : public CBossState
 {
 public:
-	enum SCENE { FIRST, LAST };
+	enum SCENE { FIRST, SECOND, THIRD, LAST };
 
 private:
 	CBossSceneState();

@@ -644,8 +644,8 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Map()
 			return E_FAIL;
 		break;
 	case Client::LEVEL_CHAPTER_8:
-		//if (FAILED(Map_Object_Create(L"Chapter8_Intro.mchc")))
-		if (FAILED(Map_Object_Create(L"Chapter_08_Play_Desk.mchc")))
+		if (FAILED(Map_Object_Create(L"Chapter8_Intro.mchc")))
+		//if (FAILED(Map_Object_Create(L"Chapter_08_Play_Desk.mchc")))
 			return E_FAIL;
 		break;
 	case Client::LEVEL_CHAPTER_TEST:
@@ -1210,7 +1210,7 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Item(const _wstring& _strLayerTag)
 {
 	// Test(PlayerItem: Glove, Stamp)
 	//CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("Flipping_Glove"), _float3(59.936f, 6.273f, -19.097f));
-	CPlayerData_Manager::GetInstance()->Spawn_Bulb(LEVEL_STATIC, (LEVEL_ID)m_eLevelID);
+	//CPlayerData_Manager::GetInstance()->Spawn_Bulb(LEVEL_STATIC, (LEVEL_ID)m_eLevelID);
 
 
 
@@ -1579,26 +1579,26 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Effects2D(const _wstring& _strLayerTag)
 
 HRESULT CLevel_Chapter_08::Ready_Layer_PortalLocker(const _wstring& _strLayerTag)
 {
-	{/* PortalLocker_LayerCount 1 */
-		CGameObject* pGameObject = nullptr;
-		CPortalLocker_LayerCount::PORTALLOCKER_LAYER_DESC Desc;
-		CPortal* pTargetPortal = static_cast<CPortal_Default*>(static_cast<CSection_2D_PlayMap*>(CSection_Manager::GetInstance()->Find_Section(TEXT("Chapter8_SKSP_08")))->Get_Portal(0));
+	//{/* PortalLocker_LayerCount 1 */
+	//	CGameObject* pGameObject = nullptr;
+	//	CPortalLocker_LayerCount::PORTALLOCKER_LAYER_DESC Desc;
+	//	CPortal* pTargetPortal = static_cast<CPortal_Default*>(static_cast<CSection_2D_PlayMap*>(CSection_Manager::GetInstance()->Find_Section(TEXT("Chapter8_SKSP_08")))->Get_Portal(0));
 
-		if (nullptr == pTargetPortal)
-			return E_FAIL;
-		Desc.iCurLevelID = LEVEL_CHAPTER_8;
-		Desc.pTargetPortal = pTargetPortal;
-		Desc.ePortalLockerType = CPortalLocker::TYPE_PURPLE;
-		Desc.strSectionKey = TEXT("Chapter8_SKSP_08");
-		Desc.strCountingLayerTag = TEXT("Layer_Player");
+	//	if (nullptr == pTargetPortal)
+	//		return E_FAIL;
+	//	Desc.iCurLevelID = LEVEL_CHAPTER_8;
+	//	Desc.pTargetPortal = pTargetPortal;
+	//	Desc.ePortalLockerType = CPortalLocker::TYPE_PURPLE;
+	//	Desc.strSectionKey = TEXT("Chapter8_SKSP_08");
+	//	Desc.strCountingLayerTag = TEXT("Layer_Player");
 
-		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_PortalLocker_LayerCount"), LEVEL_CHAPTER_8, _strLayerTag, &pGameObject, &Desc)))
-			return E_FAIL;
+	//	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_PortalLocker_LayerCount"), LEVEL_CHAPTER_8, _strLayerTag, &pGameObject, &Desc)))
+	//		return E_FAIL;
 
-		if (FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(Desc.strSectionKey, pGameObject, SECTION_2D_PLAYMAP_OBJECT)))
-			return E_FAIL;
+	//	if (FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(Desc.strSectionKey, pGameObject, SECTION_2D_PLAYMAP_OBJECT)))
+	//		return E_FAIL;
 
-	}/* PortalLocker_LayerCount 1 */
+	//}/* PortalLocker_LayerCount 1 */
 
 
 	return S_OK;

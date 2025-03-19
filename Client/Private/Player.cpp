@@ -144,6 +144,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
 	m_iCurLevelID = pDesc->iCurLevelID;
 	pDesc->_fStepHeightThreshold = 0.225f;
 	pDesc->_fStepSlopeThreshold = 0.45f;
+	pDesc->eStartCoord = COORDINATE_2D;
 
     pDesc->iNumPartObjects = CPlayer::PLAYER_PART_LAST;
     //pDesc->eStartCoord = COORDINATE_2D;
@@ -1570,6 +1571,11 @@ void CPlayer::Shoot_Rifle(_fvector _vTargetPosition)
 	if (nullptr == m_pRifle)
 		return;
 	m_pRifle->Shoot(_vTargetPosition);
+}
+
+void CPlayer::Acquire_Item(PLAYER_2D_ITEM_ID _eItemID)
+{
+	m_pStateMachine->Transition_To(new CPlayerState_GetItem(this, _eItemID));
 }
 
 

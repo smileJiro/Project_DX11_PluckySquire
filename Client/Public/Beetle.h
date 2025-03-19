@@ -56,7 +56,7 @@ public:
 public:
 	virtual void Change_Animation() override;
 	virtual void Turn_Animation(_bool _isCW) override;
-	void Animation_End(COORDINATE _eCoord, _uint iAnimIdx);
+	virtual void Animation_End(COORDINATE _eCoord, _uint iAnimIdx) override;
 
 	virtual void Attack();
 

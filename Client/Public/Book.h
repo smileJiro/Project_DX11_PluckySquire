@@ -127,7 +127,7 @@ public:
 
 	void					Set_Freezing(_bool _isFreezing); 
 	_bool					Is_Freezing() { return m_isFreezing; }	
-	
+	void					Start_FreezingOff();
 	void					Set_Droppable(_bool _isDroppable) { m_isDroppable = _isDroppable; }
 	_bool					Is_Droppable() { return m_isDroppable; }
 private:
@@ -140,7 +140,8 @@ private :
 	BOOK_ANIM_ACTION		m_eAnimAction = ANIM_ACTION_NONE;
 	_float					m_fAccAnimTime = 0.f;
 	_float					m_isFreezingRatio = 0.7f;
-	_float3					m_fNextPos = {};
+	_float3					m_fNextPos = {};	
+	_bool					m_isFreezingOff = { false };
 	_bool					m_isFreezing = { false };
 	_bool					m_isAction = { false };
 	_bool					m_isPlayerAround= { false };

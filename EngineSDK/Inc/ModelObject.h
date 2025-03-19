@@ -88,6 +88,7 @@ public:
 	_bool Is_PickingCursor_Model_Test(_float2 _fCursorPos, _float& _fDst);
 	//const _float4x4* Find_BoneMatrix(const _char* _pBoneName) const;
 	void Register_OnAnimEndCallBack(const function<void(COORDINATE,_uint)>& fCallback);
+	void Remove_OnAnimEndCallBack(const function<void(COORDINATE, _uint)>& fCallback);
 	virtual void Check_FrustumCulling();
 
 public:
