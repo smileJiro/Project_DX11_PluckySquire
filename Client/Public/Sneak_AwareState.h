@@ -24,8 +24,11 @@ public:
 
 private:
 	_float m_fAccTime = {};
+	_float m_fRecognizeTime = {};
+	_bool m_isRecognize = {};
 	_bool m_isConvert = {};
 	_bool m_isRenew = {};
+	_bool m_isTurn = {};
 
 public:
 	static CSneak_AwareState* Create(void* _pArg);
