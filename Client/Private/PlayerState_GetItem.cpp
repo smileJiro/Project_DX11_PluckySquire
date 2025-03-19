@@ -26,22 +26,29 @@ void CPlayerState_GetItem::Update(_float _fTimeDelta)
 
 
 	}
-	_uint iCurAnimIdx = m_pFX->Get_CurrentAnimIndex();
-	_float fProgress = m_pFX->Get_CurrentAnimationProgress();
-	if (0 == iCurAnimIdx)
+	COORDINATE eCoord = m_pOwner->Get_CurCoord();
+	if (COORDINATE_2D == eCoord)
 	{
-		_float fRatio = fProgress / m_fSizeUpENdProgress;
-		_float fSize = max( 0.1f,fProgress) * 250.f;
-		m_pItemImg->Set_Scale(_float3{ fSize ,fSize ,fSize});
-	}
-	else
-	if (2 == iCurAnimIdx)
-	{
-		if (0.5f <= fProgress)
+		_uint iCurAnimIdx = m_pFX->Get_CurrentAnimIndex();
+		_float fProgress = m_pFX->Get_CurrentAnimationProgress();
+
+		if (0 == iCurAnimIdx)
 		{
-				m_pItemImg->Set_Active(false);
-				
+			(fProgress - m_fSizeUpStartProgress) / (m_fSizeUpENdProgress - m_fSizeUpStartProgress);
+			_float fRatio = fProgress / m_fSizeUpENdProgress;
+			_float fSize = max(0.1f, fProgress) * 250.f;
+			m_pItemImg->Set_Scale(_float3{ fSize ,fSize ,fSize });
 		}
+		else
+			if (2 == iCurAnimIdx)
+			{
+				if (0.5f <= fProgress)
+				{
+					m_pItemImg->Set_Active(false);
+
+				}
+
+			}
 
 	}
 
@@ -106,8 +113,12 @@ void CPlayerState_GetItem::Enter()
 
 void CPlayerState_GetItem::Exit()
 {
-	Event_DeleteObject(m_pFX);
-	Event_DeleteObject(m_pItemImg);
+	COORDINATE eCoord = m_pOwner->Get_CurCoord();
+	if (COORDINATE_2D == eCoord)
+	{
+		Event_DeleteObject(m_pFX);
+		Event_DeleteObject(m_pItemImg);
+	}
 }
 
 void CPlayerState_GetItem::On_AnimEnd(COORDINATE _eCoord, _uint _iAnimIdx)
