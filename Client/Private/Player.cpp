@@ -143,7 +143,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
 
 	m_iCurLevelID = pDesc->iCurLevelID;
 	pDesc->_fStepHeightThreshold = 0.225f;
-	pDesc->_fStepSlopeThreshold = 0.45f;
+	pDesc->_fStepSlopeThreshold = 0.75f;
 
     pDesc->iNumPartObjects = CPlayer::PLAYER_PART_LAST;
     //pDesc->eStartCoord = COORDINATE_2D;
@@ -205,7 +205,11 @@ HRESULT CPlayer::Initialize(void* _pArg)
 	ShapeData.isTrigger = true;
 	XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(0, m_f3DCenterYOffset, 0));
 	ShapeData.FilterData.MyGroup = OBJECT_GROUP::PLAYER_TRIGGER;
-	ShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::DYNAMIC_OBJECT | OBJECT_GROUP::INTERACTION_OBEJCT;
+	ShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | 
+		OBJECT_GROUP::DYNAMIC_OBJECT | 
+		OBJECT_GROUP::INTERACTION_OBEJCT |
+		OBJECT_GROUP::INTERACTION_PORTAL
+		;
 	ActorDesc.ShapeDatas[ShapeData.iShapeUse] = ShapeData;
 
 	//상호작용 구 (트리거)
@@ -760,7 +764,7 @@ void CPlayer::Late_Update(_float _fTimeDelta)
 HRESULT CPlayer::Render()
 {
 	/* Model이 없는 Container Object 같은 경우 Debug 용으로 사용하거나, 폰트 렌더용으로. */
-
+	
 #ifdef _DEBUG
 	if (m_pBody2DColliderCom->Is_Active())
 		m_pBody2DColliderCom->Render(SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName));
@@ -825,7 +829,7 @@ void CPlayer::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)
 	if (PLAYER_SHAPE_USE::INTERACTION == (PLAYER_SHAPE_USE)_My.pShapeUserData->iShapeUse)
 	{
 		OBJECT_GROUP eOtehrGroup = (OBJECT_GROUP)_Other.pActorUserData->pOwner->Get_ObjectGroupID();
-		if (OBJECT_GROUP::INTERACTION_OBEJCT == eOtehrGroup)
+		if (OBJECT_GROUP::INTERACTION_OBEJCT == eOtehrGroup || OBJECT_GROUP::INTERACTION_PORTAL == eOtehrGroup )
 		{
 			IInteractable* pInteractable = dynamic_cast<IInteractable*> (_Other.pActorUserData->pOwner);
 			if (Check_ReplaceInteractObject(pInteractable))
@@ -972,7 +976,7 @@ void CPlayer::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCol
 	OBJECT_GROUP eGroup = (OBJECT_GROUP)_pOtherObject->Get_ObjectGroupID();
 	if (_pMyCollider == m_pBody2DTriggerCom)
 	{
-		if (OBJECT_GROUP::INTERACTION_OBEJCT == eGroup)
+		if (OBJECT_GROUP::INTERACTION_OBEJCT == eGroup || OBJECT_GROUP::INTERACTION_PORTAL == eGroup)
 		{
 			IInteractable* pInteractable = dynamic_cast<IInteractable*> (_pOtherObject);
 			if (nullptr != pInteractable && static_cast<CCollider_Circle*>(_pMyCollider)->Is_ContainsPoint(_pOtherCollider->Get_Position()))
@@ -1378,36 +1382,44 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
 
 	_vector vRight = XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_RIGHT));
 	_vector vUp = XMVector3Normalize(m_pControllerTransform->Get_State(CTransform::STATE_UP));
-	if (KEY_PRESSING(KEY::W))
+	
+	if (eCoord == COORDINATE_3D)
 	{
-		if (eCoord == COORDINATE_3D)
+		if (KEY_PRESSING(KEY::W))
 			tResult.vDir += _vector{ 0.f, 0.f, 1.f,0.f };
-		else
-			//tResult.vMoveDir += _vector{ 0.f, 1.f, 0.f,0.f };
-			tResult.vDir += vUp;
-	}
-	if (KEY_PRESSING(KEY::A))
-	{
-		if (eCoord == COORDINATE_3D)
+		if (KEY_PRESSING(KEY::A))
 			tResult.vDir += _vector{ -1.f, 0.f, 0.f,0.f };
-		else
-			// tResult.vMoveDir += _vector{ -1.f, 0.f, 0.f,0.f };
-			tResult.vDir -= vRight;
-	}
-	if (KEY_PRESSING(KEY::S))
-	{
-		if (eCoord == COORDINATE_3D)
+		if (KEY_PRESSING(KEY::S))
 			tResult.vDir += _vector{ 0.f, 0.f, -1.f,0.f };
-		else
-			//tResult.vMoveDir += _vector{ 0.f, -1.f, 0.f,0.f };
-			tResult.vDir -= vUp;
-	}
-	if (KEY_PRESSING(KEY::D))
-	{
-		if (eCoord == COORDINATE_3D)
+		if (KEY_PRESSING(KEY::D))
 			tResult.vDir += _vector{ 1.f, 0.f, 0.f,0.f };
+
+		//카메라가 보는 방향
+		_vector vCamLook = static_cast<CCamera*>(CCamera_Manager::GetInstance()->Get_CurrentCamera())->Get_Arm()->Get_ArmVector();
+		vCamLook = -XMVectorSetY(vCamLook, 0.f);
+		//X축이 크면?
+		if (abs(vCamLook.m128_f32[0]) > abs(vCamLook.m128_f32[2]))
+		{
+			vCamLook.m128_f32[2] = 0.f;
+			vCamLook.m128_f32[0] /= -abs(vCamLook.m128_f32[0]);
+		}
 		else
-			//tResult.vMoveDir += _vector{ 1.f, 0.f, 0.f,0.f };
+		{
+			vCamLook.m128_f32[0] = 0.f;
+			vCamLook.m128_f32[2] /= abs(vCamLook.m128_f32[2]);
+		}
+		tResult.vDir =XMVector3TransformNormal(tResult.vDir, XMMatrixLookToLH(_vector{0.f,0.f,0.f}, vCamLook, _vector{ 0.f,1.f,0.f }));
+
+	}
+	else
+	{
+		if (KEY_PRESSING(KEY::W))
+			tResult.vDir += vUp;
+		if (KEY_PRESSING(KEY::A))
+			tResult.vDir -= vRight;
+		if (KEY_PRESSING(KEY::S))
+			tResult.vDir -= vUp;
+		if (KEY_PRESSING(KEY::D))
 			tResult.vDir += vRight;
 	}
 	tResult.vDir = XMVector3Normalize(tResult.vDir);
@@ -2158,8 +2170,9 @@ void CPlayer::Set_Mode(PLAYER_MODE _eNewMode)
 		cout << "PLAYER_MODE_CYBERJOT" << endl;
 
 		m_pTargetCamera = static_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET));
-		CCameraPivot* pPivot = static_cast<CCameraPivot*>(m_pGameInstance->Get_GameObject_Ptr(m_iCurLevelID, TEXT("Layer_CameraPivot"), 0));
-		m_pCameraTargetWorldMatrix = pPivot->Get_MainTarget()->Get_ControllerTransform()->Get_WorldMatrix_Ptr();
+		CCameraPivot* pPivot = dynamic_cast<CCameraPivot*>(m_pGameInstance->Get_GameObject_Ptr(m_iCurLevelID, TEXT("Layer_CameraPivot"), 0));
+		if(pPivot)
+			m_pCameraTargetWorldMatrix = pPivot->Get_MainTarget()->Get_ControllerTransform()->Get_WorldMatrix_Ptr();
 
 		Set_Kinematic(true);
 		//Get_ActorDynamic()->Set_Gravity(false);
@@ -2575,8 +2588,36 @@ void CPlayer::On_UnStop()
 	//static_cast<CModelObject*>(m_PartObjects[PLAYER_PART_BODY])->End_StoppableRender();
 }
 
+void CPlayer::On_GainPlayerItem(_uint _eItem)
+{
+	switch (_eItem)
+	{
+	case Client::CPlayerData_Manager::FLIPPING_GLOVE:
+		break;
+	case Client::CPlayerData_Manager::TILTING_GLOVE:
+		break;
+	case Client::CPlayerData_Manager::STOP_STAMP:
+		m_eCurrentStamp = PLAYER_PART_STOP_STMAP;
+		break;
+	case Client::CPlayerData_Manager::BOMB_STAMP:
+		m_eCurrentStamp = PLAYER_PART_BOMB_STMAP;
+		break;
+	case Client::CPlayerData_Manager::SWORD:
+		break;
+	case Client::CPlayerData_Manager::ITEM_END:
+		break;
+	default:
+		break;
+	}
+}
+
+
+
 void CPlayer::Update_CyberJot(_float _fTimeDelta)
 {
+	if (nullptr == m_pTargetCamera || nullptr == m_pCameraTargetWorldMatrix)
+		return;
+
 	m_f3DCyberCurrentSpeed -= m_f3DCyberLinearDamping * _fTimeDelta;
 	if(m_f3DCyberCurrentSpeed < 0.f)
 		m_f3DCyberCurrentSpeed = 0.f;

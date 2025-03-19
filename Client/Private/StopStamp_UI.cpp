@@ -3,6 +3,7 @@
 #include "GameInstance.h"
 #include "Book.h"
 #include "Player.h"
+#include "PlayerData_Manager.h"
 
 
 
@@ -45,9 +46,12 @@ void CStopStamp_UI::Priority_Update(_float _fTimeDelta)
 
 void CStopStamp_UI::Update(_float _fTimeDelta)
 {
+	//return tResult;
+	CPlayerData_Manager* pPDM = CPlayerData_Manager::GetInstance();
+
 	
 	CUI_Manager* pUIManager = CUI_Manager::GetInstance();
-	if (false == pUIManager->Get_StampHave(1))
+	if (false == pPDM->Is_Own(CPlayerData_Manager::STOP_STAMP))
 		return;
 
 
@@ -55,15 +59,15 @@ void CStopStamp_UI::Update(_float _fTimeDelta)
 		return;
 
 	// 둘다 있으면 체인지 스탬프 준비하고
-	if (true == pUIManager->Get_StampHave(0) &&
-		true == pUIManager->Get_StampHave(1))
+	if (true == pPDM->Is_Own(CPlayerData_Manager::BOMB_STAMP) &&
+		true == pPDM->Is_Own(CPlayerData_Manager::STOP_STAMP))
 	{
 		ChangeStamp(_fTimeDelta);
 	}
 
 	// 밤만 가지고 있으면 밤 도장 위치를 조정해주자.
-	else if (true == pUIManager->Get_StampHave(1) &&
-		false == pUIManager->Get_StampHave(0))
+	else if (true == pPDM->Is_Own(CPlayerData_Manager::STOP_STAMP) &&
+		false == pPDM->Is_Own(CPlayerData_Manager::BOMB_STAMP))
 	{
 		if (false == m_isFirstPositionAdjusted)
 		{
@@ -84,14 +88,16 @@ void CStopStamp_UI::Update(_float _fTimeDelta)
 
 void CStopStamp_UI::Late_Update(_float _fTimeDelta)
 {
-	if (false == Uimgr->GetInstance()->Get_StampHave(1))
+	CPlayerData_Manager* pPDM = CPlayerData_Manager::GetInstance();
+
+	if (false == pPDM->Is_Own(CPlayerData_Manager::STOP_STAMP))
 		return;
 
 
 	CBook* pBook = Uimgr->Get_Book();
 
 	if (nullptr == pBook)
-		assert(pBook);
+		return;
 
 	if (true == pBook->Get_PlayerAbove())
 		__super::Late_Update(_fTimeDelta);
@@ -99,7 +105,9 @@ void CStopStamp_UI::Late_Update(_float _fTimeDelta)
 
 HRESULT CStopStamp_UI::Render()
 {
-	if (false == Uimgr->GetInstance()->Get_StampHave(1))
+	CPlayerData_Manager* pPDM = CPlayerData_Manager::GetInstance();
+
+	if (false == pPDM->Is_Own(CPlayerData_Manager::STOP_STAMP))
 		return S_OK;
 
 	if (FAILED(m_pControllerTransform->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
@@ -148,8 +156,10 @@ void CStopStamp_UI::ChangeStamp(_float _fTimeDelta)
 			if (ePlayerPart == CPlayer::PLAYER_PART::PLAYER_PART_STOP_STMAP)
 			{
 				//위치 변경이 필요한가요?
-				m_fX = g_iWinSizeX / 7.5f;
-				m_fY = g_iWinSizeY - g_iWinSizeY / 10.f;
+				m_fX = g_iWinSizeX / 23.f;
+				m_fY = g_iWinSizeY - g_iWinSizeY / 6.f;
+
+				m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(m_fX - g_iWinSizeX * 0.5f, -m_fY + g_iWinSizeY * 0.5f, 0.f, 1.f));
 
 				m_isBig = true;
 				m_isScaling = true;
@@ -157,8 +167,10 @@ void CStopStamp_UI::ChangeStamp(_float _fTimeDelta)
 			else if (ePlayerPart == CPlayer::PLAYER_PART::PLAYER_PART_BOMB_STMAP)
 			{
 				//위치 변경이 필요한가요?
-				m_fX = g_iWinSizeX / 7.5f;
-				m_fY = g_iWinSizeY - g_iWinSizeY / 10.f;
+				m_fX = g_iWinSizeX / 23.f;
+				m_fY = g_iWinSizeY - g_iWinSizeY / 6.f;
+
+				m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(m_fX - g_iWinSizeX * 0.5f, -m_fY + g_iWinSizeY * 0.5f, 0.f, 1.f));
 
 				m_isSmall = true;
 				m_isScaling = true;

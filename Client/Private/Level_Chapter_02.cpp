@@ -252,6 +252,7 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_PROJECTILE, OBJECT_GROUP::BLOCKER);
 	//m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::PORTAL);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_TRIGGER, OBJECT_GROUP::INTERACTION_OBEJCT); //3 8
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_TRIGGER, OBJECT_GROUP::INTERACTION_PORTAL); //3 8
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_TRIGGER, OBJECT_GROUP::MONSTER); //3 8
 	/* 플레이어 - 문 */
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::DOOR);
@@ -528,7 +529,8 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Map()
 	switch (eLevelID)
 	{
 	case Client::LEVEL_CHAPTER_2:
-		if (FAILED(Map_Object_Create(L"Chapter_02_Play_Desk.mchc")))
+			//if (FAILED(Map_Object_Create(L"Chapter_02_Play_Desk.mchc")))
+		if (FAILED(Map_Object_Create(L"Chapter_Intro.mchc")))
 			return E_FAIL;
 		break;
 	case Client::LEVEL_CHAPTER_4:
@@ -918,6 +920,9 @@ HRESULT CLevel_Chapter_02::Ready_Layer_UI(const _wstring& _strLayerTag)
 	pDesc.fSizeY = 72.f;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Interaction_Book"), m_eLevelID, _strLayerTag, &pDesc)))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Interaction_Tilting"), m_eLevelID, _strLayerTag, &pDesc)))
 		return E_FAIL;
 
 

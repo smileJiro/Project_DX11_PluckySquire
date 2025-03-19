@@ -40,8 +40,8 @@ HRESULT CBirdMonster::Initialize(void* _pArg)
     pDesc->fFOVX = 90.f;
     pDesc->fFOVY = 60.f;
 
-    m_tStat.iHP = 5;
-    m_tStat.iMaxHP = 5;
+    pDesc->_tStat.iHP = 5;
+    pDesc->_tStat.iMaxHP = 5;
 
     /* Create Test Actor (Desc를 채우는 함수니까. __super::Initialize() 전에 위치해야함. )*/
     if (FAILED(Ready_ActorDesc(pDesc)))
@@ -84,7 +84,7 @@ HRESULT CBirdMonster::Initialize(void* _pArg)
 
     Safe_Delete(pDesc->pActorDesc);
 
-    static_cast<CActor_Dynamic*>(Get_ActorCom())->Set_Gravity(false);
+    //static_cast<CActor_Dynamic*>(Get_ActorCom())->Set_Gravity(false);
 
     return S_OK;
 }
@@ -148,6 +148,13 @@ HRESULT CBirdMonster::Render()
     return S_OK;
 }
 
+void CBirdMonster::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
+{
+    __super::On_Hit(_pHitter, _iDamg, _vForce);
+
+    m_pGameInstance->Start_SFX(_wstring(L"A_sfx_sword_hit_namastarling_") + to_wstring(rand() % 3), 50.f);
+}
+
 void CBirdMonster::Change_Animation()
 {
     if(m_iState != m_iPreState)
@@ -159,6 +166,8 @@ void CBirdMonster::Change_Animation()
             break;
 
         case MONSTER_STATE::ALERT:
+            m_pGameInstance->Start_SFX(_wstring(L"A_sfx_namastarling_alert_") + to_wstring(rand() % 4), 50.f);
+
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(ALERT_EDIT);
             break;
 
@@ -184,6 +193,8 @@ void CBirdMonster::Change_Animation()
 
         case MONSTER_STATE::DEAD:
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(DIE);
+            m_pGameInstance->Start_SFX(_wstring(L"A_sfx_namastarling_death_") + to_wstring(rand() % 3), 50.f);
+
             break;
 
         default:
@@ -249,7 +260,9 @@ void CBirdMonster::Attack()
         if (COORDINATE_3D == eCoord)
         {
             vPosition.y += vScale.y * 0.8f;
-            XMStoreFloat4(&vRotation, m_pGameInstance->Direction_To_Quaternion(XMVectorSet(0.f, 0.f, 1.f, 0.f), m_pTarget->Get_FinalPosition() - Get_FinalPosition()));
+            _vector vTargetPos = m_pTarget->Get_FinalPosition();
+            XMVectorSetY(vTargetPos, vPosition.y);
+            XMStoreFloat4(&vRotation, m_pGameInstance->Direction_To_Quaternion(XMVectorSet(0.f, 0.f, 1.f, 0.f), vTargetPos - Get_FinalPosition()));
             CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Projectile_BirdMonster"), eCoord, &vPosition, &vRotation);
         }
         else if (COORDINATE_2D == eCoord)
@@ -257,18 +270,18 @@ void CBirdMonster::Attack()
             //공격 위치 맞추기
             switch (Get_2DDirection())
             {
-            case Client::F_DIRECTION::LEFT:
+            case Client::E_DIRECTION::LEFT:
                 vPosition.x -= 50.f;
                 vPosition.y += 20.f;
                 break;
-            case Client::F_DIRECTION::RIGHT:
+            case Client::E_DIRECTION::RIGHT:
                 vPosition.x += 50.f;
                 vPosition.y += 40.f;
                 break;
-            case Client::F_DIRECTION::UP:
+            case Client::E_DIRECTION::UP:
                 vPosition.y += 70.f;
                 break;
-            case Client::F_DIRECTION::DOWN:
+            case Client::E_DIRECTION::DOWN:
                 vPosition.y -= 30.f;
                 break;
             default:
@@ -285,6 +298,9 @@ void CBirdMonster::Attack()
         ++m_iAttackCount;
 
     }
+
+    m_pGameInstance->Start_SFX(_wstring(L"A_sfx_NamaStarling_fire_seed_") + to_wstring(rand() % 2), 50.f);
+
 }
 
 HRESULT CBirdMonster::Ready_ActorDesc(void* _pArg)

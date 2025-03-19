@@ -21,7 +21,7 @@ public:
 		_float fAlert2DRange;
 		_float fChase2DRange;
 		_float fAttack2DRange;
-		_float fDelayTime;
+		_float fDelayTime=-1.f;
 		_float fCoolTime;
 		_int iCurLevel;
 		MONSTER_STATE eMoveNextState;

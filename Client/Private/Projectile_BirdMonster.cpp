@@ -155,6 +155,8 @@ void CProjectile_BirdMonster::OnTrigger_Enter(const COLL_INFO& _My, const COLL_I
         if((_uint)SHAPE_USE::SHAPE_BODY == _Other.pShapeUserData->iShapeUse)
         {
             //effect, sound
+            m_pGameInstance->Start_SFX(_wstring(L"A_sfx_namastarling_seed_land_") + to_wstring(rand() % 3), 50.f);
+
         }
 
     }
@@ -174,6 +176,7 @@ void CProjectile_BirdMonster::On_Collision2D_Enter(CCollider* _pMyCollider, CCol
 
     if (OBJECT_GROUP::PLAYER & _pOtherObject->Get_ObjectGroupID() || OBJECT_GROUP::MAPOBJECT & _pOtherObject->Get_ObjectGroupID() || OBJECT_GROUP::BLOCKER & _pOtherObject->Get_ObjectGroupID())
     {
+        m_pGameInstance->Start_SFX(_wstring(L"A_sfx_namastarling_seed_land_") + to_wstring(rand() % 3), 50.f);
     }
 }
 

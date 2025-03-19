@@ -242,6 +242,8 @@ void CBeetle::Change_Animation()
 
         case MONSTER_STATE::HIT:
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(DAMAGE);
+            m_pGameInstance->Start_SFX(_wstring(L"A_sfx_sword_hit_beetle-") + to_wstring(rand() % 5), 50.f);
+
             break;
 
         case MONSTER_STATE::DEAD:

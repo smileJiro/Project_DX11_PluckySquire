@@ -638,38 +638,23 @@ void CPlayerSword::Set_AttackEnable(_bool _bOn, CPlayer::ATTACK_TYPE _eAttackTyp
 {
 	COORDINATE eCoord = Get_CurCoord();
     m_bAttackEnable = _bOn;
-    if (COORDINATE_3D == eCoord)
-    {
-        _uint iShapeCount = (_uint)m_pActorCom->Get_Shapes().size();
-        for (_uint i = 0; i < iShapeCount; i++)
-            m_pActorCom->Set_ShapeEnable(i, false);
-        
-        if (HANDLING == m_eCurrentState)
-            m_pTrailEffect->Set_AddUpdate(_bOn);
-        if (_bOn)
-        {
-            if (CPlayer::ATTACK_TYPE::ATTACK_TYPE_NORMAL3 == _eAttackType)
-                CEffect_Manager::GetInstance()->Active_Effect(TEXT("SwordCombo"), true, &m_WorldMatrices[COORDINATE_3D]);
-       /*     if (CPlayer::ATTACK_TYPE::ATTACK_TYPE_JUMPATTACK == _eAttackType)
-                CEffect_Manager::GetInstance()->Active_EffectPosition(TEXT("SwordJumpAttack"), true, XMLoadFloat4((_float4*)&m_WorldMatrices[COORDINATE_3D].m[3]));*/
-        }
-        else 
-        {
-            m_pTrailEffect->Delete_Delay(0.5f);
-        }
-    }
+    //일단 다 끄고
+    _uint iShapeCount = (_uint)m_pActorCom->Get_Shapes().size();
+    for (_uint i = 0; i < iShapeCount; i++)
+        m_pActorCom->Set_ShapeEnable(i, false);
+    m_pAttack2DColliderCom->Set_Active(false);
+    //켜지면 필요한 것만 키기.
     if (false == _bOn)
     {
         for (CGameObject* pObj : m_AttckedObjects)
-			Safe_Release(pObj);
+            Safe_Release(pObj);
         m_AttckedObjects.clear();
-        if (COORDINATE_2D == eCoord)
-            m_pAttack2DColliderCom->Set_Active(false);
     }
     else
     {
         if (COORDINATE_3D == eCoord)
         {
+
             _uint iShapeIdx = 0;
             switch (_eAttackType)
             {
@@ -692,9 +677,32 @@ void CPlayerSword::Set_AttackEnable(_bool _bOn, CPlayer::ATTACK_TYPE _eAttackTyp
                 break;
             }
             m_pActorCom->Set_ShapeEnable(iShapeIdx, true);
+
         }
         else
+        {
             m_pAttack2DColliderCom->Set_Active(true);
+        }
+    }
+   
+
+    //이펙트 처리
+    if (COORDINATE_3D == eCoord)
+    {
+
+        if (HANDLING == m_eCurrentState)
+            m_pTrailEffect->Set_AddUpdate(_bOn);
+        if (_bOn)
+        {
+            if (CPlayer::ATTACK_TYPE::ATTACK_TYPE_NORMAL3 == _eAttackType)
+                CEffect_Manager::GetInstance()->Active_Effect(TEXT("SwordCombo"), true, &m_WorldMatrices[COORDINATE_3D]);
+            /*     if (CPlayer::ATTACK_TYPE::ATTACK_TYPE_JUMPATTACK == _eAttackType)
+                     CEffect_Manager::GetInstance()->Active_EffectPosition(TEXT("SwordJumpAttack"), true, XMLoadFloat4((_float4*)&m_WorldMatrices[COORDINATE_3D].m[3]));*/
+        }
+        else
+        {
+            m_pTrailEffect->Delete_Delay(0.5f);
+        }
     }
 
 }

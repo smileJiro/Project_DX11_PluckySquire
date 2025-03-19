@@ -77,18 +77,13 @@ HRESULT CPlayerData_Manager::Spawn_PlayerItem(_uint _iPrototypeLevelID, _uint _i
 	Desc.tTransform3DDesc.vInitialPosition = _vPos;
 	Desc.tTransform3DDesc.vInitialScaling = _vScale;
 
-	_uint iItemCount = {};
-
 	for (auto& ItemTag : m_ItemTags) {
 		if (ItemTag.first == _szItemTag) {
 			Desc.szModelTag = ItemTag.second;
 			Desc.szItemTag = ItemTag.first;
 			Desc.szEventTag = strPrevText + ItemTag.first;
-			Desc.iItemType = iItemCount;
 			break;
 		}
-
-		iItemCount++;
 	}
 
 	CGameObject* pPlayerItem;
@@ -172,11 +167,13 @@ void CPlayerData_Manager::Get_PlayerItem(_wstring _szItemTag)
 	m_ItemState[_szItemTag].first = true;
 	m_ItemState[_szItemTag].second->Change_Mode(CPlayerItem::GETTING);
 
-	CGameObject* pPlayer = m_pGameInstance->Get_GameObject_Ptr(m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Player"), 0);
+	CPlayer* pPlayer = static_cast<CPlayer*>( m_pGameInstance->Get_GameObject_Ptr(m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Player"), 0));
 	if (nullptr == pPlayer)
 		return;
 
 	// Player에게 이거 가지고 있다고 넘겨주기
+	_uint iItemType = m_ItemState[_szItemTag].second->Get_ItemType();
+	pPlayer->On_GainPlayerItem((PLAYERITEM_TYPE)iItemType);
 }
 
 void CPlayerData_Manager::Change_PlayerItemMode(_uint _iPlayerItemType, _uint _iItemMode)

@@ -27,6 +27,7 @@ void CPlayerState_EngageBoss::Enter()
 
 	if (nullptr != m_pOwner->Get_ZetPack())
 		m_pOwner->Get_ZetPack()->Switch_State(CZetPack::STATE_CYBER);
+	m_pOwner->Set_Position(_vector{  -11.0362425f ,5.76746035f , 11.9308004f });
 	m_pOwner->Set_Kinematic(true);
 	m_pOwner->LookDirectionXZ_Kinematic(_vector{ 0.f,0.f,-1.f });
 	m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::CYBERJOT_CINE_DO9_LB_ENGAGE_SH01);
