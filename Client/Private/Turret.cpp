@@ -4,6 +4,7 @@
 #include "Pooling_Manager.h"
 #include "Bomb.h"
 #include "PlayerData_Manager.h"
+#include "Section_Manager.h"
 
 CTurret::CTurret(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     :CModelObject(_pDevice, _pContext)
@@ -120,15 +121,42 @@ void CTurret::State_Change_Rise()
 void CTurret::State_Change_Fire()
 {
     Switch_Animation(STATE::STATE_FIRE);
-    _vector vPos = Get_FinalPosition();
-    _float3 vPosition = {};
-    XMStoreFloat3(&vPosition, vPos);
-    CGameObject* pGameObject = nullptr;
-   
-    CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_2D, &pGameObject, &vPosition, nullptr, nullptr, &m_strSectionName);
 
-    _vector vPlayerPos = CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr()->Get_FinalPosition();
-    static_cast<CBomb*>(pGameObject)->Start_Parabola(vPos, vPlayerPos, 1.0f);
+    CPlayer* pPlayer = CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr();
+    if (nullptr == pPlayer)
+    {
+        m_eCurState = STATE_LOWER;
+        State_Change();
+    }
+    else
+    {
+        _vector vPos = Get_FinalPosition();
+        _float3 vPosition = {};
+        XMStoreFloat3(&vPosition, vPos);
+        CGameObject* pGameObject = nullptr;
+        _vector vPlayerPos = pPlayer->Get_FinalPosition();
+        if (COORDINATE_2D == pPlayer->Get_CurCoord())
+        {
+            CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_2D, &pGameObject, &vPosition, nullptr, nullptr, &m_strSectionName);
+            CBomb* pBomb = static_cast<CBomb*>(pGameObject);
+            static_cast<CBomb*>(pGameObject)->Start_Parabola(vPos, vPlayerPos, 1.0f);
+            pBomb->Set_Time_On();
+        }
+        else
+        {
+            _vector v3DPos = CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(_float2(XMVectorGetX(vPos), XMVectorGetY(vPos)));
+            XMStoreFloat3(&vPosition, v3DPos + XMVectorSet(0.0f, 0.7f, 0.0f, 1.0f));
+            CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &pGameObject, &vPosition);
+            CBomb* pBomb = static_cast<CBomb*>(pGameObject);
+            pBomb->Start_Parabola_3D(vPlayerPos, XMConvertToRadians(30.f));
+            pBomb->Set_Time_On();
+        }
+    }
+
+
+
+    
+
 }
 
 void CTurret::State_Change_Fire_Into()

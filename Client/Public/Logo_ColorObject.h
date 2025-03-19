@@ -11,6 +11,7 @@ public:
 		_float4 vColor = {};
 		_uint	iColorObjectType = { COLOROBJECT_TYPE::DEFAULT };
 		_bool	isBlinking = { false };
+		_bool	isOrthogonal = { false };
 	}COLOROBJECT_DESC;
 
 	enum COLOROBJECT_TYPE

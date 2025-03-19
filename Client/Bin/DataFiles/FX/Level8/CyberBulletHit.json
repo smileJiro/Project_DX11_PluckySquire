@@ -17,7 +17,7 @@
                     ],
                     "SetType": "DIRECTSET"
                 },
-                "Count": 16,
+                "Count": 32,
                 "LifeTime": {
                     "Arg1": 0.20000000298023224,
                     "Arg2": 0.0,
@@ -70,7 +70,7 @@
                         0.0
                     ],
                     "Ring_Distribution": 0.0,
-                    "Ring_Radius": 0.4000000059604645,
+                    "Ring_Radius": 0.6000000238418579,
                     "Rotation": [
                         90.0,
                         0.0,
@@ -317,7 +317,7 @@
                         0.0
                     ],
                     "Ring_Distribution": 0.0,
-                    "Ring_Radius": 0.30000001192092896,
+                    "Ring_Radius": 0.5,
                     "Rotation": [
                         90.0,
                         0.0,

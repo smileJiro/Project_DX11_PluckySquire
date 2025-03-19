@@ -6,6 +6,9 @@
 #include "Actor_Dynamic.h"
 #include "Effect2D_Manager.h"
 #include "Effect_Manager.h"
+#include "Effect_System.h"
+#include "GameInstance.h"
+#include "Monster.h"
 
 CBomb::CBomb(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CCarriableObject(_pDevice, _pContext)
@@ -121,6 +124,24 @@ HRESULT CBomb::Initialize(void* _pArg)
 	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
 		TEXT("Com_2DExplisionCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[2]), &CircleDesc)))
 		return E_FAIL;
+	
+	// Fuse Effect
+	CEffect_System::EFFECT_SYSTEM_DESC EffectDesc = {};
+	EffectDesc.eStartCoord = COORDINATE_3D;
+	EffectDesc.isCoordChangeEnable = false;
+	EffectDesc.iSpriteShaderLevel = LEVEL_STATIC;
+	EffectDesc.szSpriteShaderTags = L"Prototype_Component_Shader_VtxPointInstance";
+	EffectDesc.iEffectShaderLevel = LEVEL_STATIC;
+	EffectDesc.szEffectShaderTags = L"Prototype_Component_Shader_VtxMeshEffect";
+	EffectDesc.szSpriteComputeShaderTag = L"Prototype_Component_Compute_Shader_SpriteInstance";
+	
+	m_pFuseEffect = static_cast<CEffect_System*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Fuse.json"), &EffectDesc));
+
+	if (nullptr != m_pFuseEffect)
+	{
+		m_pFuseEffect->Set_Active(false);
+		m_pFuseEffect->Set_SpawnMatrix(&m_WorldMatrices[COORDINATE_3D]);
+	}
 
 
 	Get_ActorCom()->Set_ShapeEnable((_uint)SHAPE_USE::SHAPE_TRIGER, false);
@@ -169,11 +190,17 @@ void CBomb::Update(_float _fTimeDelta)
 {
 	Action_Parabola(_fTimeDelta);
 	__super::Update(_fTimeDelta);
+	
+	if (nullptr != m_pFuseEffect)
+		m_pFuseEffect->Update(_fTimeDelta);
 }
 
 void CBomb::Late_Update(_float _fTimeDelta)
 {
 	__super::Late_Update(_fTimeDelta);
+
+	if (nullptr != m_pFuseEffect)
+		m_pFuseEffect->Late_Update(_fTimeDelta);
 }
 
 HRESULT CBomb::Render()
@@ -200,6 +227,9 @@ HRESULT CBomb::Render()
 void CBomb::Set_Time_On()
 {
 	m_isOn = true;
+
+	if (nullptr != m_pFuseEffect)
+		m_pFuseEffect->Active_Effect(true);
 }
 
 void CBomb::Set_Time_Off()
@@ -223,14 +253,20 @@ void CBomb::Explode()
 	if (COORDINATE_2D == Get_CurCoord())
 	{
 		m_p2DColliderComs[0]->Set_Active(false);
-		m_p2DColliderComs[(_uint)COLLIDER2D_USE::COLLIDER2D_BODY+1]->Set_Active(false);
-		m_p2DColliderComs[(_uint)COLLIDER2D_USE::COLLIDER2D_TRIGGER+1]->Set_Active(true);
+
+		//0번이 carriable이라 1씩 더함
+		_uint iColBodyIndex = (_uint)(COLLIDER2D_USE::COLLIDER2D_BODY)+1;
+		_uint iColTriggerIndex = (_uint)(COLLIDER2D_USE::COLLIDER2D_TRIGGER)+1;
+
+		m_p2DColliderComs[iColBodyIndex]->Set_Active(false);
+		m_p2DColliderComs[iColTriggerIndex]->Set_Active(true);
 
 		CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("Generic_Explosion"), Get_Include_Section_Name(), Get_ControllerTransform()->Get_WorldMatrix());
 	}
 	else if (COORDINATE_3D == Get_CurCoord())
 	{
-		static_cast<CActor_Dynamic*>(Get_ActorCom())->Set_Kinematic();
+		//static_cast<CActor_Dynamic*>(Get_ActorCom())->Set_Kinematic();
+		Set_Kinematic(true);
 		Get_ActorCom()->Set_ShapeEnable((_int)SHAPE_USE::SHAPE_BODY, false);
 		Get_ActorCom()->Set_ShapeEnable((_int)SHAPE_USE::SHAPE_TRIGER, true);
 
@@ -268,14 +304,28 @@ void CBomb::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, const 
 
 void CBomb::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
 {
-	if ((OBJECT_GROUP::PLAYER & _Other.pActorUserData->iObjectGroup || OBJECT_GROUP::MONSTER & _Other.pActorUserData->iObjectGroup)
-		&& (_uint)SHAPE_USE::SHAPE_BODY == _Other.pShapeUserData->iShapeUse)
+	if (OBJECT_GROUP::PLAYER & _Other.pActorUserData->iObjectGroup && (_uint)SHAPE_USE::SHAPE_BODY == _Other.pShapeUserData->iShapeUse)
 	{
 		//_vector vRepulse = 10.f * XMVector3Normalize(_Other.pActorUserData->pOwner->Get_FinalPosition() - Get_FinalPosition());
 		_vector vDir = _Other.pActorUserData->pOwner->Get_FinalPosition() - Get_FinalPosition();
 		_float fDistance = XMVectorGetX(XMVector3Length(vDir));
 		_vector vRepulse = 30.f / fDistance * XMVector3Normalize(vDir);
 		Event_Hit(this, static_cast<CCharacter*>(_Other.pActorUserData->pOwner), 1, vRepulse);
+	}
+	if (OBJECT_GROUP::MONSTER & _Other.pActorUserData->iObjectGroup && (_uint)SHAPE_USE::SHAPE_BODY == _Other.pShapeUserData->iShapeUse)
+	{
+		_int iDamg = 1;
+
+		_vector vDir = _Other.pActorUserData->pOwner->Get_FinalPosition() - Get_FinalPosition();
+		_float fDistance = XMVectorGetX(XMVector3Length(vDir));
+		_vector vRepulse = 30.f / fDistance * XMVector3Normalize(vDir);
+
+		if (true == static_cast<CMonster*>(_Other.pActorUserData->pOwner)->Is_FormationMode())
+		{
+			iDamg = 10;
+		}
+
+		Event_Hit(this, static_cast<CCharacter*>(_Other.pActorUserData->pOwner), iDamg, vRepulse);
 	}
 }
 
@@ -293,9 +343,9 @@ void CBomb::OnContact_Modify(const COLL_INFO& _0, const COLL_INFO& _1, CModifiab
 
 void CBomb::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-	if ((_uint)COLLIDER2D_USE::COLLIDER2D_TRIGGER== _pMyCollider->Get_ColliderUse())
+	if ((_uint)COLLIDER2D_USE::COLLIDER2D_TRIGGER== _pMyCollider->Get_ColliderUse() || OBJECT_GROUP::MONSTER & _pOtherCollider->Get_CollisionGroupID())
 	{
-		if (OBJECT_GROUP::PLAYER & _pOtherCollider->Get_CollisionGroupID() || OBJECT_GROUP::MONSTER & _pOtherCollider->Get_CollisionGroupID())
+		if (OBJECT_GROUP::PLAYER & _pOtherCollider->Get_CollisionGroupID())
 		{
 			Event_Hit(this, static_cast<CCharacter*>(_pOtherObject), 1, XMVector3Normalize(_pOtherObject->Get_FinalPosition() - Get_FinalPosition()), 500.f);
 		}
@@ -313,13 +363,24 @@ void CBomb::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherColli
 void CBomb::Active_OnEnable()
 {
 	__super::Active_OnEnable();
+
+
+	if (COORDINATE_3D == Get_CurCoord())
+	{
+		Set_Kinematic(false);
+	}
+
 	Set_Render(true);
-	Set_Time_On();
+	Set_Time_Off();
+
 	//CActor_Dynamic* pDynamic = static_cast<CActor_Dynamic*>(Get_ActorCom());
 	//pDynamic->Update(0.f);
 	//pDynamic->Set_Dynamic();
 
-	CEffect_Manager::GetInstance()->Active_Effect(TEXT("Fuse"), true, &m_WorldMatrices[COORDINATE_3D]);
+	//CEffect_Manager::GetInstance()->Active_Effect(TEXT("Fuse"), true, &m_WorldMatrices[COORDINATE_3D]);
+
+	//m_pFuseEffect->Inactive_All();
+	//m_pFuseEffect->Stop_Spawn(0.5f);
 
 	m_p2DColliderComs[0]->Set_Active(true);
 	m_p2DColliderComs[2]->Set_Active(false);
@@ -341,6 +402,17 @@ void CBomb::Active_OnDisable()
 	}
 
 	__super::Active_OnDisable();
+}
+
+void CBomb::On_PickUpStart(CPlayer* _pPalyer, _fmatrix _matPlayerOffset)
+{
+	if(false == m_isOn)
+		Set_Time_On();
+}
+
+void CBomb::On_Throw(_fvector _vForce)
+{
+	Explode();
 }
 
 void CBomb::Action_Parabola(_float _fTimeDelta)
@@ -374,6 +446,12 @@ void CBomb::Start_Parabola(_fvector _vStartPos, _fvector _vEndPos, _float _fPara
 	m_vParabolaTime.y = 0.0f;
 }
 
+void CBomb::Start_Parabola_3D(_fvector _vEndPos, _float _fLaunchAngleRadian, _float _fGravityMag)
+{
+	if(COORDINATE_3D == Get_CurCoord())
+		static_cast<CActor_Dynamic*>(m_pActorCom)->Start_ParabolicTo(_vEndPos, _fLaunchAngleRadian , _fGravityMag);
+}
+
 
 CBomb* CBomb::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 {
@@ -403,5 +481,7 @@ CGameObject* CBomb::Clone(void* _pArg)
 
 void CBomb::Free()
 {
+	Safe_Release(m_pFuseEffect);
+
 	__super::Free();
 }

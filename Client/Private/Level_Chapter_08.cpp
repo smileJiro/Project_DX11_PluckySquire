@@ -407,6 +407,13 @@ void CLevel_Chapter_08::Update(_float _fTimeDelta)
 		int a = 0;
 	}
 
+	if (KEY_DOWN(KEY::F5))
+	{
+		_float3 vPos = { 37.f, 34.f, 10.5f };
+		CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &vPos);
+	}
+
+
 
 	if (KEY_PRESSING(KEY::CTRL))
 	{
@@ -420,7 +427,7 @@ void CLevel_Chapter_08::Update(_float _fTimeDelta)
 			Boss_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 			Boss_Desc.tTransform3DDesc.vInitialPosition = _float3(0.53f, 60.35f, -8.0f);
 
-			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_ButterGrump"), m_eLevelID, TEXT("Layer_Monster"), &pBoss, &Boss_Desc)))
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_ButterGrump"), m_eLevelID, TEXT("Layer_Boss"), &pBoss, &Boss_Desc)))
 				return;
 
 			
@@ -1252,7 +1259,7 @@ HRESULT CLevel_Chapter_08::Ready_Layer_NPC(const _wstring& _strLayerTag)
 	HumgrumpDesc.tTransform2DDesc.vInitialPosition = _float3(0.0f, 54.89, 0.03f);
 	HumgrumpDesc.iCurLevelID = m_eLevelID;
 	HumgrumpDesc.strSectionTag = TEXT("Chapter8_P2324");
-	HumgrumpDesc.iStartAnimIndex = CNpc_Humgrump::CHAPTER6_IDLE;
+	HumgrumpDesc.iStartAnimIndex = CNpc_Humgrump::CHAPTER8_IDLE_UP;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Npc_Humgrump"),
 		m_eLevelID, _strLayerTag, &HumgrumpDesc)))
@@ -1268,29 +1275,29 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 	CGameObject* pObject = nullptr;
 
 
-	CSpear_Soldier::MONSTER_DESC Spear_Soldier_Desc;
-	Spear_Soldier_Desc.iCurLevelID = m_eLevelID;
-	Spear_Soldier_Desc.eStartCoord = COORDINATE_3D;
-	Spear_Soldier_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-	Spear_Soldier_Desc.tTransform3DDesc.vInitialPosition = _float3(13.f, 21.58f, 5.5f);
-	Spear_Soldier_Desc.isSneakMode = true;
-	Spear_Soldier_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER8_1;
+	//CSpear_Soldier::MONSTER_DESC Spear_Soldier_Desc;
+	//Spear_Soldier_Desc.iCurLevelID = m_eLevelID;
+	//Spear_Soldier_Desc.eStartCoord = COORDINATE_3D;
+	//Spear_Soldier_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	//Spear_Soldier_Desc.tTransform3DDesc.vInitialPosition = _float3(13.f, 21.58f, 5.5f);
+	//Spear_Soldier_Desc.isSneakMode = true;
+	//Spear_Soldier_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER8_1;
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Spear_Soldier"), m_eLevelID, _strLayerTag, &Spear_Soldier_Desc)))
-		return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Spear_Soldier"), m_eLevelID, _strLayerTag, &Spear_Soldier_Desc)))
+	//	return E_FAIL;
 
 
 
-	CBeetle::MONSTER_DESC Beetle_Desc;
-	Beetle_Desc.iCurLevelID = m_eLevelID;
-	Beetle_Desc.eStartCoord = COORDINATE_3D;
-	Beetle_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-	Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(15.f, 11.1f, 3.4f);
-	Beetle_Desc.isSneakMode = true;
-	Beetle_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER8_BEETLE1;
+	//CBeetle::MONSTER_DESC Beetle_Desc;
+	//Beetle_Desc.iCurLevelID = m_eLevelID;
+	//Beetle_Desc.eStartCoord = COORDINATE_3D;
+	//Beetle_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	//Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(15.f, 11.1f, 3.4f);
+	//Beetle_Desc.isSneakMode = true;
+	//Beetle_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER8_BEETLE1;
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, TEXT("Layer_Sneak_Beetle"), &Beetle_Desc)))
-		return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, TEXT("Layer_Sneak_Beetle"), &Beetle_Desc)))
+	//	return E_FAIL;
 
 
 	//CBeetle::MONSTER_DESC Beetle_Desc;
@@ -1347,58 +1354,58 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 	_wstring strLayerTag = TEXT("Layer_Monster_Door1");
 
 	//¹èÄ¡
-	CRat::MONSTER_DESC Rat_Desc;
-	Rat_Desc.iCurLevelID = m_eLevelID;
-	Rat_Desc.eStartCoord = COORDINATE_2D;
-	Rat_Desc.tTransform2DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-	Rat_Desc.tTransform2DDesc.vInitialPosition = _float3(30.f, -540.f, 0.f);
+	//CRat::MONSTER_DESC Rat_Desc;
+	//Rat_Desc.iCurLevelID = m_eLevelID;
+	//Rat_Desc.eStartCoord = COORDINATE_2D;
+	//Rat_Desc.tTransform2DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	//Rat_Desc.tTransform2DDesc.vInitialPosition = _float3(30.f, -540.f, 0.f);
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Rat"), m_eLevelID, strLayerTag, &pObject, &Rat_Desc)))
-		return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Rat"), m_eLevelID, strLayerTag, &pObject, &Rat_Desc)))
+	//	return E_FAIL;
 
-	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter8_SKSP_05"), pObject);
+	//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter8_SKSP_05"), pObject);
 
-	Rat_Desc.tTransform2DDesc.vInitialPosition = _float3(220.f, -700.f, 0.f);
+	//Rat_Desc.tTransform2DDesc.vInitialPosition = _float3(220.f, -700.f, 0.f);
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Rat"), m_eLevelID, strLayerTag, &pObject, &Rat_Desc)))
-		return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Rat"), m_eLevelID, strLayerTag, &pObject, &Rat_Desc)))
+	//	return E_FAIL;
 
-	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter8_SKSP_05"), pObject);
-
-
-	CZippy::MONSTER_DESC Zippy_Desc;
-	Zippy_Desc.iCurLevelID = m_eLevelID;
-	Zippy_Desc.eStartCoord = COORDINATE_2D;
-	Zippy_Desc.tTransform2DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-	Zippy_Desc.tTransform2DDesc.vInitialPosition = _float3(-120.f, -10.5f, 0.f);
-
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Zippy"), m_eLevelID, _strLayerTag, &pObject, &Zippy_Desc)))
-		return E_FAIL;
-
-	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter8_SKSP_05"), pObject);
+	//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter8_SKSP_05"), pObject);
 
 
+	//CZippy::MONSTER_DESC Zippy_Desc;
+	//Zippy_Desc.iCurLevelID = m_eLevelID;
+	//Zippy_Desc.eStartCoord = COORDINATE_2D;
+	//Zippy_Desc.tTransform2DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	//Zippy_Desc.tTransform2DDesc.vInitialPosition = _float3(-120.f, -10.5f, 0.f);
 
-	strLayerTag= TEXT("Layer_Monster_Door2");
-	Spear_Soldier_Desc.isSneakMode = false;
-	//CSpear_Soldier::MONSTER_DESC Spear_Soldier_Desc;
-	Spear_Soldier_Desc.iCurLevelID = m_eLevelID;
-	Spear_Soldier_Desc.eStartCoord = COORDINATE_2D;
-	Spear_Soldier_Desc.tTransform2DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-	Spear_Soldier_Desc.tTransform2DDesc.vInitialPosition = _float3(250.f, 650.5f, 0.f);
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Zippy"), m_eLevelID, _strLayerTag, &pObject, &Zippy_Desc)))
+	//	return E_FAIL;
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Spear_Soldier"), m_eLevelID, strLayerTag, &pObject, &Spear_Soldier_Desc)))
-		return E_FAIL;
-
-	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter8_SKSP_05"), pObject);
+	//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter8_SKSP_05"), pObject);
 
 
-	Spear_Soldier_Desc.tTransform2DDesc.vInitialPosition = _float3(-25.f, 600.5f, 0.f);
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Spear_Soldier"), m_eLevelID, strLayerTag, &pObject, &Spear_Soldier_Desc)))
-		return E_FAIL;
+	//strLayerTag= TEXT("Layer_Monster_Door2");
+	//Spear_Soldier_Desc.isSneakMode = false;
+	////CSpear_Soldier::MONSTER_DESC Spear_Soldier_Desc;
+	//Spear_Soldier_Desc.iCurLevelID = m_eLevelID;
+	//Spear_Soldier_Desc.eStartCoord = COORDINATE_2D;
+	//Spear_Soldier_Desc.tTransform2DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	//Spear_Soldier_Desc.tTransform2DDesc.vInitialPosition = _float3(250.f, 650.5f, 0.f);
 
-	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter8_SKSP_05"), pObject);
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Spear_Soldier"), m_eLevelID, strLayerTag, &pObject, &Spear_Soldier_Desc)))
+	//	return E_FAIL;
+
+	//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter8_SKSP_05"), pObject);
+
+
+	//Spear_Soldier_Desc.tTransform2DDesc.vInitialPosition = _float3(-25.f, 600.5f, 0.f);
+
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Spear_Soldier"), m_eLevelID, strLayerTag, &pObject, &Spear_Soldier_Desc)))
+	//	return E_FAIL;
+
+	//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter8_SKSP_05"), pObject);
 
 	return S_OK;
 }
@@ -1437,6 +1444,29 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Monster_Projectile(const _wstring& _strLa
 	BombDesc->iCurLevelID = m_eLevelID;
 
 	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Bomb"), Pooling_Desc, BombDesc);
+
+
+	CGameObject* pObject = nullptr;
+
+	_float3 vPos = { 50.5f, 30.3f, 9.f };
+	CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &pObject, &vPos);
+	//static_cast<CBomb*>(pObject)->Set_Time_Off();
+	static_cast<CBomb*>(pObject)->Set_LifeTime(5.f);
+
+	vPos = { 50.5f, 30.3f, 8.f };
+	CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &pObject, &vPos);
+	//static_cast<CBomb*>(pObject)->Set_Time_Off();
+	static_cast<CBomb*>(pObject)->Set_LifeTime(5.f);
+
+	vPos = { 49.5f, 30.3f, 9.f };
+	CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &pObject, &vPos);
+	//static_cast<CBomb*>(pObject)->Set_Time_Off();
+	static_cast<CBomb*>(pObject)->Set_LifeTime(5.f);
+
+	vPos = { 49.5f, 30.3f, 8.f };
+	CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &pObject, &vPos);
+	//static_cast<CBomb*>(pObject)->Set_Time_Off();
+	static_cast<CBomb*>(pObject)->Set_LifeTime(5.f);
 
 	return S_OK;
 }
