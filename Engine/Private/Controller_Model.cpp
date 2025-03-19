@@ -117,6 +117,7 @@ void CController_Model::Play_Animation(_float fTimeDelta, _bool _bReverse)
     }
 }
 
+
 void CController_Model::Invoke_OnAnimEndCallBack(COORDINATE _eCoord, _uint iAnimIdx)
 {
     for (auto& callback : m_listAnimEndCallBack) 
@@ -139,6 +140,14 @@ _uint CController_Model::Get_TextureIndex_To_3D(_uint _eTextureType, _uint _iMat
 }
 
 
+
+_bool CController_Model::Is_AnimTransition()
+{
+	if (COORDINATE_2D == m_eCurCoord)
+		return false;
+	else
+        return static_cast<C3DModel*>( m_ModelComs[COORDINATE_3D])->Is_AnimTransition(); 
+}
 
 void CController_Model::Set_AnimationLoop(COORDINATE _eCoord, _uint iIdx, _bool bIsLoop)
 {

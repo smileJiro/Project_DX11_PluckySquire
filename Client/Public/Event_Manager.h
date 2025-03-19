@@ -54,7 +54,7 @@ private:
 	HRESULT	Execute_Trigger_Exit_ByCollision(const EVENT& _tEvent);
 
 	HRESULT Execute_Trigger_Event(const EVENT& _tEvent);		// Trigger Object 없이 Trigger Event 실행
-	
+
 	HRESULT	Execute_Book_Main_Section_Change_Start(const EVENT& _tEvent);
 	HRESULT	Execute_Book_Main_Section_Change_End(const EVENT& _tEvent);
 	HRESULT	Execute_Book_Main_Change(const EVENT& _tEvent);
@@ -66,6 +66,11 @@ private:
 	HRESULT Execute_SetPlayerState(const EVENT& _tEvent);
 
 	HRESULT Execute_Sneak_BeetleCaught(const EVENT& _tEvent);
+
+public:
+
+	_bool Is_MapLoad() { return m_isMapLoad; }
+
 
 private:
 	HRESULT Client_Level_Enter(_int _iChangeLevelID);
@@ -96,6 +101,7 @@ private:
 	_int m_iChangeLevelID = -1;
 	_int m_iNextChangeLevelID = -1;
 	_bool m_isLevelChange = false;
+	_bool m_isMapLoad = false;
 public:
 	virtual void Free() override;
 };

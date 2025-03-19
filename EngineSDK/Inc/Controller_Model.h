@@ -50,7 +50,7 @@ public: /* 2D, 3D */
 	void			Invoke_OnAnimEndCallBack(COORDINATE _eCoord, _uint iAnimIdx);
 	//Get
 	CModel*			Get_Model(COORDINATE _eCoord) {return m_ModelComs[_eCoord];}
-
+	_bool			Is_AnimTransition();
 	//Set
 	void Set_AnimationLoop(COORDINATE _eCoord, _uint iIdx, _bool bIsLoop);
 	void Set_Animation(_uint iIdx, _bool _bReverse = false);

@@ -99,6 +99,7 @@
 
 // Excavator 
 #include "ExcavatorGame.h"
+#include "FatherPart_Prop.h"
 
 CLevel_Chapter_06::CLevel_Chapter_06(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:
@@ -253,9 +254,6 @@ HRESULT CLevel_Chapter_06::Initialize(LEVEL_ID _eLevelID)
 //#pragma endregion
 
 
-
-
-
 	/* Collision Check Matrix */
 	// 그룹필터 추가 >> 중복해서 넣어도 돼 내부적으로 걸러줌 알아서 
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::MONSTER);
@@ -346,7 +344,16 @@ void CLevel_Chapter_06::Update(_float _fTimeDelta)
 {
 	if (KEY_DOWN(KEY::K))
 	{
-		
+		/*CFatherPart_Prop::FATHERPART_PROP_DESC Desc{};
+		Desc.iCurLevelID = LEVEL_CHAPTER_6;
+		Desc.iFatherPartID = CFatherGame::FATHER_BODY;
+		Desc.Build_2D_Transform(_float2(-0.0, -0.0), _float2(200.0f, 200.0f));
+		CGameObject* pGameObject = nullptr;
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_FatherPart_Prop"), LEVEL_CHAPTER_6, TEXT("Layer_FatherPart_Prop"), &pGameObject, &Desc)))
+			assert(nullptr);
+
+		CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(pGameObject, SECTION_2D_PLAYMAP_TRIGGER);
+*/
 	}
 	CFatherGame::GetInstance()->Update();
 	CExcavatorGame::GetInstance()->Update(_fTimeDelta);
@@ -383,7 +390,7 @@ void CLevel_Chapter_06::Update(_float _fTimeDelta)
 
 	if (KEY_DOWN(KEY::I))
 	{
-		CTrigger_Manager::GetInstance()->Register_TriggerEvent(L"Next_Chapter_Event", 0);
+		//CTrigger_Manager::GetInstance()->Register_TriggerEvent(L"Next_Chapter_Event", 0);
 	}
 	// Change Camera Free  Or Target
 	if (KEY_DOWN(KEY::C)) {
@@ -561,10 +568,9 @@ HRESULT CLevel_Chapter_06::Ready_Lights()
 #ifdef _DEBUG
 	m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/DirectionalTest2.json"));
 #elif NDEBUG
-	m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/Chapter6_2.json"));
+	m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/Chapter6_Bright.json"));
 #endif // _DEBUG
-
-	m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/Chapter6.json"));
+	m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/Chapter6_Bright.json"));
 
 	//CONST_LIGHT LightDesc{};
 

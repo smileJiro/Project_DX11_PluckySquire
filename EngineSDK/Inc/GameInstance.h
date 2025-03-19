@@ -108,11 +108,16 @@ public: /* For. NewRenderer*/
 	HRESULT				Add_ShadowLight(class CLight* _pShadowLight);
 	HRESULT				Remove_ShadowLight(_int _iShadowLightID);
 	HRESULT				Clear_ShadowLight();
+	void				Set_VtxMesh(CShader* _pShader);
+	void				Set_VtxAnimMesh(CShader* _pShader);
+	void				Set_GrayScale_VtxMesh(_int _isGrayScale);
+	void				Set_GrayScale_VtxAnimMesh(_int _isGrayScale);
 #ifdef _DEBUG
 	HRESULT				Add_DebugComponent_New(class CComponent* _pDebugCom);
 	void				Set_DebugRender_New(_bool _isBool);
 	HRESULT				Add_BaseDebug(CBase* _pBaseDebug);
 #endif
+
 
 public: /* For. Key_Manager */
 	const KEY_STATE&	GetKeyState(KEY _eKEY); // 키입력 동기화 o 

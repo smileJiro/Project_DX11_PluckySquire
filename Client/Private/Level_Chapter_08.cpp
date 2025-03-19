@@ -107,7 +107,6 @@ HRESULT CLevel_Chapter_08::Initialize(LEVEL_ID _eLevelID)
 		assert(nullptr);
 	}
 
-
 	if (FAILED(Ready_Lights()))
 	{
 		MSG_BOX(" Failed Ready_Lights (Level_Chapter_08::Initialize)");
@@ -278,8 +277,8 @@ HRESULT CLevel_Chapter_08::Initialize(LEVEL_ID _eLevelID)
 
 	m_pSneakMinigameManager = CMinigame_Sneak::GetInstance();
 	m_pFormation_Manager = CFormation_Manager::GetInstance();
-	if (FAILED(m_pFormation_Manager->Initialize()))
-		return E_FAIL;
+
+
 
 	return S_OK;
 }
@@ -298,24 +297,35 @@ void CLevel_Chapter_08::Update(_float _fTimeDelta)
 
 	if (KEY_DOWN(KEY::NUM6))
 	{
+		static _int i = 0;
+		i ^= 1;
+		m_pGameInstance->Set_GrayScale_VtxAnimMesh(i);
+		//m_pGameInstance->Set_GrayScale_VtxMesh(i);
+		if (i == 1)
+		{
+			m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/Chapter8_GrayScale.json"));
+		}
+		else
+		{
 
-		// DXGI 팩토리 생성
-		IDXGIFactory4* pFactory;
-		CreateDXGIFactory1(__uuidof(IDXGIFactory4), (void**)&pFactory);
+		}
+		//// DXGI 팩토리 생성
+		//IDXGIFactory4* pFactory;
+		//CreateDXGIFactory1(__uuidof(IDXGIFactory4), (void**)&pFactory);
 
-		// 기본 GPU 어댑터 가져오기
-		IDXGIAdapter3* pAdapter;
-		pFactory->EnumAdapters1(0, (IDXGIAdapter1**)&pAdapter);
+		//// 기본 GPU 어댑터 가져오기
+		//IDXGIAdapter3* pAdapter;
+		//pFactory->EnumAdapters1(0, (IDXGIAdapter1**)&pAdapter);
 
-		// VRAM 사용c량 쿼리
-		DXGI_QUERY_VIDEO_MEMORY_INFO memoryInfo;
-		pAdapter->QueryVideoMemoryInfo(0, DXGI_MEMORY_SEGMENT_GROUP_LOCAL, &memoryInfo);
+		//// VRAM 사용c량 쿼리
+		//DXGI_QUERY_VIDEO_MEMORY_INFO memoryInfo;
+		//pAdapter->QueryVideoMemoryInfo(0, DXGI_MEMORY_SEGMENT_GROUP_LOCAL, &memoryInfo);
 
-		// 결과 출력 (MB 단위)
-		SIZE_T currentUsageMB = memoryInfo.CurrentUsage / (1024 * 1024); // 현재 사용량
-		SIZE_T availableMB = memoryInfo.AvailableForReservation / (1024 * 1024); // 예약 가능량
+		//// 결과 출력 (MB 단위)
+		//SIZE_T currentUsageMB = memoryInfo.CurrentUsage / (1024 * 1024); // 현재 사용량
+		//SIZE_T availableMB = memoryInfo.AvailableForReservation / (1024 * 1024); // 예약 가능량
 
-		int a = 0;
+		//int a = 0;
 	}
 
 	// Change Camera Free  Or Target
@@ -542,11 +552,13 @@ HRESULT CLevel_Chapter_08::Ready_Lights()
 {
 #ifdef _DEBUG
 	m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/DirectionalTest2.json"));
+	m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/DirectionalTest2.json"));
 #elif NDEBUG
-	m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/Chapter6_2.json"));
+	m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/Chapter8_GrayScale.json"));
+	m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/Chapter8_GrayScale.json"));
+	m_pGameInstance->Set_GrayScale_VtxAnimMesh(1);
+	m_pGameInstance->Set_GrayScale_VtxMesh(1);
 #endif // _DEBUG
-
-	m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/Chapter6.json"));
 
 	//CONST_LIGHT LightDesc{};
 
@@ -644,8 +656,8 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Map()
 			return E_FAIL;
 		break;
 	case Client::LEVEL_CHAPTER_8:
-		//if (FAILED(Map_Object_Create(L"Chapter8_Intro.mchc")))
-		if (FAILED(Map_Object_Create(L"Chapter_08_Play_Desk.mchc")))
+		if (FAILED(Map_Object_Create(L"Chapter8_Intro.mchc")))
+		//if (FAILED(Map_Object_Create(L"Chapter_08_Play_Desk.mchc")))
 			return E_FAIL;
 		break;
 	case Client::LEVEL_CHAPTER_TEST:
@@ -1210,7 +1222,7 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Item(const _wstring& _strLayerTag)
 {
 	// Test(PlayerItem: Glove, Stamp)
 	//CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("Flipping_Glove"), _float3(59.936f, 6.273f, -19.097f));
-	CPlayerData_Manager::GetInstance()->Spawn_Bulb(LEVEL_STATIC, (LEVEL_ID)m_eLevelID);
+	//CPlayerData_Manager::GetInstance()->Spawn_Bulb(LEVEL_STATIC, (LEVEL_ID)m_eLevelID);
 
 
 
@@ -1343,14 +1355,14 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Bomb_Soldier"), m_eLevelID, _strLayerTag, &Bomb_Soldier_Desc)))
 		return E_FAIL;
 
-	CButterGrump::MONSTER_DESC Boss_Desc;
-	Boss_Desc.iCurLevelID = m_eLevelID;
-	Boss_Desc.eStartCoord = COORDINATE_3D;
-	Boss_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-	Boss_Desc.tTransform3DDesc.vInitialPosition = _float3(-3.f, 15.35f, -80.0f);
+	//CButterGrump::MONSTER_DESC Boss_Desc;
+	//Boss_Desc.iCurLevelID = m_eLevelID;
+	//Boss_Desc.eStartCoord = COORDINATE_3D;
+	//Boss_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	//Boss_Desc.tTransform3DDesc.vInitialPosition = _float3(-3.f, 15.35f, -80.0f);
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_ButterGrump"), m_eLevelID, TEXT("Layer_Monster"), &Boss_Desc)))
-		return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_ButterGrump"), m_eLevelID, TEXT("Layer_Monster"), &Boss_Desc)))
+	//	return E_FAIL;
 
 
 
@@ -1579,26 +1591,26 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Effects2D(const _wstring& _strLayerTag)
 
 HRESULT CLevel_Chapter_08::Ready_Layer_PortalLocker(const _wstring& _strLayerTag)
 {
-	{/* PortalLocker_LayerCount 1 */
-		CGameObject* pGameObject = nullptr;
-		CPortalLocker_LayerCount::PORTALLOCKER_LAYER_DESC Desc;
-		CPortal* pTargetPortal = static_cast<CPortal_Default*>(static_cast<CSection_2D_PlayMap*>(CSection_Manager::GetInstance()->Find_Section(TEXT("Chapter8_SKSP_08")))->Get_Portal(0));
+	//{/* PortalLocker_LayerCount 1 */
+	//	CGameObject* pGameObject = nullptr;
+	//	CPortalLocker_LayerCount::PORTALLOCKER_LAYER_DESC Desc;
+	//	CPortal* pTargetPortal = static_cast<CPortal_Default*>(static_cast<CSection_2D_PlayMap*>(CSection_Manager::GetInstance()->Find_Section(TEXT("Chapter8_SKSP_08")))->Get_Portal(0));
 
-		if (nullptr == pTargetPortal)
-			return E_FAIL;
-		Desc.iCurLevelID = LEVEL_CHAPTER_8;
-		Desc.pTargetPortal = pTargetPortal;
-		Desc.ePortalLockerType = CPortalLocker::TYPE_PURPLE;
-		Desc.strSectionKey = TEXT("Chapter8_SKSP_08");
-		Desc.strCountingLayerTag = TEXT("Layer_Player");
+	//	if (nullptr == pTargetPortal)
+	//		return E_FAIL;
+	//	Desc.iCurLevelID = LEVEL_CHAPTER_8;
+	//	Desc.pTargetPortal = pTargetPortal;
+	//	Desc.ePortalLockerType = CPortalLocker::TYPE_PURPLE;
+	//	Desc.strSectionKey = TEXT("Chapter8_SKSP_08");
+	//	Desc.strCountingLayerTag = TEXT("Layer_Player");
 
-		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_PortalLocker_LayerCount"), LEVEL_CHAPTER_8, _strLayerTag, &pGameObject, &Desc)))
-			return E_FAIL;
+	//	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_PortalLocker_LayerCount"), LEVEL_CHAPTER_8, _strLayerTag, &pGameObject, &Desc)))
+	//		return E_FAIL;
 
-		if (FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(Desc.strSectionKey, pGameObject, SECTION_2D_PLAYMAP_OBJECT)))
-			return E_FAIL;
+	//	if (FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(Desc.strSectionKey, pGameObject, SECTION_2D_PLAYMAP_OBJECT)))
+	//		return E_FAIL;
 
-	}/* PortalLocker_LayerCount 1 */
+	//}/* PortalLocker_LayerCount 1 */
 
 
 	return S_OK;

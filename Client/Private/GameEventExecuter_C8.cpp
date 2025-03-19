@@ -31,11 +31,15 @@
 #include "PlayerBody.h"
 #include "DraggableObject.h"
 #include "UI_Manager.h"
+#include "Gear.h"
+#include "Portal.h"
 
 #include "Dialog_Manager.h"
 #include "Npc_Humgrump.h"
 
 #include "Logo_ColorObject.h"
+#include "Formation_Manager.h"
+#include "Event_Manager.h"
 
 CGameEventExecuter_C8::CGameEventExecuter_C8(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CGameEventExecuter(_pDevice, _pContext)
@@ -126,6 +130,9 @@ void CGameEventExecuter_C8::Update(_float _fTimeDelta)
 			break;		
 		case Client::CTrigger_Manager::CHAPTER8_BOOKDROP:
 			Chapter8_BookDrop(_fTimeDelta);
+			break;
+		case Client::CTrigger_Manager::CHAPTER8_BOOKFREEZING_OFF:
+			Chapter8_BookFreezing_Off(_fTimeDelta);
 			break;
 		default:
 			break;
@@ -368,7 +375,6 @@ void CGameEventExecuter_C8::Chapter8_Laser_Stage(_float _fTimeDelta)
 					}
 				}
 			}
-			//Change_PlayMap(1.f);
 
 			Next_Step_Over(3.4f);
 		}
@@ -626,7 +632,7 @@ void CGameEventExecuter_C8::Chapter8_Friend_Appear_Violet(_float _fTimeDelta)
 			static_cast<CFriend*>(m_TargetObjects[VIOLET])->Change_AnyState(CFriend_Violet::VIOLET_C09_JUMPINGOFFBED, false, CFriend::DIR_RIGHT);
 		}
 
-		if (nullptr != m_TargetObjects[HAT] && m_fTimer > 5.535f)
+		if (nullptr != m_TargetObjects[HAT])
 		{
 			_float fProgress = static_cast<CContainerObject*>(m_TargetObjects[VIOLET])->Get_Part_AnimProgress(CContainerObject::PART_BODY);
 
@@ -863,6 +869,7 @@ void CGameEventExecuter_C8::Chapter8_Intro(_float _fTimeDelta)
 
 		if (m_fTimer >= 3.f) {
 			CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::TARGET_2D, true, 0.5f);
+			Uimgr->Set_PlayNarration(TEXT("Chapter8_P0102_Narration_01"));
 			GameEvent_End();
 		}
 	}
@@ -949,6 +956,73 @@ void CGameEventExecuter_C8::Chapter8_Intro_Postit_Sequence(_float _fTimeDelta)
 
 void CGameEventExecuter_C8::Chapter8_Outro_Postit_Sequence(_float _fTimeDelta)
 {
+	m_fTimer += _fTimeDelta;
+	auto pBook = Get_Book();
+	CPlayer* pPlayer = Get_Player();
+
+	if (Step_Check(STEP_0))
+	{
+		function fCamerafunc = []()
+			{
+				// <-으로 돌리기. 1초동안
+				CCamera_Manager::GetInstance()->Start_Turn_AxisY(CCamera_Manager::TARGET, 1.f, XMConvertToRadians(-40.f), XMConvertToRadians(-25.f));
+				// 암 3.f 줄이기, 1초동안
+				CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Decrease(CCamera_Manager::TARGET, 1.f,
+					3.f, EASE_IN_OUT);
+				// 타겟 오프셋 y -2.f
+				CCamera_Manager::GetInstance()->Start_Changing_AtOffset(CCamera_Manager::TARGET,
+					1.f,
+					XMVectorSet(0.f, -2.f, 0.f, 0.f),
+					EASE_IN_OUT);
+			};
+		Postit_Process_Start(L"Chapter8_SKSP_Postit", 1.f, true, fCamerafunc);
+	}
+	else if (Step_Check(STEP_1))
+	{
+		Postit_Process_PageAppear();
+	}
+	else if (Step_Check(STEP_2))
+	{
+		Postit_Process_PageTalk(L"Chapter8_Outro_Postit_Sequence_01");
+	}
+	else if (Step_Check(STEP_3))
+	{
+		//// 암 타겟오프셋 x3 y2 z-3 이동
+		if (Is_Start())
+		{
+			m_tReturnArmData = CCamera_Manager::GetInstance()->Save_ArmData();
+			CCamera_Manager::GetInstance()->Change_CameraTarget(pBook);
+
+			CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Increase(CCamera_Manager::TARGET, 1.f,
+				3.f, EASE_IN_OUT);
+		}
+		// 카메라 무브
+		Next_Step_Over(1.f);
+	}
+	else if (Step_Check(STEP_4))
+	{
+		Postit_Process_PageTalk(L"Chapter8_Outro_Postit_Sequence_02");
+	}
+	else if (Step_Check(STEP_5))
+	{
+		if (Is_Start())
+		{
+			CCamera_Manager::GetInstance()->Change_CameraTarget(pPlayer);
+			CCamera_Manager::GetInstance()->Load_SavedArmData(m_tReturnArmData,1.f);
+		}
+		// 카메라 무브
+		Next_Step_Over(1.f);
+	}
+	else if (Step_Check(STEP_6))
+	{
+		Postit_Process_PageTalk(L"Chapter8_Outro_Postit_Sequence_03");
+	}
+	else if (Step_Check(STEP_7))
+	{
+		Postit_Process_End(1.f);
+	}
+	else
+		GameEvent_End();
 }
 
 void CGameEventExecuter_C8::Chapter8_3D_Out_01(_float _fTimeDelta)
@@ -1064,6 +1138,20 @@ void CGameEventExecuter_C8::Chapter8_3D_Out_02(_float _fTimeDelta)
 	CFriend* pThrash = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Thrash"));
 	CFriend* pPip = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Pip"));
 	CFriend* pViolet = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Violet"));
+
+//#ifdef _DEBUG
+	if (nullptr == pViolet)
+	{
+		if (false == Is_Dead())
+		{
+			if(Change_PlayMap(0.f))
+				GameEvent_End();
+		}
+		return;
+	}
+//#endif // _DEBUG
+
+
 	if (Step_Check(STEP_0))
 	{
 		if (Is_Start())
@@ -1111,6 +1199,8 @@ void CGameEventExecuter_C8::Chapter8_3D_Out_02(_float _fTimeDelta)
 			pViolet->Move_Position(_float2(XMVectorGetX(vVioletPos), XMVectorGetY(vVioletPos)), CFriend::DIR_UP);
 			pPip->Move_Position(_float2(XMVectorGetX(vPipPos), XMVectorGetY(vPipPos)), CFriend::DIR_UP);
 		}
+
+		Change_PlayMap(0.f);
 		Next_Step_Over(0.5f);
 	}
 	else if (Step_Check(STEP_2))
@@ -1247,9 +1337,49 @@ void CGameEventExecuter_C8::Chapter8_Tilting_Glove(_float _fTimeDelta)
 		};
 	if (true == Postit_Process(L"Chapter8_SKSP_Postit", L"Chapter8_Tilting_Glove", 1.f, CPostit_Page::POSTIT_PAGE_POSTION_TYPE_A, false, fCamerafunc))
 	{
+
+		// 포스트잇 전부 끝나고, 북 가져와서 모두 얼린다.
 		auto pBook = Get_Book();
 		if (nullptr != pBook)
+		{
+			auto pLayer = m_pGameInstance->Find_Layer(m_iCurLevelID, L"Layer_Gear");
+			
+
+			if (nullptr != pLayer)
+			{
+				auto GameObjects = pLayer->Get_GameObjects();
+
+				if (false == GameObjects.empty())
+				{
+					for_each(GameObjects.begin(), GameObjects.end(), [](CGameObject* pGameObject) {
+						static_cast<CContainerObject*>(pGameObject)->Set_PartAnimPlaying(CGear::GEAR_PART_GEAR,false);
+						static_cast<CContainerObject*>(pGameObject)->Set_PartAnimPlaying(CGear::GEAR_PART_TEETH,false);
+						});
+				}
+			}
+
+			auto pPortal =static_cast<CSection_2D_PlayMap*>(SECTION_MGR->Find_Section(SECTION_MGR->Get_Cur_Section_Key()))->Get_Portal(0);
+			static_cast<CContainerObject*>(pPortal)->Set_Active(false);
+			
 			pBook->Set_Freezing(true);
+		
+
+			// 그다음 아웃트로 책벌레 이벤트를 생성한다. 
+			CTriggerObject::TRIGGEROBJECT_DESC Desc = {};
+			Desc.vHalfExtents = { 1.0999999046325684f,
+									3.799999952316284f,
+									3.0999999046325684f };
+			Desc.iTriggerType = (_uint)TRIGGER_TYPE::EVENT_TRIGGER;
+			Desc.szEventTag = TEXT("Chapter8_Outro_Postit_Sequence");
+			Desc.eConditionType = CTriggerObject::TRIGGER_ENTER;
+			Desc.isReusable = false; 
+			Desc.eStartCoord = COORDINATE_3D;
+			Desc.tTransform3DDesc.vInitialPosition = { -115.94000244140625f,
+													64.43000030517578f,
+													23.530000686645508f };
+
+			CTrigger_Manager::GetInstance()->Create_TriggerObject(LEVEL_STATIC, (LEVEL_ID)m_iCurLevelID, &Desc);
+		}
 		GameEvent_End();
 	}
 }
@@ -1828,8 +1958,8 @@ void CGameEventExecuter_C8::Chapter8_Postit_Arm_Changing(_float _fTimeDelta)
 
 		// 1. 현재 카메라 데이터 저장 후 Arm, Length, AtOffset 변경
 		CCamera_Manager::GetInstance()->Set_ResetData(CCamera_Manager::TARGET_2D);
-		CCamera_Manager::GetInstance()->Start_Changing_ArmLength(CCamera_Manager::TARGET_2D, 1.5f, 95.70, EASE_IN_OUT);
-		CCamera_Manager::GetInstance()->Start_Turn_ArmVector(CCamera_Manager::TARGET_2D, 1.5f, XMVectorSet(-0.3410f, 0.6239f, -0.7032, 0.f), EASE_IN_OUT);
+		CCamera_Manager::GetInstance()->Start_Changing_ArmLength(CCamera_Manager::TARGET_2D, 1.5f, 95.70f, EASE_IN_OUT);
+		CCamera_Manager::GetInstance()->Start_Turn_ArmVector(CCamera_Manager::TARGET_2D, 1.5f, XMVectorSet(-0.3410f, 0.6239f, -0.7032f, 0.f), EASE_IN_OUT);
 		CCamera_Manager::GetInstance()->Start_Changing_AtOffset(CCamera_Manager::TARGET_2D, 1.5f, XMVectorSet(0.f, 20.f, 0.f, 0.f), EASE_IN_OUT);
 
 		// 1. Camera Tracking Time 변경
@@ -1983,8 +2113,8 @@ void CGameEventExecuter_C8::Chapter8_BookDrop(_float _fTimeDelta)
 	else
 	{
 
-		if (nullptr != pBook)
-			pBook->Set_Freezing(false);
+		//if (nullptr != pBook)
+			//pBook->Set_Freezing(false);
 
 		pPlayer->Set_BlockPlayerInput(false);
 		GameEvent_End();
@@ -1992,7 +2122,63 @@ void CGameEventExecuter_C8::Chapter8_BookDrop(_float _fTimeDelta)
 
 }
 
-void CGameEventExecuter_C8::Change_PlayMap(_float _fStartTime)
+void CGameEventExecuter_C8::Chapter8_BookFreezing_Off(_float _fTimeDelta)
+{
+
+	m_fTimer += _fTimeDelta;
+	CPlayer* pPlayer = Get_Player();
+	auto pBook = Get_Book();
+
+	if (Step_Check(STEP_0))
+	{
+		if (Is_Start())
+		{
+			pPlayer->Set_BlockPlayerInput(true);
+		
+		}
+		Next_Step_Over(0.5f);
+		
+	}
+	else if (Step_Check(STEP_1))
+	{
+		if (Is_Start())
+		{
+			pBook->Start_FreezingOff();
+		}
+		Next_Step_Over(0.5f);
+	}	
+	else 
+	{
+			auto pLayer = m_pGameInstance->Find_Layer(m_iCurLevelID, L"Layer_Gear");
+
+
+			if (nullptr != pLayer)
+			{
+				auto GameObjects = pLayer->Get_GameObjects();
+
+				if (false == GameObjects.empty())
+				{
+					for_each(GameObjects.begin(), GameObjects.end(), [](CGameObject* pGameObject) {
+						static_cast<CContainerObject*>(pGameObject)->Set_PartAnimPlaying(CGear::GEAR_PART_GEAR, true);
+						static_cast<CContainerObject*>(pGameObject)->Set_PartAnimPlaying(CGear::GEAR_PART_TEETH, true);
+						});
+				}
+			}
+
+			auto pPortal = static_cast<CSection_2D_PlayMap*>(SECTION_MGR->Find_Section(SECTION_MGR->Get_Cur_Section_Key()))->Get_Portal(0);
+			static_cast<CContainerObject*>(pPortal)->Set_Active(true);
+
+			pBook->Set_Freezing(false);
+
+			pPlayer->Set_BlockPlayerInput(false);
+			GameEvent_End();
+	}
+	
+	// dk...
+
+}
+
+_bool CGameEventExecuter_C8::Change_PlayMap(_float _fStartTime)
 {
 	LEVEL_ID eCurLevelID = (LEVEL_ID)m_pGameInstance->Get_CurLevelID();
 
@@ -2001,95 +2187,13 @@ void CGameEventExecuter_C8::Change_PlayMap(_float _fStartTime)
 	{
 		Event_ChangeMapObject(LEVEL_CHAPTER_8, L"Chapter_08_Play_Desk.mchc", L"Layer_MapObject");
 		m_iSubStep++;
-	}
-	//몬스터 추가
-	_fStartTime += 0.1f;
-
-	if (m_fTimer > _fStartTime && 1 == m_iSubStep)
-	{
-
-
-		CSpear_Soldier::MONSTER_DESC Spear_Soldier_Desc;
-		Spear_Soldier_Desc.iCurLevelID = eCurLevelID;
-		Spear_Soldier_Desc.eStartCoord = COORDINATE_3D;
-		Spear_Soldier_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-		Spear_Soldier_Desc.tTransform3DDesc.vInitialPosition = _float3(13.f, 21.58f, 5.5f);
-		Spear_Soldier_Desc.isSneakMode = true;
-		Spear_Soldier_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER8_1;
-
-		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Spear_Soldier"), eCurLevelID, L"Layer_Monster", &Spear_Soldier_Desc)))
-			return;
-
-
-
-		CBeetle::MONSTER_DESC Beetle_Desc;
-		Beetle_Desc.iCurLevelID = eCurLevelID;
-		Beetle_Desc.eStartCoord = COORDINATE_3D;
-		Beetle_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-		Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(15.f, 11.1f, 3.4f);
-		Beetle_Desc.isSneakMode = true;
-		Beetle_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER8_BEETLE1;
-
-		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), eCurLevelID, TEXT("Layer_Sneak_Beetle"), &Beetle_Desc)))
-			return;
-
-
-
-		//const json* pJson = m_pGameInstance->Find_Json_InLevel(TEXT("Chapter8_Monsters_3D"), m_pGameInstance->Get_CurLevelID());
-
-		//CGameObject* pObject;
-
-
-		//CMonster::MONSTER_DESC MonsterDesc3D = {};
-
-		//MonsterDesc3D.iCurLevelID = m_pGameInstance->Get_CurLevelID();
-		//MonsterDesc3D.eStartCoord = COORDINATE_3D;
-
-		//if (pJson->contains("3D"))
-		//{
-		//	_wstring strLayerTag = L"Layer_Monster";
-		//	_wstring strMonsterTag = L"";
-
-		//	for (_int i = 0; i < (*pJson)["3D"].size(); ++i)
-		//	{
-		//		if ((*pJson)["3D"][i].contains("Position"))
-		//		{
-		//			for (_int j = 0; j < 3; ++j)
-		//			{
-		//				*(((_float*)&MonsterDesc3D.tTransform3DDesc.vInitialPosition) + j) = (*pJson)["3D"][i]["Position"][j];
-		//			}
-		//		}
-		//		if ((*pJson)["3D"][i].contains("Scaling"))
-		//		{
-		//			for (_int j = 0; j < 3; ++j)
-		//			{
-		//				*(((_float*)&MonsterDesc3D.tTransform3DDesc.vInitialScaling) + j) = (*pJson)["3D"][i]["Scaling"][j];
-		//			}
-		//		}
-		//		if ((*pJson)["3D"][i].contains("LayerTag"))
-		//		{
-		//			strLayerTag = STRINGTOWSTRING((*pJson)["3D"][i]["LayerTag"]);
-		//		}
-
-		//		if ((*pJson)["3D"][i].contains("MonsterTag"))
-		//		{
-		//			strMonsterTag = STRINGTOWSTRING((*pJson)["3D"][i]["MonsterTag"]);
-		//		}
-		//		else
-		//			return;
-
-		//		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, strMonsterTag, m_pGameInstance->Get_CurLevelID(), strLayerTag, &pObject, &MonsterDesc3D)))
-		//			return;
-
-		//	}
-		//}		
-		m_iSubStep++;
+		return false;
 
 	}
-	_fStartTime += 0.1f;
+	_fStartTime += 0.2f;
+	//아이템 추가
 
-	// 3D NPC들 렌더 
-	if (m_fTimer > _fStartTime && 2 == m_iSubStep)
+	if (true == CEvent_Manager::GetInstance()->Is_MapLoad() && m_fTimer > _fStartTime && 1 == m_iSubStep)
 	{
 		auto pLayer = m_pGameInstance->Find_Layer(m_iCurLevelID, L"Layer_Social3DNPC");
 
@@ -2108,8 +2212,70 @@ void CGameEventExecuter_C8::Change_PlayMap(_float _fStartTime)
 		CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)eCurLevelID, TEXT("Stop_Stamp"), _float3(45.13f, 50.24f, 23.34f), { 1.f,1.f,1.f });
 		CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)eCurLevelID, TEXT("Tilting_Glove"), _float3(30.55f, 30.98f, 23.34f));
 		m_iSubStep++;
+		return false;
 
 	}
+	_fStartTime += 0.2f;
+
+	// 몬스터 추가
+	if (m_fTimer > _fStartTime &&  2 == m_iSubStep)
+	{
+
+			//const json* pJson = m_pGameInstance->Find_Json_InLevel(TEXT("Chapter8_Monsters_3D"), m_pGameInstance->Get_CurLevelID());
+
+			//CGameObject* pObject;
+
+
+			//CMonster::MONSTER_DESC MonsterDesc3D = {};
+
+			//MonsterDesc3D.iCurLevelID = m_pGameInstance->Get_CurLevelID();
+			//MonsterDesc3D.eStartCoord = COORDINATE_3D;
+
+			//if (pJson->contains("3D"))
+			//{
+			//	_wstring strLayerTag = L"Layer_Monster";
+			//	_wstring strMonsterTag = L"";
+
+			//	for (_int i = 0; i < (*pJson)["3D"].size(); ++i)
+			//	{
+			//		if ((*pJson)["3D"][i].contains("Position"))
+			//		{
+			//			for (_int j = 0; j < 3; ++j)
+			//			{
+			//				*(((_float*)&MonsterDesc3D.tTransform3DDesc.vInitialPosition) + j) = (*pJson)["3D"][i]["Position"][j];
+			//			}
+			//		}
+			//		if ((*pJson)["3D"][i].contains("Scaling"))
+			//		{
+			//			for (_int j = 0; j < 3; ++j)
+			//			{
+			//				*(((_float*)&MonsterDesc3D.tTransform3DDesc.vInitialScaling) + j) = (*pJson)["3D"][i]["Scaling"][j];
+			//			}
+			//		}
+			//		if ((*pJson)["3D"][i].contains("LayerTag"))
+			//		{
+			//			strLayerTag = STRINGTOWSTRING((*pJson)["3D"][i]["LayerTag"]);
+			//		}
+
+			//		if ((*pJson)["3D"][i].contains("MonsterTag"))
+			//		{
+			//			strMonsterTag = STRINGTOWSTRING((*pJson)["3D"][i]["MonsterTag"]);
+			//		}
+			//		else
+			//			return;
+
+			//		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, strMonsterTag, m_pGameInstance->Get_CurLevelID(), strLayerTag, &pObject, &MonsterDesc3D)))
+			//			return;
+
+			//	}
+			//}		
+
+		if (FAILED(CFormation_Manager::GetInstance()->Initialize()))
+			return E_FAIL;
+		m_iSubStep++;
+		return true;
+	}
+	return false;
 }
 
 

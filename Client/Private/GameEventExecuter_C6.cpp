@@ -13,6 +13,7 @@
 #include "UI_Manager.h"
 #include "Npc_Manager.h"
 
+
 /* Section */
 #include "Section_2D_PlayMap.h"
 
@@ -2114,6 +2115,8 @@ void CGameEventExecuter_C6::Chapter6_StorySequence_01(_float _fTimeDelta)
 		if (Is_Start())
 		{
 			CCamera_Manager::GetInstance()->Start_FadeOut();
+
+			
 		}
 		else
 			Next_Step_Over(1.1f);
@@ -2123,6 +2126,8 @@ void CGameEventExecuter_C6::Chapter6_StorySequence_01(_float _fTimeDelta)
 	{
 		if (Is_Start())
 		{
+			m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/Chapter6_2.json"));
+			m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/Chapter6.json"));
 			CCamera_Manager::GetInstance()->Start_FadeIn();
 			CDialog_Manager::GetInstance()->Set_DialogId(L"Chapter6_StorySequence_01_03");
 		}

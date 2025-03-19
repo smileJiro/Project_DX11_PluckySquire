@@ -25,6 +25,7 @@
 #include "Section_2D_PlayMap.h"
 #include "DraggableObject.h"
 #include "PlayerData_Manager.h"
+#include "Event_Manager.h"
 
 #include "Zippy.h"
 #include "Room_Door.h"
@@ -1517,24 +1518,26 @@ void CGameEventExecuter_C2::Chapter2_Pip_0(_float _fTimeDelta)
 	}
 }
 
-void CGameEventExecuter_C2::Change_PlayMap(_float _fStartTime)
+_bool CGameEventExecuter_C2::Change_PlayMap(_float _fStartTime)
 {
 	// 맵 설치
 	if (m_fTimer > _fStartTime && 0 == m_iSubStep)
 	{
 		m_iSubStep++;
 		Event_ChangeMapObject(LEVEL_CHAPTER_2, L"Chapter_02_Play_Desk.mchc", L"Layer_MapObject");
+		return false;
+
 	}
 	_fStartTime += 0.1f;
 	// 몬스터 추가
-	if (m_fTimer > _fStartTime && 1 == m_iSubStep)
+	if (true == CEvent_Manager::GetInstance()->Is_MapLoad() && m_fTimer > _fStartTime && 1 == m_iSubStep)
 	{
 		m_iSubStep++;
 		CGameObject* pObject = nullptr;
 		const json* pJson = m_pGameInstance->Find_Json_InLevel(TEXT("Chapter2_Monsters_3D"), m_pGameInstance->Get_CurLevelID());
 
 		if (nullptr == pJson)
-			return;
+			return false;
 		if (pJson->contains("3D"))
 		{
 			_wstring strLayerTag = L"Layer_Monster";
@@ -1591,8 +1594,10 @@ void CGameEventExecuter_C2::Change_PlayMap(_float _fStartTime)
 				}
 
 				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, strMonsterTag, m_pGameInstance->Get_CurLevelID(), strLayerTag, &pObject, &MonsterDesc3D)))
-					return;
+					return false;
 			}
+			return false;
+
 		}
 	}
 	_fStartTime += 0.1f;
@@ -1610,7 +1615,7 @@ void CGameEventExecuter_C2::Change_PlayMap(_float _fStartTime)
 		tCarriableDesc.iCurLevelID = m_pGameInstance->Get_CurLevelID();
 		tCarriableDesc.tTransform3DDesc.vInitialPosition = _float3(15.f, 6.8f, 21.5f);
 		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eCurLevelID, TEXT("Prototype_GameObject_Dice"), eCurLevelID, TEXT("Layer_Domino"), &tCarriableDesc)))
-			return;
+			return false;
 		CModelObject::MODELOBJECT_DESC tModelDesc{};
 		tModelDesc.eStartCoord = COORDINATE_3D;
 		tModelDesc.iCurLevelID = eCurLevelID;
@@ -1623,26 +1628,26 @@ void CGameEventExecuter_C2::Change_PlayMap(_float _fStartTime)
 
 		tModelDesc.strModelPrototypeTag_3D = TEXT("Domino_4");
 		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eCurLevelID, TEXT("Prototype_GameObject_Domino"), eCurLevelID, TEXT("Layer_Domino"), &tModelDesc)))
-			return;
+			return false;
 		tModelDesc.tTransform3DDesc.vInitialPosition.x += fDominoXPositionStep;
 		tModelDesc.strModelPrototypeTag_3D = TEXT("Domino_2");
 		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eCurLevelID, TEXT("Prototype_GameObject_Domino"), eCurLevelID, TEXT("Layer_Domino"), &tModelDesc)))
-			return;
+			return false;
 		tModelDesc.tTransform3DDesc.vInitialPosition.x += fDominoXPositionStep;
 		tModelDesc.tTransform3DDesc.vInitialPosition.y += 0.001f;
 		tModelDesc.strModelPrototypeTag_3D = TEXT("Domino_3");
 		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eCurLevelID, TEXT("Prototype_GameObject_Domino"), eCurLevelID, TEXT("Layer_Domino"), &tModelDesc)))
-			return;
+			return false;
 		tModelDesc.tTransform3DDesc.vInitialPosition.x += fDominoXPositionStep;
 		tModelDesc.strModelPrototypeTag_3D = TEXT("Domino_1");
 		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eCurLevelID, TEXT("Prototype_GameObject_Domino"), eCurLevelID, TEXT("Layer_Domino"), &tModelDesc)))
-			return;
+			return false;
 
 		// 도미노
 		//2번째 도미노
 		tCarriableDesc.tTransform3DDesc.vInitialPosition = _float3(48.13f, 2.61f, -5.02f);
 		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eCurLevelID, TEXT("Prototype_GameObject_Dice"), eCurLevelID, TEXT("Layer_Domino"), &tCarriableDesc)))
-			return;
+			return false;
 
 		fDominoXPosition = 64.5f;
 		fDominoYPosition = 0.0;
@@ -1651,13 +1656,13 @@ void CGameEventExecuter_C2::Change_PlayMap(_float _fStartTime)
 		tModelDesc.tTransform3DDesc.vInitialPosition = _float3(fDominoXPosition, fDominoYPosition, fDominoZPosition);
 		tModelDesc.strModelPrototypeTag_3D = TEXT("Domino_1");
 		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eCurLevelID, TEXT("Prototype_GameObject_Domino"), eCurLevelID, TEXT("Layer_Domino"), &tModelDesc)))
-			return;
+			return false;
 
 
 		tModelDesc.tTransform3DDesc.vInitialPosition.x += fDominoXPositionStep;
 		tModelDesc.strModelPrototypeTag_3D = TEXT("Domino_3");
 		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eCurLevelID, TEXT("Prototype_GameObject_Domino"), eCurLevelID, TEXT("Layer_Domino"), &tModelDesc)))
-			return;
+			return false;
 
 
 		CDraggableObject::DRAGGABLE_DESC tDraggableDesc = {};
@@ -1671,11 +1676,17 @@ void CGameEventExecuter_C2::Change_PlayMap(_float _fStartTime)
 
 		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DraggableObject"),
 			eCurLevelID, TEXT("Layer_Draggable"), &tDraggableDesc)))
-			return;
+			return false;
 
 		CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)eCurLevelID, TEXT("Flipping_Glove"), _float3(62.31f, 6.28f, -21.097f));
 		CPlayerData_Manager::GetInstance()->Spawn_Bulb(LEVEL_STATIC, (LEVEL_ID)eCurLevelID);
+
+		return true;
+
 	}
+
+
+	return false;
 }
 
 

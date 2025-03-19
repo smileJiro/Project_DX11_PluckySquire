@@ -89,6 +89,7 @@ HRESULT CBeetle::Initialize(void* _pArg)
     pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, RUN, true);
     pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, TURN_LEFT, true);
     pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, TURN_RIGHT, true);
+    pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, CAUGHTLOOP, true);
     pModelObject->Set_Animation(IDLE);
 
     pModelObject->Register_OnAnimEndCallBack(bind(&CBeetle::Animation_End, this, placeholders::_1, placeholders::_2));
@@ -356,7 +357,8 @@ void CBeetle::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
         break;
 
     case CAUGHT:
-        Set_AnimChangeable(true);
+        //Set_AnimChangeable(true);
+        pModelObject->Switch_Animation(CAUGHTLOOP);
         break;
 
     case DAMAGE:

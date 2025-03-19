@@ -5,6 +5,12 @@
 #include "Monster.h"
 #include "FSM.h"
 
+#include "Camera_Manager.h"
+#include "PlayerData_Manager.h"
+#include "PlayerBody.h"
+
+#include "Beetle.h"
+
 CSneak_AttackState::CSneak_AttackState()
 {
 }
@@ -19,13 +25,14 @@ HRESULT CSneak_AttackState::Initialize(void* _pArg)
 
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
-		
+
 	return S_OK;
 }
 
 
 void CSneak_AttackState::State_Enter()
 {
+	Beetle_CutScene();
 	m_pOwner->Set_AnimChangeable(false);
 }
 
@@ -48,11 +55,16 @@ void CSneak_AttackState::State_Update(_float _fTimeDelta)
 			Event_ChangeMonsterState(MONSTER_STATE::FORMATION_BACK, m_pFSM);
 		}
 	}
+
+	// FadeInOut 시간 계산
+	FadeInOut(_fTimeDelta);
+
+	Check_Animation_End();
 }
 
 void CSneak_AttackState::State_Exit()
 {
-	After_Attack();
+
 }
 
 void CSneak_AttackState::After_Attack()
@@ -83,7 +95,71 @@ void CSneak_AttackState::After_Attack()
 		return;
 	}
 	Event_Sneak_BeetleCaught(static_cast<CActorObject*>(m_pTarget), static_cast<CActorObject*>(m_pOwner), &vPlayerPos, &vMonsterPos);
+	
+	m_pOwner->Set_AnimChangeable(true);
+
 	Event_ChangeMonsterState(MONSTER_STATE::SNEAK_IDLE, m_pFSM);
+}
+
+void CSneak_AttackState::Beetle_CutScene()
+{
+	// 1. Change Camera
+	CCamera_Manager::GetInstance()->Set_ResetData(CCamera_Manager::TARGET);
+	CCamera_Manager::GetInstance()->Start_Changing_ArmLength(CCamera_Manager::TARGET, 0.f, 4.4f, EASE_IN_OUT);
+	CCamera_Manager::GetInstance()->Start_Turn_ArmVector(CCamera_Manager::TARGET, 0.f, XMVectorSet(0.336f, 0.7632f, -0.552f, 0.f), EASE_IN_OUT);
+	CCamera_Manager::GetInstance()->Start_Zoom(CCamera_Manager::TARGET, 0.f, CCamera::LEVEL_6, EASE_IN_OUT);
+
+	// 2. Change Player Animation
+	CPlayer* pPlayer = CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr();
+	pPlayer->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_KNOCKED_DOWN_AND_EATEN_FROM_BEHIND_LATCH);
+
+	// 3. Player Input 막기
+	pPlayer->Set_BlockPlayerInput(true);
+}
+
+void CSneak_AttackState::FadeInOut(_float _fTimeDelta)
+{
+	if (false == m_isStartFade) {
+		_float fRatio = m_pGameInstance->Calculate_Ratio(&m_fSneakFadeTime, _fTimeDelta, LERP);
+
+		if (fRatio >= (1.f - EPSILON)) {
+			m_fSneakFadeTime.y = 0.f;
+			m_isStartFade = true;
+			CCamera_Manager::GetInstance()->Start_FadeOut(0.7f);
+		}
+
+		return;
+	}
+	
+	// FadeOut이 시작됐다면?
+	_float fFadeRatio = CCamera_Manager::GetInstance()->Get_DofBufferData().fFadeRatio;
+
+	if (0.f == fFadeRatio) {
+		// Player 위치, Monster의 상태 전환
+		After_Attack();
+
+		// FadeIn 시작
+		CCamera_Manager::GetInstance()->Start_FadeIn(0.7f);
+		CCamera_Manager::GetInstance()->Start_ResetArm_To_SettingPoint(CCamera_Manager::TARGET, 0.f);
+		
+		// Player Animation 바꾸기
+		CPlayer* pPlayer = CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr();
+		pPlayer->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_IDLE_01);
+
+		// KeyInput 막은 거 풀기
+		pPlayer->Set_BlockPlayerInput(false);
+
+		m_isStartFade = false;
+	}
+}
+
+void CSneak_AttackState::Check_Animation_End()
+{
+	// Player Anim 바꾸기
+	CPlayer* pPlayer = CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr();
+	if (false == pPlayer->Get_Body()->Is_AnimTransition() && false == pPlayer->Get_Body()->Is_DuringAnimation()) {
+		pPlayer->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_KNOCKED_DOWN_AND_EATEN_FROM_BEHIND_LOOP_LATCH);
+	}
 }
 
 CSneak_AttackState* CSneak_AttackState::Create(void* _pArg)
@@ -101,5 +177,6 @@ CSneak_AttackState* CSneak_AttackState::Create(void* _pArg)
 
 void CSneak_AttackState::Free()
 {
+	//CPlayer* pPlayer = CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr()->Get_Body()->Remove
 	__super::Free();
 }

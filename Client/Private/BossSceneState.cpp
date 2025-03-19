@@ -4,6 +4,7 @@
 #include "BossSceneState.h"
 #include "Monster.h"
 #include "FSM.h"
+#include "ButterGrump.h"
 
 CBossSceneState::CBossSceneState()
 {
@@ -15,6 +16,8 @@ HRESULT CBossSceneState::Initialize(void* _pArg)
 
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
+
+	m_fDelayTime = 5.f;
 		
 	return S_OK;
 }
@@ -22,7 +25,6 @@ HRESULT CBossSceneState::Initialize(void* _pArg)
 
 void CBossSceneState::State_Enter()
 {
-	m_pOwner->Set_AnimChangeable(false);
 }
 
 void CBossSceneState::State_Update(_float _fTimeDelta)
@@ -32,22 +34,44 @@ void CBossSceneState::State_Update(_float _fTimeDelta)
 	if (nullptr == m_pOwner)
 		return;
 
-	m_pOwner->Get_ControllerTransform()->Set_AutoRotationYDirection(m_pTarget->Get_FinalPosition() - m_pOwner->Get_FinalPosition());
-	//m_pOwner->Get_ControllerTransform()->LookAt_3D(m_pTarget->Get_FinalPosition());
-	//m_pOwner->Get_ControllerTransform()->Update_AutoRotation(_fTimeDelta);
-	//애니메이션 재생
-	switch (m_iSceneIdx)
+	//if(true == m_isDelay)
+	//{
+	//	m_fAccTime += _fTimeDelta;
+	//	if (m_fDelayTime <= m_fAccTime)
+	//	{
+	//		if(true == m_pOwner->Get_AnimChangeable())
+	//		{
+	//			static_cast<CButterGrump*>(m_pOwner)->Play_Intro(SECOND);
+	//			m_fAccTime = 0.f;
+	//			m_isDelay = false;
+	//		}
+	//	}
+	//}
+
+	if (KEY_PRESSING(KEY::CTRL))
 	{
-	case FIRST:
+		if (KEY_DOWN(KEY::NUM9))
+		{
+			//애니메이션 재생
+			if (true == m_pOwner->Get_AnimChangeable())
+			{
+				static_cast<CButterGrump*>(m_pOwner)->Play_Intro(m_iSceneIdx);
+				switch (m_iSceneIdx)
+				{
+				case FIRST:
+					m_isDelay = true;
+					m_iSceneIdx = SECOND;
+					break;
 
-		break;
-
-	default:
-		break;
+				default:
+					break;
+				}
+				++m_iSceneIdx;
+			}
+		}
 	}
-
-	//임시 코드
-	Event_ChangeBossState(BOSS_STATE::IDLE, m_pFSM);
+	if (SCENE::LAST <= m_iSceneIdx && true == m_pOwner->Get_AnimChangeable())
+		Event_ChangeBossState(BOSS_STATE::IDLE, m_pFSM);
 }
 
 void CBossSceneState::State_Exit()

@@ -144,7 +144,7 @@ public:
 	void Shield_Break();
 	void Activate_Invinciblility(_bool _isActivate);
 	void	Animation_End(COORDINATE _eCoord, _uint iAnimIdx);
-	void Play_Intro();
+	void Play_Intro(_uint _iIndex);
 
 	virtual void	On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)override;
 	void Hit();
@@ -161,6 +161,10 @@ private:
 
 private:
 	CFSM_Boss* m_pBossFSM = { nullptr };
+
+	_float m_fSceneAccTime = { 0.f };
+	_float m_fSceneTime = { 0.f };
+	_bool m_isScene = { false };
 
 	_bool m_isInvincible = { false };
 	_bool m_isMove = { false };
@@ -197,6 +201,10 @@ private:
 	class CEffect_System* m_pShieldEffect = { nullptr };
 	class CEffect_System* m_pRoarEffect = { nullptr };
 
+private:
+	_bool m_isStopTimeScale = false;
+	_float2 m_vStopTime = {2.f, 0.0f};
+	_float m_fStopTimeScale = 0.1f;
 public:
 	static CButterGrump* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject* Clone(void* _pArg) override;

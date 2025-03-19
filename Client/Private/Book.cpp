@@ -178,6 +178,17 @@ void CBook::Priority_Update(_float _fTimeDelta)
 
 void CBook::Update(_float _fTimeDelta)
 {
+	if (true == m_isFreezing && true == m_isFreezingOff)
+	{
+		m_isFreezingRatio -= _fTimeDelta * 0.1f;
+		if (0.f >= m_isFreezingRatio)
+		{
+			m_isFreezingRatio = 0.f;
+			m_isFreezingOff = false;
+			m_isFreezing = false;
+		}
+	}
+
 	_float3 fDefaultPos = { };
 
 	if (KEY_DOWN(KEY::M))
@@ -1027,6 +1038,15 @@ void CBook::Start_DropBook()
 	pActor->Freeze_Rotation(true, true, false);
 	pActor->Freeze_Position(false, false, false);
 
+
+	_vector vForcDir = { 0.f,-1.f,0.f };
+	_float fForce = 10.f;
+	_vector vForce = vForcDir * fForce;
+	_vector vTorque = XMVector3Cross(vForce, { 10.f,0.f,0.f });
+	CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
+	_float3 vTorq; XMStoreFloat3(&vTorq, vTorque);
+	pDynamicActor->Add_Torque(vTorq);
+
 	m_isDroppable = false;
 }
 
@@ -1045,6 +1065,11 @@ void CBook::Set_Freezing(_bool _isFreezing)
 {
 	m_isFreezing = _isFreezing;
 
+}
+
+void CBook::Start_FreezingOff()
+{
+	m_isFreezingOff = true;
 }
 
 //void CBook::Calc_Page3DWorldMinMax()
