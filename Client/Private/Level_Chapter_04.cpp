@@ -772,6 +772,9 @@ HRESULT CLevel_Chapter_04::Ready_Layer_UI(const _wstring& _strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Interaction_Book"), m_eLevelID, _strLayerTag, &pDesc)))
 		return E_FAIL;
 
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Interaction_Tilting"), m_eLevelID, _strLayerTag, &pDesc)))
+		return E_FAIL;
+
 	CGameObject* pInteractionE;
 
 	pDesc.fSizeX = 360.f / 3.f;

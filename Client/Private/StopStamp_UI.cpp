@@ -156,8 +156,10 @@ void CStopStamp_UI::ChangeStamp(_float _fTimeDelta)
 			if (ePlayerPart == CPlayer::PLAYER_PART::PLAYER_PART_STOP_STMAP)
 			{
 				//위치 변경이 필요한가요?
-				m_fX = g_iWinSizeX / 7.5f;
-				m_fY = g_iWinSizeY - g_iWinSizeY / 10.f;
+				m_fX = g_iWinSizeX / 23.f;
+				m_fY = g_iWinSizeY - g_iWinSizeY / 6.f;
+
+				m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(m_fX - g_iWinSizeX * 0.5f, -m_fY + g_iWinSizeY * 0.5f, 0.f, 1.f));
 
 				m_isBig = true;
 				m_isScaling = true;
@@ -165,8 +167,10 @@ void CStopStamp_UI::ChangeStamp(_float _fTimeDelta)
 			else if (ePlayerPart == CPlayer::PLAYER_PART::PLAYER_PART_BOMB_STMAP)
 			{
 				//위치 변경이 필요한가요?
-				m_fX = g_iWinSizeX / 7.5f;
-				m_fY = g_iWinSizeY - g_iWinSizeY / 10.f;
+				m_fX = g_iWinSizeX / 23.f;
+				m_fY = g_iWinSizeY - g_iWinSizeY / 6.f;
+
+				m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(m_fX - g_iWinSizeX * 0.5f, -m_fY + g_iWinSizeY * 0.5f, 0.f, 1.f));
 
 				m_isSmall = true;
 				m_isScaling = true;

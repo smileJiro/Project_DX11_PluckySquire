@@ -71,6 +71,7 @@
 #include "Loading_Book.h"
 #include "BossHP.h"
 #include "BossHPBar.h"
+#include "UI_Interaction_Tilting.h"
 
 #include "Logo_BackGround.h"
 #include "Logo_ColorObject.h"
@@ -541,6 +542,10 @@ HRESULT CLoader::Loading_Level_Static()
 
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Interact_Book"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Static/KeyIcon/Keyboard_Book_%d.dds"), 2))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Interact_Book_1"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Static/KeyIcon/Keyboard_Book_1_%d.dds"), 2))))
 		return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Interact_Key"),
@@ -2742,6 +2747,14 @@ HRESULT CLoader::UI_Object_Load(LEVEL_ID _eLevelID)
 		CPrintFloorWord::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_GameObject_PrintFloorWord"),
+		CPrintFloorWord::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_GameObject_Interaction_Tilting"),
+		CUI_Interaction_Tilting::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_GameObject_WorldMapNpc"),
 		CWorldMapNPC::Create(m_pDevice, m_pContext))))

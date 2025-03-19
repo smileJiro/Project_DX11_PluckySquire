@@ -146,9 +146,29 @@ HRESULT CInteraction_Key::Render()
 {
 	CUI_Manager* pUIManager = CUI_Manager::GetInstance();
 	CPlayerData_Manager* pPDM = CPlayerData_Manager::GetInstance();
+	CBook* pBook = dynamic_cast<CBook*>(Uimgr->Get_Player()->Get_InteractableObject());
 
-	if (false == pPDM->Is_Own(CPlayerData_Manager::BOMB_STAMP) && false == pPDM->Is_Own(CPlayerData_Manager::STOP_STAMP))
+	if (false == pPDM->Is_Own(CPlayerData_Manager::BOMB_STAMP) && false == pPDM->Is_Own(CPlayerData_Manager::STOP_STAMP) &&
+		false == pPDM->Is_Own(CPlayerData_Manager::FLIPPING_GLOVE) && false == pPDM->Is_Own(CPlayerData_Manager::TILTING_GLOVE))
 		return S_OK;
+
+	if (nullptr == pBook)
+	{
+		if (true == m_isRender)
+			m_isRender = false;
+
+		return S_OK;
+	}
+
+	if (false == pPDM->Is_Own(CPlayerData_Manager::FLIPPING_GLOVE) && false == pPDM->Is_Own(CPlayerData_Manager::TILTING_GLOVE) && true == pBook->Get_PlayerAround())
+		return S_OK;
+
+	if (false == pPDM->Is_Own(CPlayerData_Manager::BOMB_STAMP) && false == pPDM->Is_Own(CPlayerData_Manager::STOP_STAMP) && true == pBook->Get_PlayerAbove())
+	{
+		if (true == pPDM->Is_Own(CPlayerData_Manager::FLIPPING_GLOVE) || true == pPDM->Is_Own(CPlayerData_Manager::TILTING_GLOVE))
+			return S_OK;
+	}
+		
 
 	if (FAILED(m_pControllerTransform->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
 		return E_FAIL;
