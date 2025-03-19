@@ -5,6 +5,8 @@
 #include "Monster.h"
 #include "FSM.h"
 
+#include "Camera_Manager.h"
+
 CSneak_AttackState::CSneak_AttackState()
 {
 }
@@ -26,6 +28,7 @@ HRESULT CSneak_AttackState::Initialize(void* _pArg)
 
 void CSneak_AttackState::State_Enter()
 {
+	Beetle_CutScene();
 	m_pOwner->Set_AnimChangeable(false);
 }
 
@@ -84,6 +87,12 @@ void CSneak_AttackState::After_Attack()
 	}
 	Event_Sneak_BeetleCaught(static_cast<CActorObject*>(m_pTarget), static_cast<CActorObject*>(m_pOwner), &vPlayerPos, &vMonsterPos);
 	Event_ChangeMonsterState(MONSTER_STATE::SNEAK_IDLE, m_pFSM);
+}
+
+void CSneak_AttackState::Beetle_CutScene()
+{
+//	CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Decrease(CCamera_Manager::TARGET, 0.f, 5.f, EASE_IN_OUT);
+
 }
 
 CSneak_AttackState* CSneak_AttackState::Create(void* _pArg)

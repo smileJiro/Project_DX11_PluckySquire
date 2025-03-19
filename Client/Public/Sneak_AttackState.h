@@ -21,6 +21,7 @@ public:
 
 private:
 	void After_Attack();
+	void Beetle_CutScene();
 
 public:
 	static CSneak_AttackState* Create(void* _pArg);
