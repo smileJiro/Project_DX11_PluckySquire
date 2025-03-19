@@ -19,6 +19,7 @@
 #include "Friend_Violet.h"
 #include "PlayerData_Manager.h"
 #include "Door_Red.h"
+#include "Event_Manager.h"
 
 CGameEventExecuter_C4::CGameEventExecuter_C4(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CGameEventExecuter(_pDevice, _pContext)
@@ -701,7 +702,7 @@ void CGameEventExecuter_C4::Friend_MapEnter(_float _fTimeDelta)
 	}
 }
 
-void CGameEventExecuter_C4::Change_PlayMap(_float _fStartTime)
+_bool CGameEventExecuter_C4::Change_PlayMap(_float _fStartTime)
 {
 	LEVEL_ID eCurLevelID = (LEVEL_ID)m_pGameInstance->Get_CurLevelID();
 
@@ -710,12 +711,13 @@ void CGameEventExecuter_C4::Change_PlayMap(_float _fStartTime)
 	{
 		Event_ChangeMapObject(LEVEL_CHAPTER_4, L"Chapter_04_Play_Desk.mchc", L"Layer_MapObject");
 		m_iSubStep++;
+		return false;
 
 	}
 	_fStartTime += 0.1f;
 
 	//몬스터 추가
-	if (m_fTimer > _fStartTime && 1 == m_iSubStep)
+	if (true == CEvent_Manager::GetInstance()->Is_MapLoad() && m_fTimer > _fStartTime && 1 == m_iSubStep)
 	{
 		const json* pJson = m_pGameInstance->Find_Json_InLevel(TEXT("Chapter4_Monsters_3D"), eCurLevelID);
 
@@ -757,14 +759,15 @@ void CGameEventExecuter_C4::Change_PlayMap(_float _fStartTime)
 					strMonsterTag = STRINGTOWSTRING((*pJson)["3D"][i]["MonsterTag"]);
 				}
 				else
-					return;
+					return false;
 
 				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, strMonsterTag, eCurLevelID, strLayerTag, &pObject, &MonsterDesc3D)))
-					return;
+					return false;
 
 			}
 		}		
 		m_iSubStep++;
+		return false;
 
 	}
 	_fStartTime += 0.1f;
@@ -783,7 +786,7 @@ void CGameEventExecuter_C4::Change_PlayMap(_float _fStartTime)
 
 		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DraggableObject"),
 			m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Draggable"), &tDraggableDesc)))
-			return;		
+			return false;
 
 		CDoor_Red::DOOR_RED_DESC DoorRedDesc = {};
 		DoorRedDesc.tTransform2DDesc.vInitialPosition = _float3(1010.f, -530.f, 0.f);
@@ -798,7 +801,7 @@ void CGameEventExecuter_C4::Change_PlayMap(_float _fStartTime)
 
 		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorRed"),
 			eCurLevelID, L"Layer_MapGimmick", &DoorRedDesc)))
-			return;
+			return false;
 
 		DoorRedDesc.tTransform2DDesc.vInitialPosition = _float3(605.f, -200.f, 0.f);
 		DoorRedDesc.iCurLevelID = eCurLevelID;
@@ -811,7 +814,7 @@ void CGameEventExecuter_C4::Change_PlayMap(_float _fStartTime)
 
 		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorRed"),
 			eCurLevelID, L"Layer_MapGimmick", &DoorRedDesc)))
-			return;
+			return false;
 
 		DoorRedDesc.tTransform2DDesc.vInitialPosition = _float3(-515.f, 80.f, 0.f);
 		DoorRedDesc.iCurLevelID = eCurLevelID;
@@ -825,7 +828,7 @@ void CGameEventExecuter_C4::Change_PlayMap(_float _fStartTime)
 
 		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorRed"),
 			eCurLevelID, L"Layer_MapGimmick", &DoorRedDesc)))
-			return ;
+			return false;
 
 		DoorRedDesc = {};
 		DoorRedDesc.tTransform2DDesc.vInitialPosition = _float3(-1151.00f, 95.00f, 0.f);
@@ -840,8 +843,9 @@ void CGameEventExecuter_C4::Change_PlayMap(_float _fStartTime)
 
 		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorRed"),
 			eCurLevelID, L"Layer_MapGimmick", &DoorRedDesc)))
-			return ;
+			return false;
 		m_iSubStep++;
+		return false;
 
 
 	}
@@ -866,8 +870,12 @@ void CGameEventExecuter_C4::Change_PlayMap(_float _fStartTime)
 		CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)eCurLevelID, TEXT("Bomb_Stamp"), _float3(-45.9f, 10.83f, 8.21f), {1.f,1.f,1.f});
 		CPlayerData_Manager::GetInstance()->Spawn_Bulb(LEVEL_STATIC, (LEVEL_ID)eCurLevelID);
 		m_iSubStep++;
+		return true;
 
 	}
+
+	return false;
+
 }
 
 CGameEventExecuter_C4* CGameEventExecuter_C4::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

@@ -21,8 +21,9 @@ private:
 	CModelObject* m_pItemImg = nullptr;
     _vector m_vItemOffset = { 100.f,100.f };
 	PLAYER_2D_ITEM_ID m_eItemID = PLAYER_2D_ITEM_ID::LAST;
-	_float m_fSizeUpStartProgress = 0.f;
-	_float m_fSizeUpENdProgress = 0.3f;
+    _bool m_bSizedUp = false;
+	_float m_fSizeUpTimeAcc = 0.f;
+	_float m_fSizeUpTime= 0.1f;
 };
 
 END

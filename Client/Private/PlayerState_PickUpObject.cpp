@@ -60,7 +60,8 @@ void CPlayerState_PickUpObject::Update(_float _fTimeDelta)
 void CPlayerState_PickUpObject::Enter()
 {
 	assert(m_pOwner->Is_CarryingObject());
-	m_pOwner->UnEquip_Part(CPlayer::PLAYER_PART_SWORD);
+	//if (m_pOwner->Is_SwordHandling())
+	//	m_pOwner->UnEquip_Part(CPlayer::PLAYER_PART_SWORD);
 	COORDINATE eCoord = m_pOwner->Get_CurCoord();
 	m_pCarriableObject = m_pOwner->Get_CarryingObject();
 

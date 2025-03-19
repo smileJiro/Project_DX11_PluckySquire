@@ -212,7 +212,6 @@ void CBossDeadState::State_Update(_float _fTimeDelta)
 		if (5.4f <= m_fAccTime)
 		{
 			CEffect_Manager::GetInstance()->Active_EffectMatrix(TEXT("BossEnd"), true, matWorld);
-
 			///* ÅÂ¿õ Ãß°¡ */
 			CCamera_Manager::GetInstance()->Start_FadeOut_White(1.0f);
 			++m_iEffectCount;

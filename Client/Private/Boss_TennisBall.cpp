@@ -96,7 +96,12 @@ void CBoss_TennisBall::Update(_float _fTimeDelta)
     }
     else
     {
-		Get_ControllerTransform()->Go_Direction(Get_FinalPosition() - m_pTarget->Get_FinalPosition(), Get_ControllerTransform()->Get_SpeedPerSec() * 3.f, _fTimeDelta);
+        m_vStopTime.y += _fTimeDelta * (1.0f / m_fStopTimeScale);
+        if (m_vStopTime.x <= m_vStopTime.y)
+        {
+            m_pGameInstance->Reset_TimeScale(TEXT("Timer_120"));
+        }
+		Get_ControllerTransform()->Go_Direction(Get_FinalPosition() - m_pTarget->Get_FinalPosition(), Get_ControllerTransform()->Get_SpeedPerSec() * 8.f, _fTimeDelta);
     }
 
     if(KEY_PRESSING(KEY::CTRL))
@@ -184,6 +189,8 @@ void CBoss_TennisBall::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vFor
         if (0 >= m_tStat.iHP)
         {
             m_isShoot = true;
+            m_pGameInstance->Set_TimeScale(m_fStopTimeScale, TEXT("Timer_120"));
+            m_vStopTime.y = 0.0f;
         }
     }
 }

@@ -115,11 +115,11 @@ HRESULT CSection_2D_Narration::Start_Narration()
 			CUI_Manager::GetInstance()->Set_PlayNarration(TEXT("Chapter6_P1516_Narration_01"));
 			m_FirstPlay[4] = true;
 		}
-		else if (Get_SectionName() == L"Chapter8_P0102" && false  == m_FirstPlay[5])
-		{
-			CUI_Manager::GetInstance()->Set_PlayNarration(TEXT("Chapter8_P0102_Narration_01"));
-			m_FirstPlay[5] = true;
-		}
+		//else if (Get_SectionName() == L"Chapter8_P0102" && false  == m_FirstPlay[5])
+		//{
+		//	CUI_Manager::GetInstance()->Set_PlayNarration(TEXT("Chapter8_P0102_Narration_01"));
+		//	m_FirstPlay[5] = true;
+		//}
 		else if (Get_SectionName() == L"Chapter8_P0910" && false == m_FirstPlay[6])
 		{
 			CUI_Manager::GetInstance()->Set_PlayNarration(TEXT("Chapter8_P0910_Narration_01"));
