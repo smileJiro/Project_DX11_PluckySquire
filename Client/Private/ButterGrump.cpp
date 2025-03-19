@@ -166,6 +166,18 @@ void CButterGrump::Priority_Update(_float _fTimeDelta)
         }
     }
 
+    if (true == m_isStopTimeScale)
+    {
+        m_vStopTime.y += _fTimeDelta * (1.0f / m_fStopTimeScale);
+
+        if (m_vStopTime.x <= m_vStopTime.y)
+        {
+            m_isStopTimeScale = false;
+            m_pGameInstance->Reset_TimeScale(TEXT("Timer_120"));
+            CCamera_Manager::GetInstance()->Start_Shake_ByCount(CCamera_Manager::TARGET, 0.7f, 0.4f, 1000, CCamera::SHAKE_XY, 0.0f);
+        }
+    }
+
     __super::Priority_Update(_fTimeDelta); /* Part Object Priority_Update */
 }
 
@@ -406,7 +418,7 @@ void CButterGrump::Attack()
         //Rot = XMQuaternionMultiply(Rot, XMQuaternionRotationAxis(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(90.f)));
         //XMStoreFloat4(&vRotation, Rot);
         //vPosition.y += vScale.y * 0.5f;
-
+        CCamera_Manager::GetInstance()->Start_Shake_ByCount(CCamera_Manager::TARGET, 3.0f, 0.1f, 6000, CCamera::SHAKE_XY, 0.0f);
         _float fVerticalAngle=0.f;
         _float fHorizontalAngle=0.f;
 
@@ -444,6 +456,7 @@ void CButterGrump::Attack()
             _float4 vQuat; XMStoreFloat4(&vQuat, XMQuaternionMultiply(vRot, XMLoadFloat4(&vRotation)));
 
             CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Boss_HomingBall"), COORDINATE_3D, &vPosition, &vQuat, &vScale);
+            
         }
         else if (true == Is_Phase2())
         {
@@ -596,6 +609,7 @@ void CButterGrump::Attack()
 
     case BOSS_STATE::WINGSLAM:
     {
+        CCamera_Manager::GetInstance()->Start_Shake_ByCount(CCamera_Manager::TARGET, 3.0f, 0.15f, 6000, CCamera::SHAKE_XY, 0.0f);
         /*_float4 vRot;
         XMStoreFloat4(&vRot, m_pGameInstance->Direction_To_Quaternion(XMVectorSet(0.f, 0.f, 1.f, 0.f), m_pTarget->Get_FinalPosition() - XMLoadFloat3(&vPosition)));*/
         CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Boss_WingSlam"), COORDINATE_3D, &vPosition, &vRotation);
@@ -605,6 +619,7 @@ void CButterGrump::Attack()
 
     case BOSS_STATE::WINGSLICE:
     {
+        CCamera_Manager::GetInstance()->Start_Shake_ByCount(CCamera_Manager::TARGET, 3.0f, 0.15f, 6000, CCamera::SHAKE_XY, 0.0f);
   //      _float4 vRot;
 		//XMStoreFloat4(&vRot, m_pGameInstance->Direction_To_Quaternion(XMVectorSet(0.f, 0.f, 1.f, 0.f), m_pTarget->Get_FinalPosition() - XMLoadFloat3(&vPosition)));
         CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Boss_WingSlice"), COORDINATE_3D, &vPosition, &vRotation);
@@ -802,6 +817,15 @@ void CButterGrump::Shield_Break()
 
     if (nullptr != m_pYellowEffect)
         m_pYellowEffect->Inactive_All();
+
+    if (false == m_isStopTimeScale)
+    {
+        m_isStopTimeScale = true;
+        m_vStopTime.y = 0.0f;
+        m_pGameInstance->Set_TimeScale(m_fStopTimeScale, TEXT("Timer_120"));
+
+        
+    }
 }
 
 void CButterGrump::Activate_Invinciblility(_bool _isActivate)

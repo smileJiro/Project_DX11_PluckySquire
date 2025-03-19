@@ -402,7 +402,7 @@ void CLevel_Chapter_06::Update(_float _fTimeDelta)
 
 	if (KEY_DOWN(KEY::I))
 	{
-		CTrigger_Manager::GetInstance()->Register_TriggerEvent(L"Next_Chapter_Event", 0);
+		//CTrigger_Manager::GetInstance()->Register_TriggerEvent(L"Next_Chapter_Event", 0);
 	}
 	// Change Camera Free  Or Target
 	if (KEY_DOWN(KEY::C)) {
@@ -580,10 +580,9 @@ HRESULT CLevel_Chapter_06::Ready_Lights()
 #ifdef _DEBUG
 	m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/DirectionalTest2.json"));
 #elif NDEBUG
-	m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/Chapter6_2.json"));
+	m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/Chapter6_Bright.json"));
 #endif // _DEBUG
-
-	m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/Chapter6.json"));
+	m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/Chapter6_Bright.json"));
 
 	//CONST_LIGHT LightDesc{};
 

@@ -59,6 +59,8 @@ private:
 	_bool m_isShoot = { false };
 	CButterGrump* m_pSpawner = { nullptr };
 
+	_float2 m_vStopTime = { 1.0f, 0.0f };
+	_float m_fStopTimeScale = 0.02f;
 public:
 	static CBoss_TennisBall* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject* Clone(void* _pArg) override;

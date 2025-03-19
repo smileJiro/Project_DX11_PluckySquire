@@ -197,6 +197,10 @@ private:
 	class CEffect_System* m_pShieldEffect = { nullptr };
 	class CEffect_System* m_pRoarEffect = { nullptr };
 
+private:
+	_bool m_isStopTimeScale = false;
+	_float2 m_vStopTime = {2.f, 0.0f};
+	_float m_fStopTimeScale = 0.1f;
 public:
 	static CButterGrump* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject* Clone(void* _pArg) override;
