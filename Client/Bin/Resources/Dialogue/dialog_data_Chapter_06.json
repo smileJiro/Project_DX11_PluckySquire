@@ -1,4093 +1,4638 @@
 {
-	"dialogs": [
-		{
-			"id": "Pandi_Dialogue_01",
-			"Section": "Chapter5_P0102",
-			"lines": [
-				{
-					"Portrait": 2,
-					"Talker": "판디",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": false,
-					"iAnimationIndex": 1,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "그쪽이 그 유명하다는 용감한 견습 기사인가?",
-					"Red": 255,
-					"Green": 255,
-					"Blue": 242
-				},
-				{
-					"Portrait": 2,
-					"Talker": "판디",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": false,
-					"iAnimationIndex": 1,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "할 수만 있다면 당신 얼굴을 수천 장이라도 그리고 싶어.",
-					"Red": 255,
-					"Green": 255,
-					"Blue": 242
-				}
-			]
-		},
-		{
-			"id": "Risa_Dialogue_01",
-			"Section": "Chapter5_P0102",
-			"lines": [
-				{
-					"Portrait": 2,
-					"Talker": "리사",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": false,
-					"iAnimationIndex": 2,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "용감한 견습 기사군요! 여기서 만나게 되다니, 반가워요.",
-					"Red": 255,
-					"Green": 202,
-					"Blue": 154
-				},
-				{
-					"Portrait": 2,
-					"Talker": "리사",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": false,
-					"iAnimationIndex": 2,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "여기에 제 미소를 보러오는 사람이 많답니다.",
-					"Red": 255,
-					"Green": 202,
-					"Blue": 154
-				},
-				{
-					"Portrait": 2,
-					"Talker": "리사",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": false,
-					"iAnimationIndex": 2,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "하지만 그걸 너무 의식하진 않으려고 해요.",
-					"Red": 255,
-					"Green": 202,
-					"Blue": 154
-				}
-			]
-		},
-		{
-			"id": "Swal_Dialogue_01",
-			"Section": "Chapter5_P0102",
-			"lines": [
-				{
-					"Portrait": 2,
-					"Talker": "스월",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": false,
-					"iAnimationIndex": 3,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "난 나비 그리는게 너무 좋아!",
-					"Red": 255,
-					"Green": 243,
-					"Blue": 111
-				},
-				{
-					"Portrait": 2,
-					"Talker": "리사",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": false,
-					"iAnimationIndex": 3,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "그런데 왜 고양이도 나비라고 부르는 걸까?",
-					"Red": 255,
-					"Green": 243,
-					"Blue": 111
-				}
-			]
-		},
-		{
-			"id": "Yayo_Dialogue_01",
-			"Section": "Chapter5_P0102",
-			"lines": [
-				{
-					"Portrait": 2,
-					"Talker": "야요",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": false,
-					"iAnimationIndex": 1,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "뭐든지 점으로 뒤덮으면 더 멋있어져.",
-					"Red": 255,
-					"Green": 208,
-					"Blue": 82
-				},
-				{
-					"Portrait": 2,
-					"Talker": "야요",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": false,
-					"iAnimationIndex": 1,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "내 계획은 아르티아를 점으로 덮는 거야...",
-					"Red": 255,
-					"Green": 208,
-					"Blue": 82
-				},
-				{
-					"Portrait": 2,
-					"Talker": "야요",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": false,
-					"iAnimationIndex": 1,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "그런데 관리인이 허락을 안 해 주네.",
-					"Red": 255,
-					"Green": 208,
-					"Blue": 82
-				}
-			]
-		},
-		{
-			"id": "Larva_Dialogue_01",
-			"Section": "Chapter5_P0102",
-			"lines": [
-				{
-					"Portrait": 2,
-					"Talker": "애벌레",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": false,
-					"iAnimationIndex": 1,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "호박에서 사는 곳도 의외로 괜찮아.",
-					"Red": 255,
-					"Green": 84,
-					"Blue": 140
-				},
-				{
-					"Portrait": 2,
-					"Talker": "애벌레",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": false,
-					"iAnimationIndex": 1,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "배고프면 안에 있는 가구를 먹으면 되거든.",
-					"Red": 255,
-					"Green": 84,
-					"Blue": 140
-				}
-			]
-		},
-		{
-			"id": "Mo_Dialogue_01",
-			"Section": "Chapter5_P0102",
-			"lines": [
-				{
-					"Portrait": 2,
-					"Talker": "모",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": false,
-					"iAnimationIndex": 2,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "물을 그려야지... 예쁘고 파란 물 말이야.",
-					"Red": 253,
-					"Green": 182,
-					"Blue": 194
-				},
-				{
-					"Portrait": 2,
-					"Talker": "모",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": false,
-					"iAnimationIndex": 2,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "그리고 연잎도. 나는 연잎이 좋더라.",
-					"Red": 253,
-					"Green": 182,
-					"Blue": 194
-				}
-			]
-		},
-		{
-			"id": "Magri_Dialogue_01",
-			"Section": "Chapter5_P0102",
-			"lines": [
-				{
-					"Portrait": 2,
-					"Talker": "마그리",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": false,
-					"iAnimationIndex": 5,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "전 여기 없는 겁니다.",
-					"Red": 198,
-					"Green": 119,
-					"Blue": 108
-				}
-			]
-		},
-		{
-			"id": "Bin_Dialogue_01",
-			"Section": "Chapter5_P0102",
-			"lines": [
-				{
-					"Portrait": 2,
-					"Talker": "빈",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": false,
-					"iAnimationIndex": 0,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "해바라기가 아름답군. 자연을 진정으로 사랑한다면,",
-					"Red": 255,
-					"Green": 220,
-					"Blue": 95
-				},
-				{
-					"Portrait": 2,
-					"Talker": "빈",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": false,
-					"iAnimationIndex": 0,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "어디서나 아름다움을 찾을 수 있어.",
-					"Red": 255,
-					"Green": 220,
-					"Blue": 95
-				}
-			]
-		},
-		{
-			"id": "Rex_Dialogue_01",
-			"Section": "Chapter5_P0102",
-			"lines": [
-				{
-					"Portrait": 2,
-					"Talker": "렉스",
-					"BG": 0,
-					"location": 1,
-					"iAnimationIndex": 1,
-					"is2D": true,
-					"isPortrait": false,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "그르르르라아아아!",
-					"Red": 190,
-					"Green": 127,
-					"Blue": 215
-				}
-			]
-		},
-		{
-			"id": "Jang_Dialogue_01",
-			"Section": "Chapter5_P0102",
-			"lines": [
-				{
-					"Portrait": 2,
-					"Talker": "장",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": false,
-					"iAnimationIndex": 2,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "시내에서 이 구역이 제일 마음에 들어.",
-					"Red": 255,
-					"Green": 102,
-					"Blue": 182
-				},
-				{
-					"Portrait": 2,
-					"Talker": "장",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": false,
-					"iAnimationIndex": 2,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "시간 되면 그림으로 남겨 볼까 싶어.",
-					"Red": 255,
-					"Green": 102,
-					"Blue": 182
-				}
-			]
-		},
-		{
-			"id": "Jojia_Dialogue_01",
-			"Section": "Chapter5_P0102",
-			"lines": [
-				{
-					"Portrait": 2,
-					"Talker": "조지아",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": false,
-					"iAnimationIndex": 1,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "뭘 읽고 있냐고요? 견습기사 모험기지. 뭐 겠어요!",
-					"Red": 236,
-					"Green": 165,
-					"Blue": 158
-				},
-				{
-					"Portrait": 2,
-					"Talker": "조지아",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": false,
-					"iAnimationIndex": 1,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "이 왕국에서 제일가는 화제작이잖아요.",
-					"Red": 236,
-					"Green": 165,
-					"Blue": 158
-				},
-				{
-					"Portrait": 2,
-					"Talker": "조지아",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": false,
-					"iAnimationIndex": 1,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "언젠가 주인공인 견습기사를 직접 만나 봤으면 좋겠어요.",
-					"Red": 236,
-					"Green": 165,
-					"Blue": 158
-				}
-			]
-		},
-		{
-			"id": "Pastel_Dialogue_01",
-			"Section": "Chapter5_P0102",
-			"lines": [
-				{
-					"Portrait": 2,
-					"Talker": "파스텔",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": false,
-					"iAnimationIndex": 0,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "이따가 붓을 사러 갈 거야.",
-					"Red": 66,
-					"Green": 203,
-					"Blue": 202
-				},
-				{
-					"Portrait": 2,
-					"Talker": "파스텔",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": false,
-					"iAnimationIndex": 0,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "미술용품을 새로 장만하면 기분이 정말 좋아지거든!",
-					"Red": 66,
-					"Green": 203,
-					"Blue": 202
-				}
-			]
-		},
-		{
-			"id": "Jame_Dialogue_01",
-			"Section": "Chapter5_P0102",
-			"lines": [
-				{
-					"Portrait": 2,
-					"Talker": "제임",
-					"BG": 0,
-					"location": 8,
-					"is2D": true,
-					"isPortrait": false,
-					"iAnimationIndex": 1,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "아르티아에는 온갖 예술가들이 살아.",
-					"Red": 255,
-					"Green": 95,
-					"Blue": 168
-				},
-				{
-					"Portrait": 2,
-					"Talker": "제임",
-					"BG": 0,
-					"location": 8,
-					"is2D": true,
-					"isPortrait": false,
-					"iAnimationIndex": 1,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "난 사람들이 즐길 수 있는 게임을 그리는 걸 좋아하지.",
-					"Red": 255,
-					"Green": 95,
-					"Blue": 168
-				}
-			]
-		},
-		{
-			"id": "Evise_Dialogue_01",
-			"Section": "Chapter5_P0102",
-			"lines": [
-				{
-					"Portrait": 2,
-					"Talker": "에비스",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": false,
-					"iAnimationIndex": 1,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "이 조각의 제목은... '땅 위로'!",
-					"Red": 255,
-					"Green": 247,
-					"Blue": 115
-				}
-			]
-		},
-		{
-			"id": "GlitchBird_Dialogue_01",
-			"Section": "Chapter5_P0102",
-			"lines": [
-				{
-					"Portrait": 2,
-					"Talker": "글리치버드",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": false,
-					"iAnimationIndex": 1,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "아르티아에서 휴가를 즐기고 있어요.",
-					"Red": 253,
-					"Green": 113,
-					"Blue": 95
-				},
-				{
-					"Portrait": 2,
-					"Talker": "글리치버드",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": false,
-					"iAnimationIndex": 1,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "예술이란 영혼을 풍족하게 해 준다는 걸 알았죠.",
-					"Red": 253,
-					"Green": 113,
-					"Blue": 95
-				}
-			]
-		},
-		{
-			"id": "MrScream_Dialogue_01",
-			"Section": "Chapter5_P0102",
-			"lines": [
-				{
-					"Portrait": 2,
-					"Talker": "미스터 스크림",
-					"BG": 0,
-					"location": 0,
-					"is2D": true,
-					"isPortrait": false,
-					"iAnimationIndex": 4,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "으으으으으으으!",
-					"Red": 255,
-					"Green": 214,
-					"Blue": 160
-				},
-				{
-					"Portrait": 2,
-					"Talker": "미스터 스크림",
-					"BG": 0,
-					"location": 0,
-					"is2D": true,
-					"isPortrait": false,
-					"iAnimationIndex": 4,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "이 조각상 너무 무서워!",
-					"Red": 255,
-					"Green": 214,
-					"Blue": 160
-				}
-			]
-		},
-		{
-			"id": "Hans_Dialogue_01",
-			"Section": "Chapter5_P0102",
-			"lines": [
-				{
-					"Portrait": 2,
-					"Talker": "한스",
-					"BG": 0,
-					"location": 0,
-					"is2D": true,
-					"isPortrait": false,
-					"iAnimationIndex": 1,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "뭘 그리냐고?",
-					"Red": 190,
-					"Green": 221,
-					"Blue": 229
-				},
-				{
-					"Portrait": 2,
-					"Talker": "한스",
-					"BG": 0,
-					"location": 0,
-					"is2D": true,
-					"isPortrait": false,
-					"iAnimationIndex": 1,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "번들거리는 형체... 반짝이는 입술... 두개골에 갈비뼈까지!",
-					"Red": 190,
-					"Green": 221,
-					"Blue": 229
-				},
-				{
-					"Portrait": 2,
-					"Talker": "한스",
-					"BG": 0,
-					"location": 0,
-					"is2D": true,
-					"isPortrait": false,
-					"iAnimationIndex": 1,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "사실... 친구한테 줄 생일 카드야.",
-					"Red": 190,
-					"Green": 221,
-					"Blue": 229
-				}
-			]
-		},
-		{
-			"id": "Banks_Dialogue_01",
-			"Section": "Chapter5_P0102",
-			"lines": [
-				{
-					"Portrait": 2,
-					"Talker": "뱅크스",
-					"BG": 0,
-					"location": 0,
-					"is2D": true,
-					"isPortrait": false,
-					"iAnimationIndex": 2,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "쉿 난 못 본 걸로 해 줘.",
-					"Red": 139,
-					"Green": 128,
-					"Blue": 134
-				}
-			]
-		},
-		{
-			"id": "Pika_Dialogue_01",
-			"Section": "Chapter5_P0102",
-			"lines": [
-				{
-					"Portrait": 2,
-					"Talker": "피카",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": false,
-					"iAnimationIndex": 2,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "난 아르티아 시민들을 그리는 게 좋아.",
-					"Red": 116,
-					"Green": 194,
-					"Blue": 226
-				},
-				{
-					"Portrait": 2,
-					"Talker": "피카",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": false,
-					"iAnimationIndex": 2,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "다만 눈이 아니라 마음에 보이는 대로 그리지!",
-					"Red": 116,
-					"Green": 194,
-					"Blue": 226
-				}
-			]
-		},
-		{
-			"id": "Pree_Dialogue_01",
-			"Section": "Chapter5_P0102",
-			"lines": [
-				{
-					"Portrait": 2,
-					"Talker": "프리",
-					"BG": 0,
-					"location": 0,
-					"is2D": true,
-					"isPortrait": false,
-					"iAnimationIndex": 1,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "제 꽃이 마음에 드세요?",
-					"Red": 0,
-					"Green": 253,
-					"Blue": 182
-				},
-				{
-					"Portrait": 2,
-					"Talker": "프리",
-					"BG": 0,
-					"location": 0,
-					"is2D": true,
-					"isPortrait": false,
-					"iAnimationIndex": 1,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "이 아이들만 보면 기쁨이 차올라요.",
-					"Red": 0,
-					"Green": 253,
-					"Blue": 182
-				},
-				{
-					"Portrait": 2,
-					"Talker": "프리",
-					"BG": 0,
-					"location": 0,
-					"is2D": true,
-					"isPortrait": false,
-					"iAnimationIndex": 1,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "꽃의 영혼을 알아봐 주는 건 오직 다른 꽃들뿐이랍니다.",
-					"Red": 0,
-					"Green": 253,
-					"Blue": 182
-				}
-			]
-		},
-		{
-			"id": "Esh_Dialogue_01",
-			"Section": "Chapter5_P0102",
-			"lines": [
-				{
-					"Portrait": 2,
-					"Talker": "에쉬",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": false,
-					"iAnimationIndex": 2,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "안녕! 난 지금 자화상을 그리고 있단다.",
-					"Red": 142,
-					"Green": 129,
-					"Blue": 133
-				},
-				{
-					"Portrait": 2,
-					"Talker": "에쉬",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": false,
-					"iAnimationIndex": 2,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "가만 생각해보면...",
-					"Red": 142,
-					"Green": 129,
-					"Blue": 133
-				},
-				{
-					"Portrait": 2,
-					"Talker": "에쉬",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": false,
-					"iAnimationIndex": 2,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "자기 자화상을 그릴 수 있는 사람은 자신뿐이지.",
-					"Red": 142,
-					"Green": 129,
-					"Blue": 133
-				}
-			]
-		},
-		{
-			"id": "Brisle_Dialogue_01",
-			"Section": "Chapter5_P0102",
-			"lines": [
-				{
-					"Portrait": 2,
-					"Talker": "브리슬",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": false,
-					"iAnimationIndex": 3,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "용감한 견습기사다! 여...영광이에요!",
-					"Red": 240,
-					"Green": 76,
-					"Blue": 122
-				},
-				{
-					"Portrait": 2,
-					"Talker": "브리슬",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": false,
-					"iAnimationIndex": 3,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "말 더듬어서 죄송해요...",
-					"Red": 240,
-					"Green": 76,
-					"Blue": 122
-				},
-				{
-					"Portrait": 2,
-					"Talker": "브리슬",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": false,
-					"iAnimationIndex": 3,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "그게... 유명인 만날 일이 잘 없어서요!",
-					"Red": 240,
-					"Green": 76,
-					"Blue": 122
-				}
-			]
-		},
-		{
-			"id": "Riza_Dialogue_01",
-			"Section": "Chapter5_P0102",
-			"lines": [
-				{
-					"Portrait": 2,
-					"Talker": "리자",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": false,
-					"iAnimationIndex": 2,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "이번 시즌에는 강렬한 색을 입을까 봐요.",
-					"Red": 85,
-					"Green": 237,
-					"Blue": 224
-				}
-			]
-		},
-		{
-			"id": "Ren_Dialogue_01",
-			"Section": "Chapter5_P0102",
-			"lines": [
-				{
-					"Portrait": 2,
-					"Talker": "렌",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": false,
-					"iAnimationIndex": 2,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "난 개가 아니야.",
-					"Red": 250,
-					"Green": 191,
-					"Blue": 161
-				}
-			]
-		},
-		{
-			"id": "Warhall_Dialogue_01",
-			"Section": "Chapter5_P0102",
-			"lines": [
-				{
-					"Portrait": 2,
-					"Talker": "워홀",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": false,
-					"iAnimationIndex": 1,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "나는 원본의 복제품일 뿐이야.",
-					"Red": 255,
-					"Green": 255,
-					"Blue": 240
-				},
-				{
-					"Portrait": 2,
-					"Talker": "워홀",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": false,
-					"iAnimationIndex": 1,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "아니, 그 반대인 걸까? 어느 쪽이든 상관은 없지만.",
-					"Red": 255,
-					"Green": 255,
-					"Blue": 240
-				}
-			]
-		},
-		{
-			"id": "Dave_Dialogue_01",
-			"Section": "Chapter5_P0102",
-			"lines": [
-				{
-					"Portrait": 2,
-					"Talker": "데이브",
-					"BG": 0,
-					"location": 6,
-					"is2D": true,
-					"isPortrait": false,
-					"iAnimationIndex": 2,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "이 주스 진짜 맛있다.",
-					"Red": 255,
-					"Green": 238,
-					"Blue": 189
-				},
-				{
-					"Portrait": 2,
-					"Talker": "데이브",
-					"BG": 0,
-					"location": 6,
-					"is2D": true,
-					"isPortrait": false,
-					"iAnimationIndex": 2,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "물감에 염료로 넣어도 좋을 것 같은데?",
-					"Red": 255,
-					"Green": 238,
-					"Blue": 189
-				}
-			]
-		},
-		{
-			"id": "Berry_Dialogue_01",
-			"Section": "Chapter5_P0102",
-			"lines": [
-				{
-					"Portrait": 2,
-					"Talker": "베리",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": false,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "과일은 건강과 행복의 지름길!",
-					"Red": 137,
-					"Green": 186,
-					"Blue": 232
-				}
-			]
-		},
-		{
-			"id": "Eve_Dialogue_01",
-			"Section": "Chapter5_P0102",
-			"lines": [
-				{
-					"Portrait": 2,
-					"Talker": "이브",
-					"BG": 0,
-					"location": 0,
-					"is2D": true,
-					"isPortrait": false,
-					"iAnimationIndex": 2,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "요즘 이 피라미드의 수수께끼에 푹 빠져 있어.",
-					"Red": 255,
-					"Green": 235,
-					"Blue": 175
-				},
-				{
-					"Portrait": 2,
-					"Talker": "이브",
-					"BG": 0,
-					"location": 0,
-					"is2D": true,
-					"isPortrait": false,
-					"iAnimationIndex": 2,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "여기서 벌써 사흘째 피라미드만 바라보고 있지.",
-					"Red": 255,
-					"Green": 235,
-					"Blue": 175
-				}
-			]
-		},
-		{
-			"id": "Sal_Dialogue_01",
-			"Section": "Chapter5_P0102",
-			"lines": [
-				{
-					"Portrait": 2,
-					"Talker": "살",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": false,
-					"iAnimationIndex": 1,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "축하하네! 아주 놀라운 발견을 했군.",
-					"Red": 254,
-					"Green": 86,
-					"Blue": 140
-				},
-				{
-					"Portrait": 2,
-					"Talker": "살",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": false,
-					"iAnimationIndex": 1,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "바로 나를 말이야!",
-					"Red": 254,
-					"Green": 86,
-					"Blue": 140
-				}
-			]
-		},
-		{
-			"id": "Store_Dialog_01",
-			"Section": "Chapter5_P0102",
-			"lines": [
-				{
-					"Portrait": 2,
-					"Talker": "마르티나",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": true,
-					"iAnimationIndex": 3,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "안녕하세요, 용감한 견습 기사님!",
-					"Red": 255,
-					"Green": 224,
-					"Blue": 136
-				},
-				{
-					"Portrait": 2,
-					"Talker": "마르티나",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": true,
-					"iAnimationIndex": 9,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "새 물건이 들어왔어요. 한번 보세요!",
-					"Red": 255,
-					"Green": 224,
-					"Blue": 136
-				}
-			]
-		},
-		{
-			"id": "3D_MiniBeard_Chapter_6_Dialog_01",
-			"Section": "Chapter1_P0506",
-			"lines": [
-				{
-					"Portrait": 7,
-					"Talker": "미니 수염",
-					"BG": 14,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "있잖아, 이 근처에 네 도움이 필요한 친구가 있어.",
-					"Red": 161,
-					"Green": 210,
-					"Blue": 234
-				},
-				{
-					"Portrait": 7,
-					"Talker": "미니 수염",
-					"BG": 14,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "머그잔처럼 생긴 행성에 사는 꼬마 로켓이지.",
-					"Red": 161,
-					"Green": 210,
-					"Blue": 234
-				},
-				{
-					"Portrait": 7,
-					"Talker": "미니 수염",
-					"BG": 14,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "책상 한가운데로 가면, 내가 말한 행성을\n찾을 수 있을 거야.",
-					"Red": 161,
-					"Green": 210,
-					"Blue": 234
-				}
-			]
-		},
-		{
-			"id": "3D_MiniBeard_Chapter_6_Dialog_02",
-			"Section": "Chapter1_P0506",
-			"lines": [
-				{
-					"Portrait": 7,
-					"Talker": "미니 수염",
-					"BG": 14,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "안녕. 아빠 로켓의 부품을 찾고 있지?",
-					"Red": 161,
-					"Green": 210,
-					"Blue": 234
-				},
-				{
-					"Portrait": 7,
-					"Talker": "미니 수염",
-					"BG": 14,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "왼쪽 높은 곳에서 하나 본 것 같아.",
-					"Red": 161,
-					"Green": 210,
-					"Blue": 234
-				},
-				{
-					"Portrait": 7,
-					"Talker": "미니 수염",
-					"BG": 14,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "고소 공포증은 없다면 좋겠네.",
-					"Red": 161,
-					"Green": 210,
-					"Blue": 234
-				}
-			]
-		},
-		{
-			"id": "3D_MiniBeard_Chapter_6_Dialog_03",
-			"Section": "Chapter1_P0506",
-			"lines": [
-				{
-					"Portrait": 7,
-					"Talker": "미니 수염",
-					"BG": 14,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "안녕, 친구. 아빠 로켓의 부품을 찾을려면\n위로 올라가야 할 거야.",
-					"Red": 161,
-					"Green": 210,
-					"Blue": 234
-				},
-				{
-					"Portrait": 7,
-					"Talker": "미니 수염",
-					"BG": 14,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "여기 있는 발판들을 쓰면 되는데,\n내 뒤에 있는 발판부터 시작하면 돼.",
-					"Red": 161,
-					"Green": 210,
-					"Blue": 234
-				},
-				{
-					"Portrait": 7,
-					"Talker": "미니 수염",
-					"BG": 14,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "고소 공포증은 없다면 좋겠네.",
-					"Red": 161,
-					"Green": 210,
-					"Blue": 234
-				}
-			]
-		},
-		{
-			"id": "3D_MiniBeard_Chapter_6_Dialog_04",
-			"Section": "Chapter1_P0506",
-			"lines": [
-				{
-					"Portrait": 7,
-					"Talker": "미니 수염",
-					"BG": 14,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "안녕. 아빠 로켓의 잃어버린 부품이 근처에 있어.",
-					"Red": 161,
-					"Green": 210,
-					"Blue": 234
-				},
-				{
-					"Portrait": 7,
-					"Talker": "미니 수염",
-					"BG": 14,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "부품을 찾으려면 이 위험천만한 우주를\n제트팩으로 가로질러야 돼.",
-					"Red": 161,
-					"Green": 210,
-					"Blue": 234
-				},
-				{
-					"Portrait": 7,
-					"Talker": "미니 수염",
-					"BG": 14,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "인생이란 원래 그런 법이지.",
-					"Red": 161,
-					"Green": 210,
-					"Blue": 234
-				}
-			]
-		},
-		{
-			"id": "3D_MiniBeard_Chapter_6_Dialog_05",
-			"Section": "Chapter1_P0506",
-			"lines": [
-				{
-					"Portrait": 7,
-					"Talker": "미니 수염",
-					"BG": 14,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "이 근처 나무로 된 곳 안에 양초가 있어.",
-					"Red": 161,
-					"Green": 210,
-					"Blue": 234
-				},
-				{
-					"Portrait": 7,
-					"Talker": "미니 수염",
-					"BG": 14,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "책상 맨 끝에서 찾을 수 있지.",
-					"Red": 161,
-					"Green": 210,
-					"Blue": 234
-				},
-				{
-					"Portrait": 7,
-					"Talker": "미니 수염",
-					"BG": 14,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "촛불을 켜려면 너 자신을 믿고 그 안으로 뛰어내려 봐.",
-					"Red": 161,
-					"Green": 210,
-					"Blue": 234
-				}
-			]
-		},
-		{
-			"id": "3D_MiniBeard_Chapter_6_Dialog_06",
-			"Section": "Chapter1_P0506",
-			"lines": [
-				{
-					"Portrait": 7,
-					"Talker": "미니 수염",
-					"BG": 14,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "별일 없지? 이 근처에 양초가 두 개 있어.",
-					"Red": 161,
-					"Green": 210,
-					"Blue": 234
-				},
-				{
-					"Portrait": 7,
-					"Talker": "미니 수염",
-					"BG": 14,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "두 개 다 높은 곳에 있지.",
-					"Red": 161,
-					"Green": 210,
-					"Blue": 234
-				},
-				{
-					"Portrait": 7,
-					"Talker": "미니 수염",
-					"BG": 14,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "위로 올라가 보라고!",
-					"Red": 161,
-					"Green": 210,
-					"Blue": 234
-				}
-			]
-		},
-		{
-			"id": "3D_MiniBeard_Chapter_6_Dialog_07",
-			"Section": "Chapter1_P0506",
-			"lines": [
-				{
-					"Portrait": 7,
-					"Talker": "미니 수염",
-					"BG": 14,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "어디 보자...",
-					"Red": 161,
-					"Green": 210,
-					"Blue": 234
-				},
-				{
-					"Portrait": 7,
-					"Talker": "미니 수염",
-					"BG": 14,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "지금 잘하고 있는 것 같네.",
-					"Red": 161,
-					"Green": 210,
-					"Blue": 234
-				}
-			]
-		},
-		{
-			"id": "ZetPack_Child_0",
-			"lines": [
-				{
-					"Portrait": 0,
-					"Talker": "찌릿",
-					"BG": 23,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "어, 안녕!",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 0,
-					"Talker": "찌릿",
-					"BG": 23,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "너 안테나 멋지다... 보송거리고 하늘거리는 게 말이야!",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 0,
-					"Talker": "찌릿",
-					"BG": 23,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "난 찌릿이야. 만나서 반가워...",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 0,
-					"Talker": "찌릿",
-					"BG": 23,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "...아, 네 이름은 저트인데, 무슨 물건을 찾고 있다고?",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 0,
-					"Talker": "찌릿",
-					"BG": 23,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "그럼 우리 아빠가 도와줄 수 있을지 몰라... \n아주 똑똑한 분이거든.",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 0,
-					"Talker": "찌릿",
-					"BG": 23,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "그런데 아빠는 지금 조각조각 흩어져 있어.",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 0,
-					"Talker": "찌릿",
-					"BG": 23,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "어떤 못돼 먹은 병사들이 이 작은 행성에 쳐들어와서는 \n아빠를 산산조각 냈거든!",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 0,
-					"Talker": "찌릿",
-					"BG": 23,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "그러고는 조각을 챙기고 사라졌어... \n그러는 게 어디 있냐고!",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 0,
-					"Talker": "찌릿",
-					"BG": 23,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "있잖아, 우리 아빠를 조립하는 걸 도와주면 \n아빠도 네가 물건을 찾을 수 있도록 도와주실 거야!",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 0,
-					"Talker": "찌릿",
-					"BG": 23,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "내 제트 추진 실력이 좀 불안하긴 하지만 \n힘을 합치면 해낼 수 있을거야...",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 0,
-					"Talker": "찌릿",
-					"BG": 23,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "어때?",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 0,
-					"Talker": "찌릿",
-					"BG": 23,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "이 행성에서 나갈 때, 내가 네 등 위에 올라탈게!",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 0,
-					"Talker": "찌릿",
-					"BG": 23,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "그러면 함께 아빠의 조각을 찾을 수 있을거야!",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				}
-			]
-		},
-		{
-			"id": "ZetPack_Child_1",
-			"lines": [
-				{
-					"Portrait": 0,
-					"Talker": "찌릿",
-					"BG": 23,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "모성의 대기권에서 벗어나는 데 성공했어!",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 0,
-					"Talker": "찌릿",
-					"BG": 23,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "이런 적은 진짜 처음이야! 엄청 신나는걸!",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 0,
-					"Talker": "찌릿",
-					"BG": 23,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "하지만 이 거대하고 험악한 은하계에...",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 0,
-					"Talker": "찌릿",
-					"BG": 23,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "우리 아빠의 조각이 흩어져 있어.",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 0,
-					"Talker": "찌릿",
-					"BG": 23,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "조각은 총 세 개야...",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				}
-			]
-		},
-		{
-			"id": "ZetPack_Child_2",
-			"lines": [
-				{
-					"Portrait": 0,
-					"Talker": "찌릿",
-					"BG": 23,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "은하계 왼쪽 끝에 하나가 있고...",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				}
-			]
-		},
-		{
-			"id": "ZetPack_Child_3",
-			"lines": [
-				{
-					"Portrait": 0,
-					"Talker": "찌릿",
-					"BG": 23,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "오른쪽에도 하나 있어...",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				}
-			]
-		},
-		{
-			"id": "ZetPack_Child_4",
-			"lines": [
-				{
-					"Portrait": 0,
-					"Talker": "찌릿",
-					"BG": 23,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "마지막 조각은 가운데에 있을거야.",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				}
-			]
-		},
-		{
-			"id": "ZetPack_Child_5",
-			"lines": [
-				{
-					"Portrait": 0,
-					"Talker": "찌릿",
-					"BG": 23,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "자, 내 심우주 추진기를 작동시켰어...",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 0,
-					"Talker": "찌릿",
-					"BG": 23,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "이제 우주를 여행할 시간이야...\n그럼출발!",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				}
-			]
-		},
-		{
-			"id": "Mug_Alien_0",
-			"lines": [
-				{
-					"Portrait": 0,
-					"Talker": "테리",
-					"BG": 19,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "앗, 손님이다!",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 0,
-					"Talker": "테리",
-					"BG": 19,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "안녕! 난 테리야.",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 0,
-					"Talker": "테리",
-					"BG": 19,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "생명체가 여길 찾아오다니 별일이네.",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 0,
-					"Talker": "테리",
-					"BG": 19,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "아, 어디 가기 전에 말이야...\n내가 반짝반짝한 걸 찾았어!",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 0,
-					"Talker": "테리",
-					"BG": 19,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "나중에 이 테리를 기억할 기념품으로 가져가는 게 어때?",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				}
-			]
-		},
-		{
-			"id": "ZetPack_Child_6",
-			"lines": [
-				{
-					"Portrait": 0,
-					"Talker": "찌릿",
-					"BG": 23,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "좋았어!",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 0,
-					"Talker": "찌릿",
-					"BG": 23,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "아빠 부품을 하나 찾았네...",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 0,
-					"Talker": "찌릿",
-					"BG": 23,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "하지만 은하계에 부품이 아직 두 개나 남았어...",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 0,
-					"Talker": "찌릿",
-					"BG": 23,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "힘내보자!",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				}
-			]
-		},
-		{
-			"id": "JellyKing_0",
-			"lines": [
-				{
-					"Portrait": 0,
-					"Talker": "제럴도",
-					"BG": 6,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "안녕하신가!",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 0,
-					"Talker": "제럴도",
-					"BG": 6,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "짐은 젤리 왕 제럴도라고 하네, 호호!",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 0,
-					"Talker": "제럴도",
-					"BG": 6,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "오늘은 짐의 생일이야... 올해로 60살이지!",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 0,
-					"Talker": "제럴도",
-					"BG": 6,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "아, 촛불에 불을 켜고 생일을 축하할 수 있다면 얼마나 좋을까...",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 0,
-					"Talker": "제럴도",
-					"BG": 6,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "이 탱글탱글한 몸이 보낸 10년이란 세월마다 \n촛불을 하나씩 켜고 말이야...",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 0,
-					"Talker": "제럴도",
-					"BG": 6,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "마침 이 근처 어딘가에 양초 여섯 개가 놓여 있거든?",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 0,
-					"Talker": "제럴도",
-					"BG": 6,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "그 양초에 전부 불을 붙여서 \n이 나이 든 왕을 기쁘게 만들어 주겠나?",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				}
+  "dialogs": [
+    {
+      "id": "Artia_PigEvent_01",
+      "Section": "Chapter5_P0102",
+      "lines": [
+        {
+          "Portrait": 2,
+          "Talker": "엄버",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "iAnimationIndex": 1,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "바이올렛!!",
+          "Red": 255,
+          "Green": 255,
+          "Blue": 242
+        }
+      ]
+    },
+    {
+      "id": "Artia_PigEvent_02",
+      "Section": "Chapter5_P0102",
+      "lines": [
+        {
+          "Portrait": 0,
+          "Talker": "바이올렛",
+          "BG": 13,
+          "location": 1,
+          "is2D": true,
+          "OffsetX": 0.0,
+          "OffsetY": 200.0,
+          "isPortrait": true,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "삼촌!! 오랜만이에요! 잘 지내셨죠?",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 2,
+          "Talker": "엄버",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "iAnimationIndex": 1,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "몰라보게 컸구나.\n나야... 잘 지낸다고 말하고 싶지만.",
+          "Red": 255,
+          "Green": 255,
+          "Blue": 242
+        },
+        {
+          "Portrait": 2,
+          "Talker": "엄버",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "iAnimationIndex": 1,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "글쎄다, 저번에 세상이 흔들리지 않았니?",
+          "Red": 255,
+          "Green": 255,
+          "Blue": 242
+        },
+        {
+          "Portrait": 2,
+          "Talker": "엄버",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "iAnimationIndex": 1,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "그 때 우리 집 지우개꿀꿀이 삼형제가\n전부 도망을 가버려서 말이야.",
+          "Red": 255,
+          "Green": 255,
+          "Blue": 242
+        },
+        {
+          "Portrait": 0,
+          "Talker": "바이올렛",
+          "BG": 13,
+          "location": 1,
+          "is2D": true,
+          "OffsetX": 0.0,
+          "OffsetY": 200.0,
+          "isPortrait": true,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "예??? 삼촌 지우개꿀꿀이들 없이는 못 사시잖아요?",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 2,
+          "Talker": "엄버",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "iAnimationIndex": 1,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "그래서 사방팔방 찾아다니고 전단지도 붙여봤는데,\n깜깜 무소식이란다...",
+          "Red": 255,
+          "Green": 255,
+          "Blue": 242
+        },
+        {
+          "Portrait": 0,
+          "Talker": "바이올렛",
+          "BG": 13,
+          "location": 1,
+          "is2D": true,
+          "OffsetX": 0.0,
+          "OffsetY": 200.0,
+          "isPortrait": true,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "...",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 0,
+          "Talker": "바이올렛",
+          "BG": 13,
+          "location": 1,
+          "is2D": true,
+          "OffsetX": 0.0,
+          "OffsetY": 200.0,
+          "isPortrait": true,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "얘들아, 왕궁에 들르기 전에 잠깐만...\n우리 지우개꿀꿀이들을 찾아보고 가면 안될까?",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 0,
+          "Talker": "바이올렛",
+          "BG": 13,
+          "location": 1,
+          "is2D": true,
+          "OffsetX": 0.0,
+          "OffsetY": 200.0,
+          "isPortrait": true,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "삼촌도 삼촌이지만, 나도 지우개꿀꿀이들과 함께 자랐거든.",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 1,
+          "Talker": "스래쉬",
+          "BG": 2,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": true,
+          "OffsetX": -20.0,
+          "OffsetY": 100.0,
+          "isLineEnter": true,
+          "TalkerIndex": 0,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "당연하지! 넓은 도시라 어디 다치진 않았을까 걱정이 되네...",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 2,
+          "Talker": "엄버",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "iAnimationIndex": 1,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "정말인가! 그럼 제발 도와주게. 총 세 마리야. 부탁하네.",
+          "Red": 255,
+          "Green": 255,
+          "Blue": 242
+        }
+      ]
+    },
+    {
+      "id": "Artia_PigEvent_03",
+      "Section": "Chapter5_P0102",
+      "lines": [
+        {
+          "Portrait": 0,
+          "Talker": "바이올렛",
+          "BG": 13,
+          "location": 1,
+          "is2D": true,
+          "OffsetX": 0.0,
+          "OffsetY": 200.0,
+          "isPortrait": true,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "꼬맹아! 여기서 이렇게 자고 있네...",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 1,
+          "Talker": "스래쉬",
+          "BG": 2,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": true,
+          "OffsetX": -20.0,
+          "OffsetY": 100.0,
+          "isLineEnter": true,
+          "TalkerIndex": 0,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "우와. 진짜 크다.",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 0,
+          "Talker": "바이올렛",
+          "BG": 13,
+          "location": 1,
+          "is2D": true,
+          "OffsetX": 0.0,
+          "OffsetY": 200.0,
+          "isPortrait": true,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "그런데 얘는 한번 자면 잘 안 깨거든.\n우리가 대신 삼촌네 진흙밭에 옮겨다 주자.",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 1,
+          "Talker": "스래쉬",
+          "BG": 2,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": true,
+          "OffsetX": -20.0,
+          "OffsetY": 100.0,
+          "isLineEnter": true,
+          "TalkerIndex": 0,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "어...",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 1,
+          "Talker": "스래쉬",
+          "BG": 2,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": true,
+          "OffsetX": -20.0,
+          "OffsetY": 100.0,
+          "isLineEnter": true,
+          "TalkerIndex": 0,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "우리한테 그럴 만한 힘이 있다고\n생각해 줘서 고맙긴 한데...",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 7,
+          "Talker": "달수염",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isLineEnter": true,
+          "isPortrait": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "얘들아, 들리니??? ",
+          "Red": 161,
+          "Green": 210,
+          "Blue": 234
+        },
+        {
+          "Portrait": 1,
+          "Talker": "스래쉬",
+          "BG": 2,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": true,
+          "OffsetX": -20.0,
+          "OffsetY": 100.0,
+          "isLineEnter": true,
+          "TalkerIndex": 0,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "아이고 깜짝아.\n할아버지???",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 7,
+          "Talker": "달수염",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isLineEnter": true,
+          "isPortrait": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "꼬마돼지를 못 옮겨서 곤란한 모양이구나.\n저트라면 해결할 수 있을 걸?",
+          "Red": 161,
+          "Green": 210,
+          "Blue": 234
+        },
+        {
+          "Portrait": 0,
+          "Talker": "바이올렛",
+          "BG": 13,
+          "location": 1,
+          "is2D": true,
+          "OffsetX": 0.0,
+          "OffsetY": 200.0,
+          "isPortrait": true,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "세상 밖으로 나가서요?",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 7,
+          "Talker": "달수염",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isLineEnter": true,
+          "isPortrait": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "그렇지.\n저트, 이미 네가 해결할 만한 물건을 가지고 있지 않니?",
+          "Red": 161,
+          "Green": 210,
+          "Blue": 234
+        },
+        {
+          "Portrait": 7,
+          "Talker": "달수염",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isLineEnter": true,
+          "isPortrait": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "보자보자... 뭔가 기울일 수 있는 물건. 말이지.",
+          "Red": 161,
+          "Green": 210,
+          "Blue": 234
+        },
+        {
+          "Portrait": 1,
+          "Talker": "스래쉬",
+          "BG": 2,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": true,
+          "OffsetX": -20.0,
+          "OffsetY": 100.0,
+          "isLineEnter": true,
+          "TalkerIndex": 0,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "그럼 일단 그 초록색 동그라미부터 찾아봐야겠구만.",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        }
+      ]
+    },
+    {
+      "id": "Artia_PigEvent_02",
+      "Section": "Chapter5_P0102",
+      "lines": [
+        {
+          "Portrait": 2,
+          "Talker": "엄버",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "iAnimationIndex": 1,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "진짜 우리 지우개꿀꿀이 세 마리를 다 찾아오다니.",
+          "Red": 255,
+          "Green": 255,
+          "Blue": 242
+        },
+        {
+          "Portrait": 2,
+          "Talker": "엄버",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "iAnimationIndex": 1,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "너희 엄청나게 대단한걸???",
+          "Red": 255,
+          "Green": 255,
+          "Blue": 242
+        },
+        {
+          "Portrait": 0,
+          "Talker": "바이올렛",
+          "BG": 13,
+          "location": 1,
+          "is2D": true,
+          "OffsetX": 0.0,
+          "OffsetY": 200.0,
+          "isPortrait": true,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "별 말씀을요. 사실 우리 저트가 전부 찾았어요.",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 2,
+          "Talker": "엄버",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "iAnimationIndex": 1,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "그러냐! 고맙다. 저트!",
+          "Red": 255,
+          "Green": 255,
+          "Blue": 242
+        }
+      ]
+    },
+    {
+      "id": "Pandi_Dialogue_01",
+      "Section": "Chapter5_P0102",
+      "lines": [
+        {
+          "Portrait": 2,
+          "Talker": "판디",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "iAnimationIndex": 1,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "그쪽이 그 유명하다는 용감한 견습 기사인가?",
+          "Red": 255,
+          "Green": 255,
+          "Blue": 242
+        },
+        {
+          "Portrait": 2,
+          "Talker": "판디",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "iAnimationIndex": 1,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "할 수만 있다면 당신 얼굴을 수천 장이라도 그리고 싶어.",
+          "Red": 255,
+          "Green": 255,
+          "Blue": 242
+        }
+      ]
+    },
+    {
+      "id": "Risa_Dialogue_01",
+      "Section": "Chapter5_P0102",
+      "lines": [
+        {
+          "Portrait": 2,
+          "Talker": "리사",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "iAnimationIndex": 2,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "용감한 견습 기사군요! 여기서 만나게 되다니, 반가워요.",
+          "Red": 255,
+          "Green": 202,
+          "Blue": 154
+        },
+        {
+          "Portrait": 2,
+          "Talker": "리사",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "iAnimationIndex": 2,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "여기에 제 미소를 보러오는 사람이 많답니다.",
+          "Red": 255,
+          "Green": 202,
+          "Blue": 154
+        },
+        {
+          "Portrait": 2,
+          "Talker": "리사",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "iAnimationIndex": 2,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "하지만 그걸 너무 의식하진 않으려고 해요.",
+          "Red": 255,
+          "Green": 202,
+          "Blue": 154
+        }
+      ]
+    },
+    {
+      "id": "Swal_Dialogue_01",
+      "Section": "Chapter5_P0102",
+      "lines": [
+        {
+          "Portrait": 2,
+          "Talker": "스월",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "iAnimationIndex": 3,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "난 나비 그리는게 너무 좋아!",
+          "Red": 255,
+          "Green": 243,
+          "Blue": 111
+        },
+        {
+          "Portrait": 2,
+          "Talker": "리사",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "iAnimationIndex": 3,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "그런데 왜 고양이도 나비라고 부르는 걸까?",
+          "Red": 255,
+          "Green": 243,
+          "Blue": 111
+        }
+      ]
+    },
+    {
+      "id": "Yayo_Dialogue_01",
+      "Section": "Chapter5_P0102",
+      "lines": [
+        {
+          "Portrait": 2,
+          "Talker": "야요",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "iAnimationIndex": 1,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "뭐든지 점으로 뒤덮으면 더 멋있어져.",
+          "Red": 255,
+          "Green": 208,
+          "Blue": 82
+        },
+        {
+          "Portrait": 2,
+          "Talker": "야요",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "iAnimationIndex": 1,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "내 계획은 아르티아를 점으로 덮는 거야...",
+          "Red": 255,
+          "Green": 208,
+          "Blue": 82
+        },
+        {
+          "Portrait": 2,
+          "Talker": "야요",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "iAnimationIndex": 1,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "그런데 관리인이 허락을 안 해 주네.",
+          "Red": 255,
+          "Green": 208,
+          "Blue": 82
+        }
+      ]
+    },
+    {
+      "id": "Larva_Dialogue_01",
+      "Section": "Chapter5_P0102",
+      "lines": [
+        {
+          "Portrait": 2,
+          "Talker": "애벌레",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "iAnimationIndex": 1,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "호박에서 사는 곳도 의외로 괜찮아.",
+          "Red": 255,
+          "Green": 84,
+          "Blue": 140
+        },
+        {
+          "Portrait": 2,
+          "Talker": "애벌레",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "iAnimationIndex": 1,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "배고프면 안에 있는 가구를 먹으면 되거든.",
+          "Red": 255,
+          "Green": 84,
+          "Blue": 140
+        }
+      ]
+    },
+    {
+      "id": "Mo_Dialogue_01",
+      "Section": "Chapter5_P0102",
+      "lines": [
+        {
+          "Portrait": 2,
+          "Talker": "모",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "iAnimationIndex": 2,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "물을 그려야지... 예쁘고 파란 물 말이야.",
+          "Red": 253,
+          "Green": 182,
+          "Blue": 194
+        },
+        {
+          "Portrait": 2,
+          "Talker": "모",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "iAnimationIndex": 2,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "그리고 연잎도. 나는 연잎이 좋더라.",
+          "Red": 253,
+          "Green": 182,
+          "Blue": 194
+        }
+      ]
+    },
+    {
+      "id": "Magri_Dialogue_01",
+      "Section": "Chapter5_P0102",
+      "lines": [
+        {
+          "Portrait": 2,
+          "Talker": "마그리",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "iAnimationIndex": 5,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "전 여기 없는 겁니다.",
+          "Red": 198,
+          "Green": 119,
+          "Blue": 108
+        }
+      ]
+    },
+    {
+      "id": "Bin_Dialogue_01",
+      "Section": "Chapter5_P0102",
+      "lines": [
+        {
+          "Portrait": 2,
+          "Talker": "빈",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "iAnimationIndex": 0,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "해바라기가 아름답군. 자연을 진정으로 사랑한다면,",
+          "Red": 255,
+          "Green": 220,
+          "Blue": 95
+        },
+        {
+          "Portrait": 2,
+          "Talker": "빈",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "iAnimationIndex": 0,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "어디서나 아름다움을 찾을 수 있어.",
+          "Red": 255,
+          "Green": 220,
+          "Blue": 95
+        }
+      ]
+    },
+    {
+      "id": "Rex_Dialogue_01",
+      "Section": "Chapter5_P0102",
+      "lines": [
+        {
+          "Portrait": 2,
+          "Talker": "렉스",
+          "BG": 0,
+          "location": 1,
+          "iAnimationIndex": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "그르르르라아아아!",
+          "Red": 190,
+          "Green": 127,
+          "Blue": 215
+        }
+      ]
+    },
+    {
+      "id": "Jang_Dialogue_01",
+      "Section": "Chapter5_P0102",
+      "lines": [
+        {
+          "Portrait": 2,
+          "Talker": "장",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "iAnimationIndex": 2,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "시내에서 이 구역이 제일 마음에 들어.",
+          "Red": 255,
+          "Green": 102,
+          "Blue": 182
+        },
+        {
+          "Portrait": 2,
+          "Talker": "장",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "iAnimationIndex": 2,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "시간 되면 그림으로 남겨 볼까 싶어.",
+          "Red": 255,
+          "Green": 102,
+          "Blue": 182
+        }
+      ]
+    },
+    {
+      "id": "Jojia_Dialogue_01",
+      "Section": "Chapter5_P0102",
+      "lines": [
+        {
+          "Portrait": 2,
+          "Talker": "조지아",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "iAnimationIndex": 1,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "뭘 읽고 있냐고요? 견습기사 모험기지. 뭐 겠어요!",
+          "Red": 236,
+          "Green": 165,
+          "Blue": 158
+        },
+        {
+          "Portrait": 2,
+          "Talker": "조지아",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "iAnimationIndex": 1,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "이 왕국에서 제일가는 화제작이잖아요.",
+          "Red": 236,
+          "Green": 165,
+          "Blue": 158
+        },
+        {
+          "Portrait": 2,
+          "Talker": "조지아",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "iAnimationIndex": 1,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "언젠가 주인공인 견습기사를 직접 만나 봤으면 좋겠어요.",
+          "Red": 236,
+          "Green": 165,
+          "Blue": 158
+        }
+      ]
+    },
+    {
+      "id": "Pastel_Dialogue_01",
+      "Section": "Chapter5_P0102",
+      "lines": [
+        {
+          "Portrait": 2,
+          "Talker": "파스텔",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "iAnimationIndex": 0,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "이따가 붓을 사러 갈 거야.",
+          "Red": 66,
+          "Green": 203,
+          "Blue": 202
+        },
+        {
+          "Portrait": 2,
+          "Talker": "파스텔",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "iAnimationIndex": 0,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "미술용품을 새로 장만하면 기분이 정말 좋아지거든!",
+          "Red": 66,
+          "Green": 203,
+          "Blue": 202
+        }
+      ]
+    },
+    {
+      "id": "Jame_Dialogue_01",
+      "Section": "Chapter5_P0102",
+      "lines": [
+        {
+          "Portrait": 2,
+          "Talker": "제임",
+          "BG": 0,
+          "location": 8,
+          "is2D": true,
+          "isPortrait": false,
+          "iAnimationIndex": 1,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "아르티아에는 온갖 예술가들이 살아.",
+          "Red": 255,
+          "Green": 95,
+          "Blue": 168
+        },
+        {
+          "Portrait": 2,
+          "Talker": "제임",
+          "BG": 0,
+          "location": 8,
+          "is2D": true,
+          "isPortrait": false,
+          "iAnimationIndex": 1,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "난 사람들이 즐길 수 있는 게임을 그리는 걸 좋아하지.",
+          "Red": 255,
+          "Green": 95,
+          "Blue": 168
+        }
+      ]
+    },
+    {
+      "id": "Evise_Dialogue_01",
+      "Section": "Chapter5_P0102",
+      "lines": [
+        {
+          "Portrait": 2,
+          "Talker": "에비스",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "iAnimationIndex": 1,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "이 조각의 제목은... '땅 위로'!",
+          "Red": 255,
+          "Green": 247,
+          "Blue": 115
+        }
+      ]
+    },
+    {
+      "id": "GlitchBird_Dialogue_01",
+      "Section": "Chapter5_P0102",
+      "lines": [
+        {
+          "Portrait": 2,
+          "Talker": "글리치버드",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "iAnimationIndex": 1,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "아르티아에서 휴가를 즐기고 있어요.",
+          "Red": 253,
+          "Green": 113,
+          "Blue": 95
+        },
+        {
+          "Portrait": 2,
+          "Talker": "글리치버드",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "iAnimationIndex": 1,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "예술이란 영혼을 풍족하게 해 준다는 걸 알았죠.",
+          "Red": 253,
+          "Green": 113,
+          "Blue": 95
+        }
+      ]
+    },
+    {
+      "id": "MrScream_Dialogue_01",
+      "Section": "Chapter5_P0102",
+      "lines": [
+        {
+          "Portrait": 2,
+          "Talker": "미스터 스크림",
+          "BG": 0,
+          "location": 0,
+          "is2D": true,
+          "isPortrait": false,
+          "iAnimationIndex": 4,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "으으으으으으으!",
+          "Red": 255,
+          "Green": 214,
+          "Blue": 160
+        },
+        {
+          "Portrait": 2,
+          "Talker": "미스터 스크림",
+          "BG": 0,
+          "location": 0,
+          "is2D": true,
+          "isPortrait": false,
+          "iAnimationIndex": 4,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "이 조각상 너무 무서워!",
+          "Red": 255,
+          "Green": 214,
+          "Blue": 160
+        }
+      ]
+    },
+    {
+      "id": "Hans_Dialogue_01",
+      "Section": "Chapter5_P0102",
+      "lines": [
+        {
+          "Portrait": 2,
+          "Talker": "한스",
+          "BG": 0,
+          "location": 0,
+          "is2D": true,
+          "isPortrait": false,
+          "iAnimationIndex": 1,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "뭘 그리냐고?",
+          "Red": 190,
+          "Green": 221,
+          "Blue": 229
+        },
+        {
+          "Portrait": 2,
+          "Talker": "한스",
+          "BG": 0,
+          "location": 0,
+          "is2D": true,
+          "isPortrait": false,
+          "iAnimationIndex": 1,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "번들거리는 형체... 반짝이는 입술... 두개골에 갈비뼈까지!",
+          "Red": 190,
+          "Green": 221,
+          "Blue": 229
+        },
+        {
+          "Portrait": 2,
+          "Talker": "한스",
+          "BG": 0,
+          "location": 0,
+          "is2D": true,
+          "isPortrait": false,
+          "iAnimationIndex": 1,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "사실... 친구한테 줄 생일 카드야.",
+          "Red": 190,
+          "Green": 221,
+          "Blue": 229
+        }
+      ]
+    },
+    {
+      "id": "Banks_Dialogue_01",
+      "Section": "Chapter5_P0102",
+      "lines": [
+        {
+          "Portrait": 2,
+          "Talker": "뱅크스",
+          "BG": 0,
+          "location": 0,
+          "is2D": true,
+          "isPortrait": false,
+          "iAnimationIndex": 2,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "쉿 난 못 본 걸로 해 줘.",
+          "Red": 139,
+          "Green": 128,
+          "Blue": 134
+        }
+      ]
+    },
+    {
+      "id": "Pika_Dialogue_01",
+      "Section": "Chapter5_P0102",
+      "lines": [
+        {
+          "Portrait": 2,
+          "Talker": "피카",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "iAnimationIndex": 2,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "난 아르티아 시민들을 그리는 게 좋아.",
+          "Red": 116,
+          "Green": 194,
+          "Blue": 226
+        },
+        {
+          "Portrait": 2,
+          "Talker": "피카",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "iAnimationIndex": 2,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "다만 눈이 아니라 마음에 보이는 대로 그리지!",
+          "Red": 116,
+          "Green": 194,
+          "Blue": 226
+        }
+      ]
+    },
+    {
+      "id": "Pree_Dialogue_01",
+      "Section": "Chapter5_P0102",
+      "lines": [
+        {
+          "Portrait": 2,
+          "Talker": "프리",
+          "BG": 0,
+          "location": 0,
+          "is2D": true,
+          "isPortrait": false,
+          "iAnimationIndex": 1,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "제 꽃이 마음에 드세요?",
+          "Red": 0,
+          "Green": 253,
+          "Blue": 182
+        },
+        {
+          "Portrait": 2,
+          "Talker": "프리",
+          "BG": 0,
+          "location": 0,
+          "is2D": true,
+          "isPortrait": false,
+          "iAnimationIndex": 1,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "이 아이들만 보면 기쁨이 차올라요.",
+          "Red": 0,
+          "Green": 253,
+          "Blue": 182
+        },
+        {
+          "Portrait": 2,
+          "Talker": "프리",
+          "BG": 0,
+          "location": 0,
+          "is2D": true,
+          "isPortrait": false,
+          "iAnimationIndex": 1,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "꽃의 영혼을 알아봐 주는 건 오직 다른 꽃들뿐이랍니다.",
+          "Red": 0,
+          "Green": 253,
+          "Blue": 182
+        }
+      ]
+    },
+    {
+      "id": "Esh_Dialogue_01",
+      "Section": "Chapter5_P0102",
+      "lines": [
+        {
+          "Portrait": 2,
+          "Talker": "에쉬",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "iAnimationIndex": 2,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "안녕! 난 지금 자화상을 그리고 있단다.",
+          "Red": 142,
+          "Green": 129,
+          "Blue": 133
+        },
+        {
+          "Portrait": 2,
+          "Talker": "에쉬",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "iAnimationIndex": 2,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "가만 생각해보면...",
+          "Red": 142,
+          "Green": 129,
+          "Blue": 133
+        },
+        {
+          "Portrait": 2,
+          "Talker": "에쉬",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "iAnimationIndex": 2,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "자기 자화상을 그릴 수 있는 사람은 자신뿐이지.",
+          "Red": 142,
+          "Green": 129,
+          "Blue": 133
+        }
+      ]
+    },
+    {
+      "id": "Brisle_Dialogue_01",
+      "Section": "Chapter5_P0102",
+      "lines": [
+        {
+          "Portrait": 2,
+          "Talker": "브리슬",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "iAnimationIndex": 3,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "용감한 견습기사다! 여...영광이에요!",
+          "Red": 240,
+          "Green": 76,
+          "Blue": 122
+        },
+        {
+          "Portrait": 2,
+          "Talker": "브리슬",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "iAnimationIndex": 3,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "말 더듬어서 죄송해요...",
+          "Red": 240,
+          "Green": 76,
+          "Blue": 122
+        },
+        {
+          "Portrait": 2,
+          "Talker": "브리슬",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "iAnimationIndex": 3,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "그게... 유명인 만날 일이 잘 없어서요!",
+          "Red": 240,
+          "Green": 76,
+          "Blue": 122
+        }
+      ]
+    },
+    {
+      "id": "Riza_Dialogue_01",
+      "Section": "Chapter5_P0102",
+      "lines": [
+        {
+          "Portrait": 2,
+          "Talker": "리자",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "iAnimationIndex": 2,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "이번 시즌에는 강렬한 색을 입을까 봐요.",
+          "Red": 85,
+          "Green": 237,
+          "Blue": 224
+        }
+      ]
+    },
+    {
+      "id": "Ren_Dialogue_01",
+      "Section": "Chapter5_P0102",
+      "lines": [
+        {
+          "Portrait": 2,
+          "Talker": "렌",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "iAnimationIndex": 2,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "난 개가 아니야.",
+          "Red": 250,
+          "Green": 191,
+          "Blue": 161
+        }
+      ]
+    },
+    {
+      "id": "Warhall_Dialogue_01",
+      "Section": "Chapter5_P0102",
+      "lines": [
+        {
+          "Portrait": 2,
+          "Talker": "워홀",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "iAnimationIndex": 1,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "나는 원본의 복제품일 뿐이야.",
+          "Red": 255,
+          "Green": 255,
+          "Blue": 240
+        },
+        {
+          "Portrait": 2,
+          "Talker": "워홀",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "iAnimationIndex": 1,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "아니, 그 반대인 걸까? 어느 쪽이든 상관은 없지만.",
+          "Red": 255,
+          "Green": 255,
+          "Blue": 240
+        }
+      ]
+    },
+    {
+      "id": "Dave_Dialogue_01",
+      "Section": "Chapter5_P0102",
+      "lines": [
+        {
+          "Portrait": 2,
+          "Talker": "데이브",
+          "BG": 0,
+          "location": 6,
+          "is2D": true,
+          "isPortrait": false,
+          "iAnimationIndex": 2,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "이 주스 진짜 맛있다.",
+          "Red": 255,
+          "Green": 238,
+          "Blue": 189
+        },
+        {
+          "Portrait": 2,
+          "Talker": "데이브",
+          "BG": 0,
+          "location": 6,
+          "is2D": true,
+          "isPortrait": false,
+          "iAnimationIndex": 2,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "물감에 염료로 넣어도 좋을 것 같은데?",
+          "Red": 255,
+          "Green": 238,
+          "Blue": 189
+        }
+      ]
+    },
+    {
+      "id": "Berry_Dialogue_01",
+      "Section": "Chapter5_P0102",
+      "lines": [
+        {
+          "Portrait": 2,
+          "Talker": "베리",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "과일은 건강과 행복의 지름길!",
+          "Red": 137,
+          "Green": 186,
+          "Blue": 232
+        }
+      ]
+    },
+    {
+      "id": "Eve_Dialogue_01",
+      "Section": "Chapter5_P0102",
+      "lines": [
+        {
+          "Portrait": 2,
+          "Talker": "이브",
+          "BG": 0,
+          "location": 0,
+          "is2D": true,
+          "isPortrait": false,
+          "iAnimationIndex": 2,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "요즘 이 피라미드의 수수께끼에 푹 빠져 있어.",
+          "Red": 255,
+          "Green": 235,
+          "Blue": 175
+        },
+        {
+          "Portrait": 2,
+          "Talker": "이브",
+          "BG": 0,
+          "location": 0,
+          "is2D": true,
+          "isPortrait": false,
+          "iAnimationIndex": 2,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "여기서 벌써 사흘째 피라미드만 바라보고 있지.",
+          "Red": 255,
+          "Green": 235,
+          "Blue": 175
+        }
+      ]
+    },
+    {
+      "id": "Sal_Dialogue_01",
+      "Section": "Chapter5_P0102",
+      "lines": [
+        {
+          "Portrait": 2,
+          "Talker": "살",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "iAnimationIndex": 1,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "축하하네! 아주 놀라운 발견을 했군.",
+          "Red": 254,
+          "Green": 86,
+          "Blue": 140
+        },
+        {
+          "Portrait": 2,
+          "Talker": "살",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "iAnimationIndex": 1,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "바로 나를 말이야!",
+          "Red": 254,
+          "Green": 86,
+          "Blue": 140
+        }
+      ]
+    },
+    {
+      "id": "Store_Dialog_01",
+      "Section": "Chapter5_P0102",
+      "lines": [
+        {
+          "Portrait": 2,
+          "Talker": "마르티나",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": true,
+          "iAnimationIndex": 3,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "안녕하세요, 용감한 견습 기사님!",
+          "Red": 255,
+          "Green": 224,
+          "Blue": 136
+        },
+        {
+          "Portrait": 2,
+          "Talker": "마르티나",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": true,
+          "iAnimationIndex": 9,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "새 물건이 들어왔어요. 한번 보세요!",
+          "Red": 255,
+          "Green": 224,
+          "Blue": 136
+        }
+      ]
+    },
+    {
+      "id": "3D_MiniBeard_Chapter_6_Dialog_01",
+      "Section": "Chapter1_P0506",
+      "lines": [
+        {
+          "Portrait": 7,
+          "Talker": "미니 수염",
+          "BG": 14,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "있잖아, 이 근처에 네 도움이 필요한 친구가 있어.",
+          "Red": 161,
+          "Green": 210,
+          "Blue": 234
+        },
+        {
+          "Portrait": 7,
+          "Talker": "미니 수염",
+          "BG": 14,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "머그잔처럼 생긴 행성에 사는 꼬마 로켓이지.",
+          "Red": 161,
+          "Green": 210,
+          "Blue": 234
+        },
+        {
+          "Portrait": 7,
+          "Talker": "미니 수염",
+          "BG": 14,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "책상 한가운데로 가면, 내가 말한 행성을\n찾을 수 있을 거야.",
+          "Red": 161,
+          "Green": 210,
+          "Blue": 234
+        }
+      ]
+    },
+    {
+      "id": "3D_MiniBeard_Chapter_6_Dialog_02",
+      "Section": "Chapter1_P0506",
+      "lines": [
+        {
+          "Portrait": 7,
+          "Talker": "미니 수염",
+          "BG": 14,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "안녕. 아빠 로켓의 부품을 찾고 있지?",
+          "Red": 161,
+          "Green": 210,
+          "Blue": 234
+        },
+        {
+          "Portrait": 7,
+          "Talker": "미니 수염",
+          "BG": 14,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "왼쪽 높은 곳에서 하나 본 것 같아.",
+          "Red": 161,
+          "Green": 210,
+          "Blue": 234
+        },
+        {
+          "Portrait": 7,
+          "Talker": "미니 수염",
+          "BG": 14,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "고소 공포증은 없다면 좋겠네.",
+          "Red": 161,
+          "Green": 210,
+          "Blue": 234
+        }
+      ]
+    },
+    {
+      "id": "3D_MiniBeard_Chapter_6_Dialog_03",
+      "Section": "Chapter1_P0506",
+      "lines": [
+        {
+          "Portrait": 7,
+          "Talker": "미니 수염",
+          "BG": 14,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "안녕, 친구. 아빠 로켓의 부품을 찾을려면\n위로 올라가야 할 거야.",
+          "Red": 161,
+          "Green": 210,
+          "Blue": 234
+        },
+        {
+          "Portrait": 7,
+          "Talker": "미니 수염",
+          "BG": 14,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "여기 있는 발판들을 쓰면 되는데,\n내 뒤에 있는 발판부터 시작하면 돼.",
+          "Red": 161,
+          "Green": 210,
+          "Blue": 234
+        },
+        {
+          "Portrait": 7,
+          "Talker": "미니 수염",
+          "BG": 14,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "고소 공포증은 없다면 좋겠네.",
+          "Red": 161,
+          "Green": 210,
+          "Blue": 234
+        }
+      ]
+    },
+    {
+      "id": "3D_MiniBeard_Chapter_6_Dialog_04",
+      "Section": "Chapter1_P0506",
+      "lines": [
+        {
+          "Portrait": 7,
+          "Talker": "미니 수염",
+          "BG": 14,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "안녕. 아빠 로켓의 잃어버린 부품이 근처에 있어.",
+          "Red": 161,
+          "Green": 210,
+          "Blue": 234
+        },
+        {
+          "Portrait": 7,
+          "Talker": "미니 수염",
+          "BG": 14,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "부품을 찾으려면 이 위험천만한 우주를\n제트팩으로 가로질러야 돼.",
+          "Red": 161,
+          "Green": 210,
+          "Blue": 234
+        },
+        {
+          "Portrait": 7,
+          "Talker": "미니 수염",
+          "BG": 14,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "인생이란 원래 그런 법이지.",
+          "Red": 161,
+          "Green": 210,
+          "Blue": 234
+        }
+      ]
+    },
+    {
+      "id": "3D_MiniBeard_Chapter_6_Dialog_05",
+      "Section": "Chapter1_P0506",
+      "lines": [
+        {
+          "Portrait": 7,
+          "Talker": "미니 수염",
+          "BG": 14,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "이 근처 나무로 된 곳 안에 양초가 있어.",
+          "Red": 161,
+          "Green": 210,
+          "Blue": 234
+        },
+        {
+          "Portrait": 7,
+          "Talker": "미니 수염",
+          "BG": 14,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "책상 맨 끝에서 찾을 수 있지.",
+          "Red": 161,
+          "Green": 210,
+          "Blue": 234
+        },
+        {
+          "Portrait": 7,
+          "Talker": "미니 수염",
+          "BG": 14,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "촛불을 켜려면 너 자신을 믿고 그 안으로 뛰어내려 봐.",
+          "Red": 161,
+          "Green": 210,
+          "Blue": 234
+        }
+      ]
+    },
+    {
+      "id": "3D_MiniBeard_Chapter_6_Dialog_06",
+      "Section": "Chapter1_P0506",
+      "lines": [
+        {
+          "Portrait": 7,
+          "Talker": "미니 수염",
+          "BG": 14,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "별일 없지? 이 근처에 양초가 두 개 있어.",
+          "Red": 161,
+          "Green": 210,
+          "Blue": 234
+        },
+        {
+          "Portrait": 7,
+          "Talker": "미니 수염",
+          "BG": 14,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "두 개 다 높은 곳에 있지.",
+          "Red": 161,
+          "Green": 210,
+          "Blue": 234
+        },
+        {
+          "Portrait": 7,
+          "Talker": "미니 수염",
+          "BG": 14,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "위로 올라가 보라고!",
+          "Red": 161,
+          "Green": 210,
+          "Blue": 234
+        }
+      ]
+    },
+    {
+      "id": "3D_MiniBeard_Chapter_6_Dialog_07",
+      "Section": "Chapter1_P0506",
+      "lines": [
+        {
+          "Portrait": 7,
+          "Talker": "미니 수염",
+          "BG": 14,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "어디 보자...",
+          "Red": 161,
+          "Green": 210,
+          "Blue": 234
+        },
+        {
+          "Portrait": 7,
+          "Talker": "미니 수염",
+          "BG": 14,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "지금 잘하고 있는 것 같네.",
+          "Red": 161,
+          "Green": 210,
+          "Blue": 234
+        }
+      ]
+    },
+    {
+      "id": "ZetPack_Child_0",
+      "lines": [
+        {
+          "Portrait": 0,
+          "Talker": "찌릿",
+          "BG": 23,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "어, 안녕!",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 0,
+          "Talker": "찌릿",
+          "BG": 23,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "너 안테나 멋지다... 보송거리고 하늘거리는 게 말이야!",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 0,
+          "Talker": "찌릿",
+          "BG": 23,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "난 찌릿이야. 만나서 반가워...",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 0,
+          "Talker": "찌릿",
+          "BG": 23,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "...아, 네 이름은 저트인데, 무슨 물건을 찾고 있다고?",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 0,
+          "Talker": "찌릿",
+          "BG": 23,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "그럼 우리 아빠가 도와줄 수 있을지 몰라... \n아주 똑똑한 분이거든.",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 0,
+          "Talker": "찌릿",
+          "BG": 23,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "그런데 아빠는 지금 조각조각 흩어져 있어.",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 0,
+          "Talker": "찌릿",
+          "BG": 23,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "어떤 못돼 먹은 병사들이 이 작은 행성에 쳐들어와서는 \n아빠를 산산조각 냈거든!",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 0,
+          "Talker": "찌릿",
+          "BG": 23,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "그러고는 조각을 챙기고 사라졌어... \n그러는 게 어디 있냐고!",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 0,
+          "Talker": "찌릿",
+          "BG": 23,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "있잖아, 우리 아빠를 조립하는 걸 도와주면 \n아빠도 네가 물건을 찾을 수 있도록 도와주실 거야!",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 0,
+          "Talker": "찌릿",
+          "BG": 23,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "내 제트 추진 실력이 좀 불안하긴 하지만 \n힘을 합치면 해낼 수 있을거야...",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 0,
+          "Talker": "찌릿",
+          "BG": 23,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "어때?",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 0,
+          "Talker": "찌릿",
+          "BG": 23,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "이 행성에서 나갈 때, 내가 네 등 위에 올라탈게!",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 0,
+          "Talker": "찌릿",
+          "BG": 23,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "그러면 함께 아빠의 조각을 찾을 수 있을거야!",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        }
+      ]
+    },
+    {
+      "id": "ZetPack_Child_1",
+      "lines": [
+        {
+          "Portrait": 0,
+          "Talker": "찌릿",
+          "BG": 23,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "모성의 대기권에서 벗어나는 데 성공했어!",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 0,
+          "Talker": "찌릿",
+          "BG": 23,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "이런 적은 진짜 처음이야! 엄청 신나는걸!",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 0,
+          "Talker": "찌릿",
+          "BG": 23,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "하지만 이 거대하고 험악한 은하계에...",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 0,
+          "Talker": "찌릿",
+          "BG": 23,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "우리 아빠의 조각이 흩어져 있어.",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 0,
+          "Talker": "찌릿",
+          "BG": 23,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "조각은 총 세 개야...",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        }
+      ]
+    },
+    {
+      "id": "ZetPack_Child_2",
+      "lines": [
+        {
+          "Portrait": 0,
+          "Talker": "찌릿",
+          "BG": 23,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "은하계 왼쪽 끝에 하나가 있고...",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        }
+      ]
+    },
+    {
+      "id": "ZetPack_Child_3",
+      "lines": [
+        {
+          "Portrait": 0,
+          "Talker": "찌릿",
+          "BG": 23,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "오른쪽에도 하나 있어...",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        }
+      ]
+    },
+    {
+      "id": "ZetPack_Child_4",
+      "lines": [
+        {
+          "Portrait": 0,
+          "Talker": "찌릿",
+          "BG": 23,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "마지막 조각은 가운데에 있을거야.",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        }
+      ]
+    },
+    {
+      "id": "ZetPack_Child_5",
+      "lines": [
+        {
+          "Portrait": 0,
+          "Talker": "찌릿",
+          "BG": 23,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "자, 내 심우주 추진기를 작동시켰어...",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 0,
+          "Talker": "찌릿",
+          "BG": 23,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "이제 우주를 여행할 시간이야...\n그럼출발!",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        }
+      ]
+    },
+    {
+      "id": "Mug_Alien_0",
+      "lines": [
+        {
+          "Portrait": 0,
+          "Talker": "테리",
+          "BG": 19,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "앗, 손님이다!",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 0,
+          "Talker": "테리",
+          "BG": 19,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "안녕! 난 테리야.",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 0,
+          "Talker": "테리",
+          "BG": 19,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "생명체가 여길 찾아오다니 별일이네.",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 0,
+          "Talker": "테리",
+          "BG": 19,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "아, 어디 가기 전에 말이야...\n내가 반짝반짝한 걸 찾았어!",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 0,
+          "Talker": "테리",
+          "BG": 19,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "나중에 이 테리를 기억할 기념품으로 가져가는 게 어때?",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        }
+      ]
+    },
+    {
+      "id": "ZetPack_Child_6",
+      "lines": [
+        {
+          "Portrait": 0,
+          "Talker": "찌릿",
+          "BG": 23,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "좋았어!",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 0,
+          "Talker": "찌릿",
+          "BG": 23,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "아빠 부품을 하나 찾았네...",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 0,
+          "Talker": "찌릿",
+          "BG": 23,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "하지만 은하계에 부품이 아직 두 개나 남았어...",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 0,
+          "Talker": "찌릿",
+          "BG": 23,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "힘내보자!",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        }
+      ]
+    },
+    {
+      "id": "JellyKing_0",
+      "lines": [
+        {
+          "Portrait": 0,
+          "Talker": "제럴도",
+          "BG": 6,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "안녕하신가!",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 0,
+          "Talker": "제럴도",
+          "BG": 6,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "짐은 젤리 왕 제럴도라고 하네, 호호!",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 0,
+          "Talker": "제럴도",
+          "BG": 6,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "오늘은 짐의 생일이야... 올해로 60살이지!",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 0,
+          "Talker": "제럴도",
+          "BG": 6,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "아, 촛불에 불을 켜고 생일을 축하할 수 있다면 얼마나 좋을까...",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 0,
+          "Talker": "제럴도",
+          "BG": 6,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "이 탱글탱글한 몸이 보낸 10년이란 세월마다 \n촛불을 하나씩 켜고 말이야...",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 0,
+          "Talker": "제럴도",
+          "BG": 6,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "마침 이 근처 어딘가에 양초 여섯 개가 놓여 있거든?",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 0,
+          "Talker": "제럴도",
+          "BG": 6,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "그 양초에 전부 불을 붙여서 \n이 나이 든 왕을 기쁘게 만들어 주겠나?",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        }
 
-			]
-		},
-		{
-			"id": "JellyKing_1",
-			"lines": [
-				{
-					"Portrait": 0,
-					"Talker": "제럴도",
-					"BG": 6,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "이 친구들, 정말로 해냈군!",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 0,
-					"Talker": "제럴도",
-					"BG": 6,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "친애하는 백성들이여, 이리 와서 왕의 선물을 받게나.",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				}
-			]
-		},
-		{
-			"id": "ZetPack_Child_7",
-			"lines": [
-				{
-					"Portrait": 0,
-					"Talker": "찌릿",
-					"BG": 23,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "됐어, 저트! 아빠 조각이 이제 두 개야!",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 0,
-					"Talker": "찌릿",
-					"BG": 23,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "전쟁 구역에 들어갈 준비가 된 것 같아.",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 0,
-					"Talker": "찌릿",
-					"BG": 23,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "얼른 가자!",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				}
-			]
-		},
-		{
-			"id": "ZetPack_Child_8",
-			"lines": [
-				{
-					"Portrait": 0,
-					"Talker": "찌릿",
-					"BG": 23,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "해냈어! 우리가 은하계 전투에서 이겼다고!",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 0,
-					"Talker": "찌릿",
-					"BG": 23,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "너 레이저 쏘는 거 진짜 멋있더라!\n내 추진 솜씨는 어땠어?",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 0,
-					"Talker": "찌릿",
-					"BG": 23,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "빨리 아빠한테 말해 주고 싶다!",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 0,
-					"Talker": "찌릿",
-					"BG": 23,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "자, 이제 내 모성으로 돌아가서 아빠를 조립하자!",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 0,
-					"Talker": "찌릿",
-					"BG": 23,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "우리가 처음으로 만난 머그잔 모양의 행성이야!",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				}
-			]
-		},
-		{
-			"id": "ZetPack_Child_9",
-			"lines": [
-				{
-					"Portrait": 0,
-					"Talker": "찌릿",
-					"BG": 23,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "좋아, 이제 아빠를 조립하자!",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				}
-			]
-		},
-		{
-			"id": "ZetPack_Father_0",
-			"lines": [
-				{
-					"Portrait": 0,
-					"Talker": "짜릿",
-					"BG": 22,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "아, 이제야 좀 살 것 같군!",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 0,
-					"Talker": "짜릿",
-					"BG": 22,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "혹시 조각난 적이 있는가 모르겠다만 \n남들한테 권하고 싶은 경험은 아니야.",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 0,
-					"Talker": "짜릿",
-					"BG": 22,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "뭐? 어떤 물건을 찾고 있다고?",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 0,
-					"Talker": "짜릿",
-					"BG": 22,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "이 행성의 핵 안에 별난 물건이 하나 있긴 하다만...",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 0,
-					"Talker": "짜릿",
-					"BG": 22,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "내 안테나가 말하길, 그게 네가 찾는 물건일지도 \n모르겠다고 하는구나.",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 0,
-					"Talker": "짜릿",
-					"BG": 22,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "어디 꺼낼 수 있을지 한번 보자구나.",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				}
-			]
-		},
-		{
-			"id": "ZetPack_Father_1",
-			"lines": [
-				{
-					"Portrait": 0,
-					"Talker": "짜릿",
-					"BG": 22,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "추진 장치를 스트레칭하니까 기분 최고야.",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 0,
-					"Talker": "짜릿",
-					"BG": 22,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "그 이상한 물건이 네가 찾던 것이길 바라마.",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 0,
-					"Talker": "짜릿",
-					"BG": 22,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "고맙다, 젊은 전사 친구. 그리고 찌릿이 너도... \n네가 정말 자랑스러워!",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				}
-			]
-		},
-		{
-			"id": "DEFENDER_Dialogue_01",
-			"Section": "Chapter6_SKSP_04",
-			"lines": [
-				{
-					"Portrait": 2,
-					"Talker": "위버",
-					"BG": 27,
-					"location": 8,
-					"is2D": true,
-					"isPortrait": false,
-					"isDefender": true,
-					"iAnimationIndex": -1,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "왜 이렇게 늦었나, 병사!",
-					"Red": 255,
-					"Green": 255,
-					"Blue": 242
-				},
-				{
-					"Portrait": 2,
-					"Talker": "위버",
-					"BG": 27,
-					"location": 8,
-					"is2D": true,
-					"isPortrait": false,
-					"isDefender": true,
-					"iAnimationIndex": -1,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "자네가 밖에서 빈둥대는 동안, 우린 스크렐을\n상대하느라 눈코 뜰 새가 없었단 말이다!",
-					"Red": 255,
-					"Green": 255,
-					"Blue": 242
-				},
-				{
-					"Portrait": 2,
-					"Talker": "위버",
-					"BG": 27,
-					"location": 8,
-					"is2D": true,
-					"isPortrait": false,
-					"isDefender": true,
-					"iAnimationIndex": -1,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "녀석들이 쳐들어와서 우리의 우수한 과학자들을\n훔쳐 갔다.",
-					"Red": 255,
-					"Green": 255,
-					"Blue": 242
-				},
-				{
-					"Portrait": 2,
-					"Talker": "위버",
-					"BG": 27,
-					"location": 8,
-					"is2D": true,
-					"isPortrait": false,
-					"isDefender": true,
-					"iAnimationIndex": -1,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "그 샌님들은 하나같이 약골에 겁쟁이지만\n전쟁에 이기려면 녀석들이 필요하단 말이다!",
-					"Red": 255,
-					"Green": 255,
-					"Blue": 242
-				},
-				{
-					"Portrait": 2,
-					"Talker": "위버",
-					"BG": 27,
-					"location": 8,
-					"is2D": true,
-					"isPortrait": false,
-					"isDefender": true,
-					"iAnimationIndex": -1,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "얼른 가서 그 과학자들을 구하고... 나한테 데려와!",
-					"Red": 255,
-					"Green": 255,
-					"Blue": 242
-				},
-				{
-					"Portrait": 2,
-					"Talker": "위버",
-					"BG": 27,
-					"location": 8,
-					"is2D": true,
-					"isPortrait": false,
-					"isDefender": true,
-					"iAnimationIndex": -1,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "그리고, 한 가지 더. 절대 죽지 마라.",
-					"Red": 255,
-					"Green": 255,
-					"Blue": 242
-				}
-			]
-		},
-		{
-			"id": "DEFENDER_Dialogue_02",
-			"Section": "Chapter6_SKSP_04",
-			"lines": [
-				{
-					"Portrait": 2,
-					"Talker": "위버",
-					"BG": 27,
-					"location": 8,
-					"is2D": true,
-					"isPortrait": false,
-					"isDefender": true,
-					"iAnimationIndex": -1,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "마지막 과학자까지 전부 데려왔군.",
-					"Red": 255,
-					"Green": 255,
-					"Blue": 242
-				},
-				{
-					"Portrait": 2,
-					"Talker": "위버",
-					"BG": 27,
-					"location": 8,
-					"is2D": true,
-					"isPortrait": false,
-					"isDefender": true,
-					"iAnimationIndex": -1,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "이제 기지에 범생이들이 꽉 찼어.",
-					"Red": 255,
-					"Green": 255,
-					"Blue": 242
-				},
-				{
-					"Portrait": 2,
-					"Talker": "위버",
-					"BG": 27,
-					"location": 8,
-					"is2D": true,
-					"isPortrait": false,
-					"isDefender": true,
-					"iAnimationIndex": -1,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "다들 다음 무기를 개발하느라 정신없이 일하고 있지!",
-					"Red": 255,
-					"Green": 255,
-					"Blue": 242
-				},
-				{
-					"Portrait": 2,
-					"Talker": "위버",
-					"BG": 27,
-					"location": 8,
-					"is2D": true,
-					"isPortrait": false,
-					"isDefender": true,
-					"iAnimationIndex": -1,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "잘했다 병사!",
-					"Red": 255,
-					"Green": 255,
-					"Blue": 242
-				},
-				{
-					"Portrait": 2,
-					"Talker": "위버",
-					"BG": 27,
-					"location": 8,
-					"is2D": true,
-					"isPortrait": false,
-					"isDefender": true,
-					"iAnimationIndex": -1,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "다음 임무는 이 고철 덩어리를 다른 곳으로\n가져가는 거다!",
-					"Red": 255,
-					"Green": 255,
-					"Blue": 242
-				}
-			]
-		},
-		{
-			"id": "Stamp_Acquire_Stop",
-			"lines": [
-				{
-					"Portrait": 16,
-					"Talker": "",
-					"BG": 9,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "저트가 멈춰 도장을 얻었습니다!",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 16,
-					"Talker": "",
-					"BG": 9,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "멈춰 도장을 사용하면, 책 페이지에 \n마법의 손 아이콘을 찍을 수 있습니다!",
-					"Red": 161,
-					"Green": 210,
-					"Blue": 234
-				},
-				{
-					"Portrait": 16,
-					"Talker": "",
-					"BG": 9,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "이 아이콘이 찍힌 대상은 무엇이든 멈추게 됩니다.",
-					"Red": 161,
-					"Green": 210,
-					"Blue": 234
-				},
-				{
-					"Portrait": 16,
-					"Talker": "",
-					"BG": 9,
-					"location": 0,
-					"is2D": false,
-					"isPortrait": false,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "[Q]를 눌러서 도장을 찍으세요.",
-					"Red": 161,
-					"Green": 210,
-					"Blue": 234
-				}
-			]
-		},
-		{
-			"id": "Dialog_Offset_Test_01",
-			"Section": "Chapter5_P0102",
-			"lines": [
-				{
-					"Portrait": 0,
-					"Talker": "TEST",
-					"BG": 13,
-					"location": 1,
-					"OffsetX": -100.0,
-					"OffsetY": 100.0,
-					"is2D": true,
-					"isPortrait": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "Location이 1, 오프셋이 -100, +100 이에요",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 1,
-					"Talker": "TEST",
-					"BG": 2,
-					"location": 1,
-					"OffsetX": 10.0,
-					"OffsetY": 10.0,
-					"is2D": true,
-					"isPortrait": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "Location이 1, 오프셋이 +10, +10 이에요",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 1,
-					"Talker": "TEST",
-					"BG": 2,
-					"location": 1,
-					"OffsetX": 30.0,
-					"OffsetY": 30.0,
-					"is2D": true,
-					"isPortrait": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "Location이 1, 오프셋이 +30, +30 이에요",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 1,
-					"Talker": "TEST",
-					"BG": 2,
-					"location": 1,
-					"OffsetX": 50.0,
-					"OffsetY": 50.0,
-					"is2D": true,
-					"isPortrait": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "Location이 1, 오프셋이 +50, +50 이에요",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 1,
-					"Talker": "TEST",
-					"BG": 2,
-					"location": 1,
-					"OffsetX": 100.0,
-					"OffsetY": 100.0,
-					"is2D": true,
-					"isPortrait": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "Location이 1, 오프셋이 +100, +100 이에요",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 1,
-					"Talker": "TEST",
-					"BG": 2,
-					"location": 1,
-					"OffsetX": -100.0,
-					"OffsetY": -100.0,
-					"is2D": true,
-					"isPortrait": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "Location이 1, 오프셋이 -100, -100 이에요",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				}
+      ]
+    },
+    {
+      "id": "JellyKing_1",
+      "lines": [
+        {
+          "Portrait": 0,
+          "Talker": "제럴도",
+          "BG": 6,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "이 친구들, 정말로 해냈군!",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 0,
+          "Talker": "제럴도",
+          "BG": 6,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "친애하는 백성들이여, 이리 와서 왕의 선물을 받게나.",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        }
+      ]
+    },
+    {
+      "id": "ZetPack_Child_7",
+      "lines": [
+        {
+          "Portrait": 0,
+          "Talker": "찌릿",
+          "BG": 23,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "됐어, 저트! 아빠 조각이 이제 두 개야!",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 0,
+          "Talker": "찌릿",
+          "BG": 23,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "전쟁 구역에 들어갈 준비가 된 것 같아.",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 0,
+          "Talker": "찌릿",
+          "BG": 23,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "얼른 가자!",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        }
+      ]
+    },
+    {
+      "id": "ZetPack_Child_8",
+      "lines": [
+        {
+          "Portrait": 0,
+          "Talker": "찌릿",
+          "BG": 23,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "해냈어! 우리가 은하계 전투에서 이겼다고!",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 0,
+          "Talker": "찌릿",
+          "BG": 23,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "너 레이저 쏘는 거 진짜 멋있더라!\n내 추진 솜씨는 어땠어?",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 0,
+          "Talker": "찌릿",
+          "BG": 23,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "빨리 아빠한테 말해 주고 싶다!",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 0,
+          "Talker": "찌릿",
+          "BG": 23,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "자, 이제 내 모성으로 돌아가서 아빠를 조립하자!",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 0,
+          "Talker": "찌릿",
+          "BG": 23,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "우리가 처음으로 만난 머그잔 모양의 행성이야!",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        }
+      ]
+    },
+    {
+      "id": "ZetPack_Child_9",
+      "lines": [
+        {
+          "Portrait": 0,
+          "Talker": "찌릿",
+          "BG": 23,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "좋아, 이제 아빠를 조립하자!",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        }
+      ]
+    },
+    {
+      "id": "ZetPack_Father_0",
+      "lines": [
+        {
+          "Portrait": 0,
+          "Talker": "짜릿",
+          "BG": 22,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "아, 이제야 좀 살 것 같군!",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 0,
+          "Talker": "짜릿",
+          "BG": 22,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "혹시 조각난 적이 있는가 모르겠다만 \n남들한테 권하고 싶은 경험은 아니야.",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 0,
+          "Talker": "짜릿",
+          "BG": 22,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "뭐? 어떤 물건을 찾고 있다고?",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 0,
+          "Talker": "짜릿",
+          "BG": 22,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "이 행성의 핵 안에 별난 물건이 하나 있긴 하다만...",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 0,
+          "Talker": "짜릿",
+          "BG": 22,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "내 안테나가 말하길, 그게 네가 찾는 물건일지도 \n모르겠다고 하는구나.",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 0,
+          "Talker": "짜릿",
+          "BG": 22,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "어디 꺼낼 수 있을지 한번 보자구나.",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        }
+      ]
+    },
+    {
+      "id": "ZetPack_Father_1",
+      "lines": [
+        {
+          "Portrait": 0,
+          "Talker": "짜릿",
+          "BG": 22,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "추진 장치를 스트레칭하니까 기분 최고야.",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 0,
+          "Talker": "짜릿",
+          "BG": 22,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "그 이상한 물건이 네가 찾던 것이길 바라마.",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 0,
+          "Talker": "짜릿",
+          "BG": 22,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "고맙다, 젊은 전사 친구. 그리고 찌릿이 너도... \n네가 정말 자랑스러워!",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        }
+      ]
+    },
+    {
+      "id": "DEFENDER_Dialogue_01",
+      "Section": "Chapter6_SKSP_04",
+      "lines": [
+        {
+          "Portrait": 2,
+          "Talker": "위버",
+          "BG": 27,
+          "location": 8,
+          "is2D": true,
+          "isPortrait": false,
+          "isDefender": true,
+          "iAnimationIndex": -1,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "왜 이렇게 늦었나, 병사!",
+          "Red": 255,
+          "Green": 255,
+          "Blue": 242
+        },
+        {
+          "Portrait": 2,
+          "Talker": "위버",
+          "BG": 27,
+          "location": 8,
+          "is2D": true,
+          "isPortrait": false,
+          "isDefender": true,
+          "iAnimationIndex": -1,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "자네가 밖에서 빈둥대는 동안, 우린 스크렐을\n상대하느라 눈코 뜰 새가 없었단 말이다!",
+          "Red": 255,
+          "Green": 255,
+          "Blue": 242
+        },
+        {
+          "Portrait": 2,
+          "Talker": "위버",
+          "BG": 27,
+          "location": 8,
+          "is2D": true,
+          "isPortrait": false,
+          "isDefender": true,
+          "iAnimationIndex": -1,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "녀석들이 쳐들어와서 우리의 우수한 과학자들을\n훔쳐 갔다.",
+          "Red": 255,
+          "Green": 255,
+          "Blue": 242
+        },
+        {
+          "Portrait": 2,
+          "Talker": "위버",
+          "BG": 27,
+          "location": 8,
+          "is2D": true,
+          "isPortrait": false,
+          "isDefender": true,
+          "iAnimationIndex": -1,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "그 샌님들은 하나같이 약골에 겁쟁이지만\n전쟁에 이기려면 녀석들이 필요하단 말이다!",
+          "Red": 255,
+          "Green": 255,
+          "Blue": 242
+        },
+        {
+          "Portrait": 2,
+          "Talker": "위버",
+          "BG": 27,
+          "location": 8,
+          "is2D": true,
+          "isPortrait": false,
+          "isDefender": true,
+          "iAnimationIndex": -1,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "얼른 가서 그 과학자들을 구하고... 나한테 데려와!",
+          "Red": 255,
+          "Green": 255,
+          "Blue": 242
+        },
+        {
+          "Portrait": 2,
+          "Talker": "위버",
+          "BG": 27,
+          "location": 8,
+          "is2D": true,
+          "isPortrait": false,
+          "isDefender": true,
+          "iAnimationIndex": -1,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "그리고, 한 가지 더. 절대 죽지 마라.",
+          "Red": 255,
+          "Green": 255,
+          "Blue": 242
+        }
+      ]
+    },
+    {
+      "id": "DEFENDER_Dialogue_02",
+      "Section": "Chapter6_SKSP_04",
+      "lines": [
+        {
+          "Portrait": 2,
+          "Talker": "위버",
+          "BG": 27,
+          "location": 8,
+          "is2D": true,
+          "isPortrait": false,
+          "isDefender": true,
+          "iAnimationIndex": -1,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "마지막 과학자까지 전부 데려왔군.",
+          "Red": 255,
+          "Green": 255,
+          "Blue": 242
+        },
+        {
+          "Portrait": 2,
+          "Talker": "위버",
+          "BG": 27,
+          "location": 8,
+          "is2D": true,
+          "isPortrait": false,
+          "isDefender": true,
+          "iAnimationIndex": -1,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "이제 기지에 범생이들이 꽉 찼어.",
+          "Red": 255,
+          "Green": 255,
+          "Blue": 242
+        },
+        {
+          "Portrait": 2,
+          "Talker": "위버",
+          "BG": 27,
+          "location": 8,
+          "is2D": true,
+          "isPortrait": false,
+          "isDefender": true,
+          "iAnimationIndex": -1,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "다들 다음 무기를 개발하느라 정신없이 일하고 있지!",
+          "Red": 255,
+          "Green": 255,
+          "Blue": 242
+        },
+        {
+          "Portrait": 2,
+          "Talker": "위버",
+          "BG": 27,
+          "location": 8,
+          "is2D": true,
+          "isPortrait": false,
+          "isDefender": true,
+          "iAnimationIndex": -1,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "잘했다 병사!",
+          "Red": 255,
+          "Green": 255,
+          "Blue": 242
+        },
+        {
+          "Portrait": 2,
+          "Talker": "위버",
+          "BG": 27,
+          "location": 8,
+          "is2D": true,
+          "isPortrait": false,
+          "isDefender": true,
+          "iAnimationIndex": -1,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "다음 임무는 이 고철 덩어리를 다른 곳으로\n가져가는 거다!",
+          "Red": 255,
+          "Green": 255,
+          "Blue": 242
+        }
+      ]
+    },
+    {
+      "id": "Stamp_Acquire_Stop",
+      "lines": [
+        {
+          "Portrait": 16,
+          "Talker": "",
+          "BG": 9,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "저트가 멈춰 도장을 얻었습니다!",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 16,
+          "Talker": "",
+          "BG": 9,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "멈춰 도장을 사용하면, 책 페이지에 \n마법의 손 아이콘을 찍을 수 있습니다!",
+          "Red": 161,
+          "Green": 210,
+          "Blue": 234
+        },
+        {
+          "Portrait": 16,
+          "Talker": "",
+          "BG": 9,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "이 아이콘이 찍힌 대상은 무엇이든 멈추게 됩니다.",
+          "Red": 161,
+          "Green": 210,
+          "Blue": 234
+        },
+        {
+          "Portrait": 16,
+          "Talker": "",
+          "BG": 9,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "[Q]를 눌러서 도장을 찍으세요.",
+          "Red": 161,
+          "Green": 210,
+          "Blue": 234
+        }
+      ]
+    },
+    {
+      "id": "Dialog_Offset_Test_01",
+      "Section": "Chapter5_P0102",
+      "lines": [
+        {
+          "Portrait": 0,
+          "Talker": "TEST",
+          "BG": 13,
+          "location": 1,
+          "OffsetX": -100.0,
+          "OffsetY": 100.0,
+          "is2D": true,
+          "isPortrait": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "Location이 1, 오프셋이 -100, +100 이에요",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 1,
+          "Talker": "TEST",
+          "BG": 2,
+          "location": 1,
+          "OffsetX": 10.0,
+          "OffsetY": 10.0,
+          "is2D": true,
+          "isPortrait": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "Location이 1, 오프셋이 +10, +10 이에요",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 1,
+          "Talker": "TEST",
+          "BG": 2,
+          "location": 1,
+          "OffsetX": 30.0,
+          "OffsetY": 30.0,
+          "is2D": true,
+          "isPortrait": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "Location이 1, 오프셋이 +30, +30 이에요",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 1,
+          "Talker": "TEST",
+          "BG": 2,
+          "location": 1,
+          "OffsetX": 50.0,
+          "OffsetY": 50.0,
+          "is2D": true,
+          "isPortrait": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "Location이 1, 오프셋이 +50, +50 이에요",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 1,
+          "Talker": "TEST",
+          "BG": 2,
+          "location": 1,
+          "OffsetX": 100.0,
+          "OffsetY": 100.0,
+          "is2D": true,
+          "isPortrait": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "Location이 1, 오프셋이 +100, +100 이에요",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 1,
+          "Talker": "TEST",
+          "BG": 2,
+          "location": 1,
+          "OffsetX": -100.0,
+          "OffsetY": -100.0,
+          "is2D": true,
+          "isPortrait": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "Location이 1, 오프셋이 -100, -100 이에요",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        }
 
-			]
-		},
-		{
-			"id": "Dialogue_Before_Humgrump_Revolt",
-			"Section": "Chapter6_P1314",
-			"isChangeTalker": true,
-			"lines": [
-				{
-					"Portrait": 0,
-					"Talker": "험그럼프",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": false,
-					"OffsetX": 0.0,
-					"OffsetY": 70.0,
-					"TalkerIndex": 0,
-					"FontColorR": 255.0,
-					"FontColorG": 255.0,
-					"FontColorB": 0.0,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "굉장하군, 달수염. 굉장해!",
-					"Red": 10,
-					"Green": 10,
-					"Blue": 10
-				},
-				{
-					"Portrait": 0,
-					"Talker": "험그럼프",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": false,
-					"OffsetX": 0.0,
-					"OffsetY": 70.0,
-					"TalkerIndex": 0,
-					"FontColorR": 255.0,
-					"FontColorG": 255.0,
-					"FontColorB": 0.0,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "당연히 나 따위는 네 위대한 마법을 상대할 수 없겠지.",
-					"Red": 10,
-					"Green": 10,
-					"Blue": 10
-				},
-				{
-					"Portrait": 0,
-					"Talker": "험그럼프",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"OffsetX": 0.0,
-					"OffsetY": 70.0,
-					"TalkerIndex": 0,
-					"FontColorR": 255.0,
-					"FontColorG": 255.0,
-					"FontColorB": 0.0,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "네 실력은 항상 좋았지만, 나는 그저 구석에서 징징대는 \n 무능력한 험그럼프일 뿐이지...",
-					"Red": 10,
-					"Green": 10,
-					"Blue": 10
-				},
-				{
-					"Portrait": 0,
-					"Talker": "험그럼프",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"OffsetX": 0.0,
-					"OffsetY": 70.0,
-					"TalkerIndex": 0,
-					"FontColorR": 255.0,
-					"FontColorG": 255.0,
-					"FontColorB": 0.0,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "난 언제나 네 그림자 속에 있었다... \n 내 사랑하는 동생... 위대한 달수염한테 맞서지 말아야 했다고!",
-					"Red": 10,
-					"Green": 10,
-					"Blue": 10
-				},
-				{
-					"Portrait": 7,
-					"Talker": "달수염",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": false,
-					"OffsetX": 0.0,
-					"OffsetY": 70.0,
-					"TalkerIndex": 1,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "그쯤해둬, 험그럼프!",
-					"Red": 161,
-					"Green": 210,
-					"Blue": 234
-				},
-				{
-					"Portrait": 7,
-					"Talker": "달수염",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": false,
-					"OffsetX": 0.0,
-					"OffsetY": 70.0,
-					"TalkerIndex": 1,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "맨날 그렇게 풀죽은 소리만 하고!",
-					"Red": 161,
-					"Green": 210,
-					"Blue": 234
-				},
-				{
-					"Portrait": 7,
-					"Talker": "달수염",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": false,
-					"OffsetX": 0.0,
-					"OffsetY": 70.0,
-					"TalkerIndex": 1,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "나가서 운동 좀 해. 예전엔 탁구도 쳤잖아.",
-					"Red": 161,
-					"Green": 210,
-					"Blue": 234
-				},
-				{
-					"Portrait": 0,
-					"Talker": "험그럼프",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"OffsetX": 0.0,
-					"OffsetY": 70.0,
-					"TalkerIndex": 0,
-					"FontColorR": 255.0,
-					"FontColorG": 255.0,
-					"FontColorB": 0.0,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "잘도 기억하는군! 하지만... 탁구도 항상 네가 이겨 버렸잖아.",
-					"Red": 10,
-					"Green": 10,
-					"Blue": 10
-				},
-				{
-					"Portrait": 0,
-					"Talker": "험그럼프",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"OffsetX": 0.0,
-					"OffsetY": 70.0,
-					"TalkerIndex": 0,
-					"FontColorR": 255.0,
-					"FontColorG": 255.0,
-					"FontColorB": 0.0,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "그러나 아직 기억하는 작전은 있지. 바로 교란 작전이야.",
-					"Red": 10,
-					"Green": 10,
-					"Blue": 10
-				},
-				{
-					"Portrait": 0,
-					"Talker": "험그럼프",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"OffsetX": 0.0,
-					"OffsetY": 70.0,
-					"TalkerIndex": 0,
-					"FontColorR": 255.0,
-					"FontColorG": 255.0,
-					"FontColorB": 0.0,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "뒤로 살짝 물러나는 척하다가...",
-					"Red": 10,
-					"Green": 10,
-					"Blue": 10
-				}
-			]
-		},
-		{
-			"id": "Dialogue_Humgrump_Revolt",
-			"Section": "Chapter6_P1314",
-			"isChangeTalker": true,
-			"lines": [
-				{
-					"Portrait": 0,
-					"Talker": "험그럼프",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"OffsetX": 0.0,
-					"OffsetY": 70.0,
-					"TalkerIndex": 0,
-					"FontColorR": 255.0,
-					"FontColorG": 255.0,
-					"FontColorB": 0.0,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "아주 강력한... 백핸드로...",
-					"Red": 10,
-					"Green": 10,
-					"Blue": 10
-				},
-				{
-					"Portrait": 0,
-					"Talker": "험그럼프",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"OffsetX": 0.0,
-					"OffsetY": 70.0,
-					"TalkerIndex": 0,
-					"FontColorR": 255.0,
-					"FontColorG": 255.0,
-					"FontColorB": 0.0,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "승기를 잡는 거야.",
-					"Red": 10,
-					"Green": 10,
-					"Blue": 10
-				}
-			]
-		},
-		{
-			"id": "Dialogue_After_Humgrump_Revolt",
-			"Section": "Chapter6_P1314",
-			"isChangeTalker": true,
-			"lines": [
-				{
-					"Portrait": 0,
-					"Talker": "험그럼프",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"OffsetX": 0.0,
-					"OffsetY": 70.0,
-					"TalkerIndex": 0,
-					"FontColorR": 255.0,
-					"FontColorG": 255.0,
-					"FontColorB": 0.0,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "이번 게임은... 험그럼프의 승리다!",
-					"Red": 10,
-					"Green": 10,
-					"Blue": 10
-				}
-			]
-		},
-		{
-			"id": "Dialogue_Scream_Violet",
-			"Section": "Chapter6_P1314",
-			"lines": [
-				{
-					"Portrait": 0,
-					"Talker": "바이올렛",
-					"BG": 13,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": false,
-					"OffsetX": 0.0,
-					"OffsetY": 70.0,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "                           안 돼!!!!!!",
-					"Red": 161,
-					"Green": 210,
-					"Blue": 234
-				}
-			]
-		},
-		{
-			"id": "Chapter6_FriendEvent_0",
-			"Section": "Chapter5_P0102",
-			"isChangeTalker": true,
-			"lines": [
-				{
-					"Portrait": 0,
-					"Talker": "바이올렛",
-					"TalkerIndex": 1,
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "다 왔어! 여기가 내 고향이야!",
-					"Red": 191,
-					"Green": 144,
-					"Blue": 224
-				},
-				{
-					"Portrait": 0,
-					"Talker": "바이올렛",
-					"TalkerIndex": 1,
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "우리 엄마가 있을지도 모르니, 최대한 조용히 다니자!",
-					"Red": 191,
-					"Green": 144,
-					"Blue": 224
-				},
-				{
-					"Portrait": 0,
-					"Talker": "바이올렛",
-					"TalkerIndex": 1,
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "아르티아는 예술인들의 도시야!",
-					"Red": 191,
-					"Green": 144,
-					"Blue": 224
-				},
-				{
-					"Portrait": 0,
-					"Talker": "스래쉬",
-					"TalkerIndex": 0,
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "와 멋진도시야 바이올렛!\n어서 사람들을 만나러 가보자!",
-					"Red": 190,
-					"Green": 218,
-					"Blue": 186
-				}
-			]
-		},
-		{
-			"id": "Chapter6_StorySequence_01_01",
-			"Section": "Chapter5_P0304",
-			"lines": [
-				{
-					"Portrait": 0,
-					"Talker": "뮤렐",
-					"TalkerIndex": 0,
-					"BG": 0,
-					"location": 3,
-					"OffsetX": 0.0,
-					"OffsetY": 200.0,
-					"is2D": true,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "폐하께서 기다리고 계십니다. 안으로 드시지요.",
-					"Red": 191,
-					"Green": 144,
-					"Blue": 224
-				}
-			]
-		},
-		{
-			"id": "Chapter6_Start_3D",
-			"Section": "Chapter6_P0102",
-			"isChangeTalker": true,
-			"lines": [
-				{
-					"Portrait": 0,
-					"Talker": "스래쉬",
-					"TalkerIndex": 0,
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "무시무시한 톱니가 길을 막고있어!",
-					"Red": 190,
-					"Green": 218,
-					"Blue": 186
-				},
-				{
-					"Portrait": 0,
-					"Talker": "스래쉬",
-					"TalkerIndex": 0,
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "이 앞을 지나는 것은 무리야... 어떡하지...?",
-					"Red": 190,
-					"Green": 218,
-					"Blue": 186
-				},
-				{
-					"Portrait": 7,
-					"Talker": "달수염",
-					"TalkerIndex": 0,
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": true,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "너흰 지금 막다른 길에 몰린 것 같구나!",
-					"Red": 161,
-					"Green": 210,
-					"Blue": 234
-				},
-				{
-					"Portrait": 7,
-					"Talker": "달수염",
-					"TalkerIndex": 0,
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": true,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "너희도 잘 알겠지만, 멈춰 달라고 정중히 부탁해 봤자\n기계는 꼼짝도 안 할 게야.",
-					"Red": 161,
-					"Green": 210,
-					"Blue": 234
-				},
-				{
-					"Portrait": 7,
-					"Talker": "달수염",
-					"TalkerIndex": 0,
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": true,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "이 기계를 멈추려면 아주 특별한 물건이 필요할 거다.\n바로... 책상에서 찾을 수 있는 물건 말이야.",
-					"Red": 161,
-					"Green": 210,
-					"Blue": 234
-				}
-			]
-		},
-		{
-			"id": "Chapter6_StorySequence_01_02",
-			"Section": "Chapter5_P0304",
-			"lines": [
-				{
-					"Portrait": 0,
-					"Talker": "크로마 여왕",
-					"TalkerIndex": 0,
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"OffsetX": 0.0,
-					"OffsetY": 200.0,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "저트! 이렇게 다시 만나니 너무 기쁘네요.",
-					"Red": 252,
-					"Green": 190,
-					"Blue": 203
-				},
-				{
-					"Portrait": 0,
-					"Talker": "크로마 여왕",
-					"TalkerIndex": 0,
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"OffsetX": 0.0,
-					"OffsetY": 200.0,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "바이올렛, 스레쉬... 다들 잘 와줬어요.",
-					"Red": 252,
-					"Green": 190,
-					"Blue": 203
-				},
-				{
-					"Portrait": 0,
-					"Talker": "크로마 여왕",
-					"TalkerIndex": 0,
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"OffsetX": 0.0,
-					"OffsetY": 200.0,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "저트, 이번 소동에 관해 설명해 주시겠어요?",
-					"Red": 252,
-					"Green": 190,
-					"Blue": 203
-				},
-				{
-					"Portrait": 0,
-					"Talker": "크로마 여왕",
-					"TalkerIndex": 0,
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"OffsetX": 0.0,
-					"OffsetY": 200.0,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "또 그 말썽쟁이 험그럼프 짓이겠지요?",
-					"Red": 252,
-					"Green": 190,
-					"Blue": 203
-				}
-			]
-		},
-		{
-			"id": "Chapter6_StorySequence_01_03",
-			"Section": "Chapter5_P0304",
-			"lines": [
-				{
-					"Portrait": 0,
-					"Talker": "크로마 여왕",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"OffsetX": 0.0,
-					"OffsetY": 200.0,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "그런 일이 있었다니...",
-					"Red": 252,
-					"Green": 190,
-					"Blue": 203
-				},
-				{
-					"Portrait": 0,
-					"Talker": "크로마 여왕",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"OffsetX": 0.0,
-					"OffsetY": 200.0,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "책 바깥으로 나가는 초월 마법이라니,\n정말 터무니없네요.",
-					"Red": 252,
-					"Green": 190,
-					"Blue": 203
-				},
-				{
-					"Portrait": 0,
-					"Talker": "크로마 여왕",
-					"TalkerIndex": 0,
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"OffsetX": 0.0,
-					"OffsetY": 200.0,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "게다가 그 마법을 사용해\n우리 세계의 이야기를 차지하려는 음모까지...",
-					"Red": 252,
-					"Green": 190,
-					"Blue": 203
-				},
-				{
-					"Portrait": 0,
-					"Talker": "크로마 여왕",
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"OffsetX": 0.0,
-					"OffsetY": 200.0,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "얼른 험그럼프를 찾아, 그가 꾸미는 흉계를 막아야 해요.",
-					"Red": 252,
-					"Green": 190,
-					"Blue": 203
-				}
-			]
-		},
-		{
-			"id": "Chapter6_StorySequence_01_04",
-			"Section": "Chapter5_P0304",
-			"isChangeTalker": true,
-			"lines": [
-				{
-					"Portrait": 1,
-					"Talker": "스래쉬",
-					"BG": 2,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": true,
-					"OffsetX": -20.0,
-					"OffsetY": 100.0,
-					"isLineEnter": true,
-					"TalkerIndex": 0,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "트라르그에 무슨 일이 생겼나?",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				}
-			]
-		},
-		{
-			"id": "Chapter6_StorySequence_01_05",
-			"Section": "Chapter5_P0304",
-			"isChangeTalker": true,
-			"lines": [
-				{
-					"Portrait": 1,
-					"Talker": "스래쉬",
-					"BG": 2,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": true,
-					"OffsetX": 0.0,
-					"OffsetY": 50.0,
-					"isLineEnter": true,
-					"TalkerIndex": 0,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "안 돼...\n 내 고향 트라르그가...",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				}
-			]
-		},
-		{
-			"id": "Chapter6_StorySequence_01_06",
-			"Section": "Chapter5_P0304",
-			"isChangeTalker": true,
-			"lines": [
-				{
-					"Portrait": 1,
-					"Talker": "스래쉬",
-					"BG": 2,
-					"location": 1,
-					"is2D": true,
-					"isPortrait": true,
-					"OffsetX": 0.0,
-					"OffsetY": 50.0,
-					"isLineEnter": true,
-					"TalkerIndex": 0,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "무슨 일이 생겼는지 모르겠지만 먼저 실례하겠습니다!",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				}
-			]
-		},
-		{
-			"id": "Chapter6_StorySequence_01_07",
-			"Section": "Chapter5_P0304",
-			"isChangeTalker": true,
-			"lines": [
-				{
-					"Portrait": 0,
-					"Talker": "바이올렛",
-					"BG": 13,
-					"location": 1,
-					"is2D": true,
-					"OffsetX": 0.0,
-					"OffsetY": 200.0,
-					"isPortrait": true,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 350
-					},
-					"text": "저트! 나는 아르티아에 남아 가족들을 지키고 있을게.\n스래쉬를 도와줘!",
-					"Red": 0,
-					"Green": 0,
-					"Blue": 0
-				},
-				{
-					"Portrait": 0,
-					"Talker": "크로마 여왕",
-					"TalkerIndex": 0,
-					"BG": 0,
-					"location": 1,
-					"is2D": true,
-					"OffsetX": 0.0,
-					"OffsetY": 200.0,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "험그럼프가 트라르그에서 무슨 짓을 꾸미고 있을지 몰라요.\n 부탁합니다, 저트.",
-					"Red": 252,
-					"Green": 190,
-					"Blue": 203
-				}
-			]
-		},
-		{
-			"id": "Chapter6_Boss_Start",
-			"Section": "Chapter6_P0708",
-			"isChangeTalker": true,
-			"lines": [
-				{
-					"Portrait": 0,
-					"Talker": "스래쉬",
-					"TalkerIndex": 0,
-					"BG": 0,
-					"location": 0,
-					"is2D": true,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "맙소사! 뭐 저런 고약한 기계가 다있지...?",
-					"Red": 190,
-					"Green": 218,
-					"Blue": 186
-				},
-				{
-					"Portrait": 0,
-					"Talker": "스래쉬",
-					"TalkerIndex": 0,
-					"BG": 0,
-					"location": 0,
-					"is2D": true,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "우리 둘 다 덤벼야 물리칠 수 있을 것 같아!",
-					"Red": 190,
-					"Green": 218,
-					"Blue": 186
-				}
+      ]
+    },
+    {
+      "id": "Dialogue_Before_Humgrump_Revolt",
+      "Section": "Chapter6_P1314",
+      "isChangeTalker": true,
+      "lines": [
+        {
+          "Portrait": 0,
+          "Talker": "험그럼프",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "OffsetX": 0.0,
+          "OffsetY": 70.0,
+          "TalkerIndex": 0,
+          "FontColorR": 255.0,
+          "FontColorG": 255.0,
+          "FontColorB": 0.0,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "굉장하군, 달수염. 굉장해!",
+          "Red": 10,
+          "Green": 10,
+          "Blue": 10
+        },
+        {
+          "Portrait": 0,
+          "Talker": "험그럼프",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "OffsetX": 0.0,
+          "OffsetY": 70.0,
+          "TalkerIndex": 0,
+          "FontColorR": 255.0,
+          "FontColorG": 255.0,
+          "FontColorB": 0.0,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "당연히 나 따위는 네 위대한 마법을 상대할 수 없겠지.",
+          "Red": 10,
+          "Green": 10,
+          "Blue": 10
+        },
+        {
+          "Portrait": 0,
+          "Talker": "험그럼프",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "OffsetX": 0.0,
+          "OffsetY": 70.0,
+          "TalkerIndex": 0,
+          "FontColorR": 255.0,
+          "FontColorG": 255.0,
+          "FontColorB": 0.0,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "네 실력은 항상 좋았지만, 나는 그저 구석에서 징징대는 \n 무능력한 험그럼프일 뿐이지...",
+          "Red": 10,
+          "Green": 10,
+          "Blue": 10
+        },
+        {
+          "Portrait": 0,
+          "Talker": "험그럼프",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "OffsetX": 0.0,
+          "OffsetY": 70.0,
+          "TalkerIndex": 0,
+          "FontColorR": 255.0,
+          "FontColorG": 255.0,
+          "FontColorB": 0.0,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "난 언제나 네 그림자 속에 있었다... \n 내 사랑하는 동생... 위대한 달수염한테 맞서지 말아야 했다고!",
+          "Red": 10,
+          "Green": 10,
+          "Blue": 10
+        },
+        {
+          "Portrait": 7,
+          "Talker": "달수염",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "OffsetX": 0.0,
+          "OffsetY": 70.0,
+          "TalkerIndex": 1,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "그쯤해둬, 험그럼프!",
+          "Red": 161,
+          "Green": 210,
+          "Blue": 234
+        },
+        {
+          "Portrait": 7,
+          "Talker": "달수염",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "OffsetX": 0.0,
+          "OffsetY": 70.0,
+          "TalkerIndex": 1,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "맨날 그렇게 풀죽은 소리만 하고!",
+          "Red": 161,
+          "Green": 210,
+          "Blue": 234
+        },
+        {
+          "Portrait": 7,
+          "Talker": "달수염",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "OffsetX": 0.0,
+          "OffsetY": 70.0,
+          "TalkerIndex": 1,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "나가서 운동 좀 해. 예전엔 탁구도 쳤잖아.",
+          "Red": 161,
+          "Green": 210,
+          "Blue": 234
+        },
+        {
+          "Portrait": 0,
+          "Talker": "험그럼프",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "OffsetX": 0.0,
+          "OffsetY": 70.0,
+          "TalkerIndex": 0,
+          "FontColorR": 255.0,
+          "FontColorG": 255.0,
+          "FontColorB": 0.0,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "잘도 기억하는군! 하지만... 탁구도 항상 네가 이겨 버렸잖아.",
+          "Red": 10,
+          "Green": 10,
+          "Blue": 10
+        },
+        {
+          "Portrait": 0,
+          "Talker": "험그럼프",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "OffsetX": 0.0,
+          "OffsetY": 70.0,
+          "TalkerIndex": 0,
+          "FontColorR": 255.0,
+          "FontColorG": 255.0,
+          "FontColorB": 0.0,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "그러나 아직 기억하는 작전은 있지. 바로 교란 작전이야.",
+          "Red": 10,
+          "Green": 10,
+          "Blue": 10
+        },
+        {
+          "Portrait": 0,
+          "Talker": "험그럼프",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "OffsetX": 0.0,
+          "OffsetY": 70.0,
+          "TalkerIndex": 0,
+          "FontColorR": 255.0,
+          "FontColorG": 255.0,
+          "FontColorB": 0.0,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "뒤로 살짝 물러나는 척하다가...",
+          "Red": 10,
+          "Green": 10,
+          "Blue": 10
+        }
+      ]
+    },
+    {
+      "id": "Dialogue_Humgrump_Revolt",
+      "Section": "Chapter6_P1314",
+      "isChangeTalker": true,
+      "lines": [
+        {
+          "Portrait": 0,
+          "Talker": "험그럼프",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "OffsetX": 0.0,
+          "OffsetY": 70.0,
+          "TalkerIndex": 0,
+          "FontColorR": 255.0,
+          "FontColorG": 255.0,
+          "FontColorB": 0.0,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "아주 강력한... 백핸드로...",
+          "Red": 10,
+          "Green": 10,
+          "Blue": 10
+        },
+        {
+          "Portrait": 0,
+          "Talker": "험그럼프",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "OffsetX": 0.0,
+          "OffsetY": 70.0,
+          "TalkerIndex": 0,
+          "FontColorR": 255.0,
+          "FontColorG": 255.0,
+          "FontColorB": 0.0,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "승기를 잡는 거야.",
+          "Red": 10,
+          "Green": 10,
+          "Blue": 10
+        }
+      ]
+    },
+    {
+      "id": "Dialogue_After_Humgrump_Revolt",
+      "Section": "Chapter6_P1314",
+      "isChangeTalker": true,
+      "lines": [
+        {
+          "Portrait": 0,
+          "Talker": "험그럼프",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "OffsetX": 0.0,
+          "OffsetY": 70.0,
+          "TalkerIndex": 0,
+          "FontColorR": 255.0,
+          "FontColorG": 255.0,
+          "FontColorB": 0.0,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "이번 게임은... 험그럼프의 승리다!",
+          "Red": 10,
+          "Green": 10,
+          "Blue": 10
+        }
+      ]
+    },
+    {
+      "id": "Dialogue_Scream_Violet",
+      "Section": "Chapter6_P1314",
+      "lines": [
+        {
+          "Portrait": 0,
+          "Talker": "바이올렛",
+          "BG": 13,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "OffsetX": 0.0,
+          "OffsetY": 70.0,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "                           안 돼!!!!!!",
+          "Red": 161,
+          "Green": 210,
+          "Blue": 234
+        }
+      ]
+    },
+    {
+      "id": "Chapter6_FriendEvent_0",
+      "Section": "Chapter5_P0102",
+      "isChangeTalker": true,
+      "lines": [
+        {
+          "Portrait": 0,
+          "Talker": "바이올렛",
+          "TalkerIndex": 1,
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "다 왔어! 여기가 내 고향이야!",
+          "Red": 191,
+          "Green": 144,
+          "Blue": 224
+        },
+        {
+          "Portrait": 0,
+          "Talker": "바이올렛",
+          "TalkerIndex": 1,
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "아르티아는 예술인들의 도시야. 왕궁에 들르기 전에 잠깐 구경하고 갈래?",
+          "Red": 191,
+          "Green": 144,
+          "Blue": 224
+        },
+        {
+          "Portrait": 0,
+          "Talker": "바이올렛",
+          "TalkerIndex": 1,
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "잠깐 삼촌께도 인사 드리고 싶은데, 괜찮을까?",
+          "Red": 191,
+          "Green": 144,
+          "Blue": 224
+        },
+        {
+          "Portrait": 0,
+          "Talker": "스래쉬",
+          "TalkerIndex": 0,
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "당연하지! 가자, 바이올렛, 저트!",
+          "Red": 190,
+          "Green": 218,
+          "Blue": 186
+        }
+      ]
+    },
+    {
+      "id": "Chapter6_StorySequence_01_01",
+      "Section": "Chapter5_P0304",
+      "lines": [
+        {
+          "Portrait": 0,
+          "Talker": "뮤렐",
+          "TalkerIndex": 0,
+          "BG": 0,
+          "location": 3,
+          "OffsetX": 0.0,
+          "OffsetY": 200.0,
+          "is2D": true,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "폐하께서 기다리고 계십니다. 안으로 드시지요.",
+          "Red": 191,
+          "Green": 144,
+          "Blue": 224
+        }
+      ]
+    },
+    {
+      "id": "Chapter6_Start_3D",
+      "Section": "Chapter6_P0102",
+      "isChangeTalker": true,
+      "lines": [
+        {
+          "Portrait": 0,
+          "Talker": "스래쉬",
+          "TalkerIndex": 0,
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "무시무시한 톱니가 길을 막고있어!",
+          "Red": 190,
+          "Green": 218,
+          "Blue": 186
+        },
+        {
+          "Portrait": 0,
+          "Talker": "스래쉬",
+          "TalkerIndex": 0,
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "이 앞을 지나는 것은 무리야... 어떡하지...?",
+          "Red": 190,
+          "Green": 218,
+          "Blue": 186
+        },
+        {
+          "Portrait": 7,
+          "Talker": "달수염",
+          "TalkerIndex": 0,
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": true,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "너흰 지금 막다른 길에 몰린 것 같구나!",
+          "Red": 161,
+          "Green": 210,
+          "Blue": 234
+        },
+        {
+          "Portrait": 7,
+          "Talker": "달수염",
+          "TalkerIndex": 0,
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": true,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "너희도 잘 알겠지만, 멈춰 달라고 정중히 부탁해 봤자\n기계는 꼼짝도 안 할 게야.",
+          "Red": 161,
+          "Green": 210,
+          "Blue": 234
+        },
+        {
+          "Portrait": 7,
+          "Talker": "달수염",
+          "TalkerIndex": 0,
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": true,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "이 기계를 멈추려면 아주 특별한 물건이 필요할 거다.\n바로... 책상에서 찾을 수 있는 물건 말이야.",
+          "Red": 161,
+          "Green": 210,
+          "Blue": 234
+        }
+      ]
+    },
+    {
+      "id": "Chapter6_StorySequence_01_02",
+      "Section": "Chapter5_P0304",
+      "lines": [
+        {
+          "Portrait": 0,
+          "Talker": "크로마 여왕",
+          "TalkerIndex": 0,
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "OffsetX": 0.0,
+          "OffsetY": 200.0,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "저트! 이렇게 다시 만나니 너무 기쁘네요.",
+          "Red": 252,
+          "Green": 190,
+          "Blue": 203
+        },
+        {
+          "Portrait": 0,
+          "Talker": "크로마 여왕",
+          "TalkerIndex": 0,
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "OffsetX": 0.0,
+          "OffsetY": 200.0,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "바이올렛, 스레쉬... 다들 잘 와줬어요.",
+          "Red": 252,
+          "Green": 190,
+          "Blue": 203
+        },
+        {
+          "Portrait": 0,
+          "Talker": "크로마 여왕",
+          "TalkerIndex": 0,
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "OffsetX": 0.0,
+          "OffsetY": 200.0,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "저트, 이번 소동에 관해 설명해 주시겠어요?",
+          "Red": 252,
+          "Green": 190,
+          "Blue": 203
+        },
+        {
+          "Portrait": 0,
+          "Talker": "크로마 여왕",
+          "TalkerIndex": 0,
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "OffsetX": 0.0,
+          "OffsetY": 200.0,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "또 그 말썽쟁이 험그럼프 짓이겠지요?",
+          "Red": 252,
+          "Green": 190,
+          "Blue": 203
+        }
+      ]
+    },
+    {
+      "id": "Chapter6_StorySequence_01_03",
+      "Section": "Chapter5_P0304",
+      "lines": [
+        {
+          "Portrait": 0,
+          "Talker": "크로마 여왕",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "OffsetX": 0.0,
+          "OffsetY": 200.0,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "그런 일이 있었다니...",
+          "Red": 252,
+          "Green": 190,
+          "Blue": 203
+        },
+        {
+          "Portrait": 0,
+          "Talker": "크로마 여왕",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "OffsetX": 0.0,
+          "OffsetY": 200.0,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "책 바깥으로 나가는 초월 마법이라니,\n정말 터무니없네요.",
+          "Red": 252,
+          "Green": 190,
+          "Blue": 203
+        },
+        {
+          "Portrait": 0,
+          "Talker": "크로마 여왕",
+          "TalkerIndex": 0,
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "OffsetX": 0.0,
+          "OffsetY": 200.0,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "게다가 그 마법을 사용해\n우리 세계의 이야기를 차지하려는 음모까지...",
+          "Red": 252,
+          "Green": 190,
+          "Blue": 203
+        },
+        {
+          "Portrait": 0,
+          "Talker": "크로마 여왕",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "OffsetX": 0.0,
+          "OffsetY": 200.0,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "얼른 험그럼프를 찾아, 그가 꾸미는 흉계를 막아야 해요.",
+          "Red": 252,
+          "Green": 190,
+          "Blue": 203
+        }
+      ]
+    },
+    {
+      "id": "Chapter6_StorySequence_01_04",
+      "Section": "Chapter5_P0304",
+      "isChangeTalker": true,
+      "lines": [
+        {
+          "Portrait": 1,
+          "Talker": "스래쉬",
+          "BG": 2,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": true,
+          "OffsetX": -20.0,
+          "OffsetY": 100.0,
+          "isLineEnter": true,
+          "TalkerIndex": 0,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "트라르그에 무슨 일이 생겼나?",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        }
+      ]
+    },
+    {
+      "id": "Chapter6_StorySequence_01_05",
+      "Section": "Chapter5_P0304",
+      "isChangeTalker": true,
+      "lines": [
+        {
+          "Portrait": 1,
+          "Talker": "스래쉬",
+          "BG": 2,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": true,
+          "OffsetX": 0.0,
+          "OffsetY": 50.0,
+          "isLineEnter": true,
+          "TalkerIndex": 0,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "안 돼...\n 내 고향 트라르그가...",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        }
+      ]
+    },
+    {
+      "id": "Chapter6_StorySequence_01_06",
+      "Section": "Chapter5_P0304",
+      "isChangeTalker": true,
+      "lines": [
+        {
+          "Portrait": 1,
+          "Talker": "스래쉬",
+          "BG": 2,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": true,
+          "OffsetX": 0.0,
+          "OffsetY": 50.0,
+          "isLineEnter": true,
+          "TalkerIndex": 0,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "무슨 일이 생겼는지 모르겠지만 먼저 실례하겠습니다!",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        }
+      ]
+    },
+    {
+      "id": "Chapter6_StorySequence_01_07",
+      "Section": "Chapter5_P0304",
+      "isChangeTalker": true,
+      "lines": [
+        {
+          "Portrait": 0,
+          "Talker": "바이올렛",
+          "BG": 13,
+          "location": 1,
+          "is2D": true,
+          "OffsetX": 0.0,
+          "OffsetY": 200.0,
+          "isPortrait": true,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "저트! 나는 아르티아에 남아 가족들을 지키고 있을게.\n스래쉬를 도와줘!",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 0,
+          "Talker": "크로마 여왕",
+          "TalkerIndex": 0,
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "OffsetX": 0.0,
+          "OffsetY": 200.0,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "험그럼프가 트라르그에서 무슨 짓을 꾸미고 있을지 몰라요.\n 부탁합니다, 저트.",
+          "Red": 252,
+          "Green": 190,
+          "Blue": 203
+        }
+      ]
+    },
 
-			]
-		},
-		{
-			"id": "Chapter6_Boss_Progress1_End",
-			"Section": "Chapter6_P0708",
-			"isChangeTalker": true,
-			"lines": [
-				{
-					"Portrait": 1,
-					"Talker": "스래쉬",
-					"TalkerIndex": 0,
-					"BG": 0,
-					"location": 0,
-					"is2D": true,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "이런... 녀석이 화났나봐!",
-					"Red": 190,
-					"Green": 218,
-					"Blue": 186
-				}
-			]
-		},
-		{
-			"id": "Chapter6_Boss_Progress2_End",
-			"Section": "Chapter6_P0708",
-			"isChangeTalker": true,
-			"lines": [
-				{
-					"Portrait": 1,
-					"Talker": "스래쉬",
-					"TalkerIndex": 0,
-					"BG": 0,
-					"location": 0,
-					"is2D": true,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "소용없어! 톱날이 너무 빨라...",
-					"Red": 190,
-					"Green": 218,
-					"Blue": 186
-				}
-			]
-		},
-		{
-			"id": "Chapter6_Boss_Progress3_End",
-			"Section": "Chapter6_P0708",
-			"isChangeTalker": true,
-			"lines": [
-				{
-					"Portrait": 1,
-					"Talker": "스래쉬",
-					"TalkerIndex": 0,
-					"BG": 0,
-					"location": 0,
-					"is2D": true,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "힘을 합쳐야 돼!",
-					"Red": 190,
-					"Green": 218,
-					"Blue": 186
-				},
-				{
-					"Portrait": 1,
-					"Talker": "스래쉬",
-					"TalkerIndex": 0,
-					"BG": 0,
-					"location": 0,
-					"is2D": true,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "네가 그 물건을 멈추는 능력으로 톱날을 세워...",
-					"Red": 190,
-					"Green": 218,
-					"Blue": 186
-				},
-				{
-					"Portrait": 1,
-					"Talker": "스래쉬",
-					"TalkerIndex": 0,
-					"BG": 0,
-					"location": 0,
-					"is2D": true,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "그러면 내가 잠금장치를 부술게!",
-					"Red": 190,
-					"Green": 218,
-					"Blue": 186
-				}
-			]
-		},
-		{
-			"id": "Chapter6_Boss_Progress5_End",
-			"Section": "Chapter6_P0708",
-			"isChangeTalker": true,
-			"lines": [
-				{
-					"Portrait": 1,
-					"Talker": "스래쉬",
-					"TalkerIndex": 0,
-					"BG": 0,
-					"location": 0,
-					"is2D": true,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "저트! 조절장치가 드러났어!",
-					"Red": 190,
-					"Green": 218,
-					"Blue": 186
-				},
-				{
-					"Portrait": 1,
-					"Talker": "스래쉬",
-					"TalkerIndex": 0,
-					"BG": 0,
-					"location": 0,
-					"is2D": true,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "있는 힘껏 때려!!!",
-					"Red": 190,
-					"Green": 218,
-					"Blue": 186
-				}
-			]
-		},
-		{
-			"id": "Chapter6_Boss_Progress6_End",
-			"Section": "Chapter6_P0708",
-			"isChangeTalker": true,
-			"lines": [
-				{
-					"Portrait": 1,
-					"Talker": "스래쉬",
-					"TalkerIndex": 0,
-					"BG": 0,
-					"location": 0,
-					"is2D": true,
-					"isPortrait": false,
-					"isLineEnter": true,
-					"animation": {
-						"duration": 1000,
-						"speed": 500
-					},
-					"text": "기차가 폭주한다!!!",
-					"Red": 190,
-					"Green": 218,
-					"Blue": 186
-				}
-			]
-		}
-	]
+    {
+      "id": "Chapter6_Boss_Start",
+      "Section": "Chapter6_P0708",
+      "isChangeTalker": true,
+      "lines": [
+        {
+          "Portrait": 0,
+          "Talker": "스래쉬",
+          "TalkerIndex": 0,
+          "BG": 0,
+          "location": 0,
+          "is2D": true,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "맙소사! 뭐 저런 고약한 기계가 다있지...?",
+          "Red": 190,
+          "Green": 218,
+          "Blue": 186
+        },
+        {
+          "Portrait": 0,
+          "Talker": "스래쉬",
+          "TalkerIndex": 0,
+          "BG": 0,
+          "location": 0,
+          "is2D": true,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "우리 둘 다 덤벼야 물리칠 수 있을 것 같아!",
+          "Red": 190,
+          "Green": 218,
+          "Blue": 186
+        }
+
+      ]
+    },
+    {
+      "id": "Chapter6_Boss_Progress1_End",
+      "Section": "Chapter6_P0708",
+      "isChangeTalker": true,
+      "lines": [
+        {
+          "Portrait": 1,
+          "Talker": "스래쉬",
+          "TalkerIndex": 0,
+          "BG": 0,
+          "location": 0,
+          "is2D": true,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "이런... 녀석이 화났나봐!",
+          "Red": 190,
+          "Green": 218,
+          "Blue": 186
+        }
+      ]
+    },
+    {
+      "id": "Chapter6_Boss_Progress2_End",
+      "Section": "Chapter6_P0708",
+      "isChangeTalker": true,
+      "lines": [
+        {
+          "Portrait": 1,
+          "Talker": "스래쉬",
+          "TalkerIndex": 0,
+          "BG": 0,
+          "location": 0,
+          "is2D": true,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "소용없어! 톱날이 너무 빨라...",
+          "Red": 190,
+          "Green": 218,
+          "Blue": 186
+        }
+      ]
+    },
+    {
+      "id": "Chapter6_Boss_Progress3_End",
+      "Section": "Chapter6_P0708",
+      "isChangeTalker": true,
+      "lines": [
+        {
+          "Portrait": 1,
+          "Talker": "스래쉬",
+          "TalkerIndex": 0,
+          "BG": 0,
+          "location": 0,
+          "is2D": true,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "힘을 합쳐야 돼!",
+          "Red": 190,
+          "Green": 218,
+          "Blue": 186
+        },
+        {
+          "Portrait": 1,
+          "Talker": "스래쉬",
+          "TalkerIndex": 0,
+          "BG": 0,
+          "location": 0,
+          "is2D": true,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "네가 그 물건을 멈추는 능력으로 톱날을 세워...",
+          "Red": 190,
+          "Green": 218,
+          "Blue": 186
+        },
+        {
+          "Portrait": 1,
+          "Talker": "스래쉬",
+          "TalkerIndex": 0,
+          "BG": 0,
+          "location": 0,
+          "is2D": true,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "그러면 내가 잠금장치를 부술게!",
+          "Red": 190,
+          "Green": 218,
+          "Blue": 186
+        }
+      ]
+    },
+    {
+      "id": "Chapter6_Boss_Progress5_End",
+      "Section": "Chapter6_P0708",
+      "isChangeTalker": true,
+      "lines": [
+        {
+          "Portrait": 1,
+          "Talker": "스래쉬",
+          "TalkerIndex": 0,
+          "BG": 0,
+          "location": 0,
+          "is2D": true,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "저트! 조절장치가 드러났어!",
+          "Red": 190,
+          "Green": 218,
+          "Blue": 186
+        },
+        {
+          "Portrait": 1,
+          "Talker": "스래쉬",
+          "TalkerIndex": 0,
+          "BG": 0,
+          "location": 0,
+          "is2D": true,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "있는 힘껏 때려!!!",
+          "Red": 190,
+          "Green": 218,
+          "Blue": 186
+        }
+      ]
+    },
+    {
+      "id": "Chapter6_Boss_Progress6_End",
+      "Section": "Chapter6_P0708",
+      "isChangeTalker": true,
+      "lines": [
+        {
+          "Portrait": 1,
+          "Talker": "스래쉬",
+          "TalkerIndex": 0,
+          "BG": 0,
+          "location": 0,
+          "is2D": true,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "기차가 폭주한다!!!",
+          "Red": 190,
+          "Green": 218,
+          "Blue": 186
+        }
+      ]
+    }
+  ]
 }

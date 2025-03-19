@@ -559,7 +559,7 @@ public:
 	void Revive();
 	void ReFuel();
 	void ZetPropel(_float _fTimeDelta);
-	void Shoot_Rifle();
+	void Shoot_Rifle(_fvector _vDirection);
 
 	_bool Check_ReplaceInteractObject(IInteractable* _pObj);
 
@@ -784,18 +784,23 @@ public:
 	_float Get_CyberDashSpeed() { return m_f3DCyberDashSpeed; }
 	_float Get_CyberCurrentSpeed() { return m_f3DCyberCurrentSpeed; }
 	_vector Get_CyberVelocity() { return m_vCyberPlaneVelocity; }
+	_vector Get_CyberCursorOffset() { return m_vCyberCursorOffset; }
 	//Set
 	void Set_CyberVelocity(_vector _vMoveVelocity);
+	void Move_CyberCursor(_vector _vMove);
 private:
 	CActor_Dynamic* m_pDynamicActor = nullptr;
 	class CCamera_Target* m_pTargetCamera = nullptr;
 	const _float4x4* m_pCameraTargetWorldMatrix = { nullptr };
 	_float m_fDistanceFromCamearPlane = 7.5f;
 	_vector m_vCyberPlanePosition = { 0.f,0.f };
-	_vector m_vCyberPlaneMaxPosition = { 4.f,2.5f};
-	_vector m_vCyberPlaneMinPosition = { -4.f,-3.f};
+	_vector m_vCyberPlaneMaxPosition = { 5.f,4.f};
+	_vector m_vCyberPlaneMinPosition = { -5.f,-4.f};
 	_vector m_vCyberPlaneDirection = { 0.f,0.f };
 	_vector m_vCyberPlaneVelocity = { 0.f,0.f };
+	_vector m_vCyberCursorOffset = { 0.f,0.f, 50.f };
+	_vector m_vCyberCursorMaxOffset = { 5.f,5.f, 50.f};
+	_vector m_vCyberCursorMinOffset = { -5.f,-5.f, 50.f };
 	_float m_f3DCyberCurrentSpeed = 0.f;
 	_float m_f3DCyberFlySpeed = 6.f;
 	_float m_f3DCyberDashSpeed = 25.f;

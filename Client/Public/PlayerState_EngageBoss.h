@@ -13,6 +13,9 @@ public:
     virtual void Enter() override;
     virtual void Exit() override;
     virtual void On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx) override;
+
+private:
+
 };
 
 END
@@ -28,5 +31,5 @@ END
 //Cyberjot_cine_LB_engage_Sh01 재생.
 //잠깐 암전.(FadeOut)
 //보스 앞에서 Cyberjot_cine_LB_engage_Sh02 재생. 
-//보스 소리지르기
+//보스 소리지르기  (카메라 위치 : 1.74 , 25.2, 5.42)
 //보스전 시작

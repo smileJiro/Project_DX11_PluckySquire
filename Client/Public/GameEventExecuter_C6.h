@@ -76,7 +76,6 @@ private:
 private:
 
 private:
-	_float4x4						m_TargetWorldMatrix = {};
 	_uint							m_iDialogueIndex = 0;
 	_float							m_fPlaye2DMoveSpeed = {};
 public:

@@ -36,7 +36,7 @@ public :
 		PIP_C09_JUMPUP,					  // C09
 		PIP_C09_JUMPUP_IDLE,			  // C09
 		Pip_knockedback_End,
-		Pip_knockedback_Loop,
+		PIP_KNOCKEDBACK_LOOP,
 		Pip_released,
 		Pip_trapped,
 		pip_talk_happy_up_Flipbook,

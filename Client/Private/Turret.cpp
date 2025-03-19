@@ -160,6 +160,7 @@ void CTurret::State_Change_Fire()
             static_cast<CBomb*>(pGameObject)->Start_Parabola(vPos, vPlayerPos, 1.0f);
 
             CCamera_Manager::GetInstance()->Start_Shake_ByCount(CCamera_Manager::TARGET_2D, 0.2f, 0.4f, 50, CCamera::SHAKE_Y, 0.05f);
+            pBomb->Set_Time_On();
         }
         else
         {
@@ -170,6 +171,7 @@ void CTurret::State_Change_Fire()
             pBomb->Start_Parabola_3D(vPlayerPos, XMConvertToRadians(30.f));
 
             CCamera_Manager::GetInstance()->Start_Shake_ByCount(CCamera_Manager::TARGET, 0.2f, 0.4f, 50, CCamera::SHAKE_Y, 0.05f);
+            pBomb->Set_Time_On();
         }
     }
 
