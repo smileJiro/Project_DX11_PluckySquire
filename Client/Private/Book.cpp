@@ -136,7 +136,7 @@ HRESULT CBook::Initialize(void* _pArg)
 	Set_AnimationLoop(COORDINATE_3D, 8, false);
 	Set_AnimationLoop(COORDINATE_3D, 9, true);
 	Set_Animation(0);
-
+	Update(0.f);
 
 	Bind_AnimEventFunc("Player_Change_Action", bind(&CBook::PageAction_Call_PlayerEvent, this));
 
@@ -180,8 +180,9 @@ void CBook::Update(_float _fTimeDelta)
 {
 	if (true == m_isFreezing && true == m_isFreezingOff)
 	{
-		m_isFreezingRatio -= _fTimeDelta * 0.1f;
-		if (0.f >= m_isFreezingRatio)
+		m_isFreezingRatioTime -= _fTimeDelta;
+		m_isFreezingRatio = 0.7f * m_isFreezingRatioTime;
+		if (0.f >= m_isFreezingRatioTime)
 		{
 			m_isFreezingRatio = 0.f;
 			m_isFreezingOff = false;
@@ -384,7 +385,7 @@ HRESULT CBook::Render()
 				{
 					if (CUR_LEFT == i || CUR_RIGHT == i)
 					{
-						_float fBlend = 0.7f;
+						_float fBlend = m_isFreezingRatio;
 						if (FAILED(pShader->Bind_RawValue("g_fBlendingRatio", &fBlend, sizeof(_float))))
 							return E_FAIL;
 

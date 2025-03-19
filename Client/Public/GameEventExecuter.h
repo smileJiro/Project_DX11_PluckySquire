@@ -191,6 +191,7 @@ protected:
 	
 	//임시 데이터들 ...
 	_bool					m_isPlag = { false };
+	_bool					m_isBookDelete = { false };
 	vector<CGameObject*>	m_TargetObjects;
 	CPostit_Page*			m_pPostitPage = nullptr;
 	_int					m_iEventExcuterAction = -1;

@@ -103,10 +103,16 @@ public:
 	CBook* Get_Book()
 	{
 		if (nullptr == m_pBook)
-			assert(m_pBook);
+			return nullptr;
 
 		return m_pBook;
 	}
+	
+	void								Remove_Book() {
+		Safe_Release(m_pBook);
+		m_pBook = nullptr; 
+	}
+
 
 	void								Set_BossForUI(CButterGrump* _pBoss) { m_pBoss = _pBoss; Safe_AddRef(_pBoss); }
 	CButterGrump*						Get_BossForUI()

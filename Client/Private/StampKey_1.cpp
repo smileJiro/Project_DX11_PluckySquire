@@ -2,6 +2,7 @@
 #include "StampKey_1.h"
 #include "GameInstance.h"
 #include "UI_Manager.h"
+#include "PlayerData_Manager.h"
 
 
 
@@ -46,13 +47,13 @@ void CStampKey_1::Priority_Update(_float _fTimeDelta)
 void CStampKey_1::Update(_float _fTimeDelta)
 {
 	CBook* pBook = Uimgr->Get_Book();
-
+	CPlayerData_Manager* pPDM = CPlayerData_Manager::GetInstance();
 	if (nullptr == pBook)
-		assert(pBook);
+		return;
 
 	if (true == pBook->Get_PlayerAbove())
 	{
-		if (true == Uimgr->Get_StampHave(0) && true == Uimgr->Get_StampHave(1))
+		if (true == pPDM->Is_Own(CPlayerData_Manager::BOMB_STAMP) && true == pPDM->Is_Own(CPlayerData_Manager::STOP_STAMP))
 		{
 			Change_StampKeyWord();
 		}
@@ -63,13 +64,13 @@ void CStampKey_1::Update(_float _fTimeDelta)
 void CStampKey_1::Late_Update(_float _fTimeDelta)
 {
 	CBook* pBook = Uimgr->Get_Book();
-
+	CPlayerData_Manager* pPDM = CPlayerData_Manager::GetInstance();
 	if (nullptr == pBook)
-		assert(pBook);
+		return;
 
 	if (true == pBook->Get_PlayerAbove())
 	{
-		if (true == Uimgr->Get_StampHave(0) && true == Uimgr->Get_StampHave(1))
+		if (true == pPDM->Is_Own(CPlayerData_Manager::BOMB_STAMP) && true == pPDM->Is_Own(CPlayerData_Manager::STOP_STAMP))
 			__super::Late_Update(_fTimeDelta);
 	}
 	
@@ -78,7 +79,8 @@ void CStampKey_1::Late_Update(_float _fTimeDelta)
 HRESULT CStampKey_1::Render()
 {
 	CUI_Manager* pUIManager = CUI_Manager::GetInstance();
-	if (false == pUIManager->Get_StampHave(0) || false == pUIManager->Get_StampHave(1))
+	CPlayerData_Manager* pPDM = CPlayerData_Manager::GetInstance();
+	if (false == pPDM->Is_Own(CPlayerData_Manager::BOMB_STAMP) || false == pPDM->Is_Own(CPlayerData_Manager::STOP_STAMP))
 		return S_OK;
 
 	if (FAILED(m_pControllerTransform->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
