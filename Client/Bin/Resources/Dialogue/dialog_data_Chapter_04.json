@@ -218,8 +218,10 @@
           "Portrait": 0,
           "Talker": "바이올렛",
           "BG": 13,
-          "location": 5,
+          "location": 0,
           "is2D": true,
+          "OffsetX": 40.0,
+          "OffsetY": -100.0,
           "isPortrait": true,
           "isLineEnter": true,
           "animation": {
@@ -235,8 +237,10 @@
           "Portrait": 0,
           "Talker": "바이올렛",
           "BG": 13,
-          "location": 5,
+          "location": 0,
           "is2D": true,
+          "OffsetX": 40.0,
+          "OffsetY": -100.0,
           "isPortrait": true,
           "isLineEnter": true,
           "animation": {
@@ -252,8 +256,10 @@
           "Portrait": 0,
           "Talker": "바이올렛",
           "BG": 13,
-          "location": 5,
+          "location": 0,
           "is2D": true,
+          "OffsetX": 40.0,
+          "OffsetY": -100.0,
           "isLineEnter": true,
           "isPortrait": true,
           "animation": {
@@ -269,8 +275,10 @@
           "Portrait": 1,
           "Talker": "스래쉬",
           "BG": 2,
-          "location": 4,
+          "location": 0,
           "is2D": true,
+          "OffsetX": -40.0,
+          "OffsetY": -100.0,
           "isPortrait": true,
           "animation": {
             "duration": 1000,
@@ -285,7 +293,9 @@
           "Portrait": 0,
           "Talker": "바이올렛",
           "BG": 13,
-          "location": 5,
+          "location": 0,
+          "OffsetX": 40.0,
+          "OffsetY": -100.0,
           "is2D": true,
           "isPortrait": true,
           "animation": {
@@ -364,7 +374,7 @@
             "duration": 1000,
             "speed": 350
           },
-          "text": "대박이네.",
+          "text": "대박이네......",
           "Red": 0,
           "Green": 0,
           "Blue": 0
@@ -627,6 +637,8 @@
           "Talker": "바이올렛",
           "BG": 2,
           "location": 0,
+          "OffsetX": 0.0,
+          "OffsetY": 100.0,
           "is2D": true,
           "isPortrait": true,
           "animation": {
@@ -644,6 +656,8 @@
           "BG": 2,
           "location": 0,
           "is2D": true,
+          "OffsetX": 0.0,
+          "OffsetY": -100.0,
           "isPortrait": true,
           "isLineEnter": true,
           "animation": {
@@ -660,6 +674,8 @@
           "Talker": "스래쉬",
           "BG": 2,
           "location": 0,
+          "OffsetX": 0.0,
+          "OffsetY": -100.0,
           "is2D": true,
           "isPortrait": true,
           "animation": {
@@ -676,6 +692,8 @@
           "Talker": "스래쉬",
           "BG": 2,
           "location": 0,
+          "OffsetX": 0.0,
+          "OffsetY": -100.0,
           "is2D": true,
           "isPortrait": true,
           "isLineEnter": true,

@@ -52,7 +52,8 @@ public:
 	};
 
 	enum BOSSPART {BOSSPART_BODY, BOSSPART_LEFTEYE, BOSSPART_RIGHTEYE, BOSSPART_TONGUE, BOSSPART_SHIELD,
-		BOSSPART_HOMING_EFFECT, BOSSPART_PURPLEBALL_EFFECT, BOSSPART_YELLOWBALL_EFFECT, BOOSPART_SHIELD_EFFECT,
+		BOSSPART_HOMING_EFFECT, BOSSPART_PURPLEBALL_EFFECT, BOSSPART_YELLOWBALL_EFFECT, BOSSPART_SHIELD_EFFECT,
+		BOSSPART_ROAR_EFFECT,
 		BOSSPART_END};
 
 	//enum BOSS_SHAPE_USE
@@ -143,13 +144,14 @@ public:
 	void Shield_Break();
 	void Activate_Invinciblility(_bool _isActivate);
 	void	Animation_End(COORDINATE _eCoord, _uint iAnimIdx);
-	void Play_Intro();
+	void Play_Intro(_uint _iIndex);
 
 	virtual void	On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)override;
 	void Hit();
 
-	public:
-
+public:
+	void	Roar();
+	void	EndRoar();
 
 private:
 	virtual	HRESULT					Ready_ActorDesc(void* _pArg);
@@ -193,6 +195,7 @@ private:
 	class CEffect_System* m_pPurpleEffect = { nullptr };
 	class CEffect_System* m_pYellowEffect = { nullptr };
 	class CEffect_System* m_pShieldEffect = { nullptr };
+	class CEffect_System* m_pRoarEffect = { nullptr };
 
 private:
 	_bool m_isStopTimeScale = false;

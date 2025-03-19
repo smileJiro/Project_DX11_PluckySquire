@@ -88,12 +88,16 @@ public:
 	_bool Is_PickingCursor_Model_Test(_float2 _fCursorPos, _float& _fDst);
 	//const _float4x4* Find_BoneMatrix(const _char* _pBoneName) const;
 	void Register_OnAnimEndCallBack(const function<void(COORDINATE,_uint)>& fCallback);
+	void Remove_OnAnimEndCallBack(const function<void(COORDINATE, _uint)>& fCallback);
 	virtual void Check_FrustumCulling();
 
 public:
 	void Start_FadeAlphaIn(_float _fFadeAlphaTime = 1.0f); // ¹à¾ÆÁö´Â°Å
 	void Start_FadeAlphaOut(_float _fFadeAlphaTime = 1.0f); // ¹à¾ÆÁö´Â°Å
 	void Action_Fade(_float _fTimeDelta);
+
+public:
+	HRESULT Bind_RawValue(COORDINATE _eCoordinate, const _char* _pConstantName, const void* _pData, _uint _iLength);
 
 public:
 	// Get
@@ -163,12 +167,15 @@ public: /* Trail */
 	virtual HRESULT			Render_Trail();
 public:
 	void					On_Trail() { m_isTrail = true; }
-	void					On_Trail(_float _fTrailCreateTime, _float _fTrailDuration, const _float4& _vTrailColor)
+	void					On_Trail(_float _fTrailCreateTime, _float _fTrailDuration, const _float4& _vTrailColor, const _float4& _vOuterColor, _float _fBaseReflect, _float _fExp)
 	{
 		m_vTrailCreateTime.x = _fTrailCreateTime;
 		m_fTrailDuration = _fTrailDuration;
 		m_vTrailColor = _vTrailColor;
 		m_isTrail = true;
+		m_vOuterColor = _vOuterColor;
+		m_fBaseReflect = _fBaseReflect;
+		m_fExp = _fExp;
 	}
 	void					Off_Trail() { m_isTrail = false; }
 	void					Set_TrailCreateTime(_float _fTrailCreateTime) { m_vTrailCreateTime.x = _fTrailCreateTime; }
@@ -181,6 +188,9 @@ protected:
 	_float2					m_vTrailCreateTime = { 0.01f, 0.0f };
 	_float					m_fTrailDuration = 0.3f;
 	_float4					m_vTrailColor = { 0.0f, 0.909f, 1.0f, 1.0f };
+	_float4					m_vOuterColor = { 1.f, 1.f, 1.f, 1.f };
+	_float					m_fBaseReflect = { 0.f };
+	_float					m_fExp = { 0.f };
 
 public:
 	void					Set_PosTexColor(const _float4 _vColor) { m_vPosTexColor = _vColor; }

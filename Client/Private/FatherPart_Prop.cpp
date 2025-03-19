@@ -162,9 +162,22 @@ void CFatherPart_Prop::State_Change_Pickup()
 	CPlayer* pPlayer = CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr();
 	assert(pPlayer);
 
-	pPlayer->Set_State(CPlayer::STATE::GET_ITEM);
+	switch (m_iFatherPart)
+	{
+	case CFatherGame::FATHER_PART::FATHER_BODY:
+		pPlayer->Acquire_Item(PLAYER_2D_ITEM_ID::FATHER_BODY);
+		break;
+	case CFatherGame::FATHER_PART::FATHER_WING:
+		pPlayer->Acquire_Item(PLAYER_2D_ITEM_ID::FATHER_WING);
+		break;
+	case CFatherGame::FATHER_PART::FATER_HEAD:
+		pPlayer->Acquire_Item(PLAYER_2D_ITEM_ID::FATER_HEAD);
+		break;
+	default:
+		break;
+	}
 
-	CFatherGame::GetInstance()->Pickup_FatherPart((CFatherGame::FATHER_PART)m_iFatherPart);
+	//CFatherGame::GetInstance()->Pickup_FatherPart((CFatherGame::FATHER_PART)m_iFatherPart);
 	Event_DeleteObject(this);
 }
 

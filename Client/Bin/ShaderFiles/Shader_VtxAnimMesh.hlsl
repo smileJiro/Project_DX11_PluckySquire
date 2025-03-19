@@ -39,6 +39,13 @@ cbuffer MultiFresnels : register(b1)
 }
 
 
+cbuffer SingleFresnel : register(b2)
+{
+    Fresnel OneFresnel;
+};
+
+
+
 /* 상수 테이블 */
 float4x4 g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 /* Bone Matrix */
@@ -49,6 +56,8 @@ float g_fFarZ = 500.f;
 int g_iFlag = 0;
 
 float4 g_vCamPosition;
+float4 g_vOuterColor;
+float g_fBaseReflect, g_fExp;
 
 float2 g_fStartUV;
 float2 g_fEndUV;
@@ -462,22 +471,125 @@ PS_PLAYERDEPTHOUT PS_PLAYERDEPTH(PS_IN In)
 
 struct PS_TRAIL_OUT
 {
-    float4 vDiffuse : SV_TARGET0;
+    float4 vAccumulate : SV_TARGET0;
+    float vRevealage : SV_TARGET1;
+    float4 vBright : SV_TARGET2;
 };
+
+float FUNC_WEIGHT(float fDepth, float fAlpha)
+{
+    return fAlpha * clamp(10.f / (1e-5 + pow(fDepth / 200.f, 4.f)), 1e-2, 3e3);
+}
+
+
+float3 RGBtoHSV(float3 vColor)
+{
+    float maxC = max(vColor.r, max(vColor.g, vColor.b));
+    float minC = min(vColor.r, min(vColor.g, vColor.b));
+    float delta = maxC - minC;
+
+    float h = 0;
+    if (delta > 0)
+    {
+        if (maxC == vColor.r)
+            h = fmod(((vColor.g - vColor.b) / delta), 6);
+        else if (maxC == vColor.g)
+            h = ((vColor.b - vColor.r) / delta) + 2;
+        else
+            h = ((vColor.r - vColor.g) / delta) + 4;
+    }
+    h = (h < 0 ? h + 6 : h) / 6; // Normalize to [0,1]
+
+    float s = (maxC == 0) ? 0 : delta / maxC;
+    float v = maxC;
+
+    return float3(h, s, v);
+}
+
+// HSV → RGB 변환
+float3 HSVtoRGB(float3 vHsv)
+{
+    float h = vHsv.x * 6;
+    float s = vHsv.y;
+    float v = vHsv.z;
+
+    int i = (int) floor(h);
+    float f = h - i;
+    float p = v * (1 - s);
+    float q = v * (1 - s * f);
+    float t = v * (1 - s * (1 - f));
+
+    float3 rgb;
+    if (i == 0)
+        rgb = float3(v, t, p);
+    else if (i == 1)
+        rgb = float3(q, v, p);
+    else if (i == 2)
+        rgb = float3(p, v, t);
+    else if (i == 3)
+        rgb = float3(p, q, v);
+    else if (i == 4)
+        rgb = float3(t, p, v);
+    else
+        rgb = float3(v, p, q);
+
+    return rgb;
+}
+
+// HSV 보간 함수
+float3 HSVLerp(float3 colorA, float3 colorB, float t)
+{
+    float3 hsvA = RGBtoHSV(colorA);
+    float3 hsvB = RGBtoHSV(colorB);
+
+    // Hue는 각도 개념이라 보간 시 회전 방향 고려
+    if (abs(hsvA.x - hsvB.x) > 0.5)
+    {
+        if (hsvA.x > hsvB.x)
+            hsvB.x += 1.0;
+        else
+            hsvA.x += 1.0;
+    }
+
+    float3 hsvLerp = lerp(hsvA, hsvB, t);
+    hsvLerp.x = fmod(hsvLerp.x, 1.0); // Normalize Hue
+
+    return HSVtoRGB(hsvLerp);
+}
+
+
 
 PS_TRAIL_OUT PS_TRAIL(PS_IN In)
 {
-    PS_TRAIL_OUT Out = (PS_TRAIL_OUT) 0;
+    PS_TRAIL_OUT Out = (PS_TRAIL_OUT) 0;     
+    
+    float3 vViewDirection = g_vCamPosition.xyz - In.vWorldPos.xyz;
+    float fLength = length(vViewDirection);
+    vViewDirection = normalize(vViewDirection);
+    
+    float FresnelValue = Compute_Fresnel(In.vNormal.xyz, vViewDirection, g_fBaseReflect, g_fExp, 1.f);    
+    
+    float3 vFresnelColor = HSVLerp(g_vTrailColor.xyz, g_vOuterColor.xyz, FresnelValue);
+    
     float fAlpha = 1.0f - g_vTrailTime.y / g_vTrailTime.x;
-    float4 FinalColor = g_vTrailColor;
+    float4 FinalColor/* = g_vTrailColor*/;
+    FinalColor.rgb = vFresnelColor;
+    FinalColor.a = g_vTrailColor.a;
+    
     FinalColor.rgb *= fAlpha;
     FinalColor.a *= fAlpha;
 
     if (FinalColor.a < 0.01f)
         discard;
-
-    Out.vDiffuse = FinalColor;
-
+    
+    float fWeight = FUNC_WEIGHT(In.vProjPos.w, FinalColor.a);
+    //float fWeight = 300.f;
+    Out.vAccumulate.xyz = FinalColor.xyz * FinalColor.a * fWeight;
+    Out.vAccumulate.a = FinalColor.a * fWeight;
+    Out.vRevealage.r = FinalColor.a;
+    Out.vBright = Out.vAccumulate;
+    
+    //Out.vBloom = FinalColor;
     return Out;
 }
 
@@ -626,8 +738,8 @@ technique11 DefaultTechnique
     pass TrailPass // 10
     {
         SetRasterizerState(RS_Default);
-        SetDepthStencilState(DSS_None, 0);
-        SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        SetDepthStencilState(DSS_WriteNone, 0);
+        SetBlendState(BS_WeightAccumulate, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
 
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;

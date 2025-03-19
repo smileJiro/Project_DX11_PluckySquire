@@ -32,6 +32,7 @@ void CPlayerState_Evict::Update(_float _fTimeDelta)
 			v3DWorldPos.y = 0.352f;
 
 			m_pOwner->Change_Coordinate(COORDINATE_3D, (_float3*)&v3DWorldPos);
+			m_pOwner->Set_Kinematic(true);
 			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_BOOKOUT_01_GT);
 			m_pOwner->LookDirectionXZ_Kinematic(_vector{0,0,-1});
 			m_eCurState = BOOKOUT;	

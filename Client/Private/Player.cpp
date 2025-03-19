@@ -1573,6 +1573,11 @@ void CPlayer::Shoot_Rifle(_fvector _vTargetPosition)
 	m_pRifle->Shoot(_vTargetPosition);
 }
 
+void CPlayer::Acquire_Item(PLAYER_2D_ITEM_ID _eItemID)
+{
+	m_pStateMachine->Transition_To(new CPlayerState_GetItem(this, _eItemID));
+}
+
 
 
 //아무런 상호작용 중이 아닐 때에는 그냥 가장 가까운 애로 교체.
@@ -2513,49 +2518,7 @@ void CPlayer::Key_Input(_float _fTimeDelta)
 	}
 	if (KEY_DOWN(KEY::Z))
 	{
-		//COORDINATE eCoord =Get_CurCoord();
-		//if (COORDINATE_3D == eCoord)
-		//{
-			//근처 포탈
-			//static_cast<CActor_Dynamic*>(Get_ActorCom())->Start_ParabolicTo(_vector{ -46.9548531, 0.358914316, -11.1276035 }, XMConvertToRadians(45.f), 9.81f * 3.0f);
-			//포탈 4 0x00000252f201def0 {52.1207695, 2.48441672, 13.1522322, 1.00000000}
-			//도미노 { 6.99342966, 5.58722591, 21.8827782 }
-			//static_cast<CActor_Dynamic*>(Get_ActorCom())->Start_ParabolicTo(_vector{ 6.99342966, 5.58722591, 21.8827782 }, XMConvertToRadians(45.f), 9.81f * 3.0f);
-			//주사위 2 (48.73f, 2.61f, -5.02f);
-			//static_cast<CActor_Dynamic*>(Get_ActorCom())->Start_ParabolicTo(_vector{ 48.73f, 2.61f, -5.02f }, XMConvertToRadians(45.f), 9.81f * 3.0f);
-			//static_cast<CActor_Dynamic*>(Get_ActorCowm())->Start_ParabolicTo(_vector{ 15.f, 10.f, 21.8827782 }, XMConvertToRadians(45.f), 9.81f * 3.0f);
-
-	   // }
-		//static_cast<CModelObject*>(m_PartObjects[PART_BODY])->To_NextAnimation();
-		//_vector vPalyerPos = Get_FinalPosition();
-		//AUTOMOVE_COMMAND tCommand{};
-		//tCommand.eType = AUTOMOVE_TYPE::MOVE_TO;
-		//tCommand.iAnimIndex = (_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_RUN_01_GT;
-		//tCommand.fPreDelayTime = 4.f;
-		//tCommand.vTarget = vPalyerPos += { 2.f, 0.f, 0.f };
-		//Add_AutoMoveCommand(tCommand);
-		//tCommand.iAnimIndex = (_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_RUN_01_GT;
-		//tCommand.vTarget += { 0.f, 0.f, 2.f };
-		//Add_AutoMoveCommand(tCommand);
-		//tCommand.iAnimIndex = (_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_RUN_01_GT;
-		//tCommand.vTarget += { -2.f, 0.f, 0.f };
-		//Add_AutoMoveCommand(tCommand);
-		//tCommand.iAnimIndex = (_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_RUN_01_GT;
-		//tCommand.vTarget += { 0.f, 0.f, -2.f };
-		//Add_AutoMoveCommand(tCommand);
-
-		//Set_State(EVICT);
-		//Start_AutoMove(true);
-		//AUTOMOVE_COMMAND tCommand{};
-		//tCommand.eType = AUTOMOVE_TYPE::MOVE_TO;
-		//tCommand.iAnimIndex = (_uint)CPlayer::ANIM_STATE_2D::PLAYER_RUN_RIGHT;
-		//tCommand.fPreDelayTime = 0.5f;
-		//tCommand.vTarget = { 0.f, 0.f, 0.f };
-		//tCommand.fPostDelayTime = 0.5f;
-		//tCommand.fMoveSpeedMag = 4.f;
-		//Add_AutoMoveCommand(tCommand);
-  //      Start_AutoMove(true);
-		//Set_State(CPlayer::TRANSFORM_IN);
+		//Set_State(CPlayer::EVICT);
 	}
 	if (m_pActorCom->Is_Kinematic())
 	{

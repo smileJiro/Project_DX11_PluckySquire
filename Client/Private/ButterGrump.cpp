@@ -91,7 +91,8 @@ HRESULT CButterGrump::Initialize(void* _pArg)
     m_pBossFSM->Add_State((_uint)BOSS_STATE::HIT);
     m_pBossFSM->Add_State((_uint)BOSS_STATE::DEAD);
 
-    m_pBossFSM->Set_State((_uint)BOSS_STATE::IDLE);
+    m_pBossFSM->Set_State((_uint)BOSS_STATE::SCENE);
+    //m_pBossFSM->Set_State((_uint)BOSS_STATE::IDLE);
 
     CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
 
@@ -104,6 +105,8 @@ HRESULT CButterGrump::Initialize(void* _pArg)
 
     Bind_AnimEventFunc("On_Attack", bind(&CButterGrump::On_Attack, this));
     Bind_AnimEventFunc("On_Move", bind(&CButterGrump::On_Move, this));
+    Bind_AnimEventFunc("Roar", bind(&CButterGrump::Roar, this));
+    Bind_AnimEventFunc("EndRoar", bind(&CButterGrump::EndRoar, this));
 
     /* Com_AnimEventGenerator */
     CAnimEventGenerator::ANIMEVTGENERATOR_DESC tAnimEventDesc{};
@@ -264,11 +267,13 @@ void CButterGrump::Change_Animation()
         switch ((BOSS_STATE)m_iState)
         {
         case BOSS_STATE::SCENE:
-            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(LB_INTRO_SH01);
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(IDLE);
             break;
 
         case BOSS_STATE::TRANSITION:
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(TRANSITION_PHASE2);
+            //if (nullptr != m_pRoarEffect)
+            //    m_pRoarEffect->Active_All(true);
             break;
 
         case BOSS_STATE::IDLE:
@@ -344,6 +349,8 @@ void CButterGrump::Change_Animation()
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(ROAR);
             if (nullptr != m_pShieldEffect)
                 m_pShieldEffect->Active_All(true);
+            //if (nullptr != m_pRoarEffect)
+            //    m_pRoarEffect->Active_All(true);
             break;
 
         case BOSS_STATE::HIT:
@@ -503,7 +510,8 @@ void CButterGrump::Attack()
         for (_uint i = 0; i < 8; i++)
         {
             _float4 vRot;
-            _float3 vPos=vPosition;
+            _float3 vPos = vPosition;
+            //vPos.z -= 5.f;
             Rot = XMQuaternionMultiply(XMLoadFloat4(&vRotation), XMQuaternionRotationAxis(XMVectorSet(Array[i], Array2[i], 0.f, 0.f), XMConvertToRadians(fAngle)));
             XMStoreFloat4(&vRot, Rot);
             /*vPos.x += 2.f * Array[i];
@@ -574,7 +582,7 @@ void CButterGrump::Attack()
             fHorizontalAngle = XMConvertToRadians(Horizontal_Angle_Array[i]);
 
             //x, y 위치만 조정
-            _float3 fOffSet = { cos(XMConvertToRadians(120.f * (_float)i + fAngleOffset * m_iAttackCount)), sin(XMConvertToRadians(120.f * (_float)i + fAngleOffset * m_iAttackCount)), 0.f };
+            _float3 fOffSet = { cos(XMConvertToRadians(120.f * (_float)i + fAngleOffset * m_iAttackCount)), sin(XMConvertToRadians(120.f * (_float)i + fAngleOffset * m_iAttackCount)), -5.f };
 			_float3 vPos; XMStoreFloat3(&vPos, XMLoadFloat3(&vPosition) + fRadius * XMVector3Rotate(XMLoadFloat3(&fOffSet), XMLoadFloat4(&vRotation)));
 
             //설정한 수평,수직 각도만큼 회전
@@ -835,11 +843,16 @@ void CButterGrump::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
     switch ((CButterGrump::Animation)pModelObject->Get_Model(COORDINATE_3D)->Get_CurrentAnimIndex())
     {
     case LB_INTRO_SH01 :
-        pModelObject->Switch_Animation(LB_INTRO_SH04);
+        //pModelObject->Switch_Animation(LB_INTRO_SH04);
+        Set_AnimChangeable(true);
+        if ((_uint)BOSS_STATE::SCENE == m_iState)
+            pModelObject->Switch_Animation(IDLE);
         break;
 
     case LB_INTRO_SH04 :
         Set_AnimChangeable(true);
+        if ((_uint)BOSS_STATE::SCENE == m_iState)
+            pModelObject->Switch_Animation(IDLE);
         break;
 
     case EXPLOSION_INTO:
@@ -855,6 +868,7 @@ void CButterGrump::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
 
     case TRANSITION_PHASE2:
         Set_AnimChangeable(true);
+        //EndRoar();
         break;
 
     case EXPLOSION_FALL:
@@ -905,6 +919,7 @@ void CButterGrump::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
         Set_AnimChangeable(true);
         if (true == Is_Converse())
             m_isConverse = false;
+        //EndRoar();
         break;
 
     case RECEIVE_DAMAGE:
@@ -926,8 +941,23 @@ void CButterGrump::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
 //    static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(LB_INTRO_SH04);
 //}
 
-void CButterGrump::Play_Intro()
+void CButterGrump::Play_Intro(_uint _iIndex)
 {
+    switch (_iIndex)
+    {
+    case 0:
+        Set_AnimChangeable(false);
+        static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(LB_INTRO_SH01);
+        break;
+    case 1:
+        Set_AnimChangeable(false);
+        static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(LB_INTRO_SH04);
+        break;
+    case 2:
+        Set_AnimChangeable(false);
+        static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(ROAR);
+        break;
+    }
 }
 
 void CButterGrump::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
@@ -1016,6 +1046,29 @@ void CButterGrump::Hit()
     m_isAttackChained = false;
     m_isSpawnOrb = false;
     Set_AnimChangeable(true);
+}
+
+void CButterGrump::Roar()
+{
+    // Cam까지 넣어주면 좋을듯.
+    //CCamera_Manager::GetInstance()->Start_Shake_ByCount(CCamera_Manager::TARGET_2D, 0.5f, 0.2f, 100, CCamera::SHAKE_Y, 0.0f);
+
+
+    if ((_uint)BOSS_STATE::SHIELD == m_iState)
+        CCamera_Manager::GetInstance()->Start_Shake_ByCount(CCamera_Manager::TARGET, 1.2f, 0.25f, 4000, CCamera::SHAKE_XY, 0.2f);
+        //CCamera_Manager::GetInstance()->Start_Shake_ByTime(CCamera_Manager::TARGET, 1.f, 0.5f, 0.25f, CCamera::SHAKE_Y, 0.2f);
+    else if ((_uint)BOSS_STATE::TRANSITION == m_iState)
+        CCamera_Manager::GetInstance()->Start_Shake_ByCount(CCamera_Manager::TARGET, 1.8f, 0.25f, 10000, CCamera::SHAKE_XY, 0.2f);
+        //CCamera_Manager::GetInstance()->Start_Shake_ByTime(CCamera_Manager::TARGET, 1.6f, 0.75f, 0.25f, CCamera::SHAKE_yY, 0.2f);
+    
+    if (nullptr != m_pRoarEffect)
+        m_pRoarEffect->Active_All(true);
+}
+
+void CButterGrump::EndRoar()
+{
+    if (nullptr != m_pRoarEffect)
+        m_pRoarEffect->Stop_SpawnAll(0.5f);
 }
 
 HRESULT CButterGrump::Ready_ActorDesc(void* _pArg)
@@ -1262,7 +1315,7 @@ HRESULT CButterGrump::Ready_PartObjects()
 
     Safe_AddRef(m_pYellowEffect);
 
-    m_PartObjects[BOOSPART_SHIELD_EFFECT] = m_pShieldEffect =
+    m_PartObjects[BOSSPART_SHIELD_EFFECT] = m_pShieldEffect =
         static_cast<CEffect_System*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_iCurLevelID, TEXT("ShieldEnv.json"), &EffectDesc));
 
     if (nullptr != m_pShieldEffect)
@@ -1272,6 +1325,18 @@ HRESULT CButterGrump::Ready_PartObjects()
     }
 
     Safe_AddRef(m_pShieldEffect);
+
+    m_PartObjects[BOSSPART_ROAR_EFFECT] = m_pRoarEffect =
+        static_cast<CEffect_System*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_iCurLevelID, TEXT("BossRoar.json"), &EffectDesc));
+
+    if (nullptr != m_pRoarEffect)
+    {
+        m_pRoarEffect->Set_Active(false);
+        m_pRoarEffect->Set_ParentMatrix(COORDINATE_3D, m_pControllerTransform->Get_WorldMatrix_Ptr(COORDINATE_3D));
+        m_pRoarEffect->Set_SpawnMatrix(p3DModel->Get_BoneMatrix("buttergrump_righead_jaw_end"));
+    }
+
+    Safe_AddRef(m_pRoarEffect);
 
     return S_OK;
 }
@@ -1445,6 +1510,7 @@ void CButterGrump::Free()
     Safe_Release(m_pPurpleEffect);
     Safe_Release(m_pYellowEffect);
     Safe_Release(m_pShieldEffect);
+    Safe_Release(m_pRoarEffect);
 
     __super::Free();
 }

@@ -125,8 +125,11 @@ public:
 	void					End_DropBook();
 
 
-	void					Set_Freezing(_bool _isFreezing) { m_isFreezing = _isFreezing; }
+	void					Set_Freezing(_bool _isFreezing); 
 	_bool					Is_Freezing() { return m_isFreezing; }	
+	void					Start_FreezingOff();
+	void					Set_Droppable(_bool _isDroppable) { m_isDroppable = _isDroppable; }
+	_bool					Is_Droppable() { return m_isDroppable; }
 private:
 	//void					Calc_Page3DWorldMinMax();	
 
@@ -136,11 +139,14 @@ private :
 	BOOK_PAGE_ACTION		m_eCurAction = ACTION_LAST;
 	BOOK_ANIM_ACTION		m_eAnimAction = ANIM_ACTION_NONE;
 	_float					m_fAccAnimTime = 0.f;
-	_float3					m_fNextPos = {};
+	_float					m_isFreezingRatio = 0.7f;
+	_float3					m_fNextPos = {};	
+	_bool					m_isFreezingOff = { false };
 	_bool					m_isFreezing = { false };
 	_bool					m_isAction = { false };
 	_bool					m_isPlayerAround= { false };
 	_bool					m_isPlayerAbove= { false };
+	_bool					m_isDroppable = { false };
 
 	// Book Cover Blending
 	_bool					m_isStartBlending = { false };

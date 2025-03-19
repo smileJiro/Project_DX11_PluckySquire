@@ -342,7 +342,7 @@ HRESULT CImgui_Manager::Imgui_Debug_Render_ObjectInfo()
 					ImGui::PopItemFlag();
 					if ((*iter).second != -1)
 					{
-						if (iAddIndex != 0 || iSelectLoopIndix + iAddIndex >= 0 && iSelectLoopIndix + iAddIndex < iMaxObjectSize)
+						if ((iAddIndex != 0 && iSelectLoopIndix + iAddIndex >= 0) && iSelectLoopIndix + iAddIndex < iMaxObjectSize - 1)
 						{
 							pSelectObject = m_pGameInstance->Get_GameObject_Ptr(iCurLevelID, Pair.first, iSelectLoopIndix + iAddIndex);
 							(*iter).second = pSelectObject->Get_GameObjectInstanceID();

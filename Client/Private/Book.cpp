@@ -18,6 +18,7 @@
 #include "Section_2D_PlayMap.h"
 #include "TiltSwapCrate.h"
 #include "PlayerData_Manager.h"
+#include "Trigger_Manager.h"
 
 CBook::CBook(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CModelObject(_pDevice, _pContext)
@@ -161,10 +162,12 @@ HRESULT CBook::Initialize(void* _pArg)
 	m_eInteractType = INTERACT_TYPE::NORMAL;
 	m_eInteractKey = KEY::Q;
 
-
-	if (FAILED(Add_Component(LEVEL_CHAPTER_8, TEXT("Prototype_Component_Texture_Book_Freezing"),
-		TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
-		return E_FAIL; 
+	if (m_iCurLevelID == LEVEL_CHAPTER_8)
+	{
+		if (FAILED(Add_Component(LEVEL_CHAPTER_8, TEXT("Prototype_Component_Texture_Book_Freezing"),
+			TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
+			return E_FAIL;
+	} 
 	return S_OK;
 }
 
@@ -175,6 +178,17 @@ void CBook::Priority_Update(_float _fTimeDelta)
 
 void CBook::Update(_float _fTimeDelta)
 {
+	if (true == m_isFreezing && true == m_isFreezingOff)
+	{
+		m_isFreezingRatio -= _fTimeDelta * 0.1f;
+		if (0.f >= m_isFreezingRatio)
+		{
+			m_isFreezingRatio = 0.f;
+			m_isFreezingOff = false;
+			m_isFreezing = false;
+		}
+	}
+
 	_float3 fDefaultPos = { };
 
 	if (KEY_DOWN(KEY::M))
@@ -688,15 +702,30 @@ HRESULT CBook::Init_RT_RenderPos_Capcher()
 	m_pGameInstance->Add_RenderObject_New(RG_WORLDPOSMAP, PRWORLD_MAINBOOK, this);
 
 	// 따로 찍어야할 섹션을 확인후 레지스터.
-	SECTION_MGR->Register_WorldCapture(L"Chapter2_P0102", this);
-	SECTION_MGR->Register_WorldCapture(L"Chapter4_P0102", this);
-	SECTION_MGR->Register_WorldCapture(L"Chapter4_P0304", this);
-	SECTION_MGR->Register_WorldCapture(L"Chapter4_P0506", this);
-	SECTION_MGR->Register_WorldCapture(L"Chapter5_P0102", this);
-	SECTION_MGR->Register_WorldCapture(L"Chapter6_P1112", this);
-	SECTION_MGR->Register_WorldCapture(L"Chapter6_P1314", this);
-	SECTION_MGR->Register_WorldCapture(L"Chapter8_P2122", this);
-	SECTION_MGR->Register_WorldCapture(L"Chapter8_P2324", this);
+	
+	switch (m_iCurLevelID)
+	{
+	case Client::LEVEL_CHAPTER_2:
+		SECTION_MGR->Register_WorldCapture(L"Chapter2_P0102", this);
+		break;
+	case Client::LEVEL_CHAPTER_4:
+		SECTION_MGR->Register_WorldCapture(L"Chapter4_P0102", this);
+		SECTION_MGR->Register_WorldCapture(L"Chapter4_P0304", this);
+		SECTION_MGR->Register_WorldCapture(L"Chapter4_P0506", this);
+		break;
+	case Client::LEVEL_CHAPTER_6:
+		SECTION_MGR->Register_WorldCapture(L"Chapter5_P0102", this);
+		SECTION_MGR->Register_WorldCapture(L"Chapter6_P1112", this);
+		SECTION_MGR->Register_WorldCapture(L"Chapter6_P1314", this);
+		break;
+	case Client::LEVEL_CHAPTER_8:
+		SECTION_MGR->Register_WorldCapture(L"Chapter8_P2122", this);
+		SECTION_MGR->Register_WorldCapture(L"Chapter8_P2324", this);
+		break;
+	default:
+		break;
+	}
+
 
 	return S_OK;
 }
@@ -1009,6 +1038,16 @@ void CBook::Start_DropBook()
 	pActor->Freeze_Rotation(true, true, false);
 	pActor->Freeze_Position(false, false, false);
 
+
+	_vector vForcDir = { 0.f,-1.f,0.f };
+	_float fForce = 10.f;
+	_vector vForce = vForcDir * fForce;
+	_vector vTorque = XMVector3Cross(vForce, { 10.f,0.f,0.f });
+	CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
+	_float3 vTorq; XMStoreFloat3(&vTorq, vTorque);
+	pDynamicActor->Add_Torque(vTorq);
+
+	m_isDroppable = false;
 }
 
 void CBook::End_DropBook()
@@ -1020,6 +1059,17 @@ void CBook::End_DropBook()
 	pActor->Set_Gravity(false);
 	pActor->Freeze_Rotation(true, true, true);
 	pActor->Freeze_Position(false, false, false);
+}
+
+void CBook::Set_Freezing(_bool _isFreezing)
+{
+	m_isFreezing = _isFreezing;
+
+}
+
+void CBook::Start_FreezingOff()
+{
+	m_isFreezingOff = true;
 }
 
 //void CBook::Calc_Page3DWorldMinMax()

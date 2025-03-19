@@ -739,6 +739,14 @@ const _float4* CGameInstance::Get_CamPosition() const
 	return m_pPipeLine->Get_CamPosition();
 }
 
+_vector CGameInstance::Get_vCamPosition()
+{
+	if (nullptr == m_pPipeLine)
+		return XMVectorZero();
+
+	return m_pPipeLine->Get_vCamPosition();
+}
+
 _float2 CGameInstance::Transform_WorldToScreen(_fvector _vWorldPos, _float2 _fScreenSize)
 {
 	if (nullptr == m_pPipeLine)
@@ -1137,6 +1145,24 @@ _float CGameInstance::Get_SFXTrackPosition(const wstring& strSFXTag)
 
 	return m_pSound_Manager->Get_SFXTrackPosition(strSFXTag);
 }
+
+void CGameInstance::Start_SFX_Distance(const _wstring& strSFXTag, _fvector _vPosition, _float _fMaxVolume, _float _fMinVolume, _float _fMaxVolumeDist, _float _fFactor, _bool _isLoop)
+{
+	if (nullptr == m_pSound_Manager)
+		return;
+
+	return m_pSound_Manager->Start_SFX_Distance(strSFXTag, _vPosition, _fMaxVolume, _fMinVolume, _fMaxVolumeDist, _fFactor, _isLoop);
+
+}
+
+void CGameInstance::Start_SFX_Distance_Delay(const _wstring& strSFXTag, _fvector _vPosition, _float _fDelayTime, _float _fMaxVolume, _float _fMinVolume, _float _fMaxVolumeDist, _float _fFactor, _bool _isLoop)
+{
+	if (nullptr == m_pSound_Manager)
+		return;
+
+	return m_pSound_Manager->Start_SFX_Distance_Delay(strSFXTag, _vPosition, _fDelayTime, _fMaxVolume, _fMinVolume, _fMaxVolumeDist, _fFactor, _isLoop);
+}
+
 
 _bool CGameInstance::Is_SFXPlaying(const wstring& strSFXTag)
 {

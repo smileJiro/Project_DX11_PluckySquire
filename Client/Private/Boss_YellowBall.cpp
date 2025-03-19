@@ -212,7 +212,7 @@ HRESULT CBoss_YellowBall::Ready_PartObjects()
     BodyDesc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
     BodyDesc.strModelPrototypeTag_3D = TEXT("S_FX_CMN_Sphere_01");
     BodyDesc.iModelPrototypeLevelID_3D = m_iCurLevelID;
-    BodyDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::NOISEFRESNEL;
+    BodyDesc.iShaderPass_3D = (_uint)PASS_VTXMESH::NOISEFRESNEL_SCALING;
 
     BodyDesc.iRenderGroupID_3D = RG_3D;
     BodyDesc.iPriorityID_3D = PR3D_PARTICLE;
@@ -230,6 +230,7 @@ HRESULT CBoss_YellowBall::Ready_PartObjects()
     BodyDesc.szNoisePrototypeTag = L"Prototype_Component_Texture_BossProjectileNoise1";
     BodyDesc.vDiffuseScaling = { 1.f, 1.f };
     BodyDesc.vNoiseScaling = { 3.f, 2.f };
+    BodyDesc.pScaling = &m_fAccTime;
 
     m_PartObjects[PART_BODY] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_FresnelModelObject"), &BodyDesc));
     if (nullptr == m_PartObjects[PART_BODY])

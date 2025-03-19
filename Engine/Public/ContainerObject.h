@@ -49,6 +49,7 @@ public:
 	_bool Is_PartActive(_uint _iPartID);
 	//Set
 	void				Set_PartActive(_uint _iPartID, _bool _bValue);
+	void				Set_PartAnimPlaying(_uint _iPartID, _bool _bValue);
 protected:
 	vector<CPartObject*> m_PartObjects;
 

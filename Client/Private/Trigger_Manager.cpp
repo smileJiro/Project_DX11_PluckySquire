@@ -125,6 +125,8 @@ HRESULT CTrigger_Manager::Mapping_ExecuterTag()
 	m_EventExecuterTags[CHAPTER8_OUTRO_POSTIT_SEQUENCE] = 	L"Chapter8_Outro_Postit_Sequence";
 	m_EventExecuterTags[CHAPTER8_MEET_HUMGRUMP] = 	L"Chapter8_Meet_Humgrump";
 	m_EventExecuterTags[CHAPTER8_POSTIT_ARM_CHANGING] = 	L"Chapter8_Postit_Arm_Changing";
+	m_EventExecuterTags[CHAPTER8_BOOKDROP] = 	L"Chapter8_BookDrop";
+	m_EventExecuterTags[CHAPTER8_BOOKFREEZING_OFF] = 	L"Chapter8_BookFreezing_Off";
 
 	return S_OK;
 }
