@@ -354,7 +354,7 @@ void CBeetle::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
         break;
 
     case CAUGHT:
-        Set_AnimChangeable(true);
+        //Set_AnimChangeable(true);
         break;
 
     case DAMAGE:
