@@ -33,6 +33,8 @@
 #include "Dialog_Manager.h"
 #include "Npc_Humgrump.h"
 
+#include "Logo_ColorObject.h"
+
 CGameEventExecuter_C8::CGameEventExecuter_C8(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CGameEventExecuter(_pDevice, _pContext)
 {
@@ -199,9 +201,6 @@ void CGameEventExecuter_C8::Chapter8_Laser_Stage(_float _fTimeDelta)
 
 				CSection* pBookSection = CSection_Manager::GetInstance()->Find_Section(TEXT("Chapter8_P1112"));
 				CTrigger_Manager::GetInstance()->Create_TriggerObject(LEVEL_STATIC, LEVEL_CHAPTER_2, &Desc, pBookSection);
-
-
-
 
 				pPlayer->Set_BlockPlayerInput(false);
 				GameEvent_End();
@@ -1019,6 +1018,70 @@ void CGameEventExecuter_C8::Chapter8_Meet_Humgrump(_float _fTimeDelta)
 	if (Step_Check(STEP_0))
 	{
 		if (Is_Start()) {
+
+#pragma region Friends
+			// Debug
+			_wstring strFriendTag = L"Thrash_Debug";
+			{ /* Friend_Thrash */
+				CFriend_Thrash::FRIEND_DESC Desc{};
+				Desc.Build_2D_Transform(_float2(-580.f, 100.f), _float2(1.0f, 1.0f), 400.f);
+				Desc.iCurLevelID = LEVEL_CHAPTER_2;
+				Desc.eStartState = CFriend::FRIEND_IDLE;
+				Desc.eStartDirection = CFriend::DIR_LEFT;
+				Desc.iModelTagLevelID = LEVEL_STATIC;
+				Desc.iNumDialoguesIndices = 0;
+				Desc.strFightLayerTag = TEXT("Layer_Monster");
+
+				CGameObject* pGameObject = nullptr;
+				m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Friend_Thrash"), LEVEL_CHAPTER_8, TEXT("Layer_Friends"), &pGameObject, &Desc);
+
+				CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter8_P2324"), pGameObject);
+
+				CFriend_Controller::GetInstance()->Register_Friend(strFriendTag, static_cast<CFriend*>(pGameObject));
+				CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(strFriendTag);
+			} /* Friend_Thrash */
+
+			{ /* Friend_Violet */
+				strFriendTag = L"Violet_Debug";
+				CFriend_Violet::FRIEND_DESC Desc{};
+				Desc.Build_2D_Transform(_float2(-730.f, 100.f), _float2(1.0f, 1.0f), 400.f);
+				Desc.iCurLevelID = LEVEL_CHAPTER_2;
+				Desc.eStartState = CFriend::FRIEND_IDLE;
+				Desc.eStartDirection = CFriend::DIR_RIGHT;
+				Desc.iModelTagLevelID = LEVEL_STATIC;
+				Desc.iNumDialoguesIndices = 0;
+				Desc.strFightLayerTag = TEXT("Layer_Monster");
+
+				CGameObject* pGameObject = nullptr;
+				m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Friend_Violet"), LEVEL_CHAPTER_8, TEXT("Layer_Friends"), &pGameObject, &Desc);
+
+				CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter8_P2324"), pGameObject);
+
+				CFriend_Controller::GetInstance()->Register_Friend(strFriendTag, static_cast<CFriend*>(pGameObject));
+				CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(strFriendTag);
+			} /* Friend_Violet */
+
+			{ /* Friend_Pip */
+				strFriendTag = L"Pip_Debug";
+				CFriend_Pip::FRIEND_DESC Desc{};
+				Desc.Build_2D_Transform(_float2(-990.f, 20.f), _float2(1.0f, 1.0f), 400.f);
+				Desc.iCurLevelID = LEVEL_CHAPTER_2;
+				Desc.eStartState = CFriend::FRIEND_IDLE;
+				Desc.eStartDirection = CFriend::DIR_DOWN;
+				Desc.iModelTagLevelID = LEVEL_STATIC;
+				Desc.iNumDialoguesIndices = 0;
+				Desc.strFightLayerTag = TEXT("Layer_Monster");
+
+				CGameObject* pGameObject = nullptr;
+				m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Friend_Pip"), LEVEL_CHAPTER_8, TEXT("Layer_Friends"), &pGameObject, &Desc);
+
+				CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter8_P2324"), pGameObject);
+
+				CFriend_Controller::GetInstance()->Register_Friend(strFriendTag, static_cast<CFriend*>(pGameObject));
+				CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(strFriendTag);
+			} /* Friend_Pip */
+#pragma endregion
+			
 			// 1. Player 자동 이동
 			CPlayer* pPlayer = Get_Player();
 
@@ -1040,16 +1103,30 @@ void CGameEventExecuter_C8::Chapter8_Meet_Humgrump(_float _fTimeDelta)
 			pPlayer->Add_AutoMoveCommand(tCommand);
 
 			pPlayer->Start_AutoMove(true);
+
+			// Debug
+			CFriend* pThrash = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Thrash_Debug"));
+			CFriend* pViolet = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Violet_Debug"));
+			CFriend* pPip = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Pip_Debug"));
+
+			pThrash->Move_Position(_float2(-50.f, -322.33f), CFriend::DIR_UP);
+			pViolet->Move_Position(_float2(50.f, -322.33f), CFriend::DIR_UP);
+			pPip->Move_Position(_float2(0.f, -357.33f), CFriend::DIR_UP);
+
+			pThrash->Get_ControllerTransform()->Set_SpeedPerSec(200.f);
+			pViolet->Get_ControllerTransform()->Set_SpeedPerSec(200.f);
+			pPip->Get_ControllerTransform()->Set_SpeedPerSec(200.f);
+		
 		}
 
 		// 2. 중앙으로 타겟 카메라 변경
 		if (m_fTimer > 0.8f) {
-			static _float4x4 matCenter = {};
+			m_TargetWorldMatrix = {};
 			_vector vCenter = XMVectorSet(0.f, -106.36, 0.f, 1.f);
 
-			memcpy(&matCenter.m[3], &vCenter, sizeof(_float4));
+			memcpy(&m_TargetWorldMatrix.m[3], &vCenter, sizeof(_float4));
 
-			CCamera_Manager::GetInstance()->Change_CameraTarget(&matCenter, 0.5f);
+			CCamera_Manager::GetInstance()->Change_CameraTarget(&m_TargetWorldMatrix, 0.5f);
 
 			Next_Step(true);
 		}
@@ -1063,7 +1140,7 @@ void CGameEventExecuter_C8::Chapter8_Meet_Humgrump(_float _fTimeDelta)
 			pPlayer->Set_BlockPlayerInput(true);
 
 			// 4. Dialogue 재생
-			CDialog_Manager::GetInstance()->Set_DialogId(L"Dialogue_Meet_Humgrump_1");
+			CDialog_Manager::GetInstance()->Set_DialogId(L"Chapter8_Meet_Humgrump_1");
 
 			CLayer* pLayer = m_pGameInstance->Find_Layer(m_iCurLevelID, TEXT("Layer_NPC"));
 
@@ -1077,16 +1154,14 @@ void CGameEventExecuter_C8::Chapter8_Meet_Humgrump(_float _fTimeDelta)
 					continue;
 
 				if (TEXT("Humgrump") == pModel->Get_ModelPrototypeTag(COORDINATE_2D)) {
-					pModel->Switch_Animation(CNpc_Humgrump::CHAPTER6_TALK);
 					CDialog_Manager::GetInstance()->Set_NPC(pModel);
 					m_TargetObjects.push_back(pObject);
 				}
 			}
-
-			CPlayer* pPlayer = Get_Player();
-			//CDialog_Manager::GetInstance()->Set_NPC(pPlayer);
-			m_TargetObjects.push_back(pPlayer);
 	
+			CFriend* pPip = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Pip_Debug"));
+			CDialog_Manager::GetInstance()->Set_NPC(pPip);
+
 			Next_Step(true);
 		}
 	}
@@ -1101,14 +1176,15 @@ void CGameEventExecuter_C8::Chapter8_Meet_Humgrump(_float _fTimeDelta)
 
 		if (false == static_cast<CModelObject*>(m_TargetObjects[0])->Is_DuringAnimation()) {
 			// 5. Dialogue 재생
-			CDialog_Manager::GetInstance()->Set_DialogId(L"Dialogue_Meet_Humgrump_2");
+			CDialog_Manager::GetInstance()->Set_DialogId(L"Chapter8_Meet_Humgrump_2");
 			CDialog_Manager::GetInstance()->Set_NPC(m_TargetObjects[0]);
 
 			// 6. 험그럼프 Talk로 변경
 			static_cast<CModelObject*>(m_TargetObjects[0])->Switch_Animation(CNpc_Humgrump::CHAPTER8_TALK_HAPPY);
 
 			// 찍찍이로 말하는 대상 설정, 지금은 Player로 임시 설정함
-			CDialog_Manager::GetInstance()->Set_NPC(m_TargetObjects[1]);
+			CFriend* pPip = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Pip_Debug"));
+			CDialog_Manager::GetInstance()->Set_NPC(pPip);
 			Next_Step(true);
 		}
 	}
@@ -1116,13 +1192,14 @@ void CGameEventExecuter_C8::Chapter8_Meet_Humgrump(_float _fTimeDelta)
 		if (1 == CDialog_Manager::GetInstance()->Get_CurrentLineIndex()) {
 
 			if (Is_Start()) {
-				// 7. 찍찍이 Animation 변경해야 함
+				// 7. 찍찍이 Time (찍찍이 Animation 변경해야 함)
 				static_cast<CModelObject*>(m_TargetObjects[0])->Switch_Animation(CNpc_Humgrump::CHAPTER8_IDLE);
 				//static_cast<CModelObject*>(m_TargetObjects[1])->Switch_Animation(CNpc_MoonBeard::CHAPTER6_GIVE_IT_AREST);
 			}
 		}
 
 		if (3 == CDialog_Manager::GetInstance()->Get_CurrentLineIndex()) {
+			// 7. 험그럼프 Time (찍찍이 Animation 변경해야 함)
 			static_cast<CModelObject*>(m_TargetObjects[0])->Switch_Animation(CNpc_Humgrump::CHAPTER8_TALK_HAPPY);
 			//static_cast<CModelObject*>(m_TargetObjects[1])->Switch_Animation(CNpc_MoonBeard::CHAPTER6_GIVE_IT_AREST);
 
@@ -1130,20 +1207,372 @@ void CGameEventExecuter_C8::Chapter8_Meet_Humgrump(_float _fTimeDelta)
 		}
 	}
 	else if (Step_Check(STEP_4)) {
-		if (6 == CDialog_Manager::GetInstance()->Get_CurrentLineIndex()) {
+		if (5 == CDialog_Manager::GetInstance()->Get_CurrentLineIndex()) {
 
 			if (Is_Start()) {
-				// 8. 찍찍이 Animation 변경해야 함
+				// 7. 찍찍이 Time (찍찍이 Animation 변경해야 함)
 				static_cast<CModelObject*>(m_TargetObjects[0])->Switch_Animation(CNpc_Humgrump::CHAPTER8_IDLE);
 				//static_cast<CModelObject*>(m_TargetObjects[1])->Switch_Animation(CNpc_MoonBeard::CHAPTER6_GIVE_IT_AREST);
 			}
 		}
 
-		if (3 == CDialog_Manager::GetInstance()->Get_CurrentLineIndex()) {
+		if (6 == CDialog_Manager::GetInstance()->Get_CurrentLineIndex()) {
+			// 7. 험그럼프 Time (찍찍이 Animation 변경해야 함)
 			static_cast<CModelObject*>(m_TargetObjects[0])->Switch_Animation(CNpc_Humgrump::CHAPTER8_TALK_HAPPY);
 			//static_cast<CModelObject*>(m_TargetObjects[1])->Switch_Animation(CNpc_MoonBeard::CHAPTER6_GIVE_IT_AREST);
 
 			Next_Step(true);
+		}
+	}
+	else if (Step_Check(STEP_5)) {
+		if (false == CDialog_Manager::GetInstance()->Get_DisPlayDialogue()) {
+
+			if (Is_Start()) {
+				static_cast<CModelObject*>(m_TargetObjects[0])->Switch_Animation(CNpc_Humgrump::CHAPTER8_TRANSFORM);
+			}
+		}
+
+		if (false == static_cast<CModelObject*>(m_TargetObjects[0])->Is_DuringAnimation()) {
+			// 8. Dialogue 재생
+			CDialog_Manager::GetInstance()->Set_DialogId(L"Chapter8_Meet_Humgrump_3");
+			CDialog_Manager::GetInstance()->Set_NPC(m_TargetObjects[0]);
+
+			// 8. 험그럼프 Talk로 변경
+			static_cast<CModelObject*>(m_TargetObjects[0])->Switch_Animation(CNpc_Humgrump::CHAPTER8_TRANSFORM_TALK);
+
+			Next_Step(true);
+		}
+	}
+	else if (Step_Check(STEP_6)) {
+		if (false == CDialog_Manager::GetInstance()->Get_DisPlayDialogue()) {
+
+			if (Is_Start()) {
+				// 9. Bubble로 변신, 카메라 줌
+				static_cast<CModelObject*>(m_TargetObjects[0])->Switch_Animation(CNpc_Humgrump::CHAPTER8_BUBBLE_BRUST);
+
+				CCamera_Manager::GetInstance()->Set_ResetData(CCamera_Manager::TARGET_2D);
+				CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Decrease(CCamera_Manager::TARGET_2D, 1.3f, 1.5f, EASE_IN_OUT);
+				CCamera_Manager::GetInstance()->Start_Shake_ByTime(CCamera_Manager::TARGET_2D, 1.3f, 0.02f);
+			}
+		}
+
+		if (false == static_cast<CModelObject*>(m_TargetObjects[0])->Is_DuringAnimation()) {
+			// 9. Dialogue 재생
+			CDialog_Manager::GetInstance()->Set_DialogId(L"Chapter8_Bubble_Humgrump");
+			CDialog_Manager::GetInstance()->Set_NPC(m_TargetObjects[0]);
+
+			// 9. 험그럼프 Talk로 변경
+			static_cast<CModelObject*>(m_TargetObjects[0])->Switch_Animation(CNpc_Humgrump::CHAPTER8_BUBBLE_BRUST_TALK);
+
+			Next_Step(true);
+		}
+	}
+	else if (Step_Check(STEP_7)) {
+		if (false == CDialog_Manager::GetInstance()->Get_DisPlayDialogue()) {
+
+			if (Is_Start()) {
+				static_cast<CModelObject*>(m_TargetObjects[0])->Switch_Animation(CNpc_Humgrump::CHAPTER8_FLY_AWAY);
+			}
+		}
+
+		if (false == static_cast<CModelObject*>(m_TargetObjects[0])->Is_DuringAnimation()) {
+			// 10. 다 날아갔으면 Active 끄고 Camera Zoom 더 멀리
+			m_TargetObjects[0]->Set_Active(false);
+			CCamera_Manager::GetInstance()->Start_Changing_ArmLength(CCamera_Manager::TARGET_2D, 0.5f, 14.4f, EASE_IN_OUT);
+			_vector vCenter = XMVectorSet(0.f, -37.36, 0.f, 1.f);
+
+			memcpy(&m_TargetWorldMatrix.m[3], &vCenter, sizeof(_float4));
+
+			// 11. Player와 친구들 이동
+			// Player
+			CPlayer* pPlayer = Get_Player();
+
+			AUTOMOVE_COMMAND tCommand = {};
+			tCommand.eType = AUTOMOVE_TYPE::MOVE_TO;
+			tCommand.iAnimIndex = (_uint)CPlayer::ANIM_STATE_2D::PLAYER_RUN_SWORD_UP;
+			tCommand.vTarget = XMVectorSet(0.f, -60.f, 0.0f, 1.f);
+			tCommand.fPreDelayTime = 0.3f;
+			tCommand.fPostDelayTime = 0.f;
+
+			pPlayer->Add_AutoMoveCommand(tCommand);
+
+			tCommand.eType = AUTOMOVE_TYPE::LOOK_DIRECTION;
+			tCommand.iAnimIndex = (_uint)CPlayer::ANIM_STATE_2D::PLAYER_IDLE_SWORD_UP;
+			tCommand.vTarget = XMVectorSet(0.f, 0.f, 0.0f, 1.f);
+			tCommand.fPreDelayTime = 0.0f;
+			tCommand.fPostDelayTime = 1.f;
+
+			pPlayer->Add_AutoMoveCommand(tCommand);
+
+			pPlayer->Start_AutoMove(true);
+
+
+			// Debug
+			CFriend* pThrash = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Thrash_Debug"));
+			CFriend* pViolet = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Violet_Debug"));
+			CFriend* pPip = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Pip_Debug"));
+
+			pThrash->Move_Position(_float2(-50.f, -95.f), CFriend::DIR_UP);
+			pViolet->Move_Position(_float2(50.f, -95.f), CFriend::DIR_UP);
+			pPip->Move_Position(_float2(0.f, -130.f), CFriend::DIR_UP);
+
+			Next_Step(true);
+		}
+	}
+	else if (Step_Check(STEP_8)) {
+
+		CPlayer* pPlayer = Get_Player();
+
+		// Humgrump 고치 시작
+		if (false == pPlayer->Is_AutoMoving()) {
+			// 1. 고치 Intro
+			static_cast<CModelObject*>(m_TargetObjects[0])->Switch_Animation(CNpc_Humgrump::CHAPTER8_PUPA_INTRO_0);
+			m_TargetObjects[0]->Set_Active(true);
+			m_TargetObjects[0]->Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSet(0.0f, -160.f, 0.03f, 1.f));
+			m_iSubStep++;
+
+			// 배경 어둡게
+			Ready_Action(SECTION_MGR->Get_Cur_Section_Key(), SECTION_2D_PLAYMAP_BACKGROUND, C2DMapActionObject::ACTIVE_TYPE_DYNAMIC_BACKGROUND, 0.f);
+			
+			Next_Step(true);
+		}
+	}
+	else if (Step_Check(STEP_9)) {
+
+		// 2. 고치가 튕길 때 Player와 친구들 뒤로 날아가기
+		if (m_fTimer >= 0.1f && 0 == m_iSubStep) {
+
+			// Player
+			CPlayer* pPlayer = Get_Player();
+
+			AUTOMOVE_COMMAND tCommand = {};
+			tCommand.eType = AUTOMOVE_TYPE::MOVE_TO;
+			tCommand.iAnimIndex = (_uint)CPlayer::ANIM_STATE_2D::PLAYER_KNOCKEDBACK_LOOP;
+			tCommand.vTarget = XMVectorSet(52.f, -250.00f, 0.0f, 1.f);
+			tCommand.fPreDelayTime = 0.3f;
+			tCommand.fPostDelayTime = 0.f;
+
+			pPlayer->Add_AutoMoveCommand(tCommand);
+
+			tCommand.eType = AUTOMOVE_TYPE::LOOK_DIRECTION;
+			tCommand.iAnimIndex = (_uint)CPlayer::ANIM_STATE_2D::PLAYER_KNOCKEDBACK_FLOOR;
+			tCommand.vTarget = XMVectorSet(0.f, 0.f, 0.0f, 1.f);
+			tCommand.fPreDelayTime = 0.0f;
+			tCommand.fPostDelayTime = 1.f;
+
+			pPlayer->Add_AutoMoveCommand(tCommand);
+			pPlayer->Start_AutoMove(true);
+
+
+			// Debug
+			// Thrash
+			CFriend* pThrash = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Thrash_Debug"));
+			CFriend* pViolet = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Violet_Debug"));
+			CFriend* pPip = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Pip_Debug"));
+
+			tCommand.eType = AUTOMOVE_TYPE::MOVE_TO;
+			tCommand.iAnimIndex = CFriend_Thrash::ANIM::THRASH_KNOCKEDBACK_LOOP;
+			tCommand.vTarget = XMVectorSet(-160.f, -200.f, 0.0f, 1.f);
+			tCommand.fPreDelayTime = 0.3f;
+			tCommand.fPostDelayTime = 0.f;
+
+			pThrash->Add_AutoMoveCommand(tCommand);
+
+			tCommand.eType = AUTOMOVE_TYPE::LOOK_DIRECTION;
+			tCommand.iAnimIndex = CFriend_Thrash::ANIM::THRASH_IDLE_FLOOR;
+			tCommand.vTarget = XMVectorSet(0.f, 0.f, 0.0f, 1.f);
+			tCommand.fPreDelayTime = 0.0f;
+			tCommand.fPostDelayTime = 0.f;
+
+			pThrash->Add_AutoMoveCommand(tCommand);
+			pThrash->Start_AutoMove(true);
+
+			// Violet
+			tCommand.eType = AUTOMOVE_TYPE::MOVE_TO;
+			tCommand.iAnimIndex = CFriend_Violet::ANIM::VIOLET_KNOCKEDBACK_LOOP;
+			tCommand.vTarget = XMVectorSet(160.f, -200.f, 0.0f, 1.f);
+			tCommand.fPreDelayTime = 0.3f;
+			tCommand.fPostDelayTime = 0.f;
+
+			pViolet->Add_AutoMoveCommand(tCommand);
+
+			tCommand.eType = AUTOMOVE_TYPE::LOOK_DIRECTION;
+			tCommand.iAnimIndex = CFriend_Violet::ANIM::VIOLET_IDLE_FLOOR;
+			tCommand.vTarget = XMVectorSet(0.f, 0.f, 0.0f, 1.f);
+			tCommand.fPreDelayTime = 0.0f;
+			tCommand.fPostDelayTime = 0.f;
+
+			pViolet->Add_AutoMoveCommand(tCommand);
+			pViolet->Start_AutoMove(true);
+
+			// Pip
+			tCommand.eType = AUTOMOVE_TYPE::MOVE_TO;
+			tCommand.iAnimIndex = CFriend_Pip::ANIM::PIP_KNOCKEDBACK_LOOP;
+			tCommand.vTarget = XMVectorSet(-52.f, -250.00f, 0.0f, 1.f);
+			tCommand.fPreDelayTime = 0.3f;
+			tCommand.fPostDelayTime = 0.f;
+
+			pPip->Add_AutoMoveCommand(tCommand);
+
+			tCommand.eType = AUTOMOVE_TYPE::LOOK_DIRECTION;
+			tCommand.iAnimIndex = CFriend_Pip::ANIM::PIP_IDLE_UP;
+			tCommand.vTarget = XMVectorSet(0.f, 0.f, 0.0f, 1.f);
+			tCommand.fPreDelayTime = 0.0f;
+			tCommand.fPostDelayTime = 0.f;
+
+			pPip->Add_AutoMoveCommand(tCommand);
+			pPip->Start_AutoMove(true);
+
+			m_iSubStep++;
+		}
+
+		// auto move가 끝났다면으로 변경
+		if (1 == m_iSubStep) {
+			// 3. 고치 Intro 끝났다면 Idle noface로 변경
+			if (false == static_cast<CModelObject*>(m_TargetObjects[0])->Is_DuringAnimation()) {
+				static_cast<CModelObject*>(m_TargetObjects[0])->Switch_Animation(CNpc_Humgrump::CHAPTER8_PUPA_IDLE_NOFACE);
+
+				Next_Step(true);
+			}
+		}
+	}
+	else if (Step_Check(STEP_10)) {
+		if (m_fTimer >= 0.8f) {
+			if (Is_Start()) {
+				// 바이올렛 대사 1
+				CDialog_Manager::GetInstance()->Set_DialogId(L"Chapter8_Disgusting");
+
+				// 바이올렛으로 말하는 대상 설정, 지금은 Player로 임시 설정함
+				CFriend* pViolet = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Violet_Debug"));
+				CDialog_Manager::GetInstance()->Set_NPC(pViolet);
+
+				Next_Step(true);
+			}
+		}
+	}
+	else if (Step_Check(STEP_11)) {
+		if (false == CDialog_Manager::GetInstance()->Get_DisPlayDialogue() && 0 == m_iSubStep) {
+			static_cast<CModelObject*>(m_TargetObjects[0])->Switch_Animation(CNpc_Humgrump::CHAPTER8_PUPA_INTRO_1);
+
+			m_iSubStep++;
+		}
+
+		if (false == static_cast<CModelObject*>(m_TargetObjects[0])->Is_DuringAnimation() && 1 == m_iSubStep) {
+			static_cast<CModelObject*>(m_TargetObjects[0])->Switch_Animation(CNpc_Humgrump::CHAPTER8_PUPA_IDLE);
+
+			Next_Step(true);
+		}
+	}
+	else if (Step_Check(STEP_12)) {
+		if (m_fTimer >= 0.4f) {
+			if (Is_Start()) {
+				// 5. 험그럼프 대사 1
+				CDialog_Manager::GetInstance()->Set_DialogId(L"Chapter8_Humgrump_Pupa_1");
+				CDialog_Manager::GetInstance()->Set_NPC(m_TargetObjects[0]);
+				static_cast<CModelObject*>(m_TargetObjects[0])->Switch_Animation(CNpc_Humgrump::CHAPTER8_PUPA_TALK_0);
+
+			}
+		}
+
+		if (m_fTimer >= 0.5f && false == CDialog_Manager::GetInstance()->Get_DisPlayDialogue() && 0 == m_iSubStep) {
+			static_cast<CModelObject*>(m_TargetObjects[0])->Switch_Animation(CNpc_Humgrump::CHAPTER8_PUPA_GRUNT_0);
+			m_iSubStep++;
+		}
+
+		if (false == static_cast<CModelObject*>(m_TargetObjects[0])->Is_DuringAnimation() && 1 == m_iSubStep) {
+			static_cast<CModelObject*>(m_TargetObjects[0])->Switch_Animation(CNpc_Humgrump::CHAPTER8_PUPA_GRUNT_OUT);
+			m_iSubStep++;
+		}
+
+		if (false == static_cast<CModelObject*>(m_TargetObjects[0])->Is_DuringAnimation() && 2 == m_iSubStep) {
+			// 6. 험그럼프 대사 2
+			CDialog_Manager::GetInstance()->Set_DialogId(L"Chapter8_Humgrump_Pupa_2");
+			CDialog_Manager::GetInstance()->Set_NPC(m_TargetObjects[0]);
+			static_cast<CModelObject*>(m_TargetObjects[0])->Switch_Animation(CNpc_Humgrump::CHAPTER8_PUPA_TALK_1);
+
+			Next_Step(true);
+		}
+	}
+	else if (Step_Check(STEP_13)) {
+		if (false == CDialog_Manager::GetInstance()->Get_DisPlayDialogue()) {
+			// 7. 커지고 폭발
+			if (Is_Start()) {
+				static_cast<CModelObject*>(m_TargetObjects[0])->Switch_Animation(CNpc_Humgrump::CHAPTER8_PUPA_GROW);
+				
+				// Debug
+				CFriend* pThrash = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Thrash_Debug"));
+				CFriend* pViolet = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Violet_Debug"));
+				CFriend* pPip = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Pip_Debug"));
+
+				pThrash->Get_ControllerTransform()->Set_SpeedPerSec(400.f);
+				pViolet->Get_ControllerTransform()->Set_SpeedPerSec(400.f);
+				pPip->Get_ControllerTransform()->Set_SpeedPerSec(400.f);
+
+				m_iSubStep++;
+			}
+		}
+
+		if (1 == m_iSubStep) {
+			if (false == static_cast<CModelObject*>(m_TargetObjects[0])->Is_DuringAnimation()) {
+				// 검은색 FadeOut 시작
+				CCamera_Manager::GetInstance()->Start_FadeOut(0.6f);
+
+				Next_Step(true);
+			}
+		}
+	}
+	else if (Step_Check(STEP_14))
+	{
+		if (m_fTimer >= 0.7f) {
+
+			if (Is_Start()) {
+				// 험그럼프 없애기
+				Event_DeleteObject(m_TargetObjects[0]);
+				m_TargetObjects[0] = nullptr;
+
+				// 포탈 활성화
+				static_cast<CSection_2D_PlayMap*>(SECTION_MGR->Find_Section(SECTION_MGR->Get_Cur_Section_Key()))->Set_PortalActive(true);
+			}
+		}
+
+		if (m_fTimer >= 0.9f) {
+			// 검은색 FadeIn 시작
+			CCamera_Manager::GetInstance()->Start_FadeIn(0.6f);
+
+			Next_Step(true);
+		}
+	}
+	else if (Step_Check(STEP_15)) {
+		if (m_fTimer >= 1.5f) {
+			if (Is_Start()) {
+				CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Decrease(CCamera_Manager::TARGET_2D, 0.7f, 1.5f, EASE_IN_OUT);
+			}
+		}
+
+		if (m_fTimer >= 2.5f && 0 == m_iSubStep) {
+			CDialog_Manager::GetInstance()->Set_DialogId(L"Chapter8_Going_To_Humgrump");
+			
+			// Debug
+			CFriend* pThrash = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Thrash_Debug"));
+			CFriend* pViolet = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Violet_Debug"));
+			CFriend* pPip = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Pip_Debug"));
+
+			CDialog_Manager::GetInstance()->Set_NPC(pViolet);
+			CDialog_Manager::GetInstance()->Set_NPC(pPip);
+			CDialog_Manager::GetInstance()->Set_NPC(pThrash);
+
+			m_iSubStep++;
+		}
+
+		if (1 == m_iSubStep) {
+			if (false == CDialog_Manager::GetInstance()->Get_DisPlayDialogue()) {
+				CCamera_Manager::GetInstance()->Change_CameraTarget(Get_Player(), 0.7f);
+				CPlayer* pPlayer = Get_Player();
+				
+				pPlayer->Set_BlockPlayerInput(false);
+				
+				GameEvent_End();
+			}
 		}
 	}
 }
