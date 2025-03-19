@@ -17,6 +17,7 @@
 #include "Effect_Manager.h"
 #include "Section_2D_PlayMap.h"
 #include "TiltSwapCrate.h"
+#include "PlayerData_Manager.h"
 
 CBook::CBook(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CModelObject(_pDevice, _pContext)
@@ -802,9 +803,21 @@ void CBook::Interact(CPlayer* _pUser)
 
 _bool CBook::Is_Interactable(CPlayer* _pUser)
 {
-	return (m_isPlayerAround || m_isPlayerAbove) 
-		&& (false == _pUser->Is_CarryingObject())
-		&& COORDINATE_3D == _pUser->Get_CurCoord();
+	_bool bPossible = (false == _pUser->Is_CarryingObject())&& COORDINATE_3D == _pUser->Get_CurCoord();
+
+	CPlayerData_Manager* pPDM = CPlayerData_Manager::GetInstance();
+	if (m_isPlayerAround)
+	{
+		//bPossible &= (pPDM->Is_Own(CPlayerData_Manager::FLIPPING_GLOVE) || pPDM->Is_Own(CPlayerData_Manager::TILTING_GLOVE));
+
+	}
+	else if (m_isPlayerAbove)
+	{
+		//bPossible &= (pPDM->Is_Own(CPlayerData_Manager::STOP_STAMP) || pPDM->Is_Own(CPlayerData_Manager::BOMB_STAMP));
+	}
+
+
+	return bPossible;
 }
 
 _float CBook::Get_Distance(COORDINATE _eCoord, CPlayer* _pUser)

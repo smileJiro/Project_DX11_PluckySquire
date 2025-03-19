@@ -55,7 +55,7 @@ HRESULT CPortal_Cannon::Initialize(void* _pArg)
 	Safe_AddRef(m_pDetectCollider);
 
     m_fInteractChargeTime =0.6f;
-    m_eInteractType = INTERACT_TYPE::CHARGE;
+    m_eInteractType = INTERACT_TYPE::CHARGE_UP;
     m_eInteractID = INTERACT_ID::PORTAL;
     m_pBody->Register_OnAnimEndCallBack(bind(&CPortal_Cannon::On_AnimEnd, this, placeholders::_1, placeholders::_2));
 
@@ -307,6 +307,10 @@ void CPortal_Cannon::On_InteractionStart(CPlayer* _pPlayer)
 void CPortal_Cannon::On_Pressing(CPlayer* _pPlayer, _float _fTimeDelta)
 {
 
+}
+
+void CPortal_Cannon::On_ChargeComplete(CPlayer* _pPlayer)
+{
 }
 
 void CPortal_Cannon::On_InteractionEnd(CPlayer* _pPlayer)
