@@ -23,6 +23,8 @@ void CPlayerState_EngageBoss::Enter()
 	m_pOwner->Equip_Part(CPlayer::PLAYER_PART_ZETPACK);
 	m_pOwner->Equip_Part(CPlayer::PLAYER_PART_CYBERCURSOR);
 
+	m_pOwner->Set_Position(XMVectorSet(-10.6962425f, 6.06746035f, 11.9308004f, 1.f));
+
 	if (nullptr != m_pOwner->Get_ZetPack())
 		m_pOwner->Get_ZetPack()->Switch_State(CZetPack::STATE_CYBER);
 	m_pOwner->Set_Kinematic(true);
@@ -39,7 +41,7 @@ void CPlayerState_EngageBoss::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 {
 	if ((_uint)CPlayer::ANIM_STATE_3D::CYBERJOT_CINE_DO9_LB_ENGAGE_SH01 == iAnimIdx)
 	{
-		m_pGameInstance->Get_GameObject_Ptr(LEVEL_CAMERA_TOOL, TEXT("Layer_Boss"), 0)->Set_Position(_vector{ 0.f , 30.f, -20.f });
+		m_pGameInstance->Get_GameObject_Ptr(LEVEL_CAMERA_TOOL, TEXT("Layer_Boss"), 0)->Set_Position(_vector{ 0.f , 30.f, -10.f });
 		m_pOwner->Set_Position(_vector{ 0.f , 30.f, -75.f });
 		m_pOwner->LookDirectionXZ_Kinematic(_vector{ 0.f,0.f,1.f });
 		m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::CYBERJOT_CINE_DO9_LB_ENGAGE_SH02);

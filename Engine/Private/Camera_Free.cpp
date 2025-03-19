@@ -87,22 +87,22 @@ void CCamera_Free::Key_Input(_float fTimeDelta)
 {
 	if (KEY_PRESSING((KEY)m_iModeKey[0]))
 	{
-		m_pControllerTransform->Go_Straight(fTimeDelta);
+		m_pControllerTransform->Go_Straight(fTimeDelta * 0.3f);
 	}
 
 	if (KEY_PRESSING((KEY)m_iModeKey[1]))
 	{
-		m_pControllerTransform->Go_Backward(fTimeDelta);
+		m_pControllerTransform->Go_Backward(fTimeDelta * 0.3f);
 	}
 
 	if (KEY_PRESSING((KEY)m_iModeKey[2]))
 	{
-		m_pControllerTransform->Go_Right(fTimeDelta);
+		m_pControllerTransform->Go_Right(fTimeDelta * 0.3f);
 	}
 
 	if (KEY_PRESSING((KEY)m_iModeKey[3]))
 	{
-		m_pControllerTransform->Go_Left(fTimeDelta);
+		m_pControllerTransform->Go_Left(fTimeDelta * 0.3f);
 	}
 	
 	if (KEY_PRESSING(KEY::Q))
@@ -110,7 +110,7 @@ void CCamera_Free::Key_Input(_float fTimeDelta)
 		_float fSpeed = m_pControllerTransform->Get_SpeedPerSec();
 		_vector vPos = m_pControllerTransform->Get_State(CTransform::STATE_POSITION);
 
-		vPos = vPos + (fTimeDelta * fSpeed * XMVectorSet(0.f, -1.f, 0.f, 0.f));
+		vPos = vPos + (fTimeDelta * fSpeed * 0.3f * XMVectorSet(0.f, -1.f, 0.f, 0.f));
 
 		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, vPos);
 	}
@@ -120,7 +120,7 @@ void CCamera_Free::Key_Input(_float fTimeDelta)
 		_float fSpeed = m_pControllerTransform->Get_SpeedPerSec();
 		_vector vPos = m_pControllerTransform->Get_State(CTransform::STATE_POSITION);
 
-		vPos = vPos + (fTimeDelta * fSpeed * XMVectorSet(0.f, 1.f, 0.f, 0.f));
+		vPos = vPos + (fTimeDelta * fSpeed * 0.3f * XMVectorSet(0.f, 1.f, 0.f, 0.f));
 
 		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, vPos);
 	}
@@ -130,7 +130,7 @@ void CCamera_Free::Key_Input(_float fTimeDelta)
 		_float fSpeed = m_pControllerTransform->Get_SpeedPerSec();
 		_vector vPos = m_pControllerTransform->Get_State(CTransform::STATE_POSITION);
 
-		vPos = vPos + (fTimeDelta * fSpeed * XMVectorSet(0.f, 0.f, 1.f, 0.f));
+		vPos = vPos + (fTimeDelta * fSpeed * 0.3f * XMVectorSet(0.f, 0.f, 1.f, 0.f));
 
 		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, vPos);
 	}
@@ -140,7 +140,7 @@ void CCamera_Free::Key_Input(_float fTimeDelta)
 		_float fSpeed = m_pControllerTransform->Get_SpeedPerSec();
 		_vector vPos = m_pControllerTransform->Get_State(CTransform::STATE_POSITION);
 
-		vPos = vPos + (fTimeDelta * fSpeed * XMVectorSet(0.f, 0.f, -1.f, 0.f));
+		vPos = vPos + (fTimeDelta * fSpeed * 0.3f * XMVectorSet(0.f, 0.f, -1.f, 0.f));
 
 		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, vPos);
 	}
@@ -150,7 +150,7 @@ void CCamera_Free::Key_Input(_float fTimeDelta)
 		_float fSpeed = m_pControllerTransform->Get_SpeedPerSec();
 		_vector vPos = m_pControllerTransform->Get_State(CTransform::STATE_POSITION);
 
-		vPos = vPos + (fTimeDelta * fSpeed * XMVectorSet(-1.f, 0.f, 0.f, 0.f));
+		vPos = vPos + (fTimeDelta * fSpeed * 0.3f * XMVectorSet(-1.f, 0.f, 0.f, 0.f));
 
 		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, vPos);
 	}
@@ -160,7 +160,7 @@ void CCamera_Free::Key_Input(_float fTimeDelta)
 		_float fSpeed = m_pControllerTransform->Get_SpeedPerSec();
 		_vector vPos = m_pControllerTransform->Get_State(CTransform::STATE_POSITION);
 
-		vPos = vPos + (fTimeDelta * fSpeed * XMVectorSet(1.f, 0.f, 0.f, 0.f));
+		vPos = vPos + (fTimeDelta * fSpeed * 0.3f * XMVectorSet(1.f, 0.f, 0.f, 0.f));
 
 		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, vPos);
 	}
