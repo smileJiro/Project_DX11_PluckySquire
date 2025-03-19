@@ -292,6 +292,7 @@ protected:
 	_float m_fFOVY = { 0.f };
 
 	_float m_fHalfBodySize = { 0.f };
+	_float m_fHalfBodyHeight = { 0.f };
 
 	_float3 m_vRayOffset = { 0.f,0.f,0.f };
 	_float m_fRayHalfWidth = {};

@@ -159,13 +159,16 @@ void CBomb::Priority_Update(_float _fTimeDelta)
 {
 	if (true == m_isOn)
 	{
-		m_fAccTime += _fTimeDelta;
-
-		if (false == m_isExplode)
+		if(false == m_isThrow)
 		{
-			if (m_fLifeTime <= m_fAccTime)
+			m_fAccTime += _fTimeDelta;
+
+			if (false == m_isExplode)
 			{
-				Explode();
+				if (m_fLifeTime <= m_fAccTime)
+				{
+					Explode();
+				}
 			}
 		}
 	}
@@ -182,6 +185,20 @@ void CBomb::Priority_Update(_float _fTimeDelta)
 			}
 		}
 	}
+
+	if (true == m_isThrow)
+	{
+		m_fThrowAccTime += _fTimeDelta;
+
+		if (false == m_isExplode)
+		{
+			if (m_fThrowTime <= m_fThrowAccTime)
+			{
+				Explode();
+			}
+		}
+	}
+
 
 	__super::Priority_Update(_fTimeDelta);
 }
@@ -390,6 +407,8 @@ void CBomb::Active_OnDisable()
 {
 	m_fAccTime = 0.f;
 	m_isExplode = false;
+	m_fThrowAccTime = 0.f;
+	m_isThrow = false;
 
 	if (COORDINATE_2D == Get_CurCoord())
 	{
@@ -412,7 +431,7 @@ void CBomb::On_PickUpStart(CPlayer* _pPalyer, _fmatrix _matPlayerOffset)
 
 void CBomb::On_Throw(_fvector _vForce)
 {
-	Explode();
+	m_isThrow = true;
 }
 
 void CBomb::Action_Parabola(_float _fTimeDelta)

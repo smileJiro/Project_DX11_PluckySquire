@@ -67,6 +67,9 @@ private:
 	_float m_fAccTime = { 0.f };
 	_float m_fLifeTime = { 0.f };
 	_float m_fExplodeTime = { 0.f };
+	_float m_fThrowAccTime = { 0.f };
+	_float m_fThrowTime = { 1.f };	//플레이어가 던지면 시간 후 바로 터짐
+	_bool m_isThrow = { false };
 	_bool m_isExplode = { false };
 	_bool m_isOn = { true }; //심지에 불 붙은 상태
 
