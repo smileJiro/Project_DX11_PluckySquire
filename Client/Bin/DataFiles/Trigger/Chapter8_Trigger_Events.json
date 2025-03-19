@@ -64,17 +64,7 @@
     "Actions": [
       {
         "ActionTag": "Create_EventExecuter",
-        "EventTag": "Chapter8_Intro",
-        "Is_Sequence": true
-      }
-    ]
-  },
-  {
-    "Trigger_EventTag": "Chapter8_3D_Out_01",
-    "Actions": [
-      {
-        "ActionTag": "Create_EventExecuter",
-        "EventTag": "Chapter8_Intro",
+        "EventTag": "Chapter8_3D_Out_01",
         "Is_Sequence": true
       }
     ]
@@ -105,6 +95,16 @@
       {
         "ActionTag": "Create_EventExecuter",
         "EventTag": "Chapter8_Outro_Postit_Sequence",
+        "Is_Sequence": true
+      }
+    ]
+  },
+  {
+    "Trigger_EventTag": "Chapter8_BookDrop",
+    "Actions": [
+      {
+        "ActionTag": "Create_EventExecuter",
+        "EventTag": "Chapter8_BookDrop",
         "Is_Sequence": true
       }
     ]

@@ -167,7 +167,6 @@ private:
 	void				Save_TriggerData();
 	void				Load_TriggerData();
 
-
 	// Bulb
 	void				Create_Bulb_ByLine();
 	void				Create_Bulb_ByPoint();

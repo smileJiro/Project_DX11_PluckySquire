@@ -121,7 +121,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
             
                 pMainApp->Set_OneFrameDeltaTime((_float)iOneFrameDeltaTime);
             }
-            
 
         }
 
@@ -189,7 +188,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 
    ShowWindow(hWnd, nCmdShow);
    UpdateWindow(hWnd);
-   ShowCursor(false);
+   //ShowCursor(false);
 
    g_hWnd = hWnd;
 

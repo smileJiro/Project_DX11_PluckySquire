@@ -105,16 +105,16 @@ HRESULT CPlayerData_Manager::Spawn_Bulb(_uint _iPrototypeLevelID, _uint _iLevelI
 	switch (_iLevelID)
 	{
 	case Client::LEVEL_CHAPTER_2:
-		strJsonPath = TEXT("../Bin/DataFiles/Trigger/Bulb/Bulb_Position.json");
+		strJsonPath = TEXT("../Bin/DataFiles/Trigger/Bulb/Chapter2_Bulb_Position.json");
 		break;
 	case Client::LEVEL_CHAPTER_4:
-		//strJsonPath = TEXT("../Bin/DataFiles/Trigger/Bulb/Bulb_Position.json");
+		strJsonPath = TEXT("../Bin/DataFiles/Trigger/Bulb/Chapter4_Bulb_Position.json");
 		break;
 	case Client::LEVEL_CHAPTER_6:
-		//strJsonPath = TEXT("../Bin/DataFiles/Trigger/Bulb/Bulb_Position.json");
+		strJsonPath = TEXT("../Bin/DataFiles/Trigger/Bulb/Chapter6_Bulb_Position.json");
 		break;
 	case Client::LEVEL_CHAPTER_8:
-		//strJsonPath = TEXT("../Bin/DataFiles/Trigger/Bulb/Bulb_Position.json");
+		strJsonPath = TEXT("../Bin/DataFiles/Trigger/Bulb/Chapter8_Bulb_Position.json");
 		break;
 	default:
 		break;

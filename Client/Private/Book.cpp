@@ -18,6 +18,7 @@
 #include "Section_2D_PlayMap.h"
 #include "TiltSwapCrate.h"
 #include "PlayerData_Manager.h"
+#include "Trigger_Manager.h"
 
 CBook::CBook(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CModelObject(_pDevice, _pContext)
@@ -161,6 +162,12 @@ HRESULT CBook::Initialize(void* _pArg)
 	m_eInteractType = INTERACT_TYPE::NORMAL;
 	m_eInteractKey = KEY::Q;
 
+	if (m_iCurLevelID == LEVEL_CHAPTER_8)
+	{
+		if (FAILED(Add_Component(LEVEL_CHAPTER_8, TEXT("Prototype_Component_Texture_Book_Freezing"),
+			TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
+			return E_FAIL;
+	} 
 	return S_OK;
 }
 
@@ -286,8 +293,6 @@ HRESULT CBook::Render()
 			case Client::CBook::CUR_RIGHT:
 			case Client::CBook::CUR_LEFT:
 		{
-
-
 	#pragma region 현재 페이지인지, 다음 페이지인지 확인하고 SRV 가져오기.
 
 			CSection* pTargetSection = nullptr;
@@ -362,6 +367,21 @@ HRESULT CBook::Render()
 				}
 				else
 					MSG_BOX("Book Mesh Binding Error - Book.cpp");
+
+				// 프리징 상태라면, 현재 페이지에 덧그리기. 0.7 정도로...
+				if (true == m_isFreezing) 
+				{
+					if (CUR_LEFT == i || CUR_RIGHT == i)
+					{
+						_float fBlend = 0.7f;
+						if (FAILED(pShader->Bind_RawValue("g_fBlendingRatio", &fBlend, sizeof(_float))))
+							return E_FAIL;
+
+						m_pTextureCom->Bind_ShaderResource(pShader, "g_BlendingTexture", 0);
+						iShaderPass = (_uint)PASS_VTXANIMMESH::TEXTUREBLENDING;
+					
+					}
+				}
 #pragma endregion
 
 
@@ -992,6 +1012,7 @@ void CBook::Start_DropBook()
 	pActor->Freeze_Rotation(true, true, false);
 	pActor->Freeze_Position(false, false, false);
 
+	m_isDroppable = false;
 }
 
 void CBook::End_DropBook()
@@ -1083,6 +1104,7 @@ CGameObject* CBook::Clone(void* _pArg)
 
 void CBook::Free()
 {
+	Safe_Release(m_pTextureCom);
 	Safe_Release(m_pAnimEventGenerator);
 	__super::Free();
 }

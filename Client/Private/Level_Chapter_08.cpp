@@ -124,7 +124,7 @@ HRESULT CLevel_Chapter_08::Initialize(LEVEL_ID _eLevelID)
 		MSG_BOX(" Failed Ready_Layer_MainTable (Level_Chapter_08::Initialize)");
 		assert(nullptr);
 	}
-	if (FAILED(Ready_Layer_Book(TEXT("Layer_Terrain"))))
+	if (FAILED(Ready_Layer_Book(TEXT("Layer_Book"))))
 	{
 		MSG_BOX(" Failed Ready_Layer_Book (Level_Chapter_08::Initialize)");
 		assert(nullptr);
@@ -827,7 +827,7 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Player(const _wstring& _strLayerTag, CGam
 
 HRESULT CLevel_Chapter_08::Ready_Layer_Book(const _wstring& _strLayerTag)
 {
-	CGameObject* pBook = nullptr;
+	CGameObject* pGameObject = nullptr;
 	//TODO :: SAMPLE
 	CBook::BOOK_DESC Desc = {};
 	Desc.iCurLevelID = m_eLevelID;
@@ -835,12 +835,15 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Book(const _wstring& _strLayerTag)
 	Desc.tTransform3DDesc.vInitialPosition = _float3(-90.f, 64.7f, 19.0f);
 	Desc.tTransform3DDesc.vInitialScaling = _float3(1.0f, 1.0f, 1.0f);
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Book"),
-		m_eLevelID, L"Layer_Book", &pBook, &Desc)))
+		m_eLevelID, L"Layer_Book", &pGameObject, &Desc)))
 		return E_FAIL;
 
+	CBook* pBook = static_cast<CBook*>(pGameObject);
 
+	Uimgr->Set_Book(pBook);
 
-	Uimgr->Set_Book(static_cast<CBook*>(pBook));
+	pBook->Set_BlendingRatio(1.f);
+	pBook->Set_Droppable(true);
 
 	return S_OK;
 }
@@ -1207,7 +1210,7 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Item(const _wstring& _strLayerTag)
 {
 	// Test(PlayerItem: Glove, Stamp)
 	//CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("Flipping_Glove"), _float3(59.936f, 6.273f, -19.097f));
-	//CPlayerData_Manager::GetInstance()->Spawn_Bulb(LEVEL_STATIC, (LEVEL_ID)m_eLevelID);
+	CPlayerData_Manager::GetInstance()->Spawn_Bulb(LEVEL_STATIC, (LEVEL_ID)m_eLevelID);
 
 
 
