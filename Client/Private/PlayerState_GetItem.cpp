@@ -26,12 +26,28 @@ void CPlayerState_GetItem::Update(_float _fTimeDelta)
 
 
 	}
-	if (2 == m_pFX->Get_CurrentAnimIndex())
+	_uint iCurAnimIdx = m_pFX->Get_CurrentAnimIndex();
+	_float fProgress = m_pFX->Get_CurrentAnimationProgress();
+	if (0 == iCurAnimIdx)
 	{
-		if( 0.5f <= m_pFX->Get_CurrentAnimationProgress())
-			Event_DeleteObject(m_pItemImg);
+		_float fRatio = fProgress / m_fSizeUpENdProgress;
+		_float fSize = max( 0.1f,fProgress) * 250.f;
+		m_pItemImg->Set_Scale(_float3{ fSize ,fSize ,fSize});
+	}
+	else
+	if (2 == iCurAnimIdx)
+	{
+		if (0.5f <= fProgress)
+		{
+				m_pItemImg->Set_Active(false);
+				
+		}
 
 	}
+
+
+
+
 }
 
 void CPlayerState_GetItem::Enter()
@@ -53,6 +69,7 @@ void CPlayerState_GetItem::Enter()
 		m_pFX->Register_OnAnimEndCallBack(bind (& CPlayerState_GetItem::On_FXAnimEnd, this, placeholders::_1, placeholders::_2));
 		m_pFX->Switch_Animation(0);
 
+
 		wstring wstrItemImg = L"";
 		switch (m_eItemID)
 		{
@@ -69,12 +86,13 @@ void CPlayerState_GetItem::Enter()
 		default:
 			return;
 		}
+
 		tModelDesc.Build_2D_Model(m_pOwner->Get_CurLevelID(), wstrItemImg, TEXT("Prototype_Component_Shader_VtxPosTex"), (_uint)PASS_VTXPOSTEX::DEFAULT, false);
-		tModelDesc.tTransform2DDesc.vInitialScaling = {300.f,300.f,300.f};
+		tModelDesc.tTransform2DDesc.vInitialScaling = { 1.f,1.f,1.f };
+		XMStoreFloat3(&tModelDesc.tTransform2DDesc.vInitialPosition, m_pOwner->Get_FinalPosition() + m_vItemOffset);
 		m_pItemImg = static_cast<CModelObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &tModelDesc));
 		m_pGameInstance->Add_GameObject_ToLayer(m_pOwner->Get_CurLevelID(), TEXT("Layer_FX"), m_pItemImg);
 		CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(m_pItemImg, SECTION_2D_PLAYMAP_EFFECT);
-
 		break;
 	}
 	case Engine::COORDINATE_3D:
@@ -88,7 +106,8 @@ void CPlayerState_GetItem::Enter()
 
 void CPlayerState_GetItem::Exit()
 {
-
+	Event_DeleteObject(m_pFX);
+	Event_DeleteObject(m_pItemImg);
 }
 
 void CPlayerState_GetItem::On_AnimEnd(COORDINATE _eCoord, _uint _iAnimIdx)
@@ -114,8 +133,7 @@ void CPlayerState_GetItem::On_FXAnimEnd(COORDINATE _eCoord, _uint _iAnimIdx)
 	}
 	else if (2 == _iAnimIdx)
 	{
-		Event_DeleteObject(m_pFX);
-
+		m_pFX->Set_Active(false);
 		m_pOwner->Set_2DDirection(E_DIRECTION::RIGHT);
 		m_pOwner->Set_State(CPlayer::IDLE);
 		return;
