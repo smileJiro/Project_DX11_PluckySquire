@@ -62,6 +62,8 @@ private:
 	void							Artia_PigEvent_Encounter_Out(_float _fTimeDelta);
 	void							Artia_PigEvent_End(_float _fTimeDelta);
 	void							Artia_Exit(_float _fTimeDelta);
+	void							Chapter6_Candle_In(_float _fTimeDelta);
+	void							Chapter6_Candle_Out(_float _fTimeDelta);
 
 	/* FatherGame */
 	void							Chapter6_FatherGame_Progress_Start_Clear(_float _fTimeDelta);
