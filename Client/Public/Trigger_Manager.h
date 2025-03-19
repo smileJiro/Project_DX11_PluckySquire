@@ -77,7 +77,6 @@ public :
 		/* Friend Event */
 
 		CHAPTER6_START_3D,			// 톱니 앞에서 3D 진입 전
-		CHAPTER6_INTRO,				// Intro
 
 		/* Father Game Start */
 		CHAPTER6_FATHERGAME_PROGRESS_START_CLEAR,
