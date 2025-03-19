@@ -3,6 +3,7 @@
 #include "GameInstance.h"
 #include "Book.h"
 #include "Player.h"
+#include "PlayerData_Manager.h"
 
 
 
@@ -45,9 +46,12 @@ void CStopStamp_UI::Priority_Update(_float _fTimeDelta)
 
 void CStopStamp_UI::Update(_float _fTimeDelta)
 {
+	//return tResult;
+	CPlayerData_Manager* pPDM = CPlayerData_Manager::GetInstance();
+
 	
 	CUI_Manager* pUIManager = CUI_Manager::GetInstance();
-	if (false == pUIManager->Get_StampHave(1))
+	if (false == pPDM->Is_Own(CPlayerData_Manager::STOP_STAMP))
 		return;
 
 
@@ -55,15 +59,15 @@ void CStopStamp_UI::Update(_float _fTimeDelta)
 		return;
 
 	// 둘다 있으면 체인지 스탬프 준비하고
-	if (true == pUIManager->Get_StampHave(0) &&
-		true == pUIManager->Get_StampHave(1))
+	if (true == pPDM->Is_Own(CPlayerData_Manager::BOMB_STAMP) &&
+		true == pPDM->Is_Own(CPlayerData_Manager::STOP_STAMP))
 	{
 		ChangeStamp(_fTimeDelta);
 	}
 
 	// 밤만 가지고 있으면 밤 도장 위치를 조정해주자.
-	else if (true == pUIManager->Get_StampHave(1) &&
-		false == pUIManager->Get_StampHave(0))
+	else if (true == pPDM->Is_Own(CPlayerData_Manager::STOP_STAMP) &&
+		false == pPDM->Is_Own(CPlayerData_Manager::BOMB_STAMP))
 	{
 		if (false == m_isFirstPositionAdjusted)
 		{
@@ -84,7 +88,9 @@ void CStopStamp_UI::Update(_float _fTimeDelta)
 
 void CStopStamp_UI::Late_Update(_float _fTimeDelta)
 {
-	if (false == Uimgr->GetInstance()->Get_StampHave(1))
+	CPlayerData_Manager* pPDM = CPlayerData_Manager::GetInstance();
+
+	if (false == pPDM->Is_Own(CPlayerData_Manager::STOP_STAMP))
 		return;
 
 
@@ -99,7 +105,9 @@ void CStopStamp_UI::Late_Update(_float _fTimeDelta)
 
 HRESULT CStopStamp_UI::Render()
 {
-	if (false == Uimgr->GetInstance()->Get_StampHave(1))
+	CPlayerData_Manager* pPDM = CPlayerData_Manager::GetInstance();
+
+	if (false == pPDM->Is_Own(CPlayerData_Manager::STOP_STAMP))
 		return S_OK;
 
 	if (FAILED(m_pControllerTransform->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))

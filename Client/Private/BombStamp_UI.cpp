@@ -3,6 +3,7 @@
 #include "GameInstance.h"
 #include "UI_Manager.h"
 #include "Book.h"
+#include "PlayerData_Manager.h"
 
 
 #include "Dialog_Manager.h"
@@ -46,26 +47,26 @@ void CBombStamp_UI::Update(_float _fTimeDelta)
 {
 	CUI_Manager* pUIManager = CUI_Manager::GetInstance();
 	
-
+	CPlayerData_Manager* pPDM = CPlayerData_Manager::GetInstance();
 
 
 	// 밤 도장을 가지고 있지 않으면 리턴을 시켜주자.
-	if (false == pUIManager->Get_StampHave(0))
+	if (false == pPDM->Is_Own(CPlayerData_Manager::BOMB_STAMP))
 		return;
 
 	if (m_isActive == false)
 		return;
 
 	// 둘다 있으면 체인지 스탬프 준비하고
-	if (true == pUIManager->Get_StampHave(0) &&
-		true == pUIManager->Get_StampHave(1))
+	if (true == pPDM->Is_Own(CPlayerData_Manager::BOMB_STAMP) &&
+		true == pPDM->Is_Own(CPlayerData_Manager::STOP_STAMP))
 	{ 
 		ChangeStamp(_fTimeDelta);
 	}
 
 	// 밤만 가지고 있으면 밤 도장 위치를 조정해주자.
-	else if (true == pUIManager->Get_StampHave(0) &&
-			false == pUIManager->Get_StampHave(1))
+	else if (true == pPDM->Is_Own(CPlayerData_Manager::BOMB_STAMP) &&
+			false == pPDM->Is_Own(CPlayerData_Manager::STOP_STAMP))
 	{
 		if (false == m_isFirstPositionAdjusted)
 		{
@@ -86,7 +87,8 @@ void CBombStamp_UI::Update(_float _fTimeDelta)
 
 void CBombStamp_UI::Late_Update(_float _fTimeDelta)
 {
-	if (false == Uimgr->GetInstance()->Get_StampHave(0))
+	CPlayerData_Manager* pPDM = CPlayerData_Manager::GetInstance();
+	if (false == pPDM->Is_Own(CPlayerData_Manager::BOMB_STAMP))
 		return;
 
 	CBook* pBook = Uimgr->Get_Book();
@@ -100,7 +102,8 @@ void CBombStamp_UI::Late_Update(_float _fTimeDelta)
 
 HRESULT CBombStamp_UI::Render()
 {
-	if (false == Uimgr->GetInstance()->Get_StampHave(0))
+	CPlayerData_Manager* pPDM = CPlayerData_Manager::GetInstance();
+	if (false == pPDM->Is_Own(CPlayerData_Manager::BOMB_STAMP))
 		return S_OK;
 
 

@@ -3,6 +3,7 @@
 #include "GameInstance.h"
 #include "UI_Manager.h"
 #include "Book.h"
+#include "PlayerData_Manager.h"
 
 
 
@@ -144,7 +145,9 @@ void CInteraction_Key::Late_Update(_float _fTimeDelta)
 HRESULT CInteraction_Key::Render()
 {
 	CUI_Manager* pUIManager = CUI_Manager::GetInstance();
-	if (false == pUIManager->Get_StampHave(0) && false == pUIManager->Get_StampHave(1))
+	CPlayerData_Manager* pPDM = CPlayerData_Manager::GetInstance();
+
+	if (false == pPDM->Is_Own(CPlayerData_Manager::BOMB_STAMP) && false == pPDM->Is_Own(CPlayerData_Manager::STOP_STAMP))
 		return S_OK;
 
 	if (FAILED(m_pControllerTransform->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
@@ -274,9 +277,9 @@ void CInteraction_Key::StampWord()
 {
 
 	CUI_Manager* pUIManager = CUI_Manager::GetInstance();
-
-	if ((true == pUIManager->Get_StampHave(0) ||
-		true == pUIManager->Get_StampHave(1)))
+	CPlayerData_Manager* pPDM = CPlayerData_Manager::GetInstance();
+	if ((true == pPDM->Is_Own(CPlayerData_Manager::BOMB_STAMP) ||
+		true == pPDM->Is_Own(CPlayerData_Manager::STOP_STAMP)))
 	{
 		ChangeStampWord();
 	}

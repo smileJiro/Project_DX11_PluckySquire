@@ -3,6 +3,7 @@
 #include "GameInstance.h"
 #include "UI_Manager.h"
 #include "Book.h"
+#include "PlayerData_Manager.h"
 
 
 CArrowForStamp::CArrowForStamp(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -54,9 +55,11 @@ void CArrowForStamp::Late_Update(_float _fTimeDelta)
 	if (nullptr == pBook)
 		assert(pBook);
 
+	CPlayerData_Manager* pPDM = CPlayerData_Manager::GetInstance();
+
 	if (true == pBook->Get_PlayerAbove())
 	{
-		if (true == Uimgr->Get_StampHave(0) && true == Uimgr->Get_StampHave(1))
+		if (true == pPDM->Is_Own(CPlayerData_Manager::BOMB_STAMP) && true == pPDM->Is_Own(CPlayerData_Manager::STOP_STAMP))
 			__super::Late_Update(_fTimeDelta);
 	}
 		
@@ -65,7 +68,9 @@ void CArrowForStamp::Late_Update(_float _fTimeDelta)
 HRESULT CArrowForStamp::Render()
 {
 	CUI_Manager* pUIManager = CUI_Manager::GetInstance();
-	if (false == pUIManager->Get_StampHave(0) || false == pUIManager->Get_StampHave(1))
+	CPlayerData_Manager* pPDM = CPlayerData_Manager::GetInstance();
+
+	if (false == pPDM->Is_Own(CPlayerData_Manager::BOMB_STAMP) || false == pPDM->Is_Own(CPlayerData_Manager::STOP_STAMP))
 		return S_OK;
 
 	if (FAILED(m_pControllerTransform->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
