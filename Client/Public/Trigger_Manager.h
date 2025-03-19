@@ -67,7 +67,6 @@ public :
 		CHAPTER4_STORYSEQUENCE,		// 글로브 습득 후, 스케치스페이스 이벤트
 		//CHAPTER4_2D_IN,				// 폭탄 도장 얻고나서의 이벤트 
 
-		CHAPTER6_INTRO,				// Intro
 		ARTIA_PIGEVENT_START,	
 		ARTIA_PIGEVENT_ENCOUNTER,
 		ARTIA_PIGEVENT_ENCOUNTER_OUT,

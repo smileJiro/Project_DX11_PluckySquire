@@ -23,7 +23,7 @@ HRESULT CPanicState::Initialize(void* _pArg)
 	m_iPrevDir = -1;
 	m_iDir = -1;
 	m_eDir = F_DIRECTION::F_DIR_LAST;
-	m_fDelayTime = 5.f;
+	m_fDelayTime = 2.f;
 		
 	return S_OK;
 }
@@ -77,12 +77,13 @@ void CPanicState::State_Update(_float _fTimeDelta)
 	{
 		m_pOwner->Stop_Rotate();
 		m_pOwner->Stop_Move();
-		Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
+		Event_ChangeMonsterState(MONSTER_STATE::PATROL, m_pFSM);
 	}
 
 
 	//폭탄 방향의 반대로 달리다가 다른 물체와 충돌하면 방향전환
-	if (true == m_pOwner->IsContactToBlock() && false == m_isTurn)
+	//if (true == m_pOwner->Check_Block(_fTimeDelta) && false == m_isTurn)
+	if (false == m_isTurn)
 	{
 		m_isTurn = true;
 		m_isBlock = true;
@@ -149,8 +150,8 @@ void CPanicState::PanicMove(_float _fTimeDelta)
 		if (true == m_isMove)
 		{
 			//m_pOwner->Get_ActorCom()->Set_LinearVelocity(vDir, m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec());
-			m_pOwner->Move(vDir * m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec(), _fTimeDelta);
-			if (true == m_pOwner->IsContactToBlock())
+			m_pOwner->Move(XMVector3Normalize(vDir)*m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec(), _fTimeDelta);
+			if (true == m_pOwner->Check_Block(_fTimeDelta))
 			{
 				m_isMove = false;
 				m_isTurn = false;
@@ -194,7 +195,7 @@ void CPanicState::RandomMove(_float _fTimeDelta, _int _iDir)
 		{
 			//m_pOwner->Get_ActorCom()->Set_LinearVelocity(vDir, m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec());
 			m_pOwner->Move(vDir * m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec(), _fTimeDelta);
-			if (true == m_pOwner->IsContactToBlock())
+			if (true == m_pOwner->Check_Block(_fTimeDelta))
 			{
 				m_isMove = false;
 				m_isTurn = false;

@@ -189,6 +189,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 
    ShowWindow(hWnd, nCmdShow);
    UpdateWindow(hWnd);
+   ShowCursor(false);
 
    g_hWnd = hWnd;
 

@@ -88,6 +88,7 @@
 #include "Room_Door.h"
 
 #include "Npc_Humgrump.h"
+#include "Gear.h"
 
 CLevel_Chapter_08::CLevel_Chapter_08(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:
@@ -195,6 +196,12 @@ HRESULT CLevel_Chapter_08::Initialize(LEVEL_ID _eLevelID)
 		assert(nullptr);
 	}
 
+	if (FAILED(Ready_Layer_Gear(TEXT("Layer_Gear"))))
+	{
+		MSG_BOX(" Failed Ready_Layer_Gear (Level_Chapter_08::Initialize)");
+		assert(nullptr);
+	}
+	
 	/* Collision Check Matrix */
 	// 그룹필터 추가 >> 중복해서 넣어도 돼 내부적으로 걸러줌 알아서 Door_Yellow
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::MONSTER);
@@ -1978,6 +1985,23 @@ HRESULT CLevel_Chapter_08::Ready_Layer_RoomDoor(const _wstring& _strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Room_Door"),
 		m_eLevelID, _strLayerTag, &Desc)))
 		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Chapter_08::Ready_Layer_Gear(const _wstring& _strLayerTag)
+{
+	{// Chapter_8 FirstGear
+		CGear::GEAR_DESC Desc;
+		Desc.iCurLevelID = LEVEL_CHAPTER_8;
+		Desc.Build_2D_Transform(_float2(-442.f, 180.0f), _float2(0.99f, 1.0f));
+
+		CGameObject* pGameObject = nullptr;
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_Gear"), LEVEL_CHAPTER_8, _strLayerTag, &pGameObject, &Desc)))
+			return E_FAIL;
+
+		CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter8_P1920"), pGameObject);
+	}// Chapter_8 FirstGear
 
 	return S_OK;
 }
