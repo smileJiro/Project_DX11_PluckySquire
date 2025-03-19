@@ -113,6 +113,7 @@
 #include "RabbitLunch.h"
 #include "Bomb.h"
 #include "BombableBox.h"
+#include "CyberCursor.h"
 #include "TiltSwapPusher.h"
 #include "TiltSwapCrate.h"
 #include "BigPressurePlate.h"
@@ -2114,7 +2115,9 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_BossHPBar"),
 		CBossHPBar::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
-
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_CyberCursor"),
+		CCyberCursor::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 #pragma endregion
 
 #pragma region Chapter 8 - Effect Load

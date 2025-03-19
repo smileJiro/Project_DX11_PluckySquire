@@ -105,6 +105,7 @@ public:
 		PLAYER_PART_ZETPACK,
 		PLAYER_PART_VISOR,
 		PLAYER_PART_TURNBOOKEFFECT,
+		PLAYER_PART_CYBERCURSOR,
 		PLAYER_PART_LAST
 	};
 
@@ -791,6 +792,7 @@ public:
 	void Move_CyberCursor(_vector _vMove);
 private:
 	CActor_Dynamic* m_pDynamicActor = nullptr;
+	class CCyberCursor* m_pCyberCursor = nullptr;
 	class CCamera_Target* m_pTargetCamera = nullptr;
 	const _float4x4* m_pCameraTargetWorldMatrix = { nullptr };
 	_float m_fDistanceFromCamearPlane = 7.5f;
