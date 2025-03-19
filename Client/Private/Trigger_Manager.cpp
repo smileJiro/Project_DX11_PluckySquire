@@ -90,6 +90,8 @@ HRESULT CTrigger_Manager::Mapping_ExecuterTag()
 	m_EventExecuterTags[CHAPTER6_INTRO] = L"Chapter6_Intro";
 	m_EventExecuterTags[CHAPTER6_START_3D] = L"Chapter6_Start_3D";
 	m_EventExecuterTags[ARTIA_PIGEVENT_START] = L"Artia_PigEvent_Start";
+	m_EventExecuterTags[ARTIA_PIGEVENT_ENCOUNTER] = L"Artia_PigEvent_Encounter";
+	m_EventExecuterTags[ARTIA_PIGEVENT_ENCOUNTER_OUT] = L"Artia_PigEvent_Encounter_Out";
 	m_EventExecuterTags[ARTIA_PIGEVENT_END] = L"Artia_PigEvent_End";
 	m_EventExecuterTags[ARTIA_EXIT] = L"Artia_Exit";
 	m_EventExecuterTags[CHAPTER6_CANDLE_IN] = L"Chapter6_Candle_In";
@@ -103,6 +105,8 @@ HRESULT CTrigger_Manager::Mapping_ExecuterTag()
 	m_EventExecuterTags[CHAPTER6_CHANGE_BOOK_TO_GREATE_HUMGRUMP] = L"Chapter6_Change_Book_To_Greate_Humgrump";
 	m_EventExecuterTags[CHAPTER6_FRIENDEVENT_0] = L"Chapter6_FriendEvent_0";
 	m_EventExecuterTags[CHAPTER6_STORYSEQUENCE_01] = L"Chapter6_StorySequence_01";
+	m_EventExecuterTags[CHAPTER6_BOSS_START] = L"Chapter6_Boss_Start";
+	m_EventExecuterTags[CHAPTER6_BOSS_PROGRESS1_END] = L"Chapter6_Boss_Progress1_End";
 
 
 	m_EventExecuterTags[CHAPTER8_LASER_STAGE] = L"Chapter8_Laser_Stage";

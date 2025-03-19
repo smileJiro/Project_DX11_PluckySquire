@@ -5,6 +5,7 @@
 #include "Bomb.h"
 #include "PlayerData_Manager.h"
 #include "Section_Manager.h"
+#include "Camera_Manager.h"
 
 CTurret::CTurret(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     :CModelObject(_pDevice, _pContext)
@@ -36,6 +37,9 @@ HRESULT CTurret::Initialize(void* _pArg)
     if (FAILED(__super::Initialize(_pArg)))
         return E_FAIL;
 
+    if (FAILED(Ready_Components(pDesc)))
+        return E_FAIL;
+  
     /* Set Anim End */
     Register_OnAnimEndCallBack(bind(&CTurret::On_AnimEnd, this, placeholders::_1, placeholders::_2));
 
@@ -44,24 +48,38 @@ HRESULT CTurret::Initialize(void* _pArg)
 
 void CTurret::Priority_Update(_float _fTimeDelta)
 {
-
+    if (true == m_isStoppable)
+        return;
     __super::Priority_Update(_fTimeDelta);
 }
 
 void CTurret::Update(_float _fTimeDelta)
 {
+    if (true == m_isStoppable)
+        return;
     Action_State(_fTimeDelta);
     __super::Update(_fTimeDelta);
 }
 
 void CTurret::Late_Update(_float _fTimeDelta)
 {
+    if (true == m_isStoppable)
+    {
+        Action_StoppableRender(_fTimeDelta);
+        return;
+    }
+
     State_Change();
     __super::Late_Update(_fTimeDelta);
 }
 
 HRESULT CTurret::Render()
 {
+#ifdef _DEBUG
+    if (m_p2DColliderComs[0]->Is_Active())
+        m_p2DColliderComs[0]->Render(SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName));
+#endif
+
     return __super::Render();
 }
 
@@ -121,7 +139,7 @@ void CTurret::State_Change_Rise()
 void CTurret::State_Change_Fire()
 {
     Switch_Animation(STATE::STATE_FIRE);
-
+    
     CPlayer* pPlayer = CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr();
     if (nullptr == pPlayer)
     {
@@ -140,6 +158,9 @@ void CTurret::State_Change_Fire()
             CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_2D, &pGameObject, &vPosition, nullptr, nullptr, &m_strSectionName);
             CBomb* pBomb = static_cast<CBomb*>(pGameObject);
             static_cast<CBomb*>(pGameObject)->Start_Parabola(vPos, vPlayerPos, 1.0f);
+
+            CCamera_Manager::GetInstance()->Start_Shake_ByCount(CCamera_Manager::TARGET_2D, 0.2f, 0.4f, 50, CCamera::SHAKE_Y, 0.05f);
+            pBomb->Set_Time_On();
         }
         else
         {
@@ -148,12 +169,11 @@ void CTurret::State_Change_Fire()
             CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &pGameObject, &vPosition);
             CBomb* pBomb = static_cast<CBomb*>(pGameObject);
             pBomb->Start_Parabola_3D(vPlayerPos, XMConvertToRadians(30.f));
+
+            CCamera_Manager::GetInstance()->Start_Shake_ByCount(CCamera_Manager::TARGET, 0.2f, 0.4f, 50, CCamera::SHAKE_Y, 0.05f);
+            pBomb->Set_Time_On();
         }
     }
-
-
-
-    
 
 }
 
@@ -248,6 +268,37 @@ void CTurret::On_AnimEnd(COORDINATE _eCoord, _uint _iAnimIdx)
     default:
         break;
     }
+}
+
+void CTurret::On_Stop()
+{
+    m_isStoppable = true;
+    Start_StoppableRender();
+}
+
+void CTurret::On_UnStop()
+{
+    m_isStoppable = false;
+    End_StoppableRender();
+}
+
+HRESULT CTurret::Ready_Components(TURRET_DESC* _pDesc)
+{
+    m_p2DColliderComs.resize(1);
+
+    CCollider_Circle::COLLIDER_CIRCLE_DESC Desc = {};
+    Desc.pOwner = this;
+    Desc.fRadius = 100.0f;
+    Desc.vScale = { 1.0f, 1.0f };
+    Desc.vOffsetPosition = { 0.0f, Desc.fRadius * 0.5f };
+    Desc.isBlock = false;
+    Desc.isTrigger = true;
+    Desc.iCollisionGroupID = OBJECT_GROUP::MONSTER;
+    if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
+        TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &Desc)))
+        return E_FAIL;
+
+    return S_OK;
 }
 
 CTurret* CTurret::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

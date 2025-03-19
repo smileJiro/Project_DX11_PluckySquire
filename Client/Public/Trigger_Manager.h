@@ -69,8 +69,15 @@ public :
 
 		CHAPTER6_INTRO,				// Intro
 		ARTIA_PIGEVENT_START,	
+		ARTIA_PIGEVENT_ENCOUNTER,
+		ARTIA_PIGEVENT_ENCOUNTER_OUT,
 		ARTIA_PIGEVENT_END,		
 		ARTIA_EXIT,				
+
+		/* Friend Event */
+		CHAPTER6_FRIENDEVENT_0, // 아르티아 첫 진입
+		/* Friend Event */
+
 		CHAPTER6_START_3D,			// 톱니 앞에서 3D 진입 전
 		CHAPTER6_CANDLE_IN,			// 감옥 속 촛불 특수 처리
 		CHAPTER6_CANDLE_OUT,		// 감옥 속 촛불 특수 처리
@@ -82,13 +89,16 @@ public :
 		CHAPTER6_FATHERGAME_PROGRESS_FATHERPART_2,
 		CHAPTER6_FATHERGAME_PROGRESS_FATHERPART_3,
 		/* Father Game End */
+
+		/* Chapter6_Boss */
+		CHAPTER6_BOSS_START, 
+		CHAPTER6_BOSS_PROGRESS1_END, 
+		/* Chapter6_Boss */
+
 		CHAPTER6_HUMGRUMP_REVOLT,	// 달수염 죽는 이벤트
 		CHAPTER6_CHANGE_BOOK_TO_GREATE_HUMGRUMP,		// 위대한 험그럼프로 책 바뀌는 이벤트
 		CHAPTER6_STORYSEQUENCE_01, // 왕궁 이벤트
 
-		/* Friend Event */
-		CHAPTER6_FRIENDEVENT_0,
-		/* Friend Event */
 
 		CHAPTER8_LASER_STAGE,
 		CHAPTER8_LASER_STAGE_2,

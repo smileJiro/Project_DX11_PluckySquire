@@ -57,6 +57,11 @@ public:
 
 private:
 	void							Chapter6_Intro(_float _fTimeDelta);
+	void							Artia_PigEvent_Start(_float _fTimeDelta);
+	void							Artia_PigEvent_Encounter(_float _fTimeDelta);
+	void							Artia_PigEvent_Encounter_Out(_float _fTimeDelta);
+	void							Artia_PigEvent_End(_float _fTimeDelta);
+	void							Artia_Exit(_float _fTimeDelta);
 	void							Chapter6_Candle_In(_float _fTimeDelta);
 	void							Chapter6_Candle_Out(_float _fTimeDelta);
 
@@ -72,8 +77,9 @@ private:
 	void							Chapter6_Humgrump_Revolt(_float _fTimeDelta);
 	void							Chapter6_Change_Book_To_Greate_Humgrump(_float _fTimeDelta);
 	void							Chapter6_Start_3D(_float _fTimeDelta); // 6챕터 3d 진입 이벤트
+	void							Chapter6_Boss_Start(_float _fTimeDelta); 
+	void							Chapter6_Boss_Progress1_End(_float _fTimeDelta); 
 
-private:
 
 private:
 	_uint							m_iDialogueIndex = 0;

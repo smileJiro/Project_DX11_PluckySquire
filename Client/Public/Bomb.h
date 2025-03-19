@@ -18,6 +18,10 @@ public:
 	virtual HRESULT Render() override;
 
 public:
+	void Set_LifeTime(_float _fLifeTime)
+	{
+		m_fLifeTime = _fLifeTime;
+	}
 	void Set_Time_On();
 	void Set_Time_Off();
 	void Bomb_Shape_Enable(_bool _isEnable);
@@ -45,12 +49,15 @@ public:
 	virtual void Active_OnEnable() override;
 	virtual void Active_OnDisable() override;
 
+	virtual void On_PickUpStart(CPlayer* _pPalyer, _fmatrix _matPlayerOffset) override;
+	virtual void On_Throw(_fvector _vForce) override;
+
 public:
 	void Start_Parabola(_fvector _vStartPos, _fvector _vEndPos, _float _fParabolaTime);
 	void Start_Parabola_3D(_fvector _vEndPos, _float _fLaunchAngleRadian, _float _fGravityMag = 9.81f * 3.0f);
 private:
 	void Action_Parabola(_float _fTimeDelta);
-private:
+private: /* Æ÷¹°¼± 2D Data */
 	_bool m_isParabolaAction = false;
 	_float3 m_vStartPos = {};
 	_float3 m_vEndPos = {};

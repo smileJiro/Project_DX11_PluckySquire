@@ -204,7 +204,7 @@ void CGameEventExecuter_C8::Chapter8_Laser_Stage(_float _fTimeDelta)
 				Desc.tTransform2DDesc.vInitialPosition = { -806.f,-180.f, 0.f };
 
 				CSection* pBookSection = CSection_Manager::GetInstance()->Find_Section(TEXT("Chapter8_P1112"));
-				CTrigger_Manager::GetInstance()->Create_TriggerObject(LEVEL_STATIC, LEVEL_CHAPTER_2, &Desc, pBookSection);
+				CTrigger_Manager::GetInstance()->Create_TriggerObject(LEVEL_STATIC, LEVEL_CHAPTER_8, &Desc, pBookSection);
 
 				pPlayer->Set_BlockPlayerInput(false);
 				GameEvent_End();
@@ -1308,7 +1308,7 @@ void CGameEventExecuter_C8::Chapter8_Meet_Humgrump(_float _fTimeDelta)
 			// 10. 다 날아갔으면 Active 끄고 Camera Zoom 더 멀리
 			m_TargetObjects[0]->Set_Active(false);
 			CCamera_Manager::GetInstance()->Start_Changing_ArmLength(CCamera_Manager::TARGET_2D, 0.5f, 14.4f, EASE_IN_OUT);
-			_vector vCenter = XMVectorSet(0.f, -37.36, 0.f, 1.f);
+			_vector vCenter = XMVectorSet(0.f, -37.36f, 0.f, 1.f);
 
 			memcpy(&m_TargetWorldMatrix.m[3], &vCenter, sizeof(_float4));
 

@@ -24,6 +24,16 @@ CMonster::CMonster(const CMonster& _Prototype)
 {
 }
 
+void CMonster::Set_Target(CGameObject* _pGameObject)
+{
+	if (nullptr == _pGameObject)
+		return;
+
+	Safe_Release(m_pTarget);
+	m_pTarget = _pGameObject;
+	Safe_AddRef(m_pTarget);
+}
+
 _bool CMonster::Is_Formation_Stop()
 {
 	if (nullptr == m_pFormation)
