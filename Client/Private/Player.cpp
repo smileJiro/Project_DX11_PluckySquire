@@ -2582,7 +2582,7 @@ void CPlayer::On_UnStop()
 	//static_cast<CModelObject*>(m_PartObjects[PLAYER_PART_BODY])->End_StoppableRender();
 }
 
-void CPlayer::On_GainPlayerItem(CPlayerData_Manager::PLAYERITEM_TYPE _eItem)
+void CPlayer::On_GainPlayerItem(_uint _eItem)
 {
 	switch (_eItem)
 	{
@@ -2604,6 +2604,8 @@ void CPlayer::On_GainPlayerItem(CPlayerData_Manager::PLAYERITEM_TYPE _eItem)
 		break;
 	}
 }
+
+
 
 void CPlayer::Update_CyberJot(_float _fTimeDelta)
 {
