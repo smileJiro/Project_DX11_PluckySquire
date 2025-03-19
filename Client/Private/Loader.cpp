@@ -113,6 +113,7 @@
 #include "RabbitLunch.h"
 #include "Bomb.h"
 #include "BombableBox.h"
+#include "CyberCursor.h"
 #include "TiltSwapPusher.h"
 #include "TiltSwapCrate.h"
 #include "BigPressurePlate.h"
@@ -1952,6 +1953,11 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 		/* °øÅë UI Texture */
 		if (FAILED(UI_Texture_Load(_eLoadLevelID)))
 			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Add_Prototype(eResourceLevelID, TEXT("Prototype_Component_Texture_Book_Freezing"),
+			CTexture::Create(m_pDevice, m_pContext, TEXT("..//Bin/Resources/Textures/Object/3DObject/Book_Freezing_Texture.dds"), 1))))
+			return E_FAIL;
+
 	
 	#pragma endregion
 	
@@ -2015,6 +2021,11 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 
 	/* UI */
 	if (FAILED(UI_Object_Load(_eLoadLevelID)))
+		return E_FAIL;
+
+	/* For. Prototype_GameObject_Gear */
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Gear"),
+		CGear::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For. Prototype_GameObject_GameEventExecuter */
@@ -2114,7 +2125,9 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_BossHPBar"),
 		CBossHPBar::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
-
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_CyberCursor"),
+		CCyberCursor::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 #pragma endregion
 
 #pragma region Chapter 8 - Effect Load

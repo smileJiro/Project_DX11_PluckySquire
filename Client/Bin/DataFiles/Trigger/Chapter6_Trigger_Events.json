@@ -54,7 +54,7 @@
     "Actions": [
       {
         "ActionTag": "Create_EventExecuter",
-        "EventTag": "Artia_PigEvent_Start",
+        "EventTag": "Artia_PigEvent_End",
         "Is_Sequence": true
       }
     ]

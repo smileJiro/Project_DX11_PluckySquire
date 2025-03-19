@@ -172,11 +172,6 @@ void CMonster::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, co
 		//XMVectorSetY( vRepulse , -1.f);
 		//Event_KnockBack(static_cast<CCharacter*>(_Other.pActorUserData->pOwner), vRepulse);
 	}
-
-	if (OBJECT_GROUP::MAPOBJECT & _Other.pActorUserData->iObjectGroup)
-	{
-		m_isContact_Block = true;
-	}
 }
 
 void CMonster::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
@@ -185,10 +180,6 @@ void CMonster::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, con
 
 void CMonster::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
 {
-	if (OBJECT_GROUP::MAPOBJECT & _Other.pActorUserData->iObjectGroup)
-	{
-		m_isContact_Block = false;
-	}
 }
 
 void CMonster::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
@@ -284,6 +275,7 @@ void CMonster::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
 
 	if (0 >= m_tStat.iHP)
 	{
+		m_tStat.iHP = 0;
 		if (0 == m_tStat.iHP)
 		{
 			Set_AnimChangeable(true);
@@ -294,6 +286,7 @@ void CMonster::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
 
 			static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Start_HitRender();
 			Event_ChangeMonsterState(MONSTER_STATE::DEAD, m_pFSM);
+			KnockBack(_vForce);
 		}
 
 	}
@@ -646,7 +639,8 @@ _bool CMonster::Check_Block(_fvector _vForce, _float _fTimeDelta)
 
 	_float fDistance = Get_ControllerTransform()->Get_SpeedPerSec() * _fTimeDelta + m_fHalfBodySize;
 
-	return m_pGameInstance->RayCast_Nearest_GroupFilter(vOrigin, vRayDir, fDistance, OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE);
+	//return m_pGameInstance->RayCast_Nearest_GroupFilter(vOrigin, vRayDir, fDistance, OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE);
+	return m_pGameInstance->RayCast_Nearest_GroupFilter(vOrigin, vRayDir, fDistance, OBJECT_GROUP::MONSTER_PROJECTILE);
 }
 
 _bool CMonster::Add_To_Formation()
@@ -664,6 +658,9 @@ _bool CMonster::Add_To_Formation()
 
 _bool CMonster::Remove_From_Formation()
 {
+	if (nullptr == m_pFormation)
+		return false;
+
 	if (m_pFormation->Remove_From_Formation(this))
 	{
 		CActor_Dynamic* pDynamic = static_cast<CActor_Dynamic*>(Get_ActorCom());

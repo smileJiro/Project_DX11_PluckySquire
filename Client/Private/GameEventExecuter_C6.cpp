@@ -323,13 +323,13 @@ void CGameEventExecuter_C6::Artia_PigEvent_Start(_float _fTimeDelta)
 		if (Is_Start())
 		{
 			CTriggerObject::TRIGGEROBJECT_DESC Desc = {};
-			Desc.vHalfExtents = { 150.f, 20.f, 0.5f };
+			Desc.vHalfExtents = { 20.f, 120.f, 0.5f };
 			Desc.iTriggerType = (_uint)TRIGGER_TYPE::EVENT_TRIGGER;
 			Desc.szEventTag = TEXT("Artia_PigEvent_Encounter");
 			Desc.eConditionType = CTriggerObject::TRIGGER_ENTER;
 			Desc.isReusable = false;
 			Desc.eStartCoord = COORDINATE_2D;
-			Desc.Build_2D_Transform({ 1007.0f, 309.0f }, { 1.f,1.f });
+			Desc.Build_2D_Transform({ 1007.0f, 409.0f }, { 1.f,1.f });
 
 			CSection* pBookSection = CSection_Manager::GetInstance()->Find_Section(TEXT("Chapter5_P0102"));
 			CTrigger_Manager::GetInstance()->Create_TriggerObject(LEVEL_STATIC, LEVEL_CHAPTER_6, &Desc, pBookSection);
@@ -594,7 +594,7 @@ void CGameEventExecuter_C6::Artia_PigEvent_End(_float _fTimeDelta)
 			static_cast<CFriend*>(m_TargetObjects[VIOLET])->Move_Position(_float2(XMVectorGetX(vVioletPos), XMVectorGetY(vVioletPos)), CFriend::DIR_UP);
 		}
 
-		Next_Step_Over(3.f);
+		Next_Step_Over(2.f);
 	}
 	else if (Step_Check(STEP_2))
 	{
@@ -616,7 +616,48 @@ void CGameEventExecuter_C6::Artia_PigEvent_End(_float _fTimeDelta)
 	{
 		if (Is_Start())
 		{
+			CNPC_Manager::GetInstance()->ChangeDialogue(L"Eray", L"Eray_Dialogue_02");
 			// 실질 END 처리
+			//{
+			//	"Collider_Info": {
+			//		"Position": [
+			//			-16.0,
+			//			717.0
+			//		] ,
+			//			"Scale" : [
+			//				114.0,
+			//				18.0
+			//			]
+			//	},
+			//		"Fillter_MyGroup": 2,
+			//		"Fillter_OtherGroupMask" : 128,
+			//		"Trigger_ConditionType" : 0,
+			//		"Trigger_Coordinate" : 0,
+			//		"Trigger_EventTag" : "BookSectionChange_Next",
+			//		"Trigger_Type" : 6,
+			//		"MapTrigger_Info" : {
+			//		"Next_Position": [
+			//			-1181.0,
+			//			-301.0
+			//		]
+			//	}
+			//},
+
+
+			CTriggerObject::TRIGGEROBJECT_DESC Desc = {};
+			Desc.vHalfExtents = { 0.5f, 0.5f, 0.5f };
+			Desc.iTriggerType = (_uint)TRIGGER_TYPE::EVENT_TRIGGER;
+			Desc.szEventTag = TEXT("Artia_Exit");
+			Desc.eConditionType = CTriggerObject::TRIGGER_ENTER;
+			Desc.isReusable = false;
+			Desc.eStartCoord = COORDINATE_2D;
+			Desc.Build_2D_Transform({ -16.0f, 697.0f }, { 114.0f,18.0f });
+
+			CSection* pBookSection = CSection_Manager::GetInstance()->Find_Section(TEXT("Chapter5_P0102"));
+			CTrigger_Manager::GetInstance()->Create_TriggerObject(LEVEL_STATIC, LEVEL_CHAPTER_6, &Desc, pBookSection);
+
+
+
 		}
 		Next_Step(true);
 	}
@@ -633,6 +674,13 @@ void CGameEventExecuter_C6::Artia_PigEvent_End(_float _fTimeDelta)
 
 void CGameEventExecuter_C6::Artia_Exit(_float _fTimeDelta)
 {
+
+	if (Is_Start())
+	{
+	
+		_float3 fNextPos = {-1181.0f,-301.f,0.f };
+		Event_Book_Main_Section_Change_Start(1, &fNextPos);
+	}
 }
 
 void CGameEventExecuter_C6::Chapter6_Candle_In(_float _fTimeDelta)

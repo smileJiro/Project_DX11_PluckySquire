@@ -105,6 +105,7 @@ public:
 		PLAYER_PART_ZETPACK,
 		PLAYER_PART_VISOR,
 		PLAYER_PART_TURNBOOKEFFECT,
+		PLAYER_PART_CYBERCURSOR,
 		PLAYER_PART_LAST
 	};
 
@@ -785,12 +786,13 @@ public:
 	_float Get_CyberCurrentSpeed() { return m_f3DCyberCurrentSpeed; }
 	_vector Get_CyberVelocity() { return m_vCyberPlaneVelocity; }
 	_vector Get_CyberCursorPosition() { return  m_vCyberCursorBasePosition + m_vCyberCursorOffset; }
-
+	_vector Get_CyberCursorWorldPosition() { return m_vCyberCursorWorldPosition; }
 	//Set
 	void Set_CyberVelocity(_vector _vMoveVelocity);
 	void Move_CyberCursor(_vector _vMove);
 private:
 	CActor_Dynamic* m_pDynamicActor = nullptr;
+	class CCyberCursor* m_pCyberCursor = nullptr;
 	class CCamera_Target* m_pTargetCamera = nullptr;
 	const _float4x4* m_pCameraTargetWorldMatrix = { nullptr };
 	_float m_fDistanceFromCamearPlane = 7.5f;
@@ -800,11 +802,13 @@ private:
 	_vector m_vCyberPlaneDirection = { 0.f,0.f };
 	_vector m_vCyberPlaneVelocity = { 0.f,0.f };
 	_vector m_vCyberCursorOffset = { 0.f,0.f, 0.f };
-	_vector m_vCyberCursorMaxOffset = { 5.f,7.5f, 50.f};
-	_vector m_vCyberCursorMinOffset = { -5.f,-7.5f, 50.f };
-	_vector m_vCyberCursorBasePosition = { 0.f,0.f, 50.f };
-	_vector m_vTargetBoardMin = { -8.f,-3.f };
-	_vector m_vTargetBoardMax = { 8.f,19.f };
+	_vector m_vCyberCursorMaxOffset = { 4.f,4.f, 0.f};
+	_vector m_vCyberCursorMinOffset = { -4.f,-4.f, 0.f };
+	_vector m_vCyberCursorBasePosition = { 0.f,0.f, 0.f };
+	_vector m_vCyberCursorWorldPosition = { 0.f,0.f, 0.f };
+	_vector m_vTargetBoardMin = { -8.f,5.f };
+	_vector m_vTargetBoardMax = { 8.f,25.f };
+	_float m_f3DCyberCursorDistance = 40.f;
 	_float m_f3DCyberCurrentSpeed = 0.f;
 	_float m_f3DCyberFlySpeed = 6.f;
 	_float m_f3DCyberDashSpeed = 25.f;
