@@ -73,6 +73,8 @@ public:
 		return m_isAnimChangeable;
 	}
 
+	void Set_Target(CGameObject* _pGameObject);
+
 	//void Set_2D_Direction(F_DIRECTION _eDir);
 	//F_DIRECTION Get_2DDirection() 
 	//{ 

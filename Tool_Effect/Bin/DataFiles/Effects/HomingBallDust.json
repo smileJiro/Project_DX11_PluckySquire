@@ -228,7 +228,7 @@
                 }
             ],
             "Pooling": "REVIVE",
-            "ShaderPass": "ROT_SUB_DISSOLVE",
+            "ShaderPass": "ROT2_SUB_DISSOLVE",
             "SpawnPosition": "ABSOLUTE_WORLD",
             "SpawnType": "SPAWN_RATE",
             "Texture": "../Bin/Resources/Textures/Effects/T_FX_CMN_Fire2x2_01.dds",

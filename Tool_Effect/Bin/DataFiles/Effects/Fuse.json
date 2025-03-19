@@ -19,7 +19,7 @@
                 },
                 "Count": 32,
                 "LifeTime": {
-                    "Arg1": 1.0,
+                    "Arg1": 5.0,
                     "Arg2": 0.0,
                     "SetType": "DIRECTSET"
                 },
@@ -196,7 +196,7 @@
             "SpawnPosition": "FOLLOW_PARENT",
             "SpawnType": "BURST_SPAWN",
             "Texture": "../Bin/Resources/Textures/Effects/T_FX_CMN_Spark2x2_01.dds",
-            "Time": 1.0,
+            "Time": 5.0,
             "Transform": [
                 1.0,
                 0.0,
@@ -236,7 +236,7 @@
                 },
                 "Count": 32,
                 "LifeTime": {
-                    "Arg1": 0.30000001192092896,
+                    "Arg1": 0.4000000059604645,
                     "Arg2": 0.0,
                     "SetType": "DIRECTSET"
                 },
@@ -399,7 +399,7 @@
             "SpawnPosition": "ABSOLUTE_WORLD",
             "SpawnType": "SPAWN_RATE",
             "Texture": "../Bin/Resources/Textures/Effects/T_FX_CMN_Star_01.dds",
-            "Time": 1.0,
+            "Time": 5.0,
             "Transform": [
                 1.0,
                 0.0,
@@ -422,5 +422,5 @@
         }
     ],
     "Name": "Fuse",
-    "ToolLoopTime": 2.0
+    "ToolLoopTime": 7.0
 }

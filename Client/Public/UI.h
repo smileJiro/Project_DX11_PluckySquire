@@ -91,6 +91,9 @@ public:
 		_wstring		strName = TEXT(" ");
 		_wstring		strItemInfomation = TEXT(" ");
 
+		
+		_bool			isMultiTextue = { false };
+
 	}UIOBJDESC;
 
 public:

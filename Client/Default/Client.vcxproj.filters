@@ -793,6 +793,9 @@
     <Filter Include="03.Components\FSM\State\Panic">
       <UniqueIdentifier>{f2e92573-9798-459e-9e1a-d17917d7e111}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\UI\00. GamePlay\08. BossHP_Bar\00.BossHP_Bar_Texture">
+      <UniqueIdentifier>{4e9152f4-cf93-4b33-af69-9254a2fa6e41}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -2049,6 +2052,12 @@
     <ClInclude Include="..\Public\Bomb_AlertState.h">
       <Filter>03.Components\FSM\State\Panic</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\BossHP.h">
+      <Filter>02.GameObjects\UI\00. GamePlay\08. BossHP_Bar</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossHPBar.h">
+      <Filter>02.GameObjects\UI\00. GamePlay\08. BossHP_Bar\00.BossHP_Bar_Texture</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -3291,6 +3300,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\State_Sneak.cpp">
       <Filter>03.Components\FSM\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossHP.cpp">
+      <Filter>02.GameObjects\UI\00. GamePlay\08. BossHP_Bar</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossHPBar.cpp">
+      <Filter>02.GameObjects\UI\00. GamePlay\08. BossHP_Bar\00.BossHP_Bar_Texture</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -1,6 +1,8 @@
 #pragma once
 #include "CarriableObject.h"
-
+BEGIN(Engine)
+class CEffect_System;
+END
 BEGIN(Client)
 class CBomb : public CCarriableObject
 {
@@ -16,6 +18,10 @@ public:
 	virtual HRESULT Render() override;
 
 public:
+	void Set_LifeTime(_float _fLifeTime)
+	{
+		m_fLifeTime = _fLifeTime;
+	}
 	void Set_Time_On();
 	void Set_Time_Off();
 	void Bomb_Shape_Enable(_bool _isEnable);
@@ -43,6 +49,9 @@ public:
 	virtual void Active_OnEnable() override;
 	virtual void Active_OnDisable() override;
 
+	virtual void On_PickUpStart(CPlayer* _pPalyer, _fmatrix _matPlayerOffset) override;
+	virtual void On_Throw(_fvector _vForce) override;
+
 public:
 	void Start_Parabola(_fvector _vStartPos, _fvector _vEndPos, _float _fParabolaTime);
 	void Start_Parabola_3D(_fvector _vEndPos, _float _fLaunchAngleRadian, _float _fGravityMag = 9.81f * 3.0f);
@@ -60,6 +69,8 @@ private:
 	_float m_fExplodeTime = { 0.f };
 	_bool m_isExplode = { false };
 	_bool m_isOn = { true }; //심지에 불 붙은 상태
+
+	class CEffect_System* m_pFuseEffect = { nullptr };
 
 public:
 	static CBomb* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
