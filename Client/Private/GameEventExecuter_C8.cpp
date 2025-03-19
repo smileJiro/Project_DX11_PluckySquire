@@ -38,6 +38,8 @@
 #include "Npc_Humgrump.h"
 
 #include "Logo_ColorObject.h"
+#include "Formation_Manager.h"
+#include "Event_Manager.h"
 
 CGameEventExecuter_C8::CGameEventExecuter_C8(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CGameEventExecuter(_pDevice, _pContext)
@@ -955,7 +957,8 @@ void CGameEventExecuter_C8::Chapter8_Intro_Postit_Sequence(_float _fTimeDelta)
 void CGameEventExecuter_C8::Chapter8_Outro_Postit_Sequence(_float _fTimeDelta)
 {
 	m_fTimer += _fTimeDelta;
-
+	auto pBook = Get_Book();
+	CPlayer* pPlayer = Get_Player();
 
 	if (Step_Check(STEP_0))
 	{
@@ -980,26 +983,41 @@ void CGameEventExecuter_C8::Chapter8_Outro_Postit_Sequence(_float _fTimeDelta)
 	}
 	else if (Step_Check(STEP_2))
 	{
-		Postit_Process_PageTalk(L"Postit_Page_02");
+		Postit_Process_PageTalk(L"Chapter8_Outro_Postit_Sequence_01");
 	}
 	else if (Step_Check(STEP_3))
 	{
 		//// 암 타겟오프셋 x3 y2 z-3 이동
 		if (Is_Start())
 		{
-			CCamera_Manager::GetInstance()->Start_Changing_AtOffset(CCamera_Manager::TARGET,
-				1.f,
-				XMVectorSet(4.f, 0.f, -0.8f, 0.f),
-				EASE_IN_OUT);
+			m_tReturnArmData = CCamera_Manager::GetInstance()->Save_ArmData();
+			CCamera_Manager::GetInstance()->Change_CameraTarget(pBook);
+
+			CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Increase(CCamera_Manager::TARGET, 1.f,
+				3.f, EASE_IN_OUT);
 		}
 		// 카메라 무브
 		Next_Step_Over(1.f);
 	}
 	else if (Step_Check(STEP_4))
 	{
-		Postit_Process_PageTalk(L"Postit_Page_03");
+		Postit_Process_PageTalk(L"Chapter8_Outro_Postit_Sequence_02");
 	}
 	else if (Step_Check(STEP_5))
+	{
+		if (Is_Start())
+		{
+			CCamera_Manager::GetInstance()->Change_CameraTarget(pPlayer);
+			CCamera_Manager::GetInstance()->Load_SavedArmData(m_tReturnArmData,1.f);
+		}
+		// 카메라 무브
+		Next_Step_Over(1.f);
+	}
+	else if (Step_Check(STEP_6))
+	{
+		Postit_Process_PageTalk(L"Chapter8_Outro_Postit_Sequence_03");
+	}
+	else if (Step_Check(STEP_7))
 	{
 		Postit_Process_End(1.f);
 	}
@@ -1120,6 +1138,20 @@ void CGameEventExecuter_C8::Chapter8_3D_Out_02(_float _fTimeDelta)
 	CFriend* pThrash = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Thrash"));
 	CFriend* pPip = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Pip"));
 	CFriend* pViolet = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Violet"));
+
+//#ifdef _DEBUG
+	if (nullptr == pViolet)
+	{
+		if (false == Is_Dead())
+		{
+			if(Change_PlayMap(0.f))
+				GameEvent_End();
+		}
+		return;
+	}
+//#endif // _DEBUG
+
+
 	if (Step_Check(STEP_0))
 	{
 		if (Is_Start())
@@ -2146,7 +2178,7 @@ void CGameEventExecuter_C8::Chapter8_BookFreezing_Off(_float _fTimeDelta)
 
 }
 
-void CGameEventExecuter_C8::Change_PlayMap(_float _fStartTime)
+_bool CGameEventExecuter_C8::Change_PlayMap(_float _fStartTime)
 {
 	LEVEL_ID eCurLevelID = (LEVEL_ID)m_pGameInstance->Get_CurLevelID();
 
@@ -2155,95 +2187,13 @@ void CGameEventExecuter_C8::Change_PlayMap(_float _fStartTime)
 	{
 		Event_ChangeMapObject(LEVEL_CHAPTER_8, L"Chapter_08_Play_Desk.mchc", L"Layer_MapObject");
 		m_iSubStep++;
-	}
-	//몬스터 추가
-	_fStartTime += 0.1f;
-
-	if (m_fTimer > _fStartTime && 1 == m_iSubStep)
-	{
-
-
-		CSpear_Soldier::MONSTER_DESC Spear_Soldier_Desc;
-		Spear_Soldier_Desc.iCurLevelID = eCurLevelID;
-		Spear_Soldier_Desc.eStartCoord = COORDINATE_3D;
-		Spear_Soldier_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-		Spear_Soldier_Desc.tTransform3DDesc.vInitialPosition = _float3(13.f, 21.58f, 5.5f);
-		Spear_Soldier_Desc.isSneakMode = true;
-		Spear_Soldier_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER8_1;
-
-		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Spear_Soldier"), eCurLevelID, L"Layer_Monster", &Spear_Soldier_Desc)))
-			return;
-
-
-
-		CBeetle::MONSTER_DESC Beetle_Desc;
-		Beetle_Desc.iCurLevelID = eCurLevelID;
-		Beetle_Desc.eStartCoord = COORDINATE_3D;
-		Beetle_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-		Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(15.f, 11.1f, 3.4f);
-		Beetle_Desc.isSneakMode = true;
-		Beetle_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER8_BEETLE1;
-
-		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), eCurLevelID, TEXT("Layer_Sneak_Beetle"), &Beetle_Desc)))
-			return;
-
-
-
-		//const json* pJson = m_pGameInstance->Find_Json_InLevel(TEXT("Chapter8_Monsters_3D"), m_pGameInstance->Get_CurLevelID());
-
-		//CGameObject* pObject;
-
-
-		//CMonster::MONSTER_DESC MonsterDesc3D = {};
-
-		//MonsterDesc3D.iCurLevelID = m_pGameInstance->Get_CurLevelID();
-		//MonsterDesc3D.eStartCoord = COORDINATE_3D;
-
-		//if (pJson->contains("3D"))
-		//{
-		//	_wstring strLayerTag = L"Layer_Monster";
-		//	_wstring strMonsterTag = L"";
-
-		//	for (_int i = 0; i < (*pJson)["3D"].size(); ++i)
-		//	{
-		//		if ((*pJson)["3D"][i].contains("Position"))
-		//		{
-		//			for (_int j = 0; j < 3; ++j)
-		//			{
-		//				*(((_float*)&MonsterDesc3D.tTransform3DDesc.vInitialPosition) + j) = (*pJson)["3D"][i]["Position"][j];
-		//			}
-		//		}
-		//		if ((*pJson)["3D"][i].contains("Scaling"))
-		//		{
-		//			for (_int j = 0; j < 3; ++j)
-		//			{
-		//				*(((_float*)&MonsterDesc3D.tTransform3DDesc.vInitialScaling) + j) = (*pJson)["3D"][i]["Scaling"][j];
-		//			}
-		//		}
-		//		if ((*pJson)["3D"][i].contains("LayerTag"))
-		//		{
-		//			strLayerTag = STRINGTOWSTRING((*pJson)["3D"][i]["LayerTag"]);
-		//		}
-
-		//		if ((*pJson)["3D"][i].contains("MonsterTag"))
-		//		{
-		//			strMonsterTag = STRINGTOWSTRING((*pJson)["3D"][i]["MonsterTag"]);
-		//		}
-		//		else
-		//			return;
-
-		//		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, strMonsterTag, m_pGameInstance->Get_CurLevelID(), strLayerTag, &pObject, &MonsterDesc3D)))
-		//			return;
-
-		//	}
-		//}		
-		m_iSubStep++;
+		return false;
 
 	}
-	_fStartTime += 0.1f;
+	_fStartTime += 0.2f;
+	//아이템 추가
 
-	// 3D NPC들 렌더 
-	if (m_fTimer > _fStartTime && 2 == m_iSubStep)
+	if (true == CEvent_Manager::GetInstance()->Is_MapLoad() && m_fTimer > _fStartTime && 1 == m_iSubStep)
 	{
 		auto pLayer = m_pGameInstance->Find_Layer(m_iCurLevelID, L"Layer_Social3DNPC");
 
@@ -2262,8 +2212,70 @@ void CGameEventExecuter_C8::Change_PlayMap(_float _fStartTime)
 		CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)eCurLevelID, TEXT("Stop_Stamp"), _float3(45.13f, 50.24f, 23.34f), { 1.f,1.f,1.f });
 		CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)eCurLevelID, TEXT("Tilting_Glove"), _float3(30.55f, 30.98f, 23.34f));
 		m_iSubStep++;
+		return false;
 
 	}
+	_fStartTime += 0.2f;
+
+	// 몬스터 추가
+	if (m_fTimer > _fStartTime &&  2 == m_iSubStep)
+	{
+
+			//const json* pJson = m_pGameInstance->Find_Json_InLevel(TEXT("Chapter8_Monsters_3D"), m_pGameInstance->Get_CurLevelID());
+
+			//CGameObject* pObject;
+
+
+			//CMonster::MONSTER_DESC MonsterDesc3D = {};
+
+			//MonsterDesc3D.iCurLevelID = m_pGameInstance->Get_CurLevelID();
+			//MonsterDesc3D.eStartCoord = COORDINATE_3D;
+
+			//if (pJson->contains("3D"))
+			//{
+			//	_wstring strLayerTag = L"Layer_Monster";
+			//	_wstring strMonsterTag = L"";
+
+			//	for (_int i = 0; i < (*pJson)["3D"].size(); ++i)
+			//	{
+			//		if ((*pJson)["3D"][i].contains("Position"))
+			//		{
+			//			for (_int j = 0; j < 3; ++j)
+			//			{
+			//				*(((_float*)&MonsterDesc3D.tTransform3DDesc.vInitialPosition) + j) = (*pJson)["3D"][i]["Position"][j];
+			//			}
+			//		}
+			//		if ((*pJson)["3D"][i].contains("Scaling"))
+			//		{
+			//			for (_int j = 0; j < 3; ++j)
+			//			{
+			//				*(((_float*)&MonsterDesc3D.tTransform3DDesc.vInitialScaling) + j) = (*pJson)["3D"][i]["Scaling"][j];
+			//			}
+			//		}
+			//		if ((*pJson)["3D"][i].contains("LayerTag"))
+			//		{
+			//			strLayerTag = STRINGTOWSTRING((*pJson)["3D"][i]["LayerTag"]);
+			//		}
+
+			//		if ((*pJson)["3D"][i].contains("MonsterTag"))
+			//		{
+			//			strMonsterTag = STRINGTOWSTRING((*pJson)["3D"][i]["MonsterTag"]);
+			//		}
+			//		else
+			//			return;
+
+			//		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, strMonsterTag, m_pGameInstance->Get_CurLevelID(), strLayerTag, &pObject, &MonsterDesc3D)))
+			//			return;
+
+			//	}
+			//}		
+
+		if (FAILED(CFormation_Manager::GetInstance()->Initialize()))
+			return E_FAIL;
+		m_iSubStep++;
+		return true;
+	}
+	return false;
 }
 
 

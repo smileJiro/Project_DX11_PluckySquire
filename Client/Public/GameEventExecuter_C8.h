@@ -79,11 +79,12 @@ public:
 	void Chapter8_BookDrop(_float _fTimeDelta);
 	void Chapter8_BookFreezing_Off(_float _fTimeDelta);
 
-	virtual void				Change_PlayMap(_float _fStartTime) override;
+	virtual _bool	Change_PlayMap(_float _fStartTime) override;
 
 
 private:
 	_bool				m_isPlayerFirstDead = false;
+	RETURN_ARMDATA		m_tReturnArmData;
 public:
 	static CGameEventExecuter_C8* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual void Free();
