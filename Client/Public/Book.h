@@ -127,6 +127,9 @@ public:
 
 	void					Set_Freezing(_bool _isFreezing) { m_isFreezing = _isFreezing; }
 	_bool					Is_Freezing() { return m_isFreezing; }	
+	
+	void					Set_Droppable(_bool _isDroppable) { m_isDroppable = _isDroppable; }
+	_bool					Is_Droppable() { return m_isDroppable; }
 private:
 	//void					Calc_Page3DWorldMinMax();	
 
@@ -141,6 +144,7 @@ private :
 	_bool					m_isAction = { false };
 	_bool					m_isPlayerAround= { false };
 	_bool					m_isPlayerAbove= { false };
+	_bool					m_isDroppable = { false };
 
 	// Book Cover Blending
 	_bool					m_isStartBlending = { false };

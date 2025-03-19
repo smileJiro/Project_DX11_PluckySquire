@@ -18,6 +18,7 @@
 #include "Section_2D_PlayMap.h"
 #include "TiltSwapCrate.h"
 #include "PlayerData_Manager.h"
+#include "Trigger_Manager.h"
 
 CBook::CBook(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CModelObject(_pDevice, _pContext)
@@ -161,10 +162,12 @@ HRESULT CBook::Initialize(void* _pArg)
 	m_eInteractType = INTERACT_TYPE::NORMAL;
 	m_eInteractKey = KEY::Q;
 
-
-	if (FAILED(Add_Component(LEVEL_CHAPTER_8, TEXT("Prototype_Component_Texture_Book_Freezing"),
-		TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
-		return E_FAIL; 
+	if (m_iCurLevelID == LEVEL_CHAPTER_8)
+	{
+		if (FAILED(Add_Component(LEVEL_CHAPTER_8, TEXT("Prototype_Component_Texture_Book_Freezing"),
+			TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
+			return E_FAIL;
+	} 
 	return S_OK;
 }
 
@@ -1009,6 +1012,7 @@ void CBook::Start_DropBook()
 	pActor->Freeze_Rotation(true, true, false);
 	pActor->Freeze_Position(false, false, false);
 
+	m_isDroppable = false;
 }
 
 void CBook::End_DropBook()
