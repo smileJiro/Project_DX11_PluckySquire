@@ -95,7 +95,7 @@ HRESULT CSpear_Soldier::Initialize(void* _pArg)
 
     if (COORDINATE_3D == Get_CurCoord())
     {
-        m_fDashDistance = 10.f;
+        m_fDashDistance = 7.f;
     }
     else if (COORDINATE_2D == Get_CurCoord())
     {
@@ -235,20 +235,21 @@ void CSpear_Soldier::Update(_float _fTimeDelta)
         if (COORDINATE_3D == Get_CurCoord())
         {
             m_vDir.y = 0;
-            Get_ActorCom()->Set_LinearVelocity(XMVector3Normalize(XMLoadFloat3(&m_vDir)), Get_ControllerTransform()->Get_SpeedPerSec() * 2.f);
+            Get_ActorCom()->Set_LinearVelocity(XMVector3Normalize(XMLoadFloat3(&m_vDir)), Get_ControllerTransform()->Get_SpeedPerSec() * 3.f);
         }
         else if (COORDINATE_2D == Get_CurCoord())
         {
             Get_ControllerTransform()->Go_Direction(XMLoadFloat3(&m_vDir), Get_ControllerTransform()->Get_SpeedPerSec() * 5.f, _fTimeDelta);
         }
-        /*m_fAccDistance += Get_ControllerTransform()->Get_SpeedPerSec() * _fTimeDelta;
+        m_fAccDistance += Get_ControllerTransform()->Get_SpeedPerSec() * _fTimeDelta;
 
         if (m_fDashDistance <= m_fAccDistance)
         {
             m_fAccDistance = 0.f;
             m_isDash = false;
-            Stop_MoveXZ();
-        }*/
+			if (COORDINATE_3D == Get_CurCoord())
+                Stop_MoveXZ();
+        }
     }
 
     if (true == m_isJump)

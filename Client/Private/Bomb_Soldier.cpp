@@ -159,6 +159,13 @@ void CBomb_Soldier::Attack()
     {
         Set_PreAttack(false);
 
+        if (nullptr == m_PartObjects[PART_RIGHT_WEAPON])
+        {
+            Set_AnimChangeable(true);
+            Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
+            return;
+        }
+
         // 다이나믹으로 전환하고 레이어에 넣기
         m_PartObjects[PART_RIGHT_WEAPON]->Get_ActorCom()->Set_ShapeEnable((_int)SHAPE_USE::SHAPE_BODY, true);
         m_PartObjects[PART_RIGHT_WEAPON]->Get_ControllerTransform()->Rotation(XMConvertToRadians(0.f), _vector{ 1.f,0.f,0.f,0.f });
