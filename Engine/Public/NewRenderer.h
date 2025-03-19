@@ -41,7 +41,7 @@ public:/* Bind Defferd ConstBufferData */
 	HRESULT								Bind_DofConstBuffer(const _char* _szConstBufferName, ID3D11Buffer* _pConstBuffer);
 public:
 	HRESULT								Load_IBL(const _wstring& _strIBLJsonPath);
-#ifdef _DEBUG
+#ifdef NDEBUG
 
 public:
 	void Update_Imgui();
@@ -103,7 +103,7 @@ private: /* Player Hide */
 	_float3								m_vPlayerHideColor = { 1.0f, 0.24f, 0.4666f };
 	_float3								m_vOtherHideColor = { 0.8f,0.8f ,0.8f };
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 private:
 	list<CComponent*> m_DebugComponents;
 	list<CBase*> m_BaseDebugs;

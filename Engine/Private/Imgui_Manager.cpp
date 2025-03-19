@@ -121,7 +121,7 @@ HRESULT CImgui_Manager::LevelChange_Imgui()
 	return S_OK;
 }
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 
 HRESULT CImgui_Manager::Imgui_Debug_Render()
 {
@@ -773,14 +773,14 @@ HRESULT CImgui_Manager::Imgui_Debug_Lights()
 			auto Saveiter = Lights.begin();
 			for (; Saveiter != Lights.end(); ++Saveiter)
 			{
-				CONST_LIGHT tConstLightData = (*Saveiter)->Get_LightDesc();
-				LIGHT_TYPE eType = (*Saveiter)->Get_Type();
-				json LightJson;
-
 				if (nullptr != dynamic_cast<CLight_Target*>(*Saveiter))
 				{
 					continue;
 				}
+				CONST_LIGHT tConstLightData = (*Saveiter)->Get_LightDesc();
+				LIGHT_TYPE eType = (*Saveiter)->Get_Type();
+				json LightJson;
+
 				switch (eType)
 				{
 				case Engine::LIGHT_TYPE::POINT:

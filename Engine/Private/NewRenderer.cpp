@@ -88,7 +88,7 @@ HRESULT CNewRenderer::Draw_RenderObject()
 			Pair.second->Render(m_pShader, m_pVIBuffer);
 	}
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 	if (true == m_isDebugRender)
 	{
 		if (FAILED(Render_Debug()))
@@ -298,7 +298,7 @@ HRESULT CNewRenderer::Load_IBL(const _wstring& _strIBLJsonPath)
 	return S_OK;
 }
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 void CNewRenderer::Update_Imgui()
 {
 	for (auto& Pair : m_RenderGroups)
@@ -330,7 +330,7 @@ void CNewRenderer::Set_PlayerHideColor(const _float3 _vPlayerHideColor, _bool _i
 }
 
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 
 HRESULT CNewRenderer::Render_Debug()
 {
@@ -429,7 +429,7 @@ void CNewRenderer::Free()
 		Safe_Release(Pair.second);
 	}
 	m_DSVs.clear();
-#ifdef _DEBUG
+#ifdef NDEBUG
 	for (auto& pDebugComponent : m_DebugComponents)
 	{
 		Safe_Release(pDebugComponent);

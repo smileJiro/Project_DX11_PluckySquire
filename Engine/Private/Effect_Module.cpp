@@ -14,7 +14,7 @@ CEffect_Module::CEffect_Module(const CEffect_Module& _Prototype)
     , m_eModuleType(_Prototype.m_eModuleType)
     , m_eApplyTo(_Prototype.m_eApplyTo)
     , m_pGameInstance(_Prototype.m_pGameInstance)
-#ifdef _DEBUG
+#ifdef NDEBUG
     , m_strTypeName(_Prototype.m_strTypeName)
 #endif
 {
@@ -77,7 +77,7 @@ void CEffect_Module::Free()
     __super::Free();
 }
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 
 void CEffect_Module::Tool_Module_Update()
 {

@@ -276,10 +276,13 @@ PS_OUT PS_MAIN(PS_IN In)
         vORMH.b = useMetallicMap ? g_MetallicTexture.Sample(LinearSampler, In.vTexcoord).r : Material.Metallic;
     }
     
+        
+    
+    vAlbedo.rgb = dot(vAlbedo.rgb, float3(0.299f, 0.587f, 0.114f)) + (vAlbedo.rgb * 0.1f);
    if (vAlbedo.a < 0.01f)
        discard;
-    
-    Out.vDiffuse = vAlbedo * Material.MultipleAlbedo;
+
+    Out.vDiffuse = vAlbedo;
     // 1,0,0
     // 1, 0.5, 0.5 (양의 x 축)
     // 0, 0.5, 0.5 (음의 x 축)
