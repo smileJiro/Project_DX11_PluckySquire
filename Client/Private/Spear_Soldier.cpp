@@ -289,11 +289,14 @@ void CSpear_Soldier::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Oth
 {
     __super::OnTrigger_Enter(_My, _Other);
 
-    //대열이 있는 장소에 다이나믹 오브젝트가 폭탄밖에 없으므로
-    if (OBJECT_GROUP::DYNAMIC_OBJECT & _Other.pActorUserData->iObjectGroup)
+    if(true == Is_FormationMode())
     {
-        Event_ChangeMonsterState(MONSTER_STATE::BOMB_ALERT, m_pFSM);
-        m_pFSM->Set_EvadeTargetPos(_Other.pActorUserData->pOwner->Get_FinalPosition());
+        //대열이 있는 장소에 다이나믹 오브젝트가 폭탄밖에 없으므로
+        if (OBJECT_GROUP::DYNAMIC_OBJECT & _Other.pActorUserData->iObjectGroup)
+        {
+            Event_ChangeMonsterState(MONSTER_STATE::BOMB_ALERT, m_pFSM);
+            m_pFSM->Set_EvadeTargetPos(_Other.pActorUserData->pOwner->Get_FinalPosition());
+        }
     }
 }
 
