@@ -76,7 +76,7 @@ public :
 		/* Friend Event */
 		CHAPTER6_FRIENDEVENT_0, // 아르티아 첫 진입
 		/* Friend Event */
-
+		CHAPTER6_INTRO,
 		CHAPTER6_START_3D,			// 톱니 앞에서 3D 진입 전
 		CHAPTER6_CANDLE_IN,			// 감옥 속 촛불 특수 처리
 		CHAPTER6_CANDLE_OUT,		// 감옥 속 촛불 특수 처리
