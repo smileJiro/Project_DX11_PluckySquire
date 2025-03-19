@@ -1646,11 +1646,11 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Monster()
 {
 	CGameObject* pObject = nullptr;
 
-	//if (FAILED(Ready_Layer_Monster_2D()))
-	//	return E_FAIL;
+	if (FAILED(Ready_Layer_Monster_2D()))
+		return E_FAIL;
 
-	//if (FAILED(Ready_Layer_Monster_3D()))
-	//	return E_FAIL;
+	if (FAILED(Ready_Layer_Monster_3D()))
+		return E_FAIL;
 
 	//wstring strLayerTag = TEXT("Layer_Monster");
 

@@ -40,8 +40,8 @@ HRESULT CBirdMonster::Initialize(void* _pArg)
     pDesc->fFOVX = 90.f;
     pDesc->fFOVY = 60.f;
 
-    m_tStat.iHP = 5;
-    m_tStat.iMaxHP = 5;
+    pDesc->_tStat.iHP = 5;
+    pDesc->_tStat.iMaxHP = 5;
 
     /* Create Test Actor (Desc를 채우는 함수니까. __super::Initialize() 전에 위치해야함. )*/
     if (FAILED(Ready_ActorDesc(pDesc)))
@@ -84,7 +84,7 @@ HRESULT CBirdMonster::Initialize(void* _pArg)
 
     Safe_Delete(pDesc->pActorDesc);
 
-    static_cast<CActor_Dynamic*>(Get_ActorCom())->Set_Gravity(false);
+    //static_cast<CActor_Dynamic*>(Get_ActorCom())->Set_Gravity(false);
 
     return S_OK;
 }
@@ -260,7 +260,9 @@ void CBirdMonster::Attack()
         if (COORDINATE_3D == eCoord)
         {
             vPosition.y += vScale.y * 0.8f;
-            XMStoreFloat4(&vRotation, m_pGameInstance->Direction_To_Quaternion(XMVectorSet(0.f, 0.f, 1.f, 0.f), m_pTarget->Get_FinalPosition() - Get_FinalPosition()));
+            _vector vTargetPos = m_pTarget->Get_FinalPosition();
+            XMVectorSetY(vTargetPos, vPosition.y);
+            XMStoreFloat4(&vRotation, m_pGameInstance->Direction_To_Quaternion(XMVectorSet(0.f, 0.f, 1.f, 0.f), vTargetPos - Get_FinalPosition()));
             CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Projectile_BirdMonster"), eCoord, &vPosition, &vRotation);
         }
         else if (COORDINATE_2D == eCoord)

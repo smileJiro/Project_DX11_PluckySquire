@@ -95,7 +95,7 @@ HRESULT CSpear_Soldier::Initialize(void* _pArg)
 
     if (COORDINATE_3D == Get_CurCoord())
     {
-        m_fDashDistance = 10.f;
+        m_fDashDistance = 7.f;
     }
     else if (COORDINATE_2D == Get_CurCoord())
     {
@@ -235,20 +235,21 @@ void CSpear_Soldier::Update(_float _fTimeDelta)
         if (COORDINATE_3D == Get_CurCoord())
         {
             m_vDir.y = 0;
-            Get_ActorCom()->Set_LinearVelocity(XMVector3Normalize(XMLoadFloat3(&m_vDir)), Get_ControllerTransform()->Get_SpeedPerSec() * 2.f);
+            Get_ActorCom()->Set_LinearVelocity(XMVector3Normalize(XMLoadFloat3(&m_vDir)), Get_ControllerTransform()->Get_SpeedPerSec() * 3.f);
         }
         else if (COORDINATE_2D == Get_CurCoord())
         {
             Get_ControllerTransform()->Go_Direction(XMLoadFloat3(&m_vDir), Get_ControllerTransform()->Get_SpeedPerSec() * 5.f, _fTimeDelta);
         }
-        /*m_fAccDistance += Get_ControllerTransform()->Get_SpeedPerSec() * _fTimeDelta;
+        m_fAccDistance += Get_ControllerTransform()->Get_SpeedPerSec() * _fTimeDelta;
 
         if (m_fDashDistance <= m_fAccDistance)
         {
             m_fAccDistance = 0.f;
             m_isDash = false;
-            Stop_MoveXZ();
-        }*/
+			if (COORDINATE_3D == Get_CurCoord())
+                Stop_MoveXZ();
+        }
     }
 
     if (true == m_isJump)
@@ -289,11 +290,14 @@ void CSpear_Soldier::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Oth
 {
     __super::OnTrigger_Enter(_My, _Other);
 
-    //대열이 있는 장소에 다이나믹 오브젝트가 폭탄밖에 없으므로
-    if (OBJECT_GROUP::DYNAMIC_OBJECT & _Other.pActorUserData->iObjectGroup)
+    if(true == Is_FormationMode())
     {
-        Event_ChangeMonsterState(MONSTER_STATE::BOMB_ALERT, m_pFSM);
-        m_pFSM->Set_EvadeTargetPos(_Other.pActorUserData->pOwner->Get_FinalPosition());
+        //대열이 있는 장소에 다이나믹 오브젝트가 폭탄밖에 없으므로
+        if (OBJECT_GROUP::DYNAMIC_OBJECT & _Other.pActorUserData->iObjectGroup)
+        {
+            Event_ChangeMonsterState(MONSTER_STATE::BOMB_ALERT, m_pFSM);
+            m_pFSM->Set_EvadeTargetPos(_Other.pActorUserData->pOwner->Get_FinalPosition());
+        }
     }
 }
 
