@@ -87,7 +87,7 @@ public :
 	virtual void					Update(_float _fTimeDelta)  abstract;
 
 	virtual void					GameEvent_End();
-	virtual void					Change_PlayMap(_float _fStartTime) {};
+	virtual _bool					Change_PlayMap(_float _fStartTime) { return true; };
 
 protected:
 	void							Start_Train(_float _fTimeDelta);
