@@ -34,24 +34,18 @@ void CBossSceneState::State_Update(_float _fTimeDelta)
 	if (nullptr == m_pOwner)
 		return;
 
-	if(true == m_isDelay)
-	{
-		m_fAccTime += _fTimeDelta;
-		if (m_fDelayTime <= m_fAccTime)
-		{
-			m_fAccTime = 0.f;
-			m_isDelay = false;
-		}
-	}
-
-	//switch (m_iSceneIdx)
+	//if(true == m_isDelay)
 	//{
-	//case FIRST:
-
-	//	break;
-
-	//default:
-	//	break;
+	//	m_fAccTime += _fTimeDelta;
+	//	if (m_fDelayTime <= m_fAccTime)
+	//	{
+	//		if(true == m_pOwner->Get_AnimChangeable())
+	//		{
+	//			static_cast<CButterGrump*>(m_pOwner)->Play_Intro(SECOND);
+	//			m_fAccTime = 0.f;
+	//			m_isDelay = false;
+	//		}
+	//	}
 	//}
 
 	if (KEY_PRESSING(KEY::CTRL))
@@ -62,12 +56,21 @@ void CBossSceneState::State_Update(_float _fTimeDelta)
 			if (true == m_pOwner->Get_AnimChangeable())
 			{
 				static_cast<CButterGrump*>(m_pOwner)->Play_Intro(m_iSceneIdx);
+				switch (m_iSceneIdx)
+				{
+				case FIRST:
+					m_isDelay = true;
+					m_iSceneIdx = SECOND;
+					break;
+
+				default:
+					break;
+				}
 				++m_iSceneIdx;
-				m_isDelay = true;
 			}
 		}
 	}
-	if (SCENE::LAST <= m_iSceneIdx)
+	if (SCENE::LAST <= m_iSceneIdx && true == m_pOwner->Get_AnimChangeable())
 		Event_ChangeBossState(BOSS_STATE::IDLE, m_pFSM);
 }
 

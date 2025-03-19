@@ -22,7 +22,7 @@ namespace Engine
 		float			fDofBrightness = 1.5f; // Fovy와 FocusDistance를 기반으로 구해지는 값.
 		float			fBaseBlurPower = 0.1f;
 		float			fFadeRatio = 1.0f;
-		float			dummy2;
+		int				isWhiteFade = 0;
 
 		XMFLOAT3		vBlurColor = { 1.0f, 1.0f, 1.0f };
 		float			dummy3;

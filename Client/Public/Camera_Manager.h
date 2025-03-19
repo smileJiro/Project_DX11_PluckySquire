@@ -36,6 +36,7 @@ public:
 	_uint				Get_CameraType() { return m_eCurrentCameraType; }
 	_uint				Get_CameraMode(_uint _iCameraType);
 	_uint				Get_CurCameraMode();
+	CONST_DOF			Get_DofBufferData() const;
 	void				Off_Shake();
 #ifdef _DEBUG
 
@@ -123,6 +124,8 @@ public:
 
 	void				Start_FadeIn(_float _fFadeTime = 1.0f);
 	void				Start_FadeOut(_float _fFadeTime = 1.0f);
+	void				Start_FadeIn_White(_float _fFadeTime = 1.0f);
+	void				Start_FadeOut_White(_float _fFadeTime = 1.0f);
 	void				Set_FadeRatio(_uint _eCameraType, _float _fFadeRatio, _bool _isUpdate);
 
 public:

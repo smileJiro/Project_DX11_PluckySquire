@@ -8,6 +8,7 @@ public:
 	enum ZOOM_LEVEL { LEVEL_1, LEVEL_2, LEVEL_3, LEVEL_4, LEVEL_5, LEVEL_6, LEVEL_7, LEVEL_8, LEVEL_9, LEVEL_10, ZOOM_LAST,};
 	enum SHAKE_TYPE { SHAKE_XY, SHAKE_X, SHAKE_Y, SHAKE_LAST };
 	enum FADE_TYPE { FADE_IN, FADE_OUT, FADE_LAST };
+	enum WHITE_FADE { WHITE_IN, WHITE_OUT, WHITE_LAST };
 public:
 	typedef struct tagCameraDesc : public CGameObject::GAMEOBJECT_DESC
 	{
@@ -212,6 +213,14 @@ protected:
 protected:
 	FADE_TYPE					m_eFadeType = FADE_TYPE::FADE_LAST;
 	_float2						m_vFadeTime = { 1.0f, 0.0f };
+
+
+public:
+	void Start_WhiteFadeOut(_float _fTime);
+	void Start_WhiteFadeIn(_float _fTime);
+
+protected:
+	_int						m_isWhiteFade = 0;
 
 protected:
 	class CCameraArm*			m_pCurArm = { nullptr };
