@@ -59,7 +59,7 @@ HRESULT CCarriableObject::Initialize(void* _pArg)
 	if(true == pDesc->isCoordChangeEnable || COORDINATE_2D == pDesc->eStartCoord)
 	{
 		/* Test 2D Collider */
-		m_p2DColliderComs.resize(1);
+		m_p2DColliderComs.resize(2);
 		CCollider_Circle::COLLIDER_CIRCLE_DESC CircleDesc = {};
 		CircleDesc.pOwner = this;
 		CircleDesc.fRadius = 20.f;
@@ -67,13 +67,15 @@ HRESULT CCarriableObject::Initialize(void* _pArg)
 		CircleDesc.vScale = { 1.f / vScale.x, 1.f / vScale.y };
 		CircleDesc.vOffsetPosition = { 0.f, 0.f };
 		CircleDesc.isBlock = false;
-		CircleDesc.isTrigger = true;
+		CircleDesc.isTrigger = false;
 		CircleDesc.iCollisionGroupID = OBJECT_GROUP::INTERACTION_OBEJCT;
 		if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
 			TEXT("Com_2DCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &CircleDesc)))
 			return E_FAIL;
 		m_pBody2DColliderCom = m_p2DColliderComs[0];
 		Safe_AddRef(m_pBody2DColliderCom);
+
+
 	}
 	if (nullptr != m_pActorCom)
 		m_pActorCom->Set_Mass(1.5f);
