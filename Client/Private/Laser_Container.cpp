@@ -390,7 +390,7 @@ HRESULT CLaser_Container::Ready_Components(LASER_DESC* _pDesc)
 	_float2 vSizeExtent = {};
 	_float2 vSizeOffsetPos = {};
 	_float  fSizeColliderOffset = 50.f;
-	_float  fBeamWeight = 10.f;
+	_float  fBeamWeight = 6.f;
 	// 움직임 판단, 
 	_vector vSectionEndPos = XMLoadFloat2(&fSectionSize);
 	vSectionEndPos *= 0.5f;

@@ -31,8 +31,7 @@ private:
 	void			Beetle_CutScene();
 	void			FadeInOut(_float _fTimeDelta);
 
-	void			On_Player_AnimEnd(COORDINATE _eCoordinate, _uint _iAnimIndex);
-	void			On_Beetle_AnimEnd(COORDINATE _eCoordinate, _uint _iAnimIndex);
+	void			Check_Animation_End();
 
 public:
 	static CSneak_AttackState* Create(void* _pArg);

@@ -40,6 +40,16 @@
     ]
   },
   {
+    "Trigger_EventTag": "Chapter8_Intro",
+    "Actions": [
+      {
+        "ActionTag": "Create_EventExecuter",
+        "EventTag": "Chapter8_Intro",
+        "Is_Sequence": true
+      }
+    ]
+  },
+  {
     "Trigger_EventTag": "Chapter8_Laser_Stage_2",
     "Actions": [
       {
@@ -105,6 +115,16 @@
       {
         "ActionTag": "Create_EventExecuter",
         "EventTag": "Chapter8_BookDrop",
+        "Is_Sequence": true
+      }
+    ]
+  },
+  {
+    "Trigger_EventTag": "Chapter8_BookFreezing_Off",
+    "Actions": [
+      {
+        "ActionTag": "Create_EventExecuter",
+        "EventTag": "Chapter8_BookFreezing_Off",
         "Is_Sequence": true
       }
     ]

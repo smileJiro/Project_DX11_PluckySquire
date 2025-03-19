@@ -178,6 +178,17 @@ void CBook::Priority_Update(_float _fTimeDelta)
 
 void CBook::Update(_float _fTimeDelta)
 {
+	if (true == m_isFreezing && true == m_isFreezingOff)
+	{
+		m_isFreezingRatio -= _fTimeDelta * 0.1f;
+		if (0.f >= m_isFreezingRatio)
+		{
+			m_isFreezingRatio = 0.f;
+			m_isFreezingOff = false;
+			m_isFreezing = false;
+		}
+	}
+
 	_float3 fDefaultPos = { };
 
 	if (KEY_DOWN(KEY::M))
@@ -1054,6 +1065,11 @@ void CBook::Set_Freezing(_bool _isFreezing)
 {
 	m_isFreezing = _isFreezing;
 
+}
+
+void CBook::Start_FreezingOff()
+{
+	m_isFreezingOff = true;
 }
 
 //void CBook::Calc_Page3DWorldMinMax()

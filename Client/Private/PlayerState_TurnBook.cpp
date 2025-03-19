@@ -172,7 +172,10 @@ void CPlayerState_TurnBook::Update(_float _fTimeDelta)
 			if (false == m_pBook->Is_DuringAnimation()) {
 				
 				if (m_pBook->Is_Freezing())
-					m_pBook->Set_Freezing(false);
+				{
+					CTrigger_Manager::GetInstance()->Register_TriggerEvent(L"Chapter8_BookFreezing_Off", 0);
+					//m_pBook->Start_FreezingOff();
+				}
 
 				
 				Set_State(IDLE);

@@ -146,11 +146,19 @@ void CSneak_AttackState::FadeInOut(_float _fTimeDelta)
 	}
 }
 
+void CSneak_AttackState::Check_Animation_End()
+{
+	// Player
+	CPlayer* pPlayer = CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr();
+	static_cast<C3DModel*>(pPlayer->Get_Body())->
+
+}
+
 void CSneak_AttackState::On_Player_AnimEnd(COORDINATE _eCoordinate, _uint _iAnimIndex)
 {
 	if (COORDINATE_3D == _eCoordinate && (_uint)CPlayer::ANIM_STATE_3D::LATCH_KNOCKED_DOWN_AND_EATEN_FROM_BEHIND_LATCH == _iAnimIndex) {
 		// Player Anim ¹Ù²Ù±â
-		CPlayer* pPlayer = CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr();
+		
 		pPlayer->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_KNOCKED_DOWN_AND_EATEN_FROM_BEHIND_LOOP_LATCH);
 	}
 }

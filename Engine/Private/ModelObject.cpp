@@ -342,11 +342,6 @@ void CModelObject::Register_OnAnimEndCallBack( const function<void(COORDINATE,_u
 
 }
 
-void CModelObject::Remove_OnAnimEndCallBack(const function<void(COORDINATE, _uint)>& fCallback)
-{
-	m_pControllerModel->Remove_OnAnimEndCallBack(fCallback);
-}
-
 void CModelObject::Check_FrustumCulling()
 {
     if (COORDINATE_3D == Get_CurCoord())

@@ -117,6 +117,7 @@ void CController_Model::Play_Animation(_float fTimeDelta, _bool _bReverse)
     }
 }
 
+
 void CController_Model::Invoke_OnAnimEndCallBack(COORDINATE _eCoord, _uint iAnimIdx)
 {
     for (auto& callback : m_listAnimEndCallBack) 

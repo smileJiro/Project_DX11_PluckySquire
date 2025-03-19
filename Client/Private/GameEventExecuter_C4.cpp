@@ -181,14 +181,7 @@ void CGameEventExecuter_C4::Chapter4_Intro_Postit_Sequence(_float _fTimeDelta)
 	{
 		function fCamerafunc = []() {
 
-			//// 암 5 땡기기
-			//CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Increase(CCamera_Manager::TARGET, 1.f,
-			//	10.f, EASE_IN_OUT);
-			////CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Decrease(CCamera_Manager::TARGET, 5.f,
-			////	1.f, EASE_IN_OUT);
-			//CCamera_Manager::GetInstance()->Start_Turn_AxisRight(CCamera_Manager::TARGET, 1.f, XMConvertToRadians(40.f), XMConvertToRadians(25.f));
-
-			//// 암 타겟오프셋 x3 y2 z-3 이동
+			
 			CCamera_Manager::GetInstance()->Start_Changing_AtOffset(CCamera_Manager::TARGET,
 				1.f,
 				XMVectorSet(0.f, -2.f, 0.f, 0.f),

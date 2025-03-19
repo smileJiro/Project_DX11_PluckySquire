@@ -270,8 +270,8 @@ HRESULT CLevel_Chapter_08::Initialize(LEVEL_ID _eLevelID)
 	//CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("Tilting_Glove"), _float3(30.55f, 30.98f, 23.34f));
 
 	// Intro ½ÃÀÛ
-	//CTrigger_Manager::GetInstance()->Register_TriggerEvent(TEXT("Chapter8_Intro"), 50);
-	//CCamera_Manager::GetInstance()->Start_FadeIn(3.f);
+	CTrigger_Manager::GetInstance()->Register_TriggerEvent(TEXT("Chapter8_Intro"), 50);
+	CCamera_Manager::GetInstance()->Start_FadeIn(3.f);
 
 	/* Set Shader PlayerHideColor */
 	m_pGameInstance->Set_PlayerHideColor(_float3(0.8f, 0.8f, 0.8f), true);
@@ -644,8 +644,8 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Map()
 			return E_FAIL;
 		break;
 	case Client::LEVEL_CHAPTER_8:
-		//if (FAILED(Map_Object_Create(L"Chapter8_Intro.mchc")))
-		if (FAILED(Map_Object_Create(L"Chapter_08_Play_Desk.mchc")))
+		if (FAILED(Map_Object_Create(L"Chapter8_Intro.mchc")))
+		//if (FAILED(Map_Object_Create(L"Chapter_08_Play_Desk.mchc")))
 			return E_FAIL;
 		break;
 	case Client::LEVEL_CHAPTER_TEST:
@@ -1210,7 +1210,7 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Item(const _wstring& _strLayerTag)
 {
 	// Test(PlayerItem: Glove, Stamp)
 	//CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("Flipping_Glove"), _float3(59.936f, 6.273f, -19.097f));
-	CPlayerData_Manager::GetInstance()->Spawn_Bulb(LEVEL_STATIC, (LEVEL_ID)m_eLevelID);
+	//CPlayerData_Manager::GetInstance()->Spawn_Bulb(LEVEL_STATIC, (LEVEL_ID)m_eLevelID);
 
 
 
