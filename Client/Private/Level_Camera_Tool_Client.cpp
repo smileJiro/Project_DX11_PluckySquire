@@ -169,7 +169,7 @@ HRESULT CLevel_Camera_Tool_Client::Ready_Layer_Map()
 {
 	//if (FAILED(Map_Object_Create(L"Chapter_02_Play_Desk.mchc")))
 	//	return E_FAIL;
-	if (FAILED(Map_Object_Create(L"Chapter_08_Play_Desk.mchc")))
+	if (FAILED(Map_Object_Create(L"Chapter_Boss.mchc")))
 		return E_FAIL;
 
 	return S_OK;
@@ -272,8 +272,9 @@ HRESULT CLevel_Camera_Tool_Client::Ready_Layer_Player(const _wstring& _strLayerT
 
 	CPlayer::CONTAINEROBJ_DESC PlayerDesc = {};
 	PlayerDesc.iCurLevelID = m_eLevelID;
-	PlayerDesc.tTransform3DDesc.vInitialPosition = { -3.f, 0.35f, -19.3f };   // TODO ::임시 위치
+	PlayerDesc.tTransform3DDesc.vInitialPosition = { -9.7f, 4.2f, 10.66f };   // TODO ::임시 위치
 	PlayerDesc.tTransform3DDesc.vInitialRotation = { 0.f, XMConvertToRadians(180.f), 0.f};   // TODO ::임시 위치
+	PlayerDesc.eStartCoord = COORDINATE_3D;
 	_int a = sizeof(CPlayer::CONTAINEROBJ_DESC);
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_TestPlayer"), m_eLevelID, _strLayerTag, _ppOut, &PlayerDesc)))
@@ -300,25 +301,6 @@ HRESULT CLevel_Camera_Tool_Client::Ready_Layer_TestTerrain(const _wstring& _strL
 	// Cube
 	CModelObject* pOut = { nullptr };
 	CModelObject::MODELOBJECT_DESC Desc = {};
-
-	//Desc.eStartCoord = COORDINATE_3D;
-	//Desc.iCurLevelID = LEVEL_CAMERA_TOOL;
-	//Desc.isCoordChangeEnable = false;
-	//Desc.iModelPrototypeLevelID_3D = LEVEL_CAMERA_TOOL;
-
-	//Desc.strShaderPrototypeTag_3D = TEXT("Prototype_Component_Shader_VtxMesh");
-	//Desc.strModelPrototypeTag_3D = TEXT("alphabet_blocks_a_mesh");
-
-	//Desc.iShaderPass_3D = (_uint)PASS_VTXMESH::DEFAULT;
-
-	//Desc.tTransform3DDesc.vInitialPosition = m_tKeyFrameInfo.vPosition;
-	//Desc.tTransform3DDesc.vInitialScaling = _float3(0.5f, 0.5f, 0.5f);
-	//Desc.tTransform3DDesc.fRotationPerSec = XMConvertToRadians(180.f);
-	//Desc.tTransform3DDesc.fSpeedPerSec = 0.f;
-
-	//m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), LEVEL_CAMERA_TOOL, TEXT("Layer_Simulation"), &m_pSimulationCube, &Desc);
-	//Safe_AddRef(m_pSimulationCube);
-	//m_pSimulationCube->Set_Active(false);
 
 	// Book
 	CBook::BOOK_DESC BookDesc = {};
@@ -354,6 +336,17 @@ HRESULT CLevel_Camera_Tool_Client::Ready_Layer_TestTerrain(const _wstring& _strL
 	//
 	////pOut->Set_Active(false);
 	//m_ModelObjects.push_back(pOut);
+
+	// Humgrump
+	CGameObject* pBoss = nullptr;
+	CButterGrump::MONSTER_DESC Boss_Desc;
+	Boss_Desc.iCurLevelID = m_eLevelID;
+	Boss_Desc.eStartCoord = COORDINATE_3D;
+	Boss_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	Boss_Desc.tTransform3DDesc.vInitialPosition = _float3(0.53f, 60.35f, -8.0f);
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_ButterGrump"), m_eLevelID, TEXT("Layer_Boss"), &pBoss, &Boss_Desc)))
+		return;
 
 	// Player	
 	CPlayer* pPlayer = static_cast<CPlayer*>(m_pGameInstance->Get_GameObject_Ptr(LEVEL_CAMERA_TOOL, TEXT("Layer_Player"), 0));

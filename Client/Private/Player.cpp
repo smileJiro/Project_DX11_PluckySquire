@@ -143,7 +143,6 @@ HRESULT CPlayer::Initialize(void* _pArg)
 	m_iCurLevelID = pDesc->iCurLevelID;
 	pDesc->_fStepHeightThreshold = 0.225f;
 	pDesc->_fStepSlopeThreshold = 0.45f;
-	pDesc->eStartCoord = COORDINATE_2D;
 
     pDesc->iNumPartObjects = CPlayer::PLAYER_PART_LAST;
     //pDesc->eStartCoord = COORDINATE_2D;
