@@ -1426,14 +1426,27 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Monster_Projectile(const _wstring& _strLa
 	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Bomb"), Pooling_Desc, BombDesc);
 
 
+	CGameObject* pObject = nullptr;
+
 	_float3 vPos = { 50.5f, 30.3f, 10.f };
-	CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &vPos);
+	CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &pObject, &vPos);
+	//static_cast<CBomb*>(pObject)->Set_Time_Off();
+	static_cast<CBomb*>(pObject)->Set_LifeTime(5.f);
+
 	vPos = { 50.5f, 30.3f, 8.5f };
-	CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &vPos);
-	vPos = { 50.5f, 32.f, 10.f };
-	CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &vPos);
-	vPos = { 50.5f, 32.f, 8.5f };
-	CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &vPos);
+	CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &pObject, &vPos);
+	//static_cast<CBomb*>(pObject)->Set_Time_Off();
+	static_cast<CBomb*>(pObject)->Set_LifeTime(5.f);
+
+	vPos = { 49.5f, 30.3f, 10.f };
+	CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &pObject, &vPos);
+	//static_cast<CBomb*>(pObject)->Set_Time_Off();
+	static_cast<CBomb*>(pObject)->Set_LifeTime(5.f);
+
+	vPos = { 49.5f, 30.3f, 8.5f };
+	CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &pObject, &vPos);
+	//static_cast<CBomb*>(pObject)->Set_Time_Off();
+	static_cast<CBomb*>(pObject)->Set_LifeTime(5.f);
 
 	return S_OK;
 }

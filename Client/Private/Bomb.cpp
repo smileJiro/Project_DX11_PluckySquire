@@ -200,6 +200,7 @@ HRESULT CBomb::Render()
 void CBomb::Set_Time_On()
 {
 	m_isOn = true;
+	CEffect_Manager::GetInstance()->Active_Effect(TEXT("Fuse"), true, &m_WorldMatrices[COORDINATE_3D]);
 }
 
 void CBomb::Set_Time_Off()
@@ -320,18 +321,15 @@ void CBomb::Active_OnEnable()
 {
 	__super::Active_OnEnable();
 
+
 	if (COORDINATE_3D == Get_CurCoord())
 	{
 		Set_Kinematic(false);
 	}
 
 	Set_Render(true);
-	Set_Time_On();
-	//CActor_Dynamic* pDynamic = static_cast<CActor_Dynamic*>(Get_ActorCom());
-	//pDynamic->Update(0.f);
-	//pDynamic->Set_Dynamic();
-
-	CEffect_Manager::GetInstance()->Active_Effect(TEXT("Fuse"), true, &m_WorldMatrices[COORDINATE_3D]);
+	Set_Time_Off();
+	//Set_Time_On();
 
 	m_p2DColliderComs[0]->Set_Active(true);
 	m_p2DColliderComs[2]->Set_Active(false);
@@ -353,6 +351,11 @@ void CBomb::Active_OnDisable()
 	}
 
 	__super::Active_OnDisable();
+}
+
+void CBomb::On_PickUpStart(CPlayer* _pPalyer, _fmatrix _matPlayerOffset)
+{
+	Set_Time_On();
 }
 
 void CBomb::Action_Parabola(_float _fTimeDelta)

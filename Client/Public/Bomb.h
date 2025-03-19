@@ -16,6 +16,10 @@ public:
 	virtual HRESULT Render() override;
 
 public:
+	void Set_LifeTime(_float _fLifeTime)
+	{
+		m_fLifeTime = _fLifeTime;
+	}
 	void Set_Time_On();
 	void Set_Time_Off();
 	void Bomb_Shape_Enable(_bool _isEnable);
@@ -42,6 +46,8 @@ public:
 
 	virtual void Active_OnEnable() override;
 	virtual void Active_OnDisable() override;
+
+	virtual void On_PickUpStart(CPlayer* _pPalyer, _fmatrix _matPlayerOffset) override;
 
 public:
 	void Start_Parabola(_fvector _vStartPos, _fvector _vEndPos, _float _fParabolaTime);
