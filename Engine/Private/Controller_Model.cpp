@@ -117,10 +117,6 @@ void CController_Model::Play_Animation(_float fTimeDelta, _bool _bReverse)
     }
 }
 
-void CController_Model::Remove_OnAnimEndCallBack(const function<void(COORDINATE, _uint)>& fCallback)
-{
-	//m_listAnimEndCallBack.remove(fCallback);
-}
 
 void CController_Model::Invoke_OnAnimEndCallBack(COORDINATE _eCoord, _uint iAnimIdx)
 {
