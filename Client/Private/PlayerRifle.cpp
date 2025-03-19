@@ -103,7 +103,7 @@ void CPlayerRifle::Shoot(_fvector _vDir)
 		_vector vFirePosition = matWorld.r[3] + m_vBarrelOffset;
 		_float3 vPos; XMStoreFloat3(&vPos, vFirePosition);
 		//ROT
-		_vector vLook = m_pPlayer->Get_LookDirection();
+		_vector vLook = _vDir;// m_pPlayer->Get_LookDirection();
 	
 		_vector vBase = _vector{ 0.f,0.f,1.f,0.f };
 		_vector vAxis;

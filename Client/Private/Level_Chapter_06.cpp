@@ -992,6 +992,7 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Book(const _wstring& _strLayerTag)
 	if (nullptr != pGameObject)
 		CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_P0708"), pGameObject, SECTION_2D_PLAYMAP_PORTAL);
 
+	static_cast<CPortal*>(pGameObject)->Set_FirstActive(true);
 
 	tPortalDesc.Build_2D_Transform(_float2{ 386, -105}, _float2{ 1.f,1.f });
 	tPortalDesc.iPortalIndex = 2;
@@ -1004,6 +1005,7 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Book(const _wstring& _strLayerTag)
 	);
 	if (nullptr != pGameObject)
 		CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_P0708"), pGameObject, SECTION_2D_PLAYMAP_PORTAL);
+	static_cast<CPortal*>(pGameObject)->Set_FirstActive(true);
 
 	return S_OK;
 }
