@@ -35,15 +35,15 @@
 		{
 			"strSectionid": "Chapter2_P1314",
 			"strAnimaionName": "C01_Humgrump",
-			"strNPCName": "Humgrump",
+			"strNPCName": "Chapter_1_Humgrump",
 			"strCreateSection": 3,
 			"strDialogueId": "C01_Humgrump_01",
-			"iStartAnimation": 2,
+			"iStartAnimation": 17,
 			"vPositionX": 70.0,
 			"vPositionY": 116.5,
 			"vPositionZ": 0.0,
 			"CollisionScaleX": 70.0,
-			"CollisionScaleY": 70.0,
+			"CollisionScaleY": 170.0,
 			"isInteractable": true,
 			"isDialog": true,
 			"is2D": true

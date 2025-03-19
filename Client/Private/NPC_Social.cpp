@@ -8,6 +8,7 @@
 #include "StateMachine.h"
 #include "Npc_OnlySocial.h"
 #include "Dialog_Manager.h"
+#include "NPC_Manager.h"
 
 
 
@@ -41,12 +42,17 @@ HRESULT CNPC_Social::Initialize(void* _pArg)
 	m_strDialogueID = pDesc->strDialogueId;
 
 
+
 	m_fNPCCollsionHalfHeight = pDesc->fCollisionHalfHeight;
 	m_fNPCCollisionRadius = pDesc->fCollisionRadius;
 	m_fNPCTriggerRadius = pDesc->fTriggerRadius;
 	m_strNPCName = pDesc->strNPCName;
 
-
+	if (TEXT("Chapter_1_Humgrump") == m_strNPCName)
+	{
+		m_isEndAnimationChange = false;
+		m_isDialgPlayForHumgrump = false;
+	}
 	
 	if (false == m_is2D)
 	{
@@ -160,14 +166,9 @@ void CNPC_Social::Priority_Update(_float _fTimeDelta)
 void CNPC_Social::Update(_float _fTimeDelta)
 {
 
-	_bool		texttext = { false };
+	
 
-	if (true == CDialog_Manager::GetInstance()->Get_isLastDialog())
-	{
-		texttext = true;
 
-		int a = 0;
-	}
 
 
 	__super::Update(_fTimeDelta);
@@ -182,14 +183,32 @@ void CNPC_Social::Update(_float _fTimeDelta)
 		m_iPreSocialNpcAnimationindex = m_iSocialNpcAnimationIndex;
 	}
 
-	if (true == m_isPlayDisplay && false == CDialog_Manager::GetInstance()->Get_DisPlayDialogue())
+	if (true == m_isPlayDisplay && false == CDialog_Manager::GetInstance()->Get_DisPlayDialogue() && TEXT("Chapter_1_Humgrump") != m_strNPCName)
 	{
 		static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(m_iStartAnimation);
-
+	
 		m_iSocialNpcAnimationIndex = m_iStartAnimation;
 		m_isPlayDisplay = false;
 		
 	}
+
+
+	// 험그럼프 전용
+	if (false == m_isEndAnimationChange && TEXT("Chapter_1_Humgrump") == m_strNPCName)
+	{
+		//CNPC_Social* pSocial = CNPC_Manager::GetInstance()->Find_SocialNPC(TEXT("Humgrump"));
+		//
+		//if (nullptr == pSocial)
+		//	return;
+
+		if (true == m_isThrow && false == CDialog_Manager::GetInstance()->Get_DisPlayDialogue())
+		{
+			static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(20);
+			m_isEndAnimationChange = true;
+		}
+
+	}
+
 
 
 	
@@ -227,15 +246,28 @@ void CNPC_Social::Late_Update(_float _fTimeDelta)
 HRESULT CNPC_Social::Render()
 {
 #ifdef _DEBUG
-	//if (COORDINATE_2D == Get_CurCoord())
-	//	m_p2DNpcCollider->Render();
-#endif // _DEBUG
+	if (COORDINATE_2D == Get_CurCoord())
+		m_p2DColliderComs[0]->Render();
+#endif  //_DEBUG
 
 	return S_OK;
 }
 
 void CNPC_Social::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
+	CPlayer* pSocial = dynamic_cast<CPlayer*>(_pOtherObject);
+
+	if (nullptr == pSocial)
+		return;
+
+	if (TEXT("Chapter_1_Humgrump") == this->Get_NPCName() && false == this->is_DisplayHumgrump())
+	{
+		CNPC_Social* pSocial = CNPC_Manager::GetInstance()->Find_SocialNPC(TEXT("Chapter_1_Humgrump"));
+
+		pSocial->Throw_Dialogue();
+		pSocial->Set_DisplayHumgrump(true);
+
+	}
 }
 
 void CNPC_Social::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
@@ -254,13 +286,13 @@ void CNPC_Social::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOthe
 
 void CNPC_Social::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 {
-	if (m_strDialogueID == TEXT("C01_Humgrump_01"))
+	if (TEXT("Chapter_1_Humgrump") == m_strNPCName)
 	{
 		if (iAnimIdx != m_iPreState)
 		{
 			switch (iAnimIdx)
 			{
-			case 0:
+			case 9:
 			{
 				static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(20);
 			}
@@ -268,7 +300,7 @@ void CNPC_Social::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 
 			case 20:
 			{
-
+				static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Set_AnimationLoop(COORDINATE_2D, 21, true);
 				static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(21);
 			}
 			break;
@@ -344,23 +376,48 @@ HRESULT CNPC_Social::Ready_ActorDesc(void* _pArg)
 
 HRESULT CNPC_Social::Ready_Components()
 {
-	m_p2DColliderComs.resize(1);
 	CCollider_AABB::COLLIDER_AABB_DESC AABBDesc = {};
-	AABBDesc.pOwner = this;
-	AABBDesc.vExtents = { m_vCollsionScale.x, m_vCollsionScale.y };
-	AABBDesc.vScale = { 1.0f, 1.0f };
-	AABBDesc.vOffsetPosition = { 0.f, AABBDesc.vExtents.y * 0.5f };
-	AABBDesc.isBlock = true;
-	AABBDesc.isTrigger = false;
+	if (TEXT("Chapter_1_Humgrump") != m_strNPCName)
+	{
+		m_p2DColliderComs.resize(1);
 
-	if (true == m_isInteractable)
-		AABBDesc.iCollisionGroupID = OBJECT_GROUP::INTERACTION_OBEJCT;
+		AABBDesc.pOwner = this;
+		AABBDesc.vExtents = { m_vCollsionScale.x, m_vCollsionScale.y * 2.f };
+		AABBDesc.vScale = { 1.0f, 1.0f };
+		AABBDesc.vOffsetPosition = { 0.f, 0.f };
+		AABBDesc.isBlock = true;
+		AABBDesc.isTrigger = false;
+
+		if (true == m_isInteractable)
+			AABBDesc.iCollisionGroupID = OBJECT_GROUP::INTERACTION_OBEJCT;
+		else
+			AABBDesc.iCollisionGroupID = OBJECT_GROUP::NONE;
+
+		if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
+			TEXT("Com_2DCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &AABBDesc)))
+			return E_FAIL;
+
+
+
+
+	}
 	else
-		AABBDesc.iCollisionGroupID = OBJECT_GROUP::NONE;
+	{
 
-	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
-		TEXT("Com_2DCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &AABBDesc)))
-		return E_FAIL;
+		m_p2DColliderComs.resize(1);
+		AABBDesc.pOwner = this;
+		AABBDesc.vExtents = { m_vCollsionScale.x, m_vCollsionScale.y };
+		AABBDesc.vScale = { 1.0f, 1.0f };
+		AABBDesc.vOffsetPosition = { 0.f, 0.f };
+		AABBDesc.isBlock = true;
+		AABBDesc.isTrigger = false;
+
+			AABBDesc.iCollisionGroupID = OBJECT_GROUP::INTERACTION_OBEJCT;
+
+		if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
+			TEXT("Com_2DCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &AABBDesc)))
+			return E_FAIL;
+	}
 	
 	m_p2DNpcCollider = m_p2DColliderComs[0];
 	Safe_AddRef(m_p2DNpcCollider);
