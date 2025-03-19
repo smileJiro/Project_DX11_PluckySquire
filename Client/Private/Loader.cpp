@@ -275,6 +275,7 @@
 #include "Saw.h"
 #include "Turret.h"
 
+#include "Zip_C8.h"
 
 
 CLoader::CLoader(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -2140,6 +2141,9 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_CyberCursor"),
 		CCyberCursor::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_ZipC8"),
+		CZip_C8::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 #pragma endregion
 

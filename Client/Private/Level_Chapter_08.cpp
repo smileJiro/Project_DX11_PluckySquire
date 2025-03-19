@@ -36,6 +36,7 @@
 #include "Bomb.h"
 #include "Rat.h"
 #include "Zippy.h"
+#include "Zip_C8.h"
 #include "SlipperyObject.h"
 #include "LightningBolt.h"
 #include "ButterGrump.h"
@@ -493,6 +494,16 @@ void CLevel_Chapter_08::Update(_float _fTimeDelta)
 			SECTION_MGR->Remove_Section(L"Chapter8_SKSP_09");
 			SECTION_MGR->Remove_Section(L"Chapter8_SKSP_10");
 				//});
+
+			//
+			CZip_C8::MODELOBJECT_DESC tZipDesc{};
+			tZipDesc.iCurLevelID = m_eLevelID;
+			tZipDesc.Build_2D_Transform(_float2(-248.0, -111.0), _float2(1.0f, 1.0f));
+			CGameObject* pGameObject = nullptr;
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_ZipC8"), m_eLevelID, TEXT("Layer_Zip"), &pGameObject, &tZipDesc)))
+				assert(nullptr);
+			CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter8_SKSP_11"), pGameObject, SECTION_2D_PLAYMAP_OBJECT);
+
 
 			// 보스 체력바 관련
 			CUI::UIOBJDESC pDesc = {};

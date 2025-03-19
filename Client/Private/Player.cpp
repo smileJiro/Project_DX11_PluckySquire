@@ -760,7 +760,7 @@ void CPlayer::Late_Update(_float _fTimeDelta)
 HRESULT CPlayer::Render()
 {
 	/* Model이 없는 Container Object 같은 경우 Debug 용으로 사용하거나, 폰트 렌더용으로. */
-
+	
 #ifdef _DEBUG
 	if (m_pBody2DColliderCom->Is_Active())
 		m_pBody2DColliderCom->Render(SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName));
@@ -2166,8 +2166,9 @@ void CPlayer::Set_Mode(PLAYER_MODE _eNewMode)
 		cout << "PLAYER_MODE_CYBERJOT" << endl;
 
 		m_pTargetCamera = static_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET));
-		CCameraPivot* pPivot = static_cast<CCameraPivot*>(m_pGameInstance->Get_GameObject_Ptr(m_iCurLevelID, TEXT("Layer_CameraPivot"), 0));
-		m_pCameraTargetWorldMatrix = pPivot->Get_MainTarget()->Get_ControllerTransform()->Get_WorldMatrix_Ptr();
+		CCameraPivot* pPivot = dynamic_cast<CCameraPivot*>(m_pGameInstance->Get_GameObject_Ptr(m_iCurLevelID, TEXT("Layer_CameraPivot"), 0));
+		if(pPivot)
+			m_pCameraTargetWorldMatrix = pPivot->Get_MainTarget()->Get_ControllerTransform()->Get_WorldMatrix_Ptr();
 
 		Set_Kinematic(true);
 		//Get_ActorDynamic()->Set_Gravity(false);
@@ -2610,6 +2611,9 @@ void CPlayer::On_GainPlayerItem(_uint _eItem)
 
 void CPlayer::Update_CyberJot(_float _fTimeDelta)
 {
+	if (nullptr == m_pTargetCamera || nullptr == m_pCameraTargetWorldMatrix)
+		return;
+
 	m_f3DCyberCurrentSpeed -= m_f3DCyberLinearDamping * _fTimeDelta;
 	if(m_f3DCyberCurrentSpeed < 0.f)
 		m_f3DCyberCurrentSpeed = 0.f;

@@ -2059,6 +2059,7 @@
       <Filter>02.GameObjects\UI\00. GamePlay\08. BossHP_Bar\00.BossHP_Bar_Texture</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CyberCursor.h" />
+    <ClInclude Include="..\Public\Zip_C8.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -3309,6 +3310,7 @@
       <Filter>02.GameObjects\UI\00. GamePlay\08. BossHP_Bar\00.BossHP_Bar_Texture</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CyberCursor.cpp" />
+    <ClCompile Include="..\Private\Zip_C8.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
