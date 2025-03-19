@@ -86,7 +86,7 @@ void CFormationBackState::State_Update(_float _fTimeDelta)
 	}
 
 	//포메이션으로부터 목표 위치 받아서 이동
-	if (false == m_pOwner->Get_Formation_Position(&m_vNextPos))
+	if (false == m_pOwner->Get_Formation_Position(&m_vNextPos, _fTimeDelta))
 		return;
 	m_isTurn = true;
 
@@ -153,6 +153,9 @@ void CFormationBackState::Move(_float _fTimeDelta)
 			//m_pOwner->Stop_Move();
 			m_isTurn = false;
 			m_isMove = false;
+
+			//예비 자리에서 빼줌
+			m_pOwner->Remove_From_Formation_ReserveSlot();
 
 			Event_ChangeMonsterState(MONSTER_STATE::FORMATION_MOVE, m_pFSM);
 			return;

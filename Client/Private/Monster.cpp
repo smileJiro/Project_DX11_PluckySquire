@@ -675,12 +675,20 @@ _bool CMonster::Remove_From_Formation()
 	return false;
 }
 
-_bool CMonster::Get_Formation_Position(_float3* _vPosition)
+_bool CMonster::Remove_From_Formation_ReserveSlot()
 {
 	if (nullptr == m_pFormation)
 		return false;
 
-	return m_pFormation->Get_Formation_Position(this, _vPosition);
+	return m_pFormation->Remove_From_Formation_ReserveSlot(this);
+}
+
+_bool CMonster::Get_Formation_Position(_float3* _vPosition, _float _fTimeDelta)
+{
+	if (nullptr == m_pFormation)
+		return false;
+
+	return m_pFormation->Get_Formation_Position(this, _vPosition, _fTimeDelta);
 }
 
 _bool CMonster::Get_Formation_NextPosition(_float3* _vPosition)

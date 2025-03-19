@@ -39,6 +39,7 @@ public:
 
 	// * 로 넘기는이유 : void* 로 데이터 쉐이더에 넘길거라 
 	const _float4* Get_CamPosition() const 	{ return &m_vCamPosition; }
+	_vector Get_vCamPosition() { return XMLoadFloat4(&m_vCamPosition); }
 
 	_float* Get_NearZ() { return &m_vNearFarZ.x; }
 	_float* Get_FarZ() { return &m_vNearFarZ.y; }

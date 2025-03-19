@@ -16,7 +16,8 @@ HRESULT CSneak_AwareState::Initialize(void* _pArg)
 	m_fChaseRange = pDesc->fChaseRange;
 	m_fAttackRange = pDesc->fAttackRange;
 
-	m_fCoolTime = 1.f;
+	m_fCoolTime = 2.f;
+	m_fRecognizeTime = 0.5f;
 
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
@@ -30,8 +31,10 @@ void CSneak_AwareState::State_Enter()
 	m_pOwner->Set_AnimChangeable(false);
 	m_pOwner->Stop_Move();
 	m_isConvert = false;
+	m_isRecognize = false;
 	m_fAccTime = 0.f;
 	m_isRenew = false;
+	m_isTurn = true;
 	cout << "Aware" << endl;
 }
 
@@ -42,16 +45,26 @@ void CSneak_AwareState::State_Update(_float _fTimeDelta)
 	if(false == m_isRenew)
 	{
 		m_fAccTime += _fTimeDelta;
+		//이 시간 동안은 따로 인식안함
+		if (m_fRecognizeTime <= m_fAccTime)
+		{
+			m_isRecognize = true;
+		}
 		if (m_fCoolTime <= m_fAccTime)
 		{
-			m_fAccTime = 0.f;
+			m_isRenew = true;
 		}
 	}
 	if (nullptr != m_pTarget)
 	{
 		//소리난 위치로 회전
 		_vector vDir = XMVector3Normalize(XMLoadFloat3(&m_vSneakPos) - m_pOwner->Get_FinalPosition());
-		m_pOwner->Rotate_To_Radians(XMVectorSetY(vDir, 0.f), m_pOwner->Get_ControllerTransform()->Get_RotationPerSec());
+
+		if(true == m_isTurn)
+		{
+			if (true == m_pOwner->Rotate_To_Radians(XMVectorSetY(vDir, 0.f), m_pOwner->Get_ControllerTransform()->Get_RotationPerSec()))
+				m_isTurn = false;
+		}
 
 		//몬스터 인식 범위 안에 들어오면 인식상태로 전환
 		if (true == Check_Target3D(true))
@@ -67,23 +80,22 @@ void CSneak_AwareState::State_Update(_float _fTimeDelta)
 
 			return;
 		}
-		//if (m_isConvert == true)
-		//{
-		//	Event_ChangeMonsterState(MONSTER_STATE::SNEAK_INVESTIGATE, m_pFSM);
-		//	return;
-		//}
+		if (m_isConvert == true)
+		{
+			Event_ChangeMonsterState(MONSTER_STATE::SNEAK_INVESTIGATE, m_pFSM);
+			return;
+		}
 
 		//플레이어가 인식되지 않았는데 소리가 나면 위치 저장 후 경계추적으로 전환 
-		if (m_pOwner->IsTarget_In_Sneak_Detection())
+		if (m_isRecognize && m_pOwner->IsTarget_In_Sneak_Detection())
 		{
 			m_pFSM->Set_Sneak_InvestigatePos(m_pTarget->Get_FinalPosition());
-			Event_ChangeMonsterState(MONSTER_STATE::SNEAK_INVESTIGATE, m_pFSM);
-			//m_isConvert = true;
+			m_isConvert = true;
 			return;
 		}
 
 		//인식 되지 않고 소리도 안나면 복귀상태로 전환 (지금 애니메이션 재생동안은 전환 안되니까)
-		else
+		if (m_isRenew && false == m_isTurn)
 		{
 			if (false == m_pOwner->Is_FormationMode())
 				Event_ChangeMonsterState(MONSTER_STATE::SNEAK_BACK, m_pFSM);

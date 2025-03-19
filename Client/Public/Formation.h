@@ -50,14 +50,16 @@ public:
 	_bool Add_To_Formation(CMonster* _pMember, CFormation** _pFormation);
 
 	_bool Remove_From_Formation(CMonster* _pMember);
+	_bool Remove_From_Formation_ReserveSlot(CMonster* _pMember);
 
-	_bool Get_Formation_Position(CMonster* _pMember, _float3* _vPosition);
+	_bool Get_Formation_Position(CMonster* _pMember, _float3* _vPosition, _float _fTimeDelta);
 	_bool Get_Formation_NextPosition(CMonster* _pMember, _float3* _vPosition);
 
 
 private:
 	vector<CMonster*> m_Members;
 	set<_uint> m_EmptySlots;
+	set<_uint> m_ReserveSlots;
 	vector<_float3> m_PatrolPoints;
 	vector<_float3> m_OffSets;
 	_uint m_iRow = { 3 };

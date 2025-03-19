@@ -6,6 +6,10 @@
 #include "Event_Manager.h"
 #include "Formation.h"
 #include "Monster.h"
+#include "PortalLocker_LayerCount.h"
+#include "Section_2D_PlayMap.h"
+#include "Section_Manager.h"
+#include "Portal.h"
 
 
 IMPLEMENT_SINGLETON(CFormation_Manager)
@@ -98,12 +102,36 @@ HRESULT CFormation_Manager::Ready_Chapter8_Formation()
 	FormationDesc.fDelayTime = 2.f;
 
 	//Å×½ºÆ®
-	FormationDesc.iRow = 1;
-	FormationDesc.iColumn = 1;
+	FormationDesc.iRow = 3;
+	FormationDesc.iColumn = 4;
 
 	pFormation = static_cast<CFormation*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_Formation"), &FormationDesc));
 	if (nullptr == pFormation)
 		return E_FAIL;
+
+
+	{/* PortalLocker_LayerCount 1 */
+		CGameObject* pGameObject = nullptr;
+		CPortalLocker_LayerCount::PORTALLOCKER_LAYER_DESC Desc;
+		CPortal* pTargetPortal = static_cast<CPortal*>(static_cast<CSection_2D_PlayMap*>(CSection_Manager::GetInstance()->Find_Section(TEXT("Chapter8_SKSP_08")))->Get_Portal(0));
+
+		if (nullptr == pTargetPortal)
+			return E_FAIL;
+		Desc.iCurLevelID = LEVEL_CHAPTER_8;
+		Desc.pTargetPortal = pTargetPortal;
+		Desc.ePortalLockerType = CPortalLocker::TYPE_PURPLE;
+		Desc.strSectionKey = TEXT("Chapter8_SKSP_08");
+		Desc.strCountingLayerTag = TEXT("Layer_Monster_Locker");
+
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_PortalLocker_LayerCount"), LEVEL_CHAPTER_8, TEXT("Layer_PortalLock_LayerCount"), &pGameObject, &Desc)))
+			return E_FAIL;
+
+		if (FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(Desc.strSectionKey, pGameObject, SECTION_2D_PLAYMAP_OBJECT)))
+			return E_FAIL;
+
+	}/* PortalLocker_LayerCount 1 */
+
+
 
 	Register_Formation(pFormation);
 
