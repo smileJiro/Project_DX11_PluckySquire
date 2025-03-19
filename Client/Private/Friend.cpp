@@ -78,14 +78,16 @@ void CFriend::Update(_float _fTimeDelta)
         //Change_Mode(FRIEND_MODE::MODE_FIGHT);
         //m_eCurState = FRIEND_ATTACK;
     }
+
+
     Action_State(_fTimeDelta);
+
 
     __super::Update(_fTimeDelta);
 }
 
 void CFriend::Late_Update(_float _fTimeDelta)
 {
-
     State_Change();
 
     __super::Late_Update(_fTimeDelta);
@@ -313,6 +315,12 @@ void CFriend::State_Change()
     case Client::CFriend::FRIEND_ANY:
         State_Change_Any();
         break;
+    case Client::CFriend::FRIEND_PULL:
+        State_Change_Pull();
+        break;
+    case Client::CFriend::FRIEND_BACKROLL:
+        State_Change_BackRoll();
+        break;
     default:
         break;
     }
@@ -321,6 +329,7 @@ void CFriend::State_Change()
         Switch_AnimIndex_State(); // 현재 상태에 맞는 Animation 선택
     m_ePreState = m_eCurState;
 }
+
 
 void CFriend::Set_ChaseTarget(CGameObject* _pChaseTarget)
 {
@@ -418,6 +427,16 @@ void CFriend::State_Change_Mojam()
 
 void CFriend::State_Change_Hit()
 {
+}
+
+void CFriend::State_Change_Pull()
+{
+    m_vPullTime.y = 0.0f;
+}
+
+void CFriend::State_Change_BackRoll()
+{
+    m_vBackRollTime.y = 0.0f;
 }
 
 void CFriend::State_Change_Any()
@@ -536,6 +555,7 @@ void CFriend::ChaseToTarget(_float _fTimeDelta)
         return;
     }
 
+
     _wstring strTargetSection = m_pChaseTarget->Get_Include_Section_Name();
     if (COORDINATE_3D == m_pChaseTarget->Get_CurCoord())
     {
@@ -544,10 +564,19 @@ void CFriend::ChaseToTarget(_float _fTimeDelta)
     }
     else if (m_pChaseTarget->Get_Include_Section_Name() != m_strSectionName)
     {
-        _vector vTargetPos = m_pChaseTarget->Get_FinalPosition();
-        m_pControllerTransform->Set_State(CTransform::STATE_POSITION, vTargetPos);
-        CSection_Manager::GetInstance()->Remove_GameObject_FromSectionLayer(m_strSectionName, this);
-        CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strTargetSection, this);
+        if (m_pChaseTarget->Get_Include_Section_Name() == TEXT(""))
+        {
+            int a = 0;
+            m_eCurState = FRIEND_IDLE;
+        }
+        else
+        {
+            _vector vTargetPos = m_pChaseTarget->Get_FinalPosition();
+            m_pControllerTransform->Set_State(CTransform::STATE_POSITION, vTargetPos);
+            CSection_Manager::GetInstance()->Remove_GameObject_FromSectionLayer(m_strSectionName, this);
+            CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strTargetSection, this);
+        }
+
         return;
     }
 
@@ -583,6 +612,8 @@ void CFriend::ChaseToTargetPosition(_float2 _vTargetPosition, _float _fTimeDelta
     {
         m_eDirection = m_eMoveEndDirection;
         m_eCurState = FRIEND_IDLE;
+
+        Move_Arrival();
     }
 }
 
@@ -608,7 +639,12 @@ void CFriend::Action_State(_float _fTimeDelta)
     case Client::CFriend::FRIEND_MOJAM:
         Action_State_Mojam(_fTimeDelta); // Mojam 애니메이션 재생 후 Idle 
         break;
-        
+    case Client::CFriend::FRIEND_PULL:
+        Action_State_Pull(_fTimeDelta); // Mojam 애니메이션 재생 후 Idle 
+        break;
+    case Client::CFriend::FRIEND_BACKROLL:
+        Action_State_BackRoll(_fTimeDelta); // Mojam 애니메이션 재생 후 Idle 
+        break;
     default:
         break;
     }
@@ -732,7 +768,35 @@ void CFriend::Action_State_Hit(_float _fTimeDelta)
 {
 }
 
+void CFriend::Action_State_Pull(_float _fTimeDelta)
+{
+    m_vPullTime.y += _fTimeDelta;
+
+    if (m_vPullTime.x <= m_vPullTime.y)
+    {
+        m_eCurState = FRIEND_BACKROLL;
+    }
+}
+
+void CFriend::Action_State_BackRoll(_float _fTimeDelta)
+{
+    if (false == m_isBackRollLoop)
+        return;
+
+    m_vBackRollTime.y += _fTimeDelta;
+    Move(XMVectorSet(0.0f, -250.f, 0.0f, 0.0f), _fTimeDelta);
+    if (m_vBackRollTime.x <= m_vBackRollTime.y)
+    {
+        Switch_AnimIndex_State();
+        m_isBackRollLoop = false;
+    }
+}
+
 void CFriend::Action_State_Any(_float _fTimeDelta)
+{
+}
+
+void CFriend::Move_Arrival()
 {
 }
 

@@ -9,6 +9,7 @@
 #include "Interaction_E.h"
 #include "Interaction_Heart.h"
 #include "Book.h"
+#include "ButterGrump.h"
 
 
 
@@ -28,6 +29,7 @@ private:
 	STAMP								m_eStampIndex = { STAMP_END };
 	CPlayer* m_pPlayer = { nullptr };
 	CDialog* m_pDiagloue = { nullptr };
+	CButterGrump* m_pBoss = { nullptr };
 	CInteraction_E* m_pInteractionE = { nullptr };
 	CInteraction_Heart* m_pInteractionHeart = { nullptr };
 	
@@ -103,6 +105,16 @@ public:
 
 		return m_pBook;
 	}
+
+	void								Set_BossForUI(CButterGrump* _pBoss) { m_pBoss = _pBoss; Safe_AddRef(_pBoss); }
+	CButterGrump*						Get_BossForUI()
+	{
+		if (nullptr == m_pBoss)
+			assert(m_pBoss);
+
+		return m_pBoss;
+	}
+
 
 	void								Set_StampHave(_uint _index, _bool _isHave) { m_PlayerStampHaves[_index] = _isHave; }
 	_bool								Get_StampHave(_uint _index) { return m_PlayerStampHaves[_index]; }

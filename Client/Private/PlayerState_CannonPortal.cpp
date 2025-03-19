@@ -92,9 +92,10 @@ void CPlayerState_CannonPortal::Update(_float _fTimeDelta)
 
 		if (m_pTargetPortal)
 		{
+			_float fUpForce = m_pOwner->Get_UpForce();
 			_float fDistance = XMVector3Length(m_pTargetPortal->Get_FinalPosition() - m_pOwner->Get_FinalPosition()).m128_f32[0];
 			cout << fDistance << endl;
-			if (fDistance < 0.3f)
+			if (fUpForce < 0.f && fDistance < 0.3f)
 			{
 				Set_SubState(SUB_GOAL_IN_READY);
 

@@ -3,12 +3,16 @@
     {
       "id": "Artia_PigEvent_01",
       "Section": "Chapter5_P0102",
+      "isChangeTalker": true,
       "lines": [
         {
           "Portrait": 2,
           "Talker": "엄버",
+          "TalkerIndex": 0,
           "BG": 0,
-          "location": 1,
+          "location": 0,
+          "OffsetX": 0.0,
+          "OffsetY": 0.0,
           "is2D": true,
           "isPortrait": false,
           "iAnimationIndex": 1,
@@ -26,15 +30,17 @@
     {
       "id": "Artia_PigEvent_02",
       "Section": "Chapter5_P0102",
+      "isChangeTalker": true,
       "lines": [
         {
           "Portrait": 0,
           "Talker": "바이올렛",
+          "TalkerIndex": 1,
           "BG": 13,
-          "location": 1,
+          "location": 0,
           "is2D": true,
           "OffsetX": 0.0,
-          "OffsetY": 200.0,
+          "OffsetY": 0.0,
           "isPortrait": true,
           "isLineEnter": true,
           "animation": {
@@ -49,6 +55,8 @@
         {
           "Portrait": 2,
           "Talker": "엄버",
+          "TalkerIndex": 0,
+
           "BG": 0,
           "location": 1,
           "is2D": true,
@@ -67,6 +75,7 @@
         {
           "Portrait": 2,
           "Talker": "엄버",
+          "TalkerIndex": 0,
           "BG": 0,
           "location": 1,
           "is2D": true,
@@ -85,6 +94,7 @@
         {
           "Portrait": 2,
           "Talker": "엄버",
+          "TalkerIndex": 0,
           "BG": 0,
           "location": 1,
           "is2D": true,
@@ -95,7 +105,7 @@
             "duration": 1000,
             "speed": 350
           },
-          "text": "그 때 우리 집 지우개꿀꿀이 삼형제가\n전부 도망을 가버려서 말이야.",
+          "text": "그 때 우리 집 지우개꿀꿀이가 가출을 해 버려서 말이야.",
           "Red": 255,
           "Green": 255,
           "Blue": 242
@@ -104,17 +114,18 @@
           "Portrait": 0,
           "Talker": "바이올렛",
           "BG": 13,
-          "location": 1,
+          "location": 0,
+          "TalkerIndex": 1,
           "is2D": true,
           "OffsetX": 0.0,
-          "OffsetY": 200.0,
+          "OffsetY": 0.0,
           "isPortrait": true,
           "isLineEnter": true,
           "animation": {
             "duration": 1000,
             "speed": 350
           },
-          "text": "예??? 삼촌 지우개꿀꿀이들 없이는 못 사시잖아요?",
+          "text": "예??? 삼촌 지우개꿀꿀이 없이는 못 사시잖아요?",
           "Red": 0,
           "Green": 0,
           "Blue": 0
@@ -124,6 +135,7 @@
           "Talker": "엄버",
           "BG": 0,
           "location": 1,
+          "TalkerIndex": 0,
           "is2D": true,
           "isPortrait": false,
           "isLineEnter": true,
@@ -132,7 +144,7 @@
             "duration": 1000,
             "speed": 350
           },
-          "text": "그래서 사방팔방 찾아다니고 전단지도 붙여봤는데,\n깜깜 무소식이란다...",
+          "text": "어떻게든 데려오고 싶은데. 저 멀리서 잠이 들어 버려서...",
           "Red": 255,
           "Green": 255,
           "Blue": 242
@@ -141,10 +153,11 @@
           "Portrait": 0,
           "Talker": "바이올렛",
           "BG": 13,
-          "location": 1,
+          "location": 0,
           "is2D": true,
+          "TalkerIndex": 1,
           "OffsetX": 0.0,
-          "OffsetY": 200.0,
+          "OffsetY": 0.0,
           "isPortrait": true,
           "isLineEnter": true,
           "animation": {
@@ -155,22 +168,23 @@
           "Red": 0,
           "Green": 0,
           "Blue": 0
-        },       
+        },
         {
           "Portrait": 0,
           "Talker": "바이올렛",
           "BG": 13,
-          "location": 1,
+          "location": 0,
           "is2D": true,
+          "TalkerIndex": 1,
           "OffsetX": 0.0,
-          "OffsetY": 200.0,
+          "OffsetY": 0.0,
           "isPortrait": true,
           "isLineEnter": true,
           "animation": {
             "duration": 1000,
             "speed": 350
           },
-          "text": "얘들아, 왕궁에 들르기 전에 잠깐만...\n우리 지우개꿀꿀이들을 찾아보고 가면 안될까?",
+          "text": "얘들아, 왕궁에 들르기 전에 잠깐만...\n우리 지우개꿀꿀이 한번 보고 가면 안될까?",
           "Red": 0,
           "Green": 0,
           "Blue": 0
@@ -179,17 +193,18 @@
           "Portrait": 0,
           "Talker": "바이올렛",
           "BG": 13,
-          "location": 1,
+          "location": 0,
           "is2D": true,
+          "TalkerIndex": 1,
           "OffsetX": 0.0,
-          "OffsetY": 200.0,
+          "OffsetY": 0.0,
           "isPortrait": true,
           "isLineEnter": true,
           "animation": {
             "duration": 1000,
             "speed": 350
           },
-          "text": "삼촌도 삼촌이지만, 나도 지우개꿀꿀이들과 함께 자랐거든.",
+          "text": "삼촌도 삼촌이지만, 나도 지우개꿀꿀이와 함께 자랐거든.",
           "Red": 0,
           "Green": 0,
           "Blue": 0
@@ -198,18 +213,18 @@
           "Portrait": 1,
           "Talker": "스래쉬",
           "BG": 2,
-          "location": 1,
+          "location": 0,
           "is2D": true,
           "isPortrait": true,
-          "OffsetX": -20.0,
-          "OffsetY": 100.0,
+          "OffsetX": 0.0,
+          "OffsetY": 0.0,
           "isLineEnter": true,
-          "TalkerIndex": 0,
+          "TalkerIndex": 2,
           "animation": {
             "duration": 1000,
             "speed": 350
           },
-          "text": "당연하지! 넓은 도시라 어디 다치진 않았을까 걱정이 되네...",
+          "text": "당연하지! 어디 있는데?",
           "Red": 0,
           "Green": 0,
           "Blue": 0
@@ -222,37 +237,60 @@
           "is2D": true,
           "isPortrait": false,
           "isLineEnter": true,
+          "TalkerIndex": 0,
           "iAnimationIndex": 1,
           "animation": {
             "duration": 1000,
             "speed": 350
           },
-          "text": "정말인가! 그럼 제발 도와주게. 총 세 마리야. 부탁하네.",
+          "text": "이 도시 오른쪽 클로버 밭에 잠들어 있단다.",
           "Red": 255,
           "Green": 255,
           "Blue": 242
-        }
-      ]
-    },
-    {
-      "id": "Artia_PigEvent_03",
-      "Section": "Chapter5_P0102",
-      "lines": [
+        },
         {
           "Portrait": 0,
           "Talker": "바이올렛",
           "BG": 13,
-          "location": 1,
+          "location": 0,
           "is2D": true,
           "OffsetX": 0.0,
-          "OffsetY": 200.0,
+          "OffsetY": 0.0,
+          "TalkerIndex": 1,
           "isPortrait": true,
           "isLineEnter": true,
           "animation": {
             "duration": 1000,
             "speed": 350
           },
-          "text": "꼬맹아! 여기서 이렇게 자고 있네...",
+          "text": "알겠어요 삼촌!\n얼른 가보자, 얘들아!",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        }
+      ]
+    },
+    {
+      "id": "Artia_PigEvent_03",
+      "isChangeTalker": true,
+      "Section": "Chapter5_P0102",
+      "lines": [
+        {
+          "Portrait": 0,
+          "Talker": "바이올렛",
+          "BG": 13,
+          "location": 0,
+          "is2D": true,
+          "TalkerIndex": 1,
+          "OffsetX": 0.0,
+          "OffsetY": 0.0,
+          "isPortrait": true,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "꼬맹아! 진짜 여기서 이렇게 자고 있네...",
           "Red": 0,
           "Green": 0,
           "Blue": 0
@@ -261,13 +299,13 @@
           "Portrait": 1,
           "Talker": "스래쉬",
           "BG": 2,
-          "location": 1,
+          "location": 0,
           "is2D": true,
           "isPortrait": true,
-          "OffsetX": -20.0,
-          "OffsetY": 100.0,
+          "TalkerIndex": 1,
+          "OffsetX": 0.0,
+          "OffsetY": 0.0,
           "isLineEnter": true,
-          "TalkerIndex": 0,
           "animation": {
             "duration": 1000,
             "speed": 350
@@ -281,17 +319,18 @@
           "Portrait": 0,
           "Talker": "바이올렛",
           "BG": 13,
-          "location": 1,
+          "location": 0,
           "is2D": true,
           "OffsetX": 0.0,
-          "OffsetY": 200.0,
+          "OffsetY": 0.0,
+          "TalkerIndex": 0,
           "isPortrait": true,
           "isLineEnter": true,
           "animation": {
             "duration": 1000,
             "speed": 350
           },
-          "text": "그런데 얘는 한번 자면 잘 안 깨거든.\n우리가 대신 삼촌네 진흙밭에 옮겨다 주자.",
+          "text": "얘는 한번 자면 잘 안 깨거든.\n우리가 대신 삼촌네 진흙밭에 옮겨다 주자.",
           "Red": 0,
           "Green": 0,
           "Blue": 0
@@ -300,13 +339,13 @@
           "Portrait": 1,
           "Talker": "스래쉬",
           "BG": 2,
-          "location": 1,
+          "location": 0,
           "is2D": true,
           "isPortrait": true,
-          "OffsetX": -20.0,
-          "OffsetY": 100.0,
+          "OffsetX": 0.0,
+          "OffsetY": 0.0,
           "isLineEnter": true,
-          "TalkerIndex": 0,
+          "TalkerIndex": 1,
           "animation": {
             "duration": 1000,
             "speed": 350
@@ -320,13 +359,13 @@
           "Portrait": 1,
           "Talker": "스래쉬",
           "BG": 2,
-          "location": 1,
+          "location": 0,
           "is2D": true,
           "isPortrait": true,
-          "OffsetX": -20.0,
-          "OffsetY": 100.0,
+          "OffsetX": 0.0,
+          "OffsetY": 0.0,
           "isLineEnter": true,
-          "TalkerIndex": 0,
+          "TalkerIndex": 1,
           "animation": {
             "duration": 1000,
             "speed": 350
@@ -341,6 +380,8 @@
           "Talker": "달수염",
           "BG": 0,
           "location": 1,
+          "OffsetX": 0.0,
+          "OffsetY": 100.0,
           "is2D": true,
           "isLineEnter": true,
           "isPortrait": true,
@@ -357,11 +398,11 @@
           "Portrait": 1,
           "Talker": "스래쉬",
           "BG": 2,
-          "location": 1,
+          "location": 0,
           "is2D": true,
           "isPortrait": true,
-          "OffsetX": -20.0,
-          "OffsetY": 100.0,
+          "OffsetX": 0.0,
+          "OffsetY": 0.0,
           "isLineEnter": true,
           "TalkerIndex": 0,
           "animation": {
@@ -379,13 +420,15 @@
           "BG": 0,
           "location": 1,
           "is2D": true,
+          "OffsetX": 0.0,
+          "OffsetY": 100.0,
           "isLineEnter": true,
           "isPortrait": true,
           "animation": {
             "duration": 1000,
             "speed": 350
           },
-          "text": "꼬마돼지를 못 옮겨서 곤란한 모양이구나.\n저트라면 해결할 수 있을 걸?",
+          "text": "지우개꿀꿀이를 못 옮겨서 곤란한 모양이구나.\n저트라면 해결할 수 있을 걸?",
           "Red": 161,
           "Green": 210,
           "Blue": 234
@@ -394,10 +437,10 @@
           "Portrait": 0,
           "Talker": "바이올렛",
           "BG": 13,
-          "location": 1,
+          "location": 0,
           "is2D": true,
           "OffsetX": 0.0,
-          "OffsetY": 200.0,
+          "OffsetY": 0.0,
           "isPortrait": true,
           "isLineEnter": true,
           "animation": {
@@ -417,6 +460,8 @@
           "is2D": true,
           "isLineEnter": true,
           "isPortrait": true,
+          "OffsetX": 0.0,
+          "OffsetY": 100.0,
           "animation": {
             "duration": 1000,
             "speed": 350
@@ -427,31 +472,14 @@
           "Blue": 234
         },
         {
-          "Portrait": 7,
-          "Talker": "달수염",
-          "BG": 0,
-          "location": 1,
-          "is2D": true,
-          "isLineEnter": true,
-          "isPortrait": true,
-          "animation": {
-            "duration": 1000,
-            "speed": 350
-          },
-          "text": "보자보자... 뭔가 기울일 수 있는 물건. 말이지.",
-          "Red": 161,
-          "Green": 210,
-          "Blue": 234
-        },
-        {
           "Portrait": 1,
           "Talker": "스래쉬",
           "BG": 2,
-          "location": 1,
+          "location": 0,
           "is2D": true,
           "isPortrait": true,
-          "OffsetX": -20.0,
-          "OffsetY": 100.0,
+          "OffsetX": 0.0,
+          "OffsetY": 0.0,
           "isLineEnter": true,
           "TalkerIndex": 0,
           "animation": {
@@ -466,7 +494,55 @@
       ]
     },
     {
-      "id": "Artia_PigEvent_02",
+      "id": "Artia_PigEvent_04",
+      "isChangeTalker": true,
+      "Section": "Chapter5_P0102",
+      "lines": [
+        {
+          "Portrait": 0,
+          "Talker": "바이올렛",
+          "BG": 13,
+          "location": 1,
+          "is2D": true,
+          "TalkerIndex": 0,
+          "OffsetX": 0.0,
+          "OffsetY": 0.0,
+          "isPortrait": true,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "저트, 방금 위에서 큰 소리가 났는데\n네가 우리 지우개꿀꿀이를 어떻게 한 거야?",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 1,
+          "Talker": "스래쉬",
+          "BG": 2,
+          "location": 0,
+          "is2D": true,
+          "isPortrait": true,
+          "OffsetX": 0.0,
+          "OffsetY": 0.0,
+          "isLineEnter": true,
+          "TalkerIndex": 1,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "뭐든 못하는 게 없구만. 삼촌께 가보자고.",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        }
+      ]
+    },
+    {
+      "id": "Artia_PigEvent_05",
+      "isChangeTalker": true,
       "Section": "Chapter5_P0102",
       "lines": [
         {
@@ -482,7 +558,43 @@
             "duration": 1000,
             "speed": 350
           },
-          "text": "진짜 우리 지우개꿀꿀이 세 마리를 다 찾아오다니.",
+          "text": "바이올렛! 저트! 스래쉬!",
+          "Red": 255,
+          "Green": 255,
+          "Blue": 242
+        },
+        {
+          "Portrait": 2,
+          "Talker": "엄버",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "iAnimationIndex": 1,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "저 멀리서 우리 지우개꿀꿀이가 굴러오더구나.",
+          "Red": 255,
+          "Green": 255,
+          "Blue": 242
+        },
+        {
+          "Portrait": 2,
+          "Talker": "엄버",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "iAnimationIndex": 1,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "너희가 한 거니? 정말 고맙다.",
           "Red": 255,
           "Green": 255,
           "Blue": 242
@@ -519,7 +631,7 @@
             "duration": 1000,
             "speed": 350
           },
-          "text": "별 말씀을요. 사실 우리 저트가 전부 찾았어요.",
+          "text": "별 말씀을요. 사실 우리 저트가 전부 다 했어요.",
           "Red": 0,
           "Green": 0,
           "Blue": 0
@@ -541,6 +653,25 @@
           "Red": 255,
           "Green": 255,
           "Blue": 242
+        },
+        {
+          "Portrait": 0,
+          "Talker": "바이올렛",
+          "BG": 13,
+          "location": 1,
+          "is2D": true,
+          "OffsetX": 0.0,
+          "OffsetY": 200.0,
+          "isPortrait": true,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "도와줘서 고마워, 저트! 그럼 이제 왕궁으로 향하자.",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
         }
       ]
     },
@@ -578,6 +709,30 @@
             "speed": 350
           },
           "text": "할 수만 있다면 당신 얼굴을 수천 장이라도 그리고 싶어.",
+          "Red": 255,
+          "Green": 255,
+          "Blue": 242
+        }
+      ]
+    },
+    {
+      "id": "Eray_Dialogue_01",
+      "Section": "Chapter5_P0102",
+      "lines": [
+        {
+          "Portrait": 2,
+          "Talker": "엄버",
+          "BG": 0,
+          "location": 1,
+          "is2D": true,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "iAnimationIndex": 1,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "지우개꿀꿀이는 도시 오른쪽 클로버 밭에 있어.\n잘 부탁한다!",
           "Red": 255,
           "Green": 255,
           "Blue": 242
@@ -4407,6 +4562,230 @@
           "Red": 252,
           "Green": 190,
           "Blue": 203
+        }
+      ]
+    },
+
+    {
+      "id": "Chapter6_Boss_Start",
+      "Section": "Chapter6_P0708",
+      "isChangeTalker": true,
+      "lines": [
+        {
+          "Portrait": 0,
+          "Talker": "스래쉬",
+          "TalkerIndex": 0,
+          "BG": 0,
+          "location": 0,
+          "is2D": true,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "맙소사! 뭐 저런 고약한 기계가 다있지...?",
+          "Red": 190,
+          "Green": 218,
+          "Blue": 186
+        },
+        {
+          "Portrait": 0,
+          "Talker": "스래쉬",
+          "TalkerIndex": 0,
+          "BG": 0,
+          "location": 0,
+          "is2D": true,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "우리 둘 다 덤벼야 물리칠 수 있을 것 같아!",
+          "Red": 190,
+          "Green": 218,
+          "Blue": 186
+        }
+
+      ]
+    },
+    {
+      "id": "Chapter6_Boss_Progress1_End",
+      "Section": "Chapter6_P0708",
+      "isChangeTalker": true,
+      "lines": [
+        {
+          "Portrait": 1,
+          "Talker": "스래쉬",
+          "TalkerIndex": 0,
+          "BG": 0,
+          "location": 0,
+          "is2D": true,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "이런... 녀석이 화났나봐!",
+          "Red": 190,
+          "Green": 218,
+          "Blue": 186
+        }
+      ]
+    },
+    {
+      "id": "Chapter6_Boss_Progress2_End",
+      "Section": "Chapter6_P0708",
+      "isChangeTalker": true,
+      "lines": [
+        {
+          "Portrait": 1,
+          "Talker": "스래쉬",
+          "TalkerIndex": 0,
+          "BG": 0,
+          "location": 0,
+          "is2D": true,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "소용없어! 톱날이 너무 빨라...",
+          "Red": 190,
+          "Green": 218,
+          "Blue": 186
+        }
+      ]
+    },
+    {
+      "id": "Chapter6_Boss_Progress3_End",
+      "Section": "Chapter6_P0708",
+      "isChangeTalker": true,
+      "lines": [
+        {
+          "Portrait": 1,
+          "Talker": "스래쉬",
+          "TalkerIndex": 0,
+          "BG": 0,
+          "location": 0,
+          "is2D": true,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "힘을 합쳐야 돼!",
+          "Red": 190,
+          "Green": 218,
+          "Blue": 186
+        },
+        {
+          "Portrait": 1,
+          "Talker": "스래쉬",
+          "TalkerIndex": 0,
+          "BG": 0,
+          "location": 0,
+          "is2D": true,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "네가 그 물건을 멈추는 능력으로 톱날을 세워...",
+          "Red": 190,
+          "Green": 218,
+          "Blue": 186
+        },
+        {
+          "Portrait": 1,
+          "Talker": "스래쉬",
+          "TalkerIndex": 0,
+          "BG": 0,
+          "location": 0,
+          "is2D": true,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "그러면 내가 잠금장치를 부술게!",
+          "Red": 190,
+          "Green": 218,
+          "Blue": 186
+        }
+      ]
+    },
+    {
+      "id": "Chapter6_Boss_Progress5_End",
+      "Section": "Chapter6_P0708",
+      "isChangeTalker": true,
+      "lines": [
+        {
+          "Portrait": 1,
+          "Talker": "스래쉬",
+          "TalkerIndex": 0,
+          "BG": 0,
+          "location": 0,
+          "is2D": true,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "저트! 조절장치가 드러났어!",
+          "Red": 190,
+          "Green": 218,
+          "Blue": 186
+        },
+        {
+          "Portrait": 1,
+          "Talker": "스래쉬",
+          "TalkerIndex": 0,
+          "BG": 0,
+          "location": 0,
+          "is2D": true,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "있는 힘껏 때려!!!",
+          "Red": 190,
+          "Green": 218,
+          "Blue": 186
+        }
+      ]
+    },
+    {
+      "id": "Chapter6_Boss_Progress6_End",
+      "Section": "Chapter6_P0708",
+      "isChangeTalker": true,
+      "lines": [
+        {
+          "Portrait": 1,
+          "Talker": "스래쉬",
+          "TalkerIndex": 0,
+          "BG": 0,
+          "location": 0,
+          "is2D": true,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "기차가 폭주한다!!!",
+          "Red": 190,
+          "Green": 218,
+          "Blue": 186
         }
       ]
     }

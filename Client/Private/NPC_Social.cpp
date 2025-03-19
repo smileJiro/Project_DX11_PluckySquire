@@ -276,6 +276,22 @@ void CNPC_Social::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 
 		}
 	}
+
+	if (m_strDialogueID == TEXT("Eray_Dialogue_01"))
+	{
+		if (iAnimIdx != m_iPreState)
+		{
+			switch (iAnimIdx)
+			{
+			case 0:
+			{
+				static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(1);
+			}
+			break;
+			}
+
+		}
+	}
 }
 
 

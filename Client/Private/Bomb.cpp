@@ -9,6 +9,7 @@
 #include "Effect_System.h"
 #include "GameInstance.h"
 #include "Monster.h"
+#include "Camera_Manager.h"
 
 CBomb::CBomb(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CCarriableObject(_pDevice, _pContext)
@@ -364,6 +365,7 @@ void CBomb::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherColl
 	{
 		if (OBJECT_GROUP::PLAYER & _pOtherCollider->Get_CollisionGroupID())
 		{
+			CCamera_Manager::GetInstance()->Start_Shake_ByCount(CCamera_Manager::TARGET_2D, 0.2f, 0.4f, 50, CCamera::SHAKE_Y, 0.05f);
 			Event_Hit(this, static_cast<CCharacter*>(_pOtherObject), 1, XMVector3Normalize(_pOtherObject->Get_FinalPosition() - Get_FinalPosition()), 500.f);
 		}
 	}
