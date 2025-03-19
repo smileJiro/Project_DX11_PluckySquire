@@ -867,6 +867,7 @@ void CGameEventExecuter_C8::Chapter8_Intro(_float _fTimeDelta)
 
 		if (m_fTimer >= 3.f) {
 			CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::TARGET_2D, true, 0.5f);
+			Uimgr->Set_PlayNarration(TEXT("Chapter8_P0102_Narration_01"));
 			GameEvent_End();
 		}
 	}
