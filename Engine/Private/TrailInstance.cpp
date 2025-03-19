@@ -14,6 +14,9 @@ HRESULT CTrailInstance::Initialize(TRAIL_DESC* _pTrailDesc)
     m_vTrailColor = _pTrailDesc->vTrailColor;
     m_iNumMeshes = _pTrailDesc->iNumMeshes;
     m_MeshesBoneMatrices = _pTrailDesc->MeshesBoneMatrices;
+    m_fBaseReflect = _pTrailDesc->fBaseReflect;
+    m_fExp = _pTrailDesc->fExp;
+    m_vOuterColor = _pTrailDesc->vOuterColor;
 
     return S_OK;
 }
@@ -67,6 +70,18 @@ HRESULT CTrailInstance::Bind_TrailResources(CShader* _pShaderCom)
     if (FAILED(_pShaderCom->Bind_RawValue("g_vTrailTime", &m_vTrailTime, sizeof _float2)))
         return E_FAIL;
     
+    if (FAILED(_pShaderCom->Bind_RawValue("g_vOuterColor", &m_vOuterColor, sizeof _float4)))
+        return E_FAIL;
+
+    if (FAILED(_pShaderCom->Bind_RawValue("g_fBaseReflect", &m_fBaseReflect, sizeof _float)))
+        return E_FAIL;
+
+    if (FAILED(_pShaderCom->Bind_RawValue("g_fExp", &m_fExp, sizeof _float)))
+        return E_FAIL;
+
+    if (FAILED(_pShaderCom->Bind_RawValue("g_vCamPosition", CGameInstance::GetInstance()->Get_CamPosition(), sizeof(_float4))))
+        return E_FAIL;
+
     return S_OK;
 }
 

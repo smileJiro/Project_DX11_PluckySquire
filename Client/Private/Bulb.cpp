@@ -15,9 +15,10 @@ CBulb::CBulb(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 CBulb::CBulb(const CBulb& _Prototype)
 	: CTriggerObject(_Prototype)
 	, m_pFresnelBuffer(_Prototype.m_pFresnelBuffer)
-	, m_tFresnelInfo(_Prototype.m_tFresnelInfo)
+	, m_pColorBuffer(_Prototype.m_pColorBuffer)
 {
 	Safe_AddRef(m_pFresnelBuffer);
+	Safe_AddRef(m_pColorBuffer);
 }
 
 HRESULT CBulb::Initialize_Prototype()
@@ -77,7 +78,7 @@ void CBulb::Late_Update(_float _fTimeDelta)
 {
 	if (COORDINATE_3D == Get_CurCoord() && false == m_isFrustumCulling)
 	{
-		m_pGameInstance->Add_RenderObject_New(RG_3D, PR3D_GEOMETRY, this);
+		m_pGameInstance->Add_RenderObject_New(RG_3D, PR3D_PARTICLE, this);
 	}
 
 	__super::Late_Update(_fTimeDelta);
@@ -90,6 +91,14 @@ HRESULT CBulb::Render()
 
 	if (COORDINATE_3D == Get_CurCoord())
 	{
+		m_p3DShaderCom->Bind_RawValue("g_vCamPosition", m_pGameInstance->Get_CamPosition(), sizeof(_float4));
+
+		if (nullptr != m_pFresnelBuffer)
+			m_p3DShaderCom->Bind_ConstBuffer("SingleFresnel", m_pFresnelBuffer);
+		if (nullptr != m_pColorBuffer)
+			m_p3DShaderCom->Bind_ConstBuffer("ColorBuffer", m_pColorBuffer);
+
+		m_p3DModelCom->Render_Default(m_p3DShaderCom, (_uint)PASS_VTXMESH::FRESNEL);
 		//{
 		//	CMesh* pMesh = m_p3DModelCom->Get_Mesh(0);
 
@@ -130,7 +139,7 @@ HRESULT CBulb::Render()
 		//}		
 
 
-		m_p3DModelCom->Render(m_p3DShaderCom, (_uint)PASS_VTXMESH::DEFAULT);
+		//m_p3DModelCom->Render(m_p3DShaderCom, (_uint)PASS_VTXMESH::FRESNEL);
 	}
 
 	else if (COORDINATE_2D == Get_CurCoord())
@@ -415,24 +424,23 @@ HRESULT CBulb::Ready_Components(BULB_DESC* _pArg)
 
 HRESULT CBulb::Ready_Buffer()
 {
-	//m_tFresnelInfo.vColor = _float4(0.01f, 0.058f, 0.028f, 1.0f);
-	//m_tFresnelInfo.fExp = 0.f;
-	//m_tFresnelInfo.fBaseReflect = 1.2f;
-	//m_tFresnelInfo.fStrength = 0.43f;
+	FRESNEL_INFO tBulletFresnelInfo = {};
+	tBulletFresnelInfo.fBaseReflect = 0.1f;
+	tBulletFresnelInfo.fExp = 0.69f;
+	tBulletFresnelInfo.vColor = { 2.f, 1.7f, 1.1f, 1.f };
+	tBulletFresnelInfo.fStrength = 1.f; // ¾È¾¸.
+	m_pGameInstance->CreateConstBuffer(tBulletFresnelInfo, D3D11_USAGE_DEFAULT, &m_pFresnelBuffer);
 
-	//m_pGameInstance->CreateConstBuffer(m_tFresnelInfo, D3D11_USAGE_DYNAMIC, &m_pFresnelBuffer);
 
-	m_tFresnelInfo.tInner.vColor = _float4(0.83f, 0.44f, 0.f, 0.49f);
-	m_tFresnelInfo.tInner.fExp = 2.f;
-	m_tFresnelInfo.tInner.fBaseReflect = 0.14f;
-	m_tFresnelInfo.tInner.fStrength = 0.45f;
+	COLORS_INFO tColorsInfo = {};
+	tColorsInfo.vDiffuseColor = _float4(0.95f, 0.95f, 0.8f, 1.f);
+	tColorsInfo.vBloomColor = _float4(0.f, 0.f, 0.f, 1.f);
+	tColorsInfo.vSubColor = _float4(0.38f, 0.1f, 0.15f, 0.89f); // ¾È¾¸.
+	tColorsInfo.vInnerColor = _float4(0.2f, 0.f, 0.23f, 1.f); // ¾È¾¸.
+	m_pGameInstance->CreateConstBuffer(tColorsInfo, D3D11_USAGE_DEFAULT, &m_pColorBuffer);
 
-	m_tFresnelInfo.tOuter.vColor = _float4(0.85f, 0.56f, 0.17f, 0.28f);
-	m_tFresnelInfo.tOuter.fExp = 0.1f;
-	m_tFresnelInfo.tOuter.fBaseReflect = 3.63f;
-	m_tFresnelInfo.tOuter.fStrength = 0.54f;
 
-	m_pGameInstance->CreateConstBuffer(m_tFresnelInfo, D3D11_USAGE_DYNAMIC, &m_pFresnelBuffer);
+
 
 	return S_OK;
 }
@@ -504,6 +512,7 @@ void CBulb::Free()
 	Safe_Release(m_p3DShaderCom);
 
 	Safe_Release(m_pFresnelBuffer);
+	Safe_Release(m_pColorBuffer);
 
 	__super::Free();
 }

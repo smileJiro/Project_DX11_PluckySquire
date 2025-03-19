@@ -559,7 +559,7 @@ HRESULT CLoader::Loading_Level_Static()
 
 	lstrcpy(m_szLoadingText, TEXT("사운드를 로딩중입니다."));
 
-	if (FAILED(Loading_BGM_PathFind(TEXT("../Bin/Sounds/BGM"))))
+	if (FAILED(Loading_BGM_PathFind(TEXT("../Bin/Sounds/BGM/Common"))))
 		return E_FAIL;
 
 #pragma endregion
@@ -1145,8 +1145,8 @@ HRESULT CLoader::Loading_Level_Static()
 	if (FAILED(Loading_SFX_PathFind(TEXT("../Bin/Sounds/SFX/Common"))))
 		return E_FAIL;
 
-	if (FAILED(Loading_SFX_PathFind(TEXT("../Bin/Sounds/SFX/Level8"))))
-		return E_FAIL;
+	//if (FAILED(Loading_SFX_PathFind(TEXT("../Bin/Sounds/SFX/Level8"))))
+	//	return E_FAIL;
 
 #pragma endregion
 
@@ -1209,6 +1209,11 @@ HRESULT CLoader::Loading_Level_Logo()
 HRESULT CLoader::Loading_Level_Chapter_2(LEVEL_ID _eLoadLevelID)
 {
 	LEVEL_ID eResourceLevelID = LEVEL_CHAPTER_2;
+
+	lstrcpy(m_szLoadingText, TEXT("사운드 로딩중입니다."));
+
+	if (FAILED(Loading_BGM_PathFind(TEXT("../Bin/Sounds/BGM/Level2"))))
+		return E_FAIL;
 
 	#pragma region Chapter 2 - Component Load
 
@@ -1915,6 +1920,12 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 
 	#pragma region Chapter 8 - Component Load
 	
+	if (FAILED(Loading_SFX_PathFind(TEXT("../Bin/Sounds/SFX/Level8"))))
+		return E_FAIL;
+
+	if (FAILED(Loading_BGM_PathFind(TEXT("../Bin/Sounds/BGM/Level8"))))
+		return E_FAIL;
+
 	lstrcpy(m_szLoadingText, TEXT("컴포넌트를 로딩중입니다."));
 	
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_Component_Texture_BossProjectileMain1"),
