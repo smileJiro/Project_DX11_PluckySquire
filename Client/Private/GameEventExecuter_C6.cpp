@@ -74,6 +74,12 @@ void CGameEventExecuter_C6::Update(_float _fTimeDelta)
 		case Client::CTrigger_Manager::CHAPTER6_INTRO:
 			Chapter6_Intro(_fTimeDelta);
 			break;
+		case Client::CTrigger_Manager::CHAPTER6_CANDLE_IN:
+			Chapter6_Candle_In(_fTimeDelta);
+			break;
+		case Client::CTrigger_Manager::CHAPTER6_CANDLE_OUT:
+			Chapter6_Candle_Out(_fTimeDelta);
+			break;
 		case Client::CTrigger_Manager::CHAPTER6_FATHERGAME_PROGRESS_START_CLEAR:
 			//Chapter6_FatherGame_Progress_Fatherpart_2(_fTimeDelta);
 			Chapter6_FatherGame_Progress_Start_Clear(_fTimeDelta);
@@ -173,6 +179,13 @@ void CGameEventExecuter_C6::Chapter6_Intro(_float _fTimeDelta)
 	}
 }
 
+void CGameEventExecuter_C6::Chapter6_Candle_In(_float _fTimeDelta)
+{
+}
+
+void CGameEventExecuter_C6::Chapter6_Candle_Out(_float _fTimeDelta)
+{
+}
 
 void CGameEventExecuter_C6::Chapter6_FatherGame_Progress_Start_Clear(_float _fTimeDelta)
 {

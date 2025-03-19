@@ -89,6 +89,8 @@ HRESULT CTrigger_Manager::Mapping_ExecuterTag()
 
 	m_EventExecuterTags[CHAPTER6_INTRO] = L"Chapter6_Intro";
 	m_EventExecuterTags[CHAPTER6_START_3D] = L"Chapter6_Start_3D";
+	m_EventExecuterTags[CHAPTER6_CANDLE_IN] = L"Chapter6_Candle_In";
+	m_EventExecuterTags[CHAPTER6_CANDLE_OUT] = L"Chapter6_Candle_Out";
 	m_EventExecuterTags[CHAPTER6_FATHERGAME_PROGRESS_START_CLEAR] = L"Chapter6_FatherGame_Progress_Start_Clear";
 	m_EventExecuterTags[CHAPTER6_FATHERGAME_PROGRESS_ZETPACK_CLEAR] = L"Chapter6_FatherGame_Progress_ZetPack_Clear";
 	m_EventExecuterTags[CHAPTER6_FATHERGAME_PROGRESS_FATHERPART_1] = L"Chapter6_FatherGame_Progress_Fatherpart_1";
@@ -671,9 +673,22 @@ void CTrigger_Manager::Register_Event_Handler(_uint _iTriggerType, CTriggerObjec
 		break;
 	case (_uint)TRIGGER_TYPE::EVENT_TRIGGER:
 	{
-		_pTrigger->Register_EnterHandler([](_uint _iTriggerType, _int _iTriggerID, _wstring& _szEventTag) {
-			Event_Trigger_Enter(_iTriggerType, _iTriggerID, _szEventTag);
-			});
+		switch (_pTrigger->Get_ConditionType()) {
+		case CTriggerObject::TRIGGER_ENTER:
+		{
+			_pTrigger->Register_EnterHandler([](_uint _iTriggerType, _int _iTriggerID, _wstring& _szEventTag) {
+				Event_Trigger_Enter(_iTriggerType, _iTriggerID, _szEventTag);
+				});
+		}
+			break;
+		case CTriggerObject::TRIGGER_EXIT:
+		{
+			_pTrigger->Register_ExitHandler([](_uint _iTriggerType, _int _iTriggerID, _wstring& _szEventTag) {
+				Event_Trigger_Exit(_iTriggerType, _iTriggerID, _szEventTag);
+				});	
+		}
+			break;
+		}
 	}
 		break;
 	case (_uint)TRIGGER_TYPE::ENABLE_LOOKAT_TRIGGER:

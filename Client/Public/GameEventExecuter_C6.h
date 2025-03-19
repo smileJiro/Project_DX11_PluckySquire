@@ -57,6 +57,8 @@ public:
 
 private:
 	void							Chapter6_Intro(_float _fTimeDelta);
+	void							Chapter6_Candle_In(_float _fTimeDelta);
+	void							Chapter6_Candle_Out(_float _fTimeDelta);
 
 	/* FatherGame */
 	void							Chapter6_FatherGame_Progress_Start_Clear(_float _fTimeDelta);
