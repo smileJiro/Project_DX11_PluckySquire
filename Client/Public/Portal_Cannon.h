@@ -67,6 +67,7 @@ protected:
 	virtual void			Active_OnEnable() override;
 	virtual void			On_InteractionStart(CPlayer* _pPlayer)override;
 	virtual void			On_Pressing(CPlayer* _pPlayer, _float _fTimeDelta) override;
+	virtual void			On_ChargeComplete(CPlayer* _pPlayer) override;
 	virtual void			On_InteractionEnd(CPlayer* _pPlayer) override;
 	virtual void			On_InteractionCancel(CPlayer* _pPlayer) override;
 

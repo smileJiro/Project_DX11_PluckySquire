@@ -121,7 +121,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
             
                 pMainApp->Set_OneFrameDeltaTime((_float)iOneFrameDeltaTime);
             }
-            
 
         }
 

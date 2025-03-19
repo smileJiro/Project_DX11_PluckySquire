@@ -1,5 +1,6 @@
 #include "ContainerObject.h"
 #include "GameInstance.h"
+#include "ModelObject.h"
 
 CContainerObject::CContainerObject(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : CActorObject(_pDevice, _pContext)
@@ -154,6 +155,18 @@ HRESULT CContainerObject::Add_PartObject(CPartObject* _pPartObject)
     m_PartObjects.push_back(_pPartObject);
 
     return S_OK;
+}
+
+_float CContainerObject::Get_Part_AnimProgress(_uint _iPartIndex)
+{
+    if (_iPartIndex >= m_PartObjects.size() || m_PartObjects[_iPartIndex] == nullptr)
+        return -1.f;
+    auto pModel = static_cast<CModelObject*>(m_PartObjects[_iPartIndex])->Get_Model(m_PartObjects[_iPartIndex]->Get_CurCoord());
+
+    if (nullptr == pModel)
+        return -1.f;
+
+    return pModel->Get_CurrentAnimProgeress();
 }
 
 _bool CContainerObject::Is_PartActive(_uint _iPartID)

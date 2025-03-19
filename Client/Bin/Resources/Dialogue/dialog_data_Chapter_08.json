@@ -1204,7 +1204,6 @@
     {
       "id": "Chapter8_3D_Out_02",
       "Section": "Chapter8_P1920",
-      "isChangeTalker": true,
       "lines": [
         {
           "Portrait": 0,
@@ -1212,7 +1211,7 @@
           "BG": 0,
           "location": 0,
           "OffsetX": 0.0,
-          "OffsetY": 0.0,
+          "OffsetY": -40.0,
           "is2D": true,
           "isPortrait": false,
           "animation": {
@@ -1230,7 +1229,7 @@
           "BG": 0,
           "location": 0,
           "OffsetX": 0.0,
-          "OffsetY": 0.0,
+          "OffsetY": -40.0,
           "is2D": true,
           "isLineEnter": true,
           "isPortrait": false,
@@ -1249,7 +1248,7 @@
           "BG": 0,
           "location": 0,
           "OffsetX": 0.0,
-          "OffsetY": 0.0,
+          "OffsetY": -40.0,
           "is2D": true,
           "isLineEnter": true,
           "isPortrait": false,
@@ -1269,7 +1268,7 @@
           "location": 0,
           "is2D": true,
           "OffsetX": 0.0,
-          "OffsetY": 0.0,
+          "OffsetY": -40.0,
           "isPortrait": true,
           "isLineEnter": true,
           "animation": {

@@ -33,10 +33,10 @@ public:
 	HRESULT				Register_RenderGroup(_uint _iGroupId, _uint _iPriorityID) override;
 	virtual void		Enter_Section(const _wstring _strIncludeSectionName) override;
 	virtual void		Exit_Section(const _wstring _strIncludeSectionName) override;
-
 public:
 	CComponent*			Find_Part_Component(_uint _iPartObjectIndex, const _wstring& _strPartComponentTag);
 	HRESULT				Add_PartObject(CPartObject* _pPartObject);
+	_float				Get_Part_AnimProgress(_uint _iPartIndex);
 
 public:
 	// Get
