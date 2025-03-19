@@ -286,6 +286,10 @@ HRESULT CSpear_Soldier::Render()
 
 void CSpear_Soldier::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
 {
+    if (true == Is_FormationMode())
+    {
+        
+    }
 }
 
 void CSpear_Soldier::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
@@ -294,6 +298,18 @@ void CSpear_Soldier::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Othe
 
 void CSpear_Soldier::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
 {
+}
+
+void CSpear_Soldier::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
+{
+    __super::OnTrigger_Enter(_My, _Other);
+
+    //대열이 있는 장소에 다이나믹 오브젝트가 폭탄밖에 없으므로
+    if (OBJECT_GROUP::DYNAMIC_OBJECT & _Other.pActorUserData->iObjectGroup)
+    {
+        Event_ChangeMonsterState(MONSTER_STATE::BOMB_ALERT, m_pFSM);
+        m_pFSM->Set_EvadeTargetPos(_Other.pActorUserData->pOwner->Get_FinalPosition());
+    }
 }
 
 void CSpear_Soldier::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
@@ -453,6 +469,14 @@ void CSpear_Soldier::Change_Animation()
                 break;
 
             case MONSTER_STATE::FORMATION_BACK:
+                static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(CHASE);
+                break;
+
+            case MONSTER_STATE::BOMB_ALERT:
+                static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(ALERT);
+                break;
+
+            case MONSTER_STATE::PANIC:
                 static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(CHASE);
                 break;
 
@@ -816,6 +840,27 @@ HRESULT CSpear_Soldier::Ready_ActorDesc(void* _pArg)
         ShapeData->isTrigger = true;                    // Trigger 알림을 받기위한 용도라면 true
         //XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixTranslation(0.f, RayBoxDesc->vHalfExtents.y, RayBoxDesc->vHalfExtents.z)); // Shape의 LocalOffset을 행렬정보로 저장.
         XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixTranslation(0.f, 0.f, 0.f)); // Shape의 LocalOffset을 행렬정보로 저장.
+
+        /* 최종으로 결정 된 ShapeData를 PushBack */
+        ActorDesc->ShapeDatas.push_back(*ShapeData);
+    }
+
+    if (true == pDesc->isFormationMode)
+    {
+        //닿은 물체의 씬 쿼리를 켜는 트리거
+        SHAPE_BOX_DESC* RayBoxDesc = new SHAPE_BOX_DESC;
+        //RayBoxDesc->vHalfExtents = { pDesc->fAlertRange * tanf(XMConvertToRadians(pDesc->fFOVX * 0.5f)) * 0.5f, 1.f, pDesc->fAlertRange * 0.5f };
+        RayBoxDesc->vHalfExtents = { pDesc->fAlertRange * tanf(XMConvertToRadians(pDesc->fFOVX * 0.5f)), 2.f, pDesc->fAlertRange };
+        //RayBoxDesc->vHalfExtents = { ShapeDesc->fRadius, 0.1f, pDesc->fAlertRange * 0.5f };
+
+        /* 해당 Shape의 Flag에 대한 Data 정의 */
+        //SHAPE_DATA* ShapeData = new SHAPE_DATA;
+        ShapeData->pShapeDesc = RayBoxDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
+        ShapeData->eShapeType = SHAPE_TYPE::BOX;     // Shape의 형태.
+        ShapeData->eMaterial = ACTOR_MATERIAL::NORESTITUTION; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
+        ShapeData->isTrigger = true;                    // Trigger 알림을 받기위한 용도라면 true
+        //XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixTranslation(0.f, RayBoxDesc->vHalfExtents.y, RayBoxDesc->vHalfExtents.z)); // Shape의 LocalOffset을 행렬정보로 저장.
+        XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixTranslation(0.f, RayBoxDesc->vHalfExtents.y, 0.f)); // Shape의 LocalOffset을 행렬정보로 저장.
 
         /* 최종으로 결정 된 ShapeData를 PushBack */
         ActorDesc->ShapeDatas.push_back(*ShapeData);

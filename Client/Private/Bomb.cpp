@@ -223,14 +223,20 @@ void CBomb::Explode()
 	if (COORDINATE_2D == Get_CurCoord())
 	{
 		m_p2DColliderComs[0]->Set_Active(false);
-		m_p2DColliderComs[(_uint)COLLIDER2D_USE::COLLIDER2D_BODY+1]->Set_Active(false);
-		m_p2DColliderComs[(_uint)COLLIDER2D_USE::COLLIDER2D_TRIGGER+1]->Set_Active(true);
+
+		//0번이 carriable이라 1씩 더함
+		_uint iColBodyIndex = (_uint)(COLLIDER2D_USE::COLLIDER2D_BODY)+1;
+		_uint iColTriggerIndex = (_uint)(COLLIDER2D_USE::COLLIDER2D_TRIGGER)+1;
+
+		m_p2DColliderComs[iColBodyIndex]->Set_Active(false);
+		m_p2DColliderComs[iColTriggerIndex]->Set_Active(true);
 
 		CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("Generic_Explosion"), Get_Include_Section_Name(), Get_ControllerTransform()->Get_WorldMatrix());
 	}
 	else if (COORDINATE_3D == Get_CurCoord())
 	{
-		static_cast<CActor_Dynamic*>(Get_ActorCom())->Set_Kinematic();
+		//static_cast<CActor_Dynamic*>(Get_ActorCom())->Set_Kinematic();
+		Set_Kinematic(true);
 		Get_ActorCom()->Set_ShapeEnable((_int)SHAPE_USE::SHAPE_BODY, false);
 		Get_ActorCom()->Set_ShapeEnable((_int)SHAPE_USE::SHAPE_TRIGER, true);
 
@@ -313,6 +319,12 @@ void CBomb::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherColli
 void CBomb::Active_OnEnable()
 {
 	__super::Active_OnEnable();
+
+	if (COORDINATE_3D == Get_CurCoord())
+	{
+		Set_Kinematic(false);
+	}
+
 	Set_Render(true);
 	Set_Time_On();
 	//CActor_Dynamic* pDynamic = static_cast<CActor_Dynamic*>(Get_ActorCom());
@@ -372,6 +384,12 @@ void CBomb::Start_Parabola(_fvector _vStartPos, _fvector _vEndPos, _float _fPara
 	XMStoreFloat3(&m_vEndPos, _vEndPos);
 	m_vParabolaTime.x = _fParabolaTime;
 	m_vParabolaTime.y = 0.0f;
+}
+
+void CBomb::Start_Parabola_3D(_fvector _vEndPos, _float _fLaunchAngleRadian, _float _fGravityMag)
+{
+	if(COORDINATE_3D == Get_CurCoord())
+		static_cast<CActor_Dynamic*>(m_pActorCom)->Start_ParabolicTo(_vEndPos, _fLaunchAngleRadian , _fGravityMag);
 }
 
 

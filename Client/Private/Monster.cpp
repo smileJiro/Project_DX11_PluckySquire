@@ -162,6 +162,11 @@ void CMonster::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, co
 		//XMVectorSetY( vRepulse , -1.f);
 		//Event_KnockBack(static_cast<CCharacter*>(_Other.pActorUserData->pOwner), vRepulse);
 	}
+
+	if (OBJECT_GROUP::MAPOBJECT & _Other.pActorUserData->iObjectGroup)
+	{
+		m_isContact_Block = true;
+	}
 }
 
 void CMonster::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
@@ -170,7 +175,10 @@ void CMonster::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, con
 
 void CMonster::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
 {
-
+	if (OBJECT_GROUP::MAPOBJECT & _Other.pActorUserData->iObjectGroup)
+	{
+		m_isContact_Block = false;
+	}
 }
 
 void CMonster::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
@@ -655,6 +663,7 @@ _bool CMonster::Remove_From_Formation()
 			//Event_Set_Kinematic(pDynamic, false);
 		return true;
 	}
+	m_pFormation = nullptr;
 
 	return false;
 }

@@ -190,15 +190,16 @@ void CButterGrump::Update(_float _fTimeDelta)
 
 
 
+
+#endif // _DEBUG
     if (KEY_PRESSING(KEY::CTRL))
     {
-        if(KEY_DOWN(KEY::NUMPAD2))
+        if (KEY_DOWN(KEY::NUMPAD2))
         {
             Event_Hit(this, this, 30, XMVectorZero());
         }
     }
 
-#endif // _DEBUG
     if (KEY_DOWN(KEY::F5))
     {
         m_isInvincible ^= 1;

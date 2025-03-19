@@ -45,6 +45,7 @@ public:
 
 public:
 	void Start_Parabola(_fvector _vStartPos, _fvector _vEndPos, _float _fParabolaTime);
+	void Start_Parabola_3D(_fvector _vEndPos, _float _fLaunchAngleRadian, _float _fGravityMag = 9.81f * 3.0f);
 private:
 	void Action_Parabola(_float _fTimeDelta);
 private:

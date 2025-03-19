@@ -1482,6 +1482,22 @@ HRESULT CLevel_Chapter_04::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 		return E_FAIL;
 
 
+	// temp
+	//CDoor_Red::DOOR_RED_DESC DoorRedDesc = {};
+	//DoorRedDesc.tTransform2DDesc.vInitialPosition = _float3(0.f, 100.f, 0.f);
+	//DoorRedDesc.iCurLevelID = m_eLevelID;
+	//DoorRedDesc.isHorizontal = true;
+	//DoorRedDesc.eSize = CDoor_2D::LARGE;
+	//DoorRedDesc.eInitialState = CDoor_2D::OPENED;
+	//DoorRedDesc.strSectionTag = L"Chapter4_P0102";
+	//DoorRedDesc.strLayerTag = L"";
+	//DoorRedDesc.isCountLayer = false;
+
+
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorRed"),
+	//	m_eLevelID, L"Layer_MapGimmick", &DoorRedDesc)))
+	//	return E_FAIL;
+
 
 
 	return S_OK;

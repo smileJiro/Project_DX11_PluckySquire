@@ -510,6 +510,91 @@ void GS_NEWBILLBOARD(point GS_RIN In[1], inout TriangleStream<GS_OUT> OutStream)
     OutStream.RestartStrip();
 }
 
+
+[maxvertexcount(6)]
+void GS_NEWBILLBOARD2(point GS_RIN In[1], inout TriangleStream<GS_OUT> OutStream)
+{
+    GS_OUT Out[4];
+        
+    
+    vector vLookDir = g_vLook;
+    float3 vRightDir = normalize(cross(normalize(In[0].vUp.xyz), vLookDir.xyz));
+    float3 vUpDir = normalize(cross(vLookDir.xyz, vRightDir));
+        
+    float3 vCenter = In[0].vPosition.xyz;
+    float3 vRightDist = vRightDir * In[0].vPSize.x * 0.5f;
+    float3 vUpDist = vUpDir * In[0].vPSize.y * 0.5f;
+    
+    matrix matVP = mul(g_ViewMatrix, g_ProjMatrix);
+        
+    // 정점 기준 우상단 (카메라가 바라보는 기준 좌상단.)
+    Out[0].vPosition = float4(vCenter + vRightDist + vUpDist, 1.0f);
+    Out[0].vPosition = mul(Out[0].vPosition, matVP);
+    Out[0].vTexcoord = float2(In[0].vTexcoord.x, In[0].vTexcoord.y);
+    Out[0].vLifeTime = In[0].vLifeTime;
+    Out[0].vOriginTexcoord = float2(0.f, 0.f);
+
+    //Out[0].fWeight = Out[0].vPosition.w;
+    
+    // 정점 기준 좌상단 (카메라가 바라보는 기준 우상단.)
+    Out[1].vPosition = float4(vCenter - vRightDist + vUpDist, 1.0f);
+    Out[1].vPosition = mul(Out[1].vPosition, matVP);
+    Out[1].vTexcoord = float2(In[0].vTexcoord.z, In[0].vTexcoord.y);
+    Out[1].vLifeTime = In[0].vLifeTime;
+    Out[1].vOriginTexcoord = float2(1.f, 0.f);
+
+    //Out[1].fWeight = Out[1].vPosition.w;
+
+    // 정점 기준 좌하단 (카메라가 바라보는 기준 우하단.)
+    Out[2].vPosition = float4(vCenter - vRightDist - vUpDist, 1.0f);
+    Out[2].vPosition = mul(Out[2].vPosition, matVP);
+    Out[2].vTexcoord = float2(In[0].vTexcoord.z, In[0].vTexcoord.w);
+    Out[2].vLifeTime = In[0].vLifeTime;
+    Out[2].vOriginTexcoord = float2(1.f, 1.f);
+
+    //Out[2].fWeight = Out[2].vPosition.w;
+
+    // 정점 기준 우하단 (카메라가 바라보는 기준 좌하단.)
+    Out[3].vPosition = float4(vCenter + vRightDist - vUpDist, 1.0f);
+    Out[3].vPosition = mul(Out[3].vPosition, matVP);
+    Out[3].vTexcoord = float2(In[0].vTexcoord.x, In[0].vTexcoord.w);
+    Out[3].vLifeTime = In[0].vLifeTime;
+    Out[3].vOriginTexcoord = float2(0.f, 1.f);
+
+    //Out[3].fWeight = Out[3].vPosition.w;
+    
+    //float fdZ = (g_Near * g_Far) / (mul(In[0].vPosition, matVP).w - g_Far) / (g_Near - g_Far);
+    //float fWeight = clamp(pow(1 - fdZ, 3.f), 1e-2, 3e3);
+    float fDepth = mul(In[0].vPosition, matVP).w;
+    float fWeight = clamp(10.f / (1e-5 + pow(fDepth / 10.f, 3.0f) + pow(fDepth / 200.f, 6.f)), 1e-2, 3e3);
+    //float fWeight = clamp(10.f / (1e-5 + pow(mul(In[0].vPosition, matVP).w / 5.f, 2.0f) + pow(mul(In[0].vPosition, matVP).w / 200.f, 6.f)), 1e-2, 3e3);
+    Out[0].fWeight = fWeight;
+    Out[1].fWeight = fWeight;
+    Out[2].fWeight = fWeight;
+    Out[3].fWeight = fWeight;
+    
+    Out[0].vColor = In[0].vColor;
+    Out[1].vColor = In[0].vColor;
+    Out[2].vColor = In[0].vColor;
+    Out[3].vColor = In[0].vColor;
+    
+        
+    Out[0].fRandom = In[0].fRandom;
+    Out[1].fRandom = In[0].fRandom;
+    Out[2].fRandom = In[0].fRandom;
+    Out[3].fRandom = In[0].fRandom;
+    
+    OutStream.Append(Out[0]);
+    OutStream.Append(Out[1]);
+    OutStream.Append(Out[2]);
+    OutStream.RestartStrip();
+
+    OutStream.Append(Out[0]);
+    OutStream.Append(Out[2]);
+    OutStream.Append(Out[3]);
+    OutStream.RestartStrip();
+}
+
 [maxvertexcount(6)]
 // Biilboard 적용되지 않은 GS
 void GS_VELOCITYBILLBOARD(point GS_IN In[1], inout TriangleStream<GS_OUT> OutStream)
@@ -1171,6 +1256,20 @@ technique11 DefaultTechnique
 
         VertexShader = compile vs_5_0 VS_SRV_MAIN();
         GeometryShader = compile gs_5_0 GS_VELOCITYBILLBOARD();
+        PixelShader = compile ps_5_0 PS_WEIGHT_BLENDEDDISSOLVE_SUBBLOOM();
+
+        ComputeShader = NULL;
+    }
+
+    pass ROT2_DISSOLVE_SUBCOLORBLOOM // 15
+    {
+        SetRasterizerState(RS_Cull_None);
+        SetDepthStencilState(DSS_WriteNone, 0);
+        SetBlendState(BS_WeightAccumulate, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        //SetBlendState(BS_WeightAccumulate, float4(0.f, 0, f, 0.f, 0.f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_SRV_RMAIN2();
+        GeometryShader = compile gs_5_0 GS_NEWBILLBOARD2();
         PixelShader = compile ps_5_0 PS_WEIGHT_BLENDEDDISSOLVE_SUBBLOOM();
 
         ComputeShader = NULL;
