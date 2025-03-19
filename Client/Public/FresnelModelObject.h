@@ -19,7 +19,7 @@ public:
 		_float2		  vNoiseScaling = {1.f, 1.f};
 		const _tchar* szDiffusePrototypeTag = L"";
 		const _tchar* szNoisePrototypeTag = L"";
-
+		const _float* pScaling = { nullptr };
 	}FRESNEL_MODEL_DESC;
 protected:
 	CFresnelModelObject(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
@@ -37,6 +37,8 @@ protected:
 	class CTexture* m_pNoiseTextureCom = { nullptr };
 	_float2			m_vDiffuseScaling = { 1.f, 1.f };
 	_float2			m_vNoiseScaling = { 1.f, 1.f };
+
+	const _float* m_pScaling = { nullptr };
 
 	HRESULT	Ready_Components(const FRESNEL_MODEL_DESC* _pDesc);
 

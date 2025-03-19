@@ -548,7 +548,7 @@ PS_ACCUM PS_SINGLEFRESNEL(PS_IN In)
     
     float FresnelValue = Compute_Fresnel(In.vNormal.xyz, vViewDirection, OneFresnel.fBaseReflect, OneFresnel.fExp, OneFresnel.fStrength);
     
-    float4 vFresnelColor = OneFresnel.vColor * FresnelValue;
+    float4 vFresnelColor = OneFresnel.vColor;
 
     //Out.vDiffuse.xyz = lerp(vDiffuseColor.xyz, vFresnelColor.xyz, FresnelValue);
     ////Out.vDiffuse = (OneFresnel.vColor * FresnelValue);

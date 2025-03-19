@@ -52,7 +52,7 @@ Texture2D g_DiffuseTexture, g_NoiseTexture;
 float2 g_vDiffuseScaling, g_vNoiseScaling;
 
 float g_fFarZ = 500.f;
-float g_fHitRate = 0.f;
+float g_fHitRate = 0.f, g_fScalingTime = 0.f;
 int g_iFlag = 0;
 int g_iRenderFlag = 0;
 
@@ -110,6 +110,35 @@ VS_OUT VS_MAIN(VS_IN In)
     Out.vTangent = In.vTangent;
     return Out;
 }
+
+VS_OUT VS_TimeScaling(VS_IN In)
+{
+    VS_OUT Out = (VS_OUT) 0;
+    
+    matrix matWV, matWVP;
+    matrix matWorldScaling;
+    
+    float fScaling = 4.f * pow(g_fScalingTime, 2.f);
+    
+    matWorldScaling[0] = g_WorldMatrix[0] * saturate(fScaling);
+    matWorldScaling[1] = g_WorldMatrix[1] * saturate(fScaling);
+    matWorldScaling[2] = g_WorldMatrix[2] * saturate(fScaling);
+    matWorldScaling[3] = g_WorldMatrix[3];
+    
+
+    matWV = mul(matWorldScaling, g_ViewMatrix);
+    matWVP = mul(matWV, g_ProjMatrix);
+    
+    Out.vPosition = mul(float4(In.vPosition, 1.0), matWVP);
+    Out.vNormal = normalize(mul(float4(In.vNormal, 0), matWorldScaling));
+    Out.vTexcoord = In.vTexcoord;
+    Out.vWorldPos = mul(float4(In.vPosition, 1.f), matWorldScaling);
+    Out.vProjPos = Out.vPosition; // w 나누기를 수행하지 않은 0 ~ far 사이의 z 값이 보존되어있는 position
+    Out.vTangent = In.vTangent;
+    
+    return Out;    
+}
+
 
 VS_OUT VS_BILLBOARD(VS_IN In)
 {
@@ -882,12 +911,22 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_NOISEFRESNEL();
     }
 
-    pass NoiseFresnel_Billboard // 17
+    pass Fresnel_Scaling // 17
     {
         SetRasterizerState(RS_Default);
-        SetDepthStencilState(DSS_Default, 0);
+        SetDepthStencilState(DSS_WriteNone, 0);
         SetBlendState(BS_WeightAccumulate, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
-        VertexShader = compile vs_5_0 VS_BILLBOARD();
+        VertexShader = compile vs_5_0 VS_TimeScaling();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_SINGLEFRESNEL();
+    }
+
+    pass NoiseFresnel_Scaling // 18
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_WriteNone, 0);
+        SetBlendState(BS_WeightAccumulate, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        VertexShader = compile vs_5_0 VS_TimeScaling();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_NOISEFRESNEL();
     }

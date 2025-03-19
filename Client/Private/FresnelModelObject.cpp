@@ -30,7 +30,7 @@ HRESULT CFresnelModelObject::Initialize(void* _pArg)
 
     m_vDiffuseScaling = pDesc->vDiffuseScaling;
     m_vNoiseScaling = pDesc->vNoiseScaling;
-
+    m_pScaling = pDesc->pScaling;
 
     if (FAILED(__super::Initialize(_pArg)))
         return E_FAIL;
@@ -55,21 +55,16 @@ HRESULT CFresnelModelObject::Render()
         m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_vNoiseScaling", &m_vNoiseScaling, sizeof(_float2));
         m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_vDiffuseScaling", &m_vDiffuseScaling, sizeof(_float2));
 
-        //// 아쉽지만 이렇게..
-        //if ((_uint)PASS_VTXMESH::NOISEFRESNEL_BILLBOARD == m_iShaderPasses[COORDINATE_3D])
-        //{
-        //    _float4 vLook;
-        //    XMStoreFloat4(&vLook, m_pGameInstance->Get_TransformInverseMatrix(CPipeLine::D3DTS_VIEW).r[2]);
-        //    if (FAILED(m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_vLook", &vLook, sizeof(_float4))))
-        //        return E_FAIL;
-        //}
-
-
-
         if (nullptr != m_pFresnelBuffer)
             m_pShaderComs[COORDINATE_3D]->Bind_ConstBuffer("SingleFresnel", m_pFresnelBuffer);
         if (nullptr != m_pColorBuffer)
             m_pShaderComs[COORDINATE_3D]->Bind_ConstBuffer("ColorBuffer", m_pColorBuffer);
+        
+        // 시간에 따른 Scaling이 필요할 경우.
+        if (nullptr != m_pScaling)
+            m_pShaderComs[COORDINATE_3D]->Bind_RawValue("g_fScalingTime", m_pScaling, sizeof(_float));
+
+
         m_pControllerModel->Render_Default(m_pShaderComs[COORDINATE_3D], m_iShaderPasses[COORDINATE_3D]);
     }
     else

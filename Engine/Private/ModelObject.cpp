@@ -404,6 +404,17 @@ void CModelObject::Action_Fade(_float _fTimeDelta)
     }
 }
 
+HRESULT CModelObject::Bind_RawValue(COORDINATE _eCoordinate, const _char* _pConstantName, const void* _pData, _uint _iLength)
+{
+    if (COORDINATE_LAST == _eCoordinate)
+        return E_FAIL;
+
+    if (nullptr == m_pShaderComs[_eCoordinate])
+        return E_FAIL;
+
+    return m_pShaderComs[_eCoordinate]->Bind_RawValue(_pConstantName, _pData, _iLength);
+}
+
 void CModelObject::Update(_float _fTimeDelta)
 {
     if (m_iInstanceID == 889) {
@@ -558,6 +569,10 @@ void CModelObject::Update_Trail(_int _iTrailID, _float _fTimeDelta)
         TrailDesc.fTrailTime = m_fTrailDuration;
         TrailDesc.iNumMeshes = p3DModel->Get_NumMeshes();
         TrailDesc.vTrailColor = m_vTrailColor;
+        TrailDesc.vOuterColor = m_vOuterColor;
+        TrailDesc.fBaseReflect = m_fBaseReflect;
+        TrailDesc.fExp = m_fExp;
+
         TrailDesc.MeshesBoneMatrices;
 
         for (_uint i = 0; i < TrailDesc.iNumMeshes; ++i)
