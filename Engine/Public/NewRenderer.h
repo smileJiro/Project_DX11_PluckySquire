@@ -103,6 +103,17 @@ private: /* Player Hide */
 	_float3								m_vPlayerHideColor = { 1.0f, 0.24f, 0.4666f };
 	_float3								m_vOtherHideColor = { 0.8f,0.8f ,0.8f };
 
+public:
+	void Set_VtxMesh(CShader* _pShader) { Safe_Release(m_pVtxMesh); m_pVtxMesh = _pShader; Safe_AddRef(m_pVtxMesh); }
+	void Set_VtxAnimMesh(CShader* _pShader) { Safe_Release(m_pVtxAnimMesh); m_pVtxAnimMesh = _pShader; Safe_AddRef(m_pVtxAnimMesh); }
+	void Set_GrayScale_VtxMesh(_int _isGrayScale);
+	void Set_GrayScale_VtxAnimMesh(_int _isGrayScale);
+
+private: /* VtxMesh, VtxAnimMesh Shader */
+	_int m_isGray_VtxMesh = false;
+	_int m_isGray_VtxAnimMesh = false;
+	CShader* m_pVtxMesh = nullptr;
+	CShader* m_pVtxAnimMesh = nullptr;
 #ifdef _DEBUG
 private:
 	list<CComponent*> m_DebugComponents;

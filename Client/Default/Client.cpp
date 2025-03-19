@@ -72,6 +72,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         return E_FAIL;
     if (FAILED(pGameInstance->Add_Timer(TEXT("Timer_120"))))
         return E_FAIL;
+
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_CLIENT));
 
     MSG msg;
