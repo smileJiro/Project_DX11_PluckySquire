@@ -1,0 +1,20 @@
+[
+  {
+    "Collider_Info": {
+      "Position": [
+        40.0,
+        0.0
+      ],
+      "Scale": [
+        200.0,
+        27.0
+      ]
+    },
+    "Fillter_MyGroup": 2,
+    "Fillter_OtherGroupMask": 128,
+    "Trigger_ConditionType": 0,
+    "Trigger_Coordinate": 0,
+    "Trigger_EventTag": "Chapter8_Postit_Arm_Changing",
+    "Trigger_Type": 0
+  }
+]

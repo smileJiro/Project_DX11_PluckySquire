@@ -26,7 +26,7 @@
         },
         "Fillter_MyGroup": 128,
         "Fillter_OtherGroupMask": 2,
-        "Trigger_ConditionType": 3,
+        "Trigger_ConditionType": 0,
         "Trigger_Coordinate": 1,
         "Trigger_EventTag": "Chapter4_1",
         "Trigger_Type": 1
@@ -63,7 +63,7 @@
                 "CustomData_Tag": "FreezeExitArm"
             }
         },
-        "Trigger_ConditionType": 3,
+        "Trigger_ConditionType": 0,
         "Trigger_Coordinate": 1,
         "Trigger_EventTag": "Chapter4_FreezeX_1",
         "Trigger_Type": 3
@@ -95,7 +95,7 @@
         },
         "Fillter_MyGroup": 128,
         "Fillter_OtherGroupMask": 2,
-        "Trigger_ConditionType": 3,
+        "Trigger_ConditionType": 0,
         "Trigger_Coordinate": 1,
         "Trigger_EventTag": "Chapter4_2",
         "Trigger_Type": 1
@@ -132,7 +132,7 @@
                 "CustomData_Tag": "FreezeExitArm"
             }
         },
-        "Trigger_ConditionType": 3,
+        "Trigger_ConditionType": 0,
         "Trigger_Coordinate": 1,
         "Trigger_EventTag": "Chapter4_FreezeZ_1",
         "Trigger_Type": 5
@@ -164,7 +164,7 @@
         },
         "Fillter_MyGroup": 128,
         "Fillter_OtherGroupMask": 2,
-        "Trigger_ConditionType": 3,
+        "Trigger_ConditionType": 0,
         "Trigger_Coordinate": 1,
         "Trigger_EventTag": "Chapter4_3",
         "Trigger_Type": 1
@@ -196,7 +196,7 @@
         },
         "Fillter_MyGroup": 128,
         "Fillter_OtherGroupMask": 2,
-        "Trigger_ConditionType": 3,
+        "Trigger_ConditionType": 0,
         "Trigger_Coordinate": 1,
         "Trigger_EventTag": "Chapter4_4",
         "Trigger_Type": 1
@@ -228,7 +228,7 @@
         },
         "Fillter_MyGroup": 128,
         "Fillter_OtherGroupMask": 2,
-        "Trigger_ConditionType": 3,
+        "Trigger_ConditionType": 0,
         "Trigger_Coordinate": 1,
         "Trigger_EventTag": "Chapter4_5",
         "Trigger_Type": 1
@@ -265,7 +265,7 @@
                 "CustomData_Tag": "FreezeExitArm"
             }
         },
-        "Trigger_ConditionType": 3,
+        "Trigger_ConditionType": 0,
         "Trigger_Coordinate": 1,
         "Trigger_EventTag": "Chapter4_FreezeX_2",
         "Trigger_Type": 3
@@ -297,7 +297,7 @@
         },
         "Fillter_MyGroup": 128,
         "Fillter_OtherGroupMask": 2,
-        "Trigger_ConditionType": 3,
+        "Trigger_ConditionType": 0,
         "Trigger_Coordinate": 1,
         "Trigger_EventTag": "Chapter4_6",
         "Trigger_Type": 1
@@ -334,7 +334,7 @@
                 "CustomData_Tag": "FreezeExitArm"
             }
         },
-        "Trigger_ConditionType": 3,
+        "Trigger_ConditionType": 0,
         "Trigger_Coordinate": 1,
         "Trigger_EventTag": "Chapter4_FreezeX_3",
         "Trigger_Type": 3
@@ -371,7 +371,7 @@
                 "CustomData_Tag": "FreezeExitArm"
             }
         },
-        "Trigger_ConditionType": 3,
+        "Trigger_ConditionType": 0,
         "Trigger_Coordinate": 1,
         "Trigger_EventTag": "Chapter4_FreezeX_3",
         "Trigger_Type": 3
@@ -408,7 +408,7 @@
                 "CustomData_Tag": "FreezeExitArm"
             }
         },
-        "Trigger_ConditionType": 3,
+        "Trigger_ConditionType": 0,
         "Trigger_Coordinate": 1,
         "Trigger_EventTag": "Chapter4_FreezeZ_2",
         "Trigger_Type": 5
@@ -440,7 +440,7 @@
         },
         "Fillter_MyGroup": 128,
         "Fillter_OtherGroupMask": 2,
-        "Trigger_ConditionType": 3,
+        "Trigger_ConditionType": 0,
         "Trigger_Coordinate": 1,
         "Trigger_EventTag": "Chapter4_7",
         "Trigger_Type": 1
@@ -472,7 +472,7 @@
         },
         "Fillter_MyGroup": 128,
         "Fillter_OtherGroupMask": 2,
-        "Trigger_ConditionType": 3,
+        "Trigger_ConditionType": 0,
         "Trigger_Coordinate": 1,
         "Trigger_EventTag": "Chapter4_8",
         "Trigger_Type": 1
@@ -504,7 +504,7 @@
         },
         "Fillter_MyGroup": 128,
         "Fillter_OtherGroupMask": 2,
-        "Trigger_ConditionType": 3,
+        "Trigger_ConditionType": 0,
         "Trigger_Coordinate": 1,
         "Trigger_EventTag": "Chapter4_9",
         "Trigger_Type": 1
@@ -541,7 +541,7 @@
                 "CustomData_Tag": "FreezeExitArm"
             }
         },
-        "Trigger_ConditionType": 3,
+        "Trigger_ConditionType": 0,
         "Trigger_Coordinate": 1,
         "Trigger_EventTag": "Chapter4_FreezeX_5",
         "Trigger_Type": 3
@@ -573,7 +573,7 @@
         },
         "Fillter_MyGroup": 128,
         "Fillter_OtherGroupMask": 2,
-        "Trigger_ConditionType": 3,
+        "Trigger_ConditionType": 0,
         "Trigger_Coordinate": 1,
         "Trigger_EventTag": "Chapter4_10",
         "Trigger_Type": 1
@@ -605,7 +605,7 @@
         },
         "Fillter_MyGroup": 128,
         "Fillter_OtherGroupMask": 2,
-        "Trigger_ConditionType": 3,
+        "Trigger_ConditionType": 0,
         "Trigger_Coordinate": 1,
         "Trigger_EventTag": "Chapter4_11",
         "Trigger_Type": 1
@@ -642,7 +642,7 @@
                 "CustomData_Tag": "FreezeExitArm"
             }
         },
-        "Trigger_ConditionType": 3,
+        "Trigger_ConditionType": 0,
         "Trigger_Coordinate": 1,
         "Trigger_EventTag": "Chapter4_FreezeX_6",
         "Trigger_Type": 3
@@ -679,7 +679,7 @@
                 "CustomData_Tag": "FreezeExitArm"
             }
         },
-        "Trigger_ConditionType": 3,
+        "Trigger_ConditionType": 0,
         "Trigger_Coordinate": 1,
         "Trigger_EventTag": "Chapter4_FreezeX_7",
         "Trigger_Type": 3
@@ -711,7 +711,7 @@
         },
         "Fillter_MyGroup": 128,
         "Fillter_OtherGroupMask": 2,
-        "Trigger_ConditionType": 3,
+        "Trigger_ConditionType": 0,
         "Trigger_Coordinate": 1,
         "Trigger_EventTag": "Chapter4_12",
         "Trigger_Type": 1
@@ -748,7 +748,7 @@
                 "CustomData_Tag": "FreezeExitArm"
             }
         },
-        "Trigger_ConditionType": 3,
+        "Trigger_ConditionType": 0,
         "Trigger_Coordinate": 1,
         "Trigger_EventTag": "Chapter4_FreezeX_8",
         "Trigger_Type": 3
@@ -780,7 +780,7 @@
         },
         "Fillter_MyGroup": 128,
         "Fillter_OtherGroupMask": 2,
-        "Trigger_ConditionType": 3,
+        "Trigger_ConditionType": 0,
         "Trigger_Coordinate": 1,
         "Trigger_EventTag": "Chapter4_13",
         "Trigger_Type": 1
@@ -817,7 +817,7 @@
                 "CustomData_Tag": "FreezeExitArm"
             }
         },
-        "Trigger_ConditionType": 3,
+        "Trigger_ConditionType": 0,
         "Trigger_Coordinate": 1,
         "Trigger_EventTag": "Chapter4_FreezeX_9",
         "Trigger_Type": 3
@@ -845,7 +845,7 @@
         "Trigger_Reusable" : false,
         "Fillter_MyGroup": 128,
         "Fillter_OtherGroupMask": 2,
-        "Trigger_ConditionType": 3,
+        "Trigger_ConditionType": 0,
         "Trigger_Coordinate": 1,
         "Trigger_EventTag": "Chapter4_Event_Flag",
         "Trigger_Type": 0
@@ -873,7 +873,7 @@
 		"Trigger_Reusable" : false,
         "Fillter_MyGroup": 128,
         "Fillter_OtherGroupMask": 2,
-        "Trigger_ConditionType": 3,
+        "Trigger_ConditionType": 0,
         "Trigger_Coordinate": 1,
         "Trigger_EventTag": "Chapter4_Intro_Postit_Sequence",
         "Trigger_Type": 0

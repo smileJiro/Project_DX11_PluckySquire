@@ -6,6 +6,7 @@
 #include "Soldier_Shield.h"
 #include "DetectionField.h"
 #include "Sneak_DetectionField.h"
+#include "Effect_Manager.h"
 #include "Effect2D_Manager.h"
 
 CSpear_Soldier::CSpear_Soldier(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -284,22 +285,6 @@ HRESULT CSpear_Soldier::Render()
     return S_OK;
 }
 
-void CSpear_Soldier::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
-{
-    if (true == Is_FormationMode())
-    {
-        
-    }
-}
-
-void CSpear_Soldier::OnContact_Stay(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
-{
-}
-
-void CSpear_Soldier::OnContact_Exit(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
-{
-}
-
 void CSpear_Soldier::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
 {
     __super::OnTrigger_Enter(_My, _Other);
@@ -319,24 +304,16 @@ void CSpear_Soldier::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _p
 
 void CSpear_Soldier::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
 {
-    if(false == m_isC6BossMode)
-    {
-        __super::On_Hit(_pHitter, _iDamg, _vForce);
-    }
-
     //챕터 6 보스전에서는 hit 상태와 넉백 없음
-    else
-    {
-        if ((_uint)MONSTER_STATE::DEAD == m_iState)
-            return;
+    if ((_uint)MONSTER_STATE::DEAD == m_iState)
+        return;
 
-        m_tStat.iHP -= _iDamg;
-        if (m_tStat.iHP < 0)
-        {
-            m_tStat.iHP = 0;
-        }
-        cout << m_tStat.iHP << endl;
-        if (0 >= m_tStat.iHP)
+    m_tStat.iHP -= _iDamg;
+
+    if (0 >= m_tStat.iHP)
+    {
+        m_tStat.iHP = 0;
+        if (0 == m_tStat.iHP)
         {
             Set_AnimChangeable(true);
             if (0 < m_p2DColliderComs.size())
@@ -344,11 +321,43 @@ void CSpear_Soldier::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce
                 m_p2DColliderComs[0]->Set_Active(false);
             }
 
-            m_isDash = false;
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Start_HitRender();
             Event_ChangeMonsterState(MONSTER_STATE::DEAD, m_pFSM);
+            m_isDash = false;
+            if(false == m_isC6BossMode)
+                KnockBack(_vForce);
         }
-        else
+    }
+    else
+    {
+        if(false == m_isDash)
         {
+            if ((_uint)MONSTER_STATE::HIT != m_iState)
+            {
+                Set_AnimChangeable(true);
+                Event_ChangeMonsterState(MONSTER_STATE::HIT, m_pFSM);
+            }
+            else
+            {
+                Set_AnimChangeable(true);
+                //임시코드 (현재 상태가 HIT이면 안 불리기 때문에)
+                Event_ChangeMonsterState(MONSTER_STATE::IDLE, m_pFSM);
+                Event_ChangeMonsterState(MONSTER_STATE::HIT, m_pFSM);
+            }
+        }
+        if (false == m_isC6BossMode)
+            KnockBack(_vForce);
+
+        //Effect
+        if (COORDINATE_3D == Get_CurCoord())
+            //CEffect_Manager::GetInstance()->Active_Effect(TEXT("MonsterDead"), true, m_pControllerTransform->Get_WorldMatrix_Ptr());
+            //CEffect_Manager::GetInstance()->Active_Effect(TEXT("MonsterHit"), true, m_pControllerTransform->Get_WorldMatrix_Ptr());
+            CEffect_Manager::GetInstance()->Active_EffectMatrix(TEXT("MonsterHit"), true, m_pControllerTransform->Get_WorldMatrix());
+
+        else if (COORDINATE_2D == Get_CurCoord())
+        {
+
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Start_HitRender();
             _matrix matFX = Get_ControllerTransform()->Get_WorldMatrix();
 
             _wstring strFXTag = L"Hit_FX";
@@ -485,7 +494,7 @@ void CSpear_Soldier::Change_Animation()
                 break;
 
             case MONSTER_STATE::DEAD:
-                static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(DEATH_02_EDIT);
+                static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(DEATH_01);
                 break;
 
             default:
@@ -636,6 +645,10 @@ void CSpear_Soldier::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
 
         case HIT_FRONT:
             Set_AnimChangeable(true);
+            break;
+
+        case DEATH_01:
+            Monster_Death();
             break;
 
         case DEATH_02_EDIT:
@@ -796,6 +809,7 @@ HRESULT CSpear_Soldier::Ready_ActorDesc(void* _pArg)
     m_matQueryShapeOffset = ShapeData->LocalOffsetMatrix;
 
     m_fHalfBodySize = ShapeDesc->fRadius;
+    m_fHalfBodyHeight = ShapeDesc->fRadius+ ShapeDesc->fHalfHeight;
 
 
     if(false == pDesc->isSneakMode)
@@ -847,20 +861,18 @@ HRESULT CSpear_Soldier::Ready_ActorDesc(void* _pArg)
 
     if (true == pDesc->isFormationMode)
     {
-        //닿은 물체의 씬 쿼리를 켜는 트리거
-        SHAPE_BOX_DESC* RayBoxDesc = new SHAPE_BOX_DESC;
-        //RayBoxDesc->vHalfExtents = { pDesc->fAlertRange * tanf(XMConvertToRadians(pDesc->fFOVX * 0.5f)) * 0.5f, 1.f, pDesc->fAlertRange * 0.5f };
-        RayBoxDesc->vHalfExtents = { pDesc->fAlertRange * tanf(XMConvertToRadians(pDesc->fFOVX * 0.5f)), 2.f, pDesc->fAlertRange };
-        //RayBoxDesc->vHalfExtents = { ShapeDesc->fRadius, 0.1f, pDesc->fAlertRange * 0.5f };
+        //폭탄 감지 트리거
+        SHAPE_SPHERE_DESC* BombDetectDesc = new SHAPE_SPHERE_DESC;
+        BombDetectDesc->fRadius = 4.f;
 
         /* 해당 Shape의 Flag에 대한 Data 정의 */
         //SHAPE_DATA* ShapeData = new SHAPE_DATA;
-        ShapeData->pShapeDesc = RayBoxDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
-        ShapeData->eShapeType = SHAPE_TYPE::BOX;     // Shape의 형태.
+        ShapeData->pShapeDesc = BombDetectDesc;              // 위에서 정의한 ShapeDesc의 주소를 저장.
+        ShapeData->eShapeType = SHAPE_TYPE::SPHERE;     // Shape의 형태.
         ShapeData->eMaterial = ACTOR_MATERIAL::NORESTITUTION; // PxMaterial(정지마찰계수, 동적마찰계수, 반발계수), >> 사전에 정의해둔 Material이 아닌 Custom Material을 사용하고자한다면, Custom 선택 후 CustomMaterial에 값을 채울 것.
         ShapeData->isTrigger = true;                    // Trigger 알림을 받기위한 용도라면 true
-        //XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixTranslation(0.f, RayBoxDesc->vHalfExtents.y, RayBoxDesc->vHalfExtents.z)); // Shape의 LocalOffset을 행렬정보로 저장.
-        XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixTranslation(0.f, RayBoxDesc->vHalfExtents.y, 0.f)); // Shape의 LocalOffset을 행렬정보로 저장.
+        //XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixTranslation(0.f, BombDetectDesc->vHalfExtents.y, BombDetectDesc->vHalfExtents.z)); // Shape의 LocalOffset을 행렬정보로 저장.
+        XMStoreFloat4x4(&ShapeData->LocalOffsetMatrix, XMMatrixTranslation(0.f, 0.f, 0.f)); // Shape의 LocalOffset을 행렬정보로 저장.
 
         /* 최종으로 결정 된 ShapeData를 PushBack */
         ActorDesc->ShapeDatas.push_back(*ShapeData);
@@ -915,6 +927,7 @@ HRESULT CSpear_Soldier::Ready_Components()
         DetectionDesc.fFOVX = m_fFOVX;
         DetectionDesc.fFOVY = m_fFOVY;
         DetectionDesc.fOffset = 0.f;
+		//DetectionDesc.vPosOffset = _float3(0.f, m_fHalfBodyHeight, 0.f);
         DetectionDesc.pOwner = this;
         DetectionDesc.pTarget = m_pTarget;
 #ifdef _DEBUG

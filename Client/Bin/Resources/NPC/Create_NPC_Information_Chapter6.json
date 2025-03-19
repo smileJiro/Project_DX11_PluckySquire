@@ -573,7 +573,7 @@
 		{
 			"strSectionid": "Chapter5_P0102",
 			"strAnimaionName": "Eray",
-			"strNPCName": "Mural",
+			"strNPCName": "Eray",
 			"strCreateSection": 5,
 			"strDialogueId": "Eray_Dialogue_01",
 			"iStartAnimation": 5,
@@ -582,7 +582,7 @@
 			"vPositionZ": 0.0,
 			"CollisionScaleX": 20.0,
 			"CollisionScaleY": 20.0,
-			"isInteractable": false,
+			"isInteractable":  true,
 			"isDialog": true,
 			"is2D": true
 		}

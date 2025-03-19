@@ -195,9 +195,12 @@ void CFriend::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCol
 
 void CFriend::On_Hit(CGameObject* _pHitter, _int _fDamg, _fvector _vForce)
 {
+    if (_pHitter->Get_ObjectGroupID() == OBJECT_GROUP::MONSTER)
+        return;
+
     if (m_eCurMode != MODE_DEFAULT)
     {
-        m_eCurState = FRIEND_HIT;
+        m_eCurState = FRIEND_HIT; 
         State_Change();
     }
 
@@ -228,6 +231,7 @@ HRESULT CFriend::Mode_Enter(FRIEND_MODE _eNextMode)
     case Client::CFriend::MODE_FIGHT:
         m_eCurState = FRIEND_CHASE;
         Find_NearestTargetFromLayer();
+        m_pControllerTransform->Set_SpeedPerSec(250.f);
         break;
     case Client::CFriend::MODE_BOSS:
         break;
@@ -246,6 +250,7 @@ HRESULT CFriend::Mode_Exit()
     case Client::CFriend::MODE_FIGHT:
         m_eCurMode = MODE_DEFAULT;
         m_eCurState = FRIEND_CHASE;
+        m_pControllerTransform->Set_SpeedPerSec(400.f);
         State_Change();
         break;
     case Client::CFriend::MODE_BOSS:

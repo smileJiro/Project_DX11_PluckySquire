@@ -10,6 +10,16 @@
     ]
   },
   {
+    "Trigger_EventTag": "Chapter8_Postit_Arm_Changing",
+    "Actions": [
+      {
+        "ActionTag": "Create_EventExecuter",
+        "EventTag": "Chapter8_Postit_Arm_Changing",
+        "Is_Sequence": true
+      }
+    ]
+  },
+  {
     "Trigger_EventTag": "Chapter8_Friend_Appear_Violet",
     "Actions": [
       {
@@ -28,7 +38,7 @@
         "Is_Sequence": true
       }
     ]
-  },  
+  },
   {
     "Trigger_EventTag": "Chapter8_Laser_Stage_2",
     "Actions": [
@@ -50,11 +60,31 @@
     ]
   },
   {
-    "Trigger_EventTag": "Chapter8_Intro",
+    "Trigger_EventTag": "Chapter8_3D_Out_01",
     "Actions": [
       {
         "ActionTag": "Create_EventExecuter",
         "EventTag": "Chapter8_Intro",
+        "Is_Sequence": true
+      }
+    ]
+  },
+  {
+    "Trigger_EventTag": "Chapter8_3D_Out_01",
+    "Actions": [
+      {
+        "ActionTag": "Create_EventExecuter",
+        "EventTag": "Chapter8_Intro",
+        "Is_Sequence": true
+      }
+    ]
+  },
+  {
+    "Trigger_EventTag": "Chapter8_3D_Out_02",
+    "Actions": [
+      {
+        "ActionTag": "Create_EventExecuter",
+        "EventTag": "Chapter8_3D_Out_02",
         "Is_Sequence": true
       }
     ]

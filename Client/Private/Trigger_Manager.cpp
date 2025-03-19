@@ -90,8 +90,12 @@ HRESULT CTrigger_Manager::Mapping_ExecuterTag()
 	m_EventExecuterTags[CHAPTER6_INTRO] = L"Chapter6_Intro";
 	m_EventExecuterTags[CHAPTER6_START_3D] = L"Chapter6_Start_3D";
 	m_EventExecuterTags[ARTIA_PIGEVENT_START] = L"Artia_PigEvent_Start";
+	m_EventExecuterTags[ARTIA_PIGEVENT_ENCOUNTER] = L"Artia_PigEvent_Encounter";
+	m_EventExecuterTags[ARTIA_PIGEVENT_ENCOUNTER_OUT] = L"Artia_PigEvent_Encounter_Out";
 	m_EventExecuterTags[ARTIA_PIGEVENT_END] = L"Artia_PigEvent_End";
 	m_EventExecuterTags[ARTIA_EXIT] = L"Artia_Exit";
+	m_EventExecuterTags[CHAPTER6_CANDLE_IN] = L"Chapter6_Candle_In";
+	m_EventExecuterTags[CHAPTER6_CANDLE_OUT] = L"Chapter6_Candle_Out";
 	m_EventExecuterTags[CHAPTER6_FATHERGAME_PROGRESS_START_CLEAR] = L"Chapter6_FatherGame_Progress_Start_Clear";
 	m_EventExecuterTags[CHAPTER6_FATHERGAME_PROGRESS_ZETPACK_CLEAR] = L"Chapter6_FatherGame_Progress_ZetPack_Clear";
 	m_EventExecuterTags[CHAPTER6_FATHERGAME_PROGRESS_FATHERPART_1] = L"Chapter6_FatherGame_Progress_Fatherpart_1";
@@ -109,6 +113,8 @@ HRESULT CTrigger_Manager::Mapping_ExecuterTag()
 	m_EventExecuterTags[CHAPTER8_LASER_STAGE_2] = L"Chapter8_Laser_Stage_2";
 	m_EventExecuterTags[CHAPTER8_FRIEND_APPEAR_VIOLET] = L"Chapter8_Friend_Appear_Violet";
 	m_EventExecuterTags[CHAPTER8_FRIEND_APPEAR_THRASH] = L"Chapter8_Friend_Appear_Thrash";
+	m_EventExecuterTags[CHAPTER8_3D_OUT_01] = L"Chapter8_3D_Out_01";
+	m_EventExecuterTags[CHAPTER8_3D_OUT_02] = L"Chapter8_3D_Out_02";
 	m_EventExecuterTags[CHAPTER8_INTRO] = L"Chapter8_Intro";
 	m_EventExecuterTags[CHAPTER8_MAP_INTRO] = L"Chapter8_Map_Intro";
 	m_EventExecuterTags[CHAPTER8_INTRO_POSTIT_SEQUENCE] = L"Chapter8_Intro_Postit_Sequence";
@@ -118,6 +124,7 @@ HRESULT CTrigger_Manager::Mapping_ExecuterTag()
 	m_EventExecuterTags[CHAPTER8_TILTING_GLOVE] = 	L"Chapter8_Tilting_Glove";
 	m_EventExecuterTags[CHAPTER8_OUTRO_POSTIT_SEQUENCE] = 	L"Chapter8_Outro_Postit_Sequence";
 	m_EventExecuterTags[CHAPTER8_MEET_HUMGRUMP] = 	L"Chapter8_Meet_Humgrump";
+	m_EventExecuterTags[CHAPTER8_POSTIT_ARM_CHANGING] = 	L"Chapter8_Postit_Arm_Changing";
 
 	return S_OK;
 }
@@ -676,9 +683,22 @@ void CTrigger_Manager::Register_Event_Handler(_uint _iTriggerType, CTriggerObjec
 		break;
 	case (_uint)TRIGGER_TYPE::EVENT_TRIGGER:
 	{
-		_pTrigger->Register_EnterHandler([](_uint _iTriggerType, _int _iTriggerID, _wstring& _szEventTag) {
-			Event_Trigger_Enter(_iTriggerType, _iTriggerID, _szEventTag);
-			});
+		switch (_pTrigger->Get_ConditionType()) {
+		case CTriggerObject::TRIGGER_ENTER:
+		{
+			_pTrigger->Register_EnterHandler([](_uint _iTriggerType, _int _iTriggerID, _wstring& _szEventTag) {
+				Event_Trigger_Enter(_iTriggerType, _iTriggerID, _szEventTag);
+				});
+		}
+			break;
+		case CTriggerObject::TRIGGER_EXIT:
+		{
+			_pTrigger->Register_ExitHandler([](_uint _iTriggerType, _int _iTriggerID, _wstring& _szEventTag) {
+				Event_Trigger_Exit(_iTriggerType, _iTriggerID, _szEventTag);
+				});	
+		}
+			break;
+		}
 	}
 		break;
 	case (_uint)TRIGGER_TYPE::ENABLE_LOOKAT_TRIGGER:
