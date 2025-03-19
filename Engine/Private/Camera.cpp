@@ -217,6 +217,7 @@ void CCamera::Start_PostProcessing_Fade(FADE_TYPE _eFadeType, _float _fFadeTime)
 	if (FADE_TYPE::FADE_LAST <= _eFadeType)
 		return;
 
+	m_tDofData.isWhiteFade = false;
 	m_eFadeType = _eFadeType;
 	m_vFadeTime.x = _fFadeTime;
 
@@ -419,11 +420,18 @@ void CCamera::Action_PostProcessing_Fade(_float _fTimeDelta)
 			m_vFadeTime.y = 0.0f;
 			m_eFadeType = FADE_LAST;
 			m_tDofData.fFadeRatio = 1.0f;
+
 		}
 		else
 		{
 			m_tDofData.fFadeRatio = m_vFadeTime.y / m_vFadeTime.x;
 		}
+
+		if (0 < m_tDofData.isWhiteFade)
+		{
+			m_tDofData.fFadeRatio = 1.0f - m_tDofData.fFadeRatio;
+		}
+
 		m_isBindConstBuffer = true; // 해당 데이터가 true이면, 이번프레임 dof를 업데이트 
 	}
 		break;
@@ -441,15 +449,22 @@ void CCamera::Action_PostProcessing_Fade(_float _fTimeDelta)
 		{
 			m_tDofData.fFadeRatio = 1.0f - (m_vFadeTime.y / m_vFadeTime.x);
 		}
+
+		if (0 < m_tDofData.isWhiteFade)
+		{
+			m_tDofData.fFadeRatio = 1.0f - m_tDofData.fFadeRatio;
+		}
+
 		m_isBindConstBuffer = true; // 해당 데이터가 true이면, 이번프레임 dof를 업데이트
 	}
 		break;
 	case Engine::CCamera::FADE_LAST:
-
 		break;
 	default:
 		break;
 	}
+
+
 }
 
 void CCamera::Turn_AxisY(_float _fTimeDelta)
@@ -605,6 +620,19 @@ _bool CCamera::Turn_Camera_AxisRight(_float _fAngle, _float _fTurnTime, _float _
 	m_pControllerTransform->TurnAngle(fResultAngle, vCrossX);
 
 	return false;
+}
+
+void CCamera::Start_WhiteFadeOut(_float _fTime)
+{
+	Start_PostProcessing_Fade(FADE_OUT, _fTime);
+
+	m_tDofData.isWhiteFade = 1;
+}
+
+void CCamera::Start_WhiteFadeIn(_float _fTime)
+{
+	Start_PostProcessing_Fade(FADE_IN, _fTime);
+	m_tDofData.isWhiteFade = 1;
 }
 
 HRESULT CCamera::Ready_DofConstData(CAMERA_DESC* _pDesc)

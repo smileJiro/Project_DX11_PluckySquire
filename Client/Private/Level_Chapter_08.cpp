@@ -36,6 +36,7 @@
 #include "Bomb.h"
 #include "Rat.h"
 #include "Zippy.h"
+#include "Zip_C8.h"
 #include "SlipperyObject.h"
 #include "LightningBolt.h"
 #include "ButterGrump.h"
@@ -280,7 +281,7 @@ HRESULT CLevel_Chapter_08::Initialize(LEVEL_ID _eLevelID)
 	m_pSneakMinigameManager = CMinigame_Sneak::GetInstance();
 	m_pFormation_Manager = CFormation_Manager::GetInstance();
 
-
+	m_pFormation_Manager->Initialize();
 
 	return S_OK;
 }
@@ -495,6 +496,16 @@ void CLevel_Chapter_08::Update(_float _fTimeDelta)
 			SECTION_MGR->Remove_Section(L"Chapter8_SKSP_09");
 			SECTION_MGR->Remove_Section(L"Chapter8_SKSP_10");
 				//});
+
+			//
+			CZip_C8::MODELOBJECT_DESC tZipDesc{};
+			tZipDesc.iCurLevelID = m_eLevelID;
+			tZipDesc.Build_2D_Transform(_float2(-248.0, -111.0), _float2(1.0f, 1.0f));
+			CGameObject* pGameObject = nullptr;
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_ZipC8"), m_eLevelID, TEXT("Layer_Zip"), &pGameObject, &tZipDesc)))
+				assert(nullptr);
+			CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter8_SKSP_11"), pGameObject, SECTION_2D_PLAYMAP_OBJECT);
+
 
 			// 보스 체력바 관련
 			CUI::UIOBJDESC pDesc = {};
@@ -1355,14 +1366,14 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Bomb_Soldier"), m_eLevelID, _strLayerTag, &Bomb_Soldier_Desc)))
 		return E_FAIL;
 
-	CButterGrump::MONSTER_DESC Boss_Desc;
-	Boss_Desc.iCurLevelID = m_eLevelID;
-	Boss_Desc.eStartCoord = COORDINATE_3D;
-	Boss_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-	Boss_Desc.tTransform3DDesc.vInitialPosition = _float3(-3.f, 15.35f, -80.0f);
+	//CButterGrump::MONSTER_DESC Boss_Desc;
+	//Boss_Desc.iCurLevelID = m_eLevelID;
+	//Boss_Desc.eStartCoord = COORDINATE_3D;
+	//Boss_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	//Boss_Desc.tTransform3DDesc.vInitialPosition = _float3(-3.f, 15.35f, -80.0f);
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_ButterGrump"), m_eLevelID, TEXT("Layer_Monster"), &Boss_Desc)))
-		return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_ButterGrump"), m_eLevelID, TEXT("Layer_Monster"), &Boss_Desc)))
+	//	return E_FAIL;
 
 
 

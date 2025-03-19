@@ -4,6 +4,7 @@
 #include "Interactable.h"
 #include "Gravity.h"
 
+
 BEGIN(Engine)
 class CAnimEventGenerator;
 class CCollider; // test
@@ -538,9 +539,9 @@ public:
 	virtual void On_StartAutoMove() override;
 	virtual void On_EndAutoMove() override;
 	void On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx);
-
 	void On_Stop() override;
 	void On_UnStop() override;
+	void On_GainPlayerItem(_uint _eItem);
 public:
 
 	void Move_Attack_3D();
@@ -642,6 +643,7 @@ public:
 	const _float4x4* Get_BodyWorldMatrix_Ptr(COORDINATE eCoord) const;
 	CPlayerBody* Get_Body() { return m_pBody; }
 	CPartObject* Get_PlayerPartObject(PLAYER_PART _ePartId) { return m_PartObjects[(_uint)_ePartId]; }
+	CZetPack* Get_ZetPack() { return m_pZetPack; }
 	_vector Get_RootBonePosition();
 	//NORMAL_DIRECTION Get_PortalNormal() { return m_e3DPortalNormal; }
 	const ATTACK_TRIGGER_DESC& Get_AttackTriggerDesc(ATTACK_TYPE _eAttackType, F_DIRECTION _eFDir) { return m_f2DAttackTriggerDesc[_eAttackType][(_uint)_eFDir]; }

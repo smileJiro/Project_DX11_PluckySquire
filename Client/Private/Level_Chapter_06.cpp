@@ -253,18 +253,6 @@ HRESULT CLevel_Chapter_06::Initialize(LEVEL_ID _eLevelID)
 //
 //#pragma endregion
 
-				/* 4. 파트 바디 생성 */
-	CFatherPart_Prop::FATHERPART_PROP_DESC Desc{};
-	Desc.iCurLevelID = LEVEL_CHAPTER_6;
-	Desc.iFatherPartID = CFatherGame::FATHER_BODY;
-	Desc.Build_2D_Transform(_float2(-0.0, -0.0), _float2(200.0f, 200.0f));
-	CGameObject* pGameObject = nullptr;
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_FatherPart_Prop"), LEVEL_CHAPTER_6, TEXT("Layer_FatherPart_Prop"), &pGameObject, &Desc)))
-		assert(nullptr);
-
-	CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(pGameObject, SECTION_2D_PLAYMAP_TRIGGER);
-
-
 
 	/* Collision Check Matrix */
 	// 그룹필터 추가 >> 중복해서 넣어도 돼 내부적으로 걸러줌 알아서 
@@ -357,15 +345,6 @@ void CLevel_Chapter_06::Update(_float _fTimeDelta)
 {
 	if (KEY_DOWN(KEY::K))
 	{
-		CFatherPart_Prop::FATHERPART_PROP_DESC Desc{};
-		Desc.iCurLevelID = LEVEL_CHAPTER_6;
-		Desc.iFatherPartID = CFatherGame::FATHER_BODY;
-		Desc.Build_2D_Transform(_float2(-0.0, -0.0), _float2(200.0f, 200.0f));
-		CGameObject* pGameObject = nullptr;
-		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_FatherPart_Prop"), LEVEL_CHAPTER_6, TEXT("Layer_FatherPart_Prop"), &pGameObject, &Desc)))
-			assert(nullptr);
-
-		CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(pGameObject, SECTION_2D_PLAYMAP_TRIGGER);
 
 	}
 	CFatherGame::GetInstance()->Update();
@@ -1668,11 +1647,11 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Monster()
 {
 	CGameObject* pObject = nullptr;
 
-	//if (FAILED(Ready_Layer_Monster_2D()))
-	//	return E_FAIL;
+	if (FAILED(Ready_Layer_Monster_2D()))
+		return E_FAIL;
 
-	//if (FAILED(Ready_Layer_Monster_3D()))
-	//	return E_FAIL;
+	if (FAILED(Ready_Layer_Monster_3D()))
+		return E_FAIL;
 
 	//wstring strLayerTag = TEXT("Layer_Monster");
 

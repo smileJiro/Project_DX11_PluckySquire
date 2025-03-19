@@ -248,6 +248,9 @@ void CBomb::Set_Time_On()
 
 	if (nullptr != m_pFuseEffect)
 		m_pFuseEffect->Active_Effect(true);
+
+	m_pGameInstance->Start_SFX(_wstring(L"A_sfx_caterpillar_bomb_drop_") + to_wstring(rand() % 6), 50.f);
+
 }
 
 void CBomb::Set_Time_Off()
@@ -280,6 +283,7 @@ void CBomb::Explode()
 		m_p2DColliderComs[iColTriggerIndex]->Set_Active(true);
 
 		CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("Generic_Explosion"), Get_Include_Section_Name(), Get_ControllerTransform()->Get_WorldMatrix());
+
 	}
 	else if (COORDINATE_3D == Get_CurCoord())
 	{
@@ -289,10 +293,16 @@ void CBomb::Explode()
 		Get_ActorCom()->Set_ShapeEnable((_int)SHAPE_USE::SHAPE_TRIGER, true);
 
 		CEffect_Manager::GetInstance()->Active_Effect(TEXT("Bomb"), true, &m_WorldMatrices[COORDINATE_3D]);
+
 	}
+	m_pGameInstance->Start_SFX(_wstring(L"A_sfx_caterpillar_death_") + to_wstring(rand() % 4), 50.f);
+	m_pGameInstance->Start_SFX(_wstring(L"A_sfx_caterpillar_bomb_explode_") + to_wstring(rand() % 4), 50.f);
+
 
 	m_fAccTime = 0.f;
 	m_isExplode = true;
+
+
 }
 
 HRESULT CBomb::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition)

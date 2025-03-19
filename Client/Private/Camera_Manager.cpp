@@ -26,14 +26,14 @@ HRESULT CCamera_Manager::Initialize()
 
 void CCamera_Manager::Update(_float fTimeDelta)
 {
-	/*if (KEY_DOWN(KEY::G))
+	if (KEY_DOWN(KEY::G))
 	{
-		Start_FadeIn(2.5f);
+		Start_FadeOut_White();
 	}
 	if (KEY_DOWN(KEY::H))
 	{
 		Start_FadeOut(1.5f);
-	}*/
+	}
 
 
 	if (IS_IMPORT_IMGUI)
@@ -83,6 +83,11 @@ _uint CCamera_Manager::Get_CurCameraMode()
 
 	return _uint();
 }
+CONST_DOF CCamera_Manager::Get_DofBufferData() const
+{
+	return m_Cameras[m_eCurrentCameraType]->Get_DofBufferData();
+}
+
 void CCamera_Manager::Off_Shake()
 {
 	m_Cameras[m_eCurrentCameraType]->Off_Shake();
@@ -601,6 +606,16 @@ void CCamera_Manager::Start_FadeIn(_float _fFadeTime)
 void CCamera_Manager::Start_FadeOut(_float _fFadeTime)
 {
 	m_Cameras[m_eCurrentCameraType]->Start_PostProcessing_Fade(CCamera::FADE_OUT, _fFadeTime);
+}
+
+void CCamera_Manager::Start_FadeIn_White(_float _fFadeTime)
+{
+	m_Cameras[m_eCurrentCameraType]->Start_WhiteFadeIn(_fFadeTime);
+}
+
+void CCamera_Manager::Start_FadeOut_White(_float _fFadeTime)
+{
+	m_Cameras[m_eCurrentCameraType]->Start_WhiteFadeOut(_fFadeTime);
 }
 
 void CCamera_Manager::Set_FadeRatio(_uint _eCameraType, _float _fFadeRatio, _bool _isUpdate)

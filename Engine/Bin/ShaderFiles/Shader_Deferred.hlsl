@@ -51,7 +51,7 @@ struct DofData
     float fDofBrightness;
     float fBaseBlurPower; // 기본 전체 블러값
     float fFadeRatio; // FadeIn, FadeOut Ratio
-    float dummy2;
+    int isWhiteFade;
     
     float3 vBlurColor;
     float dummy3;
@@ -941,7 +941,8 @@ PS_OUT PS_FINAL(PS_IN In)
     //if (vFinal.a < 0.01f)
     //    discard;
     
-    vFinal.rgb *= c_DofVariable.fFadeRatio;
+    vFinal.rgb = 0 < c_DofVariable.isWhiteFade ? vFinal.rgb + c_DofVariable.fFadeRatio : vFinal.rgb * c_DofVariable.fFadeRatio;
+    //vFinal.rgb *= c_DofVariable.fFadeRatio;
 
     Out.vColor = vFinal;
     return Out;
