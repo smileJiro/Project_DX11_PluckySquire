@@ -427,8 +427,9 @@ HRESULT CMainApp::Ready_RenderGroup()
 	CRenderGroup_Trail::RG_MRT_DESC RG_TrailDesc;
 	RG_TrailDesc.iRenderGroupID = RENDERGROUP::RG_3D;
 	RG_TrailDesc.iPriorityID = PRIORITY_3D::PR3D_TRAIL;
-	RG_TrailDesc.strMRTTag = TEXT("MRT_Combine");
-	RG_TrailDesc.isClear = false;
+	RG_TrailDesc.strMRTTag = TEXT("MRT_Weighted_Blended");
+	//RG_TrailDesc.strMRTTag = TEXT("MRT_Combine");
+	RG_TrailDesc.isClear = true;
 	CRenderGroup_Trail* pRenderGroup_Trail = CRenderGroup_Trail::Create(m_pDevice, m_pContext, &RG_TrailDesc);
 	if (nullptr == pRenderGroup_Trail)
 	{
@@ -462,7 +463,7 @@ HRESULT CMainApp::Ready_RenderGroup()
 	RG_ParticleDesc.iRenderGroupID = RENDERGROUP::RG_3D;
 	RG_ParticleDesc.iPriorityID = PRIORITY_3D::PR3D_PARTICLE;
 	RG_ParticleDesc.strMRTTag = TEXT("MRT_Weighted_Blended");
-	RG_ParticleDesc.isClear = true;
+	RG_ParticleDesc.isClear = false;
 
 	CRenderGroup_MRT* pRenderGroup_Particle = CRenderGroup_MRT::Create(m_pDevice, m_pContext, &RG_ParticleDesc);
 	if (nullptr == pRenderGroup_Particle)

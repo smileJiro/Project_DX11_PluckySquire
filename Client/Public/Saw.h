@@ -56,7 +56,7 @@ private:
 	_float2 m_vMinMaxOffset_X = { -500.f, 500.f };
 	_float2 m_vMinMaxOffset_Y = { -70.f, 170.f };
 	_float2 m_vOffset = { 0.0f, 170.f };
-	_float2 m_vMoveSpeed = { 300.f, 50.f };
+	_float2 m_vMoveSpeed = { 400.f, 50.f };
 	_int m_iAttackCount = 0;
 private:
 	void State_Change();

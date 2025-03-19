@@ -37,6 +37,21 @@ HRESULT CNPC_Manager::ChangeDialogue(_wstring _NPCName, _wstring _DialogueID)
 	return S_OK;
 }
 
+HRESULT CNPC_Manager::Remove_SocialNPC(_wstring _NPCName)
+{
+
+	CNPC_Social* pSocialNpc = nullptr;
+	pSocialNpc = Find_SocialNPC(_NPCName);
+
+	if (nullptr == pSocialNpc)
+		return E_FAIL;
+
+	Event_DeleteObject(pSocialNpc);
+
+
+	return S_OK;
+}
+
 HRESULT CNPC_Manager::Level_Exit(_int iCurLevelID, _int _iChangeLevelID, _int _iNextChangeLevelID)
 {
 

@@ -8,6 +8,7 @@
 
 #include "Effect_Manager.h"
 #include "TurnBookEffect.h"
+#include "Trigger_Manager.h"
 
 CPlayerState_TurnBook::CPlayerState_TurnBook(CPlayer* _pOwner)
 	:CPlayerState(_pOwner, CPlayer::TURN_BOOK)
@@ -169,6 +170,11 @@ void CPlayerState_TurnBook::Update(_float _fTimeDelta)
 		}
 		else if (OPEN_BOOK == m_eBookState) {
 			if (false == m_pBook->Is_DuringAnimation()) {
+				
+				if (m_pBook->Is_Freezing())
+					m_pBook->Set_Freezing(false);
+
+				
 				Set_State(IDLE);
 			}
 		}
@@ -209,11 +215,18 @@ void CPlayerState_TurnBook::Enter()
 void CPlayerState_TurnBook::Exit()
 {
 	// Camera Target Player·Î ¹Ù²Þ(È¿¸²)
+
+	if (false == m_isDropp)
+	{
 	CCamera_Manager::GetInstance()->Change_CameraTarget(m_pOwner);
 	CCamera_Manager::GetInstance()->Start_ResetArm_To_SettingPoint(CCamera_Manager::TARGET, 1.f);
+	}
+	else 
+	{
+		m_isDropp = true;
+	}
 
 	CEffect_Manager::GetInstance()->Stop_Spawn(TEXT("Book_Default"), 4.f);
-
 	if (nullptr != m_pTurnBookEffect)
 		m_pTurnBookEffect->Set_Active(false);
 }
@@ -267,7 +280,15 @@ void CPlayerState_TurnBook::On_StateChange(BOOK_STATE _eNewState)
 			break;
 		case Client::CPlayerState_TurnBook::CLOSED_RIGHT:
 			m_pBook->Decalcomani_LToR();
-			m_pBook->Start_DropBook();
+			{
+				if (m_pBook->Is_Droppable())
+				{
+					CTrigger_Manager::GetInstance()->Register_TriggerEvent(L"Chapter8_BookDrop", 0);
+
+					m_pOwner->Set_State(CPlayer::IDLE);
+					m_isDropp = true;
+				}
+			}
 			break;
 		default:
 			break;

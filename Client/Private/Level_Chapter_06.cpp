@@ -99,6 +99,7 @@
 
 // Excavator 
 #include "ExcavatorGame.h"
+#include "FatherPart_Prop.h"
 
 CLevel_Chapter_06::CLevel_Chapter_06(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:
@@ -252,7 +253,16 @@ HRESULT CLevel_Chapter_06::Initialize(LEVEL_ID _eLevelID)
 //
 //#pragma endregion
 
+				/* 4. 파트 바디 생성 */
+	CFatherPart_Prop::FATHERPART_PROP_DESC Desc{};
+	Desc.iCurLevelID = LEVEL_CHAPTER_6;
+	Desc.iFatherPartID = CFatherGame::FATHER_BODY;
+	Desc.Build_2D_Transform(_float2(-0.0, -0.0), _float2(200.0f, 200.0f));
+	CGameObject* pGameObject = nullptr;
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_FatherPart_Prop"), LEVEL_CHAPTER_6, TEXT("Layer_FatherPart_Prop"), &pGameObject, &Desc)))
+		assert(nullptr);
 
+	CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(pGameObject, SECTION_2D_PLAYMAP_TRIGGER);
 
 
 
@@ -291,7 +301,7 @@ HRESULT CLevel_Chapter_06::Initialize(LEVEL_ID _eLevelID)
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::INTERACTION_OBEJCT);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::BLOCKER);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::EXPLOSION);
-	
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::FRIEND);
 
 	
 	/* 돌덩이 */
@@ -346,7 +356,16 @@ void CLevel_Chapter_06::Update(_float _fTimeDelta)
 {
 	if (KEY_DOWN(KEY::K))
 	{
-		
+		CFatherPart_Prop::FATHERPART_PROP_DESC Desc{};
+		Desc.iCurLevelID = LEVEL_CHAPTER_6;
+		Desc.iFatherPartID = CFatherGame::FATHER_BODY;
+		Desc.Build_2D_Transform(_float2(-0.0, -0.0), _float2(200.0f, 200.0f));
+		CGameObject* pGameObject = nullptr;
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_6, TEXT("Prototype_GameObject_FatherPart_Prop"), LEVEL_CHAPTER_6, TEXT("Layer_FatherPart_Prop"), &pGameObject, &Desc)))
+			assert(nullptr);
+
+		CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(pGameObject, SECTION_2D_PLAYMAP_TRIGGER);
+
 	}
 	CFatherGame::GetInstance()->Update();
 	CExcavatorGame::GetInstance()->Update(_fTimeDelta);
@@ -1014,7 +1033,7 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Book(const _wstring& _strLayerTag)
 	if (nullptr != pGameObject)
 		CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_P0708"), pGameObject, SECTION_2D_PLAYMAP_PORTAL);
 
-	static_cast<CPortal*>(pGameObject)->Set_FirstActive(true);
+	//static_cast<CPortal*>(pGameObject)->Set_FirstActive(true);
 
 	tPortalDesc.Build_2D_Transform(_float2{ 386, -105}, _float2{ 1.f,1.f });
 	tPortalDesc.iPortalIndex = 2;
@@ -1027,7 +1046,7 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Book(const _wstring& _strLayerTag)
 	);
 	if (nullptr != pGameObject)
 		CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_P0708"), pGameObject, SECTION_2D_PLAYMAP_PORTAL);
-	static_cast<CPortal*>(pGameObject)->Set_FirstActive(true);
+	//static_cast<CPortal*>(pGameObject)->Set_FirstActive(true);
 
 	return S_OK;
 }
@@ -1398,7 +1417,7 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Item(const _wstring& _strLayerTag)
 {
 	// Test(PlayerItem: Glove, Stamp)
 	//CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("Flipping_Glove"), _float3(59.936f, 6.273f, -19.097f));
-	//CPlayerData_Manager::GetInstance()->Spawn_Bulb(LEVEL_STATIC, (LEVEL_ID)m_eLevelID);
+	CPlayerData_Manager::GetInstance()->Spawn_Bulb(LEVEL_STATIC, (LEVEL_ID)m_eLevelID);
 
 
 

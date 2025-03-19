@@ -113,6 +113,8 @@ HRESULT CTrigger_Manager::Mapping_ExecuterTag()
 	m_EventExecuterTags[CHAPTER8_LASER_STAGE_2] = L"Chapter8_Laser_Stage_2";
 	m_EventExecuterTags[CHAPTER8_FRIEND_APPEAR_VIOLET] = L"Chapter8_Friend_Appear_Violet";
 	m_EventExecuterTags[CHAPTER8_FRIEND_APPEAR_THRASH] = L"Chapter8_Friend_Appear_Thrash";
+	m_EventExecuterTags[CHAPTER8_3D_OUT_01] = L"Chapter8_3D_Out_01";
+	m_EventExecuterTags[CHAPTER8_3D_OUT_02] = L"Chapter8_3D_Out_02";
 	m_EventExecuterTags[CHAPTER8_INTRO] = L"Chapter8_Intro";
 	m_EventExecuterTags[CHAPTER8_MAP_INTRO] = L"Chapter8_Map_Intro";
 	m_EventExecuterTags[CHAPTER8_INTRO_POSTIT_SEQUENCE] = L"Chapter8_Intro_Postit_Sequence";
@@ -123,6 +125,7 @@ HRESULT CTrigger_Manager::Mapping_ExecuterTag()
 	m_EventExecuterTags[CHAPTER8_OUTRO_POSTIT_SEQUENCE] = 	L"Chapter8_Outro_Postit_Sequence";
 	m_EventExecuterTags[CHAPTER8_MEET_HUMGRUMP] = 	L"Chapter8_Meet_Humgrump";
 	m_EventExecuterTags[CHAPTER8_POSTIT_ARM_CHANGING] = 	L"Chapter8_Postit_Arm_Changing";
+	m_EventExecuterTags[CHAPTER8_BOOKDROP] = 	L"Chapter8_BookDrop";
 
 	return S_OK;
 }

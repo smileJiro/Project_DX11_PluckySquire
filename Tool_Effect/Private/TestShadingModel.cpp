@@ -31,7 +31,20 @@ HRESULT CTestShadingModel::Initialize(void* _pArg)
     if (FAILED(__super::Initialize(_pArg)))
         return E_FAIL;
 
-    m_tFresnel.vColor = _float4(1.f, 1.f, 1.f, 1.f);
+    m_tFresnel.fBaseReflect = 0.1f;
+    m_tFresnel.fExp = 0.69f;
+    m_tFresnel.vColor = { 2.f, 1.7f, 1.1f, 1.f };
+    m_tFresnel.fStrength = 1.f; // ¾È¾¸.
+    m_pGameInstance->CreateConstBuffer(m_tFresnel, D3D11_USAGE_DYNAMIC, &m_pFresnelsBuffer);
+
+
+    m_tColor.vDiffuseColor = _float4(0.95f, 0.95f, 0.8f, 1.f);
+    m_tColor.vBloomColor = _float4(0.f, 0.f, 0.f, 1.f);
+    m_tColor.vSubColor = _float4(0.38f, 0.1f, 0.15f, 0.89f); // ¾È¾¸.
+    m_tColor.vInnerColor = _float4(0.2f, 0.f, 0.23f, 1.f); // ¾È¾¸.
+    m_pGameInstance->CreateConstBuffer(m_tColor, D3D11_USAGE_DYNAMIC, &m_pColorBuffer);
+
+  /*  m_tFresnel.vColor = _float4(1.f, 1.f, 1.f, 1.f);
     m_tFresnel.fExp = 1.99f;
     m_tFresnel.fBaseReflect = 0.19f;
     m_tFresnel.fStrength = 1.0f;
@@ -43,7 +56,7 @@ HRESULT CTestShadingModel::Initialize(void* _pArg)
     m_tColor.vSubColor = _float4(0.8f, 0.8f, 0.8f, 0.05f);
     m_tColor.vInnerColor = _float4(0.7f, 0.7f, 0.7f, 1.f);
 
-    m_pGameInstance->CreateConstBuffer(m_tColor, D3D11_USAGE_DYNAMIC, &m_pColorBuffer);
+    m_pGameInstance->CreateConstBuffer(m_tColor, D3D11_USAGE_DYNAMIC, &m_pColorBuffer);*/
 
 
     if (FAILED(Add_Component(LEVEL_TOOL, TEXT("Prototype_Component_Texture_Diffuse"),

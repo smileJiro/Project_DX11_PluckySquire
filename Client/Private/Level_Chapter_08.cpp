@@ -88,6 +88,7 @@
 #include "Room_Door.h"
 
 #include "Npc_Humgrump.h"
+#include "Gear.h"
 
 CLevel_Chapter_08::CLevel_Chapter_08(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:
@@ -123,7 +124,7 @@ HRESULT CLevel_Chapter_08::Initialize(LEVEL_ID _eLevelID)
 		MSG_BOX(" Failed Ready_Layer_MainTable (Level_Chapter_08::Initialize)");
 		assert(nullptr);
 	}
-	if (FAILED(Ready_Layer_Book(TEXT("Layer_Terrain"))))
+	if (FAILED(Ready_Layer_Book(TEXT("Layer_Book"))))
 	{
 		MSG_BOX(" Failed Ready_Layer_Book (Level_Chapter_08::Initialize)");
 		assert(nullptr);
@@ -195,6 +196,12 @@ HRESULT CLevel_Chapter_08::Initialize(LEVEL_ID _eLevelID)
 		assert(nullptr);
 	}
 
+	if (FAILED(Ready_Layer_Gear(TEXT("Layer_Gear"))))
+	{
+		MSG_BOX(" Failed Ready_Layer_Gear (Level_Chapter_08::Initialize)");
+		assert(nullptr);
+	}
+	
 	/* Collision Check Matrix */
 	// 그룹필터 추가 >> 중복해서 넣어도 돼 내부적으로 걸러줌 알아서 Door_Yellow
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::MONSTER);
@@ -820,7 +827,7 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Player(const _wstring& _strLayerTag, CGam
 
 HRESULT CLevel_Chapter_08::Ready_Layer_Book(const _wstring& _strLayerTag)
 {
-	CGameObject* pBook = nullptr;
+	CGameObject* pGameObject = nullptr;
 	//TODO :: SAMPLE
 	CBook::BOOK_DESC Desc = {};
 	Desc.iCurLevelID = m_eLevelID;
@@ -828,12 +835,15 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Book(const _wstring& _strLayerTag)
 	Desc.tTransform3DDesc.vInitialPosition = _float3(-90.f, 64.7f, 19.0f);
 	Desc.tTransform3DDesc.vInitialScaling = _float3(1.0f, 1.0f, 1.0f);
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Book"),
-		m_eLevelID, L"Layer_Book", &pBook, &Desc)))
+		m_eLevelID, L"Layer_Book", &pGameObject, &Desc)))
 		return E_FAIL;
 
+	CBook* pBook = static_cast<CBook*>(pGameObject);
 
+	Uimgr->Set_Book(pBook);
 
-	Uimgr->Set_Book(static_cast<CBook*>(pBook));
+	pBook->Set_BlendingRatio(1.f);
+	pBook->Set_Droppable(true);
 
 	return S_OK;
 }
@@ -1200,7 +1210,7 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Item(const _wstring& _strLayerTag)
 {
 	// Test(PlayerItem: Glove, Stamp)
 	//CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("Flipping_Glove"), _float3(59.936f, 6.273f, -19.097f));
-	//CPlayerData_Manager::GetInstance()->Spawn_Bulb(LEVEL_STATIC, (LEVEL_ID)m_eLevelID);
+	CPlayerData_Manager::GetInstance()->Spawn_Bulb(LEVEL_STATIC, (LEVEL_ID)m_eLevelID);
 
 
 
@@ -1300,48 +1310,47 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 		return E_FAIL;
 
 
-	//CBeetle::MONSTER_DESC Beetle_Desc;
-	//Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(-6.5f, 18.5f, 44.5f);
-	//Beetle_Desc.isSneakMode = false;
-	//Beetle_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER8_BEETLE_FINAL_1;
+	Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(-6.5f, 18.5f, 44.5f);
+	Beetle_Desc.isSneakMode = false;
+	Beetle_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER8_BEETLE_FINAL_1;
 
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, _strLayerTag, &Beetle_Desc)))
-	//	return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, _strLayerTag, &Beetle_Desc)))
+		return E_FAIL;
 
 
-	//Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(-13.5f, 18.3f, 46.5f);
-	//Beetle_Desc.isSneakMode = false;
-	//Beetle_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER8_BEETLE_FINAL_2;
+	Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(-13.5f, 18.3f, 46.5f);
+	Beetle_Desc.isSneakMode = false;
+	Beetle_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER8_BEETLE_FINAL_2;
 
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, _strLayerTag, &Beetle_Desc)))
-	//	return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, _strLayerTag, &Beetle_Desc)))
+		return E_FAIL;
 
-	//CCrossBow_Soldier::MONSTER_DESC CrossBow_Soldier_Desc;
-	//CrossBow_Soldier_Desc.iCurLevelID = m_eLevelID;
-	//CrossBow_Soldier_Desc.eStartCoord = COORDINATE_3D;
-	//CrossBow_Soldier_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-	//CrossBow_Soldier_Desc.tTransform3DDesc.vInitialPosition = _float3(-15.5f, 0.35f, -23.0f);
+	CCrossBow_Soldier::MONSTER_DESC CrossBow_Soldier_Desc;
+	CrossBow_Soldier_Desc.iCurLevelID = m_eLevelID;
+	CrossBow_Soldier_Desc.eStartCoord = COORDINATE_3D;
+	CrossBow_Soldier_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	CrossBow_Soldier_Desc.tTransform3DDesc.vInitialPosition = _float3(-15.5f, 0.35f, -23.0f);
 
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_CrossBow_Soldier"), m_eLevelID, _strLayerTag, &CrossBow_Soldier_Desc)))
-	//	return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_CrossBow_Soldier"), m_eLevelID, _strLayerTag, &CrossBow_Soldier_Desc)))
+		return E_FAIL;
 
-	//CBomb_Soldier::MONSTER_DESC Bomb_Soldier_Desc;
-	//Bomb_Soldier_Desc.iCurLevelID = m_eLevelID;
-	//Bomb_Soldier_Desc.eStartCoord = COORDINATE_3D;
-	//Bomb_Soldier_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-	//Bomb_Soldier_Desc.tTransform3DDesc.vInitialPosition = _float3(-5.5f, 0.35f, -13.0f);
+	CBomb_Soldier::MONSTER_DESC Bomb_Soldier_Desc;
+	Bomb_Soldier_Desc.iCurLevelID = m_eLevelID;
+	Bomb_Soldier_Desc.eStartCoord = COORDINATE_3D;
+	Bomb_Soldier_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	Bomb_Soldier_Desc.tTransform3DDesc.vInitialPosition = _float3(-5.5f, 0.35f, -13.0f);
 
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Bomb_Soldier"), m_eLevelID, _strLayerTag, &Bomb_Soldier_Desc)))
-	//	return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Bomb_Soldier"), m_eLevelID, _strLayerTag, &Bomb_Soldier_Desc)))
+		return E_FAIL;
 
-	//CButterGrump::MONSTER_DESC Boss_Desc;
-	//Boss_Desc.iCurLevelID = m_eLevelID;
-	//Boss_Desc.eStartCoord = COORDINATE_3D;
-	//Boss_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-	//Boss_Desc.tTransform3DDesc.vInitialPosition = _float3(-3.f, 15.35f, -80.0f);
+	CButterGrump::MONSTER_DESC Boss_Desc;
+	Boss_Desc.iCurLevelID = m_eLevelID;
+	Boss_Desc.eStartCoord = COORDINATE_3D;
+	Boss_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	Boss_Desc.tTransform3DDesc.vInitialPosition = _float3(-3.f, 15.35f, -80.0f);
 
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_ButterGrump"), m_eLevelID, TEXT("Layer_Monster"), &Boss_Desc)))
-	//	return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_ButterGrump"), m_eLevelID, TEXT("Layer_Monster"), &Boss_Desc)))
+		return E_FAIL;
 
 
 
@@ -1978,6 +1987,23 @@ HRESULT CLevel_Chapter_08::Ready_Layer_RoomDoor(const _wstring& _strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Room_Door"),
 		m_eLevelID, _strLayerTag, &Desc)))
 		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Chapter_08::Ready_Layer_Gear(const _wstring& _strLayerTag)
+{
+	{// Chapter_8 FirstGear
+		CGear::GEAR_DESC Desc;
+		Desc.iCurLevelID = LEVEL_CHAPTER_8;
+		Desc.Build_2D_Transform(_float2(-442.f, 180.0f), _float2(0.99f, 1.0f));
+
+		CGameObject* pGameObject = nullptr;
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_Gear"), LEVEL_CHAPTER_8, _strLayerTag, &pGameObject, &Desc)))
+			return E_FAIL;
+
+		CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter8_P1920"), pGameObject);
+	}// Chapter_8 FirstGear
 
 	return S_OK;
 }

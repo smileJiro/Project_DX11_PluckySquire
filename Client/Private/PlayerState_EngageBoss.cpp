@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "PlayerState_EngageBoss.h"
 #include "GameInstance.h"
+#include "Effect_Manager.h"
+#include "ModelObject.h"
 
 CPlayerState_EngageBoss::CPlayerState_EngageBoss(CPlayer* _pOwner)
 	:CPlayerState(_pOwner, CPlayer::ENGAGE_BOSS)
@@ -17,6 +19,7 @@ void CPlayerState_EngageBoss::Enter()
 	m_pOwner->Set_Kinematic(true);
 	m_pOwner->LookDirectionXZ_Kinematic(_vector{ 0.f,0.f,-1.f });
 	m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::CYBERJOT_CINE_DO9_LB_ENGAGE_SH01);
+
 }
 
 void CPlayerState_EngageBoss::Exit()

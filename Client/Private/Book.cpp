@@ -17,6 +17,8 @@
 #include "Effect_Manager.h"
 #include "Section_2D_PlayMap.h"
 #include "TiltSwapCrate.h"
+#include "PlayerData_Manager.h"
+#include "Trigger_Manager.h"
 
 CBook::CBook(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CModelObject(_pDevice, _pContext)
@@ -160,6 +162,12 @@ HRESULT CBook::Initialize(void* _pArg)
 	m_eInteractType = INTERACT_TYPE::NORMAL;
 	m_eInteractKey = KEY::Q;
 
+	if (m_iCurLevelID == LEVEL_CHAPTER_8)
+	{
+		if (FAILED(Add_Component(LEVEL_CHAPTER_8, TEXT("Prototype_Component_Texture_Book_Freezing"),
+			TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
+			return E_FAIL;
+	} 
 	return S_OK;
 }
 
@@ -285,8 +293,6 @@ HRESULT CBook::Render()
 			case Client::CBook::CUR_RIGHT:
 			case Client::CBook::CUR_LEFT:
 		{
-
-
 	#pragma region 현재 페이지인지, 다음 페이지인지 확인하고 SRV 가져오기.
 
 			CSection* pTargetSection = nullptr;
@@ -361,6 +367,21 @@ HRESULT CBook::Render()
 				}
 				else
 					MSG_BOX("Book Mesh Binding Error - Book.cpp");
+
+				// 프리징 상태라면, 현재 페이지에 덧그리기. 0.7 정도로...
+				if (true == m_isFreezing) 
+				{
+					if (CUR_LEFT == i || CUR_RIGHT == i)
+					{
+						_float fBlend = 0.7f;
+						if (FAILED(pShader->Bind_RawValue("g_fBlendingRatio", &fBlend, sizeof(_float))))
+							return E_FAIL;
+
+						m_pTextureCom->Bind_ShaderResource(pShader, "g_BlendingTexture", 0);
+						iShaderPass = (_uint)PASS_VTXANIMMESH::TEXTUREBLENDING;
+					
+					}
+				}
 #pragma endregion
 
 
@@ -670,15 +691,30 @@ HRESULT CBook::Init_RT_RenderPos_Capcher()
 	m_pGameInstance->Add_RenderObject_New(RG_WORLDPOSMAP, PRWORLD_MAINBOOK, this);
 
 	// 따로 찍어야할 섹션을 확인후 레지스터.
-	SECTION_MGR->Register_WorldCapture(L"Chapter2_P0102", this);
-	SECTION_MGR->Register_WorldCapture(L"Chapter4_P0102", this);
-	SECTION_MGR->Register_WorldCapture(L"Chapter4_P0304", this);
-	SECTION_MGR->Register_WorldCapture(L"Chapter4_P0506", this);
-	SECTION_MGR->Register_WorldCapture(L"Chapter5_P0102", this);
-	SECTION_MGR->Register_WorldCapture(L"Chapter6_P1112", this);
-	SECTION_MGR->Register_WorldCapture(L"Chapter6_P1314", this);
-	SECTION_MGR->Register_WorldCapture(L"Chapter8_P2122", this);
-	SECTION_MGR->Register_WorldCapture(L"Chapter8_P2324", this);
+	
+	switch (m_iCurLevelID)
+	{
+	case Client::LEVEL_CHAPTER_2:
+		SECTION_MGR->Register_WorldCapture(L"Chapter2_P0102", this);
+		break;
+	case Client::LEVEL_CHAPTER_4:
+		SECTION_MGR->Register_WorldCapture(L"Chapter4_P0102", this);
+		SECTION_MGR->Register_WorldCapture(L"Chapter4_P0304", this);
+		SECTION_MGR->Register_WorldCapture(L"Chapter4_P0506", this);
+		break;
+	case Client::LEVEL_CHAPTER_6:
+		SECTION_MGR->Register_WorldCapture(L"Chapter5_P0102", this);
+		SECTION_MGR->Register_WorldCapture(L"Chapter6_P1112", this);
+		SECTION_MGR->Register_WorldCapture(L"Chapter6_P1314", this);
+		break;
+	case Client::LEVEL_CHAPTER_8:
+		SECTION_MGR->Register_WorldCapture(L"Chapter8_P2122", this);
+		SECTION_MGR->Register_WorldCapture(L"Chapter8_P2324", this);
+		break;
+	default:
+		break;
+	}
+
 
 	return S_OK;
 }
@@ -785,9 +821,21 @@ void CBook::Interact(CPlayer* _pUser)
 
 _bool CBook::Is_Interactable(CPlayer* _pUser)
 {
-	return (m_isPlayerAround || m_isPlayerAbove) 
-		&& (false == _pUser->Is_CarryingObject())
-		&& COORDINATE_3D == _pUser->Get_CurCoord();
+	_bool bPossible = (false == _pUser->Is_CarryingObject())&& COORDINATE_3D == _pUser->Get_CurCoord();
+
+	CPlayerData_Manager* pPDM = CPlayerData_Manager::GetInstance();
+	if (m_isPlayerAround)
+	{
+		//bPossible &= (pPDM->Is_Own(CPlayerData_Manager::FLIPPING_GLOVE) || pPDM->Is_Own(CPlayerData_Manager::TILTING_GLOVE));
+
+	}
+	else if (m_isPlayerAbove)
+	{
+		//bPossible &= (pPDM->Is_Own(CPlayerData_Manager::STOP_STAMP) || pPDM->Is_Own(CPlayerData_Manager::BOMB_STAMP));
+	}
+
+
+	return bPossible;
 }
 
 _float CBook::Get_Distance(COORDINATE _eCoord, CPlayer* _pUser)
@@ -979,6 +1027,16 @@ void CBook::Start_DropBook()
 	pActor->Freeze_Rotation(true, true, false);
 	pActor->Freeze_Position(false, false, false);
 
+
+	_vector vForcDir = { 0.f,-1.f,0.f };
+	_float fForce = 10.f;
+	_vector vForce = vForcDir * fForce;
+	_vector vTorque = XMVector3Cross(vForce, { 10.f,0.f,0.f });
+	CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
+	_float3 vTorq; XMStoreFloat3(&vTorq, vTorque);
+	pDynamicActor->Add_Torque(vTorq);
+
+	m_isDroppable = false;
 }
 
 void CBook::End_DropBook()
@@ -990,6 +1048,12 @@ void CBook::End_DropBook()
 	pActor->Set_Gravity(false);
 	pActor->Freeze_Rotation(true, true, true);
 	pActor->Freeze_Position(false, false, false);
+}
+
+void CBook::Set_Freezing(_bool _isFreezing)
+{
+	m_isFreezing = _isFreezing;
+
 }
 
 //void CBook::Calc_Page3DWorldMinMax()
@@ -1070,6 +1134,7 @@ CGameObject* CBook::Clone(void* _pArg)
 
 void CBook::Free()
 {
+	Safe_Release(m_pTextureCom);
 	Safe_Release(m_pAnimEventGenerator);
 	__super::Free();
 }

@@ -45,6 +45,7 @@ public:
 	}
 
 	HRESULT								ChangeDialogue(_wstring _NPCName, _wstring _DialogueID);
+	HRESULT								Remove_SocialNPC(_wstring _NPCName);
 
 
 public:

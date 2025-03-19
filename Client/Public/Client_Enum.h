@@ -32,11 +32,11 @@ namespace Client
 		PR3D_COMBINE =				60, // ToneMapping
 
 		PR3D_BLEND =				70,
-		PR3D_TRAIL =				72,
 
 		PR3D_EFFECT =				80,
 
-		PR3D_PARTICLE =				90,
+		PR3D_TRAIL =				90,
+		PR3D_PARTICLE =				92,
 
 		PR3D_AFTERPARTICLE = 100,
 

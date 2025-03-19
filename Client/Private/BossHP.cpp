@@ -16,8 +16,6 @@ CBossHP::CBossHP(const CBossHP& _Prototype)
 {
 }
 
-
-
 HRESULT CBossHP::Initialize_Prototype()
 {
 	return S_OK;
@@ -56,7 +54,6 @@ void CBossHP::Update(_float _fTimeDelta)
 			return;
 
 		m_isNextphase = true;
-
 		m_pBossHPBar->Set_BossPhase();
 	}
 	else if (false == m_isDeadPhase && BOSS_STATE::DEAD == (BOSS_STATE)m_pButterGtump->Get_State())
@@ -67,7 +64,6 @@ void CBossHP::Update(_float _fTimeDelta)
 		m_isDeadPhase = true;
 		m_pBossHPBar->Set_BossPhase();
 	}
-		
 }
 
 void CBossHP::Late_Update(_float _fTimeDelta)
@@ -78,7 +74,6 @@ void CBossHP::Late_Update(_float _fTimeDelta)
 
 HRESULT CBossHP::Render()
 {
-
 	return S_OK;
 }
 
@@ -86,7 +81,6 @@ HRESULT CBossHP::Render()
 
 HRESULT CBossHP::Ready_Components()
 {
-
 	return S_OK;
 }
 
