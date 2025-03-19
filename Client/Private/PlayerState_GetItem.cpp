@@ -30,25 +30,33 @@ void CPlayerState_GetItem::Update(_float _fTimeDelta)
 	if (COORDINATE_2D == eCoord)
 	{
 		_uint iCurAnimIdx = m_pFX->Get_CurrentAnimIndex();
-		_float fProgress = m_pFX->Get_CurrentAnimationProgress();
 
-		if (0 == iCurAnimIdx)
+
+		if (1 == iCurAnimIdx)
 		{
-			(fProgress - m_fSizeUpStartProgress) / (m_fSizeUpENdProgress - m_fSizeUpStartProgress);
-			_float fRatio = fProgress / m_fSizeUpENdProgress;
-			_float fSize = max(0.1f, fProgress) * 250.f;
-			m_pItemImg->Set_Scale(_float3{ fSize ,fSize ,fSize });
-		}
-		else
-			if (2 == iCurAnimIdx)
+			if (false == m_bSizedUp)
 			{
-				if (0.5f <= fProgress)
+				m_fSizeUpTimeAcc += _fTimeDelta;
+				_float fRatio = m_fSizeUpTimeAcc / m_fSizeUpTime;
+				_float fSize = fRatio * 250.f;
+				m_pItemImg->Set_Scale(_float3{ fSize ,fSize ,fSize });
+				if (m_fSizeUpTimeAcc >= m_fSizeUpTime)
 				{
-					m_pItemImg->Set_Active(false);
-
+					m_bSizedUp = true;
 				}
+			}
+
+		}
+		else if (2 == iCurAnimIdx)
+		{
+			_float fProgress = m_pFX->Get_CurrentAnimationProgress();
+			if (0.6f <= fProgress)
+			{
+				m_pItemImg->Set_Active(false);
 
 			}
+
+		}
 
 	}
 
