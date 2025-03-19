@@ -2220,7 +2220,7 @@
 		},
 		{
 			"id": "Chapter8_Meet_Humgrump_1",
-			"Section": "Chapter6_P2324",
+			"Section": "Chapter8_P2324",
 			"isChangeTalker": true,
 			"lines": [
 				{
@@ -2271,7 +2271,7 @@
 		},
 		{
 			"id": "Chapter8_Meet_Humgrump_2",
-			"Section": "Chapter6_P2324",
+			"Section": "Chapter8_P2324",
 			"isChangeTalker": true,
 			"lines": [
 				{
@@ -2419,7 +2419,14 @@
 					"Red": 10,
 					"Green": 10,
 					"Blue": 10
-				},
+				}
+			]
+		},
+		{
+			"id": "Chapter8_Meet_Humgrump_3",
+			"Section": "Chapter8_P2324",
+			"isChangeTalker": true,
+			"lines": [
 				{
 					"Portrait": 0,
 					"Talker": "험그럼프",
@@ -2531,6 +2538,462 @@
 					"Red": 10,
 					"Green": 10,
 					"Blue": 10
+				}
+			]
+		},
+		{
+			"id": "Chapter8_Bubble_Humgrump",
+			"Section": "Chapter8_P2324",
+			"isChangeTalker": true,
+			"lines": [
+				{
+					"Portrait": 0,
+					"Talker": "험그럼프",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
+					"TalkerIndex": 0,
+					"FontColorR": 255.0,
+					"FontColorG": 255.0,
+					"FontColorB": 0.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "지금까지는 장난에 불과했다.",
+					"Red": 10,
+					"Green": 10,
+					"Blue": 10
+				},
+				{
+					"Portrait": 0,
+					"Talker": "험그럼프",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
+					"TalkerIndex": 0,
+					"FontColorR": 255.0,
+					"FontColorG": 255.0,
+					"FontColorB": 0.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "이제 진지하게 상대해 주마.",
+					"Red": 10,
+					"Green": 10,
+					"Blue": 10
+				}
+			]
+		},
+		{
+			"id": "Chapter8_Disgusting",
+			"Section": "Chapter8_P2324",
+			"isChangeTalker": true,
+			"lines": [
+				{
+					"Portrait": 0,
+					"Talker": "바이올렛",
+					"BG": 13,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
+					"TalkerIndex": 0,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "우웩, 징그러워.",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				}
+			]
+		},
+		{
+			"id": "Chapter8_Humgrump_Pupa_1",
+			"Section": "Chapter8_P2324",
+			"isChangeTalker": true,
+			"lines": [
+				{
+					"Portrait": 0,
+					"Talker": "험그럼프",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"OffsetX": 0.0,
+					"OffsetY": 400.0,
+					"TalkerIndex": 0,
+					"FontColorR": 255.0,
+					"FontColorG": 255.0,
+					"FontColorB": 0.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "게임은 여기서 끝이다.",
+					"Red": 10,
+					"Green": 10,
+					"Blue": 10
+				},
+				{
+					"Portrait": 0,
+					"Talker": "험그럼프",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"OffsetX": 0.0,
+					"OffsetY": 400.0,
+					"TalkerIndex": 0,
+					"FontColorR": 255.0,
+					"FontColorG": 255.0,
+					"FontColorB": 0.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "변신이 곧 완료될 거야.",
+					"Red": 10,
+					"Green": 10,
+					"Blue": 10
+				},
+				{
+					"Portrait": 0,
+					"Talker": "험그럼프",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"OffsetX": 0.0,
+					"OffsetY": 400.0,
+					"TalkerIndex": 0,
+					"FontColorR": 255.0,
+					"FontColorG": 255.0,
+					"FontColorB": 0.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "이제는... 으윽... 멈출 수 없다.",
+					"Red": 10,
+					"Green": 10,
+					"Blue": 10
+				},
+				{
+					"Portrait": 0,
+					"Talker": "험그럼프",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"OffsetX": 0.0,
+					"OffsetY": 400.0,
+					"TalkerIndex": 0,
+					"FontColorR": 255.0,
+					"FontColorG": 255.0,
+					"FontColorB": 0.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "바보 같은 책따위 애초에 내겐 너무 좁았어.",
+					"Red": 10,
+					"Green": 10,
+					"Blue": 10
+				}
+			]
+		},
+		{
+			"id": "Chapter8_Humgrump_Pupa_2",
+			"Section": "Chapter8_P2324",
+			"isChangeTalker": true,
+			"lines": [
+				{
+					"Portrait": 0,
+					"Talker": "험그럼프",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"OffsetX": 0.0,
+					"OffsetY": 400.0,
+					"TalkerIndex": 0,
+					"FontColorR": 255.0,
+					"FontColorG": 255.0,
+					"FontColorB": 0.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "나에게는 더 원대한 계획이 있다...",
+					"Red": 10,
+					"Green": 10,
+					"Blue": 10
+				},
+				{
+					"Portrait": 0,
+					"Talker": "험그럼프",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"OffsetX": 0.0,
+					"OffsetY": 400.0,
+					"TalkerIndex": 0,
+					"FontColorR": 255.0,
+					"FontColorG": 255.0,
+					"FontColorB": 0.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "바깥... 으그르르... 세상을...",
+					"Red": 10,
+					"Green": 10,
+					"Blue": 10
+				},
+				{
+					"Portrait": 0,
+					"Talker": "험그럼프",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"OffsetX": 0.0,
+					"OffsetY": 400.0,
+					"TalkerIndex": 0,
+					"FontColorR": 255.0,
+					"FontColorG": 255.0,
+					"FontColorB": 0.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "내 것으로... 만...들 테다...",
+					"Red": 10,
+					"Green": 10,
+					"Blue": 10
+				},
+				{
+					"Portrait": 0,
+					"Talker": "험그럼프",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"OffsetX": 0.0,
+					"OffsetY": 400.0,
+					"TalkerIndex": 0,
+					"FontColorR": 255.0,
+					"FontColorG": 255.0,
+					"FontColorB": 0.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "모두 내 것으로 만들어서... 이따위 책은 태워 버리면 그만이지...",
+					"Red": 10,
+					"Green": 10,
+					"Blue": 10
+				},
+				{
+					"Portrait": 0,
+					"Talker": "험그럼프",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"OffsetX": 0.0,
+					"OffsetY": 400.0,
+					"TalkerIndex": 0,
+					"FontColorR": 255.0,
+					"FontColorG": 255.0,
+					"FontColorB": 0.0,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "때가 됐다아아아......",
+					"Red": 10,
+					"Green": 10,
+					"Blue": 10
+				}
+			]
+		},
+		{
+			"id": "Chapter8_Going_To_Humgrump",
+			"Section": "Chapter8_P2324",
+			"isChangeTalker": true,
+			"lines": [
+				{
+					"Portrait": 0,
+					"Talker": "바이올렛",
+					"BG": 13,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
+					"TalkerIndex": 0,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "험그럼프가 도망쳤어!",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 0,
+					"Talker": "바이올렛",
+					"BG": 13,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
+					"TalkerIndex": 0,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "그것도 지팡이를 들고...",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 0,
+					"Talker": "바이올렛",
+					"BG": 13,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
+					"TalkerIndex": 0,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "...언제라도 터무니없는 일을 저지를 수 있어.",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 0,
+					"Talker": "바이올렛",
+					"BG": 13,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
+					"TalkerIndex": 0,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "저트야, 아무래도 네가 나설 차례인 것 같아.",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 0,
+					"Talker": "바이올렛",
+					"BG": 13,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
+					"TalkerIndex": 0,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "책 바깥으로 나가서 막아야 해!",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 0,
+					"Talker": "바이올렛",
+					"BG": 13,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"isLineEnter": true,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
+					"TalkerIndex": 0,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "이 책의 운명과 바깥 세상의 운명이 달렸어. 행운을 빌게!",
+					"Red": 161,
+					"Green": 210,
+					"Blue": 234
+				},
+				{
+					"Portrait": 0,
+					"Talker": "찍찍이",
+					"BG": 0,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
+					"TalkerIndex": 1,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "우린 널 믿어. 넌 할 수 있어.",
+					"Red": 238,
+					"Green": 230,
+					"Blue": 134
+				},
+				{
+					"Portrait": 1,
+					"Talker": "스래쉬",
+					"BG": 2,
+					"location": 1,
+					"is2D": true,
+					"isPortrait": false,
+					"OffsetX": 0.0,
+					"OffsetY": 70.0,
+					"TalkerIndex": 2,
+					"animation": {
+						"duration": 1000,
+						"speed": 500
+					},
+					"text": "트라르그가 함께하길!",
+					"Red": 0,
+					"Green": 0,
+					"Blue": 0
 				}
 			]
 		}
