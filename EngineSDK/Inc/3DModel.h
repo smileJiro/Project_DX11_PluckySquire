@@ -63,7 +63,7 @@ public:
 	const _float4x4*		Get_BoneMatrix(const _char* pBoneName) const;
 	class CBone*			Get_Bone(const _char* pBoneName) const;
 	const vector<CMesh*>&	Get_Meshes() { return m_Meshes; }
-
+	_bool					Is_AnimTransition() { return m_iCurrentAnimIndex != m_iPrevAnimIndex; }
 	//Get
 	virtual _uint			Get_AnimCount() override;
 	virtual _uint			Get_CurrentAnimIndex() override { return m_iCurrentAnimIndex; }
@@ -77,7 +77,7 @@ public:
 	virtual void			Switch_Reverse(_uint iIdx, _bool _bReverse = false) override;
 	virtual void			To_NextAnimation() override;
 	virtual void			Set_AnimSpeedMagnifier(_uint iAnimIndex, _float _fMag) override;
-	_bool Is_AnimTransition() { return m_iCurrentAnimIndex != m_iPrevAnimIndex; }
+
 	// Material Get, Set 
 
 	// Get
