@@ -256,49 +256,49 @@ HRESULT CNPC_Social::Render()
 
 void CNPC_Social::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-	//CPlayer* pPlayer = dynamic_cast<CPlayer*>(_pOtherObject);
-	//
-	//if (nullptr == pPlayer)
-	//	return;
-	//
-	//if (TEXT("Chapter_1_Humgrump") == this->Get_NPCName() && false == this->is_DisplayHumgrump())
-	//{
-	//	CNPC_Social* pSocial = CNPC_Manager::GetInstance()->Find_SocialNPC(TEXT("Chapter_1_Humgrump"));
-	//
-	//	
-	//	pPlayer->Set_BlockPlayerInput(true);
-	//	
-	//
-	//}
+	CPlayer* pPlayer = dynamic_cast<CPlayer*>(_pOtherObject);
+	
+	if (nullptr == pPlayer)
+		return;
+	
+	if (TEXT("Chapter_1_Humgrump") == this->Get_NPCName() && false == this->is_DisplayHumgrump())
+	{
+		CNPC_Social* pSocial = CNPC_Manager::GetInstance()->Find_SocialNPC(TEXT("Chapter_1_Humgrump"));
+	
+		
+		pPlayer->Set_BlockPlayerInput(true);
+		
+	
+	}
 }
 
 void CNPC_Social::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
 
-	//// 험그럼프 전용
-	//CPlayer* pPlayer = dynamic_cast<CPlayer*>(_pOtherObject);
-	//
-	//if (nullptr == pPlayer)
-	//	return;
-	//
-	//if (TEXT("Chapter_1_Humgrump") == this->Get_NPCName() && false == this->is_DisplayHumgrump())
-	//{
-	//	CNPC_Social* pSocial = CNPC_Manager::GetInstance()->Find_SocialNPC(TEXT("Chapter_1_Humgrump"));
-	//
-	//	
-	//
-	//	if (1.5f >= m_fWaitTimeHumgrumpDialog)
-	//	{
-	//		m_fWaitTimeHumgrumpDialog += 0.01f;
-	//	}
-	//	else
-	//	{
-	//		if (false == this->Get_WaitHugrumpDialog())
-	//		Throw_Dialogue();
-	//		pSocial->Set_WaitHumgrumpDialog(true);
-	//	}
-	//
-	//}
+	// 험그럼프 전용
+	CPlayer* pPlayer = dynamic_cast<CPlayer*>(_pOtherObject);
+	
+	if (nullptr == pPlayer)
+		return;
+	
+	if (TEXT("Chapter_1_Humgrump") == this->Get_NPCName() && false == this->is_DisplayHumgrump())
+	{
+		CNPC_Social* pSocial = CNPC_Manager::GetInstance()->Find_SocialNPC(TEXT("Chapter_1_Humgrump"));
+	
+		
+	
+		if (1.5f >= m_fWaitTimeHumgrumpDialog)
+		{
+			m_fWaitTimeHumgrumpDialog += 0.01f;
+		}
+		else
+		{
+			if (false == this->Get_WaitHugrumpDialog())
+			Throw_Dialogue();
+			pSocial->Set_WaitHumgrumpDialog(true);
+		}
+	
+	}
 }
 
 void CNPC_Social::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
