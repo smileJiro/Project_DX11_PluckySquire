@@ -6,6 +6,8 @@
 #include "Actor_Dynamic.h"
 #include "Effect2D_Manager.h"
 #include "Effect_Manager.h"
+#include "Effect_System.h"
+#include "GameInstance.h"
 
 CBomb::CBomb(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CCarriableObject(_pDevice, _pContext)
@@ -121,6 +123,24 @@ HRESULT CBomb::Initialize(void* _pArg)
 	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Circle"),
 		TEXT("Com_2DExplisionCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[2]), &CircleDesc)))
 		return E_FAIL;
+	
+	// Fuse Effect
+	CEffect_System::EFFECT_SYSTEM_DESC EffectDesc = {};
+	EffectDesc.eStartCoord = COORDINATE_3D;
+	EffectDesc.isCoordChangeEnable = false;
+	EffectDesc.iSpriteShaderLevel = LEVEL_STATIC;
+	EffectDesc.szSpriteShaderTags = L"Prototype_Component_Shader_VtxPointInstance";
+	EffectDesc.iEffectShaderLevel = LEVEL_STATIC;
+	EffectDesc.szEffectShaderTags = L"Prototype_Component_Shader_VtxMeshEffect";
+	EffectDesc.szSpriteComputeShaderTag = L"Prototype_Component_Compute_Shader_SpriteInstance";
+	
+	m_pFuseEffect = static_cast<CEffect_System*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Fuse.json"), &EffectDesc));
+
+	if (nullptr != m_pFuseEffect)
+	{
+		m_pFuseEffect->Set_Active(false);
+		m_pFuseEffect->Set_SpawnMatrix(&m_WorldMatrices[COORDINATE_3D]);
+	}
 
 
 	Get_ActorCom()->Set_ShapeEnable((_uint)SHAPE_USE::SHAPE_TRIGER, false);
@@ -169,11 +189,17 @@ void CBomb::Update(_float _fTimeDelta)
 {
 	Action_Parabola(_fTimeDelta);
 	__super::Update(_fTimeDelta);
+	
+	if (nullptr != m_pFuseEffect)
+		m_pFuseEffect->Update(_fTimeDelta);
 }
 
 void CBomb::Late_Update(_float _fTimeDelta)
 {
 	__super::Late_Update(_fTimeDelta);
+
+	if (nullptr != m_pFuseEffect)
+		m_pFuseEffect->Late_Update(_fTimeDelta);
 }
 
 HRESULT CBomb::Render()
@@ -331,7 +357,13 @@ void CBomb::Active_OnEnable()
 	//pDynamic->Update(0.f);
 	//pDynamic->Set_Dynamic();
 
-	CEffect_Manager::GetInstance()->Active_Effect(TEXT("Fuse"), true, &m_WorldMatrices[COORDINATE_3D]);
+	//CEffect_Manager::GetInstance()->Active_Effect(TEXT("Fuse"), true, &m_WorldMatrices[COORDINATE_3D]);
+
+	if (nullptr != m_pFuseEffect)
+		m_pFuseEffect->Active_Effect(true);
+
+	//m_pFuseEffect->Inactive_All();
+	//m_pFuseEffect->Stop_Spawn(0.5f);
 
 	m_p2DColliderComs[0]->Set_Active(true);
 	m_p2DColliderComs[2]->Set_Active(false);
@@ -421,5 +453,7 @@ CGameObject* CBomb::Clone(void* _pArg)
 
 void CBomb::Free()
 {
+	Safe_Release(m_pFuseEffect);
+
 	__super::Free();
 }
