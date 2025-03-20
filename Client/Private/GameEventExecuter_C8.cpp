@@ -40,6 +40,8 @@
 #include "Logo_ColorObject.h"
 #include "Formation_Manager.h"
 #include "Event_Manager.h"
+#include "Zip_C8.h"
+#include "Dialog_Manager.h"
 
 CGameEventExecuter_C8::CGameEventExecuter_C8(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CGameEventExecuter(_pDevice, _pContext)
@@ -136,6 +138,10 @@ void CGameEventExecuter_C8::Update(_float _fTimeDelta)
 			break;		
 		case Client::CTrigger_Manager::CHAPTER8_2D_IN:
 			Chapter8_2D_In(_fTimeDelta);
+			break;
+
+		case Client::CTrigger_Manager::CHAPTER8_TRANSFORMZIP:
+			Chapter8_TransformZip(_fTimeDelta);
 			break;
 		default:
 			break;
@@ -2293,6 +2299,74 @@ void CGameEventExecuter_C8::Chapter8_2D_In(_float _fTimeDelta)
 		pPlayer->Set_BlockPlayerInput(false);
 		GameEvent_End();
 	}
+}
+
+void CGameEventExecuter_C8::Chapter8_TransformZip(_float _fTimeDelta)
+{
+	m_fTimer += _fTimeDelta;
+	CPlayer* pPlayer = Get_Player();
+	CZip_C8* pZip = static_cast<CZip_C8*>( m_pGameInstance->Get_GameObject_Ptr(m_iCurLevelID,TEXT("Layer_Zip"), 0));
+	if (Step_Check(STEP_0))
+	{
+		if (Is_Start())
+		{
+			AUTOMOVE_COMMAND tCommand{};
+			tCommand.eType = AUTOMOVE_TYPE::MOVE_TO;
+			tCommand.iAnimIndex = (_uint)CPlayer::ANIM_STATE_2D::PLAYER_RUN_SWORD_RIGHT;
+			tCommand.vTarget =  { -300.f, - 50.f, 0.f };
+			pPlayer->Add_AutoMoveCommand(tCommand);
+
+			tCommand.eType = AUTOMOVE_TYPE::LOOK_DIRECTION;
+			tCommand.iAnimIndex = (_uint)CPlayer::ANIM_STATE_2D::PLAYER_IDLE_SWORD_RIGHT;
+			pPlayer->Add_AutoMoveCommand(tCommand);
+
+			pPlayer->Start_AutoMove(true);
+		}
+		if(false == pPlayer->Is_AutoMoving())
+			Next_Step(true);
+
+	}
+	else if (Step_Check(STEP_1))
+	{
+		//DIALOG
+		CDialog_Manager* pDM = CDialog_Manager::GetInstance();
+		if (Is_Start())
+		{
+			CCamera_Manager::GetInstance()->Change_CameraTarget(pZip, 1.f);
+			pDM->Set_DialogId(TEXT("Chapter8_MeetZip"));
+			//Uimgr->Set_DialogId(m_strDialogueIndex, m_strCurSecion);
+
+			_vector vPos = pZip->Get_FinalPosition();
+			_float3 vPosition; XMStoreFloat3(&vPosition, vPos);
+			pDM->Set_DialoguePos(vPosition);
+			//Uimgr->Set_DialoguePos(vPos);
+			pDM->Set_DisPlayDialogue(true);
+		}
+
+		if (false == pDM->Get_DisPlayDialogue())
+		{
+			Next_Step(true);
+		}
+
+	}
+	else if(Step_Check(STEP_2))
+	{
+
+		if (Is_Start())
+		{
+
+			pPlayer->Set_State(CPlayer::STATE::TRANSFORM_IN);
+			pZip->Set_ProgState(CZip_C8::ATTACH);
+		}
+		if (false == pPlayer->Get_Body()->Is_DuringAnimation())
+			Next_Step(true);
+	}
+	else
+	{
+		GameEvent_End();
+
+	}
+
 }
 
 _bool CGameEventExecuter_C8::Change_PlayMap(_float _fStartTime)

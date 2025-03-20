@@ -3377,6 +3377,98 @@
           "Blue": 0
         }
       ]
+    },
+    {
+      "id": "Chapter8_MeetZip",
+      "Section": "Chapter8_SKSP_11",
+      "isChangeTalker": false,
+      "lines": [
+        {
+          "Portrait": 0,
+          "Talker": "찌릿",
+          "BG": 23,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "저트!",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 0,
+          "Talker": "찌릿",
+          "BG": 23,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "저 끔찍한 거대 나비는 뭐야?",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 0,
+          "Talker": "찌릿",
+          "BG": 23,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "뭐가 됐든 신나긴 하지만 말이야!",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 0,
+          "Talker": "찌릿",
+          "BG": 23,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "혹시 또 은하계를 구할 때가 된 거야?",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 0,
+          "Talker": "찌릿",
+          "BG": 23,
+          "location": 0,
+          "is2D": false,
+          "isPortrait": false,
+          "isLineEnter": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "그렇다면... 어디 해 보자고!!!",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        }
+      ]
     }
   ]
 }
