@@ -4730,12 +4730,12 @@
   "ColliderPropertis": {
    "ColliderInfo": {
     "Collider_Extent": {
-     "X": 430.0,
-     "Y": 350.0
+     "X": 420.0,
+     "Y": 257.0
     },
     "Collider_Offset_Pos": {
-     "X": 0.0,
-     "Y": -50.0
+     "X": -15.0,
+     "Y": 12.0
     }
    },
    "ColliderType": 1

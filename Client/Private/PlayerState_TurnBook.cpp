@@ -28,15 +28,15 @@ void CPlayerState_TurnBook::Update(_float _fTimeDelta)
 			m_pBook->Switch_Animation(CBook::IDLE);
 			m_pBook->Set_PlayingAnim(true);
 		}
-			
+
 		m_pOwner->Set_State(CPlayer::IDLE);
 		return;
 	}
 
-	if(IDLE == m_eBookState)
+	if (IDLE == m_eBookState)
 	{
 		m_fTiltIdleTimeAcc += _fTimeDelta;
-		
+
 		if (CBook::CLOSED_IDLE == iBookAnim &&
 			tKeyResult.bInputStates[PLAYER_INPUT_TURNBOOK_LEFT]) {
 			Set_State(BOOK_STATE::OPEN_BOOK);
@@ -45,7 +45,7 @@ void CPlayerState_TurnBook::Update(_float _fTimeDelta)
 			Set_State(BOOK_STATE::TURN_LEFT);
 		else if (tKeyResult.bInputStates[PLAYER_INPUT_TURNBOOK_RIGHT])
 			Set_State(BOOK_STATE::TURN_RIGHT);
-		else if(m_fTiltIdleTimeAcc >= m_fTiltIdleTime)
+		else if (m_fTiltIdleTimeAcc >= m_fTiltIdleTime)
 		{
 			if (tKeyResult.bInputStates[PLAYER_INPUT_TILTBOOK_LEFT])
 			{
@@ -113,8 +113,8 @@ void CPlayerState_TurnBook::Update(_float _fTimeDelta)
 			{
 				m_pBook->Set_ReverseAnimation(true);
 				//넘기는 중에 다 펼쳐지면? 
-				if (false == m_pBook->Is_DuringAnimation() 
-					&&  0.2f >=m_pBook->Get_CurrentAnimationProgress())
+				if (false == m_pBook->Is_DuringAnimation()
+					&& 0.2f >= m_pBook->Get_CurrentAnimationProgress())
 				{
 					Set_State(IDLE);
 				}
@@ -164,34 +164,31 @@ void CPlayerState_TurnBook::Update(_float _fTimeDelta)
 				if (m_fSlidProgress <= m_pBook->Get_CurrentAnimationProgress())
 					m_pBook->SlideObjects_RToL();
 				//기울이는 중에 완전히 덮히면?
-				if (m_pBook->Is_DuringAnimation() &&  1.f <= m_pBook->Get_CurrentAnimationProgress())
+				if (m_pBook->Is_DuringAnimation() && 1.f <= m_pBook->Get_CurrentAnimationProgress())
 					Set_State(CLOSED_LEFT);
-			}
-		}
-		else if (OPEN_BOOK == m_eBookState) {
-			if (false == m_pBook->Is_DuringAnimation()) {
-				
-				if (m_pBook->Is_Freezing())
-				{
-					CTrigger_Manager::GetInstance()->Register_TriggerEvent(L"Chapter8_BookFreezing_Off", 0);
-					//m_pBook->Start_FreezingOff();
-				}
-
-				
-				Set_State(IDLE);
 			}
 		}
 		//아무 입력도 없으면?
 		else
 			m_pBook->Set_PlayingAnim(false);
 	}
+	else if (OPEN_BOOK == m_eBookState) {
+		if (false == m_pBook->Is_DuringAnimation()) {
 
-	
+			if (m_pBook->Is_Freezing())
+			{
+				CTrigger_Manager::GetInstance()->Register_TriggerEvent(L"Chapter8_BookFreezing_Off", 0);
+			}
+			//m_pOwner->Set_State(CPlayer::IDLE);
+		}
+	}
+
+
 }
 
 void CPlayerState_TurnBook::Enter()
 {
-	m_pBook = dynamic_cast<CBook*>( m_pOwner->Get_InteractableObject());
+	m_pBook = dynamic_cast<CBook*>(m_pOwner->Get_InteractableObject());
 	if (nullptr == m_pBook)
 	{
 		m_pOwner->Set_State(CPlayer::IDLE);
@@ -221,10 +218,10 @@ void CPlayerState_TurnBook::Exit()
 
 	if (false == m_isDropp)
 	{
-	CCamera_Manager::GetInstance()->Change_CameraTarget(m_pOwner);
-	CCamera_Manager::GetInstance()->Start_ResetArm_To_SettingPoint(CCamera_Manager::TARGET, 1.f);
+		CCamera_Manager::GetInstance()->Change_CameraTarget(m_pOwner);
+		CCamera_Manager::GetInstance()->Start_ResetArm_To_SettingPoint(CCamera_Manager::TARGET, 1.f);
 	}
-	else 
+	else
 	{
 		m_isDropp = true;
 	}
@@ -236,7 +233,7 @@ void CPlayerState_TurnBook::Exit()
 
 void CPlayerState_TurnBook::Switch_PlayerAnimation(_bool _bLeft)
 {
-	m_pOwner->Switch_Animation(_bLeft ? (_uint)CPlayer::ANIM_STATE_3D::LATCH_TURN_RIGHT :(_uint)CPlayer::ANIM_STATE_3D::LATCH_TURN_LEFT);
+	m_pOwner->Switch_Animation(_bLeft ? (_uint)CPlayer::ANIM_STATE_3D::LATCH_TURN_RIGHT : (_uint)CPlayer::ANIM_STATE_3D::LATCH_TURN_LEFT);
 
 }
 
@@ -246,7 +243,7 @@ void CPlayerState_TurnBook::On_StateChange(BOOK_STATE _eNewState)
 	BOOK_TRANSFORM eTransform = ConvertToTransform(_eNewState);
 	switch (eTransform)
 	{
-	//====================왼쪽으로~===================
+		//====================왼쪽으로~===================
 	case Client::CPlayerState_TurnBook::TRANSFORM_LEFT:
 	{
 		Switch_PlayerAnimation(!m_bUpside);
@@ -311,23 +308,23 @@ void CPlayerState_TurnBook::On_StateChange(BOOK_STATE _eNewState)
 			m_pBook->Set_ReverseAnimation(false);
 			m_pBook->Switch_Animation(CBook::OPEN_TO_FLAT);
 		}
-			break;
+		break;
 		default:
 		{
 			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_TURN_MID);
 			m_pBook->Switch_Animation(CBook::IDLE);
 			m_fTiltIdleTimeAcc = 0.f;
 		}
-			break;
+		break;
 		}
-		
+
 		break;
 	}
 	default:
 		break;
 	}
 
-	
+
 }
 
 void CPlayerState_TurnBook::Set_State(BOOK_STATE _eNewState)

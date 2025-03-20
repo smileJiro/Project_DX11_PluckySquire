@@ -740,6 +740,7 @@
           "OffsetY": 0.0,
           "is2D": true,
           "isPortrait": false,
+		  "isLineEnter": true,
           "animation": {
             "duration": 1000,
             "speed": 500
@@ -829,6 +830,7 @@
           "location": 1,
           "is2D": true,
           "isPortrait": true,
+		  "isLineEnter": true,
           "OffsetX": 0.0,
           "OffsetY": 50.0,
           "animation": {
@@ -1210,7 +1212,7 @@
           "Talker": "찍찍이",
           "BG": 0,
           "location": 0,
-          "OffsetX": 0.0,
+          "OffsetX": 100.0,
           "OffsetY": -40.0,
           "is2D": true,
           "isPortrait": false,
@@ -1228,7 +1230,7 @@
           "Talker": "찍찍이",
           "BG": 0,
           "location": 0,
-          "OffsetX": 0.0,
+          "OffsetX": 100.0,
           "OffsetY": -40.0,
           "is2D": true,
           "isLineEnter": true,
@@ -1247,7 +1249,7 @@
           "Talker": "찍찍이",
           "BG": 0,
           "location": 0,
-          "OffsetX": 0.0,
+          "OffsetX": 100.0,
           "OffsetY": -40.0,
           "is2D": true,
           "isLineEnter": true,
@@ -1267,7 +1269,7 @@
           "BG": 13,
           "location": 0,
           "is2D": true,
-          "OffsetX": 0.0,
+          "OffsetX": 100.0,
           "OffsetY": -40.0,
           "isPortrait": true,
           "isLineEnter": true,
@@ -1283,6 +1285,110 @@
       ]
     },
     {
+      "id": "Chapter8_2D_In",
+      "isChangeTalker": true,
+      "Section": "Chapter8_P1920",
+      "lines": [
+        {
+          "Portrait": 0,
+          "Talker": "찍찍이",
+          "TalkerIndex": 0,
+          "BG": 0,
+          "location": 0,
+          "OffsetX": 100.0,
+          "OffsetY": -40.0,
+          "is2D": true,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "해냈구나! 장비를 되찾았어!",
+          "Red": 254,
+          "Green": 234,
+          "Blue": 157
+        },
+        {
+          "Portrait": 0,
+          "Talker": "바이올렛",
+          "TalkerIndex": 0,
+          "BG": 13,
+          "location": 0,
+          "is2D": true,
+          "OffsetX": 100.0,
+          "OffsetY": -40.0,
+          "isPortrait": true,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "게다가 털끝 하나 안 다쳤잖아!",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 1,
+          "Talker": "스래쉬",
+          "TalkerIndex": 0,
+          "BG": 2,
+          "location": 1,
+          "is2D": true,
+          "isLineEnter": true,
+          "isPortrait": true,
+          "OffsetX": 100.0,
+          "OffsetY": -40.0,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "우리는 네가 나간 동안\n갑자기 엄청 추워지더라고.",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 1,
+          "Talker": "스래쉬",
+          "TalkerIndex": 0,
+          "BG": 2,
+          "location": 1,
+          "is2D": true,
+          "isLineEnter": true,
+          "isPortrait": true,
+          "OffsetX": 100.0,
+          "OffsetY": -40.0,
+          "animation": {
+            "duration": 1000,
+            "speed": 350
+          },
+          "text": "네가 없었어서 다행이야. 응...",
+          "Red": 0,
+          "Green": 0,
+          "Blue": 0
+        },
+        {
+          "Portrait": 0,
+          "Talker": "찍찍이",
+          "TalkerIndex": 0,
+          "BG": 0,
+          "location": 0,
+          "OffsetX": 100.0,
+          "OffsetY": -40.0,
+          "is2D": true,
+          "isPortrait": false,
+          "animation": {
+            "duration": 1000,
+            "speed": 500
+          },
+          "text": "아무튼, 이제 출발하자!",
+          "Red": 254,
+          "Green": 234,
+          "Blue": 157
+        }
+      ]
+    },
+    {
       "id": "Chapter8_Intro_Postit_Sequence",
       "lines": [
         {
@@ -1291,6 +1397,7 @@
           "BG": 7,
           "location": 0,
           "is2D": false,
+          "isLineEnter": true,
           "isPortrait": false,
           "animation": {
             "duration": 1000,
@@ -1307,6 +1414,7 @@
           "BG": 7,
           "location": 0,
           "is2D": false,
+          "isLineEnter": true,
           "isPortrait": false,
           "animation": {
             "duration": 1000,
@@ -1324,6 +1432,7 @@
           "location": 0,
           "is2D": false,
           "isPortrait": false,
+          "isLineEnter": true,
           "animation": {
             "duration": 1000,
             "speed": 350
@@ -1373,6 +1482,7 @@
           "BG": 7,
           "location": 0,
           "is2D": false,
+          "isLineEnter": true,
           "isPortrait": false,
           "animation": {
             "duration": 1000,
@@ -1389,6 +1499,7 @@
           "BG": 7,
           "location": 0,
           "is2D": false,
+          "isLineEnter": true,
           "isPortrait": false,
           "animation": {
             "duration": 1000,
@@ -1405,6 +1516,7 @@
           "BG": 7,
           "location": 0,
           "is2D": false,
+          "isLineEnter": true,
           "isPortrait": false,
           "animation": {
             "duration": 1000,
@@ -1421,6 +1533,7 @@
           "BG": 7,
           "location": 0,
           "is2D": false,
+          "isLineEnter": true,
           "isPortrait": false,
           "animation": {
             "duration": 1000,
@@ -1454,6 +1567,7 @@
           "BG": 7,
           "location": 0,
           "is2D": false,
+          "isLineEnter": true,
           "isPortrait": false,
           "animation": {
             "duration": 1000,
@@ -1470,6 +1584,7 @@
           "BG": 7,
           "location": 0,
           "is2D": false,
+          "isLineEnter": true,
           "isPortrait": false,
           "animation": {
             "duration": 1000,
@@ -1520,6 +1635,7 @@
           "BG": 7,
           "location": 0,
           "is2D": false,
+          "isLineEnter": true,
           "isPortrait": false,
           "animation": {
             "duration": 1000,
@@ -1553,6 +1669,7 @@
           "BG": 7,
           "location": 0,
           "is2D": false,
+          "isLineEnter": true,
           "isPortrait": false,
           "animation": {
             "duration": 1000,
@@ -1643,6 +1760,7 @@
           "BG": 7,
           "location": 0,
           "is2D": false,
+          "isLineEnter": true,
           "isPortrait": false,
           "animation": {
             "duration": 1000,
@@ -1676,6 +1794,7 @@
           "BG": 7,
           "location": 0,
           "is2D": false,
+          "isLineEnter": true,
           "isPortrait": false,
           "animation": {
             "duration": 1000,
@@ -1692,6 +1811,7 @@
           "BG": 7,
           "location": 0,
           "is2D": false,
+          "isLineEnter": true,
           "isPortrait": false,
           "animation": {
             "duration": 1000,

@@ -175,6 +175,9 @@ void CTurret::State_Change_Fire()
         }
     }
 
+    m_pGameInstance->Start_SFX(_wstring(L"A_sfx_tank_fire_") + to_wstring(rand() % 2), 50.f);
+
+
 }
 
 void CTurret::State_Change_Fire_Into()

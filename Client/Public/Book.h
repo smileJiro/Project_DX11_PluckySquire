@@ -140,6 +140,7 @@ private :
 	BOOK_ANIM_ACTION		m_eAnimAction = ANIM_ACTION_NONE;
 	_float					m_fAccAnimTime = 0.f;
 	_float					m_isFreezingRatio = 0.7f;
+	_float					m_isFreezingRatioTime = 1.f;
 	_float3					m_fNextPos = {};	
 	_bool					m_isFreezingOff = { false };
 	_bool					m_isFreezing = { false };

@@ -80,7 +80,7 @@ void CUI_Interaction_Book::Update(_float _fTimeDelta)
 					m_pControllerTransform->Set_Scale(COORDINATE_2D, _float3(144.f, 72.f, 1.f));
 					m_isBookInteract = true;
 					m_iTextureNum = 1;
-					wsprintf(m_tFont, L"책 기울이기");
+					wsprintf(m_tFont, L"책장 넘기기");
 				}
 			}
 			else
@@ -159,7 +159,7 @@ HRESULT CUI_Interaction_Book::Ready_Components()
 		return E_FAIL;
 
 	/* Com_Texture */
-	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Interact_Book"),
+	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Interact_Book_1"),
 		TEXT("Com_Texture_2D"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
 		return E_FAIL;
 

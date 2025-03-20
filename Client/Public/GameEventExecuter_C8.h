@@ -78,6 +78,7 @@ public:
 
 	void Chapter8_BookDrop(_float _fTimeDelta);
 	void Chapter8_BookFreezing_Off(_float _fTimeDelta);
+	void Chapter8_2D_In(_float _fTimeDelta);
 
 	void Chapter8_TransformZip(_float _fTimeDelta);
 
