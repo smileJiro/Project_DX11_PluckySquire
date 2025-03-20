@@ -314,6 +314,12 @@ void CSpear_Soldier::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce
     if ((_uint)MONSTER_STATE::DEAD == m_iState)
         return;
 
+    if (COORDINATE_3D == Get_CurCoord())
+    {
+        if (true == Get_ActorCom()->Is_Dynamic())
+            Stop_Rotate();
+    }
+
     m_tStat.iHP -= _iDamg;
 
     if (0 >= m_tStat.iHP)

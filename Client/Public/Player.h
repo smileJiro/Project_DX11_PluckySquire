@@ -588,6 +588,7 @@ public:
 	void UnEquip_Part(PLAYER_PART _ePartId);
 	void UnEquip_All();
 	void Position_To_FrontCamera(_float _fDistance);
+	void TransformToCyberJot(class CZip_C8* _pZip);
 	// interact 함수가 호출되면 true 반환.
 	INTERACT_RESULT Try_Interact(_float _fTimeDelta);
 

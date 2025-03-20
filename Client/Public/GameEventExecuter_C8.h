@@ -80,6 +80,8 @@ public:
 	void Chapter8_BookFreezing_Off(_float _fTimeDelta);
 	void Chapter8_2D_In(_float _fTimeDelta);
 
+	void Chapter8_TransformZip(_float _fTimeDelta);
+
 	virtual _bool	Change_PlayMap(_float _fStartTime) override;
 
 

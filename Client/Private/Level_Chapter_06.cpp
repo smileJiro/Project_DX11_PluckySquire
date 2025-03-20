@@ -20,6 +20,7 @@
 #include "Player.h"
 #include "Beetle.h"
 #include "BirdMonster.h"
+#include "Projectile_BarfBug.h"
 #include "Projectile_BirdMonster.h"
 #include "Spear_Soldier.h"
 #include "CrossBow_Soldier.h"
@@ -1814,6 +1815,43 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Monster()
 	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_SKSP_02"), pObject);
 
 
+
+	SketchSpace_SpikeBall_Desc.tTransform2DDesc.vInitialPosition = _float3(420.f, 285.f, 0.0f);
+	SketchSpace_SpikeBall_Desc.eSideScroll_Bound = SIDESCROLL_PATROLBOUND::CHAPTER6_2;
+	SketchSpace_SpikeBall_Desc.isStay = false;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_SketchSpace_SpikeBall"), m_eLevelID, _strLayerTag, &pObject, &SketchSpace_SpikeBall_Desc)))
+		return E_FAIL;
+
+	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_SKSP_05"), pObject);
+
+
+	SketchSpace_SpikeBall_Desc.tTransform2DDesc.vInitialPosition = _float3(-350.f, -280.f, 0.0f);
+	SketchSpace_SpikeBall_Desc.eSideScroll_Bound = SIDESCROLL_PATROLBOUND::CHAPTER6_3_1;
+	SketchSpace_SpikeBall_Desc.isStay = false;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_SketchSpace_SpikeBall"), m_eLevelID, _strLayerTag, &pObject, &SketchSpace_SpikeBall_Desc)))
+		return E_FAIL;
+
+	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_SKSP_07"), pObject);
+
+	SketchSpace_SpikeBall_Desc.tTransform2DDesc.vInitialPosition = _float3(-130.f, 300.f, 0.0f);
+	SketchSpace_SpikeBall_Desc.eSideScroll_Bound = SIDESCROLL_PATROLBOUND::CHAPTER6_3_2;
+	SketchSpace_SpikeBall_Desc.isStay = false;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_SketchSpace_SpikeBall"), m_eLevelID, _strLayerTag, &pObject, &SketchSpace_SpikeBall_Desc)))
+		return E_FAIL;
+
+	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_SKSP_07"), pObject);
+
+	SketchSpace_Alien_Desc.tTransform2DDesc.vInitialPosition = _float3(-200.f, 434.6f, 0.0f);
+	SketchSpace_Alien_Desc.eSideScroll_Bound = SIDESCROLL_PATROLBOUND::CHAPTER6_3_3;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_SketchSpace_Alien"), m_eLevelID, _strLayerTag, &pObject, &SketchSpace_Alien_Desc)))
+		return E_FAIL;
+
+	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter6_SKSP_07"), pObject);
+
 	//alien
 	//.tTransform2DDesc.vInitialPosition = _float3(-570.f, -44.8f, 0.0f); //-977.f, -44.8f
 	// 
@@ -1842,6 +1880,18 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Monster()
 HRESULT CLevel_Chapter_06::Ready_Layer_Monster_Projectile(const _wstring& _strLayerTag, CGameObject** _ppOut)
 {
 	Pooling_DESC Pooling_Desc;
+	Pooling_Desc.iPrototypeLevelID = LEVEL_STATIC;
+	Pooling_Desc.strLayerTag = TEXT("Layer_Monster_Projectile");
+	Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Projectile_BarfBug");
+
+
+	CProjectile_BarfBug::PROJECTILE_BARFBUG_DESC* pProjDesc = new CProjectile_BarfBug::PROJECTILE_BARFBUG_DESC;
+	pProjDesc->iCurLevelID = m_eLevelID;
+	pProjDesc->eStartCoord = COORDINATE_3D;
+
+	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Projectile_BarfBug"), Pooling_Desc, pProjDesc);
+
+
 	Pooling_Desc.iPrototypeLevelID = LEVEL_STATIC;
 	Pooling_Desc.strLayerTag = TEXT("Layer_Monster_Projectile");
 	Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Projectile_BirdMonster");

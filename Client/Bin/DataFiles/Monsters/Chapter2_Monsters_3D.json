@@ -18,7 +18,55 @@
         },
         {
             "MonsterTag": "Prototype_GameObject_Beetle",
-            "LayerTag": "Layer_Sneak_Beetle",
+            "LayerTag": "Layer_Bridge_Beetle",
+            "SneakMode": true,
+            "SneakWayPointIndex": "SNEAKWAYPOINTINDEX_CHAPTER2_BRIDGE_1",
+            "Position": [
+                26.5,
+                8.58,
+                25
+            ],
+            "Scaling": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        },
+        {
+            "MonsterTag": "Prototype_GameObject_Beetle",
+            "LayerTag": "Layer_Bridge_Beetle",
+            "SneakMode": true,
+            "SneakWayPointIndex": "SNEAKWAYPOINTINDEX_CHAPTER2_BRIDGE_2",
+            "Position": [
+                29.5, 
+                8.6, 
+                31.5
+            ],
+            "Scaling": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        },
+        {
+            "MonsterTag": "Prototype_GameObject_Beetle",
+            "LayerTag": "Layer_Bridge_Beetle",
+            "SneakMode": true,
+            "SneakWayPointIndex": "SNEAKWAYPOINTINDEX_CHAPTER2_BRIDGE_3",
+            "Position": [
+                35.5, 
+                8.58, 
+                31.5
+            ],
+            "Scaling": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        },
+        {
+            "MonsterTag": "Prototype_GameObject_Beetle",
+            "LayerTag": "Layer_Sneak_Beetle2",
             "SneakMode": true,
             "SneakWayPointIndex": "SNEAKWAYPOINTINDEX_CHAPTER2_2",
             "Position": [
@@ -34,7 +82,7 @@
         },
         {
             "MonsterTag": "Prototype_GameObject_Beetle",
-            "LayerTag": "Layer_Sneak_Beetle",
+            "LayerTag": "Layer_Sneak_Beetle2",
             "SneakMode": true,
             "SneakWayPointIndex": "SNEAKWAYPOINTINDEX_CHAPTER2_2_2",
             "Position": [
@@ -50,7 +98,7 @@
         },
         {
             "MonsterTag": "Prototype_GameObject_Beetle",
-            "LayerTag": "Layer_Sneak_Beetle",
+            "LayerTag": "Layer_Sneak_Beetle2",
             "SneakMode": true,
             "SneakWayPointIndex": "SNEAKWAYPOINTINDEX_CHAPTER2_3",
             "Position": [

@@ -26,10 +26,10 @@ HRESULT CCamera_Manager::Initialize()
 
 void CCamera_Manager::Update(_float fTimeDelta)
 {
-	if (KEY_DOWN(KEY::G))
-	{
-		Start_FadeOut_White();
-	}
+	//if (KEY_DOWN(KEY::G))
+	//{
+	//	Start_FadeOut_White();
+	//}
 	if (KEY_DOWN(KEY::H))
 	{
 		Start_FadeOut(1.5f);

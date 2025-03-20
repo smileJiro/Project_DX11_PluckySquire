@@ -10,6 +10,7 @@
 #include "PlayerBody.h"
 
 #include "Beetle.h"
+#include "Layer.h"
 
 CSneak_AttackState::CSneak_AttackState()
 {
@@ -45,16 +46,17 @@ void CSneak_AttackState::State_Update(_float _fTimeDelta)
 	//cout << "Attack" << endl;
 	//컷씬으로 들어가며 초기화
 	//Event_ChangeMonsterState(MONSTER_STATE::STANDBY, m_pFSM);
-	if(m_pOwner->Get_AnimChangeable())
-	{
-		if(false == m_pOwner->Is_FormationMode())
-			Event_ChangeMonsterState(MONSTER_STATE::SNEAK_IDLE, m_pFSM);
-		else
-		{
-			m_pOwner->Add_To_Formation();
-			Event_ChangeMonsterState(MONSTER_STATE::FORMATION_BACK, m_pFSM);
-		}
-	}
+	
+	//if(m_pOwner->Get_AnimChangeable())
+	//{
+	//	if(false == m_pOwner->Is_FormationMode())
+	//		Event_ChangeMonsterState(MONSTER_STATE::SNEAK_IDLE, m_pFSM);
+	//	else
+	//	{
+	//		m_pOwner->Add_To_Formation();
+	//		Event_ChangeMonsterState(MONSTER_STATE::FORMATION_BACK, m_pFSM);
+	//	}
+	//}
 
 	// FadeInOut 시간 계산
 	FadeInOut(_fTimeDelta);
@@ -75,30 +77,97 @@ void CSneak_AttackState::After_Attack()
 	switch (m_eWayIndex)
 	{
 	case Client::SNEAKWAYPOINTINDEX::CHAPTER2_1:
+	{
 		vPlayerPos = { -31.f, 6.56f, 22.5f };
 		vMonsterPos = { -16.5f, 6.56f, 22.6f };
+
+		Event_Sneak_BeetleCaught(static_cast<CActorObject*>(m_pTarget), static_cast<CActorObject*>(m_pOwner), &vPlayerPos, &vMonsterPos);
+
+		m_pOwner->Set_AnimChangeable(true);
+
+		Event_ChangeMonsterState(MONSTER_STATE::SNEAK_IDLE, m_pFSM);
+	}
+
 		break;
+
 	case Client::SNEAKWAYPOINTINDEX::CHAPTER2_2:
+	{
 		vPlayerPos = { 40.f, 0.35f, -7.f };
-		vMonsterPos = { 32.15f, 0.35f, 1.66f };
+
+		Reset_Chapter2_2(vPlayerPos);
+	}
+
 		break;
 	case Client::SNEAKWAYPOINTINDEX::CHAPTER2_2_2:
+	{
 		vPlayerPos = { 36.6f, 0.35f, 5.5f };
-		vMonsterPos = { 39.5f, 0.35f, 10.5f };
+		Reset_Chapter2_2(vPlayerPos);
+	}
 		break;
 	case Client::SNEAKWAYPOINTINDEX::CHAPTER2_3:
+	{
 		vPlayerPos = { 43.f, 0.35f, -0.5f };
-		vMonsterPos = { 47.f, 0.35f, -0.5f };
+		Reset_Chapter2_2(vPlayerPos);
+	}
+		break;
+
+		//레이어에 있는 모든 몬스터 전부 돌리기
+	case Client::SNEAKWAYPOINTINDEX::CHAPTER2_BRIDGE_1:
+	case Client::SNEAKWAYPOINTINDEX::CHAPTER2_BRIDGE_2:
+	case Client::SNEAKWAYPOINTINDEX::CHAPTER2_BRIDGE_3:
+	case Client::SNEAKWAYPOINTINDEX::CHAPTER2_BRIDGE_4:
+	{
+		vPlayerPos = { 24.f, 13.1f, 24.4f };
+
+		auto pLayer = m_pGameInstance->Find_Layer(m_iCurLevel, TEXT("Layer_Bridge_Beetle"));
+
+		if (nullptr != pLayer)
+		{
+			const auto& Objects = pLayer->Get_GameObjects();
+
+			for_each(Objects.begin(), Objects.end(), [&](CGameObject* pGameObject) {
+				auto pObject = dynamic_cast<CMonster*>(pGameObject);
+
+				if (nullptr != pObject)
+				{
+					switch (pObject->Get_WayIndex())
+					{
+					case Client::SNEAKWAYPOINTINDEX::CHAPTER2_BRIDGE_1:
+						vMonsterPos = _float3(26.5f, 8.58f, 25.f);
+						break;
+
+					case Client::SNEAKWAYPOINTINDEX::CHAPTER2_BRIDGE_2:
+						vMonsterPos = _float3(29.5f, 8.6f, 31.5f);
+						break;
+
+					case Client::SNEAKWAYPOINTINDEX::CHAPTER2_BRIDGE_3:
+						vMonsterPos = _float3(35.5f, 8.58f, 31.5f);
+						break;
+
+					case Client::SNEAKWAYPOINTINDEX::CHAPTER2_BRIDGE_4:
+						vMonsterPos = _float3(31.8f, 8.6f, 24.4f);
+						break;
+					}
+
+					Event_Sneak_BeetleCaught(static_cast<CActorObject*>(m_pTarget), static_cast<CActorObject*>(pObject), &vPlayerPos, &vMonsterPos);
+					pObject->Set_AnimChangeable(true);
+
+					Event_ChangeMonsterState(MONSTER_STATE::SNEAK_IDLE, pObject->Get_FSM());
+				}
+				});
+		}
+	}
+
 		break;
 
 	default:
 		return;
 	}
-	Event_Sneak_BeetleCaught(static_cast<CActorObject*>(m_pTarget), static_cast<CActorObject*>(m_pOwner), &vPlayerPos, &vMonsterPos);
-	
-	m_pOwner->Set_AnimChangeable(true);
+	//Event_Sneak_BeetleCaught(static_cast<CActorObject*>(m_pTarget), static_cast<CActorObject*>(m_pOwner), &vPlayerPos, &vMonsterPos);
+	//
+	//m_pOwner->Set_AnimChangeable(true);
 
-	Event_ChangeMonsterState(MONSTER_STATE::SNEAK_IDLE, m_pFSM);
+	//Event_ChangeMonsterState(MONSTER_STATE::SNEAK_IDLE, m_pFSM);
 }
 
 void CSneak_AttackState::Beetle_CutScene()
@@ -159,6 +228,45 @@ void CSneak_AttackState::Check_Animation_End()
 	CPlayer* pPlayer = CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr();
 	if (false == pPlayer->Get_Body()->Is_AnimTransition() && false == pPlayer->Get_Body()->Is_DuringAnimation()) {
 		pPlayer->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_KNOCKED_DOWN_AND_EATEN_FROM_BEHIND_LOOP_LATCH);
+	}
+}
+
+void CSneak_AttackState::Reset_Chapter2_2(_float3 _vPlayerPos)
+{
+	_float3 vMonsterPos;
+
+	auto pLayer = m_pGameInstance->Find_Layer(m_iCurLevel, TEXT("Layer_Sneak_Beetle2"));
+
+	if (nullptr != pLayer)
+	{
+		const auto& Objects = pLayer->Get_GameObjects();
+
+		for_each(Objects.begin(), Objects.end(), [&](CGameObject* pGameObject) {
+			auto pObject = dynamic_cast<CMonster*>(pGameObject);
+
+			if (nullptr != pObject)
+			{
+				switch (pObject->Get_WayIndex())
+				{
+				case Client::SNEAKWAYPOINTINDEX::CHAPTER2_2:
+					vMonsterPos = _float3(32.15f, 0.35f, 1.66f);
+					break;
+
+				case Client::SNEAKWAYPOINTINDEX::CHAPTER2_2_2:
+					vMonsterPos = _float3(39.5f, 0.35f, 10.5f);
+					break;
+
+				case Client::SNEAKWAYPOINTINDEX::CHAPTER2_3:
+					vMonsterPos = _float3(47.f, 0.35f, -0.5f);
+					break;
+				}
+
+				Event_Sneak_BeetleCaught(static_cast<CActorObject*>(m_pTarget), static_cast<CActorObject*>(pObject), &_vPlayerPos, &vMonsterPos);
+				pObject->Set_AnimChangeable(true);
+
+				Event_ChangeMonsterState(MONSTER_STATE::SNEAK_IDLE, pObject->Get_FSM());
+			}
+			});
 	}
 }
 
