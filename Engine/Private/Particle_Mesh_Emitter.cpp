@@ -19,7 +19,7 @@ CParticle_Mesh_Emitter::CParticle_Mesh_Emitter(const CParticle_Mesh_Emitter& _Pr
 	, m_iNumMeshes(_Prototype.m_iNumMeshes)
 	, m_iNumMaterials(_Prototype.m_iNumMaterials)
 	, m_Materials(_Prototype.m_Materials)
-#ifdef NDEBUG
+#ifdef _DEBUG
 	, m_strModelPath(_Prototype.m_strModelPath)
 #endif
 {
@@ -68,7 +68,7 @@ HRESULT CParticle_Mesh_Emitter::Initialize_Prototype(const json& _jsonInfo)
 		return E_FAIL;
 
 	_string strModelPath = _jsonInfo["Model"];
-#ifdef NDEBUG
+#ifdef _DEBUG
 	m_strModelPath = strModelPath;
 #endif
 
@@ -492,7 +492,7 @@ HRESULT CParticle_Mesh_Emitter::Cleanup_DeadReferences()
 	return S_OK;
 }
 
-#ifdef NDEBUG
+#ifdef _DEBUG
 void CParticle_Mesh_Emitter::Tool_Setting()
 {
 	if (m_ParticleMeshes.size())

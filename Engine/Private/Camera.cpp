@@ -553,7 +553,19 @@ void CCamera::Set_FadeRatio(_float _fFadeRatio, _bool _isUpdate)
 {
 	_fFadeRatio = std::clamp(_fFadeRatio, 0.0f, 1.0f);
 	m_tDofData.fFadeRatio = _fFadeRatio;
+	m_isWhiteFade = false;
+	if (true == _isUpdate)
+	{
+		m_pGameInstance->UpdateConstBuffer(m_tDofData, m_pConstDofBuffer);
+		Bind_DofConstBuffer();
+	}
+}
 
+void CCamera::Set_FadeRatio_White(_float _fFadeRatio, _bool _isUpdate)
+{
+	_fFadeRatio = std::clamp(_fFadeRatio, 0.0f, 1.0f);
+	m_tDofData.fFadeRatio = _fFadeRatio;
+	m_isWhiteFade = true;
 	if (true == _isUpdate)
 	{
 		m_pGameInstance->UpdateConstBuffer(m_tDofData, m_pConstDofBuffer);

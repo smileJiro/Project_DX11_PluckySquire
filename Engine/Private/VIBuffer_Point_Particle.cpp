@@ -651,7 +651,7 @@ void CVIBuffer_Point_Particle::Free()
 		Safe_Delete_Array(m_pInstanceVertices);
 	}
 
-#ifdef NDEBUG
+#ifdef _DEBUG
 	if (m_isToolReset)
 	{
 		Safe_Delete_Array(m_pInstanceVertices);
@@ -661,7 +661,7 @@ void CVIBuffer_Point_Particle::Free()
 	__super::Free();
 }
 
-#ifdef NDEBUG
+#ifdef _DEBUG
 void CVIBuffer_Point_Particle::Tool_Setting()
 {
 	__super::Tool_Setting();
