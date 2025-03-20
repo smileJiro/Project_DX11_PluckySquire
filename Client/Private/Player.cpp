@@ -1397,9 +1397,10 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
 		if (KEY_PRESSING(KEY::D))
 			tResult.vDir += _vector{ 1.f, 0.f, 0.f,0.f };
 
-		//카메라가 보는 방향
-		_vector vCamLook = static_cast<CCamera*>(CCamera_Manager::GetInstance()->Get_CurrentCamera())->Get_Arm()->Get_ArmVector();
+		////카메라가 보는 방향
+		_vector vCamLook = static_cast<CCamera*>(CCamera_Manager::GetInstance()->Get_CurrentCamera())->Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK);
 		vCamLook = -XMVectorSetY(vCamLook, 0.f);
+		vCamLook = -XMVectorSetW(vCamLook, 0.f);
 		//X축이 크면?
 		if (abs(vCamLook.m128_f32[0]) > abs(vCamLook.m128_f32[2]))
 		{
