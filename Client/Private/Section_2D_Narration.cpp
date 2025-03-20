@@ -141,6 +141,14 @@ HRESULT CSection_2D_Narration::Start_Narration()
 	return S_OK;
 }
 
+HRESULT CSection_2D_Narration::Section_Enter(const _wstring& _strPreSectionTag)
+{
+	if (TEXT("") != m_strBGMTag)
+		m_pGameInstance->Start_BGM(m_strBGMTag, 20.f);
+
+	return S_OK;
+}
+
 CSection_2D_Narration* CSection_2D_Narration::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, SECTION_2D_PLAY_TYPE _ePlayType, void* _pDesc)
 {
 	CSection_2D_Narration* pInstance = new CSection_2D_Narration(_pDevice, _pContext, _ePlayType);

@@ -203,6 +203,8 @@ public: /* For. Sound_Manager */
 	_bool				Is_BGMPlaying(const wstring& strBGMTag);
 	_float				Get_BGMVolume();
 	void				Set_BGMVolume(_float _fVolume);
+	void				Set_SFXTargetVolume(const _wstring& _strSFXTag, _float _fTargetVolume, _float _fFactor = 15.f);
+	void				Set_BGMTargetVolume(_float _fTargetVolume, _float _fFactor = 15.f);
 
 	HRESULT				Load_SFX(const wstring& strSFXTag, const wstring& strSFXFilePath);
 	void				Start_SFX(const wstring& strSFXTag, _float _fVolume = 70.f, bool _isLoop = false);

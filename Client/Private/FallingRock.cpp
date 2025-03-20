@@ -169,6 +169,7 @@ void CFallingRock::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOt
 		//_vector vPos = Get_FinalPosition();
 		//;
 		CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("FallingRock_Breaking"), m_strSectionName, Get_WorldMatrix());
+		m_pGameInstance->Start_SFX(_wstring(L"A_Sfx_RockPlatform_Crumble"), 50.f);
 	}
 		break;
 	case Client::MONSTER:
@@ -362,6 +363,8 @@ void CFallingRock::State_Change_Bound_3D()
 
 	// Effect
 	CEffect_Manager::GetInstance()->Active_EffectPosition(TEXT("RockOut"), true, XMLoadFloat4(&v3DWorldPos));
+	m_pGameInstance->Start_SFX(_wstring(L"A_Sfx_Boulder_Transition_") + to_wstring(rand() % 3), 30.f);
+
 
 }
 

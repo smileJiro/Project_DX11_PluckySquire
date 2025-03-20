@@ -1,7 +1,6 @@
 [
 	{
 		"Section_Name": "Chapter1_P0102",
-
 		"Section_BackGround_Name": "Chapter1_P0102_BackGround",
 		"Section_Type": 1,
 		"Section_Default": 0,
@@ -93,7 +92,8 @@
 		"Section_Info": {
 			"Camera_Zoom_Ratio": 1.5,
 			"Next_Page_Tag": "Chapter2_P0304",
-			"Pre_Page_Tag": "Chapter2_P0102"
+			"Pre_Page_Tag": "Chapter2_P0102",
+			"BGM": "LCD_MUS_C02_CLIFFTOP_LOOP_Stem_Base"
 		}
 	},
 	{
@@ -114,19 +114,20 @@
 		"Section_Default": 0,
 		"Section_Info": {
 			"Next_Page_Tag": "Chapter2_P0708",
-			"Pre_Page_Tag": "Chapter2_P0304"
+			"Pre_Page_Tag": "Chapter2_P0304",
+			"BGM": "LCD_MUS_C02_INTROTOTOMETOWERCUTSCENE_P1920_FULL"
 		}
 	},
 	{
 		"Section_Name": "Chapter2_P0708",
-		"Section_Start": true,
 		"Section_BackGround_Name": "Chapter2_P0708_BackGround",
 		"Section_File_Name": "Chapter2_P0708.m2chc",
 		"Section_Type": 0,
 		"Section_Default": 0,
 		"Section_Info": {
 			"Next_Page_Tag": "Chapter2_P0910",
-			"Pre_Page_Tag": "Chapter2_P0506"
+			"Pre_Page_Tag": "Chapter2_P0506",
+			"BGM": "LCD_MUS_C02_TOMETOWER_APPROACH_LOOP_Stem_Base"
 		}
 	},
 	{
@@ -142,10 +143,11 @@
 	},
 	{
 		"Section_Name": "Chapter2_P1112",
-		
+
 		"Section_BackGround_Name": "Chapter2_P1112_BackGround",
 		"Section_File_Name": "Chapter2_P1112.m2chc",
 		"Section_Type": 0,
+		"Section_Start": true,
 		"Section_Default": 0,
 		"Section_Info": {
 			"Next_Page_Tag": "Chapter2_P1314",
@@ -159,7 +161,8 @@
 		"Section_Type": 0,
 		"Section_Default": 0,
 		"Section_Info": {
-			"Pre_Page_Tag": "Chapter2_P1112"
+			"Pre_Page_Tag": "Chapter2_P1112",
+			"BGM": "MUS_C02_ConfrontingHumgrump_Loop4b"
 		}
 	},
 	{

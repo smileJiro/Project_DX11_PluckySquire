@@ -1098,6 +1098,22 @@ void CGameInstance::Set_BGMVolume(_float _fVolume)
 	return m_pSound_Manager->Set_BGMVolume(_fVolume);
 }
 
+void CGameInstance::Set_SFXTargetVolume(const _wstring& _strSFXTag, _float _fTargetVolume, _float _fFactor)
+{
+	if (nullptr == m_pSound_Manager)
+		return;
+
+	return m_pSound_Manager->Set_SFXTargetVolume(_strSFXTag, _fTargetVolume, _fFactor);
+}
+
+void CGameInstance::Set_BGMTargetVolume(_float _fTargetVolume, _float _fFactor)
+{
+	if (nullptr == m_pSound_Manager)
+		return;
+
+	return m_pSound_Manager->Set_BGMTargetVolume(_fTargetVolume, _fFactor);
+}
+
 HRESULT CGameInstance::Load_SFX(const wstring& strSFXTag, const wstring& strSFXFilePath)
 {
 	if (nullptr == m_pSound_Manager)

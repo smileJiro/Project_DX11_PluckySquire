@@ -31,7 +31,10 @@ public:
 	_float			Get_BGMVolume();
 
 	void			Set_BGMVolume(_float _fVolume);
-
+	
+public:
+	void			Set_SFXTargetVolume(const _wstring& _strSFXTag, _float _fTargetVolume, _float _fFactor = 15.f);
+	void			Set_BGMTargetVolume(_float _fTargetVolume, _float _fFactor = 15.f);
 public:
 	HRESULT			Load_SFX(const wstring& strSFXTag, const wstring& strSFXFilePath);
 	void			Start_SFX(const wstring& strSFXTag, _float _fVolume = 70.f, _bool _isLoop = false);
@@ -59,6 +62,7 @@ private:
 	map<_wstring, vector<CSound*>> m_SFXs;
 
 	vector<pair<CSound*, _bool>> m_DelaySFXs;
+	vector<CSound*>				 m_UpdateSounds;
 
 	CSound* m_pCurPlayBGM = nullptr;
 

@@ -447,11 +447,13 @@ void CGameEventExecuter_C2::Chapter2_Humgrump(_float _fTimeDelta)
 
 	if (Step_Check(STEP_0))
 	{
-
 		if (Is_Start())
 		{
 			static_cast<CMagic_Hand*>(m_pGameInstance->Get_GameObject_Ptr(LEVEL_CHAPTER_2, TEXT("Layer_MagicHand"), 0))->Set_Start(true);
+			m_pGameInstance->End_BGM();
 
+			m_pGameInstance->Start_SFX(_wstring(L"LCD_MUS_C02_CONFRONTINGHUMGRUMP_P4344_CUTSCENE_FULL"), 50.f);
+			m_pGameInstance->Start_SFX(_wstring(L"A_sfx_ejected_sequence"), 50.f);
 			m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/Chapter2_Night_Main.json"));
 			m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/Chapter2_Night_Main.json"));
 			
@@ -544,6 +546,7 @@ void CGameEventExecuter_C2::Chapter2_Lunchbox_Appear(_float _fTimeDelta)
 			CCamera_Manager::GetInstance()->Start_Zoom(CCamera_Manager::TARGET, 1.f,
 				CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET)->Get_CurrentZoomLevel() + 5, EASE_IN_OUT
 			);*/
+
 		}
 		Next_Step_Over(1.5f);
 	}
@@ -597,6 +600,13 @@ void CGameEventExecuter_C2::Chapter2_Lunchbox_Open(_float _fTimeDelta)
 		{
 			CPlayer* pPlayer = Get_Player();
 			pPlayer->Set_BlockPlayerInput(true);
+
+			m_pGameInstance->Set_SFXTargetVolume(_wstring(L"LCD_MUS_Desk_C02_NIGHTDESK_Stem_Base"), 2.f);
+			m_pGameInstance->Set_SFXTargetVolume(_wstring(L"LCD_MUS_Desk_C02_NIGHTDESK_Stem_Group1"), 2.f);
+			m_pGameInstance->Set_SFXTargetVolume(_wstring(L"LCD_MUS_Desk_C02_NIGHTDESK_Stem_Group2"), 2.f);
+
+			m_pGameInstance->Start_SFX(_wstring(L"LCD_MUS_C02_PAGETHEBOOKWORMTHEME_Stem_Base"), 20.f, true);
+			m_pGameInstance->Start_SFX(_wstring(L"LCD_MUS_C02_PAGETHEBOOKWORMTHEME_Stem_Group1"), 20.f, true);
 
 		}
 		Next_Step_Over(1.5f);
@@ -709,6 +719,11 @@ void CGameEventExecuter_C2::Chapter2_Bettle_Page(_float _fTimeDelta)
 			CPlayer* pPlayer = Get_Player();
 			pPlayer->Set_BlockPlayerInput(true);
 
+			m_pGameInstance->Set_SFXTargetVolume(_wstring(L"LCD_MUS_Desk_C02_NIGHTDESK_Stem_Base"), 2.f);
+			m_pGameInstance->Set_SFXTargetVolume(_wstring(L"LCD_MUS_Desk_C02_NIGHTDESK_Stem_Group1"), 2.f);
+			m_pGameInstance->Set_SFXTargetVolume(_wstring(L"LCD_MUS_Desk_C02_NIGHTDESK_Stem_Group2"), 2.f);
+
+			m_pGameInstance->Start_BGM(TEXT("LCD_MUS_Desk_C02_NIGHTDESK_SKETCHSPACE_FULL"), 20.f);
 		}
 		Next_Step_Over(0.5f);
 	}
@@ -805,6 +820,13 @@ void CGameEventExecuter_C2::Chapter2_Bettle_Page(_float _fTimeDelta)
 
 	else
 	{
+		m_pGameInstance->Set_SFXTargetVolume(_wstring(L"LCD_MUS_Desk_C02_NIGHTDESK_Stem_Base"), 20.f);
+		m_pGameInstance->Set_SFXTargetVolume(_wstring(L"LCD_MUS_Desk_C02_NIGHTDESK_Stem_Group1"), 20.f);
+		m_pGameInstance->Set_SFXTargetVolume(_wstring(L"LCD_MUS_Desk_C02_NIGHTDESK_Stem_Group2"), 20.f);
+
+		m_pGameInstance->End_BGM();
+
+
 		GameEvent_End();
 	}
 }
@@ -820,6 +842,11 @@ void CGameEventExecuter_C2::Chapter2_OpenBookEvent(_float _fTimeDelta)
 			CPlayer* pPlayer = Get_Player();
 			pPlayer->Set_BlockPlayerInput(true);
 
+			m_pGameInstance->Set_SFXTargetVolume(_wstring(L"LCD_MUS_Desk_C02_NIGHTDESK_Stem_Base"), 2.f);
+			m_pGameInstance->Set_SFXTargetVolume(_wstring(L"LCD_MUS_Desk_C02_NIGHTDESK_Stem_Group1"), 2.f);
+			m_pGameInstance->Set_SFXTargetVolume(_wstring(L"LCD_MUS_Desk_C02_NIGHTDESK_Stem_Group2"), 2.f);
+
+			m_pGameInstance->Start_BGM(TEXT("LCD_MUS_C02_INTROTOSKETCHSPACE_FULL"), 20.f);
 		}
 		Next_Step(true);
 	}
@@ -866,6 +893,7 @@ void CGameEventExecuter_C2::Chapter2_OpenBookEvent(_float _fTimeDelta)
 				pPage->Set_Render(true);
 				pPage->Anim_Action(CPostit_Page::POSTIT_PAGE_APPEAR, false);
 			}
+
 
 		}
 		else
@@ -961,6 +989,13 @@ void CGameEventExecuter_C2::Chapter2_OpenBookEvent(_float _fTimeDelta)
 			//pCamera->Start_PostProcessing_Fade(CCamera::FADE_IN, 0.3f);
 			CPlayer* pPlayer = Get_Player();
 			pPlayer->Set_BlockPlayerInput(false);
+
+			m_pGameInstance->Set_SFXTargetVolume(_wstring(L"LCD_MUS_Desk_C02_NIGHTDESK_Stem_Base"), 20.f);
+			m_pGameInstance->Set_SFXTargetVolume(_wstring(L"LCD_MUS_Desk_C02_NIGHTDESK_Stem_Group1"), 20.f);
+			m_pGameInstance->Set_SFXTargetVolume(_wstring(L"LCD_MUS_Desk_C02_NIGHTDESK_Stem_Group2"), 20.f);
+
+			m_pGameInstance->End_BGM();
+
 			GameEvent_End();
 		}
 	}
@@ -978,6 +1013,11 @@ void CGameEventExecuter_C2::Chapter2_StorySequence(_float _fTimeDelta)
 			CPlayer* pPlayer = Get_Player();
 			pPlayer->Set_BlockPlayerInput(true);
 
+			m_pGameInstance->Set_SFXTargetVolume(_wstring(L"LCD_MUS_Desk_C02_NIGHTDESK_Stem_Base"), 0.f);
+			m_pGameInstance->Set_SFXTargetVolume(_wstring(L"LCD_MUS_Desk_C02_NIGHTDESK_Stem_Group1"), 0.f);
+			m_pGameInstance->Set_SFXTargetVolume(_wstring(L"LCD_MUS_Desk_C02_NIGHTDESK_Stem_Group2"), 0.f);
+
+			m_pGameInstance->Start_BGM(TEXT("LCD_MUS_C02_INTROTOSKETCHSPACE_FULL"), 20.f);
 		}
 		Next_Step(true);
 	}
@@ -1382,7 +1422,7 @@ void CGameEventExecuter_C2::Chapter2_FriendEvent_0(_float _fTimeDelta)
 			CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(TEXT("Thrash"));
 			CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(TEXT("Violet"));
 
-			m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_Mojam"), 0.f, 50.f);
+			m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_Mojam"), 0.25f, 50.f);
 
 		}
 

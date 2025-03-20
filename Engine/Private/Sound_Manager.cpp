@@ -21,8 +21,8 @@ HRESULT CSound_Manager::Initialize(HWND hWnd)
 
 void CSound_Manager::Update(_float _fTimeDelta)
 {
-    if (true == m_DelaySFXs.empty())
-        return;
+    //if (true == m_DelaySFXs.empty())
+    //    return;
 
     auto iter = m_DelaySFXs.begin();
 
@@ -36,7 +36,7 @@ void CSound_Manager::Update(_float _fTimeDelta)
             iter->first->Set_Delay(false);
             Safe_Release(iter->first);
             iter = m_DelaySFXs.erase(iter);
-          
+
             //if (true == m_DelaySFXs.empty())
             //    break;
         }
@@ -44,6 +44,22 @@ void CSound_Manager::Update(_float _fTimeDelta)
         {
             ++iter;
         }
+    }
+
+    for (auto iter = m_UpdateSounds.begin(); iter != m_UpdateSounds.end(); )
+    {
+        _int iResult = (*iter)->Update_SoundVolume(_fTimeDelta);
+
+        if (1 == iResult)
+            iter = m_UpdateSounds.erase(iter);
+        else if (2 == iResult)
+        {
+            (*iter)->Stop_Sound(true);
+            iter = m_UpdateSounds.erase(iter);
+        }
+        else
+            ++iter;
+
     }
 
 }
@@ -83,7 +99,31 @@ void CSound_Manager::End_BGM()
 
 void CSound_Manager::Set_BGMVolume(_float _fVolume)
 {
-    m_pCurPlayBGM->Set_Volume(_fVolume);
+    if (nullptr != m_pCurPlayBGM)
+        m_pCurPlayBGM->Set_Volume(_fVolume);
+}
+
+void CSound_Manager::Set_SFXTargetVolume(const _wstring& _strSFXTag, _float _fTargetVolume, _float _fFactor)
+{
+    vector<CSound*>* pSFXs = Find_SFX(_strSFXTag);
+    if (nullptr == pSFXs)
+        return;
+
+    for (auto& pSFX : *pSFXs)
+    {
+        pSFX->Set_TargetVolume(_fTargetVolume, _fFactor);
+
+        m_UpdateSounds.push_back(pSFX);
+    }
+}
+
+void CSound_Manager::Set_BGMTargetVolume(_float _fTargetVolume, _float _fFactor)
+{
+    if (nullptr != m_pCurPlayBGM)
+    {
+        m_pCurPlayBGM->Set_TargetVolume(_fTargetVolume, _fFactor);
+        m_UpdateSounds.push_back(m_pCurPlayBGM);
+    }
 }
 
 _float CSound_Manager::Get_BGMVolume()
@@ -132,6 +172,8 @@ HRESULT CSound_Manager::Clear_Sound()
         iter.second.clear();
     }
     m_SFXs.clear();
+
+    m_UpdateSounds.clear();
     return S_OK;
 }
 
