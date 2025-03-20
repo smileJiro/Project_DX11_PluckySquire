@@ -2418,54 +2418,82 @@ _bool CGameEventExecuter_C8::Change_PlayMap(_float _fStartTime)
 	if (m_fTimer > _fStartTime &&  2 == m_iSubStep)
 	{
 
-			//const json* pJson = m_pGameInstance->Find_Json_InLevel(TEXT("Chapter8_Monsters_3D"), m_pGameInstance->Get_CurLevelID());
+		CGameObject* pObject = nullptr;
 
-			//CGameObject* pObject;
+		const json* pJson = m_pGameInstance->Find_Json_InLevel(TEXT("Chapter8_Monsters_3D"), m_eLevelID);
 
+		if (nullptr == pJson)
+			return E_FAIL;
+		if (pJson->contains("3D"))
+		{
+			_wstring strLayerTag = L"Layer_Monster";
+			_wstring strMonsterTag = L"";
 
-			//CMonster::MONSTER_DESC MonsterDesc3D = {};
+			for (auto Json : (*pJson)["3D"])
+			{
+				CMonster::MONSTER_DESC MonsterDesc3D = {};
 
-			//MonsterDesc3D.iCurLevelID = m_pGameInstance->Get_CurLevelID();
-			//MonsterDesc3D.eStartCoord = COORDINATE_3D;
+				MonsterDesc3D.iCurLevelID = m_eLevelID;
+				MonsterDesc3D.eStartCoord = COORDINATE_3D;
 
-			//if (pJson->contains("3D"))
-			//{
-			//	_wstring strLayerTag = L"Layer_Monster";
-			//	_wstring strMonsterTag = L"";
+				if (Json.contains("Position"))
+				{
+					for (_int j = 0; j < 3; ++j)
+					{
+						*(((_float*)&MonsterDesc3D.tTransform3DDesc.vInitialPosition) + j) = Json["Position"][j];
+					}
+				}
+				if (Json.contains("Scaling"))
+				{
+					for (_int j = 0; j < 3; ++j)
+					{
+						*(((_float*)&MonsterDesc3D.tTransform3DDesc.vInitialScaling) + j) = Json["Scaling"][j];
+					}
+				}
+				if (Json.contains("LayerTag"))
+				{
+					strLayerTag = STRINGTOWSTRING(Json["LayerTag"]);
+				}
 
-			//	for (_int i = 0; i < (*pJson)["3D"].size(); ++i)
-			//	{
-			//		if ((*pJson)["3D"][i].contains("Position"))
-			//		{
-			//			for (_int j = 0; j < 3; ++j)
-			//			{
-			//				*(((_float*)&MonsterDesc3D.tTransform3DDesc.vInitialPosition) + j) = (*pJson)["3D"][i]["Position"][j];
-			//			}
-			//		}
-			//		if ((*pJson)["3D"][i].contains("Scaling"))
-			//		{
-			//			for (_int j = 0; j < 3; ++j)
-			//			{
-			//				*(((_float*)&MonsterDesc3D.tTransform3DDesc.vInitialScaling) + j) = (*pJson)["3D"][i]["Scaling"][j];
-			//			}
-			//		}
-			//		if ((*pJson)["3D"][i].contains("LayerTag"))
-			//		{
-			//			strLayerTag = STRINGTOWSTRING((*pJson)["3D"][i]["LayerTag"]);
-			//		}
+				if (Json.contains("MonsterTag"))
+				{
+					strMonsterTag = STRINGTOWSTRING(Json["MonsterTag"]);
+				}
+				else
+					return E_FAIL;
 
-			//		if ((*pJson)["3D"][i].contains("MonsterTag"))
-			//		{
-			//			strMonsterTag = STRINGTOWSTRING((*pJson)["3D"][i]["MonsterTag"]);
-			//		}
-			//		else
-			//			return;
+				if (Json.contains("SneakMode"))
+				{
+					if (Json.contains("SneakWayPointIndex"))
+					{
+						MonsterDesc3D.eWayIndex = Json["SneakWayPointIndex"];
+					}
+					else
+						return E_FAIL;
+					MonsterDesc3D.isSneakMode = Json["SneakMode"];
+				}
 
-			//		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, strMonsterTag, m_pGameInstance->Get_CurLevelID(), strLayerTag, &pObject, &MonsterDesc3D)))
-			//			return;
+				if (Json.contains("IsStay"))
+				{
+					MonsterDesc3D.isStay = Json["IsStay"];
+					if (Json.contains("vLook"))
+					{
+						for (_int j = 0; j < 3; ++j)
+						{
+							*(((_float*)&MonsterDesc3D.vLook) + j) = Json["vLook"][j];
+						}
+					}
+				}
 
-			//	}
-			//}		
+				if (Json.contains("IsIgnoreGround"))
+				{
+					MonsterDesc3D._isIgnoreGround = Json["IsIgnoreGround"];
+				}
+
+				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, strMonsterTag, m_eLevelID, strLayerTag, &pObject, &MonsterDesc3D)))
+					return E_FAIL;
+			}
+		}
 
 		if (FAILED(CFormation_Manager::GetInstance()->Initialize()))
 			return false;
