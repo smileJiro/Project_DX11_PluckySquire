@@ -1,7 +1,6 @@
 [
 	{
 		"Section_Name": "Chapter1_P0102",
-		
 		"Section_BackGround_Name": "Chapter1_P0102_BackGround",
 		"Section_Type": 1,
 		"Section_Default": 0,
@@ -38,7 +37,8 @@
 		"Section_Default": 0,
 		"Section_Info": {
 			"Next_Page_Tag": "Chapter1_P0910",
-			"Pre_Page_Tag": "Chapter1_P0506"
+			"Pre_Page_Tag": "Chapter1_P0506",
+			"BGM": "LCD_MUS_C01_PUZZLEBASETRACK_LOOP_FULL"
 		}
 	},
 	{
@@ -49,7 +49,8 @@
 		"Section_Default": 0,
 		"Section_Info": {
 			"Next_Page_Tag": "Chapter1_P1112",
-			"Pre_Page_Tag": "Chapter1_P0708"
+			"Pre_Page_Tag": "Chapter1_P0708",
+			"BGM": "LCD_MUS_C01_HONEYPEAK_LOOP_Stem_Base"
 		}
 	},
 	{
@@ -79,7 +80,8 @@
 				"Y": 5120.0
 			},
 			"Next_Page_Tag": "Chapter2_Worldmap_0",
-			"Pre_Page_Tag": "Chapter1_P0708"
+			"Pre_Page_Tag": "Chapter1_P0708",
+			"BGM": "LCD_MUS_C02_P1112_CLIFFDESCENT_Loop_Stem_Base"
 		}
 	},
 	{

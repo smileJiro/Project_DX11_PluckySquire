@@ -252,6 +252,7 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_PROJECTILE, OBJECT_GROUP::BLOCKER);
 	//m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::PORTAL);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_TRIGGER, OBJECT_GROUP::INTERACTION_OBEJCT); //3 8
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_TRIGGER, OBJECT_GROUP::INTERACTION_PORTAL); //3 8
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_TRIGGER, OBJECT_GROUP::MONSTER); //3 8
 	/* 플레이어 - 문 */
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::DOOR);
@@ -289,7 +290,7 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 	CTrigger_Manager::GetInstance()->Load_TriggerEvents(TEXT("../Bin/DataFiles/Trigger/Chapter2_Trigger_Events.json"));
 
 	// BGM 시작
-	m_pGameInstance->Start_BGM(TEXT("LCD_MUS_C02_C2FIELDMUSIC_LOOP_Stem_Base"), 20.f);
+	m_pGameInstance->Start_BGM(TEXT("LCD_MUS_C01_INTRO_FULL"), 20.f);
 
 	// Intro 시작
 	CTrigger_Manager::GetInstance()->Register_TriggerEvent(TEXT("Chapter2_Intro"), 50);
@@ -528,7 +529,8 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Map()
 	switch (eLevelID)
 	{
 	case Client::LEVEL_CHAPTER_2:
-		if (FAILED(Map_Object_Create(L"Chapter_02_Play_Desk.mchc")))
+			//if (FAILED(Map_Object_Create(L"Chapter_02_Play_Desk.mchc")))
+		if (FAILED(Map_Object_Create(L"Chapter_Intro.mchc")))
 			return E_FAIL;
 		break;
 	case Client::LEVEL_CHAPTER_4:
@@ -920,6 +922,9 @@ HRESULT CLevel_Chapter_02::Ready_Layer_UI(const _wstring& _strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Interaction_Book"), m_eLevelID, _strLayerTag, &pDesc)))
 		return E_FAIL;
 
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_Interaction_Tilting"), m_eLevelID, _strLayerTag, &pDesc)))
+		return E_FAIL;
+
 
 #pragma endregion InterAction UI
 
@@ -1199,7 +1204,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Item(const _wstring& _strLayerTag)
 	/*CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("Flipping_Glove"), _float3(62.31f, 6.28f, -21.097f));
 	*/
 
-	CPlayerData_Manager::GetInstance()->Spawn_Bulb(LEVEL_STATIC, (LEVEL_ID)m_eLevelID);
+	//CPlayerData_Manager::GetInstance()->Spawn_Bulb(LEVEL_STATIC, (LEVEL_ID)m_eLevelID);
 	//3D Bulb
 	Pooling_DESC Pooling_Desc;
 	Pooling_Desc.iPrototypeLevelID = LEVEL_STATIC;
@@ -1306,6 +1311,37 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Monster()
 
 	//if (FAILED(Ready_Layer_Monster_3D()))
 	//	return E_FAIL;
+
+
+	//CBeetle::MONSTER_DESC Beetle_Desc;
+	//Beetle_Desc.iCurLevelID = m_eLevelID;
+	//Beetle_Desc.eStartCoord = COORDINATE_3D;
+	//Beetle_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	//Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(26.5f, 8.58f, 25.f);
+	//Beetle_Desc.isSneakMode = true;
+	//Beetle_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER2_BRIDGE_1;
+
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, TEXT("Layer_Bridge_Beetle"), &Beetle_Desc)))
+	//	return E_FAIL;
+
+	//Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(29.5f, 8.6f, 31.5f);
+	//Beetle_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER2_BRIDGE_2;
+
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, TEXT("Layer_Bridge_Beetle"), &Beetle_Desc)))
+	//	return E_FAIL;
+
+	//Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(35.5f, 8.58f, 31.5f);
+	//Beetle_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER2_BRIDGE_3;
+
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, TEXT("Layer_Bridge_Beetle"), &Beetle_Desc)))
+	//	return E_FAIL;
+
+	//Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(32.8f, 8.6f, 24.4f);
+	//Beetle_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER2_BRIDGE_4;
+
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, TEXT("Layer_Bridge_Beetle"), &Beetle_Desc)))
+	//	return E_FAIL;
+
 
 	return S_OK;
 }

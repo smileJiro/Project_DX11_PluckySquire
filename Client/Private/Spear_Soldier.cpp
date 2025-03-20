@@ -95,7 +95,7 @@ HRESULT CSpear_Soldier::Initialize(void* _pArg)
 
     if (COORDINATE_3D == Get_CurCoord())
     {
-        m_fDashDistance = 10.f;
+        m_fDashDistance = 7.f;
     }
     else if (COORDINATE_2D == Get_CurCoord())
     {
@@ -235,20 +235,21 @@ void CSpear_Soldier::Update(_float _fTimeDelta)
         if (COORDINATE_3D == Get_CurCoord())
         {
             m_vDir.y = 0;
-            Get_ActorCom()->Set_LinearVelocity(XMVector3Normalize(XMLoadFloat3(&m_vDir)), Get_ControllerTransform()->Get_SpeedPerSec() * 2.f);
+            Get_ActorCom()->Set_LinearVelocity(XMVector3Normalize(XMLoadFloat3(&m_vDir)), Get_ControllerTransform()->Get_SpeedPerSec() * 3.f);
         }
         else if (COORDINATE_2D == Get_CurCoord())
         {
             Get_ControllerTransform()->Go_Direction(XMLoadFloat3(&m_vDir), Get_ControllerTransform()->Get_SpeedPerSec() * 5.f, _fTimeDelta);
         }
-        /*m_fAccDistance += Get_ControllerTransform()->Get_SpeedPerSec() * _fTimeDelta;
+        m_fAccDistance += Get_ControllerTransform()->Get_SpeedPerSec() * _fTimeDelta;
 
         if (m_fDashDistance <= m_fAccDistance)
         {
             m_fAccDistance = 0.f;
             m_isDash = false;
-            Stop_MoveXZ();
-        }*/
+			if (COORDINATE_3D == Get_CurCoord())
+                Stop_MoveXZ();
+        }
     }
 
     if (true == m_isJump)
@@ -289,11 +290,14 @@ void CSpear_Soldier::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Oth
 {
     __super::OnTrigger_Enter(_My, _Other);
 
-    //대열이 있는 장소에 다이나믹 오브젝트가 폭탄밖에 없으므로
-    if (OBJECT_GROUP::DYNAMIC_OBJECT & _Other.pActorUserData->iObjectGroup)
+    if(true == Is_FormationMode())
     {
-        Event_ChangeMonsterState(MONSTER_STATE::BOMB_ALERT, m_pFSM);
-        m_pFSM->Set_EvadeTargetPos(_Other.pActorUserData->pOwner->Get_FinalPosition());
+        //대열이 있는 장소에 다이나믹 오브젝트가 폭탄밖에 없으므로
+        if (OBJECT_GROUP::DYNAMIC_OBJECT & _Other.pActorUserData->iObjectGroup)
+        {
+            Event_ChangeMonsterState(MONSTER_STATE::BOMB_ALERT, m_pFSM);
+            m_pFSM->Set_EvadeTargetPos(_Other.pActorUserData->pOwner->Get_FinalPosition());
+        }
     }
 }
 
@@ -304,9 +308,17 @@ void CSpear_Soldier::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _p
 
 void CSpear_Soldier::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
 {
+    m_pGameInstance->Start_SFX(_wstring(L"A_sfx_sword_hit_speartrooper_") + to_wstring(rand() % 7), 50.f);
+
     //챕터 6 보스전에서는 hit 상태와 넉백 없음
     if ((_uint)MONSTER_STATE::DEAD == m_iState)
         return;
+
+    if (COORDINATE_3D == Get_CurCoord())
+    {
+        if (true == Get_ActorCom()->Is_Dynamic())
+            Stop_Rotate();
+    }
 
     m_tStat.iHP -= _iDamg;
 
@@ -440,6 +452,8 @@ void CSpear_Soldier::Change_Animation()
 
             case MONSTER_STATE::ATTACK:
                 static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(DASH_ATTACK_STARTUP);
+                m_pGameInstance->Start_SFX(_wstring(L"A_sfx_speartrooper_swipe_attack_") + to_wstring(rand() % 3), 50.f);
+
                 break;
 
             case MONSTER_STATE::SNEAK_IDLE:
@@ -470,6 +484,8 @@ void CSpear_Soldier::Change_Animation()
 
             case MONSTER_STATE::SNEAK_ATTACK:
                 static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(ARREST);
+                m_pGameInstance->Start_SFX(_wstring(L"A_sfx_speartrooper_swipe_attack_") + to_wstring(rand() % 3), 50.f);
+
                 break;
 
             case MONSTER_STATE::FORMATION_IDLE:
@@ -498,6 +514,8 @@ void CSpear_Soldier::Change_Animation()
 
             case MONSTER_STATE::DEAD:
                 static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(DEATH_01);
+                m_pGameInstance->Start_SFX(_wstring(L"A_sfx_speartrooper_death_") + to_wstring(rand() % 8), 50.f);
+
                 break;
 
             default:
@@ -581,6 +599,8 @@ void CSpear_Soldier::Change_Animation()
                 else if (E_DIRECTION::RIGHT == Get_2DDirection() || E_DIRECTION::LEFT == Get_2DDirection())
                     eAnim = DASHATTACK_INTO_RIGHT;
                 break;
+                m_pGameInstance->Start_SFX(_wstring(L"A_sfx_speartrooper_swipe_attack_") + to_wstring(rand() % 3), 50.f);
+
 
             case MONSTER_STATE::HIT:
                 if (E_DIRECTION::UP == Get_2DDirection())
@@ -598,6 +618,8 @@ void CSpear_Soldier::Change_Animation()
                     eAnim = DEATH_DOWN;
                 else if (E_DIRECTION::RIGHT == Get_2DDirection() || E_DIRECTION::LEFT == Get_2DDirection())
                     eAnim = DEATH_RIGHT;
+                m_pGameInstance->Start_SFX(_wstring(L"A_sfx_speartrooper_death_") + to_wstring(rand() % 8), 50.f);
+
                 break;
 
             default:

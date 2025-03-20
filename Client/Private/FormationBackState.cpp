@@ -110,16 +110,18 @@ void CFormationBackState::State_Exit()
 void CFormationBackState::Move(_float _fTimeDelta)
 {
 	_vector vDir = XMVectorSetW(XMLoadFloat3(&m_vNextPos) - m_pOwner->Get_FinalPosition(), 0.f);
-	if (0.1f >= XMVectorGetX(XMVector3Length(vDir)))
-	{
-		//m_pOwner->Stop_Rotate();
-		//m_pOwner->Stop_Move();
-		m_isTurn = false;
-		m_isMove = false;
+	//if (0.1f >= XMVectorGetX(XMVector3Length(vDir)))
+	//{
+	//	//m_pOwner->Stop_Rotate();
+	//	//m_pOwner->Stop_Move();
+	//	m_isTurn = false;
+	//	m_isMove = false;
 
-		Event_ChangeMonsterState(MONSTER_STATE::FORMATION_MOVE, m_pFSM);
-		return;
-	}
+	//	m_pOwner->Remove_From_Formation_ReserveSlot();
+
+	//	Event_ChangeMonsterState(MONSTER_STATE::FORMATION_MOVE, m_pFSM);
+	//	return;
+	//}
 
 	//È¸Àü
 	if (true == m_isTurn && false == m_isMove)

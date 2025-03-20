@@ -130,6 +130,16 @@
     ]
   },
   {
+    "Trigger_EventTag": "Chapter8_2D_In",
+    "Actions": [
+      {
+        "ActionTag": "Create_EventExecuter",
+        "EventTag": "Chapter8_2D_In",
+        "Is_Sequence": true
+      }
+    ]
+  },
+  {
     "Trigger_EventTag": "Get_C08_Sword",
     "Actions": [
       {
@@ -265,6 +275,16 @@
       {
         "ActionTag": "Create_EventExecuter",
         "EventTag": "Chapter8_Meet_Humgrump",
+        "Is_Sequence": true
+      }
+    ]
+  },
+  {
+    "Trigger_EventTag": "Chapter8_TransformZip",
+    "Actions": [
+      {
+        "ActionTag": "Create_EventExecuter",
+        "EventTag": "Chapter8_TransformZip",
         "Is_Sequence": true
       }
     ]

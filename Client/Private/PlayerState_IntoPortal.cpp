@@ -46,7 +46,8 @@ void CPlayerState_JumpToPortal::Enter()
         m_vPortalPos = m_pPortal->Get_ControllerTransform()->Get_Transform(eCoord)->Get_State(CTransform::STATE_POSITION);
     _float fYDIff   = XMVectorGetY(m_vPortalPos) - XMVectorGetY(m_pOwner->Get_FinalPosition());
 	_float fXZDiff = XMVectorGetX(XMVector3Length(XMVectorSetY(m_vPortalPos, 0.f) - XMVectorSetY(m_pOwner->Get_FinalPosition(), 0.f)));
-	_float fYRadian = min(m_f3DJumpRadianMax,  max(m_f3DJumpRadianMin, atan2f(fYDIff, fXZDiff)) + XMConvertToRadians(10.f));
+	_float fYRadian = m_f3DJumpRadianMin;
+    m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_jot_vocal_portal_jump-") + to_wstring(rand() % 7), 0.15f, 50.f);
 
     if (COORDINATE_3D == eCoord)
     {
@@ -57,19 +58,24 @@ void CPlayerState_JumpToPortal::Enter()
             return;
         }
         static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Set_ShapeEnable((_uint)SHAPE_USE::SHAPE_BODY,false);
-        if (false == static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Start_ParabolicTo(m_vPortalPos, fYRadian))
+        while (false == static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Start_ParabolicTo(m_vPortalPos, fYRadian))
         {
-            static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Set_ShapeEnable((_uint)SHAPE_USE::SHAPE_BODY,true);
-			m_pOwner->Set_State(CPlayer::IDLE);
-            return;
+            fYRadian+= XMConvertToRadians(1.f);
+            if (fYRadian > m_f3DJumpRadianMax)
+            {
+                static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Set_ShapeEnable((_uint)SHAPE_USE::SHAPE_BODY, true);
+                m_pOwner->Set_State(CPlayer::IDLE);
+                return;
+            }
         }
+
+        return;
 	}
     else
     {
 
     }
 
-    m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_jot_vocal_portal_jump-") + to_wstring(rand() % 7), 0.15f, 50.f);
 }
 
 void CPlayerState_JumpToPortal::Exit()

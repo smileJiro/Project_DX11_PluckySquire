@@ -136,7 +136,7 @@ HRESULT CBook::Initialize(void* _pArg)
 	Set_AnimationLoop(COORDINATE_3D, 8, false);
 	Set_AnimationLoop(COORDINATE_3D, 9, true);
 	Set_Animation(0);
-
+	Update(0.f);
 
 	Bind_AnimEventFunc("Player_Change_Action", bind(&CBook::PageAction_Call_PlayerEvent, this));
 
@@ -180,8 +180,9 @@ void CBook::Update(_float _fTimeDelta)
 {
 	if (true == m_isFreezing && true == m_isFreezingOff)
 	{
-		m_isFreezingRatio -= _fTimeDelta * 0.1f;
-		if (0.f >= m_isFreezingRatio)
+		m_isFreezingRatioTime -= _fTimeDelta;
+		m_isFreezingRatio = 0.7f * m_isFreezingRatioTime;
+		if (0.f >= m_isFreezingRatioTime)
 		{
 			m_isFreezingRatio = 0.f;
 			m_isFreezingOff = false;
@@ -194,14 +195,11 @@ void CBook::Update(_float _fTimeDelta)
 	if (KEY_DOWN(KEY::M))
 	{
 		Event_Book_Main_Section_Change_Start(1, &fDefaultPos);
-		m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_page_turn-") + to_wstring(rand() % 6), 0.5f, 50.f);
 
 	}
 	if (KEY_DOWN(KEY::N))
 	{
 		Event_Book_Main_Section_Change_Start(0, &fDefaultPos);
-		m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_page_turn-") + to_wstring(rand() % 6), 0.5f, 50.f);
-
 
 	}
 
@@ -384,7 +382,7 @@ HRESULT CBook::Render()
 				{
 					if (CUR_LEFT == i || CUR_RIGHT == i)
 					{
-						_float fBlend = 0.7f;
+						_float fBlend = m_isFreezingRatio;
 						if (FAILED(pShader->Bind_RawValue("g_fBlendingRatio", &fBlend, sizeof(_float))))
 							return E_FAIL;
 
@@ -769,7 +767,7 @@ void CBook::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
 
 				if (LEVEL_CHAPTER_8 != m_iCurLevelID) {
 					// Player가 책 위에 있을 때 Camera Arm 조정하기
-					CCamera_Manager::GetInstance()->Start_Turn_ArmVector(CCamera_Manager::TARGET, 1.2f, XMVectorSet(0.0f, 0.9514f, -0.3080f, 0.f), EASE_IN_OUT);
+					//CCamera_Manager::GetInstance()->Start_Turn_ArmVector(CCamera_Manager::TARGET, 1.2f, XMVectorSet(0.0f, 0.9514f, -0.3080f, 0.f), EASE_IN_OUT);
 
 				}
 			}
@@ -802,8 +800,8 @@ void CBook::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
 					CCamera_Target* pTarget = static_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET));
 					CCamera_Manager::GetInstance()->Set_NextArmData(pTarget->Get_DefaultArm_Tag(), 0);
 
-					if (CCamera_Manager::TARGET == CCamera_Manager::GetInstance()->Get_CameraType())
-						CCamera_Manager::GetInstance()->Change_CameraMode(CCamera_Target::MOVE_TO_NEXTARM);
+				/*	if (CCamera_Manager::TARGET == CCamera_Manager::GetInstance()->Get_CameraType())
+						CCamera_Manager::GetInstance()->Change_CameraMode(CCamera_Target::MOVE_TO_NEXTARM);*/
 				}
 			}
 		}

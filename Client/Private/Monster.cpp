@@ -167,10 +167,13 @@ void CMonster::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, co
 		&&(_uint)SHAPE_USE::SHAPE_BODY == _My.pShapeUserData->iShapeUse
 		&& (_uint)SHAPE_USE::SHAPE_BODY == _Other.pShapeUserData->iShapeUse)
 	{
-		_vector vRepulse = 10.f * XMVector3Normalize(XMVectorSetY(_Other.pActorUserData->pOwner->Get_FinalPosition() - Get_FinalPosition(), 0.f));
-		Event_Hit(this, static_cast<CCharacter*>(_Other.pActorUserData->pOwner), Get_Stat().iDamg, vRepulse);
-		//XMVectorSetY( vRepulse , -1.f);
-		//Event_KnockBack(static_cast<CCharacter*>(_Other.pActorUserData->pOwner), vRepulse);
+		if(false == static_cast<CPlayer*>(_Other.pActorUserData->pOwner)->Is_Invincible())
+		{
+			_vector vRepulse = 10.f * XMVector3Normalize(XMVectorSetY(_Other.pActorUserData->pOwner->Get_FinalPosition() - Get_FinalPosition(), 0.f));
+			Event_Hit(this, static_cast<CCharacter*>(_Other.pActorUserData->pOwner), Get_Stat().iDamg, vRepulse);
+			//XMVectorSetY( vRepulse , -1.f);
+			//Event_KnockBack(static_cast<CCharacter*>(_Other.pActorUserData->pOwner), vRepulse);
+		}
 	}
 }
 
@@ -267,6 +270,12 @@ void CMonster::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
 {
 	if ((_uint)MONSTER_STATE::DEAD == m_iState)
 		return;
+
+	if (COORDINATE_3D == Get_CurCoord())
+	{
+		if (true == Get_ActorCom()->Is_Dynamic())
+			Stop_Rotate();
+	}
 
 	m_tStat.iHP -= _iDamg;
 #ifdef _DEBUG

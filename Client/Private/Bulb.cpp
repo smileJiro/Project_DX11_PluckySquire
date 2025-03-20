@@ -232,6 +232,9 @@ void CBulb::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherColl
 				matFX.r[1] = XMVector3Normalize(matFX.r[1]);
 				matFX.r[2] = XMVector3Normalize(matFX.r[2]);
 				CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("health_pickup_small"), CSection_Manager::GetInstance()->Get_Cur_Section_Key(), matFX);
+
+				m_pGameInstance->Start_SFX(_wstring(L"A_sfx_pickup_lightbulb-") + to_wstring(rand() % 4), 50.f);
+				m_pGameInstance->Start_SFX(_wstring(L"A_sfx_lightbulb_addv2-") + to_wstring(rand() % 8), 20.f);
 				
 				Event_DeleteObject(this);
 			}

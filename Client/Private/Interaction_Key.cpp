@@ -3,6 +3,7 @@
 #include "GameInstance.h"
 #include "UI_Manager.h"
 #include "Book.h"
+#include "PlayerData_Manager.h"
 
 
 
@@ -48,7 +49,7 @@ void CInteraction_Key::Update(_float _fTimeDelta)
 		CBook* pBook = Uimgr->Get_Book();
 
 		if (nullptr == pBook)
-			assert(pBook);
+			return;
 
 		if (true == pBook->Get_PlayerAbove())
 		{
@@ -114,7 +115,7 @@ void CInteraction_Key::Late_Update(_float _fTimeDelta)
 	CBook* pBook = Uimgr->Get_Book();
 
 	if (nullptr == pBook)
-		assert(pBook);
+		return;
 
 
 
@@ -144,8 +145,30 @@ void CInteraction_Key::Late_Update(_float _fTimeDelta)
 HRESULT CInteraction_Key::Render()
 {
 	CUI_Manager* pUIManager = CUI_Manager::GetInstance();
-	if (false == pUIManager->Get_StampHave(0) && false == pUIManager->Get_StampHave(1))
+	CPlayerData_Manager* pPDM = CPlayerData_Manager::GetInstance();
+	CBook* pBook = dynamic_cast<CBook*>(Uimgr->Get_Player()->Get_InteractableObject());
+
+	if (false == pPDM->Is_Own(CPlayerData_Manager::BOMB_STAMP) && false == pPDM->Is_Own(CPlayerData_Manager::STOP_STAMP) &&
+		false == pPDM->Is_Own(CPlayerData_Manager::FLIPPING_GLOVE) && false == pPDM->Is_Own(CPlayerData_Manager::TILTING_GLOVE))
 		return S_OK;
+
+	if (nullptr == pBook)
+	{
+		if (true == m_isRender)
+			m_isRender = false;
+
+		return S_OK;
+	}
+
+	if (false == pPDM->Is_Own(CPlayerData_Manager::FLIPPING_GLOVE) && false == pPDM->Is_Own(CPlayerData_Manager::TILTING_GLOVE) && true == pBook->Get_PlayerAround())
+		return S_OK;
+
+	if (false == pPDM->Is_Own(CPlayerData_Manager::BOMB_STAMP) && false == pPDM->Is_Own(CPlayerData_Manager::STOP_STAMP) && true == pBook->Get_PlayerAbove())
+	{
+		if (true == pPDM->Is_Own(CPlayerData_Manager::FLIPPING_GLOVE) || true == pPDM->Is_Own(CPlayerData_Manager::TILTING_GLOVE))
+			return S_OK;
+	}
+		
 
 	if (FAILED(m_pControllerTransform->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
 		return E_FAIL;
@@ -274,9 +297,9 @@ void CInteraction_Key::StampWord()
 {
 
 	CUI_Manager* pUIManager = CUI_Manager::GetInstance();
-
-	if ((true == pUIManager->Get_StampHave(0) ||
-		true == pUIManager->Get_StampHave(1)))
+	CPlayerData_Manager* pPDM = CPlayerData_Manager::GetInstance();
+	if ((true == pPDM->Is_Own(CPlayerData_Manager::BOMB_STAMP) ||
+		true == pPDM->Is_Own(CPlayerData_Manager::STOP_STAMP)))
 	{
 		ChangeStampWord();
 	}

@@ -164,6 +164,15 @@ public:
 		return m_fRayHalfWidth;
 	}
 
+	SNEAKWAYPOINTINDEX Get_WayIndex()
+	{
+		return m_eWayIndex;
+	}
+	CFSM* Get_FSM() const
+	{
+		 return m_pFSM;
+	}
+
 	_bool Is_Formation_Stop();
 	_bool Is_Formation_Rotate();
 

@@ -208,6 +208,8 @@ void CZippy::Change_Animation()
                     eAnim = ELEC_DOWN;
                 else if (E_DIRECTION::RIGHT == Get_2DDirection() || E_DIRECTION::LEFT == Get_2DDirection())
                     eAnim = ELEC_RIGHT;
+
+                m_pGameInstance->Start_SFX(_wstring(L"A_sfx_zippi_saw_loop"), 50.f);
             }
             else if (false == m_isElectric)
             {
@@ -254,6 +256,9 @@ void CZippy::Change_Animation()
             default:
                 break;
             }
+
+            m_pGameInstance->Start_SFX(_wstring(L"A_sfx_zippi_electrify_loop"), 50.f);
+
         }
         break;
 
@@ -273,6 +278,9 @@ void CZippy::Change_Animation()
 				eAnim = DIE_DOWN;
 			else if (E_DIRECTION::RIGHT == Get_2DDirection() || E_DIRECTION::LEFT == Get_2DDirection())
 				eAnim = DIE_RIGHT;
+
+            m_pGameInstance->Start_SFX(_wstring(L"A_sfx_zippi_death_") + to_wstring(rand() % 2), 50.f);
+
 			break;
 		default:
 			break;
@@ -488,6 +496,10 @@ void CZippy::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
     {
         __super::On_Hit(_pHitter, _iDamg, _vForce);
     }
+
+    m_pGameInstance->Start_SFX(_wstring(L"A_sfx_sword_hit_zippi_") + to_wstring(rand() % 3), 50.f);
+
+
 }
 
 _bool CZippy::Has_StateAnim(MONSTER_STATE _eState)

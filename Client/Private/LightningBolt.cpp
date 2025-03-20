@@ -206,6 +206,7 @@ void CLightningBolt::Active_OnEnable()
     m_isStop = false;
 	//if (COORDINATE_3D == Get_CurCoord())
  //       m_pActorCom->Set_ShapeEnable((_int)SHAPE_USE::SHAPE_BODY, true);
+
 }
 
 void CLightningBolt::Active_OnDisable()

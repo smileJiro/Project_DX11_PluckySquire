@@ -40,6 +40,8 @@ HRESULT CPlayerItem::Initialize(void* _pArg)
 	pDesc->iTriggerType = (_uint)TRIGGER_TYPE::EVENT_TRIGGER;
 	m_szModelTag = pDesc->szModelTag;
 	m_szItemTag = pDesc->szItemTag;
+	m_iItemType = pDesc->iItemType;
+
 	pDesc->vLocalPosOffset = { 0.f, 0.f, 0.f };
 	pDesc->FreezeRotation[0] = true;
 	pDesc->FreezeRotation[1] = false;

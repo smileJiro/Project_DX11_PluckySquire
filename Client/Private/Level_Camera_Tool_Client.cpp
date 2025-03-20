@@ -133,6 +133,7 @@ void CLevel_Camera_Tool_Client::Update(_float _fTimeDelta)
 	Show_SaveLoadFileWindow();
 
 	Show_AnimModel(_fTimeDelta);
+
 }
 
 HRESULT CLevel_Camera_Tool_Client::Render()
@@ -167,9 +168,9 @@ HRESULT CLevel_Camera_Tool_Client::Ready_Lights()
 
 HRESULT CLevel_Camera_Tool_Client::Ready_Layer_Map()
 {
-	//if (FAILED(Map_Object_Create(L"Chapter_02_Play_Desk.mchc")))
+	if (FAILED(Map_Object_Create(L"Chapter_02_Play_Desk.mchc")))
 	//	return E_FAIL;
-	if (FAILED(Map_Object_Create(L"Chapter_Boss.mchc")))
+	//if (FAILED(Map_Object_Create(L"Chapter_Boss.mchc")))
 		return E_FAIL;
 
 	return S_OK;
@@ -272,7 +273,7 @@ HRESULT CLevel_Camera_Tool_Client::Ready_Layer_Player(const _wstring& _strLayerT
 
 	CPlayer::CONTAINEROBJ_DESC PlayerDesc = {};
 	PlayerDesc.iCurLevelID = m_eLevelID;
-	PlayerDesc.tTransform3DDesc.vInitialPosition = { -9.7f, 4.2f, 10.66f };   // TODO ::임시 위치
+	PlayerDesc.tTransform3DDesc.vInitialPosition = { 2.94290805f, 0.351999998f, -21.1068630f };//{ -10.0362425f, 5.76746035f, 11.9308004f };   // TODO ::임시 위치
 	PlayerDesc.tTransform3DDesc.vInitialRotation = { 0.f, XMConvertToRadians(180.f), 0.f};   // TODO ::임시 위치
 	PlayerDesc.eStartCoord = COORDINATE_3D;
 	_int a = sizeof(CPlayer::CONTAINEROBJ_DESC);
@@ -305,7 +306,7 @@ HRESULT CLevel_Camera_Tool_Client::Ready_Layer_TestTerrain(const _wstring& _strL
 	// Book
 	CBook::BOOK_DESC BookDesc = {};
 	BookDesc.iCurLevelID = m_eLevelID;
-	BookDesc.isInitOverride = true;
+	BookDesc.isInitOverride = false;
 	BookDesc.tTransform3DDesc.vInitialPosition = _float3(-90.f, 64.7f, 19.0f);
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Book"),
 		m_eLevelID, L"_strLayerTag", reinterpret_cast<CGameObject**>(&pOut), &BookDesc)))
@@ -315,44 +316,46 @@ HRESULT CLevel_Camera_Tool_Client::Ready_Layer_TestTerrain(const _wstring& _strL
 	m_ModelObjects.push_back(pOut);
 	//
 	//// Hand
-	//Desc.eStartCoord = COORDINATE_3D;
-	//Desc.iCurLevelID = LEVEL_CAMERA_TOOL;
-	//Desc.iModelPrototypeLevelID_3D = LEVEL_CAMERA_TOOL;
-	//Desc.isCoordChangeEnable = false;
-	//Desc.iModelPrototypeLevelID_3D = LEVEL_CAMERA_TOOL;
-	//Desc.strModelPrototypeTag_3D = L"Prototype_Model_MagicHand";
-	//Desc.strShaderPrototypeTag_3D = L"Prototype_Component_Shader_VtxAnimMesh";
-	//Desc.iShaderPass_3D = 0;
-	//Desc.iPriorityID_3D = PR3D_BLEND;
-	//Desc.iRenderGroupID_3D = RG_3D;
-	//Desc.tTransform3DDesc.fSpeedPerSec = 1.f;
-	//Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-	//Desc.tTransform3DDesc.vInitialPosition = { 2.92f, 1.17f, -21.02f };
-	//
-	//
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"),
-	//	LEVEL_CAMERA_TOOL, _strLayerTag, reinterpret_cast<CGameObject**>(&pOut), &Desc)))
-	//	return E_FAIL;
-	//
-	////pOut->Set_Active(false);
-	//m_ModelObjects.push_back(pOut);
+	Desc.eStartCoord = COORDINATE_3D;
+	Desc.iCurLevelID = LEVEL_CAMERA_TOOL;
+	Desc.iModelPrototypeLevelID_3D = LEVEL_CAMERA_TOOL;
+	Desc.isCoordChangeEnable = false;
+	Desc.iModelPrototypeLevelID_3D = LEVEL_CAMERA_TOOL;
+	Desc.strModelPrototypeTag_3D = L"Prototype_Model_MagicHand";
+	Desc.strShaderPrototypeTag_3D = L"Prototype_Component_Shader_VtxAnimMesh";
+	Desc.iShaderPass_3D = 0;
+	Desc.iPriorityID_3D = PR3D_BLEND;
+	Desc.iRenderGroupID_3D = RG_3D;
+	Desc.tTransform3DDesc.fSpeedPerSec = 1.f;
+	Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	Desc.tTransform3DDesc.vInitialPosition = { 2.92f, 0.0f, -21.02f };
+	
+	
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"),
+		LEVEL_CAMERA_TOOL, _strLayerTag, reinterpret_cast<CGameObject**>(&pOut), &Desc)))
+		return E_FAIL;
+	
+	//pOut->Set_Active(false);
+	m_ModelObjects.push_back(pOut);
 
 	// Humgrump
-	CButterGrump::MONSTER_DESC Boss_Desc;
-	Boss_Desc.iCurLevelID = m_eLevelID;
-	Boss_Desc.eStartCoord = COORDINATE_3D;
-	Boss_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-	Boss_Desc.tTransform3DDesc.vInitialPosition = _float3(0.53f, 60.35f, -8.0f);
+	//CButterGrump::MONSTER_DESC Boss_Desc;
+	//Boss_Desc.iCurLevelID = m_eLevelID;
+	//Boss_Desc.eStartCoord = COORDINATE_3D;
+	//Boss_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	//Boss_Desc.tTransform3DDesc.vInitialPosition = _float3(0.53f, 60.35f, -8.0f);
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_ButterGrump"), m_eLevelID, TEXT("Layer_Boss"), reinterpret_cast<CGameObject**>(&pOut), &Boss_Desc)))
-		return E_FAIL;
-	m_ModelObjects.push_back(pOut);
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CAMERA_TOOL, TEXT("Prototype_GameObject_ButterGrump"), m_eLevelID, TEXT("Layer_Boss"), reinterpret_cast<CGameObject**>(&pOut), &Boss_Desc)))
+	//	return E_FAIL;
+	//m_ModelObjects.push_back(pOut);
 
 	// 
 	// Player	
 	CPlayer* pPlayer = static_cast<CPlayer*>(m_pGameInstance->Get_GameObject_Ptr(LEVEL_CAMERA_TOOL, TEXT("Layer_Player"), 0));
 	CModelObject* pPlayerBody = static_cast<CModelObject*>(pPlayer->Get_PlayerPartObject(CPlayer::PLAYER_PART_BODY));
 	m_ModelObjects.push_back(pPlayerBody);
+
+	pPlayer->Set_Kinematic(true);
 
 	return S_OK;
 }
@@ -651,8 +654,16 @@ void CLevel_Camera_Tool_Client::Show_CameraZoomInfo()
 
 void CLevel_Camera_Tool_Client::Show_AnimModel(_float _fTimeDelta)
 {
-	ImGui::Begin("Control Model");
+	static _float fPlayTimer = {};
+	static _bool isPlay = false;
 
+	if(true == isPlay && fPlayTimer <= 50.f)
+		fPlayTimer += _fTimeDelta;
+
+	
+
+	ImGui::Begin("Control Model");
+	ImGui::Text("Time: %.2f", fPlayTimer);
 	//static _int iModelIndex = {};
 	ImGui::InputInt("Model Index: %d", &m_iModelIndex);
 
@@ -758,6 +769,41 @@ void CLevel_Camera_Tool_Client::Show_AnimModel(_float _fTimeDelta)
 		ImGui::Text("Max Anim %d, Cur Time: %.2f", Greater.second, m_fAnimTime);
 	}
 
+	if (true == ImGui::Button("Play Cyber Jot CutSceneAnim")) {
+
+		CPlayer* pPlayer = static_cast<CPlayer*>(m_pGameInstance->Get_GameObject_Ptr(m_eLevelID, TEXT("Layer_Player"), 0));
+		pPlayer->Set_State(CPlayer::ENGAGE_BOSS);
+		fPlayTimer = 0.f;
+	}
+
+	if (true == ImGui::Button("Stop Jot")) {
+
+		CPlayer* pPlayer = static_cast<CPlayer*>(m_pGameInstance->Get_GameObject_Ptr(m_eLevelID, TEXT("Layer_Player"), 0));
+		pPlayer->Set_PlayingAnim(false);
+		isPlay = false;
+	}
+
+	ImGui::SameLine();
+
+	if (true == ImGui::Button("Replay Jot")) {
+
+		CPlayer* pPlayer = static_cast<CPlayer*>(m_pGameInstance->Get_GameObject_Ptr(m_eLevelID, TEXT("Layer_Player"), 0));
+		pPlayer->Set_PlayingAnim(true);
+		isPlay = true;
+	}
+
+	ImGui::SameLine();
+
+	if (true == ImGui::Button("Return To Origin Pos")) {
+
+		CPlayer* pPlayer = static_cast<CPlayer*>(m_pGameInstance->Get_GameObject_Ptr(m_eLevelID, TEXT("Layer_Player"), 0));
+		pPlayer->Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSet(-10.0362425f, 5.76746035f, 11.9308004f, 1.f));
+
+	}
+
+	if (true == ImGui::Button("Buttergrump")) {
+		static_cast<CButterGrump*>(m_pGameInstance->Get_GameObject_Ptr(m_eLevelID, TEXT("Layer_Boss"), 0))->Play_Intro(2);		
+	}
 
 	ImGui::End();
 }
@@ -2005,7 +2051,7 @@ CGameObject* CLevel_Camera_Tool_Client::Create_Cube()
 	Desc.iRenderGroupID_3D = RG_3D;
 
 	Desc.tTransform3DDesc.vInitialPosition = m_tKeyFrameInfo.vPosition;
-	Desc.tTransform3DDesc.vInitialScaling = _float3(0.8f, 0.8f, 0.8f);
+	Desc.tTransform3DDesc.vInitialScaling = _float3(0.2f, 0.2f, 0.2f);
 	Desc.tTransform3DDesc.fRotationPerSec = XMConvertToRadians(180.f);
 	Desc.tTransform3DDesc.fSpeedPerSec = 0.f;
 
@@ -2713,6 +2759,9 @@ void CLevel_Camera_Tool_Client::Play_CutScene(_float fTimeDelta)
 				}
 			}
 		}
+
+	/*	CPlayer* pPlayer = static_cast<CPlayer*>(m_pGameInstance->Get_GameObject_Ptr(m_eLevelID, TEXT("Layer_Player"), 0));
+		pPlayer->Set_State(CPlayer::ENGAGE_BOSS);*/
 
 		m_fAnimTime = 0.f;
 	}

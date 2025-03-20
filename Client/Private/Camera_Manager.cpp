@@ -26,10 +26,10 @@ HRESULT CCamera_Manager::Initialize()
 
 void CCamera_Manager::Update(_float fTimeDelta)
 {
-	if (KEY_DOWN(KEY::G))
-	{
-		Start_FadeOut_White();
-	}
+	//if (KEY_DOWN(KEY::G))
+	//{
+	//	Start_FadeOut_White();
+	//}
 	if (KEY_DOWN(KEY::H))
 	{
 		Start_FadeOut(1.5f);
@@ -83,6 +83,11 @@ _uint CCamera_Manager::Get_CurCameraMode()
 
 	return _uint();
 }
+CONST_DOF CCamera_Manager::Get_DofBufferData() const
+{
+	return m_Cameras[m_eCurrentCameraType]->Get_DofBufferData();
+}
+
 void CCamera_Manager::Off_Shake()
 {
 	m_Cameras[m_eCurrentCameraType]->Off_Shake();

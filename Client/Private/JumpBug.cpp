@@ -132,6 +132,14 @@ HRESULT CJumpBug::Render()
     return S_OK;
 }
 
+void CJumpBug::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
+{
+    __super::On_Hit(_pHitter, _iDamg, _vForce);
+
+    m_pGameInstance->Start_SFX(_wstring(L"A_sfx_sword_hit_jumperbug_") + to_wstring(rand() % 4), 50.f);
+
+}
+
 void CJumpBug::Change_Animation()
 {
     if(m_iState != m_iPreState)
@@ -147,6 +155,9 @@ void CJumpBug::Change_Animation()
             case MONSTER_STATE::PATROL:
                 static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(JUMP_UP);
                 m_isJump = true;
+
+                m_pGameInstance->Start_SFX_Distance(_wstring(L"A_sfx_jumperbug_jump-") + to_wstring(rand() % 7), m_pControllerTransform->Get_State(CTransform::STATE_POSITION), 50.f, 0.f, 13.f);
+
                 break;
 
             case MONSTER_STATE::HIT:
@@ -155,6 +166,7 @@ void CJumpBug::Change_Animation()
 
             case MONSTER_STATE::DEAD:
                 static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(DIE);
+                m_pGameInstance->Start_SFX(_wstring(L"A_sfx_jumperbug_death_") + to_wstring(rand() % 4), 50.f);
                 break;
 
             default:
@@ -183,6 +195,11 @@ void CJumpBug::Change_Animation()
                 else if (E_DIRECTION::RIGHT == Get_2DDirection() || E_DIRECTION::LEFT == Get_2DDirection())
                     eAnim = JUMP_RISE_RIGHT;
                 m_isJump = true;
+
+               
+               // m_pGameInstance->Start_SFX_Distance(_wstring(L"A_sfx_jumperbug_jump-") + to_wstring(rand() % 7), CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName, _float2(XMVectorGetX(m_pControllerTransform->Get_State(CTransform::STATE_POSITION)),
+               //     XMVectorGetY(m_pControllerTransform->Get_State(CTransform::STATE_POSITION)))), 50.f, 0.f, 13.f);
+
                 break;
 
             case Client::MONSTER_STATE::HIT:
@@ -200,6 +217,9 @@ void CJumpBug::Change_Animation()
                     eAnim = DIE_DOWN;
                 else if (E_DIRECTION::RIGHT == Get_2DDirection() || E_DIRECTION::LEFT == Get_2DDirection())
                     eAnim = DIE_RIGHT;
+
+                m_pGameInstance->Start_SFX(_wstring(L"A_sfx_jumperbug_death_") + to_wstring(rand() % 4), 50.f);
+
                 break;
             default:
                 break;

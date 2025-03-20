@@ -796,6 +796,12 @@
     <Filter Include="02.GameObjects\UI\00. GamePlay\08. BossHP_Bar\00.BossHP_Bar_Texture">
       <UniqueIdentifier>{4e9152f4-cf93-4b33-af69-9254a2fa6e41}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\UI\00. GamePlay\03. InterAction\00. Interaction_Book\00. Flipping_Glove">
+      <UniqueIdentifier>{2229eefc-6014-4875-a9bc-3a3ff3ab1b76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UI\00. GamePlay\03. InterAction\00. Interaction_Book\01. Tilting_Glove">
+      <UniqueIdentifier>{58cd630a-5eb5-4866-92d1-9710e8c90790}</UniqueIdentifier>
+    </Filter>
     <Filter Include="02.GameObjects\Monster\Boss\Part\Body">
       <UniqueIdentifier>{86b240a7-2423-4237-a88d-b3c93d46e6dd}</UniqueIdentifier>
     </Filter>
@@ -920,9 +926,6 @@
     </ClInclude>
     <ClInclude Include="..\Public\PlayerState_Idle.h" />
     <ClInclude Include="..\Public\PlayerState_Run.h" />
-    <ClInclude Include="..\Public\UI_Interaction_Book.h">
-      <Filter>02.GameObjects\UI\00. GamePlay\03. InterAction\00. Interaction_Book</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\ShopPanel.h">
       <Filter>02.GameObjects\UI\02. ShopPanel</Filter>
     </ClInclude>
@@ -1865,9 +1868,6 @@
     <ClInclude Include="..\public\Sneak_SentryTroop.h">
       <Filter>05.MiniGames\Minigame_Sneak</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Interaction_Key.h">
-      <Filter>02.GameObjects\UI\00. GamePlay\03. InterAction\03. Interaction_Key</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\BackGroundObject.h">
       <Filter>02.GameObjects\BackGround</Filter>
     </ClInclude>
@@ -2062,6 +2062,16 @@
       <Filter>02.GameObjects\UI\00. GamePlay\08. BossHP_Bar\00.BossHP_Bar_Texture</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CyberCursor.h" />
+    <ClInclude Include="..\Public\Zip_C8.h" />
+    <ClInclude Include="..\Public\UI_Interaction_Book.h">
+      <Filter>02.GameObjects\UI\00. GamePlay\03. InterAction\00. Interaction_Book\00. Flipping_Glove</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI_Interaction_Tilting.h">
+      <Filter>02.GameObjects\UI\00. GamePlay\03. InterAction\00. Interaction_Book\01. Tilting_Glove</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Interaction_Key.h">
+      <Filter>02.GameObjects\UI\00. GamePlay\03. InterAction\03. Interaction_Key</Filter>
+    </ClInclude>
     <ClInclude Include="..\public\ButterGrump_Body.h">
       <Filter>02.GameObjects\Monster\Boss\Part</Filter>
     </ClInclude>
@@ -2180,9 +2190,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState_Idle.cpp" />
     <ClCompile Include="..\Private\PlayerState_Run.cpp" />
-    <ClCompile Include="..\Private\UI_Interaction_Book.cpp">
-      <Filter>02.GameObjects\UI\00. GamePlay\03. InterAction\00. Interaction_Book</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\ShopPanel.cpp">
       <Filter>02.GameObjects\UI\02. ShopPanel</Filter>
     </ClCompile>
@@ -3315,6 +3322,13 @@
       <Filter>02.GameObjects\UI\00. GamePlay\08. BossHP_Bar\00.BossHP_Bar_Texture</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CyberCursor.cpp" />
+    <ClCompile Include="..\Private\Zip_C8.cpp" />
+    <ClCompile Include="..\Private\UI_Interaction_Book.cpp">
+      <Filter>02.GameObjects\UI\00. GamePlay\03. InterAction\00. Interaction_Book\00. Flipping_Glove</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_Interaction_Tilting.cpp">
+      <Filter>02.GameObjects\UI\00. GamePlay\03. InterAction\00. Interaction_Book\01. Tilting_Glove</Filter>
+    </ClCompile>
     <ClCompile Include="..\private\ButterGrump_Body.cpp">
       <Filter>02.GameObjects\Monster\Boss\Part</Filter>
     </ClCompile>
