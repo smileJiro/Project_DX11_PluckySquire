@@ -399,6 +399,7 @@ void CState_Sneak::Initialize_PatrolPoints(SNEAKWAYPOINTINDEX _iWayIndex)
 		m_PatrolWays.push_back(7);
 		m_PatrolWays.push_back(8);
 		m_PatrolWays.push_back(9);
+		m_isPatrolCycle = true;
 		break;
 
 	case Client::SNEAKWAYPOINTINDEX::CHAPTER8_1:

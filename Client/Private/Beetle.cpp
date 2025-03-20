@@ -65,6 +65,7 @@ HRESULT CBeetle::Initialize(void* _pArg)
 
 
     m_fStepHeightThreshold = 0.3f;
+    m_fStepSlopeThreshold = 0.75f;
 
     m_fDashDistance = 10.f;
     m_fBackFlyTime = 0.5f;

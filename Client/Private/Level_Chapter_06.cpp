@@ -20,6 +20,7 @@
 #include "Player.h"
 #include "Beetle.h"
 #include "BirdMonster.h"
+#include "Projectile_BarfBug.h"
 #include "Projectile_BirdMonster.h"
 #include "Spear_Soldier.h"
 #include "CrossBow_Soldier.h"
@@ -1847,6 +1848,18 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Monster()
 HRESULT CLevel_Chapter_06::Ready_Layer_Monster_Projectile(const _wstring& _strLayerTag, CGameObject** _ppOut)
 {
 	Pooling_DESC Pooling_Desc;
+	Pooling_Desc.iPrototypeLevelID = LEVEL_STATIC;
+	Pooling_Desc.strLayerTag = TEXT("Layer_Monster_Projectile");
+	Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Projectile_BarfBug");
+
+
+	CProjectile_BarfBug::PROJECTILE_BARFBUG_DESC* pProjDesc = new CProjectile_BarfBug::PROJECTILE_BARFBUG_DESC;
+	pProjDesc->iCurLevelID = m_eLevelID;
+	pProjDesc->eStartCoord = COORDINATE_3D;
+
+	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Projectile_BarfBug"), Pooling_Desc, pProjDesc);
+
+
 	Pooling_Desc.iPrototypeLevelID = LEVEL_STATIC;
 	Pooling_Desc.strLayerTag = TEXT("Layer_Monster_Projectile");
 	Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Projectile_BirdMonster");

@@ -1308,34 +1308,34 @@ HRESULT CLevel_Chapter_02::Ready_Layer_Monster()
 	//	return E_FAIL;
 
 
-	CBeetle::MONSTER_DESC Beetle_Desc;
-	Beetle_Desc.iCurLevelID = m_eLevelID;
-	Beetle_Desc.eStartCoord = COORDINATE_3D;
-	Beetle_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-	Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(26.5f, 8.58f, 25.f);
-	Beetle_Desc.isSneakMode = true;
-	Beetle_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER2_BRIDGE_1;
+	//CBeetle::MONSTER_DESC Beetle_Desc;
+	//Beetle_Desc.iCurLevelID = m_eLevelID;
+	//Beetle_Desc.eStartCoord = COORDINATE_3D;
+	//Beetle_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	//Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(26.5f, 8.58f, 25.f);
+	//Beetle_Desc.isSneakMode = true;
+	//Beetle_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER2_BRIDGE_1;
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, TEXT("Layer_Sneak_Beetle"), &Beetle_Desc)))
-		return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, TEXT("Layer_Bridge_Beetle"), &Beetle_Desc)))
+	//	return E_FAIL;
 
-	Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(29.5f, 8.6f, 31.5f);
-	Beetle_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER2_BRIDGE_2;
+	//Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(29.5f, 8.6f, 31.5f);
+	//Beetle_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER2_BRIDGE_2;
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, TEXT("Layer_Sneak_Beetle"), &Beetle_Desc)))
-		return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, TEXT("Layer_Bridge_Beetle"), &Beetle_Desc)))
+	//	return E_FAIL;
 
-	Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(35.5f, 8.58f, 31.5f);
-	Beetle_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER2_BRIDGE_3;
+	//Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(35.5f, 8.58f, 31.5f);
+	//Beetle_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER2_BRIDGE_3;
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, TEXT("Layer_Sneak_Beetle"), &Beetle_Desc)))
-		return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, TEXT("Layer_Bridge_Beetle"), &Beetle_Desc)))
+	//	return E_FAIL;
 
-	Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(31.8f, 8.58f, 24.4f);
-	Beetle_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER2_BRIDGE_4;
+	//Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(32.8f, 8.6f, 24.4f);
+	//Beetle_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER2_BRIDGE_4;
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, TEXT("Layer_Sneak_Beetle"), &Beetle_Desc)))
-		return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, TEXT("Layer_Bridge_Beetle"), &Beetle_Desc)))
+	//	return E_FAIL;
 
 
 	return S_OK;
