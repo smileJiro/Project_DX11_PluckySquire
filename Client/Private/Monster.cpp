@@ -104,9 +104,9 @@ HRESULT CMonster::Initialize(void* _pArg)
 		if (COORDINATE_3D == Get_CurCoord())
 		{
 			if (ACTOR_TYPE::DYNAMIC == Get_ActorType())
-				static_cast<CActor_Dynamic*>(Get_ActorCom())->Set_Rotation(XMLoadFloat3(&pDesc->vLook));
+				static_cast<CActor_Dynamic*>(Get_ActorCom())->Set_Rotation(XMVector3Normalize(XMLoadFloat3(&pDesc->vLook)));
 			else if (ACTOR_TYPE::KINEMATIC == Get_ActorType())
-				Get_ControllerTransform()->Set_Look(XMLoadFloat3(&pDesc->vLook));
+				Get_ControllerTransform()->Set_Look(XMVector3Normalize(XMLoadFloat3(&pDesc->vLook)));
 		}
 	}
 
