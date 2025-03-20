@@ -67,6 +67,8 @@ void CPartObject::Late_Update(_float _fTimeDelta)
     if (nullptr != m_pParentMatrices[eCurCoord])
         matWorld *= XMLoadFloat4x4(m_pParentMatrices[eCurCoord]);
     XMStoreFloat4x4(&m_WorldMatrices[eCurCoord], matWorld);
+
+    Action_HitRender(_fTimeDelta);
     __super::Late_Update(_fTimeDelta);
 }
 
@@ -111,6 +113,24 @@ _matrix CPartObject::Get_FinalWorldMatrix()
     return XMLoadFloat4x4( &m_WorldMatrices[m_pControllerTransform->Get_CurCoord()]);
 }
 
+void CPartObject::Start_HitRender()
+{
+    m_isHitRender = 1; m_vHitRenderTime.y = 0.0f;
+}
+
+void CPartObject::Action_HitRender(_float _fTimeDelta)
+{
+    if (false == m_isHitRender)
+        return;
+
+    m_vHitRenderTime.y += _fTimeDelta;
+    if (m_vHitRenderTime.x <= m_vHitRenderTime.y)
+    {
+        m_vHitRenderTime.y = m_vHitRenderTime.x;
+        m_isHitRender = false;
+    }
+}
+
 void CPartObject::Free()
 {
     for (_int i = 0; i < COORDINATE_LAST; ++i)
@@ -127,7 +147,7 @@ HRESULT CPartObject::Cleanup_DeadReferences()
     return S_OK;
 }
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 
 HRESULT CPartObject::Imgui_Render_ObjectInfos()
 {

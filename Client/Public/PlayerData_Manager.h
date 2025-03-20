@@ -97,8 +97,8 @@ private:
 
 	//스킬 레벨 용도
 	_int								m_iJumpSkill = { 0 };
-	_int								m_iThorowSkill = { 0 };
-	_int								m_iWhirlSkill = { 2 };
+	_int								m_iThorowSkill = { 1 };
+	_int								m_iWhirlSkill = { 1 };
 	_int								m_iAttackDamagePlus = { 0 };
 
 private:

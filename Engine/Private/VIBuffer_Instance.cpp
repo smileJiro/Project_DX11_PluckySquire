@@ -780,7 +780,7 @@ void CVIBuffer_Instance::Free()
 	__super::Free();
 }
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 
 _bool CVIBuffer_Instance::s_isShapeChange = false;
 _int CVIBuffer_Instance::s_iShapeFlags = 0;

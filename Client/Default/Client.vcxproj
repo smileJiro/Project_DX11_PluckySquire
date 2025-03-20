@@ -217,6 +217,7 @@
     <ClInclude Include="..\Public\Boss_TennisBall.h" />
     <ClInclude Include="..\Public\Boss_WingSlam.h" />
     <ClInclude Include="..\Public\Boss_WingSlice.h" />
+    <ClInclude Include="..\public\ButterGrump_Body.h" />
     <ClInclude Include="..\Public\ButterGrump_LeftEye.h" />
     <ClInclude Include="..\Public\ButterGrump_RightEye.h" />
     <ClInclude Include="..\Public\ButterGrump_Shield.h" />
@@ -638,6 +639,7 @@
     <ClCompile Include="..\Private\Boss_TennisBall.cpp" />
     <ClCompile Include="..\Private\Boss_WingSlam.cpp" />
     <ClCompile Include="..\Private\Boss_WingSlice.cpp" />
+    <ClCompile Include="..\private\ButterGrump_Body.cpp" />
     <ClCompile Include="..\Private\ButterGrump_LeftEye.cpp" />
     <ClCompile Include="..\Private\ButterGrump_RightEye.cpp" />
     <ClCompile Include="..\Private\ButterGrump_Shield.cpp" />

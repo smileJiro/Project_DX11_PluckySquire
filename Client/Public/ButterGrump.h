@@ -7,6 +7,7 @@ END
 BEGIN(Client)
 
 class CFSM_Boss;
+class CButterGrump_Body;
 class CButterGrump final : public CMonster
 {
 public:
@@ -126,6 +127,8 @@ public:
 	{
 		return m_iCurMoveIndex;
 	}
+
+	void Set_HitRenderDesc(_uint _iMeshIndex, pair<_bool, _float2> _pair);
 	
 public:
 	virtual HRESULT			Initialize_Prototype() override;

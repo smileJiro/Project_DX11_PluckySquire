@@ -36,6 +36,7 @@ public:
 	virtual HRESULT			Initialize_Prototype(const _char* pModelFilePath, _fmatrix PreTransformMatrix, _bool _isCollider);
 	virtual HRESULT			Initialize(void* _pArg) override;
 	virtual HRESULT			Render(CShader* _pShader, _uint _iShaderPass) override;
+	virtual HRESULT			Render(CShader* _pShader, _uint _iShaderPass, vector<pair<_bool, _float2>> _vecHitRender);
 	virtual HRESULT			Render_Shadow(CShader* _pShader, _uint _iShaderPass) override;
 	virtual HRESULT			Render_Default(CShader* _pShader, _uint _iShaderPass) override;
 
@@ -98,7 +99,7 @@ public:
 
 	void					Update_ConstBuffer();
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 public:
 	vector<CMesh*>&			Get_Meshs() { return m_Meshes; }
 	vector<CMaterial*>&		Get_Materials() { return m_Materials; }

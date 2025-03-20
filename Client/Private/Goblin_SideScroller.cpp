@@ -141,6 +141,7 @@ void CGoblin_SideScroller::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
 
     case DEATH:
         Set_AnimChangeable(true);
+        m_pGameInstance->Start_SFX(_wstring(L"A_sfx_goblin_die_") + to_wstring(rand() % 5), 50.f);
         CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("Death_Burst"), Get_Include_Section_Name(), Get_ControllerTransform()->Get_WorldMatrix());
         Event_DeleteObject(this);
         break;
@@ -258,6 +259,8 @@ void CGoblin_SideScroller::On_Collision2D_Exit(CCollider* _pMyCollider, CCollide
 void CGoblin_SideScroller::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
 {
     __super::On_Hit(_pHitter, _iDamg, _vForce);
+
+    m_pGameInstance->Start_SFX(_wstring(L"A_sfx_goblin_hit_") + to_wstring(rand() % 5), 50.f);
 }
 
 void CGoblin_SideScroller::Enter_Section(const _wstring _strIncludeSectionName)
