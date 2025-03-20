@@ -1,0 +1,80 @@
+{
+    "2D": [
+        {
+            "MonsterTag": "Prototype_GameObject_Rat",
+            "SectionTag": "Chapter8_SKSP_05",
+            "LayerTag": "Layer_Monster_Door1",
+            "Position": [
+                30,
+                -540, 
+                0
+            ],
+            "Scaling": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        },
+        {
+            "MonsterTag": "Prototype_GameObject_Rat",
+            "SectionTag": "Chapter8_SKSP_05",
+            "LayerTag": "Layer_Monster_Door1",
+            "Position": [
+                220, 
+                -700,
+                0
+            ],
+            "Scaling": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        },
+        {
+            "MonsterTag": "Prototype_GameObject_Zippy",
+            "SectionTag": "Chapter8_SKSP_05",
+            "LayerTag": "Layer_Monster_Door1",
+            "Position": [
+               -120, 
+               -10.5,
+                0
+            ],
+            "Scaling": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        },
+
+        {
+            "MonsterTag": "Prototype_GameObject_Spear_Soldier",
+            "SectionTag": "Chapter8_SKSP_05",
+            "LayerTag": "Layer_Monster_Door2",
+            "Position": [
+               250,
+               650.5,
+               0
+            ],
+            "Scaling": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        },
+        {
+            "MonsterTag": "Prototype_GameObject_Spear_Soldier",
+            "SectionTag": "Chapter8_SKSP_05",
+            "LayerTag": "Layer_Monster_Door2",
+            "Position": [
+               250,
+               650.5,
+               0
+            ],
+            "Scaling": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        }
+    ]
+}
