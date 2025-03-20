@@ -196,7 +196,9 @@ void CJumpBug::Change_Animation()
                     eAnim = JUMP_RISE_RIGHT;
                 m_isJump = true;
 
-                m_pGameInstance->Start_SFX(_wstring(L"A_sfx_jumperbug_jump-") + to_wstring(rand() % 7), 50.f);
+               
+               // m_pGameInstance->Start_SFX_Distance(_wstring(L"A_sfx_jumperbug_jump-") + to_wstring(rand() % 7), CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName, _float2(XMVectorGetX(m_pControllerTransform->Get_State(CTransform::STATE_POSITION)),
+               //     XMVectorGetY(m_pControllerTransform->Get_State(CTransform::STATE_POSITION)))), 50.f, 0.f, 13.f);
 
                 break;
 

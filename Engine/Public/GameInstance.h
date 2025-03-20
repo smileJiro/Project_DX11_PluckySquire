@@ -74,13 +74,13 @@ public: /* For. Object_Manager */
 	class CGameObject*	Find_NearestObject_Scaled(_uint _iLevelID, const _wstring& _strLayerTag, CController_Transform* const _pTransform, CGameObject* pCurTargetObject = nullptr);
 	class CGameObject*	Get_GameObject_Ptr(_int _iLevelID, const _wstring& _strLayerTag, _int _iObjectIndex);
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 	map<const _wstring, class CLayer*>* Get_Layers_Ptr();
 #endif
 
 public: /* For.Renderer */
 	HRESULT				Add_RenderObject(CRenderer::RENDERGROUP _eRenderGroup, class CGameObject* _pRenderObject);
-#ifdef _DEBUG
+#ifdef NDEBUG
 	HRESULT				Add_DebugComponent(class CComponent* _pDebugCom);	
 	void				Set_DebugRender(_bool _isBool);
 #endif
@@ -112,7 +112,7 @@ public: /* For. NewRenderer*/
 	void				Set_VtxAnimMesh(CShader* _pShader);
 	void				Set_GrayScale_VtxMesh(_int _isGrayScale);
 	void				Set_GrayScale_VtxAnimMesh(_int _isGrayScale);
-#ifdef _DEBUG
+#ifdef NDEBUG
 	HRESULT				Add_DebugComponent_New(class CComponent* _pDebugCom);
 	void				Set_DebugRender_New(_bool _isBool);
 	HRESULT				Add_BaseDebug(CBase* _pBaseDebug);
@@ -184,7 +184,7 @@ public: /* For. Target_Manager */
 	/* MSAA 전용 함수 */
 	HRESULT				Resolve_RT_MSAA(const _wstring& _strTargetTag); // MSAA Texture를 단일 샘플 데이터로 m_pTexture2D에 copy; 
 	HRESULT				Resolve_MRT_MSAA(const _wstring& _strMRTTag); // MSAA Texture를 단일 샘플 데이터로 m_pTexture2D에 copy; 
-#ifdef _DEBUG
+#ifdef NDEBUG
 	HRESULT				Ready_RT_Debug(const _wstring& _strTargetTag, _float _fX, _float _fY, _float _fSizeX, _float _fSizeY);	/* 렌더타겟을 디버그용으로 렌더하기위한 함수 */
 	HRESULT				Render_RT_Debug(const _wstring& _strMRTTag, CShader* _pShader, CVIBuffer_Rect* _pVIBufferRect);			/* 디버그 렌더 함수 */
 	map<const _wstring, CRenderTarget*>& Get_RenderTargets();
@@ -230,7 +230,7 @@ public: /* For. Imgui_Manager */
 	HRESULT				Start_Imgui(); // 시작을 알림.
 	HRESULT				End_Imgui(); // 종료를 알림.
 	void				Render_DrawData_Imgui(); // 수집 된 정보를 기반으로 그리기를 수행함.
-#ifdef _DEBUG
+#ifdef NDEBUG
 	HRESULT				Imgui_Select_Debug_ObjectInfo(const wstring _strLayerTag, _uint _iObjectId);
 #endif // _DEBUG
 	//HRESULT			LevelChange_Imgui();

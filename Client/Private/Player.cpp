@@ -1110,6 +1110,8 @@ void CPlayer::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
 	m_pStateMachine->Get_CurrentState()->On_Hit(_pHitter, _iDamg, _vForce);
 
 	Uimgr->Set_PlayerOnHit(true);
+	if(nullptr != m_PartObjects[CPlayer::PART_BODY])
+		static_cast<CModelObject*>(m_PartObjects[CPlayer::PART_BODY])->Start_HitRender();
 
 	if (m_tStat.iHP <= 0)
 	{

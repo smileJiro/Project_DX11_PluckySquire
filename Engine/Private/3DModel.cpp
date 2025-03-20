@@ -233,6 +233,85 @@ HRESULT C3DModel::Render(CShader* _pShader, _uint _iShaderPass)
 	return S_OK;
 }
 
+HRESULT C3DModel::Render(CShader* _pShader, _uint _iShaderPass, vector<pair<_bool, _float2>> _vecHitRender)
+{
+	if (true == _vecHitRender.empty())
+		return E_FAIL;
+
+	if (_vecHitRender.size() != m_iNumMeshes)
+		return E_FAIL;
+
+
+	/* Mesh ¥‹¿ß ∑ª¥ı. */
+	for (_uint i = 0; i < m_iNumMeshes; ++i)
+	{
+		_uint iMaterialIndex = m_Meshes[i]->Get_MaterialIndex();
+
+		if (FAILED(Bind_Material_PixelConstBuffer(iMaterialIndex, _pShader)))
+			return E_FAIL;
+
+		if (FAILED(Bind_Material(_pShader, "g_AlbedoTexture", i, aiTextureType_DIFFUSE, m_arrTextureBindingIndex[iMaterialIndex][aiTextureType_DIFFUSE])))
+		{
+			int a = 0;
+		}
+		if (FAILED(Bind_Material(_pShader, "g_EmissiveTexture", i, aiTextureType_EMISSIVE, m_arrTextureBindingIndex[iMaterialIndex][aiTextureType_EMISSIVE])))
+		{
+			int a = 0;
+		}
+		if (FAILED(Bind_Material(_pShader, "g_SpecularTexture", i, aiTextureType_SPECULAR, m_arrTextureBindingIndex[iMaterialIndex][aiTextureType_SPECULAR])))
+		{
+			int a = 0;
+		}
+		if (FAILED(Bind_Material(_pShader, "g_NormalTexture", i, aiTextureType_NORMALS, m_arrTextureBindingIndex[iMaterialIndex][aiTextureType_NORMALS])))
+		{
+			int a = 0;
+		}
+		if (FAILED(Bind_Material(_pShader, "g_ORMHTexture", i, aiTextureType_BASE_COLOR, m_arrTextureBindingIndex[iMaterialIndex][aiTextureType_BASE_COLOR])))
+		{
+			int a = 0;
+		}
+		if (FAILED(Bind_Material(_pShader, "g_MetallicTexture", i, aiTextureType_METALNESS, m_arrTextureBindingIndex[iMaterialIndex][aiTextureType_METALNESS])))
+		{
+			int a = 0;
+		}
+		if (FAILED(Bind_Material(_pShader, "g_RoughnessTexture", i, aiTextureType_DIFFUSE_ROUGHNESS, m_arrTextureBindingIndex[iMaterialIndex][aiTextureType_DIFFUSE_ROUGHNESS])))
+		{
+			int a = 0;
+		}
+		if (FAILED(Bind_Material(_pShader, "g_AOTexture", i, aiTextureType_AMBIENT_OCCLUSION, m_arrTextureBindingIndex[iMaterialIndex][aiTextureType_AMBIENT_OCCLUSION])))
+		{
+			int a = 0;
+		}
+
+		/* Bind Bone Matrices */
+		if (Is_AnimModel())
+		{
+			if (FAILED(Bind_Matrices(_pShader, "g_BoneMatrices", i)))
+				return E_FAIL;
+		}
+
+		/* Hit */
+		_pShader->Bind_RawValue("g_isHit", &_vecHitRender[i].first, sizeof(_int));
+		_float fHitRatio = _vecHitRender[i].second.y / _vecHitRender[i].second.x;
+		_pShader->Bind_RawValue("g_fHitRatio", &fHitRatio, sizeof(_float));
+
+		_uint iShaderPass = _iShaderPass;
+		if (_vecHitRender[i].first == 1)
+		{
+			iShaderPass = (_uint)PASS_VTXANIMMESH::AFTERPOSTPROCESSING;
+		}
+
+		/* Shader Pass */
+		_pShader->Begin(iShaderPass);
+
+		/* Bind Mesh Vertex Buffer */
+		m_Meshes[i]->Bind_BufferDesc();
+		m_Meshes[i]->Render();
+	}
+
+	return S_OK;
+}
+
 HRESULT C3DModel::Render_Shadow(CShader* _pShader, _uint _iShaderPass)
 {
 	/* Mesh ¥‹¿ß ∑ª¥ı. */

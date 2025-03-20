@@ -314,6 +314,12 @@ void CSpear_Soldier::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce
     if ((_uint)MONSTER_STATE::DEAD == m_iState)
         return;
 
+    if (COORDINATE_3D == Get_CurCoord())
+    {
+        if (true == Get_ActorCom()->Is_Dynamic())
+            Stop_Rotate();
+    }
+
     m_tStat.iHP -= _iDamg;
 
     if (0 >= m_tStat.iHP)
@@ -356,9 +362,12 @@ void CSpear_Soldier::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce
 
         //Effect
         if (COORDINATE_3D == Get_CurCoord())
+        {
             //CEffect_Manager::GetInstance()->Active_Effect(TEXT("MonsterDead"), true, m_pControllerTransform->Get_WorldMatrix_Ptr());
             //CEffect_Manager::GetInstance()->Active_Effect(TEXT("MonsterHit"), true, m_pControllerTransform->Get_WorldMatrix_Ptr());
             CEffect_Manager::GetInstance()->Active_EffectMatrix(TEXT("MonsterHit"), true, m_pControllerTransform->Get_WorldMatrix());
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Start_HitRender();
+        }
 
         else if (COORDINATE_2D == Get_CurCoord())
         {
