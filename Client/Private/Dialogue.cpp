@@ -1754,6 +1754,8 @@ void CDialog::isOpenPanel(_tchar* _DialogId)
 
 		// TODO :: 이거 끝나는거 어떻게 할지?
 		Uimgr->Set_DialogueFinishShopPanel(true);
+
+
 	}
 
 

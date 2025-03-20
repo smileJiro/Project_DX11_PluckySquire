@@ -687,7 +687,7 @@ void CGameEventExecuter_C4::Friend_MapEnter(_float _fTimeDelta)
 			pThrash->Move_Position(_float2(XMVectorGetX(vThrashPos), XMVectorGetY(vThrashPos)), CFriend::DIR_UP);
 			pViolet->Move_Position(_float2(XMVectorGetX(vVioletPos), XMVectorGetY(vVioletPos)), CFriend::DIR_UP);
 
-			CCamera_Manager::GetInstance()->Set_ResetData(eCamType);
+			//CCamera_Manager::GetInstance()->Set_ResetData(eCamType);
 		}
 		Next_Step_Over(1.5f);
 	}
@@ -696,7 +696,7 @@ void CGameEventExecuter_C4::Friend_MapEnter(_float _fTimeDelta)
 		//CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(TEXT("Thrash"));
 		//CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(TEXT("Violet"));
 		//CFriend_Controller::GetInstance()->Start_Train();
-		CCamera_Manager::GetInstance()->Start_ResetArm_To_SettingPoint(eCamType, 1.0f);
+		//CCamera_Manager::GetInstance()->Start_ResetArm_To_SettingPoint(eCamType, 1.0f);
 		pPlayer->Set_BlockPlayerInput(false);
 		GameEvent_End();
 	}
