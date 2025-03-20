@@ -14,7 +14,7 @@ public:
 	_uint AddRef();
 	_uint Release();
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 public:
 	virtual HRESULT Render_Base_Debug() { return S_OK; }
 #endif // _DEBUG

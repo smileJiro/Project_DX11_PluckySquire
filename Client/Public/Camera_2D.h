@@ -3,6 +3,7 @@
 
 BEGIN(Engine)
 class CCameraArm;
+class CLight_Target;
 END
 
 BEGIN(Client)
@@ -203,7 +204,11 @@ private:
 
 	void						Key_Input(_float _fTimeDelta);
 	void						Check_WorldPosChaptured();
-
+private: /* ÅÂ¿õ Ãß°¡ Target Light */
+	HRESULT Ready_TargetLight();
+	void Update_TargetLight();
+private:
+	CLight_Target* m_pTargetLight = nullptr;
 #ifdef _DEBUG
 	void						Imgui(_float _fTimeDelta);
 #endif

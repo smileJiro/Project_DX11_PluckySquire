@@ -187,7 +187,7 @@ PS_OUT PS_SPRITE2D(PS_IN In)
         float fHitRatio = g_fHitRatio;
         fHitRatio = saturate(pow(fHitRatio, 7.f));
 
-        vDiffuse.rgb = (vDiffuse.rgb * fHitRatio) + (float3(1.0f, 1.0f, 1.0f) * 1.0f - fHitRatio);
+        vDiffuse.rgb = (vDiffuse.rgb * fHitRatio) + (float3(1.0f, 1.0f, 1.0f) * (1.0f - fHitRatio));
 
     }
     

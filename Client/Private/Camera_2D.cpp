@@ -11,6 +11,7 @@
 #include "PlayerData_Manager.h"
 
 #include "NPC_Manager.h"
+#include "Light_Target.h"
 
 CCamera_2D::CCamera_2D(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CCamera{ pDevice, pContext }
@@ -42,6 +43,9 @@ HRESULT CCamera_2D::Initialize(void* pArg)
 	m_pTargetWorldMatrix = pDesc->pTargetWorldMatrix;
 
 	if (FAILED(__super::Initialize(pArg)))
+		return E_FAIL;
+
+	if (FAILED(Ready_TargetLight()))
 		return E_FAIL;
 
 	m_fBasicRatio[HORIZON_NON_SCALE] = { 0.25f, 0.f };
@@ -88,7 +92,7 @@ void CCamera_2D::Late_Update(_float fTimeDelta)
 
 	Action_SetUp_ByMode();
 	Action_Mode(fTimeDelta);
-
+	Update_TargetLight();
 	__super::Late_Update(fTimeDelta);
 }
 
@@ -1446,6 +1450,43 @@ void CCamera_2D::Check_WorldPosChaptured()
 			Start_Changing_LengthValue(m_fLengthValue, m_fOriginLengthValue);
 		}
 	}
+}
+
+HRESULT CCamera_2D::Ready_TargetLight()
+{
+	///* 점광원 */
+	CONST_LIGHT LightDesc = {};
+	LightDesc.vPosition = _float3(0.0f, 0.0f, 0.0f); // 카메라 위치로 업데이트 
+	LightDesc.vDirection = _float3(0.0f, 0.0f, 0.0f); // 카메라 룩방향으로 업데이트 
+	LightDesc.fFallOutStart = 5.2f;
+	LightDesc.fFallOutEnd = 13.0f;
+	LightDesc.vRadiance = _float3(3.0f, 3.0f, 3.0f);
+	LightDesc.vDiffuse = _float4(1.0f, 1.0f, 1.0f, 1.0f);
+	LightDesc.vAmbient = _float4(0.6f, 0.6f, 0.6f, 1.0f);
+	LightDesc.vSpecular = _float4(0.1f, 0.1f, 0.1f, 1.0f);
+	LightDesc.fSpotPower = 1.0f;
+	
+	if (FAILED(m_pGameInstance->Add_Light_Target(LightDesc, LIGHT_TYPE::SPOT, this, _float3(0.0f, 0.0f, 0.0f), &m_pTargetLight, true)))
+		return E_FAIL;
+
+	Safe_AddRef(m_pTargetLight);
+	m_pTargetLight->Set_Active(false);
+	return S_OK;
+}
+
+void CCamera_2D::Update_TargetLight()
+{
+	if (CSection_2D::SECTION_2D_PLAY_TYPE::SKSP == m_iPlayType)
+		m_pTargetLight->Set_Active(true);
+	else
+		m_pTargetLight->Set_Active(false);
+
+	CONST_LIGHT tLightDesc = m_pTargetLight->Get_LightDesc();
+	XMStoreFloat3(&tLightDesc.vPosition, Get_FinalPosition());
+	XMStoreFloat3(&tLightDesc.vDirection, m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
+	tLightDesc.fFallOutEnd = m_pCurArm->Get_Length() * 2.0f;
+	if (FAILED(m_pTargetLight->Set_LightConstData_AndUpdateBuffer(tLightDesc)))
+		return;
 }
 
 #ifdef _DEBUG

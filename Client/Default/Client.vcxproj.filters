@@ -796,6 +796,9 @@
     <Filter Include="02.GameObjects\UI\00. GamePlay\08. BossHP_Bar\00.BossHP_Bar_Texture">
       <UniqueIdentifier>{4e9152f4-cf93-4b33-af69-9254a2fa6e41}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Monster\Boss\Part\Body">
+      <UniqueIdentifier>{86b240a7-2423-4237-a88d-b3c93d46e6dd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -2059,6 +2062,9 @@
       <Filter>02.GameObjects\UI\00. GamePlay\08. BossHP_Bar\00.BossHP_Bar_Texture</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CyberCursor.h" />
+    <ClInclude Include="..\public\ButterGrump_Body.h">
+      <Filter>02.GameObjects\Monster\Boss\Part</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -3309,6 +3315,9 @@
       <Filter>02.GameObjects\UI\00. GamePlay\08. BossHP_Bar\00.BossHP_Bar_Texture</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CyberCursor.cpp" />
+    <ClCompile Include="..\private\ButterGrump_Body.cpp">
+      <Filter>02.GameObjects\Monster\Boss\Part</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

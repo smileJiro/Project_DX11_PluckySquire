@@ -78,7 +78,8 @@ HRESULT CLight_Manager::Render(CShader* _pShader, CVIBuffer_Rect* _pVIBuffer)
 {
 	for (auto& pLight : m_Lights)
 	{
-		pLight->Render_Light(_pShader, _pVIBuffer);
+		if (true == pLight->Is_Active())
+			pLight->Render_Light(_pShader, _pVIBuffer);
 	}
 
 	return S_OK;

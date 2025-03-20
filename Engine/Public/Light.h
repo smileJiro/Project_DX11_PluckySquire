@@ -7,7 +7,7 @@ class CShader;
 class CVIBuffer_Rect;
 class CGameInstance;
 class CRenderTarget;
-class CLight : public CBase
+class ENGINE_DLL CLight : public CBase
 {
 protected:
 	CLight(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, LIGHT_TYPE _eLightType);
@@ -18,7 +18,7 @@ public:
 	virtual void	Update(_float _fTimeDelta);
 	virtual HRESULT Render_Light(CShader* _pShader, CVIBuffer_Rect* _pVIBuffer);
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 	HRESULT Render_Base_Debug() override;
 	_bool m_isSelect = false;
 	_bool Is_Select() const { return m_isSelect; }
@@ -73,7 +73,7 @@ protected:
 	_bool					m_isNotClear = false; // Clear_Load 호출 시 삭제되지 않는 
 
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 	PrimitiveBatch<VertexPositionColor>* m_pBatch = nullptr;
 	BasicEffect* m_pEffect = nullptr;
 	ID3D11InputLayout* m_pInputLayout = nullptr;

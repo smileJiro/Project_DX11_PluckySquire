@@ -164,7 +164,6 @@ public:
 		return m_fRayHalfWidth;
 	}
 
-
 	_bool Is_Formation_Stop();
 	_bool Is_Formation_Rotate();
 

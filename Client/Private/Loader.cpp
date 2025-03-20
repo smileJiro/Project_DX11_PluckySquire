@@ -275,6 +275,8 @@
 #include "Saw.h"
 #include "Turret.h"
 
+#include "ButterGrump_Body.h"
+
 
 
 CLoader::CLoader(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -2033,7 +2035,12 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 	/* UI */
 	if (FAILED(UI_Object_Load(_eLoadLevelID)))
 		return E_FAIL;
+	/* For. Prototype_GameObject_ButterGrump_Body */
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_ButterGrump_Body"),
+		CButterGrump_Body::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
+	
 	/* For. Prototype_GameObject_Gear */
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Gear"),
 		CGear::Create(m_pDevice, m_pContext))))

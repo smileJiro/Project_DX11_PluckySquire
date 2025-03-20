@@ -50,7 +50,7 @@ public:
 	void						Update(_float _fTimeDelta)  override;
 	void						Late_Update(_float _fTimeDelta)  override;
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 public:
 	virtual HRESULT				Render();
 #endif
@@ -121,7 +121,7 @@ private:
 	virtual void Active_OnEnable() override;
 	virtual void Active_OnDisable() override;
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 protected:
 	PrimitiveBatch<VertexPositionColor>*	m_pBatch = nullptr;
 	BasicEffect*							m_pEffect = nullptr;
