@@ -5,6 +5,7 @@
 #include "GameInstance.h"
 #include "Section_Manager.h"
 #include "Monster.h"
+#include "ButterGrump.h"
 
 CButterGrump_Tongue::CButterGrump_Tongue(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     :CPartObject(_pDevice, _pContext)
@@ -60,6 +61,7 @@ void CButterGrump_Tongue::Update(_float _fTimeDelta)
 void CButterGrump_Tongue::Late_Update(_float _fTimeDelta)
 {
     __super::Late_Update(_fTimeDelta);
+    static_cast<CButterGrump*>(m_pParent)->Set_HitRenderDesc(4, make_pair(m_isHitRender, m_vHitRenderTime));
 }
 
 HRESULT CButterGrump_Tongue::Render()
@@ -104,6 +106,7 @@ void CButterGrump_Tongue::Active_OnDisable()
 void CButterGrump_Tongue::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
 {
     m_pParent->On_Hit(_pHitter, _iDamg, _vForce);
+    Start_HitRender();
 }
 
 HRESULT CButterGrump_Tongue::Ready_ActorDesc(void* _pArg)

@@ -37,7 +37,6 @@ HRESULT CFallingRock::Initialize(void* _pArg)
 	m_isChapter4 = pDesc->m_isChapter4;
 	// Add Desc
 	pDesc->iObjectGroupID = OBJECT_GROUP::MONSTER_PROJECTILE;
-		
 
 	/* 2D */
 	pDesc->Build_2D_Model(pDesc->iCurLevelID, TEXT("FallingRock"), TEXT("Prototype_Component_Shader_VtxPosTex"), (_uint)PASS_VTXPOSTEX::SPRITE2D, true);
@@ -120,6 +119,7 @@ void CFallingRock::Late_Update(_float _fTimeDelta)
 
 HRESULT CFallingRock::Render()
 {
+	
 	if (false == m_isColBound)
 	{
 		/* 2D 상태일때에는 그림자 렌더를 먼저하고, */

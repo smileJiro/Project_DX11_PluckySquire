@@ -5,7 +5,7 @@
 
 BEGIN(Engine)
 class CGameObject;
-class CLight_Target final : public CLight
+class ENGINE_DLL CLight_Target final : public CLight
 {
 private:
 	CLight_Target(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, LIGHT_TYPE _eLightType);

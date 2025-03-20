@@ -22,6 +22,7 @@
 #include "Boss_TennisBall.h"
 #include "Effect_Manager.h"
 #include "Camera_Manager.h"
+#include "ButterGrump_Body.h"
 
 CButterGrump::CButterGrump(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : CMonster(_pDevice, _pContext)
@@ -31,6 +32,11 @@ CButterGrump::CButterGrump(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContex
 CButterGrump::CButterGrump(const CButterGrump& _Prototype)
     : CMonster(_Prototype)
 {
+}
+
+void CButterGrump::Set_HitRenderDesc(_uint _iMeshIndex, pair<_bool, _float2> _pair)
+{
+    static_cast<CButterGrump_Body*>(m_PartObjects[BOSSPART::BOSSPART_BODY])->Set_HitRenderDesc((CButterGrump_Body::MESHINDEX)_iMeshIndex, _pair);
 }
 
 HRESULT CButterGrump::Initialize_Prototype()
@@ -1170,7 +1176,7 @@ HRESULT CButterGrump::Ready_Components()
 HRESULT CButterGrump::Ready_PartObjects()
 {
     /* Part Body */
-    CModelObject::MODELOBJECT_DESC BodyDesc{};
+    CButterGrump_Body::MODELOBJECT_DESC BodyDesc{};
 
     BodyDesc.eStartCoord = m_pControllerTransform->Get_CurCoord();
     BodyDesc.iCurLevelID = m_iCurLevelID;
@@ -1191,7 +1197,7 @@ HRESULT CButterGrump::Ready_PartObjects()
     BodyDesc.tTransform3DDesc.fRotationPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_RotationPerSec();
     BodyDesc.tTransform3DDesc.fSpeedPerSec = Get_ControllerTransform()->Get_Transform(COORDINATE_3D)->Get_SpeedPerSec();
 
-    m_PartObjects[BOSSPART_BODY] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &BodyDesc));
+    m_PartObjects[BOSSPART_BODY] = static_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_iCurLevelID, TEXT("Prototype_GameObject_ButterGrump_Body"), &BodyDesc));
     if (nullptr == m_PartObjects[BOSSPART_BODY])
         return E_FAIL;
 
