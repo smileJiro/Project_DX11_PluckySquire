@@ -2,7 +2,7 @@
 #include "Zip_C8.h"
 #include "Collider_Circle.h"
 #include "Player.h"
-
+#include "Trigger_Manager.h"
 CZip_C8::CZip_C8(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CModelObject(_pDevice, _pContext)
 {
@@ -24,11 +24,11 @@ HRESULT CZip_C8::Initialize(void* _pArg)
 	if (FAILED(__super::Initialize(_pArg)))
 		return E_FAIL;
 
-	m_p2DColliderComs.resize(3);
+	m_p2DColliderComs.resize(1);
 	//몸통 콜라이더
 	CCollider_Circle::COLLIDER_CIRCLE_DESC CircleDesc = {};
 	CircleDesc.pOwner = this;
-	CircleDesc.fRadius = 200.f;
+	CircleDesc.fRadius = 2000.f;
 	CircleDesc.vScale = { 1.0f, 1.0f };
 	CircleDesc.vOffsetPosition = { 0.f, 0.f};
 	CircleDesc.isBlock = false;
@@ -38,6 +38,8 @@ HRESULT CZip_C8::Initialize(void* _pArg)
 		TEXT("Com_Body2DCollider"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &CircleDesc)))
 		return E_FAIL;
 	//Chapter8_SKSP_11
+	Register_OnAnimEndCallBack(bind(&CZip_C8::On_AnimEnd, this, placeholders::_1, placeholders::_2));
+	Set_ProgState(WAITING);
 	return S_OK;
 }
 
@@ -59,11 +61,15 @@ HRESULT CZip_C8::Render()
 void CZip_C8::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {    //Entered
 	if (OBJECT_GROUP::PLAYER & _pOtherObject->Get_ObjectGroupID()
-		&& m_p2DColliderComs[1] == _pMyCollider)
+		&& m_p2DColliderComs[0] == _pMyCollider)
 	{
 		m_pPlayer = dynamic_cast<CPlayer*>(_pOtherObject);
+		if (nullptr == m_pPlayer)
+			return;
 		Safe_AddRef(m_pPlayer);
-		//Set_GameState(DEFENDER_PROG_ENTERED);
+
+		m_pPlayer->Set_BlockPlayerInput(true);
+		CTrigger_Manager::GetInstance()->Register_TriggerEvent(TEXT("Chapter8_TransformZip"),0);
 
 	}
 }
@@ -74,6 +80,38 @@ void CZip_C8::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCol
 
 void CZip_C8::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
+}
+
+void CZip_C8::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
+{
+	if(ATTACH_JOT == iAnimIdx)
+		Set_ProgState(ATTACH_END);
+}
+
+void CZip_C8::Set_ProgState(PROG_STATE _eState)
+{
+	if (m_eProgState == _eState)
+		return;
+	m_eProgState = _eState;
+	switch (m_eProgState)
+	{
+	case Client::CZip_C8::WAITING:
+		Switch_Animation(IDLE);
+		break;
+	case Client::CZip_C8::TALK:
+		Switch_Animation(TALK1);
+		break;
+	case Client::CZip_C8::ATTACH:
+		Switch_Animation(ATTACH_JOT);
+		break;
+	case Client::CZip_C8::ATTACH_END:
+		Event_DeleteObject(this);
+		break;
+	case Client::CZip_C8::LAST:
+		break;
+	default:
+		break;
+	}
 }
 
 CZip_C8* CZip_C8::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
