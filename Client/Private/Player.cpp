@@ -2087,7 +2087,7 @@ void CPlayer::Set_State(STATE _eState)
 		m_pStateMachine->Transition_To(new CPlayerState_GetItem(this));
 		break;
 	case Client::CPlayer::TRANSFORM_IN:
-		m_pStateMachine->Transition_To(new CPlayerState_TransformIn(this));
+		//m_pStateMachine->Transition_To(new CPlayerState_TransformIn(this));
 		break;
 	case Client::CPlayer::CYBER_DASH:
 		m_pStateMachine->Transition_To(new CPlayerState_CyberDash(this));
@@ -2388,6 +2388,11 @@ void CPlayer::Position_To_FrontCamera(_float _fDistance)
 	_vector vPlayerPos = vCamPos - pTargetCam->Get_Arm()->Get_ArmVector() * _fDistance;
 	_float3 vPos; XMStoreFloat3(&vPos, vPlayerPos);
 	Get_ActorDynamic()->Set_GlobalPose(vPos);
+}
+
+void CPlayer::TransformToCyberJot(CZip_C8* _pZip)
+{
+	m_pStateMachine->Transition_To(new CPlayerState_TransformIn(this, _pZip));
 }
 
 

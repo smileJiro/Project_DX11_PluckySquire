@@ -2355,8 +2355,8 @@ void CGameEventExecuter_C8::Chapter8_TransformZip(_float _fTimeDelta)
 		if (Is_Start())
 		{
 
-			pPlayer->Set_State(CPlayer::STATE::TRANSFORM_IN);
-			pZip->Set_ProgState(CZip_C8::ATTACH);
+			pPlayer->TransformToCyberJot(pZip);
+
 		}
 		if (false == pPlayer->Get_Body()->Is_DuringAnimation())
 			Next_Step(true);

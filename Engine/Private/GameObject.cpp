@@ -138,7 +138,8 @@ HRESULT CGameObject::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPo
         return E_FAIL;
 
     for (auto& pCollider : m_p2DColliderComs)
-        pCollider->Set_Active(!(_int)_eCoordinate);
+        if(pCollider)
+            pCollider->Set_Active(!(_int)_eCoordinate);
     return S_OK;
 }
 
