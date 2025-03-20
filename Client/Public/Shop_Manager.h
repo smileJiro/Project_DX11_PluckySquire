@@ -32,6 +32,8 @@ private:
 		SKILLSHOP_SCROLLITEM,*/
 
 public:
+	void									Set_ShopBG(CShopPanel_BG_New* _ShopBG) { m_ShopBG = _ShopBG; Safe_AddRef(_ShopBG); }
+	CShopPanel_BG_New*						Get_ShopBG() { return m_ShopBG; }
 	void									pushBack_ShopItem(vector<CShopItemBG_New*> _ItemBGs);
 	void									Emplace_ShopPanels(_uint _ePanel, CShopPanel_BG_New* _pPanel);
 	map<_uint, CShopPanel_BG_New*>			Get_ShopPanels() { return m_pShopPanels; }
@@ -105,6 +107,7 @@ private:
 	_uint									m_iSpinAttackLevel = { 0 };
 	_uint									m_iThrowAttackLevel = { 0 };
 	_uint									m_iAttackPlusLevel = { 0 };
+	CShopPanel_BG_New*						m_ShopBG = { nullptr };
 
 
 
