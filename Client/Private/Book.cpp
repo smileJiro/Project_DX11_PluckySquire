@@ -835,12 +835,12 @@ _bool CBook::Is_Interactable(CPlayer* _pUser)
 	CPlayerData_Manager* pPDM = CPlayerData_Manager::GetInstance();
 	if (m_isPlayerAround)
 	{
-		//bPossible &= (pPDM->Is_Own(CPlayerData_Manager::FLIPPING_GLOVE) || pPDM->Is_Own(CPlayerData_Manager::TILTING_GLOVE));
+		bPossible &= (pPDM->Is_Own(CPlayerData_Manager::FLIPPING_GLOVE) || pPDM->Is_Own(CPlayerData_Manager::TILTING_GLOVE));
 
 	}
 	else if (m_isPlayerAbove)
 	{
-		//bPossible &= (pPDM->Is_Own(CPlayerData_Manager::STOP_STAMP) || pPDM->Is_Own(CPlayerData_Manager::BOMB_STAMP));
+		bPossible &= (pPDM->Is_Own(CPlayerData_Manager::STOP_STAMP) || pPDM->Is_Own(CPlayerData_Manager::BOMB_STAMP));
 	}
 
 

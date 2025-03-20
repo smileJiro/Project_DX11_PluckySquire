@@ -1333,17 +1333,18 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
 	_bool bCarrying = Is_CarryingObject();
 	if (false == bCarrying && Is_SwordHandling())
 	{
+		
 		//기본공격
 		if (MOUSE_DOWN(MOUSE_KEY::LB))
 		{
 			tResult.bInputStates[PLAYER_INPUT_ATTACK] = true;
 		}
 		//칼 던지기
-		else if (MOUSE_DOWN(MOUSE_KEY::RB))
+		else if (0 < CPlayerData_Manager::GetInstance()->Get_ThrowSkillLevel()&& MOUSE_DOWN(MOUSE_KEY::RB))
 		{
 			tResult.bInputStates[PLAYER_INPUT_THROWSWORD] = true;
 		}
-		else if (Is_OnGround())
+		else if (0 < CPlayerData_Manager::GetInstance()->Get_WhirlSkillLevel() && Is_OnGround())
 		{
 			KEY_STATE eKeyState = m_pGameInstance->GetKeyState(KEY::Q);
 			if (KEY_STATE::DOWN == eKeyState)

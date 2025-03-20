@@ -10,6 +10,7 @@
 #include "Effect_Trail.h"
 #include "Effect_Beam.h"
 #include "PlayerBody.h"
+#include "PlayerData_Manager.h"
 
 CPlayerSword::CPlayerSword(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     :CModelObject(_pDevice, _pContext)
@@ -224,8 +225,9 @@ void CPlayerSword::Update(_float _fTimeDelta)
         break;
     case Client::CPlayerSword::OUTING:
     {
+
         m_fFlyingTimeAcc += _fTimeDelta;
-        if (m_fFlyingTimeAcc > m_fOutingTime) // Outing ³¡.
+        if (m_fFlyingTimeAcc > m_fOutingTime + m_fOutingTimeIncreasePerLev * CPlayerData_Manager::GetInstance()->Get_ThrowSkillLevel()) // Outing ³¡.
         {
             Set_AttackEnable(false);
             Set_AttackEnable(true);
@@ -243,6 +245,7 @@ void CPlayerSword::Update(_float _fTimeDelta)
         }
         else
         {
+
             m_pControllerTransform->Go_Direction(m_vThrowDirection, abs(m_fFlyingSpeed2D), _fTimeDelta);
         }
         break;
@@ -516,6 +519,7 @@ void CPlayerSword::Throw(_fvector _vDirection)
     m_fFlyingTimeAcc = 0;
 
     m_vThrowDirection = _vDirection;
+    m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_small_efforts-") + to_wstring(rand() % 5), 0.15f, 25.f);
     Set_State(OUTING);
     if (COORDINATE_2D == eCoord)
     {
