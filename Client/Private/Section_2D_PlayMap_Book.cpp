@@ -15,6 +15,9 @@ CSection_2D_PlayMap_Book::CSection_2D_PlayMap_Book(ID3D11Device* _pDevice, ID3D1
 
 HRESULT CSection_2D_PlayMap_Book::Section_Enter(const _wstring& _strPreSectionTag)
 {
+	if (TEXT("") != m_strBGMTag)
+		m_pGameInstance->Start_BGM(m_strBGMTag, 20.f);
+
 	return S_OK;
 }
 

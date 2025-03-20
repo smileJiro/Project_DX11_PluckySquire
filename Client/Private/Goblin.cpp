@@ -249,7 +249,7 @@ void CGoblin::Change_Animation()
 
             case MONSTER_STATE::DEAD:
                 static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(DEATH);
-                m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_goblin_die_") + to_wstring(rand() % 5), 0.3f, 50.f);
+                //m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_goblin_die_") + to_wstring(rand() % 5), 0.3f, 50.f);
                 break;
 
             default:
@@ -319,7 +319,7 @@ void CGoblin::Change_Animation()
                     eAnim = DEATH_DOWN;
                 else if (E_DIRECTION::RIGHT == Get_2DDirection() || E_DIRECTION::LEFT == Get_2DDirection())
                     eAnim = DEATH_RIGHT;
-                m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_goblin_die_") + to_wstring(rand() % 5), 0.3f, 50.f);
+                //m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_goblin_die_") + to_wstring(rand() % 5), 0.45f, 50.f);
                 break;
             default:
                 break;
@@ -351,6 +351,8 @@ void CGoblin::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
 
         case DEATH:
             Monster_Death();
+            m_pGameInstance->Start_SFX(_wstring(L"A_sfx_goblin_die_") + to_wstring(rand() % 5), 50.f);
+
             //Set_AnimChangeable(true);
 
             ////CEffect_Manager::GetInstance()->Active_Effect(TEXT("MonsterDead"), true, m_pControllerTransform->Get_WorldMatrix_Ptr());
@@ -391,6 +393,8 @@ void CGoblin::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
         case DEATH_RIGHT:
         case DEATH_UP:
             Monster_Death();
+            m_pGameInstance->Start_SFX(_wstring(L"A_sfx_goblin_die_") + to_wstring(rand() % 5), 50.f);
+
             //Set_AnimChangeable(true);
 
             //CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("Death_Burst"), CSection_Manager::GetInstance()->Get_Cur_Section_Key(), Get_ControllerTransform()->Get_WorldMatrix());
