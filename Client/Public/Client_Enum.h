@@ -332,6 +332,10 @@ namespace Client
 		CHAPTER6_1_2,
 		CHAPTER6_1_3,
 		CHAPTER6_1_4,
+		CHAPTER6_2,
+		CHAPTER6_3_1,
+		CHAPTER6_3_2,
+		CHAPTER6_3_3,
 		LAST
 	};
 
