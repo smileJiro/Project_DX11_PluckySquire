@@ -277,6 +277,8 @@
 #include "Turret.h"
 
 #include "Zip_C8.h"
+#include "ButterGrump_Body.h"
+
 
 
 CLoader::CLoader(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -2044,7 +2046,12 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 	/* UI */
 	if (FAILED(UI_Object_Load(_eLoadLevelID)))
 		return E_FAIL;
+	/* For. Prototype_GameObject_ButterGrump_Body */
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_ButterGrump_Body"),
+		CButterGrump_Body::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
+	
 	/* For. Prototype_GameObject_Gear */
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_Gear"),
 		CGear::Create(m_pDevice, m_pContext))))
@@ -2153,6 +2160,18 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_ZipC8"),
 		CZip_C8::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+#pragma endregion
+
+#pragma region Chapter 8 - Monster Load
+
+	lstrcpy(m_szLoadingText, TEXT("Level 8 몬스터 로딩중입니다."));
+
+	if (FAILED(m_pGameInstance->Load_Json_InLevel(TEXT("../Bin/DataFiles/Monsters/Chapter8_Monsters_2D.json"), TEXT("Chapter8_Monsters_2D"), _eLoadLevelID)))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Load_Json_InLevel(TEXT("../Bin/DataFiles/Monsters/Chapter8_Monsters_3D.json"), TEXT("Chapter8_Monsters_3D"), _eLoadLevelID)))
+		return E_FAIL;
+
 #pragma endregion
 
 #pragma region Chapter 8 - Effect Load

@@ -121,6 +121,7 @@ public:
 	void		Start_Shake_ByCount(_float _fShakeTime, _float _fShakeForce, _int _iShakeCount, SHAKE_TYPE _ShakeType = SHAKE_TYPE::SHAKE_XY, _float _fDelayTime = 0.f);
 	void		Start_PostProcessing_Fade(FADE_TYPE _eFadeType, _float _fFadeTime = 1.0f);
 	void		Set_FadeRatio(_float _fFadeRatio, _bool _isUpdate = false);
+	void		Set_FadeRatio_White(_float _fFadeRatio, _bool _isUpdate = false);
 
 	void		Start_Turn_AxisY(_float _fTurnTime, _float _fMinRotationPerSec, _float _fMaxRotationPerSec);
 	void		Start_Turn_AxisY(_float _fTurnTime, _float _fAngle, _uint _iRatioType);

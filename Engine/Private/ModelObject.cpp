@@ -55,19 +55,26 @@ void CModelObject::Priority_Update(_float _fTimeDelta)
 
 void CModelObject::Late_Update(_float _fTimeDelta)
 {
-    if (COORDINATE_3D == Get_CurCoord())
-    {
-        if (false == m_isFrustumCulling)
-        {
-            m_pGameInstance->Add_RenderObject_New(m_iRenderGroupID_3D, m_iPriorityID_3D, this);
-            m_pGameInstance->Add_RenderObject_New(REDNERGROUP_SHADOWID, 0, this);
-        }
-    }
+
 
     /* Update 2D Object FadeAlpha Effect :: еб©У*/
     Action_Fade(_fTimeDelta);
     Action_StoppableRender(_fTimeDelta);
     Action_HitRender(_fTimeDelta);
+
+
+    if (COORDINATE_3D == Get_CurCoord())
+    {
+        if (false == m_isFrustumCulling)
+        {
+            if(true == m_isHitRender)
+                m_pGameInstance->Add_RenderObject_New(m_iRenderGroupID_3D, 70, this);
+            else
+                m_pGameInstance->Add_RenderObject_New(m_iRenderGroupID_3D, m_iPriorityID_3D, this);
+            m_pGameInstance->Add_RenderObject_New(REDNERGROUP_SHADOWID, 0, this);
+        }
+    }
+
     /* Update Parent Matrix */
     __super::Late_Update(_fTimeDelta);
 }
@@ -106,7 +113,25 @@ HRESULT CModelObject::Render()
 	CShader* pShader = m_pShaderComs[eCoord];
 	_uint iShaderPass = m_iShaderPasses[eCoord];
     if (COORDINATE_3D == eCoord)
+    {
         pShader->Bind_RawValue("g_fFarZ", m_pGameInstance->Get_FarZ(), sizeof(_float));
+        /* Hit */
+        pShader->Bind_RawValue("g_isHit", &m_isHitRender, sizeof(_int));
+        _float fHitRatio = m_vHitRenderTime.y / m_vHitRenderTime.x;
+        pShader->Bind_RawValue("g_fHitRatio", &fHitRatio, sizeof(_float));
+
+        if(true == m_isHitRender)
+        {
+            if(true == Get_Model(COORDINATE_3D)->Is_AnimModel())
+            {
+                iShaderPass = (_uint)PASS_VTXANIMMESH::AFTERPOSTPROCESSING;
+            }
+            else
+            {
+                iShaderPass = (_uint)PASS_VTXMESH::AFTERPOSTPROCESSING;
+            }
+        }
+    }
     else if(COORDINATE_2D == eCoord)
     {
         _float fFadeAlphaRatio = m_vFadeAlpha.y / m_vFadeAlpha.x;
@@ -175,6 +200,10 @@ HRESULT CModelObject::Bind_ShaderResources_WVP()
         if (FAILED(m_pShaderComs[COORDINATE_3D]->Bind_Matrix("g_ProjMatrix", &m_pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_PROJ))))
             return E_FAIL;
 
+        if(true == m_pControllerModel->Get_Model(COORDINATE_3D)->Is_AnimModel())
+            if (FAILED(m_pShaderComs[COORDINATE_3D]->Bind_Matrix("g_CamWorld", &m_pGameInstance->Get_TransformInverseFloat4x4(CPipeLine::D3DTS_VIEW))))
+                return E_FAIL;
+        
         break;
     default:
         break;

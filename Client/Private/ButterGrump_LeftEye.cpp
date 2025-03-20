@@ -5,6 +5,7 @@
 #include "GameInstance.h"
 #include "Section_Manager.h"
 #include "Monster.h"
+#include "ButterGrump.h"
 
 CButterGrump_LeftEye::CButterGrump_LeftEye(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     :CPartObject(_pDevice, _pContext)
@@ -60,6 +61,7 @@ void CButterGrump_LeftEye::Update(_float _fTimeDelta)
 void CButterGrump_LeftEye::Late_Update(_float _fTimeDelta)
 {
     __super::Late_Update(_fTimeDelta);
+    static_cast<CButterGrump*>(m_pParent)->Set_HitRenderDesc(6, make_pair(m_isHitRender, m_vHitRenderTime));
 }
 
 HRESULT CButterGrump_LeftEye::Render()
@@ -104,6 +106,7 @@ void CButterGrump_LeftEye::Active_OnDisable()
 void CButterGrump_LeftEye::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
 {
     m_pParent->On_Hit(_pHitter, _iDamg, _vForce);
+    Start_HitRender();
 }
 
 HRESULT CButterGrump_LeftEye::Ready_ActorDesc(void* _pArg)

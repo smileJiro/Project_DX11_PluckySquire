@@ -50,7 +50,6 @@ float4 g_vCamPosition;
 float2 g_fStartUV;
 float2 g_fEndUV;
 
-
 // Vertex Shader //
 struct VS_IN
 {
@@ -224,6 +223,7 @@ PS_OUT PS_MAIN(PS_IN In)
         vORMH.b = useMetallicMap ? g_MetallicTexture.Sample(LinearSampler, In.vTexcoord).r : Material.Metallic;
     }
 
+    
     if (vAlbedo.a < 0.1f)
         discard;
     

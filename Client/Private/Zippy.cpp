@@ -458,12 +458,13 @@ void CZippy::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
                 Set_AnimChangeable(true);
                 m_p2DColliderComs[0]->Set_Active(false);
                 Event_ChangeMonsterState(MONSTER_STATE::DEAD, m_pFSM);
+                static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Start_HitRender();
             }
         }
         else
         {
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Start_HitRender();
             //KnockBack(_vForce);
-
             //Effect
             _matrix matFX = Get_ControllerTransform()->Get_WorldMatrix();
 

@@ -581,7 +581,7 @@ void CPlayer::Enter_Section(const _wstring _strIncludeSectionName)
 
 	if (TEXT("Chapter2_P0102") == _strIncludeSectionName)
 	{
-		m_pControllerTransform->Get_Transform(COORDINATE_2D)->Set_State(CTransform::STATE_POSITION, XMVectorSet(0.0f, 2800.f, 0.0f, 0.0f));
+		m_pControllerTransform->Get_Transform(COORDINATE_2D)->Set_State(CTransform::STATE_POSITION, XMVectorSet(0.0f, 2300.f, 0.0f, 1.0f));
 	}
 
 
@@ -1110,6 +1110,8 @@ void CPlayer::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
 	m_pStateMachine->Get_CurrentState()->On_Hit(_pHitter, _iDamg, _vForce);
 
 	Uimgr->Set_PlayerOnHit(true);
+	if(nullptr != m_PartObjects[CPlayer::PART_BODY])
+		static_cast<CModelObject*>(m_PartObjects[CPlayer::PART_BODY])->Start_HitRender();
 
 	if (m_tStat.iHP <= 0)
 	{
@@ -1331,17 +1333,18 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
 	_bool bCarrying = Is_CarryingObject();
 	if (false == bCarrying && Is_SwordHandling())
 	{
+		
 		//기본공격
 		if (MOUSE_DOWN(MOUSE_KEY::LB))
 		{
 			tResult.bInputStates[PLAYER_INPUT_ATTACK] = true;
 		}
 		//칼 던지기
-		else if (MOUSE_DOWN(MOUSE_KEY::RB))
+		else if (0 < CPlayerData_Manager::GetInstance()->Get_ThrowSkillLevel()&& MOUSE_DOWN(MOUSE_KEY::RB))
 		{
 			tResult.bInputStates[PLAYER_INPUT_THROWSWORD] = true;
 		}
-		else if (Is_OnGround())
+		else if (0 < CPlayerData_Manager::GetInstance()->Get_WhirlSkillLevel() && Is_OnGround())
 		{
 			KEY_STATE eKeyState = m_pGameInstance->GetKeyState(KEY::Q);
 			if (KEY_STATE::DOWN == eKeyState)
@@ -1394,9 +1397,10 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
 		if (KEY_PRESSING(KEY::D))
 			tResult.vDir += _vector{ 1.f, 0.f, 0.f,0.f };
 
-		//카메라가 보는 방향
-		_vector vCamLook = static_cast<CCamera*>(CCamera_Manager::GetInstance()->Get_CurrentCamera())->Get_Arm()->Get_ArmVector();
+		////카메라가 보는 방향
+		_vector vCamLook = static_cast<CCamera*>(CCamera_Manager::GetInstance()->Get_CurrentCamera())->Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK);
 		vCamLook = -XMVectorSetY(vCamLook, 0.f);
+		vCamLook = -XMVectorSetW(vCamLook, 0.f);
 		//X축이 크면?
 		if (abs(vCamLook.m128_f32[0]) > abs(vCamLook.m128_f32[2]))
 		{

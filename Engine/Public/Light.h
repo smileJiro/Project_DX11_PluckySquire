@@ -7,7 +7,7 @@ class CShader;
 class CVIBuffer_Rect;
 class CGameInstance;
 class CRenderTarget;
-class CLight : public CBase
+class ENGINE_DLL CLight : public CBase
 {
 protected:
 	CLight(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, LIGHT_TYPE _eLightType);

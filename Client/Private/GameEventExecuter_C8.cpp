@@ -354,6 +354,7 @@ void CGameEventExecuter_C8::Chapter8_Laser_Stage(_float _fTimeDelta)
 		{
 			if (Is_Start())
 			{
+				START_BGM(L"LCD_MUS_C09_P1718_LASER_FULL", 20.f);
 				static_cast<CBig_Laser*>(m_TargetObjects[LASER])->Move_Start(1800.f, 100.f);
 				static_cast<CBig_Laser*>(m_TargetObjects[LASER])->Set_Beam_Collider(true);
 				pPlayer->Set_BlockPlayerInput(false);
@@ -482,6 +483,7 @@ void CGameEventExecuter_C8::Chapter8_Laser_Stage_2(_float _fTimeDelta)
 	{
 		if (Is_Start())
 		{
+			START_BGM(L"LCD_MUS_C09_P1718_REUNITEDWITHPIP_Stem_Base", 20.f);
 			static_cast<CFriend*>(m_TargetObjects[0])->Change_AnyState(CFriend_Pip::PIP_EXCITED_DOWN, false, CFriend::DIR_DOWN);
 		}
 
@@ -746,6 +748,7 @@ void CGameEventExecuter_C8::Chapter8_Friend_Appear_Thrash(_float _fTimeDelta)
 			{
 				static_cast<CFriend*>(m_TargetObjects[VIOLET])->Move_Position(_float2(235.0f, 61.0f), CFriend::DIR_RIGHT);
 			}
+			START_BGM(L"LCD_MUS_C09_THRASHREUNITED_P5152_LOOP_Stem_Base", 20.f);
 
 			AUTOMOVE_COMMAND AutoMove{};
 			AutoMove.eType = AUTOMOVE_TYPE::MOVE_TO;
@@ -2313,7 +2316,7 @@ void CGameEventExecuter_C8::Chapter8_TransformZip(_float _fTimeDelta)
 			AUTOMOVE_COMMAND tCommand{};
 			tCommand.eType = AUTOMOVE_TYPE::MOVE_TO;
 			tCommand.iAnimIndex = (_uint)CPlayer::ANIM_STATE_2D::PLAYER_RUN_SWORD_RIGHT;
-			tCommand.vTarget =  { -360.f, - 111.f, 0.f };
+			tCommand.vTarget =  { -390.f, - 111.f, 0.f };
 			pPlayer->Add_AutoMoveCommand(tCommand);
 
 			tCommand.eType = AUTOMOVE_TYPE::LOOK_DIRECTION;
@@ -2323,7 +2326,10 @@ void CGameEventExecuter_C8::Chapter8_TransformZip(_float _fTimeDelta)
 			pPlayer->Start_AutoMove(true);
 		}
 		if(false == pPlayer->Is_AutoMoving())
+		{
+			pPlayer->Set_2DDirection(F_DIRECTION::RIGHT);
 			Next_Step(true);
+		}
 
 	}
 	else if (Step_Check(STEP_1))
@@ -2412,54 +2418,82 @@ _bool CGameEventExecuter_C8::Change_PlayMap(_float _fStartTime)
 	if (m_fTimer > _fStartTime &&  2 == m_iSubStep)
 	{
 
-			//const json* pJson = m_pGameInstance->Find_Json_InLevel(TEXT("Chapter8_Monsters_3D"), m_pGameInstance->Get_CurLevelID());
+		CGameObject* pObject = nullptr;
 
-			//CGameObject* pObject;
+		const json* pJson = m_pGameInstance->Find_Json_InLevel(TEXT("Chapter8_Monsters_3D"), LEVEL_CHAPTER_8);
 
+		if (nullptr == pJson)
+			return E_FAIL;
+		if (pJson->contains("3D"))
+		{
+			_wstring strLayerTag = L"Layer_Monster";
+			_wstring strMonsterTag = L"";
 
-			//CMonster::MONSTER_DESC MonsterDesc3D = {};
+			for (auto Json : (*pJson)["3D"])
+			{
+				CMonster::MONSTER_DESC MonsterDesc3D = {};
 
-			//MonsterDesc3D.iCurLevelID = m_pGameInstance->Get_CurLevelID();
-			//MonsterDesc3D.eStartCoord = COORDINATE_3D;
+				MonsterDesc3D.iCurLevelID = LEVEL_CHAPTER_8;
+				MonsterDesc3D.eStartCoord = COORDINATE_3D;
 
-			//if (pJson->contains("3D"))
-			//{
-			//	_wstring strLayerTag = L"Layer_Monster";
-			//	_wstring strMonsterTag = L"";
+				if (Json.contains("Position"))
+				{
+					for (_int j = 0; j < 3; ++j)
+					{
+						*(((_float*)&MonsterDesc3D.tTransform3DDesc.vInitialPosition) + j) = Json["Position"][j];
+					}
+				}
+				if (Json.contains("Scaling"))
+				{
+					for (_int j = 0; j < 3; ++j)
+					{
+						*(((_float*)&MonsterDesc3D.tTransform3DDesc.vInitialScaling) + j) = Json["Scaling"][j];
+					}
+				}
+				if (Json.contains("LayerTag"))
+				{
+					strLayerTag = STRINGTOWSTRING(Json["LayerTag"]);
+				}
 
-			//	for (_int i = 0; i < (*pJson)["3D"].size(); ++i)
-			//	{
-			//		if ((*pJson)["3D"][i].contains("Position"))
-			//		{
-			//			for (_int j = 0; j < 3; ++j)
-			//			{
-			//				*(((_float*)&MonsterDesc3D.tTransform3DDesc.vInitialPosition) + j) = (*pJson)["3D"][i]["Position"][j];
-			//			}
-			//		}
-			//		if ((*pJson)["3D"][i].contains("Scaling"))
-			//		{
-			//			for (_int j = 0; j < 3; ++j)
-			//			{
-			//				*(((_float*)&MonsterDesc3D.tTransform3DDesc.vInitialScaling) + j) = (*pJson)["3D"][i]["Scaling"][j];
-			//			}
-			//		}
-			//		if ((*pJson)["3D"][i].contains("LayerTag"))
-			//		{
-			//			strLayerTag = STRINGTOWSTRING((*pJson)["3D"][i]["LayerTag"]);
-			//		}
+				if (Json.contains("MonsterTag"))
+				{
+					strMonsterTag = STRINGTOWSTRING(Json["MonsterTag"]);
+				}
+				else
+					return E_FAIL;
 
-			//		if ((*pJson)["3D"][i].contains("MonsterTag"))
-			//		{
-			//			strMonsterTag = STRINGTOWSTRING((*pJson)["3D"][i]["MonsterTag"]);
-			//		}
-			//		else
-			//			return;
+				if (Json.contains("SneakMode"))
+				{
+					if (Json.contains("SneakWayPointIndex"))
+					{
+						MonsterDesc3D.eWayIndex = Json["SneakWayPointIndex"];
+					}
+					else
+						return E_FAIL;
+					MonsterDesc3D.isSneakMode = Json["SneakMode"];
+				}
 
-			//		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, strMonsterTag, m_pGameInstance->Get_CurLevelID(), strLayerTag, &pObject, &MonsterDesc3D)))
-			//			return;
+				if (Json.contains("IsStay"))
+				{
+					MonsterDesc3D.isStay = Json["IsStay"];
+					if (Json.contains("vLook"))
+					{
+						for (_int j = 0; j < 3; ++j)
+						{
+							*(((_float*)&MonsterDesc3D.vLook) + j) = Json["vLook"][j];
+						}
+					}
+				}
 
-			//	}
-			//}		
+				if (Json.contains("IsIgnoreGround"))
+				{
+					MonsterDesc3D._isIgnoreGround = Json["IsIgnoreGround"];
+				}
+
+				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, strMonsterTag, LEVEL_CHAPTER_8, strLayerTag, &pObject, &MonsterDesc3D)))
+					return E_FAIL;
+			}
+		}
 
 		if (FAILED(CFormation_Manager::GetInstance()->Initialize()))
 			return false;

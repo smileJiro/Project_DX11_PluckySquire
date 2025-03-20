@@ -104,9 +104,9 @@ HRESULT CMonster::Initialize(void* _pArg)
 		if (COORDINATE_3D == Get_CurCoord())
 		{
 			if (ACTOR_TYPE::DYNAMIC == Get_ActorType())
-				static_cast<CActor_Dynamic*>(Get_ActorCom())->Set_Rotation(XMLoadFloat3(&pDesc->vLook));
+				static_cast<CActor_Dynamic*>(Get_ActorCom())->Set_Rotation(XMVector3Normalize(XMLoadFloat3(&pDesc->vLook)));
 			else if (ACTOR_TYPE::KINEMATIC == Get_ActorType())
-				Get_ControllerTransform()->Set_Look(XMLoadFloat3(&pDesc->vLook));
+				Get_ControllerTransform()->Set_Look(XMVector3Normalize(XMLoadFloat3(&pDesc->vLook)));
 		}
 	}
 
@@ -317,16 +317,17 @@ void CMonster::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
 
 		//Effect
 		if (COORDINATE_3D == Get_CurCoord())
+		{
 			//CEffect_Manager::GetInstance()->Active_Effect(TEXT("MonsterDead"), true, m_pControllerTransform->Get_WorldMatrix_Ptr());
 			//CEffect_Manager::GetInstance()->Active_Effect(TEXT("MonsterHit"), true, m_pControllerTransform->Get_WorldMatrix_Ptr());
 			CEffect_Manager::GetInstance()->Active_EffectMatrix(TEXT("MonsterHit"), true, m_pControllerTransform->Get_WorldMatrix());
+			static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Start_HitRender();
+		}
 
 		else if (COORDINATE_2D == Get_CurCoord())
 		{
-
 			static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Start_HitRender();
 			_matrix matFX = Get_ControllerTransform()->Get_WorldMatrix();
-
 			_wstring strFXTag = L"Hit_FX";
 			strFXTag += to_wstring((_int)ceil(m_pGameInstance->Compute_Random(0.f, 5.f)));
 			CEffect2D_Manager::GetInstance()->Play_Effect(strFXTag, Get_Include_Section_Name(), matFX);

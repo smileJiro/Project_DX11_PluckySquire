@@ -56,6 +56,7 @@ float g_fFarZ = 500.f;
 int g_iFlag = 0;
 
 float4 g_vCamPosition;
+float4x4 g_CamWorld;
 float4 g_vOuterColor;
 float g_fBaseReflect, g_fExp;
 
@@ -72,6 +73,12 @@ float g_fBlendingRatio;
 /* Gray Scale */
 int g_isGrayScale = 0;
 float g_fGrayScaleColorFactor = 0.12f;
+
+// hit
+float g_fHitRatio = 1.0f;
+int g_isHit = 0;
+
+
 // Vertex Shader //
 struct VS_IN
 {
@@ -285,6 +292,7 @@ PS_OUT PS_MAIN(PS_IN In)
         vAlbedo *= Material.MultipleAlbedo;
         vAlbedo.rgb = dot(vAlbedo.rgb, float3(0.299f, 0.587f, 0.114f)) + (vAlbedo.rgb * g_fGrayScaleColorFactor);
     }
+
     
     if (vAlbedo.a < 0.01f)
         discard;
@@ -345,16 +353,28 @@ PS_OUT PS_MAIN_NONDISCARD(PS_IN In)
     return Out;
 }
 
+
 PS_ONLYALBEDO_OUT PS_ONLYALBEDO(PS_IN In) // 포스트 프로세싱 이후에 그리는
 {
     PS_ONLYALBEDO_OUT Out = (PS_ONLYALBEDO_OUT) 0;
 
     float4 vAlbedo = useAlbedoMap ? g_AlbedoTexture.Sample(LinearSampler, In.vTexcoord) : Material.Albedo;
+    vAlbedo *= Material.MultipleAlbedo;
+    if (0 < g_isHit)
+    {
+        float fHitRatio = g_fHitRatio;
+        fHitRatio = max(pow(fHitRatio, 4.f), 0.2f);
+
+        vAlbedo.rgb = (vAlbedo.rgb * fHitRatio) + (float3(1.0f, 1.0f, 1.0f) * (1.0f - fHitRatio));
+        
+        //float4 vDir = normalize(mul(float4(0.0f, 0.0f, -1.0f, 0.0f), g_CamWorld));
+        //vNormal.xyz = vDir.xyz;
+    }
     
     if (vAlbedo.a < 0.01f)
         discard;
     
-    Out.vDiffuse = vAlbedo * Material.MultipleAlbedo;
+    Out.vDiffuse = vAlbedo;
     
     return Out;
 }
@@ -756,4 +776,5 @@ technique11 DefaultTechnique
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_TEXTUREBLENDING();
     }
+
 }

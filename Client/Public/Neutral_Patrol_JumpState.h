@@ -45,7 +45,7 @@ private:
 	PATROLBOUND m_tPatrolBound = {};
 	_int m_iPrevDir = {};
 	_int m_iDir = {};
-	F_DIRECTION m_eDir = {};
+	E_DIRECTION m_eDir = {};
 	_bool m_isDelay = { false };
 	_bool m_isMove = { false };
 	_bool m_isTurn = { false };

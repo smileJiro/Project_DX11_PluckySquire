@@ -362,9 +362,12 @@ void CSpear_Soldier::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce
 
         //Effect
         if (COORDINATE_3D == Get_CurCoord())
+        {
             //CEffect_Manager::GetInstance()->Active_Effect(TEXT("MonsterDead"), true, m_pControllerTransform->Get_WorldMatrix_Ptr());
             //CEffect_Manager::GetInstance()->Active_Effect(TEXT("MonsterHit"), true, m_pControllerTransform->Get_WorldMatrix_Ptr());
             CEffect_Manager::GetInstance()->Active_EffectMatrix(TEXT("MonsterHit"), true, m_pControllerTransform->Get_WorldMatrix());
+            static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Start_HitRender();
+        }
 
         else if (COORDINATE_2D == Get_CurCoord())
         {
@@ -662,7 +665,7 @@ void CSpear_Soldier::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
             break;
 
         case ARREST:
-            Set_AnimChangeable(true);
+            //Set_AnimChangeable(true);
             break;
 
         case HIT_FRONT:
