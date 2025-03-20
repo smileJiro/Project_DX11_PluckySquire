@@ -445,7 +445,14 @@ void CState_Sneak::Initialize_PatrolDirections(SNEAKWAYPOINTINDEX _iWayIndex)
 		m_PatrolDirections.push_back({ 0.f, 0.f, -1.f });
 		m_PatrolDirections.push_back({ 0.f, 0.f, -1.f });
 		break;
+
+	case Client::SNEAKWAYPOINTINDEX::CHAPTER8_2:
+		m_PatrolDirections.push_back({ 0.f, 0.f, -1.f });
+		m_PatrolDirections.push_back({ 0.f, 0.f, -1.f });
+		break;
 	}
+
+
 }
 
 void CState_Sneak::Determine_NextDirection(_fvector& _vDestination, _float3* _vDirection)
