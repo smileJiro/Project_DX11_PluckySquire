@@ -55,7 +55,8 @@ HRESULT CLogo_BackGround::Initialize(void* _pArg)
 
 	case MAIN_HUMGRUMP :
 	{
-
+		m_pGameInstance->Start_BGM(_wstring(L"LCD_MUS_C09_MAGNIFICENTHUMGRUMP_TITLESCREEN_FULL"), 60.f);
+		m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_C9_OnceUponATime"), 0.15f, 30.f, false);
 	}
 	break;
 	}

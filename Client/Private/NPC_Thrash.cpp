@@ -461,7 +461,7 @@ HRESULT CNPC_Thrash::Ready_Components()
 	AABBDesc.vScale = { 1.0f, 1.0f };
 	AABBDesc.vOffsetPosition = { 0.f, AABBDesc.vExtents.y * 0.5f };
 	AABBDesc.isBlock = false;
-	AABBDesc.isTrigger = false;
+	AABBDesc.isTrigger = true;
 	AABBDesc.iCollisionGroupID = OBJECT_GROUP::INTERACTION_OBEJCT;
 	if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"), TEXT("Com_Collider2D"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &AABBDesc)))
 		return E_FAIL;
