@@ -240,6 +240,72 @@ HRESULT CState_Sneak::Initialize_WayPoints(SNEAKWAYPOINTINDEX _eWayIndex)
 		m_WayPoints[0].Neighbors.push_back(3);
 		break;
 
+	case SNEAKWAYPOINTINDEX::CHAPTER8_2:
+	case SNEAKWAYPOINTINDEX::CHAPTER8_3:
+		m_WayPoints.push_back({ _float3(-3.55f, 21.58f, 6.15f) });
+		m_WayPoints.push_back({ _float3(-3.55f, 21.58f, 3.15f) });
+		m_WayPoints.push_back({ _float3(-0.55f, 21.58f, 3.15f) });
+		m_WayPoints.push_back({ _float3(-0.55f, 21.58f, 6.15f) });
+
+		m_WayPoints.push_back({ _float3(1.f, 21.58f, 7.2f) });
+		m_WayPoints.push_back({ _float3(1.f, 21.58f, 9.5f) });
+		m_WayPoints.push_back({ _float3(-3.2f, 21.58f, 9.5f) });
+		m_WayPoints.push_back({ _float3(-5.1f, 21.58f, 4.7f) });
+
+		m_WayPoints.push_back({ _float3(-3.f, 21.58f, 13.f) });
+		m_WayPoints.push_back({ _float3(-6.f, 21.58f, 9.5f) });
+		m_WayPoints.push_back({ _float3(-6.f, 21.58f, 13.f) });
+		m_WayPoints.push_back({ _float3(-6.f, 21.58f, 14.5f) });
+		m_WayPoints.push_back({ _float3(-6.f, 21.58f, 18.f) });
+		m_WayPoints.push_back({ _float3(-3.f, 21.58f, 18.f) });
+		m_WayPoints.push_back({ _float3(-3.f, 21.58f, 14.5f) });
+
+		m_WayPoints[0].Neighbors.push_back(1);
+		m_WayPoints[1].Neighbors.push_back(0);
+		m_WayPoints[1].Neighbors.push_back(7);
+		m_WayPoints[7].Neighbors.push_back(1);
+		m_WayPoints[0].Neighbors.push_back(7);
+		m_WayPoints[7].Neighbors.push_back(0);
+		m_WayPoints[0].Neighbors.push_back(3);
+		m_WayPoints[3].Neighbors.push_back(0);
+		m_WayPoints[3].Neighbors.push_back(2);
+		m_WayPoints[2].Neighbors.push_back(3);
+		m_WayPoints[2].Neighbors.push_back(1);
+		m_WayPoints[1].Neighbors.push_back(2);
+		m_WayPoints[3].Neighbors.push_back(4);
+		m_WayPoints[4].Neighbors.push_back(3);
+		m_WayPoints[4].Neighbors.push_back(5);
+		m_WayPoints[5].Neighbors.push_back(4);
+		m_WayPoints[5].Neighbors.push_back(6);
+		m_WayPoints[6].Neighbors.push_back(5);
+		m_WayPoints[6].Neighbors.push_back(8);
+		m_WayPoints[8].Neighbors.push_back(6);
+		m_WayPoints[6].Neighbors.push_back(9);
+		m_WayPoints[9].Neighbors.push_back(6);
+		m_WayPoints[9].Neighbors.push_back(10);
+		m_WayPoints[10].Neighbors.push_back(9);
+		m_WayPoints[10].Neighbors.push_back(8);
+		m_WayPoints[8].Neighbors.push_back(10);
+		m_WayPoints[8].Neighbors.push_back(14);
+		m_WayPoints[14].Neighbors.push_back(8);
+		m_WayPoints[8].Neighbors.push_back(11);
+		m_WayPoints[11].Neighbors.push_back(8);
+		m_WayPoints[10].Neighbors.push_back(14);
+		m_WayPoints[14].Neighbors.push_back(10);
+		m_WayPoints[10].Neighbors.push_back(11);
+		m_WayPoints[11].Neighbors.push_back(10);
+		m_WayPoints[11].Neighbors.push_back(14);
+		m_WayPoints[14].Neighbors.push_back(11);
+		m_WayPoints[11].Neighbors.push_back(12);
+		m_WayPoints[12].Neighbors.push_back(11);
+		m_WayPoints[12].Neighbors.push_back(13);
+		m_WayPoints[13].Neighbors.push_back(12);
+		m_WayPoints[13].Neighbors.push_back(14);
+		m_WayPoints[14].Neighbors.push_back(13);
+		m_WayPoints[8].Neighbors.push_back(13);
+		m_WayPoints[13].Neighbors.push_back(8);
+		break;
+
 
 
 	case SNEAKWAYPOINTINDEX::CHAPTER8_BEETLE1:
@@ -405,6 +471,19 @@ void CState_Sneak::Initialize_PatrolPoints(SNEAKWAYPOINTINDEX _iWayIndex)
 	case Client::SNEAKWAYPOINTINDEX::CHAPTER8_1:
 		m_PatrolWays.push_back(0);
 		m_PatrolWays.push_back(1);
+		break;
+
+	case Client::SNEAKWAYPOINTINDEX::CHAPTER8_2:
+		m_PatrolWays.push_back(0);
+		m_PatrolWays.push_back(1);
+		m_PatrolWays.push_back(2);
+		m_PatrolWays.push_back(3);
+		m_isPatrolCycle = true;
+		break;
+
+	case Client::SNEAKWAYPOINTINDEX::CHAPTER8_3:
+		m_PatrolWays.push_back(8);
+		m_PatrolWays.push_back(13);
 		break;
 
 	case Client::SNEAKWAYPOINTINDEX::CHAPTER8_BEETLE1:
