@@ -33,7 +33,13 @@ private:
 
 public:
 	void									Set_ShopBG(CShopPanel_BG_New* _ShopBG) { m_ShopBG = _ShopBG; Safe_AddRef(_ShopBG); }
-	CShopPanel_BG_New*						Get_ShopBG() { return m_ShopBG; }
+	CShopPanel_BG_New*						Get_ShopBG() 
+	{ 
+		if (nullptr == m_ShopBG)
+			assert(m_ShopBG);
+
+		return m_ShopBG; 
+	}
 	void									pushBack_ShopItem(vector<CShopItemBG_New*> _ItemBGs);
 	void									Emplace_ShopPanels(_uint _ePanel, CShopPanel_BG_New* _pPanel);
 	map<_uint, CShopPanel_BG_New*>			Get_ShopPanels() { return m_pShopPanels; }
