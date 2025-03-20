@@ -97,9 +97,9 @@ void CNPC_Thrash::Priority_Update(_float _fTimeDelta)
 
 void CNPC_Thrash::Child_Update(_float _fTimeDelta)
 {
-	if (m_isTrace)
-		Trace(_fTimeDelta);
-	else
+	//if (m_isTrace)
+	//	Trace(_fTimeDelta);
+	//else
 		Welcome_Jot(_fTimeDelta);
 
 	__super::Child_Update(_fTimeDelta);
@@ -319,31 +319,11 @@ void CNPC_Thrash::Welcome_Jot(_float _fTimeDelta)
 				m_isDisplayDialogue = true;
 			}
 
-			//m_fWelcomeWaitTime += _fTimeDelta;
-			//
-			//if (5.f <= m_fWelcomeWaitTime)
-			//{
-			//	m_eActionType = ACTION_MOVE;
-			//}
-			//else
-			//	return;
+
 		}
 		else if (ACTION_INTERACTION == m_eActionType)
 		{
-			//if (Thrash_idle_right != static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_2D)->Get_CurrentAnimIndex())
-			//{
-			//	_vector vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
-			//	m_PartObjects[PART_BODY]->Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, -XMVectorAbs(vRight));
-			//	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Thrash_idle_right);
-			//	m_eAnimationType = ANIM_LEFT;
-			//}
-			//
-			//_float4 vPlayerPos = _float4(Uimgr->Get_Player()->Get_FinalPosition().m128_f32[0], Uimgr->Get_Player()->Get_FinalPosition().m128_f32[1], 0.f, 1.f);
-			//_float4 vThrashPos = _float4(m_pControllerTransform->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[0], m_pControllerTransform->Get_Transform(COORDINATE_2D)->Get_State(CTransform::STATE_POSITION).m128_f32[1], 0.f, 1.f);
-			//
-			//_float fCheckY = fabs(vPlayerPos.y - vThrashPos.y);
 
-			// 플레이어와 쓰레시의 높이가 1 이하 이면 다이얼로그를 시작한다.
 			if (m_isDisplayDialogue)
 			{
 				m_eActionType = ACTION_DIALOG;

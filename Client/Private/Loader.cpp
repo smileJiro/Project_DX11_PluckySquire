@@ -573,6 +573,9 @@ HRESULT CLoader::Loading_Level_Static()
 	if (FAILED(Loading_BGM_PathFind(TEXT("../Bin/Sounds/BGM/Common"))))
 		return E_FAIL;
 
+	if (FAILED(Loading_SFX_PathFind(TEXT("../Bin/Sounds/SFX/Logo"))))
+		return E_FAIL;
+
 	if (FAILED(Loading_SFX_PathFind(TEXT("../Bin/Sounds/SFX/Level2"))))
 		return E_FAIL;
 
