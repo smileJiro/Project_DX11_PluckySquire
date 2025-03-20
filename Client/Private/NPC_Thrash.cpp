@@ -81,7 +81,7 @@ HRESULT CNPC_Thrash::Initialize(void* _pArg)
 	Add_Component(TEXT("AnimEventGenerator"), m_pAnimEventGenerator);
 
 	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CNPC_Thrash::On_AnimEnd, this, placeholders::_1, placeholders::_2));
-	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, _float4(226.3f, -2313.1f, 0.f, 1.f));
+	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, _float4(226.3f, -2325.1f, 0.f, 1.f));
 	
 
 
