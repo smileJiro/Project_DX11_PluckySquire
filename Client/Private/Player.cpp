@@ -581,7 +581,7 @@ void CPlayer::Enter_Section(const _wstring _strIncludeSectionName)
 
 	if (TEXT("Chapter2_P0102") == _strIncludeSectionName)
 	{
-		m_pControllerTransform->Get_Transform(COORDINATE_2D)->Set_State(CTransform::STATE_POSITION, XMVectorSet(0.0f, 2800.f, 0.0f, 0.0f));
+		m_pControllerTransform->Get_Transform(COORDINATE_2D)->Set_State(CTransform::STATE_POSITION, XMVectorSet(0.0f, 2300.f, 0.0f, 1.0f));
 	}
 
 

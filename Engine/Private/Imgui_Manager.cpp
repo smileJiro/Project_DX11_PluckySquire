@@ -121,7 +121,7 @@ HRESULT CImgui_Manager::LevelChange_Imgui()
 	return S_OK;
 }
 
-#ifdef NDEBUG
+#ifdef _DEBUG
 
 HRESULT CImgui_Manager::Imgui_Debug_Render()
 {
