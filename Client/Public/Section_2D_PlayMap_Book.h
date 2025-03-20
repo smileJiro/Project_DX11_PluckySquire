@@ -8,6 +8,10 @@ private:
 	virtual ~CSection_2D_PlayMap_Book() = default;
 
 public:
+	virtual HRESULT						Section_Enter(const _wstring& _strPreSectionTag);
+
+
+public:
 	static CSection_2D_PlayMap_Book* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, void* _pDesc);
 	void Free() override;
 };

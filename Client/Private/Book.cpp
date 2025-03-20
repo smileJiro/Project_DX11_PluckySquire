@@ -195,14 +195,11 @@ void CBook::Update(_float _fTimeDelta)
 	if (KEY_DOWN(KEY::M))
 	{
 		Event_Book_Main_Section_Change_Start(1, &fDefaultPos);
-		m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_page_turn-") + to_wstring(rand() % 6), 0.5f, 50.f);
 
 	}
 	if (KEY_DOWN(KEY::N))
 	{
 		Event_Book_Main_Section_Change_Start(0, &fDefaultPos);
-		m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_page_turn-") + to_wstring(rand() % 6), 0.5f, 50.f);
-
 
 	}
 

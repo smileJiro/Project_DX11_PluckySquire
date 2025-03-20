@@ -104,6 +104,7 @@ void CCollapseBlock::State_Change()
 		break;
 	case Client::CCollapseBlock::STATE_SHAKE:
 		State_Change_Shake();
+
 		break;
 	case Client::CCollapseBlock::STATE_DROP:
 		State_Change_Drop();
@@ -126,6 +127,10 @@ void CCollapseBlock::State_Change_Shake()
 {
 	m_vShakeOffset = {};
 	m_vShakeTime.y = 0.0f;
+
+	m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_cliff_crack"), 0.1f, 50.f);
+
+	
 }
 
 void CCollapseBlock::State_Change_Drop()

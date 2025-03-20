@@ -38,7 +38,8 @@
 		"Section_Default": 0,
 		"Section_Info": {
 			"Next_Page_Tag": "Chapter1_P0910",
-			"Pre_Page_Tag": "Chapter1_P0506"
+			"Pre_Page_Tag": "Chapter1_P0506",
+			"BGM": "LCD_MUS_C01_PUZZLEBASETRACK_LOOP_FULL"
 		}
 	},
 	{
@@ -49,7 +50,8 @@
 		"Section_Default": 0,
 		"Section_Info": {
 			"Next_Page_Tag": "Chapter1_P1112",
-			"Pre_Page_Tag": "Chapter1_P0708"
+			"Pre_Page_Tag": "Chapter1_P0708",
+			"BGM": "LCD_MUS_C01_HONEYPEAK_LOOP_Stem_Base"
 		}
 	},
 	{

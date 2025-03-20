@@ -574,6 +574,9 @@ HRESULT CLoader::Loading_Level_Static()
 	if (FAILED(Loading_SFX_PathFind(TEXT("../Bin/Sounds/SFX/Level2"))))
 		return E_FAIL;
 
+	if (FAILED(Loading_SFX_PathFind(TEXT("../Bin/Sounds/SFX/Level6"))))
+		return E_FAIL;
+
 	if (FAILED(Loading_SFX_PathFind(TEXT("../Bin/Sounds/SFX/Level8"))))
 		return E_FAIL;
 
