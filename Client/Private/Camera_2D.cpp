@@ -1484,9 +1484,19 @@ void CCamera_2D::Update_TargetLight()
 	CONST_LIGHT tLightDesc = m_pTargetLight->Get_LightDesc();
 	XMStoreFloat3(&tLightDesc.vPosition, Get_FinalPosition());
 	XMStoreFloat3(&tLightDesc.vDirection, m_pControllerTransform->Get_State(CTransform::STATE_LOOK));
-	tLightDesc.fFallOutEnd = m_pCurArm->Get_Length() * 2.0f;
+	tLightDesc.fFallOutEnd = m_pCurArm->Get_Length() * 2.5f;
 	if (FAILED(m_pTargetLight->Set_LightConstData_AndUpdateBuffer(tLightDesc)))
 		return;
+}
+
+void CCamera_2D::Active_OnEnable()
+{
+	Event_SetActive(m_pTargetLight, true);
+}
+
+void CCamera_2D::Active_OnDisable()
+{
+	Event_SetActive(m_pTargetLight, false);
 }
 
 #ifdef _DEBUG
