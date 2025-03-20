@@ -2313,7 +2313,7 @@ void CGameEventExecuter_C8::Chapter8_TransformZip(_float _fTimeDelta)
 			AUTOMOVE_COMMAND tCommand{};
 			tCommand.eType = AUTOMOVE_TYPE::MOVE_TO;
 			tCommand.iAnimIndex = (_uint)CPlayer::ANIM_STATE_2D::PLAYER_RUN_SWORD_RIGHT;
-			tCommand.vTarget =  { -300.f, - 50.f, 0.f };
+			tCommand.vTarget =  { -360.f, - 111.f, 0.f };
 			pPlayer->Add_AutoMoveCommand(tCommand);
 
 			tCommand.eType = AUTOMOVE_TYPE::LOOK_DIRECTION;
