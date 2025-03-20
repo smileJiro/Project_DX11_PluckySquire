@@ -190,6 +190,8 @@ protected:
 	_uint					m_iOverride_Normal = { 0 };
 
 	_float					m_fCameraRatio = 1.f;
+	
+	_wstring				m_strBGMTag = L""; // 민용추가, Section Enter 할 때 재생시킬 브금.
 
 protected:
 	/// <summary>

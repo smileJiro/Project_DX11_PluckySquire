@@ -40,6 +40,8 @@
 #include "Logo_ColorObject.h"
 #include "Formation_Manager.h"
 #include "Event_Manager.h"
+#include "Zip_C8.h"
+#include "Dialog_Manager.h"
 
 CGameEventExecuter_C8::CGameEventExecuter_C8(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CGameEventExecuter(_pDevice, _pContext)
@@ -133,6 +135,13 @@ void CGameEventExecuter_C8::Update(_float _fTimeDelta)
 			break;
 		case Client::CTrigger_Manager::CHAPTER8_BOOKFREEZING_OFF:
 			Chapter8_BookFreezing_Off(_fTimeDelta);
+			break;		
+		case Client::CTrigger_Manager::CHAPTER8_2D_IN:
+			Chapter8_2D_In(_fTimeDelta);
+			break;
+
+		case Client::CTrigger_Manager::CHAPTER8_TRANSFORMZIP:
+			Chapter8_TransformZip(_fTimeDelta);
 			break;
 		default:
 			break;
@@ -991,10 +1000,14 @@ void CGameEventExecuter_C8::Chapter8_Outro_Postit_Sequence(_float _fTimeDelta)
 		if (Is_Start())
 		{
 			m_tReturnArmData = CCamera_Manager::GetInstance()->Save_ArmData();
-			CCamera_Manager::GetInstance()->Change_CameraTarget(pBook);
-
+			CCamera_Manager::GetInstance()->Start_Turn_AxisY(CCamera_Manager::TARGET, 1.f, 
+				XMConvertToRadians(40.f), XMConvertToRadians(25.f));
+			CCamera_Manager::GetInstance()->Start_Changing_AtOffset(CCamera_Manager::TARGET,
+				1.f,
+				XMVectorSet(20.f, 0.f, -5.f, 0.f),
+				EASE_IN_OUT);
 			CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Increase(CCamera_Manager::TARGET, 1.f,
-				3.f, EASE_IN_OUT);
+				20.f, EASE_IN_OUT);
 		}
 		// 카메라 무브
 		Next_Step_Over(1.f);
@@ -1007,7 +1020,7 @@ void CGameEventExecuter_C8::Chapter8_Outro_Postit_Sequence(_float _fTimeDelta)
 	{
 		if (Is_Start())
 		{
-			CCamera_Manager::GetInstance()->Change_CameraTarget(pPlayer);
+			//CCamera_Manager::GetInstance()->Change_CameraTarget(pPlayer);
 			CCamera_Manager::GetInstance()->Load_SavedArmData(m_tReturnArmData,1.f);
 		}
 		// 카메라 무브
@@ -1144,8 +1157,11 @@ void CGameEventExecuter_C8::Chapter8_3D_Out_02(_float _fTimeDelta)
 	{
 		if (false == Is_Dead())
 		{
-			if(Change_PlayMap(0.f))
+			if (Change_PlayMap(0.f))
+			{
+				Get_Book()->Set_Freezing(true);
 				GameEvent_End();
+			}
 		}
 		return;
 	}
@@ -1886,10 +1902,10 @@ void CGameEventExecuter_C8::Chapter8_Meet_Humgrump(_float _fTimeDelta)
 		}
 
 		if (1 == m_iSubStep) {
+
 			if (false == static_cast<CModelObject*>(m_TargetObjects[0])->Is_DuringAnimation()) {
 				// 검은색 FadeOut 시작
 				CCamera_Manager::GetInstance()->Start_FadeOut(0.6f);
-
 				Next_Step(true);
 			}
 		}
@@ -1898,7 +1914,48 @@ void CGameEventExecuter_C8::Chapter8_Meet_Humgrump(_float _fTimeDelta)
 	{
 		if (m_fTimer >= 0.7f) {
 
-			if (Is_Start()) {
+			if (Is_Start()) 
+			{
+
+				CCamera* pCamera = CCamera_Manager::GetInstance()->Get_CurrentCamera();
+				CCamera_2D* pCam = static_cast<CCamera_2D*>(pCamera);
+
+				pCam->Set_TrackingTime(0.1f);
+				auto pBook = Get_Book();
+
+				Event_DeleteObject(pBook);
+				pBook = nullptr;
+				Uimgr->Remove_Book();
+
+				CGameObject* pGameObject = nullptr;
+				CBook::BOOK_DESC Desc = {};
+				Desc.iCurLevelID = m_iCurLevelID;
+				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Book"),
+					m_iCurLevelID, L"Layer_Book", &pGameObject, &Desc)))
+					return;
+
+				pBook = static_cast<CBook*>(pGameObject);
+				//pBook->Set_Freezing(true);
+
+				Uimgr->Set_Book(pBook);
+				SECTION_MGR->Remove_Section(L"Chapter8_SKSP_01");
+				SECTION_MGR->Remove_Section(L"Chapter8_SKSP_02");
+				SECTION_MGR->Remove_Section(L"Chapter8_SKSP_03");
+				SECTION_MGR->Remove_Section(L"Chapter8_SKSP_04");
+				SECTION_MGR->Remove_Section(L"Chapter8_SKSP_05");
+				SECTION_MGR->Remove_Section(L"Chapter8_SKSP_06");
+				SECTION_MGR->Remove_Section(L"Chapter8_SKSP_07");
+				SECTION_MGR->Remove_Section(L"Chapter8_SKSP_08");
+				SECTION_MGR->Remove_Section(L"Chapter8_SKSP_09");
+				SECTION_MGR->Remove_Section(L"Chapter8_SKSP_10");
+
+				Event_ChangeMapObject(m_iCurLevelID, L"Chapter_Boss.mchc", L"Layer_MapObject");
+				//TODO ::보스 생성 위치
+
+
+
+
+
 				// 험그럼프 없애기
 				Event_DeleteObject(m_TargetObjects[0]);
 				m_TargetObjects[0] = nullptr;
@@ -1908,10 +1965,14 @@ void CGameEventExecuter_C8::Chapter8_Meet_Humgrump(_float _fTimeDelta)
 			}
 		}
 
-		if (m_fTimer >= 0.9f) {
+		if (m_fTimer >= 1.3f) {
 			// 검은색 FadeIn 시작
 			CCamera_Manager::GetInstance()->Start_FadeIn(0.6f);
+			CCamera_Manager::GetInstance()->Start_FadeOut(0.6f);
+			CCamera* pCamera = CCamera_Manager::GetInstance()->Get_CurrentCamera();
+			CCamera_2D* pCam = static_cast<CCamera_2D*>(pCamera);
 
+			pCam->Set_TrackingTime(0.3f);
 			Next_Step(true);
 		}
 	}
@@ -2040,7 +2101,7 @@ void CGameEventExecuter_C8::Chapter8_BookDrop(_float _fTimeDelta)
 			//CCamera_Manager::GetInstance()->Set_ResetData(CCamera_Manager::TARGET);
 			CCamera_Manager::GetInstance()->Change_CameraTarget(pPlayer,1.f);
 		}
-		Next_Step_Over(1.2f);
+		Next_Step_Over(1.f);
 	}
 	else if (Step_Check(STEP_1))
 	{
@@ -2070,15 +2131,19 @@ void CGameEventExecuter_C8::Chapter8_BookDrop(_float _fTimeDelta)
 
 		if (Next_Step_Over(2.f))
 		{
+			Event_DeleteObject(pBook);
+			pBook = nullptr;
+			Uimgr->Remove_Book();
 		}
 	}
 	else if (Step_Check(STEP_2))
 	{
-		if(Is_Start()) 
+		auto pLayer = m_pGameInstance->Find_Layer(m_iCurLevelID, L"Layer_Book");
+		if(true == pLayer->Is_Empty() && Is_Start())
 		{
 			// 포지션 다시 잡아주기.
 			///pBook->Set_Position(XMVectorSet(2.f, 0.4f, -17.3f, 1.f));
-			Event_DeleteObject(pBook);
+			
 			CGameObject* pGameObject = nullptr;
 			CBook::BOOK_DESC Desc = {};
 
@@ -2091,21 +2156,20 @@ void CGameEventExecuter_C8::Chapter8_BookDrop(_float _fTimeDelta)
 				return ;
 
 			pBook = static_cast<CBook*>(pGameObject);
+			pBook->Set_Freezing(true);
 
 			Uimgr->Set_Book(pBook);
 
 			pBook->Set_BlendingRatio(1.f);
 			CCamera_Manager::GetInstance()->Start_ResetArm_To_SettingPoint(CCamera_Manager::TARGET, 0.1f);
 		}
-
-
-		if (m_isPlag == false && m_fTimer > 0.5f)
+		else if (true == m_isStart && pBook != nullptr && m_isPlag == false && m_fTimer > 0.5f)
 		{
 			pBook->Set_Animation(CBook::CLOSED_IDLE);
 			m_isPlag = true;
 		}
 
-		if (Next_Step_Over(1.f))
+		if (Next_Step(m_fTimer > 1.f && m_isPlag))
 		{
 			CCamera_Manager::GetInstance()->Start_FadeIn(0.5f);
 		}
@@ -2136,7 +2200,7 @@ void CGameEventExecuter_C8::Chapter8_BookFreezing_Off(_float _fTimeDelta)
 			pPlayer->Set_BlockPlayerInput(true);
 		
 		}
-		Next_Step_Over(0.5f);
+		Next_Step_Over(2.f);
 		
 	}
 	else if (Step_Check(STEP_1))
@@ -2145,10 +2209,12 @@ void CGameEventExecuter_C8::Chapter8_BookFreezing_Off(_float _fTimeDelta)
 		{
 			pBook->Start_FreezingOff();
 		}
-		Next_Step_Over(0.5f);
+		Next_Step_Over(1.2f);
 	}	
 	else 
 	{
+		if (Is_Start())
+		{
 			auto pLayer = m_pGameInstance->Find_Layer(m_iCurLevelID, L"Layer_Gear");
 
 
@@ -2171,10 +2237,135 @@ void CGameEventExecuter_C8::Chapter8_BookFreezing_Off(_float _fTimeDelta)
 			pBook->Set_Freezing(false);
 
 			pPlayer->Set_BlockPlayerInput(false);
+		
+		
+			CFriend* pThrash = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Thrash"));
+
+
+			if (nullptr != pThrash)
+			{
+				_vector vPos = pThrash->Get_FinalPosition();
+				CTriggerObject::TRIGGEROBJECT_DESC Desc = {};
+				Desc.vHalfExtents = { 100.f, 100.0f, 0.f };
+				Desc.iTriggerType = (_uint)TRIGGER_TYPE::EVENT_TRIGGER;
+				Desc.szEventTag = TEXT("Chapter8_2D_In");
+				Desc.eConditionType = CTriggerObject::TRIGGER_ENTER;
+				Desc.isReusable = false;
+				Desc.eStartCoord = COORDINATE_2D;
+				Desc.tTransform2DDesc.vInitialPosition = {XMVectorGetX(vPos),XMVectorGetY(vPos), 0.f};
+
+				CSection* pBookSection = CSection_Manager::GetInstance()->Find_Section(TEXT("Chapter8_P1920"));
+				CTrigger_Manager::GetInstance()->Create_TriggerObject(LEVEL_STATIC, LEVEL_CHAPTER_8, &Desc, pBookSection);
+			}
+		}
 			GameEvent_End();
 	}
 	
 	// dk...
+
+}
+
+void CGameEventExecuter_C8::Chapter8_2D_In(_float _fTimeDelta)
+{
+	m_fTimer += _fTimeDelta;
+	CPlayer* pPlayer = Get_Player();
+
+	if (Step_Check(STEP_0))
+	{
+		if (Is_Start())
+		{
+			pPlayer->Set_BlockPlayerInput(true);
+		}
+		Next_Step_Over(0.8f);
+	}
+	else if (Step_Check(STEP_1))
+	{
+		if (Is_Start())
+		{
+			CFriend* pPip = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Pip"));
+			if (pPip)
+			{
+				CDialog_Manager::GetInstance()->Set_NPC(pPip);
+			}
+			CDialog_Manager::GetInstance()->Set_DialogId(L"Chapter8_2D_In");
+		}
+		else
+			if (Next_Step(!CDialog_Manager::GetInstance()->Get_DisPlayDialogue()))
+				pPlayer->Set_BlockPlayerInput(true);
+	}
+	else
+	{
+		CFriend_Controller::GetInstance()->Start_Train();
+		pPlayer->Set_BlockPlayerInput(false);
+		GameEvent_End();
+	}
+}
+
+void CGameEventExecuter_C8::Chapter8_TransformZip(_float _fTimeDelta)
+{
+	m_fTimer += _fTimeDelta;
+	CPlayer* pPlayer = Get_Player();
+	CZip_C8* pZip = static_cast<CZip_C8*>( m_pGameInstance->Get_GameObject_Ptr(m_iCurLevelID,TEXT("Layer_Zip"), 0));
+	if (Step_Check(STEP_0))
+	{
+		if (Is_Start())
+		{
+			AUTOMOVE_COMMAND tCommand{};
+			tCommand.eType = AUTOMOVE_TYPE::MOVE_TO;
+			tCommand.iAnimIndex = (_uint)CPlayer::ANIM_STATE_2D::PLAYER_RUN_SWORD_RIGHT;
+			tCommand.vTarget =  { -360.f, - 111.f, 0.f };
+			pPlayer->Add_AutoMoveCommand(tCommand);
+
+			tCommand.eType = AUTOMOVE_TYPE::LOOK_DIRECTION;
+			tCommand.iAnimIndex = (_uint)CPlayer::ANIM_STATE_2D::PLAYER_IDLE_SWORD_RIGHT;
+			pPlayer->Add_AutoMoveCommand(tCommand);
+
+			pPlayer->Start_AutoMove(true);
+		}
+		if(false == pPlayer->Is_AutoMoving())
+			Next_Step(true);
+
+	}
+	else if (Step_Check(STEP_1))
+	{
+		//DIALOG
+		CDialog_Manager* pDM = CDialog_Manager::GetInstance();
+		if (Is_Start())
+		{
+			CCamera_Manager::GetInstance()->Change_CameraTarget(pZip, 1.f);
+			pDM->Set_DialogId(TEXT("Chapter8_MeetZip"));
+			//Uimgr->Set_DialogId(m_strDialogueIndex, m_strCurSecion);
+
+			_vector vPos = pZip->Get_FinalPosition();
+			_float3 vPosition; XMStoreFloat3(&vPosition, vPos);
+			pDM->Set_DialoguePos(vPosition);
+			//Uimgr->Set_DialoguePos(vPos);
+			pDM->Set_DisPlayDialogue(true);
+		}
+
+		if (false == pDM->Get_DisPlayDialogue())
+		{
+			Next_Step(true);
+		}
+
+	}
+	else if(Step_Check(STEP_2))
+	{
+
+		if (Is_Start())
+		{
+
+			pPlayer->TransformToCyberJot(pZip);
+
+		}
+		if (false == pPlayer->Get_Body()->Is_DuringAnimation())
+			Next_Step(true);
+	}
+	else
+	{
+		GameEvent_End();
+
+	}
 
 }
 
@@ -2271,7 +2462,7 @@ _bool CGameEventExecuter_C8::Change_PlayMap(_float _fStartTime)
 			//}		
 
 		if (FAILED(CFormation_Manager::GetInstance()->Initialize()))
-			return E_FAIL;
+			return false;
 		m_iSubStep++;
 		return true;
 	}

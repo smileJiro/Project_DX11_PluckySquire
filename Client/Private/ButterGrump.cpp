@@ -91,8 +91,8 @@ HRESULT CButterGrump::Initialize(void* _pArg)
     m_pBossFSM->Add_State((_uint)BOSS_STATE::HIT);
     m_pBossFSM->Add_State((_uint)BOSS_STATE::DEAD);
 
-    //m_pBossFSM->Set_State((_uint)BOSS_STATE::SCENE);
-    m_pBossFSM->Set_State((_uint)BOSS_STATE::IDLE);
+    m_pBossFSM->Set_State((_uint)BOSS_STATE::SCENE);
+    //m_pBossFSM->Set_State((_uint)BOSS_STATE::IDLE);
 
     CModelObject* pModelObject = static_cast<CModelObject*>(m_PartObjects[PART_BODY]);
 

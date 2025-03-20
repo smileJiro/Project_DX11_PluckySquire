@@ -71,6 +71,7 @@
 #include "Loading_Book.h"
 #include "BossHP.h"
 #include "BossHPBar.h"
+#include "UI_Interaction_Tilting.h"
 
 #include "Logo_BackGround.h"
 #include "Logo_ColorObject.h"
@@ -275,6 +276,7 @@
 #include "Saw.h"
 #include "Turret.h"
 
+#include "Zip_C8.h"
 
 
 CLoader::CLoader(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -543,6 +545,10 @@ HRESULT CLoader::Loading_Level_Static()
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Static/KeyIcon/Keyboard_Book_%d.dds"), 2))))
 		return E_FAIL;
 
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Interact_Book_1"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Static/KeyIcon/Keyboard_Book_1_%d.dds"), 2))))
+		return E_FAIL;
+
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Interact_Key"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Static/KeyIcon/Interaction_Key_%d.dds"), 2))))
 		return E_FAIL;
@@ -566,6 +572,9 @@ HRESULT CLoader::Loading_Level_Static()
 		return E_FAIL;
 
 	if (FAILED(Loading_SFX_PathFind(TEXT("../Bin/Sounds/SFX/Level2"))))
+		return E_FAIL;
+
+	if (FAILED(Loading_SFX_PathFind(TEXT("../Bin/Sounds/SFX/Level6"))))
 		return E_FAIL;
 
 	if (FAILED(Loading_SFX_PathFind(TEXT("../Bin/Sounds/SFX/Level8"))))
@@ -2141,6 +2150,9 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_CyberCursor"),
 		CCyberCursor::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_ZipC8"),
+		CZip_C8::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 #pragma endregion
 
 #pragma region Chapter 8 - Effect Load
@@ -2367,14 +2379,14 @@ HRESULT CLoader::Loading_Level_Camera_Tool()
 	// 3D Map Load
 	if (FAILED(Load_Models_FromJson(LEVEL_CAMERA_TOOL,
 		MAP_3D_DEFAULT_PATH,
-		L"Chapter_08_Play_Desk.json",
+		L"Chapter_02_Play_Desk.json",
 		matPretransform, true)))
 		return E_FAIL;
 
-	CSection_Manager::GetInstance()->Set_LoadLevel(LEVEL_CHAPTER_8);
+	CSection_Manager::GetInstance()->Set_LoadLevel(LEVEL_CHAPTER_2);
 
 
-	return Loading_Level_Chapter_8(LEVEL_CAMERA_TOOL);
+	return Loading_Level_Chapter_2(LEVEL_CAMERA_TOOL);
 }
 
 HRESULT CLoader::Model_Load(LEVEL_ID _eResourceLevelID, LEVEL_ID _eLoadLevelID)
@@ -2455,8 +2467,8 @@ HRESULT CLoader::Model_Load(LEVEL_ID _eResourceLevelID, LEVEL_ID _eLoadLevelID)
 			return E_FAIL;
 		break;
 	case LEVEL_CAMERA_TOOL:
-		str3DMapProtoJsonName = L"Chapter_Boss.json";
-		strChapterName += L"Chapter8";
+		str3DMapProtoJsonName = L"Chapter_02_Play_Desk.json";
+		strChapterName += L"Chapter2";
 		break;
 	default:
 		return S_OK;
@@ -2744,6 +2756,14 @@ HRESULT CLoader::UI_Object_Load(LEVEL_ID _eLevelID)
 		CPrintFloorWord::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_GameObject_PrintFloorWord"),
+		CPrintFloorWord::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+
+	if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_GameObject_Interaction_Tilting"),
+		CUI_Interaction_Tilting::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLevelID, TEXT("Prototype_GameObject_WorldMapNpc"),
 		CWorldMapNPC::Create(m_pDevice, m_pContext))))

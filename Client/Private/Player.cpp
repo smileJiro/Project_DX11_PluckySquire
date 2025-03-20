@@ -115,13 +115,13 @@ HRESULT CPlayer::Initialize_Prototype()
 	m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL3][(_uint)F_DIRECTION::LEFT].vExtents = { 70.f, 70.f };
 	m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL3][(_uint)F_DIRECTION::LEFT].vOffset = { -80.f,0.f };
 
-	m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN][(_uint)F_DIRECTION::DOWN].vExtents = { 211.f, 211.f };
+	m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN][(_uint)F_DIRECTION::DOWN].vExtents = { 115.f, 115.f };
 	m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN][(_uint)F_DIRECTION::DOWN].vOffset = { 0.f, m_f2DCenterYOffset };
-	m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN][(_uint)F_DIRECTION::UP].vExtents = { 211.f, 211.f };
+	m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN][(_uint)F_DIRECTION::UP].vExtents = { 115.f, 115.f };
 	m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN][(_uint)F_DIRECTION::UP].vOffset = { 0.f, m_f2DCenterYOffset };
-	m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN][(_uint)F_DIRECTION::RIGHT].vExtents = { 211.f, 211.f };
+	m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN][(_uint)F_DIRECTION::RIGHT].vExtents = { 115.f, 115.f };
 	m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN][(_uint)F_DIRECTION::RIGHT].vOffset = { 0.f, m_f2DCenterYOffset };
-	m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN][(_uint)F_DIRECTION::LEFT].vExtents = { 211.f, 211.f };
+	m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN][(_uint)F_DIRECTION::LEFT].vExtents = { 115.f, 115.f };
 	m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN][(_uint)F_DIRECTION::LEFT].vOffset = { 0.f, m_f2DCenterYOffset };
 
 	m_f2DAttackTriggerDesc[ATTACK_TYPE_JUMPATTACK][(_uint)F_DIRECTION::DOWN].vExtents = { 146.5f, 74.5f };
@@ -205,7 +205,11 @@ HRESULT CPlayer::Initialize(void* _pArg)
 	ShapeData.isTrigger = true;
 	XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(0, m_f3DCenterYOffset, 0));
 	ShapeData.FilterData.MyGroup = OBJECT_GROUP::PLAYER_TRIGGER;
-	ShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::DYNAMIC_OBJECT | OBJECT_GROUP::INTERACTION_OBEJCT;
+	ShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | 
+		OBJECT_GROUP::DYNAMIC_OBJECT | 
+		OBJECT_GROUP::INTERACTION_OBEJCT |
+		OBJECT_GROUP::INTERACTION_PORTAL
+		;
 	ActorDesc.ShapeDatas[ShapeData.iShapeUse] = ShapeData;
 
 	//상호작용 구 (트리거)
@@ -760,7 +764,7 @@ void CPlayer::Late_Update(_float _fTimeDelta)
 HRESULT CPlayer::Render()
 {
 	/* Model이 없는 Container Object 같은 경우 Debug 용으로 사용하거나, 폰트 렌더용으로. */
-
+	
 #ifdef _DEBUG
 	if (m_pBody2DColliderCom->Is_Active())
 		m_pBody2DColliderCom->Render(SECTION_MGR->Get_Section_RenderTarget_Size(m_strSectionName));
@@ -825,7 +829,7 @@ void CPlayer::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)
 	if (PLAYER_SHAPE_USE::INTERACTION == (PLAYER_SHAPE_USE)_My.pShapeUserData->iShapeUse)
 	{
 		OBJECT_GROUP eOtehrGroup = (OBJECT_GROUP)_Other.pActorUserData->pOwner->Get_ObjectGroupID();
-		if (OBJECT_GROUP::INTERACTION_OBEJCT == eOtehrGroup)
+		if (OBJECT_GROUP::INTERACTION_OBEJCT == eOtehrGroup || OBJECT_GROUP::INTERACTION_PORTAL == eOtehrGroup )
 		{
 			IInteractable* pInteractable = dynamic_cast<IInteractable*> (_Other.pActorUserData->pOwner);
 			if (Check_ReplaceInteractObject(pInteractable))
@@ -972,7 +976,7 @@ void CPlayer::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCol
 	OBJECT_GROUP eGroup = (OBJECT_GROUP)_pOtherObject->Get_ObjectGroupID();
 	if (_pMyCollider == m_pBody2DTriggerCom)
 	{
-		if (OBJECT_GROUP::INTERACTION_OBEJCT == eGroup)
+		if (OBJECT_GROUP::INTERACTION_OBEJCT == eGroup || OBJECT_GROUP::INTERACTION_PORTAL == eGroup)
 		{
 			IInteractable* pInteractable = dynamic_cast<IInteractable*> (_pOtherObject);
 			if (nullptr != pInteractable && static_cast<CCollider_Circle*>(_pMyCollider)->Is_ContainsPoint(_pOtherCollider->Get_Position()))
@@ -2083,7 +2087,7 @@ void CPlayer::Set_State(STATE _eState)
 		m_pStateMachine->Transition_To(new CPlayerState_GetItem(this));
 		break;
 	case Client::CPlayer::TRANSFORM_IN:
-		m_pStateMachine->Transition_To(new CPlayerState_TransformIn(this));
+		//m_pStateMachine->Transition_To(new CPlayerState_TransformIn(this));
 		break;
 	case Client::CPlayer::CYBER_DASH:
 		m_pStateMachine->Transition_To(new CPlayerState_CyberDash(this));
@@ -2166,8 +2170,9 @@ void CPlayer::Set_Mode(PLAYER_MODE _eNewMode)
 		cout << "PLAYER_MODE_CYBERJOT" << endl;
 
 		m_pTargetCamera = static_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET));
-		CCameraPivot* pPivot = static_cast<CCameraPivot*>(m_pGameInstance->Get_GameObject_Ptr(m_iCurLevelID, TEXT("Layer_CameraPivot"), 0));
-		m_pCameraTargetWorldMatrix = pPivot->Get_MainTarget()->Get_ControllerTransform()->Get_WorldMatrix_Ptr();
+		CCameraPivot* pPivot = dynamic_cast<CCameraPivot*>(m_pGameInstance->Get_GameObject_Ptr(m_iCurLevelID, TEXT("Layer_CameraPivot"), 0));
+		if(pPivot)
+			m_pCameraTargetWorldMatrix = pPivot->Get_MainTarget()->Get_ControllerTransform()->Get_WorldMatrix_Ptr();
 
 		Set_Kinematic(true);
 		//Get_ActorDynamic()->Set_Gravity(false);
@@ -2383,6 +2388,11 @@ void CPlayer::Position_To_FrontCamera(_float _fDistance)
 	_vector vPlayerPos = vCamPos - pTargetCam->Get_Arm()->Get_ArmVector() * _fDistance;
 	_float3 vPos; XMStoreFloat3(&vPos, vPlayerPos);
 	Get_ActorDynamic()->Set_GlobalPose(vPos);
+}
+
+void CPlayer::TransformToCyberJot(CZip_C8* _pZip)
+{
+	m_pStateMachine->Transition_To(new CPlayerState_TransformIn(this, _pZip));
 }
 
 
@@ -2610,6 +2620,9 @@ void CPlayer::On_GainPlayerItem(_uint _eItem)
 
 void CPlayer::Update_CyberJot(_float _fTimeDelta)
 {
+	if (nullptr == m_pTargetCamera || nullptr == m_pCameraTargetWorldMatrix)
+		return;
+
 	m_f3DCyberCurrentSpeed -= m_f3DCyberLinearDamping * _fTimeDelta;
 	if(m_f3DCyberCurrentSpeed < 0.f)
 		m_f3DCyberCurrentSpeed = 0.f;

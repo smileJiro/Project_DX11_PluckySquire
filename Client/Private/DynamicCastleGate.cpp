@@ -54,7 +54,6 @@ HRESULT CDynamicCastleGate::Initialize(void* _pArg)
 	ActorDesc.ShapeDatas.push_back(ShapeData);
 
 
-	//중점 확인용 구
 	SHAPE_BOX_DESC BOXDesc2 = {};
 	BOXDesc2.vHalfExtents={ 2.5f, 3.5f, m_fGateHalfThick};
 	SHAPE_DATA ShapeData2 = {};
@@ -67,6 +66,22 @@ HRESULT CDynamicCastleGate::Initialize(void* _pArg)
 	ShapeData2.FilterData.MyGroup = OBJECT_GROUP::DYNAMIC_OBJECT;
 	ShapeData2.FilterData.OtherGroupMask = OBJECT_GROUP::PLAYER;
 	ActorDesc.ShapeDatas.push_back(ShapeData2);
+
+
+
+	SHAPE_BOX_DESC BOXDesc3 = {};
+	BOXDesc3.vHalfExtents = { m_fGateHalfWidth*0.5f,m_fGateHalfHeight*0.5f, m_fGateHalfThick };
+	SHAPE_DATA ShapeData3 = {};
+	ShapeData3.pShapeDesc = &BOXDesc3;
+	ShapeData3.eShapeType = SHAPE_TYPE::BOX;
+	ShapeData3.eMaterial = ACTOR_MATERIAL::NORESTITUTION;
+	ShapeData3.iShapeUse = (_uint)SHAPE_USE::SHAPE_TRIGER;
+	ShapeData3.isTrigger = true;
+	XMStoreFloat4x4(&ShapeData3.LocalOffsetMatrix, XMMatrixTranslation(0, m_fGateHalfHeight, 0));
+	ShapeData3.FilterData.MyGroup = OBJECT_GROUP::DYNAMIC_OBJECT;
+	ShapeData3.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT;
+	ActorDesc.ShapeDatas.push_back(ShapeData3);
+
 
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
@@ -91,7 +106,7 @@ void CDynamicCastleGate::Update(_float _fTimeDelta)
 #ifdef _DEBUG
 
 #endif // _DEBUG
-	if (KEY_DOWN(KEY::I))
+	if (KEY_DOWN(KEY::BACKSPACE))
 		Collapse();
 	Check_StateChange();
 	if (COLLAPSING == m_eCurState)
@@ -156,10 +171,15 @@ void CDynamicCastleGate::OnContact_Modify(const COLL_INFO& _0, const COLL_INFO& 
 
 void CDynamicCastleGate::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas)
 {
+
+}
+
+void CDynamicCastleGate::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
+{
 	OBJECT_GROUP eOtherGroup = (OBJECT_GROUP)_Other.pActorUserData->iObjectGroup;
 
 	if (OBJECT_GROUP::MAPOBJECT & eOtherGroup
-		&& (_uint)SHAPE_USE::SHAPE_FOOT == _My.pShapeUserData->iShapeUse)
+		&& (_uint)SHAPE_USE::SHAPE_TRIGER == _My.pShapeUserData->iShapeUse)
 	{
 		Set_State(COLLAPSED);
 	}
@@ -261,7 +281,21 @@ void CDynamicCastleGate::Check_StateChange()
 		{
 			static_cast<CActor_Dynamic*>(m_pActorCom)->Freeze_Position(true, false, true);
 			static_cast<CActor_Dynamic*>(m_pActorCom)->Set_MassLocalPos({0.f,0.f,0.f});
-			//m_pActorCom->Set_Mass(50.f);
+			//m_pActorCom->Set_Mass(50.f
+			static_cast<CActor_Dynamic*>(m_pActorCom)->Set_Kinematic();
+
+
+			_vector vPos = Get_FinalPosition();
+			vPos += _vector{ 0.f,0.4f,0.f };
+			_vector vLook = _vector{ 0.f,1.f,0.f };
+			_vector vRight = _vector{ 1.f,0.f,0.f };
+			_vector vUp = _vector{ 0.f,0.f,-1.f };
+			// 2. 정규화 * Scale 후 값 세팅
+			CTransform* pTransform = m_pControllerTransform->Get_Transform();
+			_float3 vScale = pTransform-> Get_Scale();
+			pTransform->Set_State(CTransform::STATE_RIGHT, XMVector3Normalize(vRight) * vScale.x);
+			pTransform->Set_State(CTransform::STATE_UP, XMVector3Normalize(vUp) * vScale.y);
+			pTransform->Set_State(CTransform::STATE_LOOK, XMVector3Normalize(vLook) * vScale.z);
 		}
 			break;
 		default:

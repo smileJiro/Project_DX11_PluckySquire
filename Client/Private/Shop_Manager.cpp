@@ -61,6 +61,7 @@ HRESULT CShop_Manager::Create_ShopPanel(_int _iChangeLevel, wstring _strLayerTag
 				return E_FAIL;
 
 			Emplace_ShopPanels((_uint)pShopDescs[CUI::SHOPPANEL::SHOP_BG].iTextureCount, static_cast<CShopPanel_BG_New*>(pShopPanel));
+			Set_ShopBG(static_cast<CShopPanel_BG_New*>(pShopPanel));
 		}
 		break;
 
@@ -607,6 +608,12 @@ HRESULT CShop_Manager::Level_Exit(_int iCurLevelID, _int _iChangeLevelID, _int _
 		m_pShop = nullptr;
 	}
 
+	if (nullptr != m_ShopBG)
+	{
+		Safe_Release(m_ShopBG);
+		m_ShopBG = nullptr;
+	}
+
 
 	m_isOpenShop = false;
 	m_iPreIndex = 0;
@@ -653,5 +660,6 @@ void CShop_Manager::Free()
 	__super::Free();
 
 	Safe_Release(m_pShop);
+	Safe_Release(m_ShopBG);
 }
 
