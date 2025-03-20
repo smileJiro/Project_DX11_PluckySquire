@@ -6,6 +6,7 @@
 		"Section_Type": 1,
 		"Section_Default": 0,
 		"Section_Info": {
+			"BGM": "LCD_MUS_C09_P0102_INTRO_FULL",
 			"Next_Page_Tag": "Chapter8_P0304"
 		}
 	},
@@ -26,6 +27,7 @@
 		"Section_Type": 0,
 		"Section_Default": 0,
 		"Section_Info": {
+			"BGM": "LCD_MUS_C09_P0910_DEEPDOOMLOOP_Stem_Base",
 			"Pre_Page_Tag": "Chapter8_P0304",
 			"Next_Page_Tag": "Chapter8_P0708"
 		},
@@ -62,6 +64,7 @@
 		"Section_Type": 0,
 		"Section_Default": 0,
 		"Section_Info": {
+      "BGM": "Stop",
 			"Pre_Page_Tag": "Chapter8_P0910",
 			"Next_Page_Tag": "Chapter8_P1314"
 		}
@@ -97,6 +100,7 @@
 		"Section_Type": 0,
 		"Section_Default": 0,
 		"Section_Info": {
+			"BGM": "LCD_MUS_C09_P2728_VIOLET_Stem_Base",
 			"Pre_Page_Tag": "Chapter8_P1112",
 			"Next_Page_Tag": "Chapter8_P1920"
 		}
@@ -109,6 +113,7 @@
 		"Section_Type": 0,
 		"Section_Default": 0,
 		"Section_Info": {
+			"BGM": "LCD_MUS_C06_P7374_BEFORETHEEXCAVATOR_Stem_Base",
 			"Pre_Page_Tag": "Chapter8_P1718",
 			"Next_Page_Tag": "Chapter8_P2122"
 		}

@@ -354,6 +354,7 @@ void CGameEventExecuter_C8::Chapter8_Laser_Stage(_float _fTimeDelta)
 		{
 			if (Is_Start())
 			{
+				START_BGM(L"LCD_MUS_C09_P1718_LASER_FULL", 20.f);
 				static_cast<CBig_Laser*>(m_TargetObjects[LASER])->Move_Start(1800.f, 100.f);
 				static_cast<CBig_Laser*>(m_TargetObjects[LASER])->Set_Beam_Collider(true);
 				pPlayer->Set_BlockPlayerInput(false);
@@ -482,6 +483,7 @@ void CGameEventExecuter_C8::Chapter8_Laser_Stage_2(_float _fTimeDelta)
 	{
 		if (Is_Start())
 		{
+			START_BGM(L"LCD_MUS_C09_P1718_REUNITEDWITHPIP_Stem_Base", 20.f);
 			static_cast<CFriend*>(m_TargetObjects[0])->Change_AnyState(CFriend_Pip::PIP_EXCITED_DOWN, false, CFriend::DIR_DOWN);
 		}
 
@@ -746,6 +748,7 @@ void CGameEventExecuter_C8::Chapter8_Friend_Appear_Thrash(_float _fTimeDelta)
 			{
 				static_cast<CFriend*>(m_TargetObjects[VIOLET])->Move_Position(_float2(235.0f, 61.0f), CFriend::DIR_RIGHT);
 			}
+			START_BGM(L"LCD_MUS_C09_THRASHREUNITED_P5152_LOOP_Stem_Base", 20.f);
 
 			AUTOMOVE_COMMAND AutoMove{};
 			AutoMove.eType = AUTOMOVE_TYPE::MOVE_TO;
