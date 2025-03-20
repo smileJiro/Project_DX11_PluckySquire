@@ -14,7 +14,7 @@ public:
     virtual void On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx) override;
 
 private:
-    _float m_fAttachkProgress = 0.72f;
+    _float m_fAttachkProgress = 0.65f;
     _bool m_bAttach = false;
     class CZip_C8* m_pZip = nullptr;
 };
