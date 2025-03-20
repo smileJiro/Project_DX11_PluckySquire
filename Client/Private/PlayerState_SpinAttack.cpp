@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "PlayerState_SpinAttack.h"
 #include "GameInstance.h"
+#include "PlayerData_Manager.h"
+#include "PlayerBody.h"
 
 CPlayerState_SpinAttack::CPlayerState_SpinAttack(CPlayer* _pOwner)
 	:CPlayerState(_pOwner, CPlayer::SPINATTACK)
@@ -44,6 +46,15 @@ void CPlayerState_SpinAttack::Update(_float _fTimeDelta)
 	{
 		if (tKeyResult.bInputStates[PLAYER_INPUT_MOVE])
 			m_pOwner->Move(XMVector3Normalize(tKeyResult.vMoveDir) * m_fSpinMoveSpeed, _fTimeDelta);
+		if (COORDINATE_2D == m_pOwner->Get_CurCoord())
+		{
+			m_f2DSpinAttackTimeAcc += _fTimeDelta;
+			if (m_f2DSpinAttackTimeAcc >= m_f2DSpinAttackTimeStep)
+			{
+				m_f2DSpinAttackTimeAcc = 0.f;
+				m_pOwner->SpinAttack();
+			}
+		}
 	}
 	//다 돌고 난 후
 	else if (SPIN_SPINEND == m_eSpinState)
@@ -57,7 +68,8 @@ void CPlayerState_SpinAttack::Enter()
 {
 	m_eCoord= m_pOwner->Get_CurCoord();
 	m_fSpinMoveSpeed = m_pOwner->Get_MoveSpeed(m_eCoord);
-	m_iSpinAttackLevel = (_int)m_pOwner->Get_SpinAttackLevel();
+	m_iSpinAttackLevel = CPlayerData_Manager::GetInstance()->Get_WhirlSkillLevel();
+	m_f2DSpinAttackTimeStep = m_pOwner->Get_Body()->Get_AnimationTime((_uint)CPlayer::ANIM_STATE_2D::PLAYER_ATTACKV02_SPIN_DOWN_LVL1);
 	m_eFDir = To_FDirection(m_pOwner->Get_2DDirection());
 	Set_SpinState(SPIN_CHARGING);
 

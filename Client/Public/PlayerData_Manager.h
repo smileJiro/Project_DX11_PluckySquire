@@ -72,9 +72,10 @@ public:
 	void					Set_ThrowSkillLevel(_uint _ThrowSkill) { m_iThorowSkill = _ThrowSkill; }
 	void					Set_WhirlSkillLevel(_uint _WhirlSkill) { m_iWhirlSkill = _WhirlSkill; }
 	void					Set_AttackDamageLevel(_uint _DamageLevel) { m_iAttackDamagePlus = _DamageLevel; }
-
-
-
+	_int					Get_JumpSkillLevel() { return m_iJumpSkill; }
+	_int					Get_ThrowSkillLevel() { return m_iThorowSkill; }
+	_int					Get_WhirlSkillLevel() { return m_iWhirlSkill; }
+	_int					Get_AttackDamageLevel() { return m_iAttackDamagePlus; }
 private: 
 	CGameInstance*						m_pGameInstance = { nullptr };
 	ID3D11Device*						m_pDevice = { nullptr };
@@ -97,7 +98,7 @@ private:
 	//스킬 레벨 용도
 	_int								m_iJumpSkill = { 0 };
 	_int								m_iThorowSkill = { 0 };
-	_int								m_iWhirlSkill = { 0 };
+	_int								m_iWhirlSkill = { 2 };
 	_int								m_iAttackDamagePlus = { 0 };
 
 private:

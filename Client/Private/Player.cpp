@@ -115,13 +115,13 @@ HRESULT CPlayer::Initialize_Prototype()
 	m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL3][(_uint)F_DIRECTION::LEFT].vExtents = { 70.f, 70.f };
 	m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL3][(_uint)F_DIRECTION::LEFT].vOffset = { -80.f,0.f };
 
-	m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN][(_uint)F_DIRECTION::DOWN].vExtents = { 211.f, 211.f };
+	m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN][(_uint)F_DIRECTION::DOWN].vExtents = { 115.f, 115.f };
 	m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN][(_uint)F_DIRECTION::DOWN].vOffset = { 0.f, m_f2DCenterYOffset };
-	m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN][(_uint)F_DIRECTION::UP].vExtents = { 211.f, 211.f };
+	m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN][(_uint)F_DIRECTION::UP].vExtents = { 115.f, 115.f };
 	m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN][(_uint)F_DIRECTION::UP].vOffset = { 0.f, m_f2DCenterYOffset };
-	m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN][(_uint)F_DIRECTION::RIGHT].vExtents = { 211.f, 211.f };
+	m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN][(_uint)F_DIRECTION::RIGHT].vExtents = { 115.f, 115.f };
 	m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN][(_uint)F_DIRECTION::RIGHT].vOffset = { 0.f, m_f2DCenterYOffset };
-	m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN][(_uint)F_DIRECTION::LEFT].vExtents = { 211.f, 211.f };
+	m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN][(_uint)F_DIRECTION::LEFT].vExtents = { 115.f, 115.f };
 	m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN][(_uint)F_DIRECTION::LEFT].vOffset = { 0.f, m_f2DCenterYOffset };
 
 	m_f2DAttackTriggerDesc[ATTACK_TYPE_JUMPATTACK][(_uint)F_DIRECTION::DOWN].vExtents = { 146.5f, 74.5f };
