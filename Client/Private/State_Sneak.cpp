@@ -324,6 +324,20 @@ HRESULT CState_Sneak::Initialize_WayPoints(SNEAKWAYPOINTINDEX _eWayIndex)
 		m_WayPoints[0].Neighbors.push_back(3);
 		break;
 
+	case SNEAKWAYPOINTINDEX::CHAPTER8_BEETLE2:
+		m_WayPoints.push_back({ _float3(36.5f, 11.11f, 4.2f) });
+		m_WayPoints.push_back({ _float3(34.5f, 11.11f, 1.6f) });
+		m_WayPoints.push_back({ _float3(34.5f, 11.11f, -1.6f) });
+
+		m_WayPoints[0].Neighbors.push_back(1);
+		m_WayPoints[1].Neighbors.push_back(0);
+		m_WayPoints[1].Neighbors.push_back(2);
+		m_WayPoints[2].Neighbors.push_back(1);
+		m_WayPoints[2].Neighbors.push_back(0);
+		m_WayPoints[0].Neighbors.push_back(2);
+		break;
+
+
 
 	case SNEAKWAYPOINTINDEX::CHAPTER8_BEETLE_FINAL_1:
 	case SNEAKWAYPOINTINDEX::CHAPTER8_BEETLE_FINAL_2:
@@ -494,6 +508,12 @@ void CState_Sneak::Initialize_PatrolPoints(SNEAKWAYPOINTINDEX _iWayIndex)
 		m_isPatrolCycle = true;
 		break;
 
+	case Client::SNEAKWAYPOINTINDEX::CHAPTER8_BEETLE2:
+		m_PatrolWays.push_back(0);
+		m_PatrolWays.push_back(1);
+		m_PatrolWays.push_back(2);
+		break;
+
 	case Client::SNEAKWAYPOINTINDEX::CHAPTER8_BEETLE_FINAL_1:
 		m_PatrolWays.push_back(0);
 		m_PatrolWays.push_back(1);
@@ -527,7 +547,9 @@ void CState_Sneak::Initialize_PatrolDirections(SNEAKWAYPOINTINDEX _iWayIndex)
 
 	case Client::SNEAKWAYPOINTINDEX::CHAPTER8_2:
 		m_PatrolDirections.push_back({ 0.f, 0.f, -1.f });
-		m_PatrolDirections.push_back({ 0.f, 0.f, -1.f });
+		m_PatrolDirections.push_back({ 1.f, 0.f, 0.f });
+		m_PatrolDirections.push_back({ 0.f, 0.f, 1.f });
+		m_PatrolDirections.push_back({ -1.f, 0.f, 0.f });
 		break;
 	}
 
