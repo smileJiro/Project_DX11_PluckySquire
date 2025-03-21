@@ -198,8 +198,6 @@ void CJumpBug::Change_Animation()
 
                 //_vector vPosition = m_pControllerTransform->Get_State(CTransform::STATE_POSITION);
 
-               m_pGameInstance->
-
                 break;
 
             case Client::MONSTER_STATE::HIT:
