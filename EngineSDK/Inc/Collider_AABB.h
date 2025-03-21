@@ -34,6 +34,7 @@ public:
 	void			Set_Extents(_float2 _vExtents) { m_vExtents = _vExtents; }
 	
 	void			Set_CollisionPos(_float2 _fCollisionPos) { m_fCurCollisionPos = _fCollisionPos; }
+
 	_float2			Get_CollisionPos() { return m_fCurCollisionPos; }
 	virtual _bool	Get_CollisionPoint(CCollider* _pOther, _float2* pOutPoint) override;
 	virtual _bool	Get_CollisionNormal(CCollider* _pOther, _float2* pOutNormal) override;

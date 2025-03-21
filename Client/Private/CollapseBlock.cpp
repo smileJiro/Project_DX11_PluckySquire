@@ -41,7 +41,7 @@ HRESULT CCollapseBlock::Initialize(void* _pArg)
 
 void CCollapseBlock::Priority_Update(_float _fTimeDelta)
 {
-	
+
 
 	__super::Priority_Update(_fTimeDelta);
 }
@@ -219,10 +219,11 @@ HRESULT CCollapseBlock::Ready_Components()
 	m_p2DColliderComs.resize(1);
 	CCollider_AABB::COLLIDER_AABB_DESC AABBDesc = {};
 	AABBDesc.pOwner = this;
-	if (m_strSectionName == TEXT("Chapter2_P0102"))
-		AABBDesc.vExtents = { 100.0f, 25.0f};
-	else
-		AABBDesc.vExtents = { 50.0f, 15.0f };
+	//if (m_strSectionName == TEXT("Chapter2_P0102"))
+	//	
+	//else
+	//	AABBDesc.vExtents = { 50.0f, 20.0f };
+	AABBDesc.vExtents = { 80.0f, 25.0f };
 	AABBDesc.vScale = { 1.0f, 1.0f };
 	AABBDesc.vOffsetPosition = { 0.0f, 0.0f };
 	AABBDesc.isBlock = true;
@@ -243,6 +244,24 @@ HRESULT CCollapseBlock::Ready_Components()
 	m_pGravityCom->Set_Active(false);
 
 	return S_OK;
+}
+
+void CCollapseBlock::Enter_Section(const _wstring _strIncludeSectionName)
+{
+	if (_strIncludeSectionName == TEXT("Chapter6_SKSP_02"))
+	{
+		m_p2DColliderComs[0]->Set_Scale(_float2(0.5f, 0.57f));
+	}
+	else if(_strIncludeSectionName == TEXT("Chapter6_SKSP_05"))
+	{
+		m_p2DColliderComs[0]->Set_Scale(_float2(0.5f, 0.57f));
+	}
+	__super::Enter_Section(_strIncludeSectionName);
+}
+
+void CCollapseBlock::Exit_Section(const _wstring _strIncludeSectionName)
+{
+	__super::Exit_Section(_strIncludeSectionName);
 }
 
 void CCollapseBlock::Active_OnEnable()

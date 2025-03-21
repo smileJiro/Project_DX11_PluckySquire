@@ -104,6 +104,7 @@ private:;
 
 	CCollider*		m_pSizeTriggerCollider = {};
 	CCollider*		m_pBeamCollider = {};
+	CCollider*		m_pBlockCollider = {};
 
 	_int			m_iBeamTargetIndex = -1;
 
