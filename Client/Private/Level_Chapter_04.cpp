@@ -372,22 +372,6 @@ void CLevel_Chapter_04::Update(_float _fTimeDelta)
 	//	CTrigger_Manager::GetInstance()->Load_TriggerEvents(TEXT("../Bin/DataFiles/Trigger/Trigger_Events.json"));
 	//}
 
-	if (KEY_PRESSING(KEY::CTRL))
-	{
-		if (KEY_DOWN(KEY::NUM5))
-		{
-			CButterGrump::MONSTER_DESC Boss_Desc;
-			Boss_Desc.iCurLevelID = m_eLevelID;
-			Boss_Desc.eStartCoord = COORDINATE_3D;
-			Boss_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-			//Boss_Desc.tTransform3DDesc.vInitialPosition = _float3(-3.f, 15.35f, -80.0f);
-			Boss_Desc.tTransform3DDesc.vInitialPosition = _float3(0.53f, 60.35f, -8.0f);
-
-			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_4, TEXT("Prototype_GameObject_ButterGrump"), m_eLevelID, TEXT("Layer_Monster"), &Boss_Desc)))
-				return;
-		}
-	}
-
 }
 
 HRESULT CLevel_Chapter_04::Render()

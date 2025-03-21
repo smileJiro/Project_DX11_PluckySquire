@@ -106,17 +106,6 @@ void CMainApp::Progress(_float _fTimeDelta)
 	CSection_Manager::GetInstance()->Section_AddRenderGroup_Process();
 	m_pGameInstance->Late_Update_Engine(_fTimeDelta);
 
-	if (KEY_DOWN(KEY::K))
-	{
-		CFriend_Controller::GetInstance()->Start_Train();
-
-	}
-	if (KEY_DOWN(KEY::J))
-	{
-		CFriend_Controller::GetInstance()->End_Train();
-
-	}
-
 	CTrail_Manager::GetInstance()->Update(_fTimeDelta);
 
 	if (IS_IMPORT_IMGUI)

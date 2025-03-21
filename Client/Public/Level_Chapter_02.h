@@ -45,6 +45,7 @@ public:
 	HRESULT					Ready_Layer_MapGimmick(const _wstring& _strLayerTag);
 	HRESULT					Ready_Layer_RoomDoor(const _wstring& _strLayerTag);
 	HRESULT					Ready_Layer_Friends(const _wstring& _strLayerTag);
+	HRESULT					Ready_Layer_BackGroundWindow(const _wstring& _strLayerTag);
 private:
 	HRESULT					Map_Object_Create(_wstring _strFileName);
 

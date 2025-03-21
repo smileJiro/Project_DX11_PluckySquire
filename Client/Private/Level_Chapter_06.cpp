@@ -344,10 +344,6 @@ HRESULT CLevel_Chapter_06::Initialize(LEVEL_ID _eLevelID)
 
 void CLevel_Chapter_06::Update(_float _fTimeDelta)
 {
-	if (KEY_DOWN(KEY::K))
-	{
-
-	}
 	CFatherGame::GetInstance()->Update();
 	CExcavatorGame::GetInstance()->Update(_fTimeDelta);
 
@@ -381,10 +377,6 @@ void CLevel_Chapter_06::Update(_float _fTimeDelta)
 		int a = 0;
 	}
 
-	if (KEY_DOWN(KEY::I))
-	{
-		//CTrigger_Manager::GetInstance()->Register_TriggerEvent(L"Next_Chapter_Event", 0);
-	}
 	// Change Camera Free  Or Target
 	if (KEY_DOWN(KEY::C)) {
 		_uint iCurCameraType = CCamera_Manager::GetInstance()->Get_CameraType();
@@ -392,30 +384,30 @@ void CLevel_Chapter_06::Update(_float _fTimeDelta)
 		CCamera_Manager::GetInstance()->Change_CameraType(iCurCameraType);
 	}
 
-	if (KEY_DOWN(KEY::NUM1))
-	{
-		CUI_Manager* pUIManager = CUI_Manager::GetInstance();
+	//if (KEY_DOWN(KEY::NUM1))
+	//{
+	//	CUI_Manager* pUIManager = CUI_Manager::GetInstance();
 
-		if (nullptr == pUIManager)
-			assert(nullptr);
+	//	if (nullptr == pUIManager)
+	//		assert(nullptr);
 
-		if (true == pUIManager->Get_StampHave(0) &&
-			true == pUIManager->Get_StampHave(1))
-		{
-			CUI_Manager::STAMP eStamp;
-			eStamp = pUIManager->Get_StampIndex();
+	//	if (true == pUIManager->Get_StampHave(0) &&
+	//		true == pUIManager->Get_StampHave(1))
+	//	{
+	//		CUI_Manager::STAMP eStamp;
+	//		eStamp = pUIManager->Get_StampIndex();
 
-			if (eStamp == CUI_Manager::STAMP_BOMB)
-			{
-				pUIManager->Set_StampIndex(CUI_Manager::STAMP_STOP);
-			}
-			else if (eStamp == CUI_Manager::STAMP_STOP)
-			{
-				pUIManager->Set_StampIndex(CUI_Manager::STAMP_BOMB);
-			}
-		}
+	//		if (eStamp == CUI_Manager::STAMP_BOMB)
+	//		{
+	//			pUIManager->Set_StampIndex(CUI_Manager::STAMP_STOP);
+	//		}
+	//		else if (eStamp == CUI_Manager::STAMP_STOP)
+	//		{
+	//			pUIManager->Set_StampIndex(CUI_Manager::STAMP_BOMB);
+	//		}
+	//	}
 
-	}
+	//}
 
 #ifdef _DEBUG
 	if (KEY_DOWN(KEY::P))

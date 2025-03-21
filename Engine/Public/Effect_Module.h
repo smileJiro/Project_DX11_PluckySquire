@@ -51,7 +51,7 @@ public:
 	virtual CEffect_Module* Clone() = 0;
 	virtual void Free() override;
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 public:
 	virtual void	Tool_Module_Update();
 	virtual HRESULT	Save_Module(json& _jsonModuleInfo);

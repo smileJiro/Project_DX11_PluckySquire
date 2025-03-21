@@ -28,7 +28,7 @@ public:
 		_float				fLength = 1.f;
 	}CAMERA_ARM_DESC;
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 	typedef struct tagLineBuffer
 	{
 		_float3				vPos;
