@@ -5,6 +5,7 @@ BEGIN(Engine)
 class CModelObject;
 class CShader;
 class C3DModel;
+class CEffect_System;
 END
 
 BEGIN(Client)
@@ -51,6 +52,9 @@ private:
 	CShader*					m_pShaderCom = { nullptr };
 	C3DModel*					m_pModelCom = { nullptr };
 
+private:
+	class CEffect_System*		m_pItemEffect = { nullptr };
+
 
 private:
 	_uint						m_iItemType = {};
@@ -66,7 +70,7 @@ private:
 	_bool						m_isScaleDown = { false };
 	_bool						m_isFinishWait = { false };
 	_bool						m_isStop = { false };
-	_bool						m_isInFrustum = { false };
+
 
 private:
 	HRESULT						Ready_Components(PLAYERITEM_DESC* _pArg);
