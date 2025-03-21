@@ -684,10 +684,11 @@ void CInteraction_E::Render_InteractionE()
 		m_isDisplayInteractionE = false;
 
 	//_int Get_Running_EventExecuterAction(); // 현재 진행 중인 EventExecuterActionType이 뭔지 리턴한다, 없다면  -1을 리턴함
-	if (-1 != CTrigger_Manager::GetInstance()->Get_Running_EventExecuterAction())
-		m_isDisplayInteractionE = false;
+	//if (-1 != CTrigger_Manager::GetInstance()->Get_Running_EventExecuterAction())
+	//	m_isDisplayInteractionE = false;
 
+	CPlayer* pPlayer = Uimgr->Get_Player();
 
-
-								
+	if (true == pPlayer->Is_PlayerInputBlocked())
+		m_isDisplayInteractionE = false;					
 }
