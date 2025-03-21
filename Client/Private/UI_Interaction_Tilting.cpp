@@ -69,8 +69,11 @@ void CUI_Interaction_Tilting::Update(_float _fTimeDelta)
 		{
 			m_isRender = true;
 
-			if (CPlayer::STATE::TURN_BOOK == Uimgr->Get_Player()->Get_CurrentStateID() && false == CPlayerData_Manager::GetInstance()->Is_Own(CPlayerData_Manager::FLIPPING_GLOVE))
+			if (CPlayer::STATE::TURN_BOOK == Uimgr->Get_Player()->Get_CurrentStateID() && 
+				false == CPlayerData_Manager::GetInstance()->Is_Own(CPlayerData_Manager::FLIPPING_GLOVE))
 			{
+
+
 				_float fX = g_iWinSizeX / 2.f - g_iWinSizeX / 12.f;
 				_float fY = g_iWinSizeY - g_iWinSizeY / 18.f;
 
@@ -83,23 +86,8 @@ void CUI_Interaction_Tilting::Update(_float _fTimeDelta)
 						m_iTextureNum = 1;
 						wsprintf(m_tFont, L"책 기울이기");
 					}
-					
+
 				}
-			}
-			//else if ((CPlayer::STATE::TURN_BOOK == Uimgr->Get_Player()->Get_CurrentStateID() && false == CPlayerData_Manager::GetInstance()->Is_Own(CPlayerData_Manager::FLIPPING_GLOVE)))
-			//{
-			//	// 책장 넘기기 건틀릿만 있는 경우
-			//	_float fX = g_iWinSizeX / 2.f - g_iWinSizeX / 12.f;
-			//	_float fY = g_iWinSizeY - g_iWinSizeY / 18.f;
-			//
-			//	if (false == m_isBookInteract)
-			//	{
-			//		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(fX - g_iWinSizeX * 0.5f, -fY + g_iWinSizeY * 0.5f, 0.f, 1.f));
-			//		m_pControllerTransform->Set_Scale(COORDINATE_2D, _float3(144.f, 72.f, 1.f));
-			//		m_isBookInteract = true;
-			//		m_iTextureNum = 1;
-			//		wsprintf(m_tFont, L"책장 넘기기");
-			//	}
 				else
 				{
 					if (true == m_isBookInteract && false == CPlayerData_Manager::GetInstance()->Is_Own(CPlayerData_Manager::FLIPPING_GLOVE))
@@ -115,6 +103,30 @@ void CUI_Interaction_Tilting::Update(_float _fTimeDelta)
 					}
 				}
 			}
+			else if (CPlayer::STATE::TURN_BOOK == Uimgr->Get_Player()->Get_CurrentStateID() &&
+				true == CPlayerData_Manager::GetInstance()->Is_Own(CPlayerData_Manager::FLIPPING_GLOVE) &&
+				true == CPlayerData_Manager::GetInstance()->Is_Own(CPlayerData_Manager::TILTING_GLOVE))
+			{
+
+				
+
+				_float fX = g_iWinSizeX / 2.f - g_iWinSizeX / 12.f;
+				_float fY = g_iWinSizeY - g_iWinSizeY / 8.5f;
+
+				if (false == m_isBookInteract)
+				{
+					
+					m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(fX - g_iWinSizeX * 0.5f, -fY + g_iWinSizeY * 0.5f, 0.f, 1.f));
+					m_pControllerTransform->Set_Scale(COORDINATE_2D, _float3(144.f, 72.f, 1.f));
+					m_isBookInteract = true;
+					m_iTextureNum = 1;
+					wsprintf(m_tFont, L"책 기울이기");
+					
+
+				}
+			}
+
+
 			else
 			{
 				m_isRender = false;
@@ -125,6 +137,7 @@ void CUI_Interaction_Tilting::Update(_float _fTimeDelta)
 			if (true == m_isRender)
 				m_isRender = false;
 		}
+	}
 	
 }
 

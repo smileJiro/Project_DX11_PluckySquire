@@ -145,8 +145,8 @@ HRESULT CLogo_BG::Render()
 
 	_wstring* strCurText = nullptr;
 
-	//strCurText = strMenuText;
-	strCurText = strMenuOverrideText;
+	strCurText = strMenuText;
+	//strCurText = strMenuOverrideText;
 	
 	//if (false == Uimgr->Get_LogoChanseStage())
 	//{
