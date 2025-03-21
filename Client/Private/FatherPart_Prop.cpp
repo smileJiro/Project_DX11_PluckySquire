@@ -177,7 +177,7 @@ void CFatherPart_Prop::State_Change_Pickup()
 		break;
 	}
 
-	//CFatherGame::GetInstance()->Pickup_FatherPart((CFatherGame::FATHER_PART)m_iFatherPart);
+	CFatherGame::GetInstance()->Pickup_FatherPart((CFatherGame::FATHER_PART)m_iFatherPart);
 	Event_DeleteObject(this);
 }
 

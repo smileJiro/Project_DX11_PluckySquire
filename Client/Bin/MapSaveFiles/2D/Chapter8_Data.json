@@ -28,6 +28,12 @@
 		"Section_Default": 0,
 		"Section_Info": {
 			"BGM": "LCD_MUS_C09_P0910_DEEPDOOMLOOP_Stem_Base",
+			"SFX": [
+				{
+					"SFX_Name": "A_sfx_Chapter9_dark",
+					"isStart": true
+				}
+			],
 			"Pre_Page_Tag": "Chapter8_P0304",
 			"Next_Page_Tag": "Chapter8_P0708"
 		},
@@ -53,6 +59,12 @@
 		"Section_Type": 1,
 		"Section_Default": 0,
 		"Section_Info": {
+			"SFX": [
+				{
+					"SFX_Name": "A_sfx_Chapter9_dark",
+					"isStart": false
+				}
+			],
 			"Pre_Page_Tag": "Chapter8_P0708",
 			"Next_Page_Tag": "Chapter8_P1112"
 		}
@@ -335,7 +347,9 @@
 				"X": 6144.0,
 				"Y": 4608.0
 			},
-			"Override_Normal": 2
+			"Override_Normal": 2,
+			"Platformer": true
+
 		}
 	},
 	{
