@@ -204,7 +204,7 @@ HRESULT CTrigger_Manager::Load_Trigger(LEVEL_ID _eProtoLevelId, LEVEL_ID _eObjec
 		#pragma region 3. 飘府芭 按眉 积己
 			CGameObject* pTrigger = nullptr;
 
-			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(_eProtoLevelId, TEXT("Prototype_GameObject_TriggerObject"), _eObjectLevelId, TEXT("Layer_Trigger"), &pTrigger, &Desc))) {
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(_eProtoLevelId, TEXT("Prototype_GameObject_TriggerObject"), _eObjectLevelId, TEXT("Layer_TriggerObject"), &pTrigger, &Desc))) {
 				MSG_BOX("Failed To Load TriggerObject");
 				return E_FAIL;
 			}
@@ -321,7 +321,7 @@ HRESULT CTrigger_Manager::Create_TriggerObject(LEVEL_ID _eProtoLevelId, LEVEL_ID
 #pragma region 3. 飘府芭 按眉 积己
 	CGameObject* pTrigger = nullptr;
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(_eProtoLevelId, TEXT("Prototype_GameObject_TriggerObject"), _eObjectLevelId, TEXT("Layer_Trigger"), &pTrigger, pDesc))) {
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(_eProtoLevelId, TEXT("Prototype_GameObject_TriggerObject"), _eObjectLevelId, TEXT("Layer_TriggerObject"), &pTrigger, pDesc))) {
 		MSG_BOX("Failed To Load TriggerObject");
 		return E_FAIL;
 	}

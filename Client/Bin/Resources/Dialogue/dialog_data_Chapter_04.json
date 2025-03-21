@@ -29,6 +29,8 @@
           "is2D": true,
           "isLineEnter": true,
           "isPortrait": true,
+          "OffsetX": 0.0,
+          "OffsetY": 20.0,
           "animation": {
             "duration": 1000,
             "speed": 500
@@ -165,6 +167,8 @@
           "is2D": true,
           "isLineEnter": true,
           "isPortrait": true,
+          "OffsetX": 0.0,
+          "OffsetY": 20.0,
           "animation": {
             "duration": 1000,
             "speed": 500
@@ -182,6 +186,8 @@
           "is2D": true,
           "isPortrait": true,
           "isLineEnter": true,
+          "OffsetX": 0.0,
+          "OffsetY": 20.0,
           "animation": {
             "duration": 1000,
             "speed": 500
@@ -199,6 +205,8 @@
           "is2D": true,
           "isLineEnter": true,
           "isPortrait": true,
+          "OffsetX": 0.0,
+          "OffsetY": 20.0,
           "animation": {
             "duration": 1000,
             "speed": 500
@@ -221,7 +229,7 @@
           "location": 0,
           "is2D": true,
           "OffsetX": 40.0,
-          "OffsetY": -100.0,
+          "OffsetY": -220.0,
           "isPortrait": true,
           "isLineEnter": true,
           "animation": {
@@ -240,7 +248,7 @@
           "location": 0,
           "is2D": true,
           "OffsetX": 40.0,
-          "OffsetY": -100.0,
+          "OffsetY": -220.0,
           "isPortrait": true,
           "isLineEnter": true,
           "animation": {
@@ -259,7 +267,7 @@
           "location": 0,
           "is2D": true,
           "OffsetX": 40.0,
-          "OffsetY": -100.0,
+          "OffsetY": -220.0,
           "isLineEnter": true,
           "isPortrait": true,
           "animation": {
@@ -277,8 +285,8 @@
           "BG": 2,
           "location": 0,
           "is2D": true,
-          "OffsetX": -40.0,
-          "OffsetY": -100.0,
+          "OffsetX": 40.0,
+          "OffsetY": -220.0,
           "isPortrait": true,
           "animation": {
             "duration": 1000,
@@ -295,7 +303,7 @@
           "BG": 13,
           "location": 0,
           "OffsetX": 40.0,
-          "OffsetY": -100.0,
+          "OffsetY": -220.0,
           "is2D": true,
           "isPortrait": true,
           "animation": {
@@ -311,13 +319,16 @@
     },
     {
       "id": "Chapter4_StorySequence_02",
+      "isChangeTalker": true,
       "Section": "Chapter4_P0102",
       "lines": [
         {
+          "TalkerIndex": 0,
+
           "Portrait": 1,
           "Talker": "스래쉬",
           "BG": 2,
-          "location": 0,
+          "location": 1,
           "is2D": true,
           "isPortrait": true,
           "animation": {
@@ -330,6 +341,7 @@
           "Blue": 0
         },
         {
+          "TalkerIndex": 0,
           "Portrait": 0,
           "Talker": "바이올렛",
           "BG": 13,
@@ -347,7 +359,8 @@
           "Blue": 0
         },
         {
-          "Portrait": 0,
+          "TalkerIndex": 0,
+          "Portrait": 1,
           "Talker": "바이올렛",
           "BG": 13,
           "location": 1,
@@ -364,10 +377,12 @@
           "Blue": 0
         },
         {
+          "TalkerIndex": 0,
+
           "Portrait": 1,
           "Talker": "스래쉬",
           "BG": 2,
-          "location": 0,
+          "location": 1,
           "is2D": true,
           "isPortrait": true,
           "animation": {
