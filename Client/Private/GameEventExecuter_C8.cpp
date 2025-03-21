@@ -1226,8 +1226,7 @@ void CGameEventExecuter_C8::Chapter8_3D_Out_02(_float _fTimeDelta)
 			pPip->Move_Position(_float2(XMVectorGetX(vPipPos), XMVectorGetY(vPipPos)), CFriend::DIR_UP);
 		}
 
-		Change_PlayMap(0.f);
-		Next_Step_Over(0.5f);
+		Next_Step_Over(Change_PlayMap(0.f));
 	}
 	else if (Step_Check(STEP_2))
 	{
