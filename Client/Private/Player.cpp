@@ -717,6 +717,9 @@ void CPlayer::Priority_Update(_float _fTimeDelta)
 	//}
 
 	__super::Priority_Update(_fTimeDelta); /* Part Object Priority_Update */
+#ifdef _DEBUG
+	cout << "FloorDist : " << m_f3DFloorDistance << endl;
+#endif
 }
 
 
@@ -818,9 +821,9 @@ void CPlayer::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
 	switch (eShapeUse)
 	{
 	case Client::SHAPE_USE::SHAPE_TRIGER:
-		if (OBJECT_GROUP::MONSTER == _Other.pActorUserData->iObjectGroup)
+		if (OBJECT_GROUP::MONSTER & _Other.pActorUserData->iObjectGroup)
 			return;
-		if (SHAPE_USE::SHAPE_BODY == (SHAPE_USE)_Other.pShapeUserData->iShapeUse)
+		if (OBJECT_GROUP::MAPOBJECT & _Other.pActorUserData->iObjectGroup)
 			Event_SetSceneQueryFlag(_Other.pActorUserData->pOwner, _Other.pShapeUserData->iShapeIndex, true);
 		break;
 	}
@@ -833,7 +836,7 @@ void CPlayer::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)
 	if (PLAYER_SHAPE_USE::INTERACTION == (PLAYER_SHAPE_USE)_My.pShapeUserData->iShapeUse)
 	{
 		OBJECT_GROUP eOtehrGroup = (OBJECT_GROUP)_Other.pActorUserData->pOwner->Get_ObjectGroupID();
-		if (OBJECT_GROUP::INTERACTION_OBEJCT == eOtehrGroup || OBJECT_GROUP::INTERACTION_PORTAL == eOtehrGroup )
+		if (OBJECT_GROUP::INTERACTION_OBEJCT & eOtehrGroup || OBJECT_GROUP::INTERACTION_PORTAL == eOtehrGroup )
 		{
 			IInteractable* pInteractable = dynamic_cast<IInteractable*> (_Other.pActorUserData->pOwner);
 			if (Check_ReplaceInteractObject(pInteractable))
@@ -844,7 +847,16 @@ void CPlayer::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)
 		}
 	}
 
-
+	SHAPE_USE eShapeUse = (SHAPE_USE)_My.pShapeUserData->iShapeUse;
+	switch (eShapeUse)
+	{
+	case Client::SHAPE_USE::SHAPE_TRIGER:
+		if (OBJECT_GROUP::MONSTER & _Other.pActorUserData->iObjectGroup)
+			return;
+		if (OBJECT_GROUP::MAPOBJECT & _Other.pActorUserData->iObjectGroup)
+			Event_SetSceneQueryFlag(_Other.pActorUserData->pOwner, _Other.pShapeUserData->iShapeIndex, true);
+		break;
+	}
 }
 
 void CPlayer::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
