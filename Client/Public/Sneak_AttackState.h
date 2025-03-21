@@ -34,6 +34,7 @@ private:
 	void			Check_Animation_End();
 
 	void			Reset_Chapter2_2(_float3 _vPlayerPos);
+	void			Reset_Chapter8_Soldier(_float3 _vPlayerPos);
 
 public:
 	static CSneak_AttackState* Create(void* _pArg);

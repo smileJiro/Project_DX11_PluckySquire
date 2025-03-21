@@ -160,6 +160,52 @@ void CSneak_AttackState::After_Attack()
 
 		break;
 
+	case Client::SNEAKWAYPOINTINDEX::CHAPTER8_1:
+	{
+		vPlayerPos = { 22.2f, 24.76f, -1.3f };
+
+		Reset_Chapter8_Soldier(vPlayerPos);
+	}
+
+	break;
+	case Client::SNEAKWAYPOINTINDEX::CHAPTER8_2:
+	case Client::SNEAKWAYPOINTINDEX::CHAPTER8_3:
+	{
+		vPlayerPos = { -9.3f, 21.58f, 0.32f };
+		Reset_Chapter8_Soldier(vPlayerPos);
+	}
+	break;
+
+
+	case Client::SNEAKWAYPOINTINDEX::CHAPTER8_BEETLE1:
+	{
+		vPlayerPos = { -10.5f, 14.1f, -3.3f };
+		vMonsterPos = { 15.f, 11.1f, 3.4f };
+
+		Event_Sneak_BeetleCaught(static_cast<CActorObject*>(m_pTarget), static_cast<CActorObject*>(m_pOwner), &vPlayerPos, &vMonsterPos);
+
+		m_pOwner->Set_AnimChangeable(true);
+
+		Event_ChangeMonsterState(MONSTER_STATE::SNEAK_IDLE, m_pFSM);
+	}
+
+	break;
+
+	case Client::SNEAKWAYPOINTINDEX::CHAPTER8_BEETLE2:
+	{
+		vPlayerPos = { 26.5f, 13.72f, -3.3f };
+		vMonsterPos = { 36.5f, 11.11f, 4.2f };
+
+		Event_Sneak_BeetleCaught(static_cast<CActorObject*>(m_pTarget), static_cast<CActorObject*>(m_pOwner), &vPlayerPos, &vMonsterPos);
+
+		m_pOwner->Set_AnimChangeable(true);
+
+		Event_ChangeMonsterState(MONSTER_STATE::SNEAK_IDLE, m_pFSM);
+	}
+
+	break;
+
+
 	default:
 		return;
 	}
@@ -258,6 +304,45 @@ void CSneak_AttackState::Reset_Chapter2_2(_float3 _vPlayerPos)
 
 				case Client::SNEAKWAYPOINTINDEX::CHAPTER2_3:
 					vMonsterPos = _float3(47.f, 0.35f, -0.5f);
+					break;
+				}
+
+				Event_Sneak_BeetleCaught(static_cast<CActorObject*>(m_pTarget), static_cast<CActorObject*>(pObject), &_vPlayerPos, &vMonsterPos);
+				pObject->Set_AnimChangeable(true);
+
+				Event_ChangeMonsterState(MONSTER_STATE::SNEAK_IDLE, pObject->Get_FSM());
+			}
+			});
+	}
+}
+
+void CSneak_AttackState::Reset_Chapter8_Soldier(_float3 _vPlayerPos)
+{
+	_float3 vMonsterPos;
+
+	auto pLayer = m_pGameInstance->Find_Layer(m_iCurLevel, TEXT("Layer_Sneak_Soldier"));
+
+	if (nullptr != pLayer)
+	{
+		const auto& Objects = pLayer->Get_GameObjects();
+
+		for_each(Objects.begin(), Objects.end(), [&](CGameObject* pGameObject) {
+			CMonster* pObject = static_cast<CMonster*>(pGameObject);
+
+			if (nullptr != pObject)
+			{
+				switch (pObject->Get_WayIndex())
+				{
+				case Client::SNEAKWAYPOINTINDEX::CHAPTER8_1:
+					vMonsterPos = _float3(13.f, 21.58f, 5.5f);
+					break;
+
+				case Client::SNEAKWAYPOINTINDEX::CHAPTER8_2:
+					vMonsterPos = _float3(-3.55f, 21.58f, 6.15f);
+					break;
+
+				case Client::SNEAKWAYPOINTINDEX::CHAPTER8_3:
+					vMonsterPos = _float3(-3.f, 21.58f, 13.f);
 					break;
 				}
 
