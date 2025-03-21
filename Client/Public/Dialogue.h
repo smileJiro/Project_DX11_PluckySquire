@@ -86,6 +86,7 @@ public:
 
         _bool           isDefender = { false };
         wstring         Section;
+        _bool           MTMSound = { false };
     };
 
     struct DialogData

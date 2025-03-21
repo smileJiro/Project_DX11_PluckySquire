@@ -29,6 +29,8 @@ HRESULT CLevel_Loading::Initialize(LEVEL_ID _eNextLevelID)
 
 	if (FAILED(Ready_Layer_UI(TEXT("Layer_Loading_UI"))))
 		return E_FAIL;
+        
+
 
     return S_OK;
 }
@@ -111,6 +113,8 @@ HRESULT CLevel_Loading::Ready_Layer_BackGround(const _wstring& strLayerTag)
 
         m_pBackGround = static_cast<CLogo_BackGround*>(pObject);
         Safe_AddRef(pObject);
+
+        m_pGameInstance->Start_BGM(_wstring(L"MAGNIFICENTHUMGRUMP_TITLESCREEN_FULL"), 60.f);
     }
 
     return S_OK;
