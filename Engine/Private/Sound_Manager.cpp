@@ -127,6 +127,7 @@ void CSound_Manager::Stop_BGM()
 {
     if (nullptr != m_pCurPlayBGM)
         m_pCurPlayBGM->Stop_Sound();
+
 }
 
 void CSound_Manager::End_BGM()
@@ -136,6 +137,11 @@ void CSound_Manager::End_BGM()
         m_pCurPlayBGM->Stop_Sound(true);
         //Safe_Release(m_pCurPlayBGM);
         m_pCurPlayBGM = nullptr;
+    }
+    if (nullptr != m_pTransitionBGM)
+    {
+        m_pTransitionBGM->Stop_Sound(true);
+        m_pTransitionBGM = nullptr;
     }
 }
 

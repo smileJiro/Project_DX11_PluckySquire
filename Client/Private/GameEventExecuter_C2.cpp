@@ -238,7 +238,7 @@ void CGameEventExecuter_C2::Chapter2_BookMagic(_float _fTimeDelta)
 			CEffect2D_Manager::GetInstance()->Play_Effect(L"storm", SECTION_MGR->Get_Cur_Section_Key(), XMMatrixTranslation(10.f, 280.f, 0.f), 3.0f, 0, false);
 			CEffect2D_Manager::GetInstance()->Play_Effect(L"storm", SECTION_MGR->Get_Cur_Section_Key(), XMMatrixTranslation(10.f, 280.f, 0.f), 3.6f, 1, true, 999.f);
 
-			m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_electric_bolt_spawn_1"), 1.f, 50.f);
+			m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_electric_bolt_spawn_1"), 2.f, 50.f);
 
 		}
 
@@ -260,6 +260,10 @@ void CGameEventExecuter_C2::Chapter2_BookMagic(_float _fTimeDelta)
 			auto pBook = Get_Book();
 			if (nullptr != pBook)
 				pBook->Execute_AnimEvent(5);
+
+			m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_C1_Lightning_Sequence_Cutver"), 0.f, 50.f);
+			m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_C1_Lightning_Sequence_Fall"), 10.f, 50.f);
+
 			CEffect_Manager::GetInstance()->Active_EffectPosition(TEXT("Book_MagicDust"), true, XMVectorSet(2.f, 0.4f, -17.3f, 1.f));
 			CCamera_2D* pCamera = static_cast<CCamera_2D*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D));
 			pCamera->Set_CameraMode(CCamera_2D::MOVE_TO_CUSTOMARM);
