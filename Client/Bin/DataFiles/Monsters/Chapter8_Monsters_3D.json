@@ -59,6 +59,103 @@
                 1.0
             ]
         },
+        {
+            "MonsterTag": "Prototype_GameObject_Spear_Soldier",
+            "LayerTag": "Layer_Monster",
+            "SneakMode": true,
+            "SneakWayPointIndex": "SNEAKWAYPOINTINDEX_CHAPTER8_2",
+            "Position": [
+                -3.55,
+                21.58,
+                6.15
+            ],
+            "Scaling": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        },
+        {
+            "MonsterTag": "Prototype_GameObject_Spear_Soldier",
+            "LayerTag": "Layer_Monster",
+            "SneakMode": true,
+            "SneakWayPointIndex": "SNEAKWAYPOINTINDEX_CHAPTER8_3",
+            "Position": [
+                -3,
+                21.58,
+                13
+            ],
+            "Scaling": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        },
+        {
+            "MonsterTag": "Prototype_GameObject_Beetle",
+            "LayerTag": "Layer_Sneak_Beetle",
+            "SneakMode": true,
+            "SneakWayPointIndex": "SNEAKWAYPOINTINDEX_CHAPTER8_BEETLE1",
+            "Position": [
+                15, 
+                11.1, 
+                3.4
+            ],
+            "Scaling": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        },
+        {
+            "MonsterTag": "Prototype_GameObject_Beetle",
+            "LayerTag": "Layer_Sneak_Beetle",
+            "SneakMode": true,
+            "SneakWayPointIndex": "SNEAKWAYPOINTINDEX_CHAPTER8_BEETLE2",
+            "Position": [
+                36.5,
+                11.11,
+                4.2
+            ],
+            "Scaling": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        },
+        {
+            "MonsterTag": "Prototype_GameObject_Beetle",
+            "LayerTag": "Layer_Monster",
+            "SneakMode": false,
+            "SneakWayPointIndex": "SNEAKWAYPOINTINDEX_CHAPTER8_BEETLE_FINAL_1",
+            "Position": [
+                -6.5,
+                18.5,
+                44.5
+            ],
+            "Scaling": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        },
+        {
+            "MonsterTag": "Prototype_GameObject_Beetle",
+            "LayerTag": "Layer_Monster",
+            "SneakMode": false,
+            "SneakWayPointIndex": "SNEAKWAYPOINTINDEX_CHAPTER8_BEETLE_FINAL_2",
+            "Position": [
+                -13.5,
+                18.3,
+                46.5
+            ],
+            "Scaling": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        },
+
 
 
         {

@@ -2420,7 +2420,7 @@ _bool CGameEventExecuter_C8::Change_PlayMap(_float _fStartTime)
 
 		CGameObject* pObject = nullptr;
 
-		const json* pJson = m_pGameInstance->Find_Json_InLevel(TEXT("Chapter8_Monsters_3D"), m_eLevelID);
+		const json* pJson = m_pGameInstance->Find_Json_InLevel(TEXT("Chapter8_Monsters_3D"), LEVEL_CHAPTER_8);
 
 		if (nullptr == pJson)
 			return E_FAIL;
@@ -2433,7 +2433,7 @@ _bool CGameEventExecuter_C8::Change_PlayMap(_float _fStartTime)
 			{
 				CMonster::MONSTER_DESC MonsterDesc3D = {};
 
-				MonsterDesc3D.iCurLevelID = m_eLevelID;
+				MonsterDesc3D.iCurLevelID = LEVEL_CHAPTER_8;
 				MonsterDesc3D.eStartCoord = COORDINATE_3D;
 
 				if (Json.contains("Position"))
@@ -2490,7 +2490,7 @@ _bool CGameEventExecuter_C8::Change_PlayMap(_float _fStartTime)
 					MonsterDesc3D._isIgnoreGround = Json["IsIgnoreGround"];
 				}
 
-				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, strMonsterTag, m_eLevelID, strLayerTag, &pObject, &MonsterDesc3D)))
+				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, strMonsterTag, LEVEL_CHAPTER_8, strLayerTag, &pObject, &MonsterDesc3D)))
 					return E_FAIL;
 			}
 		}

@@ -665,7 +665,7 @@ void CSpear_Soldier::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
             break;
 
         case ARREST:
-            Set_AnimChangeable(true);
+            //Set_AnimChangeable(true);
             break;
 
         case HIT_FRONT:
