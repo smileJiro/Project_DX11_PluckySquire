@@ -239,7 +239,10 @@ void CMonster::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherC
 	{
 		if (nullptr == m_pTarget)
 			m_pTarget = CPlayerData_Manager::GetInstance()->Get_CurrentPlayer_Ptr();
-		Event_Hit(this, static_cast<CCharacter*>(_pOtherObject), Get_Stat().iDamg, XMVector3Normalize(m_pTarget->Get_FinalPosition() - Get_FinalPosition()), 300.f);
+		if (false == static_cast<CPlayer*>(_pOtherObject)->Is_Invincible())
+		{
+			Event_Hit(this, static_cast<CCharacter*>(_pOtherObject), Get_Stat().iDamg, XMVector3Normalize(m_pTarget->Get_FinalPosition() - Get_FinalPosition()), 300.f);
+		}
 	}
 
 	if (OBJECT_GROUP::FRIEND & eOtherGroupID)

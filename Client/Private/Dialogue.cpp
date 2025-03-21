@@ -8,6 +8,8 @@
 
 #include "Section_Manager.h"
 #include "Trigger_Manager.h"
+#include "Shop_Manager.h"
+#include "Camera_Manager.h"
 
 CDialog::CDialog(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CUI(_pDevice, _pContext)
@@ -1848,6 +1850,15 @@ void CDialog::isOpenPanel(_tchar* _DialogId)
 
 		// TODO :: 이거 끝나는거 어떻게 할지?
 		Uimgr->Set_DialogueFinishShopPanel(true);
+
+		// 효림 상점 카메라
+		CGameObject* pShop = CShop_Manager::GetInstance()->Get_ShopBG();
+		// 1. Target 변경
+		CCamera_Manager::GetInstance()->Change_CameraTarget(pShop, 0.5f);
+		// 2. Arm Data 저장
+		CCamera_Manager::GetInstance()->Set_ResetData(CCamera_Manager::TARGET_2D);
+		// 3. Arm Length 변경
+		CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Decrease(CCamera_Manager::TARGET_2D, 0.5f, 2.f, EASE_IN_OUT);
 	}
 
 

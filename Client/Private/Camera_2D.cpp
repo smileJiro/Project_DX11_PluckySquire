@@ -1364,19 +1364,21 @@ void CCamera_2D::Key_Input(_float _fTimeDelta)
 
 		m_pCurArm->Set_Rotation(fRotation);
 	}
-	else if (MOUSE_PRESSING(MOUSE_KEY::RB)) {
+	else if (KEY_PRESSING(KEY::ALT)) {
+		if (MOUSE_PRESSING(MOUSE_KEY::RB)) {
 
-		if (MouseMove = MOUSE_MOVE(MOUSE_AXIS::X))
-		{
-			fRotation = XMVectorSetY(fRotation, MouseMove * _fTimeDelta * 0.3f);
+			if (MouseMove = MOUSE_MOVE(MOUSE_AXIS::X))
+			{
+				fRotation = XMVectorSetY(fRotation, MouseMove * _fTimeDelta * 0.3f);
 
+			}
+			if (MouseMove = MOUSE_MOVE(MOUSE_AXIS::Y))
+			{
+				fRotation = XMVectorSetX(fRotation, MouseMove * _fTimeDelta * -0.3f);
+			}
+
+			m_pCurArm->Set_Rotation(fRotation);
 		}
-		if (MouseMove = MOUSE_MOVE(MOUSE_AXIS::Y))
-		{
-			fRotation = XMVectorSetX(fRotation, MouseMove * _fTimeDelta * -0.3f);
-		}
-
-		m_pCurArm->Set_Rotation(fRotation);
 	}
 #pragma endregion
 	

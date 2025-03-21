@@ -299,38 +299,38 @@ void CLevel_Chapter_08::Update(_float _fTimeDelta)
 
 	/*ImGuiIO& IO = ImGui::GetIO(); (void)IO;*/
 
-	if (KEY_DOWN(KEY::NUM6))
-	{
-		static _int i = 0;
-		i ^= 1;
-		m_pGameInstance->Set_GrayScale_VtxAnimMesh(i);
-		//m_pGameInstance->Set_GrayScale_VtxMesh(i);
-		if (i == 1)
-		{
-			m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/Chapter8_GrayScale.json"));
-		}
-		else
-		{
+	//if (KEY_DOWN(KEY::NUM6))
+	//{
+	//	static _int i = 0;
+	//	i ^= 1;
+	//	m_pGameInstance->Set_GrayScale_VtxAnimMesh(i);
+	//	//m_pGameInstance->Set_GrayScale_VtxMesh(i);
+	//	if (i == 1)
+	//	{
+	//		m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/Chapter8_GrayScale.json"));
+	//	}
+	//	else
+	//	{
 
-		}
-		//// DXGI 팩토리 생성
-		//IDXGIFactory4* pFactory;
-		//CreateDXGIFactory1(__uuidof(IDXGIFactory4), (void**)&pFactory);
+	//	}
+	//	//// DXGI 팩토리 생성
+	//	//IDXGIFactory4* pFactory;
+	//	//CreateDXGIFactory1(__uuidof(IDXGIFactory4), (void**)&pFactory);
 
-		//// 기본 GPU 어댑터 가져오기
-		//IDXGIAdapter3* pAdapter;
-		//pFactory->EnumAdapters1(0, (IDXGIAdapter1**)&pAdapter);
+	//	//// 기본 GPU 어댑터 가져오기
+	//	//IDXGIAdapter3* pAdapter;
+	//	//pFactory->EnumAdapters1(0, (IDXGIAdapter1**)&pAdapter);
 
-		//// VRAM 사용c량 쿼리
-		//DXGI_QUERY_VIDEO_MEMORY_INFO memoryInfo;
-		//pAdapter->QueryVideoMemoryInfo(0, DXGI_MEMORY_SEGMENT_GROUP_LOCAL, &memoryInfo);
+	//	//// VRAM 사용c량 쿼리
+	//	//DXGI_QUERY_VIDEO_MEMORY_INFO memoryInfo;
+	//	//pAdapter->QueryVideoMemoryInfo(0, DXGI_MEMORY_SEGMENT_GROUP_LOCAL, &memoryInfo);
 
-		//// 결과 출력 (MB 단위)
-		//SIZE_T currentUsageMB = memoryInfo.CurrentUsage / (1024 * 1024); // 현재 사용량
-		//SIZE_T availableMB = memoryInfo.AvailableForReservation / (1024 * 1024); // 예약 가능량
+	//	//// 결과 출력 (MB 단위)
+	//	//SIZE_T currentUsageMB = memoryInfo.CurrentUsage / (1024 * 1024); // 현재 사용량
+	//	//SIZE_T availableMB = memoryInfo.AvailableForReservation / (1024 * 1024); // 예약 가능량
 
-		//int a = 0;
-	}
+	//	//int a = 0;
+	//}
 
 	// Change Camera Free  Or Target
 	if (KEY_DOWN(KEY::C)) {
@@ -339,38 +339,38 @@ void CLevel_Chapter_08::Update(_float _fTimeDelta)
 		CCamera_Manager::GetInstance()->Change_CameraType(iCurCameraType);
 	}
 
-	if (KEY_DOWN(KEY::NUM1))
-	{
-		CUI_Manager* pUIManager = CUI_Manager::GetInstance();
+	//if (KEY_DOWN(KEY::NUM1))
+	//{
+	//	CUI_Manager* pUIManager = CUI_Manager::GetInstance();
 
-		if (nullptr == pUIManager)
-			assert(nullptr);
+	//	if (nullptr == pUIManager)
+	//		assert(nullptr);
 
-		if (true == pUIManager->Get_StampHave(0) &&
-			true == pUIManager->Get_StampHave(1))
-		{
-			CUI_Manager::STAMP eStamp;
-			eStamp = pUIManager->Get_StampIndex();
+	//	if (true == pUIManager->Get_StampHave(0) &&
+	//		true == pUIManager->Get_StampHave(1))
+	//	{
+	//		CUI_Manager::STAMP eStamp;
+	//		eStamp = pUIManager->Get_StampIndex();
 
-			if (eStamp == CUI_Manager::STAMP_BOMB)
-			{
-				pUIManager->Set_StampIndex(CUI_Manager::STAMP_STOP);
-			}
-			else if (eStamp == CUI_Manager::STAMP_STOP)
-			{
-				pUIManager->Set_StampIndex(CUI_Manager::STAMP_BOMB);
-			}
-		}
-	}
+	//		if (eStamp == CUI_Manager::STAMP_BOMB)
+	//		{
+	//			pUIManager->Set_StampIndex(CUI_Manager::STAMP_STOP);
+	//		}
+	//		else if (eStamp == CUI_Manager::STAMP_STOP)
+	//		{
+	//			pUIManager->Set_StampIndex(CUI_Manager::STAMP_BOMB);
+	//		}
+	//	}
+	//}
 
-#ifdef _DEBUG
-	if (KEY_DOWN(KEY::P))
-		CCamera_Manager::GetInstance()->Start_ZoomIn();
-
-
-	if (KEY_DOWN(KEY::O))
-		CCamera_Manager::GetInstance()->Start_ZoomOut();
-#endif // _DEBUG
+//#ifdef _DEBUG
+//	if (KEY_DOWN(KEY::P))
+//		CCamera_Manager::GetInstance()->Start_ZoomIn();
+//
+//
+//	if (KEY_DOWN(KEY::O))
+//		CCamera_Manager::GetInstance()->Start_ZoomOut();
+//#endif // _DEBUG
 
 
 
@@ -450,11 +450,6 @@ void CLevel_Chapter_08::Update(_float _fTimeDelta)
 
 			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_ButterGrump"), m_eLevelID, TEXT("Layer_Boss"), &pBoss, &Boss_Desc)))
 				return;
-
-			
-			
-
-
 
 			CCameraPivot*  pPivot = static_cast<CCameraPivot*>(m_pGameInstance->Get_GameObject_Ptr(m_eLevelID, TEXT("Layer_CameraPivot"), 0));
 			pPivot->Set_MainTarget(pBoss);

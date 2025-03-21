@@ -344,10 +344,6 @@ HRESULT CLevel_Chapter_06::Initialize(LEVEL_ID _eLevelID)
 
 void CLevel_Chapter_06::Update(_float _fTimeDelta)
 {
-	if (KEY_DOWN(KEY::K))
-	{
-
-	}
 	CFatherGame::GetInstance()->Update();
 	CExcavatorGame::GetInstance()->Update(_fTimeDelta);
 
@@ -388,30 +384,30 @@ void CLevel_Chapter_06::Update(_float _fTimeDelta)
 		CCamera_Manager::GetInstance()->Change_CameraType(iCurCameraType);
 	}
 
-	if (KEY_DOWN(KEY::NUM1))
-	{
-		CUI_Manager* pUIManager = CUI_Manager::GetInstance();
+	//if (KEY_DOWN(KEY::NUM1))
+	//{
+	//	CUI_Manager* pUIManager = CUI_Manager::GetInstance();
 
-		if (nullptr == pUIManager)
-			assert(nullptr);
+	//	if (nullptr == pUIManager)
+	//		assert(nullptr);
 
-		if (true == pUIManager->Get_StampHave(0) &&
-			true == pUIManager->Get_StampHave(1))
-		{
-			CUI_Manager::STAMP eStamp;
-			eStamp = pUIManager->Get_StampIndex();
+	//	if (true == pUIManager->Get_StampHave(0) &&
+	//		true == pUIManager->Get_StampHave(1))
+	//	{
+	//		CUI_Manager::STAMP eStamp;
+	//		eStamp = pUIManager->Get_StampIndex();
 
-			if (eStamp == CUI_Manager::STAMP_BOMB)
-			{
-				pUIManager->Set_StampIndex(CUI_Manager::STAMP_STOP);
-			}
-			else if (eStamp == CUI_Manager::STAMP_STOP)
-			{
-				pUIManager->Set_StampIndex(CUI_Manager::STAMP_BOMB);
-			}
-		}
+	//		if (eStamp == CUI_Manager::STAMP_BOMB)
+	//		{
+	//			pUIManager->Set_StampIndex(CUI_Manager::STAMP_STOP);
+	//		}
+	//		else if (eStamp == CUI_Manager::STAMP_STOP)
+	//		{
+	//			pUIManager->Set_StampIndex(CUI_Manager::STAMP_BOMB);
+	//		}
+	//	}
 
-	}
+	//}
 
 #ifdef _DEBUG
 	if (KEY_DOWN(KEY::P))
@@ -2074,16 +2070,15 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Slippery()
 void CLevel_Chapter_06::Create_IntroTrigger()
 {
 	CTriggerObject::TRIGGEROBJECT_DESC Desc = {};
-	Desc.vHalfExtents = { 35.f, 35.f, 0.f };
+	Desc.vHalfExtents = { 7.f, 7.f, 7.f };
 	Desc.iTriggerType = (_uint)TRIGGER_TYPE::EVENT_TRIGGER;
 	Desc.szEventTag = TEXT("Chapter6_Intro");
 	Desc.eConditionType = CTriggerObject::TRIGGER_ENTER;
 	Desc.isReusable = false; // 한 번 하고 삭제할 때
-	Desc.eStartCoord = COORDINATE_2D;
-	Desc.tTransform2DDesc.vInitialPosition = { 1170.09f, -156.f, 0.f };
+	Desc.eStartCoord = COORDINATE_3D;
+	Desc.tTransform3DDesc.vInitialPosition = { 20.84f, 1.07f, -19.5f };
 
-	CSection* pSection = CSection_Manager::GetInstance()->Find_Section(TEXT("Chapter6_P0102"));
-	CTrigger_Manager::GetInstance()->Create_TriggerObject(LEVEL_STATIC, LEVEL_CHAPTER_6, &Desc, pSection);
+	CTrigger_Manager::GetInstance()->Create_TriggerObject(LEVEL_STATIC, LEVEL_CHAPTER_6, &Desc);
 }
 
 HRESULT CLevel_Chapter_06::Map_Object_Create(_wstring _strFileName)
