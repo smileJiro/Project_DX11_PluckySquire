@@ -48,7 +48,7 @@ HRESULT CDynamicCastleGate::Initialize(void* _pArg)
 	ShapeData.eMaterial = ACTOR_MATERIAL::CASTLE_GATE;
 	ShapeData.isTrigger = false;
 	ShapeData.FilterData.MyGroup = OBJECT_GROUP::DYNAMIC_OBJECT;
-	ShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::DYNAMIC_OBJECT|OBJECT_GROUP::PLAYER;
+	ShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::DYNAMIC_OBJECT|OBJECT_GROUP::PLAYER | OBJECT_GROUP::MONSTER;
 	ShapeData.iShapeUse = (_uint)SHAPE_USE::SHAPE_BODY;
 	XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(0.0f, m_fGateHalfHeight - 0.15f, 0.f));
 	ActorDesc.ShapeDatas.push_back(ShapeData);
