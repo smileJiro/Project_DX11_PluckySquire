@@ -221,15 +221,6 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 	}
 	
 
-	///* Pooling Test */
-	//Pooling_DESC Pooling_Desc;
-	//Pooling_Desc.iPrototypeLevelID = LEVEL_STATIC;
-	//Pooling_Desc.strLayerTag = TEXT("Layer_Monster");
-	//Pooling_Desc.strPrototypeTag = TEXT("Prototype_GameObject_Beetle");
-	//CBeetle::MONSTER_DESC* pDesc = new CBeetle::MONSTER_DESC;
-	//pDesc->iCurLevelID = m_eLevelID;
-	//CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_TestBeetle"), Pooling_Desc, pDesc);
-
 	/* Collision Check Matrix */
 	// 그룹필터 추가 >> 중복해서 넣어도 돼 내부적으로 걸러줌 알아서 
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER, OBJECT_GROUP::MONSTER);

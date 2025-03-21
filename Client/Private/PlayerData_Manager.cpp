@@ -178,6 +178,11 @@ void CPlayerData_Manager::Get_PlayerItem(_wstring _szItemTag)
 	m_pGameInstance->Start_SFX(_wstring(L"Jingle_GetItem"), 50.f);
 }
 
+void CPlayerData_Manager::Set_PlayerItem(_wstring _szItemTag)
+{
+	m_ItemState[_szItemTag].first = true;
+}
+
 void CPlayerData_Manager::Change_PlayerItemMode(_uint _iPlayerItemType, _uint _iItemMode)
 {
 	_wstring szPlayerItemTag = m_ItemTags[_iPlayerItemType].first;
@@ -227,7 +232,7 @@ CPlayerItem* CPlayerData_Manager::Get_PlayerItem_Ptr(const _wstring& _strItemTag
 
 void CPlayerData_Manager::Set_Tags()
 {
-	m_ItemTags[FLIPPING_GLOVE] = { TEXT("Flipping_Glove"), TEXT("latch_glove") };
+	m_ItemTags[FLIPPING_GLOVE] = { TEXT("Flipping_Glove"), TEXT("latch_glove") }; 
 	m_ItemTags[TILTING_GLOVE] = { TEXT("Tilting_Glove"), TEXT("latch_glove") };
 	m_ItemTags[STOP_STAMP] = { TEXT("Stop_Stamp"), TEXT("Stop_Stamp") };
 	m_ItemTags[BOMB_STAMP] = { TEXT("Bomb_Stamp"), TEXT("Bomb_Stamp") };
