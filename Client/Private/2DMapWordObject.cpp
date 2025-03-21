@@ -69,6 +69,21 @@ HRESULT C2DMapWordObject::Initialize(void* _pArg)
                 );
         }
     }
+    
+    if(WordObjectJson.contains("SFX_Tag_List") 
+        && WordObjectJson["SFX_Tag_List"].is_array())
+    {
+        _uint iModelCount = (_uint)WordObjectJson["SFX_Tag_List"].size();
+        m_SFXNames.reserve(iModelCount);
+        for (auto& ImageTagJson : WordObjectJson["SFX_Tag_List"])
+        {
+            if (ImageTagJson.contains("SFXPath"))
+            {
+                _string strText = ImageTagJson["SFXPath"];
+                m_SFXNames.push_back(StringToWstring(strText));
+            }
+        }
+    }
 
 
     if (WordObjectJson.contains("Word_Action_List")
@@ -231,6 +246,9 @@ _bool C2DMapWordObject::Action_Execute(_uint _iControllerIndex, _uint _iContaine
                     if (m_iModelIndex != iImageIndex)
                         m_pControllerModel->Change_Model(COORDINATE_2D, SECTION_MGR->Get_SectionLeveID(), m_ModelNames[iImageIndex]);
                     m_iModelIndex = iImageIndex;
+
+					if (m_SFXNames.empty() == false && (_uint)m_SFXNames.size() > iImageIndex)
+						START_SFX(m_SFXNames[iImageIndex], 60.f, false);
                 }
                 break;
                 case WORD_OBJECT_ACTIVE:

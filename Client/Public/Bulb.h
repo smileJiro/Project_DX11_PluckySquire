@@ -76,10 +76,14 @@ private:
 private:
 	const _float4x4*		m_pTargetWorld = { nullptr };
 
+	//스폰 되고 일정 시간 동안은 바로 먹어지지 않도록
+	_bool					m_isStartSticking = { false };
 	_bool					m_isSticking = { false };
 	_float					m_fMin = 1.5f;
 
 	// Time
+	_float					m_fAccTime = { 0.f };
+	_float					m_fStickingStartTime = { 0.f };
 	_float2					m_fBulbTime = { 0.8f, 0.f };
 	BULB_STATE				m_eBulbState = { BULB_UP };
 

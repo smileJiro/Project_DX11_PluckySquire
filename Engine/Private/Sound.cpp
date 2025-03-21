@@ -39,6 +39,40 @@ _bool CSound::Update_DelayTime(_float _fTimeDelta)
     return false;
 }
 
+_int CSound::Update_SoundVolume(_float _fTimeDelta)
+{
+    _int iUpdateResult = { 0 };
+
+    // 크기를 키우기. 
+    if (m_fTargetVolume > m_fVolume)
+    {
+        m_fVolume += _fTimeDelta * m_fUpdateFactor;
+
+        if (m_fTargetVolume <= m_fVolume)
+        {
+            m_fVolume = m_fTargetVolume;
+            iUpdateResult = 1;
+        }
+    }
+    else
+    {
+        m_fVolume -= _fTimeDelta * m_fUpdateFactor;
+
+        if (m_fTargetVolume >= m_fVolume)
+        {
+            m_fVolume = m_fTargetVolume;
+            iUpdateResult = 1;
+        }
+
+        if (0.1f > m_fVolume)
+            iUpdateResult = 2;
+    }
+
+    Set_Volume(m_fVolume);
+
+    return iUpdateResult;
+}
+
 void CSound::Play_Sound(_bool _isLoop)
 {
     m_vDelayTime.y = 0.0f; // 혹시 모르니

@@ -68,6 +68,7 @@ protected :
 	_wstring				m_strWordObjectTag;
 	_uint					m_iModelIndex = 0 ;
 	vector <_wstring>		m_ModelNames;
+	vector <_wstring>		m_SFXNames;
 	vector <WORD_ACTION>	m_Actions;
 
 	

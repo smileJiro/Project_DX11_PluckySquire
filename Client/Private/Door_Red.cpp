@@ -40,13 +40,13 @@ HRESULT CDoor_Red::Initialize(void* _pArg)
 void CDoor_Red::Update(_float _fTimeDelta)
 {
 //#ifdef _DEBUG
-    if (KEY_PRESSING(KEY::CTRL))
-    {
-        if (KEY_DOWN(KEY::NUM0))
-            Set_OpeningDoor();
-        else if (KEY_DOWN(KEY::NUM1))
-            Set_ClosingDoor();
-    }
+//    if (KEY_PRESSING(KEY::CTRL))
+//    {
+//        if (KEY_DOWN(KEY::NUM0))
+//            Set_OpeningDoor();
+//        else if (KEY_DOWN(KEY::NUM1))
+//            Set_ClosingDoor();
+//    }
 //#endif
 
     if (m_isCountLayer)

@@ -573,6 +573,9 @@ HRESULT CLoader::Loading_Level_Static()
 	if (FAILED(Loading_BGM_PathFind(TEXT("../Bin/Sounds/BGM/Common"))))
 		return E_FAIL;
 
+	if (FAILED(Loading_SFX_PathFind(TEXT("../Bin/Sounds/SFX/Logo"))))
+		return E_FAIL;
+
 	if (FAILED(Loading_SFX_PathFind(TEXT("../Bin/Sounds/SFX/Level2"))))
 		return E_FAIL;
 
@@ -2018,6 +2021,7 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 	m_pGameInstance->Load_SFX(TEXT("C8_End_02"), TEXT("../Bin/Resources/Audio/Narration/Chapter8/Chapter8_EndNarration_02.wav"));
 	m_pGameInstance->Load_SFX(TEXT("C8_End_03"), TEXT("../Bin/Resources/Audio/Narration/Chapter8/Chapter8_EndNarration_03.wav"));
 	m_pGameInstance->Load_SFX(TEXT("C8_End_04"), TEXT("../Bin/Resources/Audio/Narration/Chapter8/Chapter8_EndNarration_04.wav"));
+	m_pGameInstance->Load_SFX(TEXT("C8_End_01_SFX"), TEXT("../Bin/Resources/Audio/Narration/Chapter8/A_sfx_party_noises_loop.wav"));
 
 	// 나레이션 관련
 
@@ -2161,6 +2165,18 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 	if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_GameObject_ZipC8"),
 		CZip_C8::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+#pragma endregion
+
+#pragma region Chapter 8 - Monster Load
+
+	lstrcpy(m_szLoadingText, TEXT("Level 8 몬스터 로딩중입니다."));
+
+	if (FAILED(m_pGameInstance->Load_Json_InLevel(TEXT("../Bin/DataFiles/Monsters/Chapter8_Monsters_2D.json"), TEXT("Chapter8_Monsters_2D"), _eLoadLevelID)))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Load_Json_InLevel(TEXT("../Bin/DataFiles/Monsters/Chapter8_Monsters_3D.json"), TEXT("Chapter8_Monsters_3D"), _eLoadLevelID)))
+		return E_FAIL;
+
 #pragma endregion
 
 #pragma region Chapter 8 - Effect Load

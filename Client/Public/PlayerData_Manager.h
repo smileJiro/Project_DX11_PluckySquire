@@ -72,6 +72,10 @@ public:
 	void					Set_ThrowSkillLevel(_uint _ThrowSkill) { m_iThorowSkill = _ThrowSkill; }
 	void					Set_WhirlSkillLevel(_uint _WhirlSkill) { m_iWhirlSkill = _WhirlSkill; }
 	void					Set_AttackDamageLevel(_uint _DamageLevel) { m_iAttackDamagePlus = _DamageLevel; }
+	void					UP_JumpSkillLevel() { m_iJumpSkill = min(m_iMaxJumpSkill,++m_iJumpSkill) ; }
+	void					UP_ThrowSkillLevel() { m_iThorowSkill = min(m_iMaxThorowSkill,++m_iThorowSkill) ; }
+	void					UP_WhirlSkillLevel() { m_iWhirlSkill = min(m_iMaxWhirlSkill,++m_iWhirlSkill) ; }
+	void					UP_AttackDamageLevel() { m_iAttackDamagePlus = min(m_iMaxAttackDamagePlus,++m_iAttackDamagePlus) ; }
 	_int					Get_JumpSkillLevel() { return m_iJumpSkill; }
 	_int					Get_ThrowSkillLevel() { return m_iThorowSkill; }
 	_int					Get_WhirlSkillLevel() { return m_iWhirlSkill; }
@@ -97,9 +101,13 @@ private:
 
 	//스킬 레벨 용도
 	_int								m_iJumpSkill = { 0 };
-	_int								m_iThorowSkill = { 1 };
-	_int								m_iWhirlSkill = { 1 };
+	_int								m_iMaxJumpSkill = { 1 };
+	_int								m_iThorowSkill = { 0 };
+	_int								m_iMaxThorowSkill = { 3 };
+	_int								m_iWhirlSkill = { 0 };
+	_int								m_iMaxWhirlSkill = { 3 };
 	_int								m_iAttackDamagePlus = { 0 };
+	_int								m_iMaxAttackDamagePlus = { 3 };
 
 private:
 	void					Set_Tags();

@@ -18,7 +18,7 @@
           "iAnimationIndex": 1,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "바이올렛!!",
           "Red": 255,
@@ -45,7 +45,7 @@
           "isLineEnter": true,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "삼촌!! 오랜만이에요! 잘 지내셨죠?",
           "Red": 0,
@@ -65,7 +65,7 @@
           "iAnimationIndex": 1,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "몰라보게 컸구나.\n나야... 잘 지낸다고 말하고 싶지만.",
           "Red": 255,
@@ -84,7 +84,7 @@
           "iAnimationIndex": 1,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "글쎄다, 저번에 세상이 흔들리지 않았니?",
           "Red": 255,
@@ -103,7 +103,7 @@
           "iAnimationIndex": 1,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "그 때 우리 집 지우개꿀꿀이가 가출을 해 버려서 말이야.",
           "Red": 255,
@@ -123,7 +123,7 @@
           "isLineEnter": true,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "예??? 삼촌 지우개꿀꿀이 없이는 못 사시잖아요?",
           "Red": 0,
@@ -142,7 +142,7 @@
           "iAnimationIndex": 1,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "어떻게든 데려오고 싶은데. 저 멀리서 잠이 들어 버려서...",
           "Red": 255,
@@ -162,7 +162,7 @@
           "isLineEnter": true,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "...",
           "Red": 0,
@@ -182,7 +182,7 @@
           "isLineEnter": true,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "얘들아, 왕궁에 들르기 전에 잠깐만...\n우리 지우개꿀꿀이 한번 보고 가면 안될까?",
           "Red": 0,
@@ -202,7 +202,7 @@
           "isLineEnter": true,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "삼촌도 삼촌이지만, 나도 지우개꿀꿀이와 함께 자랐거든.",
           "Red": 0,
@@ -222,7 +222,7 @@
           "TalkerIndex": 2,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "당연하지! 어디 있는데?",
           "Red": 0,
@@ -241,7 +241,7 @@
           "iAnimationIndex": 1,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "이 도시 오른쪽 클로버 밭에 잠들어 있단다.",
           "Red": 255,
@@ -261,7 +261,7 @@
           "isLineEnter": true,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "알겠어요 삼촌!\n얼른 가보자, 얘들아!",
           "Red": 0,
@@ -288,7 +288,7 @@
           "isLineEnter": true,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "꼬맹아! 진짜 여기서 이렇게 자고 있네...",
           "Red": 0,
@@ -308,7 +308,7 @@
           "isLineEnter": true,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "우와. 진짜 크다.",
           "Red": 0,
@@ -328,7 +328,7 @@
           "isLineEnter": true,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "얘는 한번 자면 잘 안 깨거든.\n우리가 대신 삼촌네 진흙밭에 옮겨다 주자.",
           "Red": 0,
@@ -348,7 +348,7 @@
           "TalkerIndex": 1,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "어...",
           "Red": 0,
@@ -368,7 +368,7 @@
           "TalkerIndex": 1,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "우리한테 그럴 만한 힘이 있다고\n생각해 줘서 고맙긴 한데...",
           "Red": 0,
@@ -387,7 +387,7 @@
           "isPortrait": true,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "얘들아, 들리니??? ",
           "Red": 161,
@@ -407,7 +407,7 @@
           "TalkerIndex": 0,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "아이고 깜짝아.\n할아버지???",
           "Red": 0,
@@ -426,7 +426,7 @@
           "isPortrait": true,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "지우개꿀꿀이를 못 옮겨서 곤란한 모양이구나.\n저트라면 해결할 수 있을 걸?",
           "Red": 161,
@@ -445,7 +445,7 @@
           "isLineEnter": true,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "세상 밖으로 나가서요?",
           "Red": 0,
@@ -464,7 +464,7 @@
           "OffsetY": 100.0,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "그렇지.\n저트, 이미 네가 해결할 만한 물건을 가지고 있지 않니?",
           "Red": 161,
@@ -484,7 +484,7 @@
           "TalkerIndex": 0,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "그럼 일단 그 초록색 동그라미부터 찾아봐야겠구만.",
           "Red": 0,
@@ -511,7 +511,7 @@
           "isLineEnter": true,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "저트, 방금 위에서 큰 소리가 났는데\n네가 우리 지우개꿀꿀이를 어떻게 한 거야?",
           "Red": 0,
@@ -531,7 +531,7 @@
           "TalkerIndex": 1,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "뭐든 못하는 게 없구만. 삼촌께 가보자고.",
           "Red": 0,
@@ -557,7 +557,7 @@
           "iAnimationIndex": 1,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "바이올렛! 저트! 스래쉬!",
           "Red": 255,
@@ -575,7 +575,7 @@
           "iAnimationIndex": 1,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "저 멀리서 우리 지우개꿀꿀이가 굴러오더구나.",
           "Red": 255,
@@ -593,7 +593,7 @@
           "iAnimationIndex": 1,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "너희가 한 거니? 정말 고맙다.",
           "Red": 255,
@@ -611,7 +611,7 @@
           "iAnimationIndex": 1,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "너희 엄청나게 대단한걸???",
           "Red": 255,
@@ -630,7 +630,7 @@
           "isPortrait": true,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "별 말씀을요. 사실 우리 저트가 전부 다 했어요!",
           "Red": 0,
@@ -648,7 +648,7 @@
           "iAnimationIndex": 1,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "그러냐! 고맙다. 저트!",
           "Red": 255,
@@ -667,7 +667,7 @@
           "isPortrait": true,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "도와줘서 고마워, 저트! 그럼 이제 왕궁으로 향하자.",
           "Red": 0,
@@ -690,7 +690,7 @@
           "iAnimationIndex": 1,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "그쪽이 그 유명하다는 용감한 견습 기사인가?",
           "Red": 255,
@@ -707,7 +707,7 @@
           "iAnimationIndex": 1,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "할 수만 있다면 당신 얼굴을 수천 장이라도 그리고 싶어.",
           "Red": 255,
@@ -731,7 +731,7 @@
           "iAnimationIndex": 1,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "지우개꿀꿀이는 도시 오른쪽 클로버 밭에 있어.\n잘 부탁한다!",
           "Red": 255,
@@ -755,7 +755,7 @@
           "iAnimationIndex": 1,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "오늘은 밤에 지우개꿀꿀이를 꼭 껴안고 자야겠어.",
           "Red": 255,
@@ -778,7 +778,7 @@
           "iAnimationIndex": 2,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "용감한 견습 기사군요! 여기서 만나게 되다니, 반가워요.",
           "Red": 255,
@@ -795,7 +795,7 @@
           "iAnimationIndex": 2,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "여기에 제 미소를 보러오는 사람이 많답니다.",
           "Red": 255,
@@ -812,7 +812,7 @@
           "iAnimationIndex": 2,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "하지만 그걸 너무 의식하진 않으려고 해요.",
           "Red": 255,
@@ -835,7 +835,7 @@
           "iAnimationIndex": 3,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "난 나비 그리는게 너무 좋아!",
           "Red": 255,
@@ -852,7 +852,7 @@
           "iAnimationIndex": 3,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "그런데 왜 고양이도 나비라고 부르는 걸까?",
           "Red": 255,
@@ -875,7 +875,7 @@
           "iAnimationIndex": 1,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "뭐든지 점으로 뒤덮으면 더 멋있어져.",
           "Red": 255,
@@ -892,7 +892,7 @@
           "iAnimationIndex": 1,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "내 계획은 아르티아를 점으로 덮는 거야...",
           "Red": 255,
@@ -909,7 +909,7 @@
           "iAnimationIndex": 1,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "그런데 관리인이 허락을 안 해 주네.",
           "Red": 255,
@@ -932,7 +932,7 @@
           "iAnimationIndex": 1,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "호박에서 사는 곳도 의외로 괜찮아.",
           "Red": 255,
@@ -949,7 +949,7 @@
           "iAnimationIndex": 1,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "배고프면 안에 있는 가구를 먹으면 되거든.",
           "Red": 255,
@@ -972,7 +972,7 @@
           "iAnimationIndex": 2,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "물을 그려야지... 예쁘고 파란 물 말이야.",
           "Red": 253,
@@ -989,7 +989,7 @@
           "iAnimationIndex": 2,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "그리고 연잎도. 나는 연잎이 좋더라.",
           "Red": 253,
@@ -1012,7 +1012,7 @@
           "iAnimationIndex": 5,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "전 여기 없는 겁니다.",
           "Red": 198,
@@ -1035,7 +1035,7 @@
           "iAnimationIndex": 0,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "해바라기가 아름답군. 자연을 진정으로 사랑한다면,",
           "Red": 255,
@@ -1052,7 +1052,7 @@
           "iAnimationIndex": 0,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "어디서나 아름다움을 찾을 수 있어.",
           "Red": 255,
@@ -1075,7 +1075,7 @@
           "isPortrait": false,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "그르르르라아아아!",
           "Red": 190,
@@ -1098,7 +1098,7 @@
           "iAnimationIndex": 2,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "시내에서 이 구역이 제일 마음에 들어.",
           "Red": 255,
@@ -1115,7 +1115,7 @@
           "iAnimationIndex": 2,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "시간 되면 그림으로 남겨 볼까 싶어.",
           "Red": 255,
@@ -1138,7 +1138,7 @@
           "iAnimationIndex": 1,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "뭘 읽고 있냐고요? 견습기사 모험기지. 뭐 겠어요!",
           "Red": 236,
@@ -1155,7 +1155,7 @@
           "iAnimationIndex": 1,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "이 왕국에서 제일가는 화제작이잖아요.",
           "Red": 236,
@@ -1172,7 +1172,7 @@
           "iAnimationIndex": 1,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "언젠가 주인공인 견습기사를 직접 만나 봤으면 좋겠어요.",
           "Red": 236,
@@ -1195,7 +1195,7 @@
           "iAnimationIndex": 0,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "이따가 붓을 사러 갈 거야.",
           "Red": 66,
@@ -1212,7 +1212,7 @@
           "iAnimationIndex": 0,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "미술용품을 새로 장만하면 기분이 정말 좋아지거든!",
           "Red": 66,
@@ -1235,7 +1235,7 @@
           "iAnimationIndex": 1,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "아르티아에는 온갖 예술가들이 살아.",
           "Red": 255,
@@ -1252,7 +1252,7 @@
           "iAnimationIndex": 1,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "난 사람들이 즐길 수 있는 게임을 그리는 걸 좋아하지.",
           "Red": 255,
@@ -1275,7 +1275,7 @@
           "iAnimationIndex": 1,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "이 조각의 제목은... '땅 위로'!",
           "Red": 255,
@@ -1298,7 +1298,7 @@
           "iAnimationIndex": 1,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "아르티아에서 휴가를 즐기고 있어요.",
           "Red": 253,
@@ -1315,7 +1315,7 @@
           "iAnimationIndex": 1,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "예술이란 영혼을 풍족하게 해 준다는 걸 알았죠.",
           "Red": 253,
@@ -1338,7 +1338,7 @@
           "iAnimationIndex": 4,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "으으으으으으으!",
           "Red": 255,
@@ -1355,7 +1355,7 @@
           "iAnimationIndex": 4,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "이 조각상 너무 무서워!",
           "Red": 255,
@@ -1378,7 +1378,7 @@
           "iAnimationIndex": 1,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "뭘 그리냐고?",
           "Red": 190,
@@ -1395,7 +1395,7 @@
           "iAnimationIndex": 1,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "번들거리는 형체... 반짝이는 입술... 두개골에 갈비뼈까지!",
           "Red": 190,
@@ -1412,7 +1412,7 @@
           "iAnimationIndex": 1,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "사실... 친구한테 줄 생일 카드야.",
           "Red": 190,
@@ -1435,7 +1435,7 @@
           "iAnimationIndex": 2,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "쉿 난 못 본 걸로 해 줘.",
           "Red": 139,
@@ -1458,7 +1458,7 @@
           "iAnimationIndex": 2,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "난 아르티아 시민들을 그리는 게 좋아.",
           "Red": 116,
@@ -1475,7 +1475,7 @@
           "iAnimationIndex": 2,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "다만 눈이 아니라 마음에 보이는 대로 그리지!",
           "Red": 116,
@@ -1498,7 +1498,7 @@
           "iAnimationIndex": 1,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "제 꽃이 마음에 드세요?",
           "Red": 0,
@@ -1515,7 +1515,7 @@
           "iAnimationIndex": 1,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "이 아이들만 보면 기쁨이 차올라요.",
           "Red": 0,
@@ -1532,7 +1532,7 @@
           "iAnimationIndex": 1,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "꽃의 영혼을 알아봐 주는 건 오직 다른 꽃들뿐이랍니다.",
           "Red": 0,
@@ -1555,7 +1555,7 @@
           "iAnimationIndex": 2,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "안녕! 난 지금 자화상을 그리고 있단다.",
           "Red": 142,
@@ -1572,7 +1572,7 @@
           "iAnimationIndex": 2,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "가만 생각해보면...",
           "Red": 142,
@@ -1589,7 +1589,7 @@
           "iAnimationIndex": 2,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "자기 자화상을 그릴 수 있는 사람은 자신뿐이지.",
           "Red": 142,
@@ -1612,7 +1612,7 @@
           "iAnimationIndex": 3,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "용감한 견습기사다! 여...영광이에요!",
           "Red": 240,
@@ -1629,7 +1629,7 @@
           "iAnimationIndex": 3,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "말 더듬어서 죄송해요...",
           "Red": 240,
@@ -1646,7 +1646,7 @@
           "iAnimationIndex": 3,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "그게... 유명인 만날 일이 잘 없어서요!",
           "Red": 240,
@@ -1669,7 +1669,7 @@
           "iAnimationIndex": 2,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "이번 시즌에는 강렬한 색을 입을까 봐요.",
           "Red": 85,
@@ -1692,7 +1692,7 @@
           "iAnimationIndex": 2,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "난 개가 아니야.",
           "Red": 250,
@@ -1715,7 +1715,7 @@
           "iAnimationIndex": 1,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "나는 원본의 복제품일 뿐이야.",
           "Red": 255,
@@ -1732,7 +1732,7 @@
           "iAnimationIndex": 1,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "아니, 그 반대인 걸까? 어느 쪽이든 상관은 없지만.",
           "Red": 255,
@@ -1755,7 +1755,7 @@
           "iAnimationIndex": 2,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "이 주스 진짜 맛있다.",
           "Red": 255,
@@ -1772,7 +1772,7 @@
           "iAnimationIndex": 2,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "물감에 염료로 넣어도 좋을 것 같은데?",
           "Red": 255,
@@ -1794,7 +1794,7 @@
           "isPortrait": false,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "과일은 건강과 행복의 지름길!",
           "Red": 137,
@@ -1817,7 +1817,7 @@
           "iAnimationIndex": 2,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "요즘 이 피라미드의 수수께끼에 푹 빠져 있어.",
           "Red": 255,
@@ -1834,7 +1834,7 @@
           "iAnimationIndex": 2,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "여기서 벌써 사흘째 피라미드만 바라보고 있지.",
           "Red": 255,
@@ -1857,7 +1857,7 @@
           "iAnimationIndex": 1,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "축하하네! 아주 놀라운 발견을 했군.",
           "Red": 254,
@@ -1874,7 +1874,7 @@
           "iAnimationIndex": 1,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "바로 나를 말이야!",
           "Red": 254,
@@ -1897,7 +1897,7 @@
           "iAnimationIndex": 3,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "안녕하세요, 용감한 견습 기사님!",
           "Red": 255,
@@ -1914,7 +1914,7 @@
           "iAnimationIndex": 9,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "새 물건이 들어왔어요. 한번 보세요!",
           "Red": 255,
@@ -1934,9 +1934,10 @@
           "location": 0,
           "is2D": false,
           "isPortrait": false,
+		  "MTMSound": true,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "있잖아, 이 근처에 네 도움이 필요한 친구가 있어.",
           "Red": 161,
@@ -1950,9 +1951,10 @@
           "location": 0,
           "is2D": false,
           "isPortrait": false,
+		  "MTMSound": true,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "머그잔처럼 생긴 행성에 사는 꼬마 로켓이지.",
           "Red": 161,
@@ -1967,9 +1969,10 @@
           "is2D": false,
           "isPortrait": false,
           "isLineEnter": true,
+		  "MTMSound": true,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "책상 한가운데로 가면, 내가 말한 행성을\n찾을 수 있을 거야.",
           "Red": 161,
@@ -1989,9 +1992,10 @@
           "location": 0,
           "is2D": false,
           "isPortrait": false,
+		  "MTMSound": true,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "안녕. 아빠 로켓의 부품을 찾고 있지?",
           "Red": 161,
@@ -2005,9 +2009,10 @@
           "location": 0,
           "is2D": false,
           "isPortrait": false,
+		  "MTMSound": true,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "왼쪽 높은 곳에서 하나 본 것 같아.",
           "Red": 161,
@@ -2021,9 +2026,10 @@
           "location": 0,
           "is2D": false,
           "isPortrait": false,
+		  "MTMSound": true,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "고소 공포증은 없다면 좋겠네.",
           "Red": 161,
@@ -2044,9 +2050,10 @@
           "is2D": false,
           "isPortrait": false,
           "isLineEnter": true,
+		  "MTMSound": true,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "안녕, 친구. 아빠 로켓의 부품을 찾을려면\n위로 올라가야 할 거야.",
           "Red": 161,
@@ -2061,9 +2068,10 @@
           "is2D": false,
           "isPortrait": false,
           "isLineEnter": true,
+		  "MTMSound": true,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "여기 있는 발판들을 쓰면 되는데,\n내 뒤에 있는 발판부터 시작하면 돼.",
           "Red": 161,
@@ -2077,9 +2085,10 @@
           "location": 0,
           "is2D": false,
           "isPortrait": false,
+		  "MTMSound": true,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "고소 공포증은 없다면 좋겠네.",
           "Red": 161,
@@ -2099,9 +2108,10 @@
           "location": 0,
           "is2D": false,
           "isPortrait": false,
+		  "MTMSound": true,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "안녕. 아빠 로켓의 잃어버린 부품이 근처에 있어.",
           "Red": 161,
@@ -2116,9 +2126,10 @@
           "is2D": false,
           "isPortrait": false,
           "isLineEnter": true,
+		  "MTMSound": true,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "부품을 찾으려면 이 위험천만한 우주를\n제트팩으로 가로질러야 돼.",
           "Red": 161,
@@ -2132,9 +2143,10 @@
           "location": 0,
           "is2D": false,
           "isPortrait": false,
+		  "MTMSound": true,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "인생이란 원래 그런 법이지.",
           "Red": 161,
@@ -2154,9 +2166,10 @@
           "location": 0,
           "is2D": false,
           "isPortrait": false,
+		  "MTMSound": true,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "이 근처 나무로 된 곳 안에 양초가 있어.",
           "Red": 161,
@@ -2170,9 +2183,10 @@
           "location": 0,
           "is2D": false,
           "isPortrait": false,
+		  "MTMSound": true,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "책상 맨 끝에서 찾을 수 있지.",
           "Red": 161,
@@ -2186,9 +2200,10 @@
           "location": 0,
           "is2D": false,
           "isPortrait": false,
+		  "MTMSound": true,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "촛불을 켜려면 너 자신을 믿고 그 안으로 뛰어내려 봐.",
           "Red": 161,
@@ -2208,9 +2223,10 @@
           "location": 0,
           "is2D": false,
           "isPortrait": false,
+		  "MTMSound": true,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "별일 없지? 이 근처에 양초가 두 개 있어.",
           "Red": 161,
@@ -2224,9 +2240,10 @@
           "location": 0,
           "is2D": false,
           "isPortrait": false,
+		  "MTMSound": true,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "두 개 다 높은 곳에 있지.",
           "Red": 161,
@@ -2240,9 +2257,10 @@
           "location": 0,
           "is2D": false,
           "isPortrait": false,
+		  "MTMSound": true,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "위로 올라가 보라고!",
           "Red": 161,
@@ -2262,9 +2280,10 @@
           "location": 0,
           "is2D": false,
           "isPortrait": false,
+		  "MTMSound": true,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "어디 보자...",
           "Red": 161,
@@ -2278,9 +2297,10 @@
           "location": 0,
           "is2D": false,
           "isPortrait": false,
+		  "MTMSound": true,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "지금 잘하고 있는 것 같네.",
           "Red": 161,
@@ -3383,7 +3403,7 @@
           "iAnimationIndex": -1,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "왜 이렇게 늦었나, 병사!",
           "Red": 255,
@@ -3401,7 +3421,7 @@
           "iAnimationIndex": -1,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "자네가 밖에서 빈둥대는 동안, 우린 스크렐을\n상대하느라 눈코 뜰 새가 없었단 말이다!",
           "Red": 255,
@@ -3419,7 +3439,7 @@
           "iAnimationIndex": -1,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "녀석들이 쳐들어와서 우리의 우수한 과학자들을\n훔쳐 갔다.",
           "Red": 255,
@@ -3437,7 +3457,7 @@
           "iAnimationIndex": -1,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "그 샌님들은 하나같이 약골에 겁쟁이지만\n전쟁에 이기려면 녀석들이 필요하단 말이다!",
           "Red": 255,
@@ -3455,7 +3475,7 @@
           "iAnimationIndex": -1,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "얼른 가서 그 과학자들을 구하고... 나한테 데려와!",
           "Red": 255,
@@ -3473,7 +3493,7 @@
           "iAnimationIndex": -1,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "그리고, 한 가지 더. 절대 죽지 마라.",
           "Red": 255,
@@ -3497,7 +3517,7 @@
           "iAnimationIndex": -1,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "마지막 과학자까지 전부 데려왔군.",
           "Red": 255,
@@ -3515,7 +3535,7 @@
           "iAnimationIndex": -1,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "이제 기지에 범생이들이 꽉 찼어.",
           "Red": 255,
@@ -3533,7 +3553,7 @@
           "iAnimationIndex": -1,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "다들 다음 무기를 개발하느라 정신없이 일하고 있지!",
           "Red": 255,
@@ -3551,7 +3571,7 @@
           "iAnimationIndex": -1,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "잘했다 병사!",
           "Red": 255,
@@ -3569,7 +3589,7 @@
           "iAnimationIndex": -1,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "다음 임무는 이 고철 덩어리를 다른 곳으로\n가져가는 거다!",
           "Red": 255,
@@ -3590,7 +3610,7 @@
           "isPortrait": false,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "저트가 멈춰 도장을 얻었습니다!",
           "Red": 0,
@@ -3606,7 +3626,7 @@
           "isPortrait": false,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "멈춰 도장을 사용하면, 책 페이지에 \n마법의 손 아이콘을 찍을 수 있습니다!",
           "Red": 161,
@@ -3622,7 +3642,7 @@
           "isPortrait": false,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "이 아이콘이 찍힌 대상은 무엇이든 멈추게 됩니다.",
           "Red": 161,
@@ -3638,7 +3658,7 @@
           "isPortrait": false,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "[Q]를 눌러서 도장을 찍으세요.",
           "Red": 161,
@@ -3662,7 +3682,7 @@
           "isPortrait": true,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "Location이 1, 오프셋이 -100, +100 이에요",
           "Red": 0,
@@ -3680,7 +3700,7 @@
           "isPortrait": true,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "Location이 1, 오프셋이 +10, +10 이에요",
           "Red": 0,
@@ -3698,7 +3718,7 @@
           "isPortrait": true,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "Location이 1, 오프셋이 +30, +30 이에요",
           "Red": 0,
@@ -3716,7 +3736,7 @@
           "isPortrait": true,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "Location이 1, 오프셋이 +50, +50 이에요",
           "Red": 0,
@@ -3734,7 +3754,7 @@
           "isPortrait": true,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "Location이 1, 오프셋이 +100, +100 이에요",
           "Red": 0,
@@ -3752,7 +3772,7 @@
           "isPortrait": true,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "Location이 1, 오프셋이 -100, -100 이에요",
           "Red": 0,
@@ -4481,7 +4501,7 @@
           "TalkerIndex": 0,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "트라르그에 무슨 일이 생겼나?",
           "Red": 0,
@@ -4508,7 +4528,7 @@
           "TalkerIndex": 0,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "안 돼...\n 내 고향 트라르그가...",
           "Red": 0,
@@ -4535,7 +4555,7 @@
           "TalkerIndex": 0,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "무슨 일이 생겼는지 모르겠지만 먼저 실례하겠습니다!",
           "Red": 0,
@@ -4561,7 +4581,7 @@
           "isLineEnter": true,
           "animation": {
             "duration": 1000,
-            "speed": 350
+            "speed": 500
           },
           "text": "저트! 나는 아르티아에 남아 가족들을 지키고 있을게.\n스래쉬를 도와줘!",
           "Red": 0,

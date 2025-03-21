@@ -40,6 +40,7 @@ public:
 	virtual void				Late_Update(_float _fTimeDelta) override;
 	virtual HRESULT				Render() override;
 
+
 public:
 	void						Change_Mode(_uint _iItemMode);
 

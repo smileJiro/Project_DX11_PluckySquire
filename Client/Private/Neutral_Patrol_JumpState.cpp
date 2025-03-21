@@ -22,7 +22,7 @@ HRESULT CNeutral_Patrol_JumpState::Initialize(void* _pArg)
 	m_fPatrol2DOffset = 150.f;
 	m_iPrevDir = -1;
 	m_iDir = -1;
-	m_eDir = F_DIRECTION::F_DIR_LAST;
+	m_eDir = E_DIRECTION::E_DIR_LAST;
 	m_fDelayTime = 1.f;
 		
 	return S_OK;
@@ -145,23 +145,23 @@ void CNeutral_Patrol_JumpState::PatrolMove(_float _fTimeDelta, _int _iDir)
 			
 			switch (m_eDir)
 			{
-			case Client::F_DIRECTION::LEFT:
+			case Client::E_DIRECTION::LEFT:
 				m_pOwner->Get_ControllerTransform()->Go_Left(_fTimeDelta);
 				break;
 
-			case Client::F_DIRECTION::RIGHT:
+			case Client::E_DIRECTION::RIGHT:
 				m_pOwner->Get_ControllerTransform()->Go_Right(_fTimeDelta);
 				break;
 
-			case Client::F_DIRECTION::UP:
+			case Client::E_DIRECTION::UP:
 				m_pOwner->Get_ControllerTransform()->Go_Up(_fTimeDelta);
 				break;
 
-			case Client::F_DIRECTION::DOWN:
+			case Client::E_DIRECTION::DOWN:
 				m_pOwner->Get_ControllerTransform()->Go_Down(_fTimeDelta);
 				break;
 
-			case Client::F_DIRECTION::F_DIR_LAST:
+			case Client::E_DIRECTION::E_DIR_LAST:
 				return;
 				break;
 
@@ -274,22 +274,22 @@ _vector CNeutral_Patrol_JumpState::Set_PatrolDirection(_int _iDir)
 		{
 		case 0:
 			vDir = XMVectorSet(-1.f, 0.f, 0.f, 0.f);
-			m_eDir = F_DIRECTION::LEFT;
+			m_eDir = E_DIRECTION::LEFT;
 			//cout << "аб" << endl;
 			break;
 		case 1:
 			vDir = XMVectorSet(1.f, 0.f, 0.f, 0.f);
-			m_eDir = F_DIRECTION::RIGHT;
+			m_eDir = E_DIRECTION::RIGHT;
 			//cout << "©Л" << endl;
 			break;
 		case 2:
 			vDir = XMVectorSet(0.f, 1.f, 0.f, 0.f);
-			m_eDir = F_DIRECTION::UP;
+			m_eDir = E_DIRECTION::UP;
 			//cout << "╩С" << endl;
 			break;
 		case 3:
 			vDir = XMVectorSet(0.f, -1.f, 0.f, 0.f);
-			m_eDir = F_DIRECTION::DOWN;
+			m_eDir = E_DIRECTION::DOWN;
 			//cout << "го" << endl;
 			break;
 		default:

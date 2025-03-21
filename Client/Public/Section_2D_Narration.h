@@ -22,6 +22,8 @@ public:
 	virtual HRESULT				Add_GameObject_ToSectionLayer(CGameObject* _pGameObject, _uint _iLayerIndex) override;
 	virtual HRESULT				Remove_GameObject_ToSectionLayer(CGameObject* _pGameObject) override;
 	HRESULT						Start_Narration();
+	
+		virtual HRESULT						Section_Enter(const _wstring& _strPreSectionTag);
 
 
 

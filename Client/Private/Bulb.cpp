@@ -57,12 +57,22 @@ HRESULT CBulb::Initialize(void* _pArg)
 		static_cast<CActor_Dynamic*>(m_pActorCom)->Set_Gravity(false);
 	}
 
+	m_fStickingStartTime = 1.f;
 
 	return S_OK;
 }
 
 void CBulb::Priority_Update(_float _fTimeDelta)
 {
+	if(false == m_isStartSticking)
+	{
+		m_fAccTime += _fTimeDelta;
+		if (m_fStickingStartTime <= m_fAccTime)
+		{
+			m_isStartSticking = true;
+		}
+	}
+
 	__super::Priority_Update(_fTimeDelta);
 }
 
@@ -190,28 +200,31 @@ void CBulb::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
 		(_uint)SHAPE_USE::SHAPE_BODY !=_Other.pShapeUserData->iShapeUse)
 		return;
 
-	switch (_My.pShapeUserData->iShapeUse)
+	if (true == m_isStartSticking)
 	{
-	case BULB_SHAPE_USE::SHAPE_BODY:
-	{
+		switch (_My.pShapeUserData->iShapeUse)
+		{
+		case BULB_SHAPE_USE::SHAPE_BODY:
+		{
 
-		Event_Get_Bulb(COORDINATE_3D);
-		Event_DeleteObject(this);
-		static_cast<CActor_Dynamic*>(m_pActorCom)->Set_LinearVelocity(XMVectorZero());
-		m_isSticking = false;
+			Event_Get_Bulb(COORDINATE_3D);
+			Event_DeleteObject(this);
+			static_cast<CActor_Dynamic*>(m_pActorCom)->Set_LinearVelocity(XMVectorZero());
+			m_isSticking = false;
 
-		CEffect_Manager::GetInstance()->Active_Effect(TEXT("Bulb"), true, m_pControllerTransform->Get_WorldMatrix_Ptr());
-		m_pGameInstance->Start_SFX(_wstring(L"A_sfx_pickup_lightbulb-") + to_wstring(rand() % 4), 50.f);
-		m_pGameInstance->Start_SFX(_wstring(L"A_sfx_lightbulb_addv2-") + to_wstring(rand() % 8), 20.f);
+			CEffect_Manager::GetInstance()->Active_Effect(TEXT("Bulb"), true, m_pControllerTransform->Get_WorldMatrix_Ptr());
+			m_pGameInstance->Start_SFX(_wstring(L"A_sfx_pickup_lightbulb-") + to_wstring(rand() % 4), 50.f);
+			m_pGameInstance->Start_SFX(_wstring(L"A_sfx_lightbulb_addv2-") + to_wstring(rand() % 8), 20.f);
 
-	}
+		}
 		break;
-	case BULB_SHAPE_USE::SHAPE_STICKING:
-	{
-		m_pTargetWorld = _Other.pActorUserData->pOwner->Get_ControllerTransform()->Get_WorldMatrix_Ptr();
-		m_isSticking = true;
-	}
+		case BULB_SHAPE_USE::SHAPE_STICKING:
+		{
+			m_pTargetWorld = _Other.pActorUserData->pOwner->Get_ControllerTransform()->Get_WorldMatrix_Ptr();
+			m_isSticking = true;
+		}
 		break;
+		}
 	}
 }
 
@@ -221,27 +234,30 @@ void CBulb::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherColl
 	{
 		if (OBJECT_GROUP::PLAYER & _pOtherCollider->Get_CollisionGroupID())
 		{
-			if (BULB_2DCOLLIDER_USE::BULB == _pMyCollider->Get_ColliderUse())
-
+			if (true == m_isStartSticking)
 			{
-				Event_Get_Bulb(COORDINATE_2D);
+				if (BULB_2DCOLLIDER_USE::BULB == _pMyCollider->Get_ColliderUse())
 
-				//Effect
-				_matrix matFX = Get_ControllerTransform()->Get_WorldMatrix();
-				matFX.r[0] = XMVector3Normalize(matFX.r[0]);
-				matFX.r[1] = XMVector3Normalize(matFX.r[1]);
-				matFX.r[2] = XMVector3Normalize(matFX.r[2]);
-				CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("health_pickup_small"), CSection_Manager::GetInstance()->Get_Cur_Section_Key(), matFX);
+				{
+					Event_Get_Bulb(COORDINATE_2D);
 
-				m_pGameInstance->Start_SFX(_wstring(L"A_sfx_pickup_lightbulb-") + to_wstring(rand() % 4), 50.f);
-				m_pGameInstance->Start_SFX(_wstring(L"A_sfx_lightbulb_addv2-") + to_wstring(rand() % 8), 20.f);
-				
-				Event_DeleteObject(this);
-			}
-			if (BULB_2DCOLLIDER_USE::BULB_STICKING == _pMyCollider->Get_ColliderUse())
-			{
-				m_pTargetWorld = _pOtherObject->Get_ControllerTransform()->Get_WorldMatrix_Ptr();
-				m_isSticking = true;
+					//Effect
+					_matrix matFX = Get_ControllerTransform()->Get_WorldMatrix();
+					matFX.r[0] = XMVector3Normalize(matFX.r[0]);
+					matFX.r[1] = XMVector3Normalize(matFX.r[1]);
+					matFX.r[2] = XMVector3Normalize(matFX.r[2]);
+					CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("health_pickup_small"), CSection_Manager::GetInstance()->Get_Cur_Section_Key(), matFX);
+
+					m_pGameInstance->Start_SFX(_wstring(L"A_sfx_pickup_lightbulb-") + to_wstring(rand() % 4), 50.f);
+					m_pGameInstance->Start_SFX(_wstring(L"A_sfx_lightbulb_addv2-") + to_wstring(rand() % 8), 20.f);
+
+					Event_DeleteObject(this);
+				}
+				if (BULB_2DCOLLIDER_USE::BULB_STICKING == _pMyCollider->Get_ColliderUse())
+				{
+					m_pTargetWorld = _pOtherObject->Get_ControllerTransform()->Get_WorldMatrix_Ptr();
+					m_isSticking = true;
+				}
 			}
 		}
 		//if ((OBJECT_GROUP::PLAYER | OBJECT_GROUP::PLAYER_PROJECTILE) & _pOtherObject->Get_ObjectGroupID())
@@ -347,7 +363,9 @@ void CBulb::Active_OnEnable()
 {
 	__super::Active_OnEnable();
 
-
+	m_fAccTime = 0.f;
+	m_isStartSticking = false;
+	m_isSticking = false;
 }
 
 void CBulb::Active_OnDisable()
@@ -408,7 +426,7 @@ HRESULT CBulb::Ready_Components(BULB_DESC* _pArg)
 		pCollider = nullptr;
 		CircleDesc = {};
 		CircleDesc.pOwner = this;
-		CircleDesc.fRadius = 25.f;
+		CircleDesc.fRadius = 100.f;
 		CircleDesc.vScale = { 1.f / fScaleX, 1.f / fScaleY };
 		CircleDesc.vOffsetPosition = { 0.f, 0.f };
 		CircleDesc.isBlock = false;
