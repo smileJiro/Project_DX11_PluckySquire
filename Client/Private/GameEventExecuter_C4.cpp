@@ -844,8 +844,6 @@ _bool CGameEventExecuter_C4::Change_PlayMap(_float _fStartTime)
 		//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorRed"),
 		//	eCurLevelID, L"Layer_MapGimmick", &DoorRedDesc)))
 		//	return false;
-		m_iSubStep++;
-		return false;
 
 
 
@@ -857,6 +855,8 @@ _bool CGameEventExecuter_C4::Change_PlayMap(_float _fStartTime)
 		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eCurLevelID, TEXT("Prototype_GameObject_DynamicCastleGate"), eCurLevelID, L"Layer_MapGimmick", &tGateDesc)))
 			return false;
 
+		m_iSubStep++;
+		return false;
 
 	}
 	_fStartTime += 0.1f;

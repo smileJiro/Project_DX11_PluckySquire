@@ -172,9 +172,9 @@ private:
 	virtual	void				Switching(_float _fTimeDelta) override;
 	void						Change_FreezeOffset(_float _fTimeDelta);
 
-//#ifdef _DEBUG
+#ifdef _DEBUG
 	void						Imgui(_float _fTimeDelta);
-//#endif
+#endif
 private:
 	pair<ARM_DATA*, SUB_DATA*>* Find_ArmData(_wstring _wszArmTag);
 
