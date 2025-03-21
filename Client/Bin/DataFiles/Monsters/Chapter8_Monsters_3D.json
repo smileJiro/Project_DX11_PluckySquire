@@ -45,7 +45,7 @@
 
         {
             "MonsterTag": "Prototype_GameObject_Spear_Soldier",
-            "LayerTag": "Layer_Monster",
+            "LayerTag": "Layer_Sneak_Soldier",
             "SneakMode": true,
             "SneakWayPointIndex": "SNEAKWAYPOINTINDEX_CHAPTER8_1",
             "Position": [
@@ -61,7 +61,7 @@
         },
         {
             "MonsterTag": "Prototype_GameObject_Spear_Soldier",
-            "LayerTag": "Layer_Monster",
+            "LayerTag": "Layer_Sneak_Soldier",
             "SneakMode": true,
             "SneakWayPointIndex": "SNEAKWAYPOINTINDEX_CHAPTER8_2",
             "Position": [
@@ -77,7 +77,7 @@
         },
         {
             "MonsterTag": "Prototype_GameObject_Spear_Soldier",
-            "LayerTag": "Layer_Monster",
+            "LayerTag": "Layer_Sneak_Soldier",
             "SneakMode": true,
             "SneakWayPointIndex": "SNEAKWAYPOINTINDEX_CHAPTER8_3",
             "Position": [

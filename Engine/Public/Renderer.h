@@ -21,7 +21,7 @@ public:
 	HRESULT Add_RenderObject(RENDERGROUP _eRenderGroup, CGameObject* _pRenderObject);
 	HRESULT Draw_RenderObject();
 
-#ifdef NDEBUG
+#ifdef _DEBUG
 public: /* component에 대한 렌더링을 별도로 수행시키기 위해 >>> diferred shader를 통해 렌더링하다보면 콜라이더 등 렌더 상태가 이상해져서 별도 처리 .*/
 	HRESULT Add_DebugComponent(CComponent* pDebugCom)
 	{
@@ -48,7 +48,7 @@ private: /* 직교 투영으로 그리기 위한 */
 	ID3D11DepthStencilView* m_pShadowDepthStencilView = nullptr;
 	ID3D11DepthStencilView* m_pBook2DDepthStencilView = nullptr;
 
-#ifdef NDEBUG
+#ifdef _DEBUG
 private:
 	list<CComponent*> m_DebugComponents;
 	_bool m_isDebugRender = true;
@@ -71,7 +71,7 @@ private:
 private:
 	HRESULT Ready_DepthStencilView(DSVTYPE _eType, _uint _iWidth, _uint _iHeight);
 	HRESULT SetUp_Viewport(_uint _iWidth, _uint _iHeight);
-#ifdef NDEBUG
+#ifdef _DEBUG
 private:
 	HRESULT Render_Debug();
 	

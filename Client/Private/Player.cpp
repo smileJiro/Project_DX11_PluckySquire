@@ -143,7 +143,7 @@ HRESULT CPlayer::Initialize(void* _pArg)
 
 	m_iCurLevelID = pDesc->iCurLevelID;
 	pDesc->_fStepHeightThreshold = 0.225f;
-	pDesc->_fStepSlopeThreshold = 0.75f;
+	pDesc->_fStepSlopeThreshold = 0.45f;
 
     pDesc->iNumPartObjects = CPlayer::PLAYER_PART_LAST;
     //pDesc->eStartCoord = COORDINATE_2D;
@@ -1353,7 +1353,7 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
 				tResult.bInputStates[PLAYER_INPUT_SPINCHARGING] = true;
 			else if (KEY_STATE::UP == eKeyState)
 				tResult.bInputStates[PLAYER_INPUT_SPINLAUNCH] = true;
-		}*/
+		}
 	}
 
 	if (false == Has_InteractObject() && bCarrying)
