@@ -55,6 +55,9 @@ private: /* 상태 실행 루틴 */
 
 private:
 	HRESULT							Ready_Components();
+public:
+	virtual void			Enter_Section(const _wstring _strIncludeSectionName) override;
+	virtual void			Exit_Section(const _wstring _strIncludeSectionName) override;
 private:
 	/* Active 변경시 호출되는 함수 추가. */
 	virtual void Active_OnEnable();

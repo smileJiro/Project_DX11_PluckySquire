@@ -253,7 +253,7 @@ void CBarfBug::Change_Animation()
                 break;
 
             case MONSTER_STATE::ALERT:
-                m_pGameInstance->Start_SFX(_wstring(L"A_sfx_barferbug_alert_") + to_wstring(rand() % 8), 50.f);
+                m_pGameInstance->Start_SFX(_wstring(L"A_sfx_barferbug_alert_") + to_wstring(rand() % 4), 50.f);
                 static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(ALERT);
                 break;
 
@@ -316,7 +316,7 @@ void CBarfBug::Change_Animation()
                 else if (E_DIRECTION::RIGHT == Get_2DDirection() || E_DIRECTION::LEFT == Get_2DDirection())
                     eAnim = ALERT_RIGHT;
 
-                m_pGameInstance->Start_SFX(_wstring(L"A_sfx_barferbug_alert_") + to_wstring(rand() % 8), 50.f);
+                m_pGameInstance->Start_SFX(_wstring(L"A_sfx_barferbug_alert_") + to_wstring(rand() % 4), 50.f);
 
                 break;
 
@@ -345,6 +345,9 @@ void CBarfBug::Change_Animation()
                     eAnim = ATTACK_DOWN;
                 else if (E_DIRECTION::RIGHT == Get_2DDirection() || E_DIRECTION::LEFT == Get_2DDirection())
                     eAnim = ATTACK_RIGHT;
+
+                m_pGameInstance->Start_SFX(_wstring(L"A_sfx_barferbug_projectile_") + to_wstring(rand() % 2), 50.f);
+
                 break;
 
             case MONSTER_STATE::HIT:

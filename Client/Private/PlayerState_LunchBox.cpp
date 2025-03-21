@@ -81,6 +81,8 @@ void CPlayerState_LunchBox::Enter()
  	m_vLook = {0.f,0.f,1.f,0.f};
 	m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_LUNCHBOX_POSE_01_LOOP_GT);
 	m_pOwner->LookDirectionXZ_Dynamic(m_vLook);
+	_float3 vPos; XMStoreFloat3(&vPos, m_vPosition);
+	m_pOwner->Get_ActorCom()->Set_GlobalPose(vPos);
 	m_eCurState = LUNCHBOX_STATE_IDLE;
 
 	m_pGameInstance->Start_SFX(_wstring(L"A_sfx_C2DESK_pull_lunchbox_lid"), 50.f);

@@ -47,6 +47,13 @@ public:
 	void						Set_Gravity(_float _fGravity) { m_fGravity = _fGravity; }
 	void						Set_GravityAcc(_float _fGravityAcc) { m_fGravityAcc = _fGravityAcc; }
 	void						Set_GravityOffset(_float _fGravityOffset) { m_fGravityOffset = _fGravityOffset; }
+
+
+private:
+	/* Active 변경시 호출되는 함수 추가. */
+	virtual void Active_OnEnable();
+	virtual void Active_OnDisable();
+
 private:
 	CGameObject*				m_pOwner = nullptr;
 	STATE						m_ePreState = STATE::STATE_LAST;

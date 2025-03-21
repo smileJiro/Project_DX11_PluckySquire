@@ -860,12 +860,14 @@ void CGameEventExecuter_C8::Chapter8_Friend_Appear_Thrash(_float _fTimeDelta)
 void CGameEventExecuter_C8::Chapter8_Intro(_float _fTimeDelta)
 {
 	m_fTimer += _fTimeDelta;
+
 	if (Step_Check(STEP_0))
 	{
 		if (Is_Start())
 		{
 			CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::CUTSCENE);
 			CCamera_Manager::GetInstance()->Set_NextCutSceneData(TEXT("Chapter8_Intro"));
+		
 		}
 
 		Next_Step_Over(2.8f);
@@ -897,14 +899,28 @@ void CGameEventExecuter_C8::Chapter8_Intro(_float _fTimeDelta)
 
 		CCamera_CutScene* pCamera = static_cast<CCamera_CutScene*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::CUTSCENE));
 
-		if (true == pCamera->Is_Finish_CutScene()) {
+		if (m_fTimer >= 16.8f) {
+			if (Is_Start()) {
+				CCamera_Manager::GetInstance()->Start_FadeOut(3.f);
+			}
+		}
+
+		if (true == pCamera->Is_Finish_CutScene()) {	
 			Next_Step(true);
 		}
 	}
 	else if (Step_Check(STEP_4)) {
 
-		if (m_fTimer >= 3.f) {
-			CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::TARGET_2D, true, 0.5f);
+		if (0.0f == CCamera_Manager::GetInstance()->Get_DofBufferData().fFadeRatio) {
+			if (Is_Start()) {
+				CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::TARGET_2D);
+				CCamera_Manager::GetInstance()->Start_FadeIn(3.f);
+
+				m_pGameInstance->Set_GrayScale_VtxAnimMesh(0);
+			}
+		}
+
+		if (m_fTimer >= 3.5f) {
 			Uimgr->Set_PlayNarration(TEXT("Chapter8_P0102_Narration_01"));
 			GameEvent_End();
 		}
@@ -1090,8 +1106,12 @@ void CGameEventExecuter_C8::Chapter8_3D_Out_01(_float _fTimeDelta)
 			pPlayer->Set_2DDirection(F_DIRECTION::UP);
 			CFriend_Controller::GetInstance()->End_Train();
 			_vector vPlayerPos = pPlayer->Get_FinalPosition() + XMVectorSet(0.0f, 30.f, 0.0f, 0.0f);
-			_vector vThrashPos = pThrash->Get_FinalPosition() + XMVectorSet(-60.0f, 30.f, 0.0f, 0.0f);
-			_vector vVioletPos = pViolet->Get_FinalPosition() + XMVectorSet(60.0f, 30.f, 0.0f, 0.0f);
+			_vector vThrashPos;
+			if (nullptr != pThrash)
+				vThrashPos = pThrash->Get_FinalPosition() + XMVectorSet(-60.0f, 30.f, 0.0f, 0.0f);
+			_vector vVioletPos;
+			if (nullptr != pViolet)
+				vVioletPos = pViolet->Get_FinalPosition() + XMVectorSet(60.0f, 30.f, 0.0f, 0.0f);
 			_vector vPipPos = pPip->Get_FinalPosition() + XMVectorSet(-120.0f, 30.f, 0.0f, 0.0f);
 			AUTOMOVE_COMMAND AutoMove{};
 			AutoMove.eType = AUTOMOVE_TYPE::MOVE_TO;
@@ -2465,6 +2485,7 @@ void CGameEventExecuter_C8::Chapter8_Boss_Intro(_float _fTimeDelta)
 	if (Step_Check(STEP_0))
 	{
 		if (CCamera_Manager::TARGET == CCamera_Manager::GetInstance()->Get_CameraType()) {
+			Get_Player()->Set_BlockPlayerInput(true);
 			Next_Step(true);
 		}
 	}
@@ -2512,6 +2533,9 @@ void CGameEventExecuter_C8::Chapter8_Boss_Intro(_float _fTimeDelta)
 		if (Is_Start()) {
 			CCamera_Manager::GetInstance()->Start_FadeIn(0.7f);
 			CCamera_Manager::GetInstance()->Set_FadeRatio(CCamera_Manager::CUTSCENE, 1.f, true);
+			
+			Get_Player()->Set_BlockPlayerInput(false);
+
 			Next_Step(true);
 		}
 	}
@@ -2530,6 +2554,8 @@ void CGameEventExecuter_C8::Chapter8_Going_To_Boss(_float _fTimeDelta)
 			CCamera_Manager::GetInstance()->Set_NextCutSceneData(TEXT("Going_To_Humgrump"));
 			CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::CUTSCENE);
 			Get_Player()->Set_State(CPlayer::ENGAGE_BOSS);
+			Get_Player()->Set_BlockPlayerInput(true);
+
 			Next_Step(true);
 		}
 	}
@@ -2587,6 +2613,7 @@ void CGameEventExecuter_C8::Chapter8_Going_To_Boss(_float _fTimeDelta)
 
 			// Player State º¯°æ
 			Get_Player()->Set_State(CPlayer::CYBER_FLY);
+			Get_Player()->Set_BlockPlayerInput(false);
 
 			Next_Step(true);
 		}

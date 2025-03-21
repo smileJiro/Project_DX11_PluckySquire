@@ -1,6 +1,7 @@
 [
 	{
 		"Section_Name": "Chapter8_P0102",
+		"Section_Start": true,
 		"Section_BackGround_Name": "Chapter8_P0102_BackGround",
 		"Section_Type": 1,
 		"Section_Default": 0,
@@ -130,7 +131,6 @@
 	},
 	{
 		"Section_Name": "Chapter8_P2122",
-		"Section_Start": true,
 		"Section_File_Name": "Chapter8_P2122.m2chc",
 		"Section_BackGround_Name": "Chapter8_P2122_BackGround",
 		"Section_Type": 0,
