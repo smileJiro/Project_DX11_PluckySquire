@@ -574,10 +574,7 @@ void CPlayer::Enter_Section(const _wstring _strIncludeSectionName)
 	_bool bPlatformer = static_cast<CSection_2D*>(pSection)->Is_Platformer();
 	Set_PlatformerMode(bPlatformer);
 
-	if (Is_ZetPackMode() && bPlatformer)
-		Equip_Part(PLAYER_PART_ZETPACK);
-	else
-		UnEquip_Part(PLAYER_PART_ZETPACK);
+
 
 	if (TEXT("Chapter2_P0102") == _strIncludeSectionName)
 	{
@@ -2179,8 +2176,15 @@ void CPlayer::Set_Mode(PLAYER_MODE _eNewMode)
 			Get_ActorDynamic()->Set_Gravity(true);
 			Get_ActorDynamic()->Set_LinearDamping(0.f);
 			Equip_Part(PLAYER_PART_SWORD);
+			Equip_Part(PLAYER_PART_ZETPACK);
 		}
-		Equip_Part(PLAYER_PART_ZETPACK);
+		else
+		{
+			if (Is_PlatformerMode())
+				Equip_Part(PLAYER_PART_ZETPACK);
+			else
+				UnEquip_Part(PLAYER_PART_ZETPACK);
+		}
 		break;
 	case Client::CPlayer::PLAYER_MODE::PLAYER_MODE_CYBERJOT:
 	{
@@ -2557,6 +2561,10 @@ void CPlayer::Key_Input(_float _fTimeDelta)
 		Set_CurrentStampType(PLAYER_PART_BOMB_STMAP);
 		if (STATE::STAMP == Get_CurrentStateID())
 			Equip_Part(PLAYER_PART_BOMB_STMAP);
+	}
+	if (KEY_DOWN(KEY::NUM3))
+	{
+		Acquire_Item(PLAYER_2D_ITEM_ID::FATHER_BODY);
 	}
     if (KEY_DOWN(KEY::J))
     {

@@ -38,7 +38,7 @@ void CPlayerState_GetItem::Update(_float _fTimeDelta)
 			{
 				m_fSizeUpTimeAcc += _fTimeDelta;
 				_float fRatio = m_fSizeUpTimeAcc / m_fSizeUpTime;
-				_float fSize = fRatio * 250.f;
+				_float fSize = fRatio * 200.f;
 				m_pItemImg->Set_Scale(_float3{ fSize ,fSize ,fSize });
 				if (m_fSizeUpTimeAcc >= m_fSizeUpTime)
 				{
@@ -50,7 +50,7 @@ void CPlayerState_GetItem::Update(_float _fTimeDelta)
 		else if (2 == iCurAnimIdx)
 		{
 			_float fProgress = m_pFX->Get_CurrentAnimationProgress();
-			if (0.6f <= fProgress)
+			if (0.55f <= fProgress)
 			{
 				m_pItemImg->Set_Active(false);
 
@@ -80,7 +80,7 @@ void CPlayerState_GetItem::Enter()
 		XMStoreFloat3( &tModelDesc.tTransform2DDesc.vInitialPosition, m_pOwner->Get_FinalPosition() + m_vItemOffset);
 		m_pFX = static_cast<CModelObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &tModelDesc));
 		m_pGameInstance->Add_GameObject_ToLayer(m_pOwner->Get_CurLevelID(), TEXT("Layer_FX"), m_pFX);
-		CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(m_pFX, SECTION_2D_PLAYMAP_TRIGGER);
+		CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(m_pOwner->Get_Include_Section_Name(), m_pFX, SECTION_2D_PLAYMAP_TRIGGER);
 		m_pFX->Register_OnAnimEndCallBack(bind (& CPlayerState_GetItem::On_FXAnimEnd, this, placeholders::_1, placeholders::_2));
 		m_pFX->Switch_Animation(0);
 
@@ -99,6 +99,7 @@ void CPlayerState_GetItem::Enter()
 			break;
 
 		default:
+			assert(false);
 			return;
 		}
 
@@ -107,7 +108,7 @@ void CPlayerState_GetItem::Enter()
 		XMStoreFloat3(&tModelDesc.tTransform2DDesc.vInitialPosition, m_pOwner->Get_FinalPosition() + m_vItemOffset);
 		m_pItemImg = static_cast<CModelObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Prototype_GameObject_ModelObject"), &tModelDesc));
 		m_pGameInstance->Add_GameObject_ToLayer(m_pOwner->Get_CurLevelID(), TEXT("Layer_FX"), m_pItemImg);
-		CSection_Manager::GetInstance()->Add_GameObject_ToCurSectionLayer(m_pItemImg, SECTION_2D_PLAYMAP_EFFECT);
+		CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(m_pOwner->Get_Include_Section_Name(),m_pItemImg, SECTION_2D_PLAYMAP_EFFECT);
 		break;
 	}
 	case Engine::COORDINATE_3D:
