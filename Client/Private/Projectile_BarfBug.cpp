@@ -189,6 +189,8 @@ void CProjectile_BarfBug::On_Collision2D_Enter(CCollider* _pMyCollider, CCollide
         __super::On_Collision2D_Enter(_pMyCollider, _pOtherCollider, _pOtherObject);
 
         static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(PROJECTILESPLAT);
+        m_pGameInstance->Start_SFX(_wstring(L"A_sfx_barferbug_projectile_impact_") + to_wstring(rand() % 2), 50.f);
+
     }
 }
 

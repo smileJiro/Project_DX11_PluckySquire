@@ -1150,9 +1150,8 @@ void CGameEventExecuter_C2::Chapter2_StorySequence(_float _fTimeDelta)
 				}
 				});
 			//Ready_Action(SECTION_MGR->Get_Cur_Section_Key(), SECTION_2D_PLAYMAP_OBJECT, C2DMapActionObject::ACTIVE_TYPE_DYNAMIC_BACKGROUND);
-
-
-
+			m_pGameInstance->Start_SFX(_wstring(L"A_sfx_sticky_note_draw_orange"), 50.f);
+			
 			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_TargetObjects[0]);
 			pPage->Anim_Action(CPostit_Page::POSTIT_PAGE_TALK_1, true);
 			CDialog_Manager::GetInstance()->Set_DialogId(L"Postit_Page_07");
@@ -1198,6 +1197,7 @@ void CGameEventExecuter_C2::Chapter2_StorySequence(_float _fTimeDelta)
 				}
 				});
 
+			m_pGameInstance->Start_SFX(_wstring(L"A_sfx_sticky_note_draw_green"), 50.f);
 
 			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_TargetObjects[0]);
 			pPage->Anim_Action(CPostit_Page::POSTIT_PAGE_TALK_1, true);
@@ -1242,6 +1242,8 @@ void CGameEventExecuter_C2::Chapter2_StorySequence(_float _fTimeDelta)
 						pActionObj->Ready_Action();
 				}
 				});
+
+			m_pGameInstance->Start_SFX(_wstring(L"A_sfx_sticky_note_draw_blue"), 50.f);
 
 			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_TargetObjects[0]);
 			pPage->Anim_Action(CPostit_Page::POSTIT_PAGE_TALK_1, true);
