@@ -78,6 +78,22 @@ HRESULT CRoom_Door::Render()
 	return S_OK;
 }
 
+void CRoom_Door::Start_Turn_Door(_bool _isTurnDoor)
+{
+	switch (m_iCurLevelID)
+	{
+		case Client::LEVEL_CHAPTER_2:
+			START_SFX(L"A_sfx_Desk_001_Intro", 40.f, false);
+			break;
+		case Client::LEVEL_CHAPTER_8:
+			START_SFX(L"A_sfx_C9_HG_Intro_door", 40.f, false);
+			break;
+		default:
+			break;
+	}
+	m_isTurnDoor = _isTurnDoor;
+}
+
 void CRoom_Door::Turn_Door(_float _fTimeDelta)
 {
 	if (false == m_isTurnDoor)
@@ -308,4 +324,9 @@ void CRoom_Door::Free()
 {
 
 	__super::Free();
+}
+
+void CRoom_Door::Start_Turn_DoorKnob(_bool _isTurnDoor)
+{
+	m_isTurnDoorKnob = _isTurnDoor;
 }

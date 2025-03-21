@@ -41045,7 +41045,8 @@
         ]
     },
     {
-        "CutScene_Next_CameraType": 1,
+      "CutScene_Next_CameraType": 1,
+        "Pause_After_CutScene" :  true,
         "CutScene_Tag": "Going_To_Humgrump",
         "CutScene_Time": [
             14.300000190734863,
@@ -56481,8 +56482,9 @@
         ]
     },
     {
-        "CutScene_Next_CameraType": 1,
-        "CutScene_Tag": "Boss_Intro",
+      "CutScene_Next_CameraType": 1,
+        "Pause_After_CutScene" :  true,
+        "CutScene_Tag": "Chapter8_Boos_Intro",
         "CutScene_Time": [
             10.399999618530273,
             0.0

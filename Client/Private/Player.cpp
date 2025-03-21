@@ -575,10 +575,24 @@ void CPlayer::Enter_Section(const _wstring _strIncludeSectionName)
 	_bool bPlatformer = static_cast<CSection_2D*>(pSection)->Is_Platformer();
 	Set_PlatformerMode(bPlatformer);
 
-	if (Is_ZetPackMode() && bPlatformer)
-		Equip_Part(PLAYER_PART_ZETPACK);
-	else
-		UnEquip_Part(PLAYER_PART_ZETPACK);
+	CSection_2D* pCurSection = dynamic_cast<CSection_2D*>(CSection_Manager::GetInstance()->Find_Section(m_strSectionName));
+	if (nullptr != pCurSection)
+	{
+		CSection_2D::SECTION_2D_PLAY_TYPE ePlayType = pCurSection->Get_Section_2D_PlayType();
+		if (CSection_2D::SECTION_2D_PLAY_TYPE::NARRAION == ePlayType
+			|| CSection_2D::SECTION_2D_PLAY_TYPE::WORLDMAP == ePlayType
+			|| CSection_2D::SECTION_2D_PLAY_TYPE::MINIGAME == ePlayType
+			)
+			m_isRender = false;
+		else
+			m_isRender = true;
+
+		if (m_iCurLevelID == LEVEL_CHAPTER_8 && pCurSection->Get_Section_2D_RenderType() == CSection_2D::SECTION_2D_RENDER_TYPE::SECTION_2D_BOOK)
+		{
+			if (TEXT("Chapter8_P0102") != _strIncludeSectionName)
+				m_pGameInstance->Set_GrayScale_VtxAnimMesh(0);
+		}
+	}
 
 	if (TEXT("Chapter2_P0102") == _strIncludeSectionName)
 	{
@@ -586,12 +600,6 @@ void CPlayer::Enter_Section(const _wstring _strIncludeSectionName)
 	}
 
 
-	/* 8챕터 book 들어갈때 */
-	if (m_iCurLevelID == LEVEL_CHAPTER_8 && pSection2D->Get_Section_2D_RenderType() == CSection_2D::SECTION_2D_RENDER_TYPE::SECTION_2D_BOOK)
-	{
-		if(TEXT("Chapter8_P0102") != _strIncludeSectionName)
-			m_pGameInstance->Set_GrayScale_VtxAnimMesh(0);
-	}
 }
 
 void CPlayer::Exit_Section(const _wstring _strIncludeSectionName)
@@ -606,11 +614,25 @@ void CPlayer::Exit_Section(const _wstring _strIncludeSectionName)
 	if (Is_ZetPackMode())
 		Equip_Part(PLAYER_PART_ZETPACK);
 
-	auto pSection = SECTION_MGR->Find_Section(_strIncludeSectionName);
-	CSection_2D* pSection2D = static_cast<CSection_2D*>(pSection);
+	CSection_2D* pCurSection = dynamic_cast<CSection_2D*>(CSection_Manager::GetInstance()->Find_Section(m_strSectionName));
+	if (nullptr != pCurSection)
+	{
+		CSection_2D::SECTION_2D_PLAY_TYPE ePlayType = pCurSection->Get_Section_2D_PlayType();
+		if (CSection_2D::SECTION_2D_PLAY_TYPE::NARRAION == ePlayType
+			|| CSection_2D::SECTION_2D_PLAY_TYPE::WORLDMAP == ePlayType
+			|| CSection_2D::SECTION_2D_PLAY_TYPE::MINIGAME == ePlayType
+			)
+			m_isRender = false;
+		else
+			m_isRender = true;
+
+		if (m_iCurLevelID == LEVEL_CHAPTER_8 && pCurSection->Get_Section_2D_RenderType() == CSection_2D::SECTION_2D_RENDER_TYPE::SECTION_2D_BOOK)
+			m_pGameInstance->Set_GrayScale_VtxAnimMesh(1);
+	}
+}
+
 	// section 나갈때 8챕터에서 흑백처리
-	if (m_iCurLevelID == LEVEL_CHAPTER_8 && pSection2D->Get_Section_2D_RenderType() == CSection_2D::SECTION_2D_RENDER_TYPE::SECTION_2D_BOOK)
-		m_pGameInstance->Set_GrayScale_VtxAnimMesh(1);
+	
 }
 
 
@@ -866,7 +888,7 @@ void CPlayer::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)
 	case Client::SHAPE_USE::SHAPE_TRIGER:
 		if (OBJECT_GROUP::MONSTER & _Other.pActorUserData->iObjectGroup)
 			return;
-		if (OBJECT_GROUP::MAPOBJECT & _Other.pActorUserData->iObjectGroup)
+		if (OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::INTERACTION_OBEJCT | OBJECT_GROUP::DYNAMIC_OBJECT & _Other.pActorUserData->iObjectGroup)
 			Event_SetSceneQueryFlag(_Other.pActorUserData->pOwner, _Other.pShapeUserData->iShapeIndex, true);
 		break;
 	}
@@ -2192,8 +2214,15 @@ void CPlayer::Set_Mode(PLAYER_MODE _eNewMode)
 			Get_ActorDynamic()->Set_Gravity(true);
 			Get_ActorDynamic()->Set_LinearDamping(0.f);
 			Equip_Part(PLAYER_PART_SWORD);
+			Equip_Part(PLAYER_PART_ZETPACK);
 		}
-		Equip_Part(PLAYER_PART_ZETPACK);
+		else
+		{
+			if (Is_PlatformerMode())
+				Equip_Part(PLAYER_PART_ZETPACK);
+			else
+				UnEquip_Part(PLAYER_PART_ZETPACK);
+		}
 		break;
 	case Client::CPlayer::PLAYER_MODE::PLAYER_MODE_CYBERJOT:
 	{
@@ -2202,14 +2231,7 @@ void CPlayer::Set_Mode(PLAYER_MODE _eNewMode)
 			break;
 		cout << "PLAYER_MODE_CYBERJOT" << endl;
 
-		m_pTargetCamera = static_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET));
-		CCameraPivot* pPivot = dynamic_cast<CCameraPivot*>(m_pGameInstance->Get_GameObject_Ptr(m_iCurLevelID, TEXT("Layer_CameraPivot"), 0));
-		if(pPivot)
-		{
-			CGameObject*  pManinTarget = pPivot->Get_MainTarget();
-			if(pManinTarget)
-				m_pCameraTargetWorldMatrix = pManinTarget->Get_ControllerTransform()->Get_WorldMatrix_Ptr();
-		}
+
 
 		Set_Kinematic(true);
 		//Get_ActorDynamic()->Set_Gravity(false);
@@ -2571,6 +2593,10 @@ void CPlayer::Key_Input(_float _fTimeDelta)
 		if (STATE::STAMP == Get_CurrentStateID())
 			Equip_Part(PLAYER_PART_BOMB_STMAP);
 	}
+	if (KEY_DOWN(KEY::NUM3))
+	{
+		Acquire_Item(PLAYER_2D_ITEM_ID::FATHER_BODY);
+	}
     if (KEY_DOWN(KEY::J))
     {
         //Set_State(CPlayer::EVICT);
@@ -2626,7 +2652,17 @@ void CPlayer::On_GainPlayerItem(_uint _eItem)
 void CPlayer::Update_CyberJot(_float _fTimeDelta)
 {
 	if (nullptr == m_pTargetCamera || nullptr == m_pCameraTargetWorldMatrix)
-		return;
+	{
+		m_pTargetCamera = static_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET));
+		CCameraPivot* pPivot = dynamic_cast<CCameraPivot*>(m_pGameInstance->Get_GameObject_Ptr(m_iCurLevelID, TEXT("Layer_CameraPivot"), 0));
+		if (pPivot)
+		{
+			CGameObject* pManinTarget = pPivot->Get_MainTarget();
+			if (pManinTarget)
+				m_pCameraTargetWorldMatrix = pManinTarget->Get_ControllerTransform()->Get_WorldMatrix_Ptr();
+		}
+
+	}
 
 	m_f3DCyberCurrentSpeed -= m_f3DCyberLinearDamping * _fTimeDelta;
 	if(m_f3DCyberCurrentSpeed < 0.f)

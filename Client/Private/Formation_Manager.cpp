@@ -136,13 +136,13 @@ HRESULT CFormation_Manager::Ready_Chapter8_Formation()
 	Register_Formation(pFormation);
 
 
-	//FormationDesc.tTransform3DDesc.vInitialPosition = _float3(36.f, 24.37f, 10.5f);
+	FormationDesc.tTransform3DDesc.vInitialPosition = _float3(36.f, 24.37f, 10.5f);
 
-	//pFormation = static_cast<CFormation*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_Formation"), &FormationDesc));
-	//if (nullptr == pFormation)
-	//	return E_FAIL;
+	pFormation = static_cast<CFormation*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_Formation"), &FormationDesc));
+	if (nullptr == pFormation)
+		return E_FAIL;
 
-	//Register_Formation(pFormation);
+	Register_Formation(pFormation);
 
 	return S_OK;
 }

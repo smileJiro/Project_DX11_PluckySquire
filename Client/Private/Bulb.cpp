@@ -57,7 +57,7 @@ HRESULT CBulb::Initialize(void* _pArg)
 		static_cast<CActor_Dynamic*>(m_pActorCom)->Set_Gravity(false);
 	}
 
-	m_fStickingStartTime = 1.f;
+	m_fStickingStartTime = 0.5f;
 
 	return S_OK;
 }
@@ -230,7 +230,7 @@ void CBulb::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
 
 void CBulb::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-	if(true == _pMyCollider->Is_Trigger())
+	if (true == _pMyCollider->Is_Trigger())
 	{
 		if (OBJECT_GROUP::PLAYER & _pOtherCollider->Get_CollisionGroupID())
 		{
@@ -260,15 +260,12 @@ void CBulb::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherColl
 				}
 			}
 		}
-		//if ((OBJECT_GROUP::PLAYER | OBJECT_GROUP::PLAYER_PROJECTILE) & _pOtherObject->Get_ObjectGroupID())
-		//{
-		//	if (BULB_2DCOLLIDER_USE::BULB_STICKING == _pMyCollider->Get_ColliderUse())
-		//	{
-		//		m_pTargetWorld = _pOtherObject->Get_ControllerTransform()->Get_WorldMatrix_Ptr();
-		//		m_isSticking = true;
-		//	}
-		//}
 	}
+}
+
+void CBulb::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
+{
+
 }
 
 void CBulb::Add_Shape()
@@ -426,7 +423,7 @@ HRESULT CBulb::Ready_Components(BULB_DESC* _pArg)
 		pCollider = nullptr;
 		CircleDesc = {};
 		CircleDesc.pOwner = this;
-		CircleDesc.fRadius = 100.f;
+		CircleDesc.fRadius = 150.f;
 		CircleDesc.vScale = { 1.f / fScaleX, 1.f / fScaleY };
 		CircleDesc.vOffsetPosition = { 0.f, 0.f };
 		CircleDesc.isBlock = false;

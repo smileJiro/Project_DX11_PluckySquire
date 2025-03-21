@@ -45,8 +45,8 @@ public:
 public:
 	_bool					Is_Turn_DoorKnob() { return m_isTurnDoorKnob; }
 
-	void					Start_Turn_Door(_bool _isTurnDoor) { m_isTurnDoor = _isTurnDoor; }
-	void					Start_Turn_DoorKnob(_bool _isTurnDoor) { m_isTurnDoorKnob = _isTurnDoor; }
+	void					Start_Turn_Door(_bool _isTurnDoor);
+	void					Start_Turn_DoorKnob(_bool _isTurnDoor);
 
 public:
 	void					Turn_Door(_float _fTimeDelta);

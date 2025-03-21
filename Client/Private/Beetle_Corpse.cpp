@@ -92,7 +92,7 @@ HRESULT CBeetle_Corpse::Initialize(void* _pArg)
 
 	Set_Animation(7);
 	Set_Progress(COORDINATE_3D, 7, 1.f);
-	//m_pControllerModel->Play_Animation(0.f);
+	m_pControllerModel->Play_Animation(0.f);
 	Set_PlayingAnim(false);
 
 

@@ -376,6 +376,7 @@ void CMonster::Monster_Death()
 			if (2 == (_int)ceil(m_pGameInstance->Compute_Random(0.f, 3.f)))
 			{
 				_float3 vPos; XMStoreFloat3(&vPos, Get_FinalPosition());
+				vPos.y += 0.5f;
 				CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bulb"), COORDINATE_3D, &vPos);
 			}
 	}

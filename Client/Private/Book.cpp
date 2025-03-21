@@ -602,7 +602,7 @@ void CBook::PageAction_End(COORDINATE _eCoord, _uint iAnimIdx)
 #pragma region 책 넘기는 Action
 
 	if (ACTION_LAST != m_eCurAction
-		//&& iAnimIdx == ACTION
+		&& iAnimIdx == ACTION
 		)
 	{
 		if (NEXT == m_eCurAction)
