@@ -250,6 +250,16 @@ HRESULT CSection_2D::Word_Action_To_Section(const _wstring& _strSectionTag, _uin
 	return S_OK;
 }
 
+HRESULT CSection_2D::Section_Enter(const _wstring& _strPreSectionTag)
+{
+	return E_NOTIMPL;
+}
+
+HRESULT CSection_2D::Section_Exit(const _wstring& _strNextSectionTag)
+{
+	return E_NOTIMPL;
+}
+
 HRESULT CSection_2D::Register_WorldCapture(CModelObject* _pModel)
 {
 	if (nullptr == m_pMap)

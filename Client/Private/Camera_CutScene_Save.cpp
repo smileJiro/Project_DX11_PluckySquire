@@ -172,7 +172,7 @@ void CCamera_CutScene_Save::Play_CutScene(_float _fTimeDelta)
 	m_pControllerTransform->LookAt_3D(XMVectorSetW(vAt, 1.f));
 	XMStoreFloat3(&m_vAt, vAt);
 
-	//Process_Movement(_fTimeDelta);
+	Process_Movement(_fTimeDelta);
 	Save_Data();
 
 	XMStoreFloat3(&m_vPrePosition, vPosition);
@@ -277,13 +277,13 @@ void CCamera_CutScene_Save::Process_Movement(_float _fTimeDelta)
 		Start_Changing_LookAt(fTimeOffset, XMLoadFloat3(&(*pKeyFrames)[iCurKeyFrameIdx + 1].vAt), (*pKeyFrames)[iCurKeyFrameIdx + 1].iAtRatioType);
 		Start_Zoom(fTimeOffset, (CCamera::ZOOM_LEVEL)(*pKeyFrames)[iCurKeyFrameIdx + 1].iZoomLevel, (RATIO_TYPE)(*pKeyFrames)[iCurKeyFrameIdx + 1].iZoomRatioType);
 
-		Slerp_At(iCurKeyFrameIdx, pKeyFrames);
+		//Slerp_At(iCurKeyFrameIdx, pKeyFrames);
 		//Action_LookAt(_fTimeDelta);
 	}
 
-	_vector vAt = XMLoadFloat3(&m_vAt) + XMLoadFloat3(&m_vAtOffset) + XMLoadFloat3(&m_vShakeOffset);
+	//_vector vAt = XMLoadFloat3(&m_vAt) + XMLoadFloat3(&m_vAtOffset) + XMLoadFloat3(&m_vShakeOffset);
 
-	m_pControllerTransform->LookAt_3D(XMVectorSetW(vAt, 1.f));
+	//m_pControllerTransform->LookAt_3D(XMVectorSetW(vAt, 1.f));
 }
 
 void CCamera_CutScene_Save::Initialize_CameraInfo(INITIAL_DATA* _pTargetPos)

@@ -298,6 +298,7 @@ void CPlayerSword::Update(_float _fTimeDelta)
             m_pThrowTrailEffect->Active_Effect();
             Set_State(RETRIEVING);
 
+            m_pGameInstance->Start_SFX(_wstring(L"A_sfx_sword_pull-00") + to_wstring(rand() % 5), 70.f, false);
             m_pBeamEffect->Set_StartPosition(m_pPlayer->Get_CenterPosition());
             m_pBeamEffect->Set_EndPosition(XMLoadFloat3((_float3*)&m_WorldMatrices[COORDINATE_3D].m[3]));
             m_pBeamEffect->Set_Active(true);
@@ -519,8 +520,7 @@ void CPlayerSword::Throw(_fvector _vDirection)
     m_fFlyingTimeAcc = 0;
 
     m_vThrowDirection = _vDirection;
-    m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_small_efforts-") + to_wstring(rand() % 5), 0.15f, 25.f);
-    Set_State(OUTING);
+     Set_State(OUTING);
     if (COORDINATE_2D == eCoord)
     {
         Set_Position(m_pPlayer->Get_CenterPosition());
@@ -595,6 +595,7 @@ void CPlayerSword::On_StateChange()
             Switch_Animation(2);
         }
         Set_AttackEnable(true, CPlayer::ATTACK_TYPE_THKROWSWORD);
+
         break;
     }
     case Client::CPlayerSword::STUCK:

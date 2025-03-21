@@ -229,7 +229,7 @@ HRESULT CMaterial::Ready_PixelConstBuffer()
 
 	D3D11_USAGE eUsage = D3D11_USAGE_DYNAMIC;
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 	eUsage = D3D11_USAGE_DYNAMIC;
 #endif // _DEBUG
 

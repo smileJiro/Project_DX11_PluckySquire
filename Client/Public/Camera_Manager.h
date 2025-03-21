@@ -30,7 +30,10 @@ public:
 	void				Level_Exit(_int _iChangeLevelID, _int _iNextChangeLevelID);
 
 public:
-	CCamera*			Get_CurrentCamera() { return m_Cameras[m_eCurrentCameraType]; }
+	CCamera*			Get_CurrentCamera() 
+	{
+		return m_Cameras[m_eCurrentCameraType]; 
+	}
 	CCamera*			Get_Camera(_uint _iCameraType) { return m_Cameras[_iCameraType]; }
 	_vector				Get_CameraVector(CTransform::STATE _eState);						// 현재 카메라 Right, Up, Look, Pos 가져오는 함수
 	_uint				Get_CameraType() { return m_eCurrentCameraType; }

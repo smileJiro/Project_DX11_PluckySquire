@@ -75,7 +75,7 @@ void CMinigame_Sneak::Update(_float _fTimeDelta)
 	if (NONE == m_eGameState)
 		return;
 
-//#ifdef _DEBUG
+#ifdef _DEBUG
 	if (KEY_PRESSING(KEY::CTRL) && KEY_DOWN(KEY::R))
 	{
 		GameOver();
@@ -90,7 +90,7 @@ void CMinigame_Sneak::Update(_float _fTimeDelta)
 		Start_Stage();
 		m_fAccTime = 0.f;
 	}
-//#endif
+#endif
 	m_fAccTime += _fTimeDelta;
 
 	switch (m_eGameState)

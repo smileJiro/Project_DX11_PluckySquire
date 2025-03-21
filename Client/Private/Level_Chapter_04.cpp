@@ -197,6 +197,7 @@ HRESULT CLevel_Chapter_04::Initialize(LEVEL_ID _eLevelID)
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_TRIGGER, OBJECT_GROUP::WORD_GAME);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_PROJECTILE, OBJECT_GROUP::WORD_GAME);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_PROJECTILE, OBJECT_GROUP::MAPOBJECT);
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_PROJECTILE, OBJECT_GROUP::BLOCKER);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::INTERACTION_OBEJCT, OBJECT_GROUP::WORD_GAME);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::INTERACTION_OBEJCT, OBJECT_GROUP::BLOCKER);
 
@@ -230,9 +231,6 @@ HRESULT CLevel_Chapter_04::Initialize(LEVEL_ID _eLevelID)
 	/* Set Shader PlayerHideColor */
 	m_pGameInstance->Set_PlayerHideColor(_float3(1.0f, 0.24f, 0.4666f), true);
 
-	/* Chapter4 Intro Trigger 동적 생성 임시 코드*/
-	//Create_IntroTrigger();
-	// 내거 -> Chapter4_Intro
 	return S_OK;
 }
 
@@ -299,11 +297,7 @@ void CLevel_Chapter_04::Update(_float _fTimeDelta)
 	//
 	//}
 
-#ifdef _DEBUG	//if (KEY_DOWN(KEY::I))
-	//{
-	//	CTrigger_Manager::GetInstance()->Register_TriggerEvent(L"Next_Chapter_Event", 0);
-	//}
-
+#ifdef _DEBUG	
 	if (KEY_DOWN(KEY::P))
 		CCamera_Manager::GetInstance()->Start_ZoomIn();
 
@@ -371,22 +365,6 @@ void CLevel_Chapter_04::Update(_float _fTimeDelta)
 	//	CTrigger_Manager::GetInstance()->Load_Trigger(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("../Bin/DataFiles/Trigger/Chapter2_Trigger.json"));
 	//	CTrigger_Manager::GetInstance()->Load_TriggerEvents(TEXT("../Bin/DataFiles/Trigger/Trigger_Events.json"));
 	//}
-
-	if (KEY_PRESSING(KEY::CTRL))
-	{
-		if (KEY_DOWN(KEY::NUM5))
-		{
-			CButterGrump::MONSTER_DESC Boss_Desc;
-			Boss_Desc.iCurLevelID = m_eLevelID;
-			Boss_Desc.eStartCoord = COORDINATE_3D;
-			Boss_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-			//Boss_Desc.tTransform3DDesc.vInitialPosition = _float3(-3.f, 15.35f, -80.0f);
-			Boss_Desc.tTransform3DDesc.vInitialPosition = _float3(0.53f, 60.35f, -8.0f);
-
-			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_4, TEXT("Prototype_GameObject_ButterGrump"), m_eLevelID, TEXT("Layer_Monster"), &Boss_Desc)))
-				return;
-		}
-	}
 
 }
 
@@ -1481,30 +1459,31 @@ HRESULT CLevel_Chapter_04::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 
 
 	CDoor_Red::DOOR_RED_DESC DoorRedDesc = {};
-	DoorRedDesc.tTransform2DDesc.vInitialPosition = _float3(0.f, 100.f, 0.f);
+	DoorRedDesc.tTransform2DDesc.vInitialPosition = _float3(1010.f, -530.f, 0.f);
 	DoorRedDesc.iCurLevelID = m_eLevelID;
-	DoorRedDesc.isHorizontal = true;
-	DoorRedDesc.eSize = CDoor_2D::LARGE;
-	DoorRedDesc.eInitialState = CDoor_2D::OPENED;
+	DoorRedDesc.isHorizontal = false;
+	DoorRedDesc.eSize = CDoor_2D::SMALL;
+	DoorRedDesc.eInitialState = CDoor_2D::CLOSED;
 	DoorRedDesc.strSectionTag = L"Chapter4_P0102";
-	DoorRedDesc.strLayerTag = L"";
-	DoorRedDesc.isCountLayer = false;
+	DoorRedDesc.strLayerTag = L"Layer_Monster_Door1";
+
+	DoorRedDesc.fTargetDiff = 13.f;
 
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorRed"),
 		m_eLevelID, L"Layer_MapGimmick", &DoorRedDesc)))
 		return E_FAIL;
 
-			DoorRedDesc = {};
-		DoorRedDesc.tTransform2DDesc.vInitialPosition = _float3(-1151.00f, 95.00f, 0.f);
-		DoorRedDesc.iCurLevelID = m_eLevelID;
-		DoorRedDesc.isHorizontal = false;
-		DoorRedDesc.eSize = CDoor_2D::MED;
-		DoorRedDesc.eInitialState = CDoor_2D::CLOSED;
-		DoorRedDesc.strSectionTag = L"Chapter4_P0304";
-		DoorRedDesc.strLayerTag = L"Layer_Monster_Door_Book";
+	DoorRedDesc = {};
+	DoorRedDesc.tTransform2DDesc.vInitialPosition = _float3(-1151.00f, 95.00f, 0.f);
+	DoorRedDesc.iCurLevelID = m_eLevelID;
+	DoorRedDesc.isHorizontal = false;
+	DoorRedDesc.eSize = CDoor_2D::MED;
+	DoorRedDesc.eInitialState = CDoor_2D::CLOSED;
+	DoorRedDesc.strSectionTag = L"Chapter4_P0304";
+	DoorRedDesc.strLayerTag = L"Layer_Monster_Door_Book";
 
-		DoorRedDesc.fTargetDiff = 13.f;
+	DoorRedDesc.fTargetDiff = 13.f;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorRed"),
 		m_eLevelID, L"Layer_MapGimmick", &DoorRedDesc)))
@@ -1614,21 +1593,6 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Friends(const _wstring& _strLayerTag)
 		//CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(strFriendTag);
 	} /* Friend_Violet */
 	return S_OK;
-}
-
-void CLevel_Chapter_04::Create_IntroTrigger()
-{
-	CTriggerObject::TRIGGEROBJECT_DESC Desc = {};
-	Desc.vHalfExtents = { 35.f, 35.f, 0.f };
-	Desc.iTriggerType = (_uint)TRIGGER_TYPE::EVENT_TRIGGER;
-	Desc.szEventTag = TEXT("Chapter4_Intro");
-	Desc.eConditionType = CTriggerObject::TRIGGER_ENTER;
-	Desc.isReusable = false; // 한 번 하고 삭제할 때
-	Desc.eStartCoord = COORDINATE_2D;
-	Desc.tTransform2DDesc.vInitialPosition = { -568.347412f,-22.5205593f, 0.f };
-
-	CSection* pSection = CSection_Manager::GetInstance()->Find_Section(TEXT("Chapter4_P0708"));
-	CTrigger_Manager::GetInstance()->Create_TriggerObject(LEVEL_STATIC, LEVEL_CHAPTER_2, &Desc, pSection);
 }
 
 HRESULT CLevel_Chapter_04::Map_Object_Create(_wstring _strFileName)

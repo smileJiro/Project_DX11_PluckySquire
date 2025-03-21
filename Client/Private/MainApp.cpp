@@ -62,7 +62,7 @@ HRESULT CMainApp::Initialize()
 	EngineDesc.isNewRenderer = true;
 #ifdef _DEBUG
 	EngineDesc.eImportMode |= IMPORT_IMGUI | IMPORT_MESH_PICKING; // IMPORT_IMGUI | IMPORT_MESH_PICKING;NONE_IMPORT
-#elif NDEBUG
+#elif _DEBUG
 	EngineDesc.eImportMode |= IMPORT_IMGUI | IMPORT_IMGUI;
 #endif
 	
@@ -105,17 +105,6 @@ void CMainApp::Progress(_float _fTimeDelta)
 	// TODO :: 여기가 맞는지? >> 맞는 것 같삼.
 	CSection_Manager::GetInstance()->Section_AddRenderGroup_Process();
 	m_pGameInstance->Late_Update_Engine(_fTimeDelta);
-
-	if (KEY_DOWN(KEY::K))
-	{
-		CFriend_Controller::GetInstance()->Start_Train();
-
-	}
-	if (KEY_DOWN(KEY::J))
-	{
-		CFriend_Controller::GetInstance()->End_Train();
-
-	}
 
 	CTrail_Manager::GetInstance()->Update(_fTimeDelta);
 

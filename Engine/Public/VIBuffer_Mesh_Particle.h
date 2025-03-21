@@ -63,7 +63,7 @@ public:
 	virtual CComponent* Clone(void* _pArg);
 	virtual void Free() override;
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 public:
 	HRESULT Initialize_Prototype(ifstream& _inFile, _uint _iNumInstances, _fmatrix _PreTransformMatrix, _float _fSpawnRate);
 

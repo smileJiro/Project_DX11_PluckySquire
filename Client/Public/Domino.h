@@ -14,6 +14,7 @@ public:
 	virtual HRESULT			Render() override;
 
 	virtual void OnContact_Modify(const COLL_INFO& _0, const COLL_INFO& _1, CModifiableContacts& _ModifiableContacts, _bool _bIm0)override;
+	virtual void OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, const vector<PxContactPairPoint>& _ContactPointDatas) override;
 
 public:
 	static CDomino* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);

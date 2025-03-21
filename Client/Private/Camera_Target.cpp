@@ -428,10 +428,10 @@ void CCamera_Target::Set_PreArmDataState(_int _iTriggerID, _bool _isReturn)
 
 void CCamera_Target::Key_Input(_float _fTimeDelta)
 {
-	Imgui(_fTimeDelta);
 
 #ifdef _DEBUG
-
+	Imgui(_fTimeDelta);
+#endif
 #pragma region RB 카메라 Arm 회전
 	_long		MouseMove = {};
 	_vector		fRotation = {};
@@ -457,21 +457,23 @@ void CCamera_Target::Key_Input(_float _fTimeDelta)
 
 		m_pCurArm->Set_Rotation(fRotation);
 	}
-	else if (MOUSE_PRESSING(MOUSE_KEY::RB)) {
+	else if (KEY_PRESSING(KEY::ALT)) {
+		if (MOUSE_PRESSING(MOUSE_KEY::RB)) {
 
-		if (MouseMove = MOUSE_MOVE(MOUSE_AXIS::X))
-		{
-			fRotation = XMVectorSetY(fRotation, MouseMove * _fTimeDelta * 0.3f);
+			if (MouseMove = MOUSE_MOVE(MOUSE_AXIS::X))
+			{
+				fRotation = XMVectorSetY(fRotation, MouseMove * _fTimeDelta * 0.3f);
 
+			}
+			if (MouseMove = MOUSE_MOVE(MOUSE_AXIS::Y))
+			{
+				fRotation = XMVectorSetX(fRotation, MouseMove * _fTimeDelta * -0.3f);
+			}
+
+			m_pCurArm->Set_Rotation(fRotation);
 		}
-		if (MouseMove = MOUSE_MOVE(MOUSE_AXIS::Y))
-		{
-			fRotation = XMVectorSetX(fRotation, MouseMove * _fTimeDelta * -0.3f);
-		}
-
-		m_pCurArm->Set_Rotation(fRotation);
 	}
-#pragma endregion
+#ifdef _DEBUG
 
 #pragma region 예시 코드
 	/*if (KEY_DOWN(KEY::K)) {
@@ -522,28 +524,6 @@ void CCamera_Target::Key_Input(_float _fTimeDelta)
 		Set_FreezeExit(FREEZE_Z, 0);
 		//Set_FreezeExit(FREEZE_Y, 0);
 	}
-
-	//static RETURN_ARMDATA tData = {};
-	//static RETURN_ARMDATA tData1 = {};
-	//if (KEY_DOWN(KEY::Y)) {
-	//	Set_ResetData();
-	//}
-	//if (KEY_DOWN(KEY::I)) {
-	//	tData = Save_ArmData();
-	//}
-	//if (KEY_DOWN(KEY::G)) {
-	//	tData1 = Save_ArmData();
-	//}
-	//if (KEY_DOWN(KEY::K)) {
-	//	Load_SavedArmData(tData, 1.f);
-	//}
-	//if (KEY_DOWN(KEY::F)) {
-	//	Load_SavedArmData(tData1, 1.f);
-	//}
-	//if (KEY_DOWN(KEY::J)) {
-	//	Start_ResetArm_To_SettingPoint(1.f);
-	//}
-
 #endif
 }
 
@@ -918,7 +898,7 @@ void CCamera_Target::Change_FreezeOffset(_float _fTimeDelta)
 	XMStoreFloat3(&m_vFreezeOffset, vFreezeOffset);
 }
 
-//#ifdef _DEBUG
+#ifdef _DEBUG
 
 void CCamera_Target::Imgui(_float _fTimeDelta)
 {
@@ -1029,7 +1009,7 @@ void CCamera_Target::Imgui(_float _fTimeDelta)
 
 	ImGui::End();
 }
-//#endif // DEBUG
+#endif // DEBUG
 
 void CCamera_Target::Load_InitialArmTag()
 {

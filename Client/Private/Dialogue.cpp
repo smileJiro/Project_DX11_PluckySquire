@@ -8,6 +8,8 @@
 
 #include "Section_Manager.h"
 #include "Trigger_Manager.h"
+#include "Shop_Manager.h"
+#include "Camera_Manager.h"
 
 CDialog::CDialog(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CUI(_pDevice, _pContext)
@@ -80,7 +82,49 @@ void CDialog::Update(_float _fTimeDelta)
 	{
 		_float2 vRTSize = SECTION_MGR->Get_Section_RenderTarget_Size(Get_Dialogue(m_tDialogIndex)[0].Section);
 
-
+		if (true == Get_Dialogue(m_tDialogId)[0].lines[m_iCurrentLineIndex].is2D)
+		{
+			if (m_iCurrentLineIndex != Get_Dialogue(m_tDialogId)[0].lines.size() - 1)
+			{
+				m_pGameInstance->Start_SFX_Delay(TEXT("DialogWriting_sfx"), 0.f, 30.f, false);
+				m_pGameInstance->Start_SFX_Delay(TEXT("DialogWriting_sfx"), 0.1f, 30.f, false);
+				m_pGameInstance->Start_SFX_Delay(TEXT("DialogWriting_sfx"), 0.2f, 30.f, false);
+				m_pGameInstance->Start_SFX_Delay(TEXT("DialogWriting_sfx"), 0.3f, 30.f, false);
+				m_pGameInstance->Start_SFX_Delay(TEXT("DialogWriting_sfx"), 0.4f, 30.f, false);
+			}
+		}
+		else
+		{
+			if (false == Get_Dialogue(m_tDialogId)[0].lines[m_iCurrentLineIndex].MTMSound)
+			{
+				if (m_iCurrentLineIndex != Get_Dialogue(m_tDialogId)[0].lines.size() - 1)
+				{
+					m_pGameInstance->Start_SFX_Delay(TEXT("DialogWriting_sfx"), 0.f, 30.f, false);
+					m_pGameInstance->Start_SFX_Delay(TEXT("DialogWriting_sfx"), 0.1f, 30.f, false);
+					m_pGameInstance->Start_SFX_Delay(TEXT("DialogWriting_sfx"), 0.2f, 30.f, false);
+					m_pGameInstance->Start_SFX_Delay(TEXT("DialogWriting_sfx"), 0.3f, 30.f, false);
+					m_pGameInstance->Start_SFX_Delay(TEXT("DialogWriting_sfx"), 0.4f, 30.f, false);
+					m_pGameInstance->Start_SFX_Delay(TEXT("DialogWriting_sfx"), 0.5f, 30.f, false);
+					m_pGameInstance->Start_SFX_Delay(TEXT("DialogWriting_sfx"), 0.6f, 30.f, false);
+					m_pGameInstance->Start_SFX_Delay(TEXT("DialogWriting_sfx"), 0.7f, 30.f, false);
+				}
+			}
+			else
+			{
+				if (m_iCurrentLineIndex != Get_Dialogue(m_tDialogId)[0].lines.size() - 1)
+				{
+					m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_minibeard_plastic-001"), 0.f, 30.f, false);
+					m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_minibeard_plastic-001"), 0.11f, 30.f, false);
+					m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_minibeard_plastic-001"), 0.22f, 30.f, false);
+					m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_minibeard_plastic-001"), 0.33f, 30.f, false);
+					m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_minibeard_plastic-001"), 0.44f, 30.f, false);
+					m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_minibeard_plastic-001"), 0.55f, 30.f, false);
+					m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_minibeard_plastic-001"), 0.66f, 30.f, false);
+					m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_minibeard_plastic-001"), 0.77f, 30.f, false);
+					m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_minibeard_plastic-001"), 0.88f, 30.f, false);
+				}
+			}
+		}
 		
 
 
@@ -222,6 +266,10 @@ void CDialog::UpdateDialogueLine()
 			currentData.Section                 /* 섹션 이름 */
 		);
 	}
+
+
+	
+
 }
 
 HRESULT CDialog::NextLevelLoadJson(_int _iNextLevel)
@@ -388,6 +436,11 @@ HRESULT CDialog::LoadFromJson(const std::wstring& filePath)
 					if (line.contains("isPortrait") && line["isPortrait"].is_boolean())
 					{
 						dialogLine.isPortrait = line["isPortrait"].get<_bool>();
+					}
+
+					if (line.contains("MTMSound") && line["MTMSound"].is_boolean())
+					{
+						dialogLine.MTMSound = line["MTMSound"].get<_bool>();
 					}
 
 					if (line.contains("TalkerIndex") && line["TalkerIndex"].is_number_integer())
@@ -1348,6 +1401,49 @@ void CDialog::NextDialogue(_float2 _RTSize)
 // 처음 다이얼로그 입장 시 위치 계산해주는 함수
 void CDialog::FirstCalPos(_float2 _RTSize)
 {
+	if (true == Get_Dialogue(m_tDialogId)[0].lines[m_iCurrentLineIndex].is2D)
+	{
+		if (m_iCurrentLineIndex != Get_Dialogue(m_tDialogId)[0].lines.size())
+		{
+			m_pGameInstance->Start_SFX_Delay(TEXT("DialogWriting_sfx"), 0.f, 30.f, false);
+			m_pGameInstance->Start_SFX_Delay(TEXT("DialogWriting_sfx"), 0.1f, 30.f, false);
+			m_pGameInstance->Start_SFX_Delay(TEXT("DialogWriting_sfx"), 0.2f, 30.f, false);
+			m_pGameInstance->Start_SFX_Delay(TEXT("DialogWriting_sfx"), 0.3f, 30.f, false);
+			m_pGameInstance->Start_SFX_Delay(TEXT("DialogWriting_sfx"), 0.4f, 30.f, false);
+		}
+	}
+	else
+	{
+		if (false == Get_Dialogue(m_tDialogId)[0].lines[m_iCurrentLineIndex].MTMSound)
+		{
+			if (m_iCurrentLineIndex != Get_Dialogue(m_tDialogId)[0].lines.size())
+			{
+				m_pGameInstance->Start_SFX_Delay(TEXT("DialogWriting_sfx"), 0.f, 30.f, false);
+				m_pGameInstance->Start_SFX_Delay(TEXT("DialogWriting_sfx"), 0.1f, 30.f, false);
+				m_pGameInstance->Start_SFX_Delay(TEXT("DialogWriting_sfx"), 0.2f, 30.f, false);
+				m_pGameInstance->Start_SFX_Delay(TEXT("DialogWriting_sfx"), 0.3f, 30.f, false);
+				m_pGameInstance->Start_SFX_Delay(TEXT("DialogWriting_sfx"), 0.4f, 30.f, false);
+			}
+		}
+		else
+		{
+			if (m_iCurrentLineIndex != Get_Dialogue(m_tDialogId)[0].lines.size())
+			{
+				m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_minibeard_plastic-001"), 0.f, 30.f, false);
+				m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_minibeard_plastic-001"), 0.11f, 30.f, false);
+				m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_minibeard_plastic-001"), 0.22f, 30.f, false);
+				m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_minibeard_plastic-001"), 0.33f, 30.f, false);
+				m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_minibeard_plastic-001"), 0.44f, 30.f, false);
+				m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_minibeard_plastic-001"), 0.55f, 30.f, false);
+				m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_minibeard_plastic-001"), 0.66f, 30.f, false);
+				m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_minibeard_plastic-001"), 0.77f, 30.f, false);
+				m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_minibeard_plastic-001"), 0.88f, 30.f, false);
+			}
+		}
+	}
+
+
+
 
 	CPlayer* pPlayer = Uimgr->Get_Player();
 	assert(pPlayer);
@@ -1754,6 +1850,15 @@ void CDialog::isOpenPanel(_tchar* _DialogId)
 
 		// TODO :: 이거 끝나는거 어떻게 할지?
 		Uimgr->Set_DialogueFinishShopPanel(true);
+
+		// 효림 상점 카메라
+		CGameObject* pShop = CShop_Manager::GetInstance()->Get_ShopBG();
+		// 1. Target 변경
+		CCamera_Manager::GetInstance()->Change_CameraTarget(pShop, 0.5f);
+		// 2. Arm Data 저장
+		CCamera_Manager::GetInstance()->Set_ResetData(CCamera_Manager::TARGET_2D);
+		// 3. Arm Length 변경
+		CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Decrease(CCamera_Manager::TARGET_2D, 0.5f, 2.f, EASE_IN_OUT);
 	}
 
 

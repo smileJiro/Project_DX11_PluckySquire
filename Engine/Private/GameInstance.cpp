@@ -179,7 +179,7 @@ void CGameInstance::Late_Update_Engine(_float fTimeDelta)
 
 	m_pPipeLine->Update();
 	m_pLight_Manager->Update(fTimeDelta);
-#ifdef _DEBUG
+#ifdef NDEBUG
 	if (m_pNewRenderer)
 	{
 		m_pNewRenderer->Update_Imgui();
@@ -451,7 +451,7 @@ CGameObject* CGameInstance::Get_GameObject_Ptr(_int _iLevelID, const _wstring& _
 	return m_pObject_Manager->Get_GameObject_Ptr(_iLevelID, _strLayerTag, _iObjectIndex);
 }
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 map<const _wstring, class CLayer*>* CGameInstance::Get_Layers_Ptr()
 {
 	return m_pObject_Manager->Get_Layers_Ptr();
@@ -468,7 +468,7 @@ HRESULT CGameInstance::Add_RenderObject(CRenderer::RENDERGROUP _eRenderGroup, CG
 	return m_pRenderer->Add_RenderObject(_eRenderGroup, _pRenderObject);
 }
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 HRESULT CGameInstance::Add_DebugComponent(CComponent* _pDebugCom)
 {
 	if (true == m_isNewRenderer)
@@ -640,7 +640,7 @@ void CGameInstance::Set_GrayScale_VtxAnimMesh(_int _isGrayScale)
 	m_pNewRenderer->Set_GrayScale_VtxAnimMesh(_isGrayScale);
 }
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 
 HRESULT CGameInstance::Add_DebugComponent_New(CComponent* _pDebugCom)
 {
@@ -1050,6 +1050,14 @@ void CGameInstance::Start_BGM(const wstring& strBGMTag, _float _fVolume)
 	return m_pSound_Manager->Start_BGM(strBGMTag, _fVolume);
 }
 
+void CGameInstance::Transition_BGM(const _wstring& strBGMTag, _float _fVolume, _float _fFactor)
+{
+	if (nullptr == m_pSound_Manager)
+		return;
+
+	return m_pSound_Manager->Transition_BGM(strBGMTag, _fVolume, _fFactor);
+}
+
 void CGameInstance::Stop_BGM()
 {
 	if (nullptr == m_pSound_Manager)
@@ -1096,6 +1104,22 @@ void CGameInstance::Set_BGMVolume(_float _fVolume)
 		return;
 
 	return m_pSound_Manager->Set_BGMVolume(_fVolume);
+}
+
+void CGameInstance::Set_SFXTargetVolume(const _wstring& _strSFXTag, _float _fTargetVolume, _float _fFactor)
+{
+	if (nullptr == m_pSound_Manager)
+		return;
+
+	return m_pSound_Manager->Set_SFXTargetVolume(_strSFXTag, _fTargetVolume, _fFactor);
+}
+
+void CGameInstance::Set_BGMTargetVolume(_float _fTargetVolume, _float _fFactor)
+{
+	if (nullptr == m_pSound_Manager)
+		return;
+
+	return m_pSound_Manager->Set_BGMTargetVolume(_fTargetVolume, _fFactor);
 }
 
 HRESULT CGameInstance::Load_SFX(const wstring& strSFXTag, const wstring& strSFXFilePath)
@@ -1247,7 +1271,7 @@ void CGameInstance::Render_DrawData_Imgui()
 
 	return m_pImgui_Manager->Render_DrawData();
 }
-#ifdef _DEBUG
+#ifdef NDEBUG
 HRESULT	CGameInstance::Imgui_Select_Debug_ObjectInfo(const wstring _strLayerTag, _uint _iObjectId)
 {
 	if (nullptr == m_pImgui_Manager)
@@ -1595,7 +1619,7 @@ HRESULT CGameInstance::Physx_Render()
 }
 
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 
 HRESULT CGameInstance::Ready_RT_Debug(const _wstring& _strTargetTag, _float _fX, _float _fY, _float _fSizeX, _float _fSizeY)
 {

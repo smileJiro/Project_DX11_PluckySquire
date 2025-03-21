@@ -43,6 +43,26 @@ HRESULT CLogo_BackGround::Initialize(void* _pArg)
 	if (FAILED(Ready_Objects()))
 		return E_FAIL;
 
+
+	switch (m_eBackGroundType)
+	{
+	case MAIN_JOT :
+	{
+		m_pGameInstance->Start_BGM(_wstring(L"LCD_MUS_TITLEMUSIC_FULL"), 40.f);
+		m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_jot_title_screen"), 0.3f, 30.f, false);
+	}
+	break;
+
+	case MAIN_HUMGRUMP :
+	{
+		
+		m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_C9_OnceUponATime"), 0.15f, 30.f, false);
+		m_pGameInstance->Start_BGM(_wstring(L"LCD_MUS_C09_MAGNIFICENTHUMGRUMP_TITLESCREEN_FULL"), 60.f);
+	}
+	break;
+	}
+
+
 	return S_OK;
 }
 
