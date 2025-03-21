@@ -61,7 +61,8 @@ void CPlayerState_Clamber::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 		m_pOwner->Set_Position(m_vClamberEndPosition);
 		m_pOwner->LookDirectionXZ_Kinematic(-m_vClamberNormal);
 		m_pOwner->Set_Kinematic(false);
-		m_pOwner->Equip_Part(CPlayer::PLAYER_PART_SWORD);
+		if (m_pOwner->Is_SwordHandling())
+			m_pOwner->Equip_Part(CPlayer::PLAYER_PART_SWORD);
 		m_pOwner->Set_State(CPlayer::IDLE);
 	}
 }

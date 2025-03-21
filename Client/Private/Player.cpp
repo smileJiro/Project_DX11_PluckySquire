@@ -2176,7 +2176,11 @@ void CPlayer::Set_Mode(PLAYER_MODE _eNewMode)
 		m_pTargetCamera = static_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET));
 		CCameraPivot* pPivot = dynamic_cast<CCameraPivot*>(m_pGameInstance->Get_GameObject_Ptr(m_iCurLevelID, TEXT("Layer_CameraPivot"), 0));
 		if(pPivot)
-			m_pCameraTargetWorldMatrix = pPivot->Get_MainTarget()->Get_ControllerTransform()->Get_WorldMatrix_Ptr();
+		{
+			CGameObject*  pManinTarget = pPivot->Get_MainTarget();
+			if(pManinTarget)
+				m_pCameraTargetWorldMatrix = pManinTarget->Get_ControllerTransform()->Get_WorldMatrix_Ptr();
+		}
 
 		Set_Kinematic(true);
 		//Get_ActorDynamic()->Set_Gravity(false);
@@ -2185,6 +2189,7 @@ void CPlayer::Set_Mode(PLAYER_MODE _eNewMode)
 		Equip_Part(PLAYER_PART_VISOR);
 		Equip_Part(PLAYER_PART_ZETPACK);
 		Equip_Part(PLAYER_PART_CYBERCURSOR);
+
 
 		if (nullptr != m_pZetPack)
 			m_pZetPack->Switch_State(CZetPack::STATE_CYBER);
@@ -2580,10 +2585,20 @@ void CPlayer::Key_Input(_float _fTimeDelta)
             //m_pActorCom->Set_GlobalPose(_float3(0.f, 20.f, 47.f));
         }
     }
-    //if (KEY_DOWN(KEY::J))
-    //{
-    //    Set_State(CPlayer::EVICT);
-    //}
+    if (KEY_DOWN(KEY::J))
+    {
+        //Set_State(CPlayer::EVICT);
+		CPlayerData_Manager* pPDM =  CPlayerData_Manager::GetInstance();
+		pPDM->Get_PlayerItem(TEXT("Flipping_Glove"));
+		pPDM->Get_PlayerItem(TEXT("Tilting_Glove"));
+		pPDM->Get_PlayerItem(TEXT("Stop_Stamp"));
+		pPDM->Get_PlayerItem(TEXT("Bomb_Stamp"));
+		pPDM->Get_PlayerItem(TEXT("Sword"));
+		pPDM->UP_JumpSkillLevel();
+		pPDM->UP_ThrowSkillLevel();
+		pPDM->UP_WhirlSkillLevel();
+		pPDM->UP_AttackDamageLevel();
+    }
 }
 
 
