@@ -288,6 +288,7 @@ void CLogo_BG::ProcesssByIndex(_int _iIndex)
 	}
 	break;
 	}
+	m_pGameInstance->End_BGM();
 }
 
 
