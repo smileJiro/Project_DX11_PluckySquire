@@ -259,6 +259,8 @@ public :
 
 	void							Set_LoadLevel(LEVEL_ID _iLevelID) { m_iLoadLevel = _iLevelID; }
 
+	void							Set_PlayerInto(const _wstring& _strSectionTag, _bool _isPlayerInto);
+	_bool							Is_PlayerInto(const _wstring& _strSectionTag);
 
 private:
 	/// <summary>

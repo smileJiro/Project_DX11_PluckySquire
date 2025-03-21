@@ -547,6 +547,22 @@ HRESULT CSection_Manager::Word_Action_To_Section(const _wstring& _strSectionTag,
 	return pSection_2D->Word_Action_To_Section(_strSectionTag, _iControllerIndex, _iContainerIndex, _iWordType, _isRegistered);
 }
 
+void CSection_Manager::Set_PlayerInto(const _wstring& _strSectionTag, _bool _isPlayerInto)
+{
+	CSection* pCurSection = Find_Section(_strSectionTag);
+	if (nullptr == pCurSection)
+		return;
+	pCurSection->Set_PlayerInto(_isPlayerInto);
+}
+
+_bool CSection_Manager::Is_PlayerInto(const _wstring& _strSectionTag)
+{
+	CSection* pCurSection = Find_Section(_strSectionTag);
+	if (nullptr == pCurSection)
+		return false;
+	return pCurSection->Is_PlayerInto();
+}
+
 HRESULT CSection_Manager::Register_WorldCapture(const _wstring& _strSectionTag, CModelObject* _pObject)
 {
 	CSection_2D* pSection_2D = dynamic_cast<CSection_2D*>(Find_Section(_strSectionTag));
