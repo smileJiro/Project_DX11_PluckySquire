@@ -166,8 +166,11 @@ private:
 	CFSM_Boss* m_pBossFSM = { nullptr };
 
 	_float m_fSceneAccTime = { 0.f };
+	_float m_fScene2AccTime = { 0.f };
 	_float m_fSceneTime = { 0.f };
+	_float m_fScene2Time = { 0.f };
 	_bool m_isScene = { false };
+	_bool m_isScene2 = { false };
 
 	_bool m_isInvincible = { false };
 	_bool m_isMove = { false };
