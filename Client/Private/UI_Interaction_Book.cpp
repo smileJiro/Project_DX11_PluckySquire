@@ -65,7 +65,7 @@ void CUI_Interaction_Book::Update(_float _fTimeDelta)
 			return;
 		}
 			
-		if (true == pBook->Get_PlayerAround() && CPlayerData_Manager::GetInstance()->Is_Own(CPlayerData_Manager::FLIPPING_GLOVE))
+		if (true == pBook->Get_PlayerAround() && true == CPlayerData_Manager::GetInstance()->Is_Own(CPlayerData_Manager::FLIPPING_GLOVE))
 		{
 			m_isRender = true;
 

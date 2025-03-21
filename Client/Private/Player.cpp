@@ -574,7 +574,18 @@ void CPlayer::Enter_Section(const _wstring _strIncludeSectionName)
 	_bool bPlatformer = static_cast<CSection_2D*>(pSection)->Is_Platformer();
 	Set_PlatformerMode(bPlatformer);
 
-
+	CSection_2D* pCurSection = dynamic_cast<CSection_2D*>(CSection_Manager::GetInstance()->Find_Section(m_strSectionName));
+	if (nullptr != pCurSection)
+	{
+		CSection_2D::SECTION_2D_PLAY_TYPE ePlayType = pCurSection->Get_Section_2D_PlayType();
+		if (CSection_2D::SECTION_2D_PLAY_TYPE::NARRAION == ePlayType
+			|| CSection_2D::SECTION_2D_PLAY_TYPE::WORLDMAP == ePlayType
+			|| CSection_2D::SECTION_2D_PLAY_TYPE::MINIGAME == ePlayType
+			)
+			m_isRender = false;
+		else
+			m_isRender = true;
+	}
 
 	if (TEXT("Chapter2_P0102") == _strIncludeSectionName)
 	{
@@ -595,6 +606,19 @@ void CPlayer::Exit_Section(const _wstring _strIncludeSectionName)
 		CSection_Manager::GetInstance()->Remove_GameObject_FromSectionLayer(_strIncludeSectionName, m_pCarryingObject);
 	if (Is_ZetPackMode())
 		Equip_Part(PLAYER_PART_ZETPACK);
+
+	CSection_2D* pCurSection = dynamic_cast<CSection_2D*>(CSection_Manager::GetInstance()->Find_Section(m_strSectionName));
+	if (nullptr != pCurSection)
+	{
+		CSection_2D::SECTION_2D_PLAY_TYPE ePlayType = pCurSection->Get_Section_2D_PlayType();
+		if (CSection_2D::SECTION_2D_PLAY_TYPE::NARRAION == ePlayType
+			|| CSection_2D::SECTION_2D_PLAY_TYPE::WORLDMAP == ePlayType
+			|| CSection_2D::SECTION_2D_PLAY_TYPE::MINIGAME == ePlayType
+			)
+			m_isRender = false;
+		else
+			m_isRender = true;
+	}
 }
 
 

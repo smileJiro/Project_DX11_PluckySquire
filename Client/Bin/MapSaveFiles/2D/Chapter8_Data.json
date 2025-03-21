@@ -347,7 +347,9 @@
 				"X": 6144.0,
 				"Y": 4608.0
 			},
-			"Override_Normal": 2
+			"Override_Normal": 2,
+			"Platformer": true
+
 		}
 	},
 	{
