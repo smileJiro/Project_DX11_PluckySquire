@@ -140,11 +140,11 @@ HRESULT CLevel_Chapter_08::Initialize(LEVEL_ID _eLevelID)
 		MSG_BOX(" Failed Ready_Layer_Camera (Level_Chapter_08::Initialize)");
 		assert(nullptr);
 	}
-	if (FAILED(Ready_Layer_Monster()))
-	{
-		MSG_BOX(" Failed Ready_Layer_Monster (Level_Chapter_08::Initialize)");
-		assert(nullptr);
-	}
+	//if (FAILED(Ready_Layer_Monster()))
+	//{
+	//	MSG_BOX(" Failed Ready_Layer_Monster (Level_Chapter_08::Initialize)");
+	//	assert(nullptr);
+	//}
 	if (FAILED(Ready_Layer_Monster_Projectile(TEXT("Layer_Monster_Projectile"))))
 	{
 		MSG_BOX(" Failed Ready_Layer_Monster_Projectile (Level_Chapter_08::Initialize)");
@@ -273,8 +273,8 @@ HRESULT CLevel_Chapter_08::Initialize(LEVEL_ID _eLevelID)
 	//CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("Tilting_Glove"), _float3(30.55f, 30.98f, 23.34f));
 
 	// Intro 시작
-	CTrigger_Manager::GetInstance()->Register_TriggerEvent(TEXT("Chapter8_Intro"), 50);
-	CCamera_Manager::GetInstance()->Start_FadeIn(3.f);
+	//CTrigger_Manager::GetInstance()->Register_TriggerEvent(TEXT("Chapter8_Intro"), 50);
+	//CCamera_Manager::GetInstance()->Start_FadeIn(3.f);
 
 	/* Set Shader PlayerHideColor */
 	m_pGameInstance->Set_PlayerHideColor(_float3(0.8f, 0.8f, 0.8f), true);
@@ -494,13 +494,13 @@ void CLevel_Chapter_08::Update(_float _fTimeDelta)
 				//});
 
 			//
-			CZip_C8::MODELOBJECT_DESC tZipDesc{};
+	/*		CZip_C8::MODELOBJECT_DESC tZipDesc{};
 			tZipDesc.iCurLevelID = m_eLevelID;
 			tZipDesc.Build_2D_Transform(_float2(-248.0, -111.0), _float2(1.0f, 1.0f));
 			CGameObject* pGameObject = nullptr;
 			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_ZipC8"), m_eLevelID, TEXT("Layer_Zip"), &pGameObject, &tZipDesc)))
 				assert(nullptr);
-			CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter8_SKSP_11"), pGameObject, SECTION_2D_PLAYMAP_OBJECT);
+			CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter8_SKSP_11"), pGameObject, SECTION_2D_PLAYMAP_OBJECT);*/
 
 
 			// 보스 체력바 관련
