@@ -891,7 +891,8 @@ void CPlayer::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)
 	case Client::SHAPE_USE::SHAPE_TRIGER:
 		if (OBJECT_GROUP::MONSTER & _Other.pActorUserData->iObjectGroup)
 			return;
-		if (OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::INTERACTION_OBEJCT | OBJECT_GROUP::DYNAMIC_OBJECT & _Other.pActorUserData->iObjectGroup)
+		if (SHAPE_USE::SHAPE_BODY == (SHAPE_USE)_Other.pShapeUserData->iShapeUse
+			&&OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::INTERACTION_OBEJCT | OBJECT_GROUP::DYNAMIC_OBJECT & _Other.pActorUserData->iObjectGroup)
 			Event_SetSceneQueryFlag(_Other.pActorUserData->pOwner, _Other.pShapeUserData->iShapeIndex, true);
 		break;
 	}
@@ -905,9 +906,10 @@ void CPlayer::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
 	switch (iShapeUse)
 	{
 	case (_uint)Client::SHAPE_USE::SHAPE_TRIGER:
-		if (OBJECT_GROUP::MONSTER == _Other.pActorUserData->iObjectGroup)
+ 		if (OBJECT_GROUP::MONSTER == _Other.pActorUserData->iObjectGroup)
 			return;
-		if (SHAPE_USE::SHAPE_BODY == (SHAPE_USE)_Other.pShapeUserData->iShapeUse)
+		if (SHAPE_USE::SHAPE_BODY == (SHAPE_USE)_Other.pShapeUserData->iShapeUse
+			&& OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::INTERACTION_OBEJCT | OBJECT_GROUP::DYNAMIC_OBJECT & _Other.pActorUserData->iObjectGroup)
 			Event_SetSceneQueryFlag(_Other.pActorUserData->pOwner, _Other.pShapeUserData->iShapeIndex, false);
 		break;
 	case Client::CPlayer::PLAYER_SHAPE_USE::INTERACTION:
