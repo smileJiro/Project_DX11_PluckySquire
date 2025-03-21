@@ -84,13 +84,13 @@ void C3DMapSkspObject::After_Initialize()
 
 void C3DMapSkspObject::Late_Update(_float _fTimeDelta)
 {
-    if (KEY_DOWN(KEY::X))
-    {
-        _int isRenderState = m_eCurRenderState;
-        isRenderState ^= 1;
+    //if (KEY_DOWN(KEY::X))
+    //{
+    //    _int isRenderState = m_eCurRenderState;
+    //    isRenderState ^= 1;
 
-        Change_RenderState((RT_RENDERSTATE)isRenderState, false);
-    }
+    //    Change_RenderState((RT_RENDERSTATE)isRenderState, false);
+    //}
     
 
     CGameObject::Late_Update_Component(_fTimeDelta);

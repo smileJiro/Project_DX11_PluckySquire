@@ -186,7 +186,7 @@ void CCollapseBlock::Action_Shake(_float _fTimeDelta)
 		m_vShakeCycleTime.y = 0.0f;
 		/* 1. Offset Position을 구한다. */
 		m_vShakeOffset.x = m_pGameInstance->Compute_Random(m_vShakeStrength.x * -1.0f, m_vShakeStrength.x);
-		m_vShakeOffset.y = m_pGameInstance->Compute_Random(m_vShakeStrength.y * -1.0f, m_vShakeStrength.y);
+		m_vShakeOffset.y = 0.0f;// m_pGameInstance->Compute_Random(m_vShakeStrength.y * -1.0f, m_vShakeStrength.y);
 		/* 2. Origin Position + Offset Position으로 FinalPosition을 구한다. */
 		_vector vFinalPos = {};
 		vFinalPos = XMLoadFloat2(&m_vOriginPostion) + XMLoadFloat2(&m_vShakeOffset);
@@ -219,7 +219,10 @@ HRESULT CCollapseBlock::Ready_Components()
 	m_p2DColliderComs.resize(1);
 	CCollider_AABB::COLLIDER_AABB_DESC AABBDesc = {};
 	AABBDesc.pOwner = this;
-	AABBDesc.vExtents = { 100.0f, 25.0f};
+	if (m_strSectionName == TEXT("Chapter2_P0102"))
+		AABBDesc.vExtents = { 100.0f, 25.0f};
+	else
+		AABBDesc.vExtents = { 50.0f, 15.0f };
 	AABBDesc.vScale = { 1.0f, 1.0f };
 	AABBDesc.vOffsetPosition = { 0.0f, 0.0f };
 	AABBDesc.isBlock = true;

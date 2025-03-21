@@ -339,6 +339,81 @@ void CSound_Manager::Start_SFX_Distance_Delay(const _wstring& strSFXTag, _fvecto
     Start_SFX_Delay(strSFXTag, _fDelayTime, fVolume, _isLoop);
 }
 
+void CSound_Manager::Start_SFX_Distance2D(const _wstring& strSFXTag, _fvector _vPosition, _fvector _vCenter, _float _fMaxVolume, _float _fMinVolume, _float _fMaxVolumeDist, _float _fFactor, _bool _isLoop)
+{
+    vector<CSound*>* pSFXs = Find_SFX(strSFXTag);
+    if (nullptr == pSFXs)
+        return;
+
+    _float fVolume = _fMinVolume;
+    _float fDist = XMVectorGetX(XMVector2LengthEst(_vPosition - _vCenter));
+
+    if (_fMaxVolumeDist > fDist)
+        fVolume = _fMaxVolume;
+    else
+        fVolume = std::fmaxf(-_fFactor * (fDist - _fMaxVolumeDist) + _fMaxVolume, _fMinVolume);
+
+    // 弊成 角青 いい.
+    if (0.1f >= fVolume)
+        return;
+
+    for (auto& pSFX : *pSFXs)
+    {
+        if (false == pSFX->Is_Playing())
+        {
+            pSFX->Stop_Sound(true);
+            pSFX->Play_Sound(_isLoop);
+            pSFX->Set_Volume(fVolume);
+
+            return;
+        }
+    }
+
+    if (FAILED(Pulling_SFX(5, strSFXTag, pSFXs)))
+        assert(nullptr);
+
+    Start_SFX(strSFXTag, fVolume, _isLoop);
+}
+
+void CSound_Manager::Start_SFX_Distance2D_Delay(const _wstring& strSFXTag, _fvector _vPosition, _fvector _vCenter, _float _fDelayTime, _float _fMaxVolume, _float _fMinVolume, _float _fMaxVolumeDist, _float _fFactor, _bool _isLoop)
+{
+    vector<CSound*>* pSFXs = Find_SFX(strSFXTag);
+    if (nullptr == pSFXs)
+        return;
+
+    _float fVolume = _fMinVolume;
+    _float fDist = XMVectorGetX(XMVector2LengthEst(_vPosition - _vCenter));
+
+    if (_fMaxVolumeDist > fDist)
+        fVolume = _fMaxVolume;
+    else
+        fVolume = std::fmaxf(-_fFactor * (fDist - _fMaxVolumeDist) + _fMaxVolume, _fMinVolume);
+
+    // 弊成 角青 いい.
+    if (0.1f >= fVolume)
+        return;
+
+    for (auto& pSFX : *pSFXs)
+    {
+        if (false == pSFX->Is_Playing() && false == pSFX->Is_Delay())
+        {
+            pSFX->Stop_Sound(true);
+            pSFX->Set_Delay(true);
+            pSFX->Set_DelayTime(_fDelayTime);
+            pSFX->Set_Volume(fVolume);
+
+            m_DelaySFXs.push_back(make_pair(pSFX, _isLoop));
+            //Safe_AddRef(pSFX);
+            return;
+        }
+    }
+
+    if (FAILED(Pulling_SFX(5, strSFXTag, pSFXs)))
+        assert(nullptr);
+
+    Start_SFX_Delay(strSFXTag, _fDelayTime, fVolume, _isLoop);
+}
+
 
 HRESULT CSound_Manager::Pulling_SFX(_int _iNumPullings, const wstring& strSFXTag, vector<CSound*>* _pPullingSFXs)
 {

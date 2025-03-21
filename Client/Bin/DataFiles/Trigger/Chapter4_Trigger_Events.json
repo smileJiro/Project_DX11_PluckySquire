@@ -83,8 +83,8 @@
         "Is_Sequence": false
       },
       {
-        "ActionTag": "Dialogue",
-        "EventTag": "Chapter4_StorySequence_01",
+        "ActionTag": "Create_EventExecuter",
+        "EventTag": "Chapter4_StorySequence_02",
         "Is_Sequence": true
       }
     ]

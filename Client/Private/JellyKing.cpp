@@ -139,7 +139,7 @@ void CJellyKing::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOthe
 void CJellyKing::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
 {
 	/* Event 실행 : 조건 (jellyking dialogueindex 가 0 일때만.)*/
-	if (_My.pActorUserData->iObjectGroup == OBJECT_GROUP::PLAYER)
+	if (_Other.pActorUserData->iObjectGroup == OBJECT_GROUP::PLAYER)
 	{
 		if (0 == m_iDialogueIndex)
 		{
