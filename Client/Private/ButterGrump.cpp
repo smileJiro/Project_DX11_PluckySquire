@@ -139,7 +139,7 @@ HRESULT CButterGrump::Initialize(void* _pArg)
     m_fMoveAnimationProgress[DASH_RIGHT] = 0.76f-0.345f;
     m_fMoveAnimationProgress[DASH_UP] = 0.705f-0.343f;
 
-    m_fSceneTime = 5.f;
+    m_fSceneTime = 3.f;
 
     //플레이어 위치 가져오기
     m_pTarget = CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr();
@@ -158,6 +158,7 @@ HRESULT CButterGrump::Initialize(void* _pArg)
 
 void CButterGrump::Priority_Update(_float _fTimeDelta)
 {
+    m_fSceneTime = 2.f;
     if (true == m_isDelay)
     {
         m_fAccTime += _fTimeDelta;

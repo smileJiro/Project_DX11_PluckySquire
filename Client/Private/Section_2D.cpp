@@ -133,6 +133,12 @@ HRESULT CSection_2D::Import(void* _pDesc)
 					_string strPrePageTag = SectionInfo["Pre_Page_Tag"];
 					m_strPrePageTag = StringToWstring(strPrePageTag);
 				}
+
+				if (SectionInfo.contains("BGM"))
+				{
+					m_strBGMTag = STRINGTOWSTRING(SectionInfo["BGM"]);
+				}
+
 			}
 		}
 		break;

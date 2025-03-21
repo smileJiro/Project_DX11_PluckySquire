@@ -41,6 +41,8 @@
 #include "Formation_Manager.h"
 #include "Event_Manager.h"
 
+#include "ButterGrump.h"
+
 CGameEventExecuter_C8::CGameEventExecuter_C8(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CGameEventExecuter(_pDevice, _pContext)
 {
@@ -136,6 +138,9 @@ void CGameEventExecuter_C8::Update(_float _fTimeDelta)
 			break;		
 		case Client::CTrigger_Manager::CHAPTER8_2D_IN:
 			Chapter8_2D_In(_fTimeDelta);
+			break;
+		case Client::CTrigger_Manager::CHAPTER8_BOSS_INTRO:
+			Chapter8_Boss_Intro(_fTimeDelta);
 			break;
 		default:
 			break;
@@ -1944,13 +1949,19 @@ void CGameEventExecuter_C8::Chapter8_Meet_Humgrump(_float _fTimeDelta)
 				SECTION_MGR->Remove_Section(L"Chapter8_SKSP_10");
 
 				Event_ChangeMapObject(m_iCurLevelID, L"Chapter_Boss.mchc", L"Layer_MapObject");
+				
 				//TODO ::보스 생성 위치
+				CGameObject* pBoss = nullptr;
+				CButterGrump::MONSTER_DESC Boss_Desc;
+				Boss_Desc.iCurLevelID = m_iCurLevelID;
+				Boss_Desc.eStartCoord = COORDINATE_3D;
+				Boss_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+				Boss_Desc.tTransform3DDesc.vInitialPosition = _float3(0.53f, 50.f, 30.0f);
 
+				m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_ButterGrump"),
+					m_iCurLevelID, TEXT("Layer_Boss"), &pBoss, &Boss_Desc);
 
-
-
-
-				// 험그럼프 없애기
+				// 2D 험그럼프 없애기
 				Event_DeleteObject(m_TargetObjects[0]);
 				m_TargetObjects[0] = nullptr;
 
@@ -1998,6 +2009,18 @@ void CGameEventExecuter_C8::Chapter8_Meet_Humgrump(_float _fTimeDelta)
 				CPlayer* pPlayer = Get_Player();
 
 				pPlayer->Set_BlockPlayerInput(false);
+
+				// Intro Trigger 생성
+				CTriggerObject::TRIGGEROBJECT_DESC Desc = {};
+				Desc.vHalfExtents = { 7.f, 7.f, 7.f };
+				Desc.iTriggerType = (_uint)TRIGGER_TYPE::EVENT_TRIGGER;
+				Desc.szEventTag = TEXT("Chapter8_Boss_Intro");
+				Desc.eConditionType = CTriggerObject::TRIGGER_ENTER;
+				Desc.isReusable = false;
+				Desc.eStartCoord = COORDINATE_3D;
+				Desc.tTransform3DDesc.vInitialPosition = { 1.99f, 1.07f, 6.10f };
+
+				CTrigger_Manager::GetInstance()->Create_TriggerObject(LEVEL_STATIC, LEVEL_CHAPTER_8, &Desc);
 
 				GameEvent_End();
 			}
@@ -2291,6 +2314,61 @@ void CGameEventExecuter_C8::Chapter8_2D_In(_float _fTimeDelta)
 	{
 		CFriend_Controller::GetInstance()->Start_Train();
 		pPlayer->Set_BlockPlayerInput(false);
+		GameEvent_End();
+	}
+}
+
+void CGameEventExecuter_C8::Chapter8_Boss_Intro(_float _fTimeDelta)
+{
+	m_fTimer += _fTimeDelta;
+
+	if (Step_Check(STEP_0))
+	{
+		if (CCamera_Manager::TARGET == CCamera_Manager::GetInstance()->Get_CameraType()) {
+			Next_Step(true);
+		}
+	}
+	else if (Step_Check(STEP_1)) {
+		if (m_fTimer >= 0.9f) {
+			CCamera_Manager::GetInstance()->Set_NextCutSceneData(TEXT("Chapter8_Boos_Intro"));
+			CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::CUTSCENE, true, 0.8f);
+			Next_Step(true);
+		}
+	}
+	else if (Step_Check(STEP_2)) {
+		CCamera* pCamera = CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::CUTSCENE);
+		if (false == pCamera->Is_Switching()) {
+			// boss intro 시작
+			static_cast<CButterGrump*>(m_pGameInstance->Get_GameObject_Ptr(m_iCurLevelID, TEXT("Layer_Boss"), 0))->Play_Intro(0);
+		}
+	}
+	else if (Step_Check(STEP_3)) {
+		CCamera_CutScene* pCamera = static_cast<CCamera_CutScene*>(CCamera_Manager::GetInstance()->Get_CurrentCamera());
+		if (true == pCamera->Is_Finish_CutScene()) {
+			Next_Step(true);
+		}
+	}
+	else if (Step_Check(STEP_4)) {
+		if (Is_Start()) {
+			CCamera_Manager::GetInstance()->Start_FadeOut(0.7f);
+		}
+
+		// 3. FadeOut이 끝난 후 CutScene Camera -> Target Camera로 전환
+		if (m_fTimer > 0.7f) {
+			static_cast<CCamera_CutScene*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::CUTSCENE))->Set_Pause_After_CutScene(false);
+			Next_Step(true);
+		}
+	}
+	// 4. 전환 후 Target Camera로(다음 프레임) FadeIn 시작 + 기존 CutScene Camera를 다시 밝게 만들기
+	else if (Step_Check(STEP_5)) {
+		if (Is_Start()) {
+			CCamera_Manager::GetInstance()->Start_FadeIn(0.7f);
+			CCamera_Manager::GetInstance()->Set_FadeRatio(CCamera_Manager::CUTSCENE, 1.f, true);
+			Next_Step(true);
+		}
+	}
+	else
+	{
 		GameEvent_End();
 	}
 }

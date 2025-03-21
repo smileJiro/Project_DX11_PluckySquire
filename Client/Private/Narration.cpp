@@ -212,6 +212,11 @@ HRESULT CNarration::LoadFromJson(const wstring& filePath)
 					if (line.contains("strSubSFX") && line["strSubSFX"].is_string())
 						DialogueData.strSubSFX = StringToWstring(line["strSubSFX"].get<string>());
 
+					if (line.contains("SubDelay"))
+						DialogueData.fSubDelay = line["SubDelay"];
+
+					if (line.contains("NextBGM") && line["NextBGM"].is_string())
+						DialogueData.strNextBGM = StringToWstring(line["NextBGM"].get<string>());
 
 					if (line.contains("isLeft") && line["isLeft"].is_boolean())
 						DialogueData.isLeft = line["isLeft"].get<bool>();
@@ -480,7 +485,7 @@ vector<CNarration_Anim*> CNarration::GetAnimationObjectForLine(const _uint iLine
 		m_pGameInstance->Start_SFX_Delay(m_NarrationDatas[m_iNarrationCount].lines[iLine].strSFX, 0.f, 50.f, false);
 
 	if (TEXT("NOT") != m_NarrationDatas[m_iNarrationCount].lines[iLine].strSubSFX)
-		m_pGameInstance->Start_SFX_Delay(m_NarrationDatas[m_iNarrationCount].lines[iLine].strSubSFX, 0.f, 30.f, false);
+		m_pGameInstance->Start_SFX_Delay(m_NarrationDatas[m_iNarrationCount].lines[iLine].strSubSFX, m_NarrationDatas[m_iNarrationCount].lines[iLine].fSubDelay, 30.f, false);
 
 	return m_pCurrentAnimObj;
 }
@@ -744,6 +749,8 @@ void CNarration::Update_Narration(_float _fTimeDelta)
 
 						Event_Book_Main_Section_Change_Start(1, &vPos);
 
+						if (TEXT("") != m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].strNextBGM)
+							m_pGameInstance->Start_BGM(m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].strNextBGM);
 					}
 					else
 					{

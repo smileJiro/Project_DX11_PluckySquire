@@ -48,7 +48,9 @@ public:
 		_wstring strtext;           // 텍스트의 내용
         _wstring strSFX     = TEXT("NOT");            // 노출 시킬 나레이션 사운드
         _wstring strSubSFX  = TEXT("NOT");            // 노출 시킬 서브 사운드
-		_float fscale;              // 텍스트의 크기 변경
+        _float  fSubDelay = { 0.f };
+        _wstring strNextBGM = TEXT("");
+        _float fscale;              // 텍스트의 크기 변경
         _bool isLeft;                // 왼쪽인가요 오른쪽인가요? 왼쪽이면 true
         CAMERAPOS  iCameraPos = { CAMERA_LEFT };
         _float2 fpos;               // X의 좌표

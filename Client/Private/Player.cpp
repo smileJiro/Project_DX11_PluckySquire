@@ -1341,7 +1341,7 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
 		{
 			tResult.bInputStates[PLAYER_INPUT_THROWSWORD] = true;
 		}
-		else if (Is_OnGround())
+		/*else if (Is_OnGround())
 		{
 			KEY_STATE eKeyState = m_pGameInstance->GetKeyState(KEY::Q);
 			if (KEY_STATE::DOWN == eKeyState)
@@ -1350,7 +1350,7 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
 				tResult.bInputStates[PLAYER_INPUT_SPINCHARGING] = true;
 			else if (KEY_STATE::UP == eKeyState)
 				tResult.bInputStates[PLAYER_INPUT_SPINLAUNCH] = true;
-		}
+		}*/
 	}
 
 	if (false == Has_InteractObject() && bCarrying)
@@ -1395,8 +1395,23 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
 			tResult.vDir += _vector{ 1.f, 0.f, 0.f,0.f };
 
 		//카메라가 보는 방향
-		_vector vCamLook = static_cast<CCamera*>(CCamera_Manager::GetInstance()->Get_CurrentCamera())->Get_Arm()->Get_ArmVector();
+		CCamera* pCamera = static_cast<CCamera*>(CCamera_Manager::GetInstance()->Get_CurrentCamera());
+		_vector vCamLook = {};
+
+		if (nullptr == pCamera) {
+			vCamLook = { 0.f, 0.f, 1.f, 0.f };
+		}
+		else {
+			CCameraArm* pArm = pCamera->Get_Arm();
+
+			if (nullptr == pArm)
+				vCamLook = { 0.f, 0.f, 1.f, 0.f };
+			else
+				vCamLook = pArm->Get_ArmVector();
+		}
+
 		vCamLook = -XMVectorSetY(vCamLook, 0.f);
+
 		//X축이 크면?
 		if (abs(vCamLook.m128_f32[0]) > abs(vCamLook.m128_f32[2]))
 		{

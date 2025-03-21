@@ -10,6 +10,16 @@
     ]
   },
   {
+    "Trigger_EventTag": "Chapter8_Boss_Intro",
+    "Actions": [
+      {
+        "ActionTag": "Create_EventExecuter",
+        "EventTag": "Chapter8_Boss_Intro",
+        "Is_Sequence": true
+      }
+    ]
+  },
+  {
     "Trigger_EventTag": "Chapter8_Postit_Arm_Changing",
     "Actions": [
       {

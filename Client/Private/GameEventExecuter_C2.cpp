@@ -213,9 +213,13 @@ void CGameEventExecuter_C2::Chapter2_BookMagic(_float _fTimeDelta)
 	// 어두워지기
 	else if (Step_Check(STEP_1))
 	{
+
 		if (Is_Start())
 		{
 			Ready_Action(SECTION_MGR->Get_Cur_Section_Key(), SECTION_2D_PLAYMAP_BACKGROUND, C2DMapActionObject::ACTIVE_TYPE_DYNAMIC_BACKGROUND);
+			m_pGameInstance->Start_BGM(_wstring(L"LCD_MUS_C01_HUMPGRUMPCUTSCENEMAGIC_FULL_v2a"), 20.f);
+			m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_C1_Fade_To_Darkness"), 0.6f, 50.f);
+
 		}
 
 		Next_Step_Over(2.2f);
@@ -225,6 +229,7 @@ void CGameEventExecuter_C2::Chapter2_BookMagic(_float _fTimeDelta)
 	{
 		if (Is_Start())
 		{
+
 			// 딜탐, 인덱스, 루프, 라이프타임 
 			CEffect2D_Manager::GetInstance()->Play_Effect(L"beam", SECTION_MGR->Get_Cur_Section_Key(), XMMatrixTranslation(-236.f, 217.f, 0.f), 2.8f, 0, true, 999.f);// 빔쏘는거
 			CEffect2D_Manager::GetInstance()->Play_Effect(L"EffectBack", SECTION_MGR->Get_Cur_Section_Key(), XMMatrixTranslation(-276.f, 181.4f, 0.f), 0.f, 0); // 백 시작
@@ -233,6 +238,9 @@ void CGameEventExecuter_C2::Chapter2_BookMagic(_float _fTimeDelta)
 			CEffect2D_Manager::GetInstance()->Play_Effect(L"hum", SECTION_MGR->Get_Cur_Section_Key(), XMMatrixTranslation(-276.f, 170.4f, 0.f), 1.8f, 1, false, 999.f);
 			CEffect2D_Manager::GetInstance()->Play_Effect(L"storm", SECTION_MGR->Get_Cur_Section_Key(), XMMatrixTranslation(10.f, 280.f, 0.f), 3.0f, 0, false);
 			CEffect2D_Manager::GetInstance()->Play_Effect(L"storm", SECTION_MGR->Get_Cur_Section_Key(), XMMatrixTranslation(10.f, 280.f, 0.f), 3.6f, 1, true, 999.f);
+
+			m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_electric_bolt_spawn_1"), 1.f, 50.f);
+
 		}
 
 		if (m_fTimer > 3.0f && !m_isPlag)
@@ -240,6 +248,8 @@ void CGameEventExecuter_C2::Chapter2_BookMagic(_float _fTimeDelta)
 			m_isPlag = true;
 			m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/Chapter2_Night_Main.json"));
 			m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/Chapter2_Night_Main.json"));
+
+
 		}
 
 		Next_Step_Over(4.5f);
@@ -1375,6 +1385,9 @@ void CGameEventExecuter_C2::Chapter2_FriendEvent_0(_float _fTimeDelta)
 			pViolet->Change_CurState(CFriend::FRIEND_MOJAM);
 			CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(TEXT("Thrash"));
 			CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(TEXT("Violet"));
+
+			m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_Mojam"), 0.f, 50.f);
+
 		}
 
 		/* 6. 다이얼로그 종료 체크 */

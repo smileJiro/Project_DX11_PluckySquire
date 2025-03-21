@@ -740,6 +740,7 @@
           "OffsetY": 0.0,
           "is2D": true,
           "isPortrait": false,
+		  "isLineEnter": true,
           "animation": {
             "duration": 1000,
             "speed": 500
@@ -829,6 +830,7 @@
           "location": 1,
           "is2D": true,
           "isPortrait": true,
+		  "isLineEnter": true,
           "OffsetX": 0.0,
           "OffsetY": 50.0,
           "animation": {

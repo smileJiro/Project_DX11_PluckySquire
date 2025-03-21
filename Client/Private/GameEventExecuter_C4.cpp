@@ -133,6 +133,8 @@ void CGameEventExecuter_C4::Chapter4_Intro(_float _fTimeDelta)
 		if (CCamera_Manager::TARGET == CCamera_Manager::GetInstance()->Get_CameraType()) {
 			Next_Step(true);
 		}
+
+		Get_Player()->Set_BlockPlayerInput(true);
 	}
 	else if (Step_Check(STEP_1)) {
 		if (m_fTimer >= 0.9f) {
@@ -163,6 +165,8 @@ void CGameEventExecuter_C4::Chapter4_Intro(_float _fTimeDelta)
 		if (Is_Start()) {
 			CCamera_Manager::GetInstance()->Start_FadeIn(0.7f);
 			CCamera_Manager::GetInstance()->Set_FadeRatio(CCamera_Manager::CUTSCENE, 1.f, true);
+
+			Get_Player()->Set_BlockPlayerInput(false);
 			Next_Step(true);
 		}
 	}
@@ -623,14 +627,14 @@ void CGameEventExecuter_C4::Chapter4_3D_Out_02(_float _fTimeDelta)
 	{
 		// 3D Trigger 생성
 		CTriggerObject::TRIGGEROBJECT_DESC Desc = {};
-		Desc.vHalfExtents = { 3.f, 3.f, 3.f };
+		Desc.vHalfExtents = { 7.f, 7.f, 7.f };
 		Desc.iTriggerType = (_uint)TRIGGER_TYPE::EVENT_TRIGGER;
 		Desc.szEventTag = TEXT("Chapter4_Intro");
 		Desc.eConditionType = CTriggerObject::TRIGGER_ENTER;
 		Desc.isReusable = false; // 한 번 하고 삭제할 때
 		Desc.eStartCoord = COORDINATE_3D;
-		Desc.tTransform3DDesc.vInitialPosition = { -6.71f, 1.07f, -17.2f };
-
+		Desc.tTransform3DDesc.vInitialPosition = { -6.71f, 1.07f, -17.03f };
+		
 		CTrigger_Manager::GetInstance()->Create_TriggerObject(LEVEL_STATIC, LEVEL_CHAPTER_4, &Desc);
 
 		GameEvent_End();

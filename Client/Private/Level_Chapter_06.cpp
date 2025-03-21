@@ -2028,16 +2028,15 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Slippery()
 void CLevel_Chapter_06::Create_IntroTrigger()
 {
 	CTriggerObject::TRIGGEROBJECT_DESC Desc = {};
-	Desc.vHalfExtents = { 35.f, 35.f, 0.f };
+	Desc.vHalfExtents = { 7.f, 7.f, 7.f };
 	Desc.iTriggerType = (_uint)TRIGGER_TYPE::EVENT_TRIGGER;
 	Desc.szEventTag = TEXT("Chapter6_Intro");
 	Desc.eConditionType = CTriggerObject::TRIGGER_ENTER;
 	Desc.isReusable = false; // 한 번 하고 삭제할 때
-	Desc.eStartCoord = COORDINATE_2D;
-	Desc.tTransform2DDesc.vInitialPosition = { 1170.09f, -156.f, 0.f };
+	Desc.eStartCoord = COORDINATE_3D;
+	Desc.tTransform3DDesc.vInitialPosition = { 20.84f, 1.07f, -19.5f };
 
-	CSection* pSection = CSection_Manager::GetInstance()->Find_Section(TEXT("Chapter6_P0102"));
-	CTrigger_Manager::GetInstance()->Create_TriggerObject(LEVEL_STATIC, LEVEL_CHAPTER_6, &Desc, pSection);
+	CTrigger_Manager::GetInstance()->Create_TriggerObject(LEVEL_STATIC, LEVEL_CHAPTER_6, &Desc);
 }
 
 HRESULT CLevel_Chapter_06::Map_Object_Create(_wstring _strFileName)
