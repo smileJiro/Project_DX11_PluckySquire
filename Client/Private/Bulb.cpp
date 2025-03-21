@@ -230,7 +230,7 @@ void CBulb::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
 
 void CBulb::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-	if(true == _pMyCollider->Is_Trigger())
+	if (true == _pMyCollider->Is_Trigger())
 	{
 		if (OBJECT_GROUP::PLAYER & _pOtherCollider->Get_CollisionGroupID())
 		{
@@ -260,15 +260,12 @@ void CBulb::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherColl
 				}
 			}
 		}
-		//if ((OBJECT_GROUP::PLAYER | OBJECT_GROUP::PLAYER_PROJECTILE) & _pOtherObject->Get_ObjectGroupID())
-		//{
-		//	if (BULB_2DCOLLIDER_USE::BULB_STICKING == _pMyCollider->Get_ColliderUse())
-		//	{
-		//		m_pTargetWorld = _pOtherObject->Get_ControllerTransform()->Get_WorldMatrix_Ptr();
-		//		m_isSticking = true;
-		//	}
-		//}
 	}
+}
+
+void CBulb::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
+{
+
 }
 
 void CBulb::Add_Shape()

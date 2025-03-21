@@ -258,13 +258,13 @@ void CBook::Update(_float _fTimeDelta)
 
 void CBook::Late_Update(_float _fTimeDelta)
 {
-	if (KEY_DOWN(KEY::X))
-	{
-		_int isRenderState = m_eCurRenderState;
-		isRenderState ^= 1;
+	//if (KEY_DOWN(KEY::X))
+	//{
+	//	_int isRenderState = m_eCurRenderState;
+	//	isRenderState ^= 1;
 
-		Change_RenderState((RT_RENDERSTATE)isRenderState);
-	}
+	//	Change_RenderState((RT_RENDERSTATE)isRenderState);
+	//}
 	
 	__super::Late_Update(_fTimeDelta);
 }
@@ -602,7 +602,7 @@ void CBook::PageAction_End(COORDINATE _eCoord, _uint iAnimIdx)
 #pragma region 책 넘기는 Action
 
 	if (ACTION_LAST != m_eCurAction
-		//&& iAnimIdx == ACTION
+		&& iAnimIdx == ACTION
 		)
 	{
 		if (NEXT == m_eCurAction)

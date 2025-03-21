@@ -54,34 +54,11 @@ HRESULT CSection_2D_Narration::Section_AddRenderGroup_Process()
 HRESULT CSection_2D_Narration::Add_GameObject_ToSectionLayer(CGameObject* _pGameObject, _uint _iLayerIndex)
 {
 	HRESULT hr = __super::Add_GameObject_ToSectionLayer(_pGameObject, _iLayerIndex);
-
-	
-	CPlayer* pPlayer = dynamic_cast<CPlayer*>(_pGameObject);
-	// TODO:: 추후 개선 오버라이드 2개
-	if (nullptr != pPlayer)
-		pPlayer->Set_Render(false);
-		
-	CNPC* pNPC = dynamic_cast<CNPC*>(_pGameObject);
-	// TODO:: 추후 개선 오버라이드 2개
-	if (nullptr != pNPC)
-		pNPC->Set_Render(false);
-
 	return hr;
 }
 HRESULT CSection_2D_Narration::Remove_GameObject_ToSectionLayer(CGameObject* _pGameObject)
 {
 	HRESULT hr = __super::Remove_GameObject_ToSectionLayer(_pGameObject);
-	CPlayer* pPlayer = dynamic_cast<CPlayer*>(_pGameObject);
-
-	if (nullptr != pPlayer)
-		pPlayer->Set_Render(true);
-
-	CNPC* pNPC = dynamic_cast<CNPC*>(_pGameObject);
-	// TODO:: 추후 개선 오버라이드 2개
-	if (nullptr != pNPC)
-		pNPC->Set_Render(true);
-
-
 	return hr;
 }
 HRESULT CSection_2D_Narration::Start_Narration()
@@ -143,10 +120,24 @@ HRESULT CSection_2D_Narration::Start_Narration()
 
 HRESULT CSection_2D_Narration::Section_Enter(const _wstring& _strPreSectionTag)
 {
+	auto pPlayer = Uimgr->Get_Player();
+	if (nullptr != pPlayer)
+		pPlayer->Set_BlockPlayerInput(true);
+	
 	if (TEXT("") != m_strBGMTag)
 		m_pGameInstance->Start_BGM(m_strBGMTag, 20.f);
 
-	return S_OK;
+	return __super::Section_Enter(_strPreSectionTag);
+}
+
+HRESULT CSection_2D_Narration::Section_Exit(const _wstring& _strNextSectionTag)
+{
+	auto pPlayer = Uimgr->Get_Player();
+	if (nullptr != pPlayer)
+		pPlayer->Set_BlockPlayerInput(false);
+	
+
+	return __super::Section_Exit(_strNextSectionTag);;
 }
 
 CSection_2D_Narration* CSection_2D_Narration::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, SECTION_2D_PLAY_TYPE _ePlayType, void* _pDesc)

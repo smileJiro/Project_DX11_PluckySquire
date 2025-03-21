@@ -7,6 +7,7 @@
 #include "Effect2D_Manager.h"
 #include "Pooling_Manager.h"
 #include "Section_Manager.h"
+#include "PlayerData_Manager.h"
 
 CJumpBug::CJumpBug(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : CMonster(_pDevice, _pContext)
@@ -156,7 +157,7 @@ void CJumpBug::Change_Animation()
                 static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(JUMP_UP);
                 m_isJump = true;
 
-                m_pGameInstance->Start_SFX_Distance(_wstring(L"A_sfx_jumperbug_jump-") + to_wstring(rand() % 7), m_pControllerTransform->Get_State(CTransform::STATE_POSITION), 50.f, 0.f, 13.f);
+                m_pGameInstance->Start_SFX_Distance(_wstring(L"A_sfx_jumperbug_jump-") + to_wstring(rand() % 7), m_pControllerTransform->Get_State(CTransform::STATE_POSITION), 70.f, 0.f, 13.f);
 
                 break;
 
@@ -166,7 +167,6 @@ void CJumpBug::Change_Animation()
 
             case MONSTER_STATE::DEAD:
                 static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(DIE);
-                m_pGameInstance->Start_SFX(_wstring(L"A_sfx_jumperbug_death_") + to_wstring(rand() % 4), 50.f);
                 break;
 
             default:
@@ -196,10 +196,14 @@ void CJumpBug::Change_Animation()
                     eAnim = JUMP_RISE_RIGHT;
                 m_isJump = true;
 
-               
-               // m_pGameInstance->Start_SFX_Distance(_wstring(L"A_sfx_jumperbug_jump-") + to_wstring(rand() % 7), CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName, _float2(XMVectorGetX(m_pControllerTransform->Get_State(CTransform::STATE_POSITION)),
-               //     XMVectorGetY(m_pControllerTransform->Get_State(CTransform::STATE_POSITION)))), 50.f, 0.f, 13.f);
-
+                if (COORDINATE_2D == CPlayerData_Manager::GetInstance()->Get_PlayerCoord())
+                {
+                    if (CSection_Manager::GetInstance()->Is_PlayerInto(m_strSectionName))
+                    {
+                        m_pGameInstance->Start_SFX_Distance2D(_wstring(L"A_sfx_jumperbug_jump-") + to_wstring(rand() % 7),
+                            m_pControllerTransform->Get_State(CTransform::STATE_POSITION), CPlayerData_Manager::GetInstance()->Get_PlayerPosition(), 70.f, 0.f);
+                    }
+                }
                 break;
 
             case Client::MONSTER_STATE::HIT:
@@ -218,7 +222,6 @@ void CJumpBug::Change_Animation()
                 else if (E_DIRECTION::RIGHT == Get_2DDirection() || E_DIRECTION::LEFT == Get_2DDirection())
                     eAnim = DIE_RIGHT;
 
-                m_pGameInstance->Start_SFX(_wstring(L"A_sfx_jumperbug_death_") + to_wstring(rand() % 4), 50.f);
 
                 break;
             default:
@@ -297,6 +300,8 @@ void CJumpBug::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
         case DIE_UP:
         case DIE_RIGHT:
             Monster_Death();
+            m_pGameInstance->Start_SFX(_wstring(L"A_sfx_jumperbug_death_") + to_wstring(rand() % 4), 50.f);
+
             //Set_AnimChangeable(true);
 
             //CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("Death_Burst"), CSection_Manager::GetInstance()->Get_Cur_Section_Key(), Get_ControllerTransform()->Get_WorldMatrix());

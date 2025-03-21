@@ -226,11 +226,13 @@ HRESULT CLevel_Chapter_06::Initialize(LEVEL_ID _eLevelID)
 		assert(nullptr);
 	}
 	
-	CPlayerData_Manager::GetInstance()->Get_PlayerItem(TEXT("Sword"));
-	CPlayerData_Manager::GetInstance()->Get_PlayerItem(TEXT("Bomb_Stamp"));
-	CPlayerData_Manager::GetInstance()->Get_PlayerItem(TEXT("Flipping_Glove"));
-	CPlayerData_Manager::GetInstance()->Get_PlayerItem(TEXT("Tilting_Glove"));
-
+	CPlayerData_Manager::GetInstance()->Set_PlayerItem(TEXT("Sword"));
+	CPlayerData_Manager::GetInstance()->Set_PlayerItem(TEXT("Bomb_Stamp"));
+	CPlayerData_Manager::GetInstance()->Set_PlayerItem(TEXT("Flipping_Glove"));
+	CPlayerData_Manager::GetInstance()->Set_PlayerItem(TEXT("Tilting_Glove"));
+	CPlayerData_Manager::GetInstance()->Set_JumpSkillLevel(1);
+	CPlayerData_Manager::GetInstance()->Set_ThrowSkillLevel(1);
+	CPlayerData_Manager::GetInstance()->Set_WhirlSkillLevel(1);
 
 //#pragma region Test
 //

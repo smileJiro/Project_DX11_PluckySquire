@@ -220,6 +220,7 @@
 	},
 	{
 		"Section_Name": "Chapter2_SKSP_04",
+
 		"Section_BackGround_Name": "Chapter2_SKSP_04_BackGround",
 		"Section_File_Name": "Chapter2_SKSP_04.m2chc",
 		"Section_Type": 2,
@@ -252,6 +253,7 @@
 	},
 	{
 		"Section_Name": "Chapter2_SKSP_Postit",
+
 		"Section_BackGround_Name": "Chapter2_SKSP_Postit_BackGround",
 		"Section_File_Name": "Chapter2_SKSP_Postit.m2chc",
 		"Section_Type": 2,

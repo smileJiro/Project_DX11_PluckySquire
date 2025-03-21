@@ -86,6 +86,7 @@ HRESULT CTrigger_Manager::Mapping_ExecuterTag()
 	m_EventExecuterTags[CHAPTER4_EVENT_FLAG] = L"Chapter4_Event_Flag";
 	m_EventExecuterTags[CHAPTER4_GATEEVENT] = L"Chapter4_GateEvent";
 	m_EventExecuterTags[CHAPTER4_STORYSEQUENCE] = L"Chapter4_StorySequence";
+	m_EventExecuterTags[CHAPTER4_STORYSEQUENCE_02] = L"Chapter4_StorySequence_02";
 
 	m_EventExecuterTags[CHAPTER6_INTRO] = L"Chapter6_Intro";
 	m_EventExecuterTags[CHAPTER6_START_3D] = L"Chapter6_Start_3D";

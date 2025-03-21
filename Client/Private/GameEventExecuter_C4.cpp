@@ -84,6 +84,9 @@ void CGameEventExecuter_C4::Update(_float _fTimeDelta)
 		case Client::CTrigger_Manager::CHAPTER4_STORYSEQUENCE:
 			Chapter4_StorySequence(_fTimeDelta);
 			break;
+		case Client::CTrigger_Manager::CHAPTER4_STORYSEQUENCE_02:
+			Chapter4_StorySequence_02(_fTimeDelta);
+			break;
 		case Client::CTrigger_Manager::FRIEND_MAPENTER:
 			Friend_MapEnter(_fTimeDelta);
 			break;
@@ -427,6 +430,62 @@ void CGameEventExecuter_C4::Chapter4_StorySequence(_float _fTimeDelta)
 	}
 }
 
+void CGameEventExecuter_C4::Chapter4_StorySequence_02(_float _fTimeDelta)
+{
+	m_fTimer += _fTimeDelta;
+
+	
+	CPlayer* pPlayer = Get_Player();
+	CFriend* pThrash = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Thrash"));
+	CFriend* pViolet = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Violet"));
+	if (Step_Check(STEP_0))
+	{
+		if (Is_Start())
+		{
+			CFriend_Controller::GetInstance()->End_Train();
+			pPlayer->Set_BlockPlayerInput(true);
+		}
+
+		Next_Step_Over(0.5f);
+	}
+	else if (Step_Check(STEP_1))
+	{
+		// 대화 1 재생
+		if (Is_Start())
+			CDialog_Manager::GetInstance()->Set_DialogId(L"Chapter4_StorySequence_01");
+		else
+			Next_Step(!CDialog_Manager::GetInstance()->Get_DisPlayDialogue());
+	}
+	else if (Step_Check(STEP_2))
+	{
+		if (Next_Step(pPlayer->Get_CurCoord() == COORDINATE_3D))
+		{
+			pPlayer->Set_BlockPlayerInput(true);
+		}
+	}
+	else if (Step_Check(STEP_3))
+	{
+		Next_Step_Over(0.8f);
+	}
+	else if (Step_Check(STEP_4))
+	{
+		// 대화 1 재생
+		if (Is_Start())
+		{
+			CDialog_Manager::GetInstance()->Set_NPC(pViolet);
+
+			CDialog_Manager::GetInstance()->Set_DialogId(L"Chapter4_StorySequence_02");
+		}
+		else
+			Next_Step(!CDialog_Manager::GetInstance()->Get_DisPlayDialogue());
+	}
+	else 
+	{
+		GameEvent_End();
+	}
+
+}
+
 void CGameEventExecuter_C4::Chapter4_3D_Out_01(_float _fTimeDelta)
 {
 	m_fTimer += _fTimeDelta;
@@ -543,9 +602,20 @@ void CGameEventExecuter_C4::Chapter4_3D_Out_01(_float _fTimeDelta)
 	{
 		if (Is_Start())
 		{
+			_vector vThrashPos = pThrash->Get_FinalPosition() + XMVectorSet(-60.0f, 30.f, 0.0f, 0.0f);
+
 			pViolet->Change_AnyState(CFriend_Violet::VIOLET_MAGIC02_INTO_RIGHT, false, CFriend::DIR_LEFT);
-			pPlayer->Set_2DDirection(F_DIRECTION::LEFT);
-			pThrash->Set_Direction(CFriend::DIR_LEFT);
+			pThrash->Move_Position(_float2(XMVectorGetX(vThrashPos), XMVectorGetY(vThrashPos)), CFriend::DIR_LEFT);
+
+			AUTOMOVE_COMMAND AutoMove2{};
+			AutoMove2.eType = AUTOMOVE_TYPE::LOOK_DIRECTION;
+			AutoMove2.fPostDelayTime = 0.0f;
+			AutoMove2.fPreDelayTime = 0.0f;
+			AutoMove2.vTarget = XMVectorSet(-1.0f, 0.0f, 0.0f, 0.0f);
+			AutoMove2.iAnimIndex = (_uint)CPlayer::ANIM_STATE_2D::PLAYER_IDLE_RIGHT;
+			pPlayer->Add_AutoMoveCommand(AutoMove2);
+			pPlayer->Start_AutoMove(true);
+
 		}
 		Next_Step_Over(1.5f);
 	}

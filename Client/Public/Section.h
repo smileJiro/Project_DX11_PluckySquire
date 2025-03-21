@@ -8,7 +8,7 @@ class CGameInstance;
 END
 
 BEGIN(Client)
-class CSection abstract: public CBase
+class CSection abstract : public CBase
 {
 public:
 	typedef struct tagSectionDesc
@@ -44,19 +44,20 @@ public: // 왜 private?
 	void	Clear_GameObjects(_bool _isAllClear = true, _uint _iLayerIndex = 0);
 	// 6. Section Layer 내부의 Object를 전부 Event_Delete 호출 후, Clear 하는 기능
 	virtual HRESULT	CleanUp_Section();
-	
-	
 
-	_bool	Get_RenderGroupKey(_uint& _iOutputGroupID, _uint& _iOutputPriorityID) { 
-		_iOutputGroupID = m_iGroupID; 
-	_iOutputPriorityID = m_iPriorityID; 
-	return true; };
+
+
+	_bool	Get_RenderGroupKey(_uint& _iOutputGroupID, _uint& _iOutputPriorityID) {
+		_iOutputGroupID = m_iGroupID;
+		_iOutputPriorityID = m_iPriorityID;
+		return true;
+	};
 	virtual HRESULT Section_AddRenderGroup_Process() abstract;
 	_bool			Is_CurSection(CGameObject* _pGameObject);
 
 
-	const _wstring& Get_SectionName() { 
-		return m_strName; 
+	const _wstring& Get_SectionName() {
+		return m_strName;
 	}
 
 	template <typename Comparator>
@@ -71,6 +72,11 @@ public: // 왜 private?
 	CLayer* Get_Include_Layer(CGameObject* _pGameObject);
 
 	CLayer* Get_Layer(_uint _iLayerIndex) { return m_Layers[_iLayerIndex]; }
+
+
+	_bool		Is_PlayerInto() { return m_isPlayerInto; };
+	void		Set_PlayerInto(_bool _isPlayerInto) { m_isPlayerInto = _isPlayerInto; };
+
 protected:
 	virtual HRESULT Layer_Sort() { return S_OK; };
 
@@ -85,6 +91,7 @@ protected:
 	_uint						m_iLayerGroupCount = {};
 	_wstring					m_strName;
 	CLayer**					m_Layers = nullptr;
+	_bool						m_isPlayerInto = false;
 private:
 	
 	_bool Has_Exist_Layer(_uint _iLayerIndex) { return _iLayerIndex < m_iLayerGroupCount && nullptr != m_Layers[_iLayerIndex];  }

@@ -65,6 +65,7 @@ public :
 		CHAPTER4_EVENT_FLAG,		// Zipline 들어가기 전 이벤트
 		CHAPTER4_GATEEVENT,		// 성문 들어갓을떄 쓰러지는 이벤트
 		CHAPTER4_STORYSEQUENCE,		// 글로브 습득 후, 스케치스페이스 이벤트
+		CHAPTER4_STORYSEQUENCE_02,		// 글로브 습득 후, 스케치스페이스 이벤트
 		//CHAPTER4_2D_IN,				// 폭탄 도장 얻고나서의 이벤트 
 
 		ARTIA_PIGEVENT_START,	

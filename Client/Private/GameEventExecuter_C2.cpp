@@ -263,7 +263,7 @@ void CGameEventExecuter_C2::Chapter2_BookMagic(_float _fTimeDelta)
 				pBook->Execute_AnimEvent(5);
 
 			m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_C1_Lightning_Sequence_Cutver"), 0.f, 50.f);
-			m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_C1_Lightning_Sequence_Fall"), 10.f, 50.f);
+			m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_C1_Lightning_Sequence_Fall"), 7.f, 50.f);
 
 			CEffect_Manager::GetInstance()->Active_EffectPosition(TEXT("Book_MagicDust"), true, XMVectorSet(2.f, 0.4f, -17.3f, 1.f));
 			CCamera_2D* pCamera = static_cast<CCamera_2D*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D));
@@ -455,7 +455,9 @@ void CGameEventExecuter_C2::Chapter2_Humgrump(_float _fTimeDelta)
 		if (Is_Start())
 		{
 			static_cast<CMagic_Hand*>(m_pGameInstance->Get_GameObject_Ptr(LEVEL_CHAPTER_2, TEXT("Layer_MagicHand"), 0))->Set_Start(true);
-			m_pGameInstance->End_BGM();
+			
+			m_pGameInstance->Set_BGMTargetVolume(0.f);
+			//m_pGameInstance->End_BGM();
 
 			m_pGameInstance->Start_SFX(_wstring(L"LCD_MUS_C02_CONFRONTINGHUMGRUMP_P4344_CUTSCENE_FULL"), 50.f);
 			m_pGameInstance->Start_SFX(_wstring(L"A_sfx_ejected_sequence"), 50.f);
@@ -660,7 +662,7 @@ void CGameEventExecuter_C2::Chapter2_Lunchbox_Open(_float _fTimeDelta)
 			if (nullptr != pPage)
 			{
 				pPage->Set_Render(true);
-				pPage->Anim_Action(CPostit_Page::POSTIT_PAGE_APPEAR,false);
+				pPage->Anim_Action(CPostit_Page::POSTIT_PAGE_APPEAR, false);
 			}
 
 		}

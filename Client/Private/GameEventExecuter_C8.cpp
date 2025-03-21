@@ -36,6 +36,8 @@
 
 #include "Dialog_Manager.h"
 #include "Npc_Humgrump.h"
+#include "Pooling_Manager.h"
+#include "Bomb.h"
 
 #include "Logo_ColorObject.h"
 #include "Formation_Manager.h"
@@ -563,7 +565,7 @@ void CGameEventExecuter_C8::Chapter8_Friend_Appear_Violet(_float _fTimeDelta)
 				return;
 
 			if (FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(
-				SECTION_MGR->Get_Cur_Section_Key(), pGameObject)))
+				L"Chapter8_P1718", pGameObject)))
 				return;
 			m_TargetObjects[VIOLET] = pGameObject;
 
@@ -580,7 +582,7 @@ void CGameEventExecuter_C8::Chapter8_Friend_Appear_Violet(_float _fTimeDelta)
 				return;
 
 			if (FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(
-				SECTION_MGR->Get_Cur_Section_Key(), pGameObject)))
+				L"Chapter8_P1718", pGameObject)))
 				return;
 			m_TargetObjects[HAT] = pGameObject;
 
@@ -732,7 +734,7 @@ void CGameEventExecuter_C8::Chapter8_Friend_Appear_Thrash(_float _fTimeDelta)
 				return;
 
 			if (FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(
-				SECTION_MGR->Get_Cur_Section_Key(), pGameObject)))
+				L"Chapter8_P1718", pGameObject)))
 				return;
 
 			m_TargetObjects[THRASH] = pGameObject;
@@ -1228,8 +1230,7 @@ void CGameEventExecuter_C8::Chapter8_3D_Out_02(_float _fTimeDelta)
 			pPip->Move_Position(_float2(XMVectorGetX(vPipPos), XMVectorGetY(vPipPos)), CFriend::DIR_UP);
 		}
 
-		Change_PlayMap(0.f);
-		Next_Step_Over(0.5f);
+		Next_Step_Over(Change_PlayMap(0.f));
 	}
 	else if (Step_Check(STEP_2))
 	{
@@ -2614,8 +2615,8 @@ _bool CGameEventExecuter_C8::Change_PlayMap(_float _fStartTime)
 		CPlayerData_Manager::GetInstance()->Spawn_Bulb(LEVEL_STATIC, (LEVEL_ID)eCurLevelID);
 		CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)eCurLevelID, TEXT("Bomb_Stamp"), _float3(-15.54f, 26.06f, 16.56f), { 1.f,1.f,1.f });
 		CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)eCurLevelID, TEXT("Sword"), _float3(42.22f, 15.82f, -0.45f), { 2.f,2.f,2.f });
-		CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)eCurLevelID, TEXT("Stop_Stamp"), _float3(45.13f, 50.24f, 23.34f), { 1.f,1.f,1.f });
-		CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)eCurLevelID, TEXT("Tilting_Glove"), _float3(30.55f, 30.98f, 23.34f));
+		CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)eCurLevelID, TEXT("Stop_Stamp"), _float3(45.13f, 49.74f, 23.34f), { 1.f,1.f,1.f });
+		CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)eCurLevelID, TEXT("Tilting_Glove"), _float3(30.55f, 30.83f, 23.34f));
 		m_iSubStep++;
 		return false;
 
@@ -2705,6 +2706,32 @@ _bool CGameEventExecuter_C8::Change_PlayMap(_float _fStartTime)
 
 		if (FAILED(CFormation_Manager::GetInstance()->Initialize()))
 			return false;
+
+
+		//CGameObject* pObject = nullptr;
+
+		_float3 vPos = { 50.5f, 30.3f, 9.f };
+		CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &pObject, &vPos);
+		//static_cast<CBomb*>(pObject)->Set_Time_Off();
+		static_cast<CBomb*>(pObject)->Set_LifeTime(5.f);
+
+		vPos = { 50.5f, 30.3f, 8.f };
+		CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &pObject, &vPos);
+		//static_cast<CBomb*>(pObject)->Set_Time_Off();
+		static_cast<CBomb*>(pObject)->Set_LifeTime(5.f);
+
+		vPos = { 49.5f, 30.3f, 9.f };
+		CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &pObject, &vPos);
+		//static_cast<CBomb*>(pObject)->Set_Time_Off();
+		static_cast<CBomb*>(pObject)->Set_LifeTime(5.f);
+
+		vPos = { 49.5f, 30.3f, 8.f };
+		CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &pObject, &vPos);
+		//static_cast<CBomb*>(pObject)->Set_Time_Off();
+		static_cast<CBomb*>(pObject)->Set_LifeTime(5.f);
+
+
+
 		m_iSubStep++;
 		return true;
 	}

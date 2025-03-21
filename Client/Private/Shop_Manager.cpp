@@ -489,7 +489,7 @@ void CShop_Manager::Skill_LevelUp(_uint _index)
 	case CUI::SKILLSHOP::SKILLSHOP_SPINATTACKBADGE:
 	{
 		++m_iSpinAttackLevel;
-		pPlayerData->Set_JumpSkillLevel(m_iSpinAttackLevel);
+		pPlayerData->Set_WhirlSkillLevel(m_iSpinAttackLevel);
 	}
 		
 		break;
@@ -497,7 +497,7 @@ void CShop_Manager::Skill_LevelUp(_uint _index)
 	case CUI::SKILLSHOP::SKILLSHOP_ATTACKPLUSBADGE:
 	{
 		++m_iAttackPlusLevel;
-		pPlayerData->Set_JumpSkillLevel(m_iAttackPlusLevel);
+		pPlayerData->Set_AttackDamageLevel(m_iAttackPlusLevel);
 	}
 		
 		break;
@@ -505,7 +505,7 @@ void CShop_Manager::Skill_LevelUp(_uint _index)
 	case CUI::SKILLSHOP::SKILLSHOP_THROWATTBADGE:
 	{
 		++m_iThrowAttackLevel;
-		pPlayerData->Set_JumpSkillLevel(m_iThrowAttackLevel);
+		pPlayerData->Set_ThrowSkillLevel(m_iThrowAttackLevel);
 	}
 		
 		break;

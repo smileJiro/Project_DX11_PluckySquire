@@ -566,7 +566,7 @@ void CPlayer::Enter_Section(const _wstring _strIncludeSectionName)
 		CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(_strIncludeSectionName, m_pCarryingObject);
 
 
-
+	SECTION_MGR->Set_PlayerInto(_strIncludeSectionName, true);
 
 
 	auto pSection = SECTION_MGR->Find_Section(_strIncludeSectionName);
@@ -574,10 +574,18 @@ void CPlayer::Enter_Section(const _wstring _strIncludeSectionName)
 	_bool bPlatformer = static_cast<CSection_2D*>(pSection)->Is_Platformer();
 	Set_PlatformerMode(bPlatformer);
 
-	if (Is_ZetPackMode() && bPlatformer)
-		Equip_Part(PLAYER_PART_ZETPACK);
-	else
-		UnEquip_Part(PLAYER_PART_ZETPACK);
+	CSection_2D* pCurSection = dynamic_cast<CSection_2D*>(CSection_Manager::GetInstance()->Find_Section(m_strSectionName));
+	if (nullptr != pCurSection)
+	{
+		CSection_2D::SECTION_2D_PLAY_TYPE ePlayType = pCurSection->Get_Section_2D_PlayType();
+		if (CSection_2D::SECTION_2D_PLAY_TYPE::NARRAION == ePlayType
+			|| CSection_2D::SECTION_2D_PLAY_TYPE::WORLDMAP == ePlayType
+			|| CSection_2D::SECTION_2D_PLAY_TYPE::MINIGAME == ePlayType
+			)
+			m_isRender = false;
+		else
+			m_isRender = true;
+	}
 
 	if (TEXT("Chapter2_P0102") == _strIncludeSectionName)
 	{
@@ -590,10 +598,27 @@ void CPlayer::Enter_Section(const _wstring _strIncludeSectionName)
 void CPlayer::Exit_Section(const _wstring _strIncludeSectionName)
 {
 	__super::Exit_Section(_strIncludeSectionName);
+
+	SECTION_MGR->Set_PlayerInto(_strIncludeSectionName, false);
+
+
 	if (Is_CarryingObject())
 		CSection_Manager::GetInstance()->Remove_GameObject_FromSectionLayer(_strIncludeSectionName, m_pCarryingObject);
 	if (Is_ZetPackMode())
 		Equip_Part(PLAYER_PART_ZETPACK);
+
+	CSection_2D* pCurSection = dynamic_cast<CSection_2D*>(CSection_Manager::GetInstance()->Find_Section(m_strSectionName));
+	if (nullptr != pCurSection)
+	{
+		CSection_2D::SECTION_2D_PLAY_TYPE ePlayType = pCurSection->Get_Section_2D_PlayType();
+		if (CSection_2D::SECTION_2D_PLAY_TYPE::NARRAION == ePlayType
+			|| CSection_2D::SECTION_2D_PLAY_TYPE::WORLDMAP == ePlayType
+			|| CSection_2D::SECTION_2D_PLAY_TYPE::MINIGAME == ePlayType
+			)
+			m_isRender = false;
+		else
+			m_isRender = true;
+	}
 }
 
 
@@ -713,6 +738,9 @@ void CPlayer::Priority_Update(_float _fTimeDelta)
 	//}
 
 	__super::Priority_Update(_fTimeDelta); /* Part Object Priority_Update */
+#ifdef _DEBUG
+	cout << "FloorDist : " << m_f3DFloorDistance << endl;
+#endif
 }
 
 
@@ -814,9 +842,9 @@ void CPlayer::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
 	switch (eShapeUse)
 	{
 	case Client::SHAPE_USE::SHAPE_TRIGER:
-		if (OBJECT_GROUP::MONSTER == _Other.pActorUserData->iObjectGroup)
+		if (OBJECT_GROUP::MONSTER & _Other.pActorUserData->iObjectGroup)
 			return;
-		if (SHAPE_USE::SHAPE_BODY == (SHAPE_USE)_Other.pShapeUserData->iShapeUse)
+		if (OBJECT_GROUP::MAPOBJECT & _Other.pActorUserData->iObjectGroup)
 			Event_SetSceneQueryFlag(_Other.pActorUserData->pOwner, _Other.pShapeUserData->iShapeIndex, true);
 		break;
 	}
@@ -829,7 +857,7 @@ void CPlayer::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)
 	if (PLAYER_SHAPE_USE::INTERACTION == (PLAYER_SHAPE_USE)_My.pShapeUserData->iShapeUse)
 	{
 		OBJECT_GROUP eOtehrGroup = (OBJECT_GROUP)_Other.pActorUserData->pOwner->Get_ObjectGroupID();
-		if (OBJECT_GROUP::INTERACTION_OBEJCT == eOtehrGroup || OBJECT_GROUP::INTERACTION_PORTAL == eOtehrGroup )
+		if (OBJECT_GROUP::INTERACTION_OBEJCT & eOtehrGroup || OBJECT_GROUP::INTERACTION_PORTAL == eOtehrGroup )
 		{
 			IInteractable* pInteractable = dynamic_cast<IInteractable*> (_Other.pActorUserData->pOwner);
 			if (Check_ReplaceInteractObject(pInteractable))
@@ -840,7 +868,16 @@ void CPlayer::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)
 		}
 	}
 
-
+	SHAPE_USE eShapeUse = (SHAPE_USE)_My.pShapeUserData->iShapeUse;
+	switch (eShapeUse)
+	{
+	case Client::SHAPE_USE::SHAPE_TRIGER:
+		if (OBJECT_GROUP::MONSTER & _Other.pActorUserData->iObjectGroup)
+			return;
+		if (OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::INTERACTION_OBEJCT | OBJECT_GROUP::DYNAMIC_OBJECT & _Other.pActorUserData->iObjectGroup)
+			Event_SetSceneQueryFlag(_Other.pActorUserData->pOwner, _Other.pShapeUserData->iShapeIndex, true);
+		break;
+	}
 }
 
 void CPlayer::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
@@ -2163,8 +2200,15 @@ void CPlayer::Set_Mode(PLAYER_MODE _eNewMode)
 			Get_ActorDynamic()->Set_Gravity(true);
 			Get_ActorDynamic()->Set_LinearDamping(0.f);
 			Equip_Part(PLAYER_PART_SWORD);
+			Equip_Part(PLAYER_PART_ZETPACK);
 		}
-		Equip_Part(PLAYER_PART_ZETPACK);
+		else
+		{
+			if (Is_PlatformerMode())
+				Equip_Part(PLAYER_PART_ZETPACK);
+			else
+				UnEquip_Part(PLAYER_PART_ZETPACK);
+		}
 		break;
 	case Client::CPlayer::PLAYER_MODE::PLAYER_MODE_CYBERJOT:
 	{
@@ -2534,6 +2578,10 @@ void CPlayer::Key_Input(_float _fTimeDelta)
 		Set_CurrentStampType(PLAYER_PART_BOMB_STMAP);
 		if (STATE::STAMP == Get_CurrentStateID())
 			Equip_Part(PLAYER_PART_BOMB_STMAP);
+	}
+	if (KEY_DOWN(KEY::NUM3))
+	{
+		Acquire_Item(PLAYER_2D_ITEM_ID::FATHER_BODY);
 	}
     if (KEY_DOWN(KEY::J))
     {
