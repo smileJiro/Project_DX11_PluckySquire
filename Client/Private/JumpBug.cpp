@@ -198,9 +198,6 @@ void CJumpBug::Change_Animation()
 
                 //_vector vPosition = m_pControllerTransform->Get_State(CTransform::STATE_POSITION);
 
-               //m_pGameInstance->Start_SFX_Distance(_wstring(L"A_sfx_jumperbug_jump-") + to_wstring(rand() % 7), CSection_Manager::GetInstance()->Get_WorldPosition_FromWorldPosMap(m_strSectionName, 
-               //    _float2(XMVectorGetX(vPosition), XMVectorGetY(vPosition))), 65.f, 0.f, 12.f, 1.f);
-
                 break;
 
             case Client::MONSTER_STATE::HIT:

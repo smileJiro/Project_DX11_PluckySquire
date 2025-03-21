@@ -177,6 +177,13 @@ HRESULT CLevel_Chapter_04::Initialize(LEVEL_ID _eLevelID)
 		MSG_BOX(" Failed Ready_Layer_Friends (CLevel_Chapter_04::Initialize)");
 		assert(nullptr);
 	}
+
+	CPlayerData_Manager::GetInstance()->Set_PlayerItem(TEXT("Sword"));
+	CPlayerData_Manager::GetInstance()->Set_PlayerItem(TEXT("Flipping_Glove"));
+	CPlayerData_Manager::GetInstance()->Set_JumpSkillLevel(1);
+	CPlayerData_Manager::GetInstance()->Set_ThrowSkillLevel(1);
+	CPlayerData_Manager::GetInstance()->Set_WhirlSkillLevel(1);
+
 	/* Collision Test */
 	
 	// 그룹필터 추가 >> 중복해서 넣어도 돼 내부적으로 걸러줌 알아서 
