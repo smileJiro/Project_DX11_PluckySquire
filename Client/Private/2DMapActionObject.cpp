@@ -396,6 +396,8 @@ void C2DMapActionObject::Spike_Pattern_EndProcess()
     case Client::C2DMapActionObject::SPKIE_UP:
         m_fAccTime = 0.f;
         m_eCurPattern = SPKIE_IDLE_UP;
+        if (false == m_pGameInstance->Is_SFXPlaying(L"A_sfx_spike_up"))
+            START_SFX(L"A_sfx_spike_up", 30.f, false);
         Switch_Animation(SPKIE_IDLE_UP);
         break;
     default:

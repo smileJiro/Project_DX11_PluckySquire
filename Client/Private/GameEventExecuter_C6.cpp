@@ -1591,6 +1591,8 @@ void CGameEventExecuter_C6::Chapter6_Humgrump_Revolt(_float _fTimeDelta)
 				// 9. 험그럼프 Beam 끝, 할배 죽기 시작
 				static_cast<CModelObject*>(m_TargetObjects[0])->Switch_Animation(CNpc_Humgrump::CHAPTER6_BEAM_END);
 				static_cast<CModelObject*>(m_TargetObjects[1])->Switch_Animation(CNpc_MoonBeard::CHAPTER6_ZAP_DEATH);
+				START_SFX(L"A_sfx_humpgrump_death_sequence", 40.f, false);
+
 			}
 		}
 
@@ -1622,7 +1624,12 @@ void CGameEventExecuter_C6::Chapter6_Humgrump_Revolt(_float _fTimeDelta)
 	else if (Step_Check(STEP_11)) {
 		if (false == CDialog_Manager::GetInstance()->Get_DisPlayDialogue()) {
 			if (Is_Start())
+			{
+				START_SFX(L"A_sfx_humpgrump_eerie_laugh", 40.f, false);
+				END_BGM();
+				START_BGM(L"LCD_MUS_HUMGRUMPCONFRONTSMOON_2_OS_FULL_v2b", 20.f);
 				static_cast<CModelObject*>(m_TargetObjects[0])->Switch_Animation(CNpc_Humgrump::CHAPTER6_TRANSFORM_LAUGH_INTO);
+			}
 		}
 
 		if (false == static_cast<CModelObject*>(m_TargetObjects[0])->Is_DuringAnimation()) {
