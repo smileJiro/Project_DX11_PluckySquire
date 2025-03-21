@@ -20,6 +20,16 @@
     ]
   },
   {
+    "Trigger_EventTag": "Chapter8_Going_To_Boss",
+    "Actions": [
+      {
+        "ActionTag": "Create_EventExecuter",
+        "EventTag": "Chapter8_Going_To_Boss",
+        "Is_Sequence": true
+      }
+    ]
+  },
+  {
     "Trigger_EventTag": "Chapter8_Postit_Arm_Changing",
     "Actions": [
       {

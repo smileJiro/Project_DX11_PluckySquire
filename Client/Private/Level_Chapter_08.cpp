@@ -140,11 +140,11 @@ HRESULT CLevel_Chapter_08::Initialize(LEVEL_ID _eLevelID)
 		MSG_BOX(" Failed Ready_Layer_Camera (Level_Chapter_08::Initialize)");
 		assert(nullptr);
 	}
-	if (FAILED(Ready_Layer_Monster()))
-	{
-		MSG_BOX(" Failed Ready_Layer_Monster (Level_Chapter_08::Initialize)");
-		assert(nullptr);
-	}
+	//if (FAILED(Ready_Layer_Monster()))
+	//{
+	//	MSG_BOX(" Failed Ready_Layer_Monster (Level_Chapter_08::Initialize)");
+	//	assert(nullptr);
+	//}
 	if (FAILED(Ready_Layer_Monster_Projectile(TEXT("Layer_Monster_Projectile"))))
 	{
 		MSG_BOX(" Failed Ready_Layer_Monster_Projectile (Level_Chapter_08::Initialize)");
@@ -241,6 +241,7 @@ HRESULT CLevel_Chapter_08::Initialize(LEVEL_ID _eLevelID)
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::PLAYER);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::MAPOBJECT);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::BLOCKER);
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::DOOR);
 
 	/* 발판 - 기믹오브젝트, 2D에 해당하는 오브젝트 (주사위, 등.. )*/
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MAPOBJECT, OBJECT_GROUP::GIMMICK_OBJECT);
@@ -271,8 +272,8 @@ HRESULT CLevel_Chapter_08::Initialize(LEVEL_ID _eLevelID)
 	//CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("Tilting_Glove"), _float3(30.55f, 30.98f, 23.34f));
 
 	// Intro 시작
-	CTrigger_Manager::GetInstance()->Register_TriggerEvent(TEXT("Chapter8_Intro"), 50);
-	CCamera_Manager::GetInstance()->Start_FadeIn(3.f);
+	//CTrigger_Manager::GetInstance()->Register_TriggerEvent(TEXT("Chapter8_Intro"), 50);
+	//CCamera_Manager::GetInstance()->Start_FadeIn(3.f);
 
 	/* Set Shader PlayerHideColor */
 	m_pGameInstance->Set_PlayerHideColor(_float3(0.8f, 0.8f, 0.8f), true);
@@ -280,7 +281,7 @@ HRESULT CLevel_Chapter_08::Initialize(LEVEL_ID _eLevelID)
 	m_pSneakMinigameManager = CMinigame_Sneak::GetInstance();
 	m_pFormation_Manager = CFormation_Manager::GetInstance();
 
-	m_pFormation_Manager->Initialize();
+	//m_pFormation_Manager->Initialize();
 
 	return S_OK;
 }
@@ -494,6 +495,14 @@ void CLevel_Chapter_08::Update(_float _fTimeDelta)
 	//			assert(nullptr);
 	//		CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter8_SKSP_11"), pGameObject, SECTION_2D_PLAYMAP_OBJECT);
 
+			//
+	/*		CZip_C8::MODELOBJECT_DESC tZipDesc{};
+			tZipDesc.iCurLevelID = m_eLevelID;
+			tZipDesc.Build_2D_Transform(_float2(-248.0, -111.0), _float2(1.0f, 1.0f));
+			CGameObject* pGameObject = nullptr;
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_ZipC8"), m_eLevelID, TEXT("Layer_Zip"), &pGameObject, &tZipDesc)))
+				assert(nullptr);
+			CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter8_SKSP_11"), pGameObject, SECTION_2D_PLAYMAP_OBJECT);*/
 
 	//		// 보스 체력바 관련
 	//		CUI::UIOBJDESC pDesc = {};
@@ -1610,6 +1619,30 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Monster_3D()
 				return E_FAIL;
 		}
 	}
+
+
+	//생성 나중에 하므로 여기서 한번에 진행
+
+	_float3 vPos = { 50.5f, 30.3f, 9.f };
+	CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &pObject, &vPos);
+	//static_cast<CBomb*>(pObject)->Set_Time_Off();
+	static_cast<CBomb*>(pObject)->Set_LifeTime(5.f);
+
+	vPos = { 50.5f, 30.3f, 8.f };
+	CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &pObject, &vPos);
+	//static_cast<CBomb*>(pObject)->Set_Time_Off();
+	static_cast<CBomb*>(pObject)->Set_LifeTime(5.f);
+
+	vPos = { 49.5f, 30.3f, 9.f };
+	CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &pObject, &vPos);
+	//static_cast<CBomb*>(pObject)->Set_Time_Off();
+	static_cast<CBomb*>(pObject)->Set_LifeTime(5.f);
+
+	vPos = { 49.5f, 30.3f, 8.f };
+	CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &pObject, &vPos);
+	//static_cast<CBomb*>(pObject)->Set_Time_Off();
+	static_cast<CBomb*>(pObject)->Set_LifeTime(5.f);
+
 	return S_OK;
 }
 

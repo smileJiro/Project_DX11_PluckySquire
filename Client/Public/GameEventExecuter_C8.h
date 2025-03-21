@@ -81,6 +81,7 @@ public:
 	void Chapter8_2D_In(_float _fTimeDelta);
 	
 	void Chapter8_Boss_Intro(_float _fTimeDelta);
+	void Chapter8_Going_To_Boss(_float _fTimeDelta);
 
 	void Chapter8_TransformZip(_float _fTimeDelta);
 

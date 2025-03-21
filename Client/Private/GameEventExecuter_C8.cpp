@@ -146,7 +146,9 @@ void CGameEventExecuter_C8::Update(_float _fTimeDelta)
 		case Client::CTrigger_Manager::CHAPTER8_BOSS_INTRO:
 			Chapter8_Boss_Intro(_fTimeDelta);
 			break;
-
+		case Client::CTrigger_Manager::CHAPTER8_GOING_TO_BOSS:
+			Chapter8_Going_To_Boss(_fTimeDelta);
+			break;
 		case Client::CTrigger_Manager::CHAPTER8_TRANSFORMZIP:
 			Chapter8_TransformZip(_fTimeDelta);
 			break;
@@ -1986,6 +1988,14 @@ void CGameEventExecuter_C8::Chapter8_Meet_Humgrump(_float _fTimeDelta)
 				m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_ButterGrump"),
 					m_iCurLevelID, TEXT("Layer_Boss"), &pBoss, &Boss_Desc);
 
+				// 찌릿이 만들기
+				CZip_C8::MODELOBJECT_DESC tZipDesc{};
+				tZipDesc.iCurLevelID = m_iCurLevelID;
+				tZipDesc.Build_2D_Transform(_float2(-248.0, -111.0), _float2(1.0f, 1.0f));
+				m_pGameInstance->Add_GameObject_ToLayer(m_iCurLevelID, TEXT("Prototype_GameObject_ZipC8"), m_iCurLevelID, TEXT("Layer_Zip"), &pGameObject, &tZipDesc);
+				CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter8_SKSP_11"), pGameObject, SECTION_2D_PLAYMAP_OBJECT);
+
+
 				// 2D 험그럼프 없애기
 				Event_DeleteObject(m_TargetObjects[0]);
 				m_TargetObjects[0] = nullptr;
@@ -2035,11 +2045,33 @@ void CGameEventExecuter_C8::Chapter8_Meet_Humgrump(_float _fTimeDelta)
 
 				pPlayer->Set_BlockPlayerInput(false);
 
+				// Monster 제거
+				/*CLayer* pLayer = m_pGameInstance->Find_Layer(m_iCurLevelID, TEXT("Layer_Monster"));
+
+				for (auto& Monster : pLayer->Get_GameObjects()) {
+					Event_DeleteObject(Monster);
+				}
+
+				pLayer = m_pGameInstance->Find_Layer(m_iCurLevelID, TEXT("Layer_Sneak_Beetle"));
+
+				for (auto& Beetle : pLayer->Get_GameObjects()) {
+					Event_DeleteObject(Beetle);
+				}
+
+				pLayer = m_pGameInstance->Find_Layer(m_iCurLevelID, TEXT("Layer_Sneak_Soldier"));
+
+				for (auto& Soldier : pLayer->Get_GameObjects()) {
+					Event_DeleteObject(Soldier);
+				}*/
+
 				// 이전 Trigger 제거
 				CLayer* pLayer = m_pGameInstance->Find_Layer(m_iCurLevelID, TEXT("Layer_TriggerObject"));
 
 				for (auto& TriggerObject : pLayer->Get_GameObjects()) {
-					Event_DeleteObject(TriggerObject);
+					if (COORDINATE_3D == TriggerObject->Get_CurCoord())
+						Event_DeleteObject(TriggerObject);
+					/*	TriggerObject->Set_Active(false);
+						TriggerObject->Set_Render(false);*/
 				}
 
 				// Intro Trigger 생성
@@ -2050,7 +2082,7 @@ void CGameEventExecuter_C8::Chapter8_Meet_Humgrump(_float _fTimeDelta)
 				Desc.eConditionType = CTriggerObject::TRIGGER_ENTER;
 				Desc.isReusable = false;
 				Desc.eStartCoord = COORDINATE_3D;
-				Desc.tTransform3DDesc.vInitialPosition = { 1.99f, 1.07f, 6.10f };
+				Desc.tTransform3DDesc.vInitialPosition = { 1.99f, 1.07f, -16.79f };
 
 				CTrigger_Manager::GetInstance()->Create_TriggerObject(LEVEL_STATIC, LEVEL_CHAPTER_8, &Desc);
 
@@ -2397,26 +2429,31 @@ void CGameEventExecuter_C8::Chapter8_TransformZip(_float _fTimeDelta)
 
 		if (false == pDM->Get_DisPlayDialogue())
 		{
+			CCamera_Manager::GetInstance()->Change_CameraTarget(Get_Player(), 1.f);
 			Next_Step(true);
 		}
 
 	}
 	else if(Step_Check(STEP_2))
 	{
-
 		if (Is_Start())
 		{
-
 			pPlayer->TransformToCyberJot(pZip);
-
 		}
-		if (false == pPlayer->Get_Body()->Is_DuringAnimation())
+		if (false == pPlayer->Get_Body()->Is_DuringAnimation()) {
+			
+			// Boss CutScene Trigger 실행
+			CTrigger_Manager::GetInstance()->Register_TriggerEvent(TEXT("Chapter8_Going_To_Boss"), 0);
+
+			// Player Shape 켜기
+			Get_Player()->Get_ActorDynamic()->Set_ShapeEnable(CPlayer::PART_BODY, true);
+
 			Next_Step(true);
+		}
 	}
 	else
 	{
 		GameEvent_End();
-
 	}
 
 }
@@ -2443,9 +2480,17 @@ void CGameEventExecuter_C8::Chapter8_Boss_Intro(_float _fTimeDelta)
 		if (false == pCamera->Is_Switching()) {
 			// boss intro 시작
 			static_cast<CButterGrump*>(m_pGameInstance->Get_GameObject_Ptr(m_iCurLevelID, TEXT("Layer_Boss"), 0))->Play_Intro(0);
+			Next_Step(true);
 		}
 	}
 	else if (Step_Check(STEP_3)) {
+		if (m_fTimer >= 5.f) {
+			if (Is_Start()) {
+				Get_Player()->LookDirectionXZ_Dynamic({ 0.f, 0.f, 1.f });
+				Get_Player()->Get_Body()->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_IDLE_NERVOUS_TURN_01_GT);
+			}
+		}
+
 		CCamera_CutScene* pCamera = static_cast<CCamera_CutScene*>(CCamera_Manager::GetInstance()->Get_CurrentCamera());
 		if (true == pCamera->Is_Finish_CutScene()) {
 			Next_Step(true);
@@ -2467,6 +2512,82 @@ void CGameEventExecuter_C8::Chapter8_Boss_Intro(_float _fTimeDelta)
 		if (Is_Start()) {
 			CCamera_Manager::GetInstance()->Start_FadeIn(0.7f);
 			CCamera_Manager::GetInstance()->Set_FadeRatio(CCamera_Manager::CUTSCENE, 1.f, true);
+			Next_Step(true);
+		}
+	}
+	else
+	{
+		GameEvent_End();
+	}
+}
+
+void CGameEventExecuter_C8::Chapter8_Going_To_Boss(_float _fTimeDelta)
+{
+	m_fTimer += _fTimeDelta;
+
+	if (Step_Check(STEP_0)) {
+		if (COORDINATE_3D == Get_Player()->Get_CurCoord()) {
+			CCamera_Manager::GetInstance()->Set_NextCutSceneData(TEXT("Going_To_Humgrump"));
+			CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::CUTSCENE);
+			Get_Player()->Set_State(CPlayer::ENGAGE_BOSS);
+			Next_Step(true);
+		}
+	}
+	else if (Step_Check(STEP_1)) {
+		CCamera_CutScene* pCamera = static_cast<CCamera_CutScene*>(CCamera_Manager::GetInstance()->Get_CurrentCamera());
+		
+		if (m_fTimer >= 11.5f) {
+			if (Is_Start()) {
+				CGameObject* pBoss = m_pGameInstance->Get_GameObject_Ptr(m_iCurLevelID, TEXT("Layer_Boss"), 0);
+				static_cast<CButterGrump*>(pBoss)->Play_Intro(2);
+			}
+		}
+		
+		if (true == pCamera->Is_Finish_CutScene()) {
+			Next_Step(true);
+		}
+	}
+	else if (Step_Check(STEP_2)) {
+		if (Is_Start()) {
+			CCamera_Manager::GetInstance()->Start_FadeOut(0.7f);
+		}
+
+		// 3. FadeOut이 끝난 후 CutScene Camera -> Target Camera로 전환
+		if (m_fTimer > 0.7f) {
+			static_cast<CCamera_CutScene*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::CUTSCENE))->Set_Pause_After_CutScene(false);
+			Next_Step(true);
+		}
+	}
+	// 4. 전환 후 Target Camera로(다음 프레임) FadeIn 시작 + 기존 CutScene Camera를 다시 밝게 만들기
+	else if (Step_Check(STEP_3)) {
+		if (Is_Start()) {
+			CCamera_Manager::GetInstance()->Start_FadeIn(0.7f);
+			CCamera_Manager::GetInstance()->Set_FadeRatio(CCamera_Manager::CUTSCENE, 1.f, true);
+
+			// Camera Pivot 설정
+			CCameraPivot* pPivot = static_cast<CCameraPivot*>(m_pGameInstance->Get_GameObject_Ptr(m_iCurLevelID, TEXT("Layer_CameraPivot"), 0));
+			CGameObject* pBoss = m_pGameInstance->Get_GameObject_Ptr(m_iCurLevelID, TEXT("Layer_Boss"), 0);
+			pPivot->Set_MainTarget(pBoss);
+			pPivot->Set_Active(true);
+			CCamera_Manager::GetInstance()->Change_CameraTarget(pPivot, 0.f);
+
+			CCamera_Target* pCamera = static_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_CurrentCamera());
+			pCamera->Get_Arm()->Set_ArmVector(_vector{ 0.f,0.f, -1.f });
+			pCamera->Set_Position(_vector{ 0.53f, 60.35f, -8.0f });
+			pCamera->Get_Arm()->Set_Length(24.6f);
+			pCamera->Set_FreezeEnter(CCamera_Target::FREEZE_X, XMVectorSet(-0.3150f, 0.1552f, -0.9363f, 0.f), 0);
+			pCamera->Set_FreezeEnter(CCamera_Target::FREEZE_Z, XMVectorSet(-0.3150f, 0.1552f, -0.9363f, 0.f), 0);
+
+			// Boss 체력바
+			CUI::UIOBJDESC pDesc = {};
+			pDesc.iCurLevelID = m_iCurLevelID;
+
+			Uimgr->Set_BossForUI(static_cast<CButterGrump*>(pBoss));
+			m_pGameInstance->Add_GameObject_ToLayer(m_iCurLevelID, TEXT("Prototype_GameObject_BossHP"), pDesc.iCurLevelID, TEXT("Layer_UI"), &pDesc);
+
+			// Player State 변경
+			Get_Player()->Set_State(CPlayer::CYBER_FLY);
+
 			Next_Step(true);
 		}
 	}

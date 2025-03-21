@@ -49,7 +49,7 @@ void CPlayerState_EngageBoss::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 	}
 	else if ((_uint)CPlayer::ANIM_STATE_3D::CYBERJOT_CINE_DO9_LB_ENGAGE_SH02 == iAnimIdx)
 	{
-	//	m_pOwner->Set_State(CPlayer::CYBER_FLY);
+		//m_pOwner->Set_State(CPlayer::CYBER_FLY);
 		int a = 0;
 	}
 }

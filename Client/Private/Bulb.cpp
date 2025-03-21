@@ -57,7 +57,7 @@ HRESULT CBulb::Initialize(void* _pArg)
 		static_cast<CActor_Dynamic*>(m_pActorCom)->Set_Gravity(false);
 	}
 
-	m_fStickingStartTime = 1.f;
+	m_fStickingStartTime = 0.5f;
 
 	return S_OK;
 }
@@ -423,7 +423,7 @@ HRESULT CBulb::Ready_Components(BULB_DESC* _pArg)
 		pCollider = nullptr;
 		CircleDesc = {};
 		CircleDesc.pOwner = this;
-		CircleDesc.fRadius = 100.f;
+		CircleDesc.fRadius = 150.f;
 		CircleDesc.vScale = { 1.f / fScaleX, 1.f / fScaleY };
 		CircleDesc.vOffsetPosition = { 0.f, 0.f };
 		CircleDesc.isBlock = false;

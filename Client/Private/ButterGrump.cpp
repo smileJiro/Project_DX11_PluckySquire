@@ -146,6 +146,7 @@ HRESULT CButterGrump::Initialize(void* _pArg)
     m_fMoveAnimationProgress[DASH_UP] = 0.705f-0.343f;
 
     m_fSceneTime = 3.f;
+    m_fScene2Time = 4.f;
 
     //플레이어 위치 가져오기
     m_pTarget = CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr();
@@ -181,6 +182,15 @@ void CButterGrump::Priority_Update(_float _fTimeDelta)
         {
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(LB_INTRO_SH04);
             m_isScene = false;
+        }
+    }
+    if (true == m_isScene2)
+    {
+        m_fScene2AccTime += _fTimeDelta;
+        if (m_fScene2Time <= m_fScene2AccTime)
+        {
+            Set_AnimChangeable(true);
+            m_isScene2 = false;
         }
     }
 
@@ -942,6 +952,10 @@ void CButterGrump::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
         if (true == Is_Converse())
             m_isConverse = false;
         //EndRoar();
+        if ((_uint)BOSS_STATE::SCENE == m_iState)
+        {
+            m_isScene2 = true;
+        }
         break;
 
     case RECEIVE_DAMAGE:
