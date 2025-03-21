@@ -100,7 +100,6 @@ CLevel_Logo* CLevel_Logo::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _p
 
 void CLevel_Logo::Free()
 {
-	m_pGameInstance->End_BGM();
-
+	
 	__super::Free();
 }
