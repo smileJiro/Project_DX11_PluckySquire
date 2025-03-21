@@ -571,6 +571,7 @@ void CPlayer::Enter_Section(const _wstring _strIncludeSectionName)
 
 	auto pSection = SECTION_MGR->Find_Section(_strIncludeSectionName);
 
+	CSection_2D* pSection2D = static_cast<CSection_2D*>(pSection);
 	_bool bPlatformer = static_cast<CSection_2D*>(pSection)->Is_Platformer();
 	Set_PlatformerMode(bPlatformer);
 
@@ -585,6 +586,12 @@ void CPlayer::Enter_Section(const _wstring _strIncludeSectionName)
 	}
 
 
+	/* 8챕터 book 들어갈때 */
+	if (m_iCurLevelID == LEVEL_CHAPTER_8 && pSection2D->Get_Section_2D_RenderType() == CSection_2D::SECTION_2D_RENDER_TYPE::SECTION_2D_BOOK)
+	{
+		if(TEXT("Chapter8_P0102") != _strIncludeSectionName)
+			m_pGameInstance->Set_GrayScale_VtxAnimMesh(0);
+	}
 }
 
 void CPlayer::Exit_Section(const _wstring _strIncludeSectionName)
@@ -598,6 +605,12 @@ void CPlayer::Exit_Section(const _wstring _strIncludeSectionName)
 		CSection_Manager::GetInstance()->Remove_GameObject_FromSectionLayer(_strIncludeSectionName, m_pCarryingObject);
 	if (Is_ZetPackMode())
 		Equip_Part(PLAYER_PART_ZETPACK);
+
+	auto pSection = SECTION_MGR->Find_Section(_strIncludeSectionName);
+	CSection_2D* pSection2D = static_cast<CSection_2D*>(pSection);
+	// section 나갈때 8챕터에서 흑백처리
+	if (m_iCurLevelID == LEVEL_CHAPTER_8 && pSection2D->Get_Section_2D_RenderType() == CSection_2D::SECTION_2D_RENDER_TYPE::SECTION_2D_BOOK)
+		m_pGameInstance->Set_GrayScale_VtxAnimMesh(1);
 }
 
 
