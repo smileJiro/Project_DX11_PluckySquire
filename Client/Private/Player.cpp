@@ -2217,14 +2217,7 @@ void CPlayer::Set_Mode(PLAYER_MODE _eNewMode)
 			break;
 		cout << "PLAYER_MODE_CYBERJOT" << endl;
 
-		m_pTargetCamera = static_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET));
-		CCameraPivot* pPivot = dynamic_cast<CCameraPivot*>(m_pGameInstance->Get_GameObject_Ptr(m_iCurLevelID, TEXT("Layer_CameraPivot"), 0));
-		if(pPivot)
-		{
-			CGameObject*  pManinTarget = pPivot->Get_MainTarget();
-			if(pManinTarget)
-				m_pCameraTargetWorldMatrix = pManinTarget->Get_ControllerTransform()->Get_WorldMatrix_Ptr();
-		}
+
 
 		Set_Kinematic(true);
 		//Get_ActorDynamic()->Set_Gravity(false);
@@ -2645,7 +2638,17 @@ void CPlayer::On_GainPlayerItem(_uint _eItem)
 void CPlayer::Update_CyberJot(_float _fTimeDelta)
 {
 	if (nullptr == m_pTargetCamera || nullptr == m_pCameraTargetWorldMatrix)
-		return;
+	{
+		m_pTargetCamera = static_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET));
+		CCameraPivot* pPivot = dynamic_cast<CCameraPivot*>(m_pGameInstance->Get_GameObject_Ptr(m_iCurLevelID, TEXT("Layer_CameraPivot"), 0));
+		if (pPivot)
+		{
+			CGameObject* pManinTarget = pPivot->Get_MainTarget();
+			if (pManinTarget)
+				m_pCameraTargetWorldMatrix = pManinTarget->Get_ControllerTransform()->Get_WorldMatrix_Ptr();
+		}
+
+	}
 
 	m_f3DCyberCurrentSpeed -= m_f3DCyberLinearDamping * _fTimeDelta;
 	if(m_f3DCyberCurrentSpeed < 0.f)

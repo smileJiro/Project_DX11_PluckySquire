@@ -134,13 +134,14 @@ void CGameEventExecuter_C4::Chapter4_Intro(_float _fTimeDelta)
 	if (Step_Check(STEP_0))
 	{
 		if (CCamera_Manager::TARGET == CCamera_Manager::GetInstance()->Get_CameraType()) {
+			Get_Player()->Set_BlockPlayerInput(true);
 			Next_Step(true);
 		}
 
-		Get_Player()->Set_BlockPlayerInput(true);
 	}
 	else if (Step_Check(STEP_1)) {
 		if (m_fTimer >= 0.9f) {
+			
 			CCamera_Manager::GetInstance()->Set_NextCutSceneData(TEXT("Chapter4_Intro"));
 			CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::CUTSCENE, true, 0.8f);
 			Next_Step(true);
@@ -268,6 +269,7 @@ void CGameEventExecuter_C4::Chapter4_Event_Flag(_float _fTimeDelta)
 	if (Step_Check(STEP_0)) {
 		if (Is_Start())
 		{
+			Get_Player()->Set_BlockPlayerInput(true);
 			CCamera_Manager::GetInstance()->Set_NextCutSceneData(TEXT("Chapter4_Flag"));
 			CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::CUTSCENE, true, 0.8f);
 		}
@@ -298,6 +300,8 @@ void CGameEventExecuter_C4::Chapter4_Event_Flag(_float _fTimeDelta)
 		if (Is_Start()) {
 			CCamera_Manager::GetInstance()->Start_FadeIn(0.3f);
 			CCamera_Manager::GetInstance()->Set_FadeRatio(CCamera_Manager::CUTSCENE, 1.f, true);
+
+			Get_Player()->Set_BlockPlayerInput(false);
 			Next_Step(true);
 		}
 	}
@@ -312,8 +316,9 @@ void CGameEventExecuter_C4::Chapter4_GateEvent(_float _fTimeDelta)
 	{
 		if (Is_Start())
 		{
+			CCamera_Manager::GetInstance()->Save_ArmData(CCamera_Manager::TARGET_2D);
 			CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Increase(CCamera_Manager::TARGET_2D,
-				1.f,5.f, EASE_IN_OUT);
+				1.f,8.f, EASE_IN_OUT);
 			CPlayer* pPlayer = Get_Player();
 			
 			if(nullptr != pPlayer)
@@ -363,9 +368,10 @@ void CGameEventExecuter_C4::Chapter4_GateEvent(_float _fTimeDelta)
 		if (Is_Start())
 		{
 			CPlayer* pPlayer = Get_Player();
-			pPlayer->Set_Position({ -139.f, -544.f, 0.f });
+			pPlayer->Set_Position({ -139.f, -444.f, 0.f });
 
 			static_cast<CSection_2D_PlayMap*>(SECTION_MGR->Find_Section(L"Chapter4_SKSP_04"))->Set_PortalActive(true);
+			static_cast<CSection_2D_PlayMap*>(SECTION_MGR->Find_Section(L"Chapter4_SKSP_04"))->Get_Portal(0)->Set_Active(false);
 
 		}
 		Next_Step(true);
@@ -374,8 +380,8 @@ void CGameEventExecuter_C4::Chapter4_GateEvent(_float _fTimeDelta)
 	{
 		if (Is_Start())
 		{
-			CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Decrease(CCamera_Manager::TARGET_2D,
-				1.f, 5.f, EASE_IN_OUT);
+
+			CCamera_Manager::GetInstance()->Start_ResetArm_To_SettingPoint(CCamera_Manager::TARGET_2D,1.f);
 			CPlayer* pPlayer = Get_Player();
 
 			if (nullptr != pPlayer)
@@ -442,7 +448,7 @@ void CGameEventExecuter_C4::Chapter4_StorySequence_02(_float _fTimeDelta)
 	{
 		if (Is_Start())
 		{
-			CFriend_Controller::GetInstance()->End_Train();
+			//CFriend_Controller::GetInstance()->End_Train();
 			pPlayer->Set_BlockPlayerInput(true);
 		}
 

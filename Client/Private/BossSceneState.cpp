@@ -48,29 +48,29 @@ void CBossSceneState::State_Update(_float _fTimeDelta)
 	//	}
 	//}
 
-	if (KEY_PRESSING(KEY::CTRL))
-	{
-		if (KEY_DOWN(KEY::NUM9))
-		{
-			//애니메이션 재생
-			if (true == m_pOwner->Get_AnimChangeable())
-			{
-				static_cast<CButterGrump*>(m_pOwner)->Play_Intro(m_iSceneIdx);
-				switch (m_iSceneIdx)
-				{
-				case FIRST:
-					m_isDelay = true;
-					m_iSceneIdx = SECOND;
-					break;
+	//if (KEY_PRESSING(KEY::CTRL))
+	//{
+	//	if (KEY_DOWN(KEY::NUM9))
+	//	{
+	//		//애니메이션 재생
+	//		if (true == m_pOwner->Get_AnimChangeable())
+	//		{
+	//			static_cast<CButterGrump*>(m_pOwner)->Play_Intro(m_iSceneIdx);
+	//			switch (m_iSceneIdx)
+	//			{
+	//			case FIRST:
+	//				m_isDelay = true;
+	//				m_iSceneIdx = SECOND;
+	//				break;
 
-				default:
-					break;
-				}
-				++m_iSceneIdx;
-			}
-		}
-	}
-	if (SCENE::LAST <= m_iSceneIdx && true == m_pOwner->Get_AnimChangeable())
+	//			default:
+	//				break;
+	//			}
+	//			++m_iSceneIdx;
+	//		}
+	//	}
+	//}
+	if (true == m_pOwner->Get_AnimChangeable())
 		Event_ChangeBossState(BOSS_STATE::IDLE, m_pFSM);
 }
 

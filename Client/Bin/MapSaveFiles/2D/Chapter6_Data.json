@@ -114,6 +114,12 @@
 		"Section_Type": 0,
 		"Section_Info": {
 			"BGM": "LCD_MUS_C08_POSTBATTLE_P0708_LOOP_Stem_Base",
+			"SFX": [
+				{
+					"SFX_Name": "A_sfx_C8_TheGangArrivedAtArtia",
+					"isStart": true
+				}
+			],
 			"Camera_Zoom_Ratio": 2.0,
 			"RenderResolution": {
 				"X": 5120.0,
@@ -154,6 +160,12 @@
 		"Section_Default": 0,
 		"Section_Info": {
 			"BGM": "LCD_MUS_HUMGRUMPCONFRONTSMOON_2_OS_FULL_v2b",
+			"SFX": [
+				{
+					"SFX_Name": "A_sfx_C8_TheGangArrivedAtArtia",
+					"isStart": false
+				}
+			],
 			"Pre_Page_Tag": "Chapter6_P1112"
 		}
 	},

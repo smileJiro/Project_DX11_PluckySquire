@@ -60,11 +60,6 @@ void CPlayerState_ExitPortal::Update(_float _fTimeDelta)
 	}
 	if (COORDINATE_3D == eCoord)
 	{
-		if (m_pOwner->Is_CyvberJotMode())
-		{
-			m_pOwner->Set_State(CPlayer::ENGAGE_BOSS);
-			return;
-		}
 		if (-0.f > m_pOwner->Get_UpForce())
 		{
 			static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Set_ShapeEnable((_uint)SHAPE_USE::SHAPE_BODY, true);
