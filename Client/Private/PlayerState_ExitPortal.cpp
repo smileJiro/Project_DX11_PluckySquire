@@ -68,6 +68,7 @@ void CPlayerState_ExitPortal::Update(_float _fTimeDelta)
 		if (-0.f > m_pOwner->Get_UpForce())
 		{
 			static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Set_ShapeEnable((_uint)SHAPE_USE::SHAPE_BODY, true);
+			m_pOwner->Measure_FloorDistance();
 			if(m_pOwner->Is_OnGround())
 				m_pOwner->Set_State(CPlayer::IDLE);
 		}
