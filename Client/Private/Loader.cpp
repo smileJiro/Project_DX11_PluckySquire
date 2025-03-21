@@ -2020,6 +2020,7 @@ HRESULT CLoader::Loading_Level_Chapter_8(LEVEL_ID _eLoadLevelID)
 	m_pGameInstance->Load_SFX(TEXT("C8_End_02"), TEXT("../Bin/Resources/Audio/Narration/Chapter8/Chapter8_EndNarration_02.wav"));
 	m_pGameInstance->Load_SFX(TEXT("C8_End_03"), TEXT("../Bin/Resources/Audio/Narration/Chapter8/Chapter8_EndNarration_03.wav"));
 	m_pGameInstance->Load_SFX(TEXT("C8_End_04"), TEXT("../Bin/Resources/Audio/Narration/Chapter8/Chapter8_EndNarration_04.wav"));
+	m_pGameInstance->Load_SFX(TEXT("C8_End_01_SFX"), TEXT("../Bin/Resources/Audio/Narration/Chapter8/A_sfx_party_noises_loop.wav"));
 
 	// 나레이션 관련
 

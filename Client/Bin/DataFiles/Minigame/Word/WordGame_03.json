@@ -17,18 +17,27 @@
             250.0,
             100.0
           ],
-		"Collider_Offset": [
-            0.0,
-            50.0
-          ]
-		},
+		    "Collider_Offset": [
+                0.0,
+                50.0
+              ]
+		    },
         "Image_Tag_List": [
           {
             "ImagePath": "09_0910_GateClosed_Sprite"
-			  
+
           },
           {
             "ImagePath": "09_0910_GateOpen_Sprite"
+          }
+        ],
+        "SFX_Tag_List": [
+          {
+            "SFXPath": "A_sfx_iron_gate_shut"
+
+          },
+          {
+            "SFXPath": "A_sfx_iron_gate_broken"
           }
         ],
         "Word_Action_List": [

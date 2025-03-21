@@ -346,6 +346,8 @@ void CGameEventExecuter_C8::Chapter8_Laser_Stage(_float _fTimeDelta)
 			if (Is_Start())
 			{
 				static_cast<CModelObject*>(m_TargetObjects[LASER])->Switch_Animation(CBig_Laser::LASER_START);
+				START_SFX(L"A_sfx_laser_igniting", 60.f, false);
+				START_SFX(L"A_sfx_laser_shooting_loop", 60.f, true);
 			}
 			Next_Step_Over(1.5f);
 		}
@@ -355,8 +357,8 @@ void CGameEventExecuter_C8::Chapter8_Laser_Stage(_float _fTimeDelta)
 			if (Is_Start())
 			{
 				START_BGM(L"LCD_MUS_C09_P1718_LASER_FULL", 20.f);
-				static_cast<CBig_Laser*>(m_TargetObjects[LASER])->Move_Start(1800.f, 100.f);
 				static_cast<CBig_Laser*>(m_TargetObjects[LASER])->Set_Beam_Collider(true);
+				static_cast<CBig_Laser*>(m_TargetObjects[LASER])->Move_Start(1800.f, 100.f);
 				pPlayer->Set_BlockPlayerInput(false);
 			}
 			Next_Step_Over(4.5f);
@@ -2423,7 +2425,7 @@ _bool CGameEventExecuter_C8::Change_PlayMap(_float _fStartTime)
 		const json* pJson = m_pGameInstance->Find_Json_InLevel(TEXT("Chapter8_Monsters_3D"), LEVEL_CHAPTER_8);
 
 		if (nullptr == pJson)
-			return E_FAIL;
+			return false;
 		if (pJson->contains("3D"))
 		{
 			_wstring strLayerTag = L"Layer_Monster";
@@ -2460,7 +2462,7 @@ _bool CGameEventExecuter_C8::Change_PlayMap(_float _fStartTime)
 					strMonsterTag = STRINGTOWSTRING(Json["MonsterTag"]);
 				}
 				else
-					return E_FAIL;
+					return false;
 
 				if (Json.contains("SneakMode"))
 				{
@@ -2469,7 +2471,7 @@ _bool CGameEventExecuter_C8::Change_PlayMap(_float _fStartTime)
 						MonsterDesc3D.eWayIndex = Json["SneakWayPointIndex"];
 					}
 					else
-						return E_FAIL;
+						return false;
 					MonsterDesc3D.isSneakMode = Json["SneakMode"];
 				}
 
@@ -2491,7 +2493,7 @@ _bool CGameEventExecuter_C8::Change_PlayMap(_float _fStartTime)
 				}
 
 				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, strMonsterTag, LEVEL_CHAPTER_8, strLayerTag, &pObject, &MonsterDesc3D)))
-					return E_FAIL;
+					return false;
 			}
 		}
 

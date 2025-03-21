@@ -62,7 +62,7 @@ HRESULT CMainApp::Initialize()
 	EngineDesc.isNewRenderer = true;
 #ifdef _DEBUG
 	EngineDesc.eImportMode |= IMPORT_IMGUI | IMPORT_MESH_PICKING; // IMPORT_IMGUI | IMPORT_MESH_PICKING;NONE_IMPORT
-#elif NDEBUG
+#elif _DEBUG
 	EngineDesc.eImportMode |= IMPORT_IMGUI | IMPORT_IMGUI;
 #endif
 	
