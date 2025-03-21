@@ -219,6 +219,26 @@ void CPlayerData_Manager::Set_CurrentPlayer(PLAYABLE_ID _ePlayableID)
 	m_pCurrentPlayer->On_CurrentPlayable();
 }
 
+_vector CPlayerData_Manager::Get_PlayerPosition()
+{
+	if (nullptr == m_pCurrentPlayer)
+	{
+		return XMVectorZero();
+	}
+
+	return m_pCurrentPlayer->Get_FinalPosition();
+}
+
+COORDINATE CPlayerData_Manager::Get_PlayerCoord()
+{
+	if (nullptr == m_pCurrentPlayer)
+	{
+		return COORDINATE_LAST;
+	}
+
+	return m_pCurrentPlayer->Get_CurCoord();
+}
+
 CPlayerItem* CPlayerData_Manager::Get_PlayerItem_Ptr(const _wstring& _strItemTag)
 {
 	return m_ItemState[_strItemTag].second;
