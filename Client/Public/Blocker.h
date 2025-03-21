@@ -1,10 +1,11 @@
 #pragma once
 #include "PartObject.h"
+#include "BombSwitchStopper.h"
 /* 2D, 3D 모두 가능하게, 다만 2D와 3D를 동시에 할순없다? */
 /* 초기 좌표 상태에 대한 밸류를 가지고, 해당 밸류에 맞는 2D Collision 혹은, Static Actor를 생성해주는 클래스 */
 /* 기능. 없음 >>> 콜라이더 컴포넌트를 콜리전매니저에 던져주는 기능. */
 BEGIN(Client)
-class CBlocker : public CPartObject
+class CBlocker : public CPartObject, public IBombSwitchReceiver
 {
 public:
 	typedef struct tagBlockerDesc : public CPartObject::tagPartObjectDesc
@@ -49,5 +50,8 @@ public:
 	static CBlocker*	Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, COORDINATE _eCoord);
 	CGameObject*		Clone(void* _pArg) override;
 	void				Free() override;
+
+	// IBombSwitchReceiver을(를) 통해 상속됨
+	void On_BombSwitch(_bool _bOn) override;
 };
 END

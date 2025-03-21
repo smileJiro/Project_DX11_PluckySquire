@@ -28,7 +28,9 @@ void CPlayerState_JumpToPortal::Update(_float _fTimeDelta)
 	}
     else
     {
-        if(m_pPortal->Get_Distance(eCoord, m_pOwner) <= m_f3DDistanceThreshold)
+		_vector vPlayerPos = m_pOwner->Get_FinalPosition();
+        if(m_pPortal->Get_Distance(eCoord, m_pOwner) <= m_f3DDistanceThreshold
+            || Check_ExceedPortal(vPlayerPos))
 		{
 
             m_pOwner->Set_State(CPlayer::EXIT_PORTAL);
@@ -42,7 +44,8 @@ void CPlayerState_JumpToPortal::Enter()
 {
     m_pPortal = dynamic_cast<CPortal*>(m_pOwner->Get_InteractableObject());
     assert(nullptr != m_pPortal);
-	COORDINATE eCoord = m_pOwner->Get_CurCoord();
+    COORDINATE eCoord = m_pOwner->Get_CurCoord(); 
+    m_vPlayerStartPos = m_pOwner->Get_FinalPosition();
     m_vPortalPos = m_pPortal->Get_ControllerTransform()->Get_Transform(eCoord)->Get_State(CTransform::STATE_POSITION);
     _float fYDIff   = XMVectorGetY(m_vPortalPos) - XMVectorGetY(m_pOwner->Get_FinalPosition());
 	_float fXZDiff = XMVectorGetX(XMVector3Length(XMVectorSetY(m_vPortalPos, 0.f) - XMVectorSetY(m_pOwner->Get_FinalPosition(), 0.f)));
@@ -113,6 +116,14 @@ void CPlayerState_JumpToPortal::OnTrigger_Enter(const COLL_INFO& _My, const COLL
     //    break;
     //}
     //}
+}
+
+_bool CPlayerState_JumpToPortal::Check_ExceedPortal(_vector vPos)
+{
+    _bool bExeedX = (m_vPortalPos.m128_f32[0] - m_vPlayerStartPos.m128_f32[0]) * (m_vPortalPos.m128_f32[0] - vPos.m128_f32[0]) <= 0.f;
+    _bool bExeedY = (m_vPortalPos.m128_f32[1] - m_vPlayerStartPos.m128_f32[1]) * (m_vPortalPos.m128_f32[0] - vPos.m128_f32[1]) <= 0.f;
+    _bool bExeedZ = (m_vPortalPos.m128_f32[2] - m_vPlayerStartPos.m128_f32[2]) * (m_vPortalPos.m128_f32[0] - vPos.m128_f32[2]) <= 0.f;
+    return bExeedX || bExeedZ || bExeedY;
 }
 
 

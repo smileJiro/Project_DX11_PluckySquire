@@ -1106,8 +1106,12 @@ void CGameEventExecuter_C8::Chapter8_3D_Out_01(_float _fTimeDelta)
 			pPlayer->Set_2DDirection(F_DIRECTION::UP);
 			CFriend_Controller::GetInstance()->End_Train();
 			_vector vPlayerPos = pPlayer->Get_FinalPosition() + XMVectorSet(0.0f, 30.f, 0.0f, 0.0f);
-			_vector vThrashPos = pThrash->Get_FinalPosition() + XMVectorSet(-60.0f, 30.f, 0.0f, 0.0f);
-			_vector vVioletPos = pViolet->Get_FinalPosition() + XMVectorSet(60.0f, 30.f, 0.0f, 0.0f);
+			_vector vThrashPos;
+			if (nullptr != pThrash)
+				vThrashPos = pThrash->Get_FinalPosition() + XMVectorSet(-60.0f, 30.f, 0.0f, 0.0f);
+			_vector vVioletPos;
+			if (nullptr != pViolet)
+				vVioletPos = pViolet->Get_FinalPosition() + XMVectorSet(60.0f, 30.f, 0.0f, 0.0f);
 			_vector vPipPos = pPip->Get_FinalPosition() + XMVectorSet(-120.0f, 30.f, 0.0f, 0.0f);
 			AUTOMOVE_COMMAND AutoMove{};
 			AutoMove.eType = AUTOMOVE_TYPE::MOVE_TO;

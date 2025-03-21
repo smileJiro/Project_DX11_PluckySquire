@@ -16,7 +16,6 @@ CDomino::CDomino(const CDomino& _Prototype)
 
 HRESULT CDomino::Initialize(void* _pArg)
 {
-
 	CModelObject::MODELOBJECT_DESC* pModelDsc = static_cast<CModelObject::MODELOBJECT_DESC*>(_pArg);
 	pModelDsc->isCoordChangeEnable = false;
 	pModelDsc->iModelPrototypeLevelID_3D = pModelDsc->iCurLevelID;
