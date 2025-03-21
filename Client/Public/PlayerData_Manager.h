@@ -53,6 +53,7 @@ public:
 	HRESULT					Spawn_Bulb(_uint _iPrototypeLevelID, _uint _iLevelID);
 	
 	void					Get_PlayerItem(_wstring _szItemTag);
+	void					Set_PlayerItem(_wstring _szItemTag);
 	void					Increase_BulbCount() { m_iBulbCount += 1; };
 
 public:

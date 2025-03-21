@@ -59,6 +59,7 @@
       ]
     },
     "Fillter_MyGroup": 2,
+    "Trigger_Reusable": false,
     "Fillter_OtherGroupMask": 128,
     "Trigger_ConditionType": 0,
     "Trigger_Coordinate": 0,

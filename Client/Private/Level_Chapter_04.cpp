@@ -197,6 +197,7 @@ HRESULT CLevel_Chapter_04::Initialize(LEVEL_ID _eLevelID)
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_TRIGGER, OBJECT_GROUP::WORD_GAME);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_PROJECTILE, OBJECT_GROUP::WORD_GAME);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_PROJECTILE, OBJECT_GROUP::MAPOBJECT);
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::WORD_GAME, OBJECT_GROUP::BLOCKER);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_PROJECTILE, OBJECT_GROUP::BLOCKER);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::INTERACTION_OBEJCT, OBJECT_GROUP::WORD_GAME);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::INTERACTION_OBEJCT, OBJECT_GROUP::BLOCKER);
@@ -272,6 +273,8 @@ void CLevel_Chapter_04::Update(_float _fTimeDelta)
 		CCamera_Manager::GetInstance()->Change_CameraType(iCurCameraType);
 	}
 
+	CPlayerData_Manager::GetInstance()->Get_PlayerItem(TEXT("Sword"));
+	CPlayerData_Manager::GetInstance()->Get_PlayerItem(TEXT("Flipping_Glove"));
 	//if (KEY_DOWN(KEY::NUM1))
 	//{
 	//	CUI_Manager* pUIManager = CUI_Manager::GetInstance();
@@ -632,7 +635,7 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Player(const _wstring& _strLayerTag, CGam
 	Desc.iCurLevelID = m_eLevelID;
 	//Desc.tTransform3DDesc.vInitialPosition = { -3.f, 0.35f, -19.3f };   // TODO ::임시 위치
 	Desc.eStartCoord = COORDINATE_2D;
-	Desc.tTransform2DDesc.vInitialPosition = { -1954, -690.f, 0.f };   // TODO ::임시 위치
+	Desc.tTransform2DDesc.vInitialPosition = { -1974, -690.f, 0.f };   // TODO ::임시 위치
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_TestPlayer"), m_eLevelID, _strLayerTag, _ppOut, &Desc)))
 		return E_FAIL;

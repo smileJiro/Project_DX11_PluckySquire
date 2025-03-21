@@ -2021,6 +2021,13 @@ void CGameEventExecuter_C8::Chapter8_Meet_Humgrump(_float _fTimeDelta)
 
 				pPlayer->Set_BlockPlayerInput(false);
 
+				// 이전 Trigger 제거
+				CLayer* pLayer = m_pGameInstance->Find_Layer(m_iCurLevelID, TEXT("Layer_TriggerObject"));
+
+				for (auto& TriggerObject : pLayer->Get_GameObjects()) {
+					Event_DeleteObject(TriggerObject);
+				}
+
 				// Intro Trigger 생성
 				CTriggerObject::TRIGGEROBJECT_DESC Desc = {};
 				Desc.vHalfExtents = { 7.f, 7.f, 7.f };
