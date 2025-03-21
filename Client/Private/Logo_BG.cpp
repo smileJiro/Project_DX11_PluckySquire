@@ -50,8 +50,10 @@ void CLogo_BG::Update(_float _fTimeDelta)
 		{
 			if (3 > iIndex)
 			{
+				m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_menu_move"), 0.0f, 30.f, false);
 				iIndex += 1;
 				CUI_Manager::GetInstance()->Set_LogoIndex(iIndex);
+				
 
 			}
 			else
@@ -61,13 +63,17 @@ void CLogo_BG::Update(_float _fTimeDelta)
 		{
 			if (1 <= iIndex)
 			{
+				m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_menu_move"), 0.0f, 30.f, false);
 				iIndex -= 1;
 				CUI_Manager::GetInstance()->Set_LogoIndex(iIndex);
+				
 			}
 		}
 		else if (KEY_DOWN(KEY::ENTER) && true == Uimgr->Get_LogoChanseStage())
 		{
+			m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_menu_select"), 0.0f, 30.f, false);
 			ProcesssByIndex(iIndex);
+			
 		}
 
 
@@ -282,6 +288,7 @@ void CLogo_BG::ProcesssByIndex(_int _iIndex)
 	}
 	break;
 	}
+	m_pGameInstance->End_BGM();
 }
 
 
