@@ -216,6 +216,8 @@ public: /* For. Sound_Manager */
 
 	void				Start_SFX_Distance(const _wstring& strSFXTag, _fvector _vPosition, _float _fMaxVolume = 70.f, _float _fMinVolume = 0.f, _float _fMaxVolumeDist = 10.f, _float _fFactor = 0.5f, _bool _isLoop = false);
 	void				Start_SFX_Distance_Delay(const _wstring& strSFXTag, _fvector _vPosition, _float _fDelayTime, _float _fMaxVolume = 70.f, _float _fMinVolume = 0.f, _float _fMaxVolumeDist = 10.f, _float _fFactor = 0.5f, _bool _isLoop = false);
+	void				Start_SFX_Distance2D(const _wstring& strSFXTag, _fvector _vPosition, _fvector _vCenter, _float _fMaxVolume = 70.f, _float _fMinVolume = 0.f, _float _fMaxVolumeDist = 300.f, _float _fFactor = 0.5f, _bool _isLoop = false);
+	void				Start_SFX_Distance2D_Delay(const _wstring& strSFXTag, _fvector _vPosition, _fvector _vCenter, _float _fDelayTime, _float _fMaxVolume = 70.f, _float _fMinVolume = 0.f, _float _fMaxVolumeDist = 300.f, _float _fFactor = 0.5f, _bool _isLoop = false);
 
 	_bool				Is_SFXPlaying(const wstring& strSFXTag);
 	_float				Get_SFXVolume(const wstring& strSFXTag);
