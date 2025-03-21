@@ -43,7 +43,7 @@ void CPlayerState_JumpToPortal::Enter()
     m_pPortal = dynamic_cast<CPortal*>(m_pOwner->Get_InteractableObject());
     assert(nullptr != m_pPortal);
 	COORDINATE eCoord = m_pOwner->Get_CurCoord();
-        m_vPortalPos = m_pPortal->Get_ControllerTransform()->Get_Transform(eCoord)->Get_State(CTransform::STATE_POSITION);
+    m_vPortalPos = m_pPortal->Get_ControllerTransform()->Get_Transform(eCoord)->Get_State(CTransform::STATE_POSITION);
     _float fYDIff   = XMVectorGetY(m_vPortalPos) - XMVectorGetY(m_pOwner->Get_FinalPosition());
 	_float fXZDiff = XMVectorGetX(XMVector3Length(XMVectorSetY(m_vPortalPos, 0.f) - XMVectorSetY(m_pOwner->Get_FinalPosition(), 0.f)));
 	_float fYRadian = m_f3DJumpRadianMin;
