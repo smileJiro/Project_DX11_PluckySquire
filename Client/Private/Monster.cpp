@@ -394,6 +394,7 @@ void CMonster::Monster_Death()
 	}
 
 	Event_DeleteObject(this);
+
 }
 
 void CMonster::Attack()

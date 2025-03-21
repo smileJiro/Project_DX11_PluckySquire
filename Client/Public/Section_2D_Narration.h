@@ -24,7 +24,7 @@ public:
 	HRESULT						Start_Narration();
 	
 		virtual HRESULT						Section_Enter(const _wstring& _strPreSectionTag);
-
+		virtual HRESULT						Section_Exit(const _wstring& _strNextSectionTag);
 
 
 	// 맵 연결 생각안해놨는데, 일단 해보자.
