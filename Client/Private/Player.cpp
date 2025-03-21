@@ -1415,7 +1415,7 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
 		tResult.vDir =XMVector3TransformNormal(tResult.vDir, XMMatrixLookToLH(_vector{0.f,0.f,0.f}, vCamLook, _vector{ 0.f,1.f,0.f }));
 
 	}
-	else
+	else if (eCoord == COORDINATE_2D)
 	{
 		if (KEY_PRESSING(KEY::W))
 			tResult.vDir += vUp;
@@ -2259,10 +2259,10 @@ void CPlayer::Set_Upforce(_float _fForce)
 {
 	if (COORDINATE_2D == Get_CurCoord())
 	{
-		if (Is_PlatformerMode())
-			m_pGravityCom->Set_GravityAcc(_fForce);
-		else
-			m_f2DUpForce = _fForce;
+		m_f2DUpForce = _fForce;
+		//if (Is_PlatformerMode())
+		//	m_pGravityCom->Set_GravityAcc(_fForce);
+		//else
 	}
 	else
 	{
@@ -2450,6 +2450,9 @@ void CPlayer::ThrowObject()
 
 void CPlayer::SpinAttack()
 {
+	m_pGameInstance->Start_SFX(_wstring(L"A_sfx_jot_vocal_spin_attack-") + to_wstring(rand() % 5), 50.f);
+	m_pGameInstance->Start_SFX(_wstring(L"A_sfx_sword_spin-") + to_wstring(rand() % 5), 50.f);
+
 	End_Attack();
 	Start_Attack(CPlayer::ATTACK_TYPE_SPIN);
 }
@@ -2499,52 +2502,23 @@ void CPlayer::Key_Input(_float _fTimeDelta)
 		Event_Change_Coordinate(this, (COORDINATE)iCurCoord, &vNewPos);
 		//Change_Coordinate((COORDINATE)iCurCoord, _float3(0.0f, 0.0f, 0.0f));
 	}
-	if (KEY_DOWN(KEY::F3))
-	{
-		_int iCurCoord = (_int)Get_CurCoord();
-		(_int)iCurCoord ^= 1;
-		_float3 vNewPos = _float3(0.0f, 0.0f, 0.0f);
-		if (iCurCoord == COORDINATE_2D)
-			CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(L"Chapter8_SKSP_02", this, SECTION_2D_PLAYMAP_OBJECT);
-		else
-			CSection_Manager::GetInstance()->Remove_GameObject_FromSectionLayer(L"Chapter8_SKSP_02", this);
 
-		Event_Change_Coordinate(this, (COORDINATE)iCurCoord, &vNewPos);
-
-		//m_pActorCom->Set_AllShapeEnable(false);
-
-	}
 	if (KEY_DOWN(KEY::V))
 	{
-		// 도형 크기 바꾸기
-		//SHAPE_CAPSULE_DESC Desc;
-		//Desc.fRadius = 1.f;
-		//Desc.fHalfHeight = 1.f;
-		//m_pActorCom->Set_ShapeGeometry(0, PxGeometryType::eCAPSULE, &Desc);
+
 		COORDINATE eCurCoord = Get_CurCoord();
-		if (COORDINATE_2D == eCurCoord)
-			Set_PlatformerMode(!m_bPlatformerMode);
-		else
+
+		if (COORDINATE_3D == eCurCoord)
 		{
 			Set_PlatformerMode(false);
 			Set_Kinematic(false == m_pActorCom->Is_Kinematic());
 		}
-		//m_pControllerTransform->Rotation(XMConvertToRadians(m_bPlatformerMode ? 90 : 0), {0,0,1});
 	}
 	if (KEY_DOWN(KEY::F2))
 	{
 		PLAYER_MODE eNextMode = (PLAYER_MODE)((m_ePlayerMode + 1) % PLAYER_MODE_LAST);
 		Set_Mode(eNextMode);
 		Set_State(IDLE);
-	}
-
-	if (KEY_DOWN(KEY::F4))
-	{
-		Event_DeleteObject(this);
-	}
-	if (KEY_DOWN(KEY::Z))
-	{
-		//Set_State(CPlayer::EVICT);
 	}
 	if (m_pActorCom->Is_Kinematic())
 	{
@@ -2568,23 +2542,6 @@ void CPlayer::Key_Input(_float _fTimeDelta)
 		if (STATE::STAMP == Get_CurrentStateID())
 			Equip_Part(PLAYER_PART_BOMB_STMAP);
 	}
-	if (KEY_PRESSING(KEY::CTRL))
-    {
-        if (KEY_DOWN(KEY::H))
-        {
-            //m_pActorCom->Set_GlobalPose(_float3(-31.f, 6.56f, 22.5f));
-            //m_pActorCom->Set_GlobalPose(_float3(23.5f, 20.56f, 22.5f));
-            //m_pActorCom->Set_GlobalPose(_float3(42.f, 8.6f, 20.f));
-            //m_pActorCom->Set_GlobalPose(_float3(40.f, 0.35f, -7.f));
-
-
-			m_pActorCom->Set_GlobalPose(_float3(48.f, 24.1f, -1.7f));
-            //m_pActorCom->Set_GlobalPose(_float3(18.36f, 21.58f, 1.11f));
-            //m_pActorCom->Set_GlobalPose(_float3(14.6f, 11.11f, -2.9f));
-            //m_pActorCom->Set_GlobalPose(_float3(18.5f, 18.2f, 40.f));
-            //m_pActorCom->Set_GlobalPose(_float3(0.f, 20.f, 47.f));
-        }
-    }
     if (KEY_DOWN(KEY::J))
     {
         //Set_State(CPlayer::EVICT);
