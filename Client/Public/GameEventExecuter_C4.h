@@ -63,6 +63,7 @@ private:
 	void							Chapter4_Event_Flag(_float _fTimeDelta);
 	void							Chapter4_GateEvent(_float _fTimeDelta);
 	void							Chapter4_StorySequence(_float _fTimeDelta);
+	void							Chapter4_StorySequence_02(_float _fTimeDelta);
 	void							Chapter4_3D_Out_01(_float _fTimeDelta);
 	void							Chapter4_3D_Out_02(_float _fTimeDelta);
 	void							Friend_MapEnter(_float _fTimeDelta);

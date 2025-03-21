@@ -662,7 +662,7 @@ void CGameEventExecuter_C2::Chapter2_Lunchbox_Open(_float _fTimeDelta)
 			if (nullptr != pPage)
 			{
 				pPage->Set_Render(true);
-				pPage->Anim_Action(CPostit_Page::POSTIT_PAGE_APPEAR,false);
+				pPage->Anim_Action(CPostit_Page::POSTIT_PAGE_APPEAR, false);
 			}
 
 		}

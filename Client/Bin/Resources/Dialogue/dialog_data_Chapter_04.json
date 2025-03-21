@@ -30,7 +30,7 @@
           "isLineEnter": true,
           "isPortrait": true,
           "OffsetX": 0.0,
-          "OffsetY": 20.0,
+          "OffsetY": -30.0,
           "animation": {
             "duration": 1000,
             "speed": 500
@@ -168,7 +168,7 @@
           "isLineEnter": true,
           "isPortrait": true,
           "OffsetX": 0.0,
-          "OffsetY": 20.0,
+          "OffsetY": -30.0,
           "animation": {
             "duration": 1000,
             "speed": 500
@@ -187,7 +187,7 @@
           "isPortrait": true,
           "isLineEnter": true,
           "OffsetX": 0.0,
-          "OffsetY": 20.0,
+          "OffsetY": -30.0,
           "animation": {
             "duration": 1000,
             "speed": 500
@@ -206,7 +206,7 @@
           "isLineEnter": true,
           "isPortrait": true,
           "OffsetX": 0.0,
-          "OffsetY": 20.0,
+          "OffsetY": -30.0,
           "animation": {
             "duration": 1000,
             "speed": 500
@@ -229,7 +229,7 @@
           "location": 0,
           "is2D": true,
           "OffsetX": 40.0,
-          "OffsetY": -220.0,
+          "OffsetY": 70.0,
           "isPortrait": true,
           "isLineEnter": true,
           "animation": {
@@ -248,7 +248,7 @@
           "location": 0,
           "is2D": true,
           "OffsetX": 40.0,
-          "OffsetY": -220.0,
+          "OffsetY": 70.0,
           "isPortrait": true,
           "isLineEnter": true,
           "animation": {
@@ -267,7 +267,7 @@
           "location": 0,
           "is2D": true,
           "OffsetX": 40.0,
-          "OffsetY": -220.0,
+          "OffsetY": 70.0,
           "isLineEnter": true,
           "isPortrait": true,
           "animation": {
@@ -286,7 +286,7 @@
           "location": 0,
           "is2D": true,
           "OffsetX": 40.0,
-          "OffsetY": -220.0,
+          "OffsetY": 70.0,
           "isPortrait": true,
           "animation": {
             "duration": 1000,
@@ -303,7 +303,7 @@
           "BG": 13,
           "location": 0,
           "OffsetX": 40.0,
-          "OffsetY": -220.0,
+          "OffsetY": 70.0,
           "is2D": true,
           "isPortrait": true,
           "animation": {
