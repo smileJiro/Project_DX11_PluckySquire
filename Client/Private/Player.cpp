@@ -1353,7 +1353,7 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
 				tResult.bInputStates[PLAYER_INPUT_SPINCHARGING] = true;
 			else if (KEY_STATE::UP == eKeyState)
 				tResult.bInputStates[PLAYER_INPUT_SPINLAUNCH] = true;
-		}*/
+		}
 	}
 
 	if (false == Has_InteractObject() && bCarrying)
