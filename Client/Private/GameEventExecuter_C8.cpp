@@ -847,6 +847,7 @@ void CGameEventExecuter_C8::Chapter8_Friend_Appear_Thrash(_float _fTimeDelta)
 void CGameEventExecuter_C8::Chapter8_Intro(_float _fTimeDelta)
 {
 	m_fTimer += _fTimeDelta;
+
 	if (Step_Check(STEP_0))
 	{
 		if (Is_Start())
@@ -885,14 +886,28 @@ void CGameEventExecuter_C8::Chapter8_Intro(_float _fTimeDelta)
 
 		CCamera_CutScene* pCamera = static_cast<CCamera_CutScene*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::CUTSCENE));
 
-		if (true == pCamera->Is_Finish_CutScene()) {
+		if (m_fTimer >= 16.8f) {
+			if (Is_Start()) {
+				CCamera_Manager::GetInstance()->Start_FadeOut(3.f);
+			}
+		}
+
+		if (true == pCamera->Is_Finish_CutScene()) {	
 			Next_Step(true);
 		}
 	}
 	else if (Step_Check(STEP_4)) {
 
-		if (m_fTimer >= 3.f) {
-			CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::TARGET_2D, true, 0.5f);
+		if (0.0f == CCamera_Manager::GetInstance()->Get_DofBufferData().fFadeRatio) {
+			if (Is_Start()) {
+				CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::TARGET_2D);
+				CCamera_Manager::GetInstance()->Start_FadeIn(3.f);
+
+				m_pGameInstance->Set_GrayScale_VtxAnimMesh(0);
+			}
+		}
+
+		if (m_fTimer >= 3.5f) {
 			Uimgr->Set_PlayNarration(TEXT("Chapter8_P0102_Narration_01"));
 			GameEvent_End();
 		}
