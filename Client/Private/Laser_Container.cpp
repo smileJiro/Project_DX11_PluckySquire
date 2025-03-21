@@ -547,7 +547,6 @@ void CLaser_Container::Pressured_Process(_float _fTimeDelta)
 void CLaser_Container::Set_BeamOn(_bool _IsBeamOn)
 {
 	m_IsBeamOn = _IsBeamOn;
-
 	static_cast<CPartObject*>(m_PartObjects[PART_BEAM_START_EFFECT])->Set_Render(m_IsBeamOn);
 	static_cast<CPartObject*>(m_PartObjects[PART_BEAM_EFFECT])->Set_Render(m_IsBeamOn);
 	static_cast<CPartObject*>(m_PartObjects[PART_BEAM_END_EFFECT])->Set_Render(m_IsBeamOn);

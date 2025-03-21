@@ -121,7 +121,7 @@ HRESULT CImgui_Manager::LevelChange_Imgui()
 	return S_OK;
 }
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 
 HRESULT CImgui_Manager::Imgui_Debug_Render()
 {
@@ -637,7 +637,6 @@ HRESULT CImgui_Manager::Imgui_Debug_Lights()
 					fLength = (*iter)->Get_DirectionalLightLength();
 					eType = (*iter)->Get_Type();
 					Selectiter = iter;
-					
 				}
 
 				// 선택된 항목에 포커스 설정
@@ -669,7 +668,7 @@ HRESULT CImgui_Manager::Imgui_Debug_Lights()
 			break;
 		}
 
-		if (ImGui::DragFloat3("Position##Light", &tConstLightData.vPosition.x, 0.1f, -200.f, 300.f, "%.2f", ImGuiSliderFlags_AlwaysClamp))
+		if (ImGui::DragFloat3("Position##Light", &tConstLightData.vPosition.x, 0.1f, -400.f, 400.f, "%.2f", ImGuiSliderFlags_AlwaysClamp))
 		{
 			(*Selectiter)->Set_LightConstData_AndUpdateBuffer(tConstLightData);
 			(*Selectiter)->Compute_ViewProjMatrix();

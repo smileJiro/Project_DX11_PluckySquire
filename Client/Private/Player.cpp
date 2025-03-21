@@ -115,13 +115,13 @@ HRESULT CPlayer::Initialize_Prototype()
 	m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL3][(_uint)F_DIRECTION::LEFT].vExtents = { 70.f, 70.f };
 	m_f2DAttackTriggerDesc[ATTACK_TYPE_NORMAL3][(_uint)F_DIRECTION::LEFT].vOffset = { -80.f,0.f };
 
-	m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN][(_uint)F_DIRECTION::DOWN].vExtents = { 211.f, 211.f };
+	m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN][(_uint)F_DIRECTION::DOWN].vExtents = { 115.f, 115.f };
 	m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN][(_uint)F_DIRECTION::DOWN].vOffset = { 0.f, m_f2DCenterYOffset };
-	m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN][(_uint)F_DIRECTION::UP].vExtents = { 211.f, 211.f };
+	m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN][(_uint)F_DIRECTION::UP].vExtents = { 115.f, 115.f };
 	m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN][(_uint)F_DIRECTION::UP].vOffset = { 0.f, m_f2DCenterYOffset };
-	m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN][(_uint)F_DIRECTION::RIGHT].vExtents = { 211.f, 211.f };
+	m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN][(_uint)F_DIRECTION::RIGHT].vExtents = { 115.f, 115.f };
 	m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN][(_uint)F_DIRECTION::RIGHT].vOffset = { 0.f, m_f2DCenterYOffset };
-	m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN][(_uint)F_DIRECTION::LEFT].vExtents = { 211.f, 211.f };
+	m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN][(_uint)F_DIRECTION::LEFT].vExtents = { 115.f, 115.f };
 	m_f2DAttackTriggerDesc[ATTACK_TYPE_SPIN][(_uint)F_DIRECTION::LEFT].vOffset = { 0.f, m_f2DCenterYOffset };
 
 	m_f2DAttackTriggerDesc[ATTACK_TYPE_JUMPATTACK][(_uint)F_DIRECTION::DOWN].vExtents = { 146.5f, 74.5f };
@@ -581,7 +581,7 @@ void CPlayer::Enter_Section(const _wstring _strIncludeSectionName)
 
 	if (TEXT("Chapter2_P0102") == _strIncludeSectionName)
 	{
-		m_pControllerTransform->Get_Transform(COORDINATE_2D)->Set_State(CTransform::STATE_POSITION, XMVectorSet(0.0f, 2800.f, 0.0f, 0.0f));
+		m_pControllerTransform->Get_Transform(COORDINATE_2D)->Set_State(CTransform::STATE_POSITION, XMVectorSet(0.0f, 2300.f, 0.0f, 1.0f));
 	}
 
 
@@ -700,17 +700,17 @@ HRESULT CPlayer::Ready_Components()
 
 void CPlayer::Priority_Update(_float _fTimeDelta)
 {
-	if (KEY_DOWN(KEY::K))
-	{
-		//CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(TEXT("Thrash"));
-		//CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(TEXT("Violet"));
-		//CFriend_Controller::GetInstance()->Start_Train();
-		//CGravity::STATE eCurState = m_pGravityCom->Get_CurState();
-		//_int iState = eCurState;
-		//iState ^= 1;
-		//m_pGravityCom->Change_State((CGravity::STATE)iState);
-		//On_Stop();
-	}
+	//if (KEY_DOWN(KEY::K))
+	//{
+	//	//CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(TEXT("Thrash"));
+	//	//CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(TEXT("Violet"));
+	//	//CFriend_Controller::GetInstance()->Start_Train();
+	//	//CGravity::STATE eCurState = m_pGravityCom->Get_CurState();
+	//	//_int iState = eCurState;
+	//	//iState ^= 1;
+	//	//m_pGravityCom->Change_State((CGravity::STATE)iState);
+	//	//On_Stop();
+	//}
 
 	__super::Priority_Update(_fTimeDelta); /* Part Object Priority_Update */
 }
@@ -1110,6 +1110,8 @@ void CPlayer::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
 	m_pStateMachine->Get_CurrentState()->On_Hit(_pHitter, _iDamg, _vForce);
 
 	Uimgr->Set_PlayerOnHit(true);
+	if(nullptr != m_PartObjects[CPlayer::PART_BODY])
+		static_cast<CModelObject*>(m_PartObjects[CPlayer::PART_BODY])->Start_HitRender();
 
 	if (m_tStat.iHP <= 0)
 	{
@@ -1331,17 +1333,18 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
 	_bool bCarrying = Is_CarryingObject();
 	if (false == bCarrying && Is_SwordHandling())
 	{
+		
 		//기본공격
 		if (MOUSE_DOWN(MOUSE_KEY::LB))
 		{
 			tResult.bInputStates[PLAYER_INPUT_ATTACK] = true;
 		}
 		//칼 던지기
-		else if (MOUSE_DOWN(MOUSE_KEY::RB))
+		else if (0 < CPlayerData_Manager::GetInstance()->Get_ThrowSkillLevel()&& MOUSE_DOWN(MOUSE_KEY::RB))
 		{
 			tResult.bInputStates[PLAYER_INPUT_THROWSWORD] = true;
 		}
-		/*else if (Is_OnGround())
+		else if (0 < CPlayerData_Manager::GetInstance()->Get_WhirlSkillLevel() && Is_OnGround())
 		{
 			KEY_STATE eKeyState = m_pGameInstance->GetKeyState(KEY::Q);
 			if (KEY_STATE::DOWN == eKeyState)
@@ -1394,24 +1397,10 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
 		if (KEY_PRESSING(KEY::D))
 			tResult.vDir += _vector{ 1.f, 0.f, 0.f,0.f };
 
-		//카메라가 보는 방향
-		CCamera* pCamera = static_cast<CCamera*>(CCamera_Manager::GetInstance()->Get_CurrentCamera());
-		_vector vCamLook = {};
-
-		if (nullptr == pCamera) {
-			vCamLook = { 0.f, 0.f, 1.f, 0.f };
-		}
-		else {
-			CCameraArm* pArm = pCamera->Get_Arm();
-
-			if (nullptr == pArm)
-				vCamLook = { 0.f, 0.f, 1.f, 0.f };
-			else
-				vCamLook = pArm->Get_ArmVector();
-		}
-
+		////카메라가 보는 방향
+		_vector vCamLook = static_cast<CCamera*>(CCamera_Manager::GetInstance()->Get_CurrentCamera())->Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK);
 		vCamLook = -XMVectorSetY(vCamLook, 0.f);
-
+		vCamLook = -XMVectorSetW(vCamLook, 0.f);
 		//X축이 크면?
 		if (abs(vCamLook.m128_f32[0]) > abs(vCamLook.m128_f32[2]))
 		{
@@ -1426,7 +1415,7 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
 		tResult.vDir =XMVector3TransformNormal(tResult.vDir, XMMatrixLookToLH(_vector{0.f,0.f,0.f}, vCamLook, _vector{ 0.f,1.f,0.f }));
 
 	}
-	else
+	else if (eCoord == COORDINATE_2D)
 	{
 		if (KEY_PRESSING(KEY::W))
 			tResult.vDir += vUp;
@@ -2102,7 +2091,7 @@ void CPlayer::Set_State(STATE _eState)
 		m_pStateMachine->Transition_To(new CPlayerState_GetItem(this));
 		break;
 	case Client::CPlayer::TRANSFORM_IN:
-		m_pStateMachine->Transition_To(new CPlayerState_TransformIn(this));
+		//m_pStateMachine->Transition_To(new CPlayerState_TransformIn(this));
 		break;
 	case Client::CPlayer::CYBER_DASH:
 		m_pStateMachine->Transition_To(new CPlayerState_CyberDash(this));
@@ -2187,7 +2176,11 @@ void CPlayer::Set_Mode(PLAYER_MODE _eNewMode)
 		m_pTargetCamera = static_cast<CCamera_Target*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET));
 		CCameraPivot* pPivot = dynamic_cast<CCameraPivot*>(m_pGameInstance->Get_GameObject_Ptr(m_iCurLevelID, TEXT("Layer_CameraPivot"), 0));
 		if(pPivot)
-			m_pCameraTargetWorldMatrix = pPivot->Get_MainTarget()->Get_ControllerTransform()->Get_WorldMatrix_Ptr();
+		{
+			CGameObject*  pManinTarget = pPivot->Get_MainTarget();
+			if(pManinTarget)
+				m_pCameraTargetWorldMatrix = pManinTarget->Get_ControllerTransform()->Get_WorldMatrix_Ptr();
+		}
 
 		Set_Kinematic(true);
 		//Get_ActorDynamic()->Set_Gravity(false);
@@ -2196,6 +2189,7 @@ void CPlayer::Set_Mode(PLAYER_MODE _eNewMode)
 		Equip_Part(PLAYER_PART_VISOR);
 		Equip_Part(PLAYER_PART_ZETPACK);
 		Equip_Part(PLAYER_PART_CYBERCURSOR);
+
 
 		if (nullptr != m_pZetPack)
 			m_pZetPack->Switch_State(CZetPack::STATE_CYBER);
@@ -2265,10 +2259,10 @@ void CPlayer::Set_Upforce(_float _fForce)
 {
 	if (COORDINATE_2D == Get_CurCoord())
 	{
-		if (Is_PlatformerMode())
-			m_pGravityCom->Set_GravityAcc(_fForce);
-		else
-			m_f2DUpForce = _fForce;
+		m_f2DUpForce = _fForce;
+		//if (Is_PlatformerMode())
+		//	m_pGravityCom->Set_GravityAcc(_fForce);
+		//else
 	}
 	else
 	{
@@ -2405,6 +2399,11 @@ void CPlayer::Position_To_FrontCamera(_float _fDistance)
 	Get_ActorDynamic()->Set_GlobalPose(vPos);
 }
 
+void CPlayer::TransformToCyberJot(CZip_C8* _pZip)
+{
+	m_pStateMachine->Transition_To(new CPlayerState_TransformIn(this, _pZip));
+}
+
 
 
 void CPlayer::ThrowSword()
@@ -2451,6 +2450,9 @@ void CPlayer::ThrowObject()
 
 void CPlayer::SpinAttack()
 {
+	m_pGameInstance->Start_SFX(_wstring(L"A_sfx_jot_vocal_spin_attack-") + to_wstring(rand() % 5), 50.f);
+	m_pGameInstance->Start_SFX(_wstring(L"A_sfx_sword_spin-") + to_wstring(rand() % 5), 50.f);
+
 	End_Attack();
 	Start_Attack(CPlayer::ATTACK_TYPE_SPIN);
 }
@@ -2500,52 +2502,23 @@ void CPlayer::Key_Input(_float _fTimeDelta)
 		Event_Change_Coordinate(this, (COORDINATE)iCurCoord, &vNewPos);
 		//Change_Coordinate((COORDINATE)iCurCoord, _float3(0.0f, 0.0f, 0.0f));
 	}
-	if (KEY_DOWN(KEY::F3))
-	{
-		_int iCurCoord = (_int)Get_CurCoord();
-		(_int)iCurCoord ^= 1;
-		_float3 vNewPos = _float3(0.0f, 0.0f, 0.0f);
-		if (iCurCoord == COORDINATE_2D)
-			CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(L"Chapter8_SKSP_02", this, SECTION_2D_PLAYMAP_OBJECT);
-		else
-			CSection_Manager::GetInstance()->Remove_GameObject_FromSectionLayer(L"Chapter8_SKSP_02", this);
 
-		Event_Change_Coordinate(this, (COORDINATE)iCurCoord, &vNewPos);
-
-		//m_pActorCom->Set_AllShapeEnable(false);
-
-	}
 	if (KEY_DOWN(KEY::V))
 	{
-		// 도형 크기 바꾸기
-		//SHAPE_CAPSULE_DESC Desc;
-		//Desc.fRadius = 1.f;
-		//Desc.fHalfHeight = 1.f;
-		//m_pActorCom->Set_ShapeGeometry(0, PxGeometryType::eCAPSULE, &Desc);
+
 		COORDINATE eCurCoord = Get_CurCoord();
-		if (COORDINATE_2D == eCurCoord)
-			Set_PlatformerMode(!m_bPlatformerMode);
-		else
+
+		if (COORDINATE_3D == eCurCoord)
 		{
 			Set_PlatformerMode(false);
 			Set_Kinematic(false == m_pActorCom->Is_Kinematic());
 		}
-		//m_pControllerTransform->Rotation(XMConvertToRadians(m_bPlatformerMode ? 90 : 0), {0,0,1});
 	}
 	if (KEY_DOWN(KEY::F2))
 	{
 		PLAYER_MODE eNextMode = (PLAYER_MODE)((m_ePlayerMode + 1) % PLAYER_MODE_LAST);
 		Set_Mode(eNextMode);
 		Set_State(IDLE);
-	}
-
-	if (KEY_DOWN(KEY::F4))
-	{
-		Event_DeleteObject(this);
-	}
-	if (KEY_DOWN(KEY::Z))
-	{
-		//Set_State(CPlayer::EVICT);
 	}
 	if (m_pActorCom->Is_Kinematic())
 	{
@@ -2569,27 +2542,20 @@ void CPlayer::Key_Input(_float _fTimeDelta)
 		if (STATE::STAMP == Get_CurrentStateID())
 			Equip_Part(PLAYER_PART_BOMB_STMAP);
 	}
-	if (KEY_PRESSING(KEY::CTRL))
+    if (KEY_DOWN(KEY::J))
     {
-        if (KEY_DOWN(KEY::H))
-        {
-            //m_pActorCom->Set_GlobalPose(_float3(-31.f, 6.56f, 22.5f));
-            //m_pActorCom->Set_GlobalPose(_float3(23.5f, 20.56f, 22.5f));
-            //m_pActorCom->Set_GlobalPose(_float3(42.f, 8.6f, 20.f));
-            //m_pActorCom->Set_GlobalPose(_float3(40.f, 0.35f, -7.f));
-
-
-			m_pActorCom->Set_GlobalPose(_float3(48.f, 24.1f, -1.7f));
-            //m_pActorCom->Set_GlobalPose(_float3(18.36f, 21.58f, 1.11f));
-            //m_pActorCom->Set_GlobalPose(_float3(14.6f, 11.11f, -2.9f));
-            //m_pActorCom->Set_GlobalPose(_float3(18.5f, 18.2f, 40.f));
-            //m_pActorCom->Set_GlobalPose(_float3(0.f, 20.f, 47.f));
-        }
+        //Set_State(CPlayer::EVICT);
+		CPlayerData_Manager* pPDM =  CPlayerData_Manager::GetInstance();
+		pPDM->Get_PlayerItem(TEXT("Flipping_Glove"));
+		pPDM->Get_PlayerItem(TEXT("Tilting_Glove"));
+		pPDM->Get_PlayerItem(TEXT("Stop_Stamp"));
+		pPDM->Get_PlayerItem(TEXT("Bomb_Stamp"));
+		pPDM->Get_PlayerItem(TEXT("Sword"));
+		pPDM->UP_JumpSkillLevel();
+		pPDM->UP_ThrowSkillLevel();
+		pPDM->UP_WhirlSkillLevel();
+		pPDM->UP_AttackDamageLevel();
     }
-    //if (KEY_DOWN(KEY::J))
-    //{
-    //    Set_State(CPlayer::EVICT);
-    //}
 }
 
 

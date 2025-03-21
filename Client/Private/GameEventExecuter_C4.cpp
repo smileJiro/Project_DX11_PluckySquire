@@ -793,19 +793,19 @@ _bool CGameEventExecuter_C4::Change_PlayMap(_float _fStartTime)
 			return false;
 
 		CDoor_Red::DOOR_RED_DESC DoorRedDesc = {};
-		DoorRedDesc.tTransform2DDesc.vInitialPosition = _float3(1010.f, -530.f, 0.f);
-		DoorRedDesc.iCurLevelID = eCurLevelID;
-		DoorRedDesc.isHorizontal = false;
-		DoorRedDesc.eSize = CDoor_2D::SMALL;
-		DoorRedDesc.eInitialState = CDoor_2D::CLOSED;
-		DoorRedDesc.strSectionTag = L"Chapter4_P0102";
-		DoorRedDesc.strLayerTag = L"Layer_Monster_Door1";
+		//DoorRedDesc.tTransform2DDesc.vInitialPosition = _float3(1010.f, -530.f, 0.f);
+		//DoorRedDesc.iCurLevelID = eCurLevelID;
+		//DoorRedDesc.isHorizontal = false;
+		//DoorRedDesc.eSize = CDoor_2D::SMALL;
+		//DoorRedDesc.eInitialState = CDoor_2D::CLOSED;
+		//DoorRedDesc.strSectionTag = L"Chapter4_P0102";
+		//DoorRedDesc.strLayerTag = L"Layer_Monster_Door1";
 
-		DoorRedDesc.fTargetDiff = 13.f;
+		//DoorRedDesc.fTargetDiff = 13.f;
 
-		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorRed"),
-			eCurLevelID, L"Layer_MapGimmick", &DoorRedDesc)))
-			return false;
+		//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorRed"),
+		//	eCurLevelID, L"Layer_MapGimmick", &DoorRedDesc)))
+		//	return false;
 
 		DoorRedDesc.tTransform2DDesc.vInitialPosition = _float3(605.f, -200.f, 0.f);
 		DoorRedDesc.iCurLevelID = eCurLevelID;
@@ -834,23 +834,33 @@ _bool CGameEventExecuter_C4::Change_PlayMap(_float _fStartTime)
 			eCurLevelID, L"Layer_MapGimmick", &DoorRedDesc)))
 			return false;
 
-		DoorRedDesc = {};
-		DoorRedDesc.tTransform2DDesc.vInitialPosition = _float3(-1151.00f, 95.00f, 0.f);
-		DoorRedDesc.iCurLevelID = eCurLevelID;
-		DoorRedDesc.isHorizontal = false;
-		DoorRedDesc.eSize = CDoor_2D::MED;
-		DoorRedDesc.eInitialState = CDoor_2D::CLOSED;
-		DoorRedDesc.strSectionTag = L"Chapter4_P0304";
-		DoorRedDesc.strLayerTag = L"Layer_Monster_Door_Book";
+		//DoorRedDesc = {};
+		//DoorRedDesc.tTransform2DDesc.vInitialPosition = _float3(-1151.00f, 95.00f, 0.f);
+		//DoorRedDesc.iCurLevelID = eCurLevelID;
+		//DoorRedDesc.isHorizontal = false;
+		//DoorRedDesc.eSize = CDoor_2D::MED;
+		//DoorRedDesc.eInitialState = CDoor_2D::CLOSED;
+		//DoorRedDesc.strSectionTag = L"Chapter4_P0304";
+		//DoorRedDesc.strLayerTag = L"Layer_Monster_Door_Book";
 
-		DoorRedDesc.fTargetDiff = 13.f;
+		//DoorRedDesc.fTargetDiff = 13.f;
 
-		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorRed"),
-			eCurLevelID, L"Layer_MapGimmick", &DoorRedDesc)))
+		//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorRed"),
+		//	eCurLevelID, L"Layer_MapGimmick", &DoorRedDesc)))
+		//	return false;
+
+
+
+		//Castle Gate
+		CDynamicCastleGate::CONTAINEROBJ_DESC tGateDesc{};
+		tGateDesc.eStartCoord = COORDINATE_3D;
+		tGateDesc.iCurLevelID = eCurLevelID;
+		tGateDesc.tTransform3DDesc.vInitialPosition = _float3(-46.18f, 9.99f, -1.34f);
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(eCurLevelID, TEXT("Prototype_GameObject_DynamicCastleGate"), eCurLevelID, L"Layer_MapGimmick", &tGateDesc)))
 			return false;
+
 		m_iSubStep++;
 		return false;
-
 
 	}
 	_fStartTime += 0.1f;

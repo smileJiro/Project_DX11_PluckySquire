@@ -308,7 +308,7 @@ void CEmitter::Free()
 	__super::Free();
 }
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 void CEmitter::Tool_Update(_float fTimeDelta)
 {
 	if (ImGui::TreeNode("Position Type"))

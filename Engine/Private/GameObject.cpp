@@ -78,7 +78,7 @@ void CGameObject::Late_Update(_float _fTimeDelta)
 
 HRESULT CGameObject::Render()
 {
-//#ifdef _DEBUG
+//#ifdef NDEBUG
 //    for (auto& p2DCollider : m_p2DColliderComs)
 //    {
 //        p2DCollider->Render();
@@ -138,7 +138,8 @@ HRESULT CGameObject::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPo
         return E_FAIL;
 
     for (auto& pCollider : m_p2DColliderComs)
-        pCollider->Set_Active(!(_int)_eCoordinate);
+        if(pCollider)
+            pCollider->Set_Active(!(_int)_eCoordinate);
     return S_OK;
 }
 
@@ -218,7 +219,7 @@ void CGameObject::Free()
 
 }
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 
 HRESULT CGameObject::Imgui_Render_ObjectInfos()
 {

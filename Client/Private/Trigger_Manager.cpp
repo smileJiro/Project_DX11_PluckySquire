@@ -128,6 +128,7 @@ HRESULT CTrigger_Manager::Mapping_ExecuterTag()
 	m_EventExecuterTags[CHAPTER8_BOOKDROP] = 	L"Chapter8_BookDrop";
 	m_EventExecuterTags[CHAPTER8_BOOKFREEZING_OFF] = 	L"Chapter8_BookFreezing_Off";
 	m_EventExecuterTags[CHAPTER8_2D_IN] = 	L"Chapter8_2D_In";
+	m_EventExecuterTags[CHAPTER8_TRANSFORMZIP] = L"Chapter8_TransformZip";
 	m_EventExecuterTags[CHAPTER8_BOSS_INTRO] = 	L"Chapter8_Boss_Intro";
 
 	return S_OK;

@@ -288,5 +288,15 @@
         "Is_Sequence": true
       }
     ]
+  },
+  {
+    "Trigger_EventTag": "Chapter8_TransformZip",
+    "Actions": [
+      {
+        "ActionTag": "Create_EventExecuter",
+        "EventTag": "Chapter8_TransformZip",
+        "Is_Sequence": true
+      }
+    ]
   }
 ]

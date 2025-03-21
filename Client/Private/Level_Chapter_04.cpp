@@ -197,6 +197,7 @@ HRESULT CLevel_Chapter_04::Initialize(LEVEL_ID _eLevelID)
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_TRIGGER, OBJECT_GROUP::WORD_GAME);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_PROJECTILE, OBJECT_GROUP::WORD_GAME);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_PROJECTILE, OBJECT_GROUP::MAPOBJECT);
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_PROJECTILE, OBJECT_GROUP::BLOCKER);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::INTERACTION_OBEJCT, OBJECT_GROUP::WORD_GAME);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::INTERACTION_OBEJCT, OBJECT_GROUP::BLOCKER);
 
@@ -296,11 +297,7 @@ void CLevel_Chapter_04::Update(_float _fTimeDelta)
 	//
 	//}
 
-#ifdef _DEBUG	//if (KEY_DOWN(KEY::I))
-	//{
-	//	CTrigger_Manager::GetInstance()->Register_TriggerEvent(L"Next_Chapter_Event", 0);
-	//}
-
+#ifdef _DEBUG	
 	if (KEY_DOWN(KEY::P))
 		CCamera_Manager::GetInstance()->Start_ZoomIn();
 
@@ -368,22 +365,6 @@ void CLevel_Chapter_04::Update(_float _fTimeDelta)
 	//	CTrigger_Manager::GetInstance()->Load_Trigger(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("../Bin/DataFiles/Trigger/Chapter2_Trigger.json"));
 	//	CTrigger_Manager::GetInstance()->Load_TriggerEvents(TEXT("../Bin/DataFiles/Trigger/Trigger_Events.json"));
 	//}
-
-	if (KEY_PRESSING(KEY::CTRL))
-	{
-		if (KEY_DOWN(KEY::NUM5))
-		{
-			CButterGrump::MONSTER_DESC Boss_Desc;
-			Boss_Desc.iCurLevelID = m_eLevelID;
-			Boss_Desc.eStartCoord = COORDINATE_3D;
-			Boss_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-			//Boss_Desc.tTransform3DDesc.vInitialPosition = _float3(-3.f, 15.35f, -80.0f);
-			Boss_Desc.tTransform3DDesc.vInitialPosition = _float3(0.53f, 60.35f, -8.0f);
-
-			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_4, TEXT("Prototype_GameObject_ButterGrump"), m_eLevelID, TEXT("Layer_Monster"), &Boss_Desc)))
-				return;
-		}
-	}
 
 }
 
@@ -1476,32 +1457,37 @@ HRESULT CLevel_Chapter_04::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 		return E_FAIL;
 
 
-	//Castle Gate
-	CDynamicCastleGate::CONTAINEROBJ_DESC tGateDesc{};
-	tGateDesc.eStartCoord = COORDINATE_3D;
-	tGateDesc.iCurLevelID = m_eLevelID;
-	tGateDesc.tTransform3DDesc.vInitialPosition = _float3(-46.18f, 9.99f, -1.34f);
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_DynamicCastleGate"), m_eLevelID, _strLayerTag, &tGateDesc)))
+
+	CDoor_Red::DOOR_RED_DESC DoorRedDesc = {};
+	DoorRedDesc.tTransform2DDesc.vInitialPosition = _float3(1010.f, -530.f, 0.f);
+	DoorRedDesc.iCurLevelID = m_eLevelID;
+	DoorRedDesc.isHorizontal = false;
+	DoorRedDesc.eSize = CDoor_2D::SMALL;
+	DoorRedDesc.eInitialState = CDoor_2D::CLOSED;
+	DoorRedDesc.strSectionTag = L"Chapter4_P0102";
+	DoorRedDesc.strLayerTag = L"Layer_Monster_Door1";
+
+	DoorRedDesc.fTargetDiff = 13.f;
+
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorRed"),
+		m_eLevelID, L"Layer_MapGimmick", &DoorRedDesc)))
 		return E_FAIL;
 
+	DoorRedDesc = {};
+	DoorRedDesc.tTransform2DDesc.vInitialPosition = _float3(-1151.00f, 95.00f, 0.f);
+	DoorRedDesc.iCurLevelID = m_eLevelID;
+	DoorRedDesc.isHorizontal = false;
+	DoorRedDesc.eSize = CDoor_2D::MED;
+	DoorRedDesc.eInitialState = CDoor_2D::CLOSED;
+	DoorRedDesc.strSectionTag = L"Chapter4_P0304";
+	DoorRedDesc.strLayerTag = L"Layer_Monster_Door_Book";
 
-	// temp
-	//CDoor_Red::DOOR_RED_DESC DoorRedDesc = {};
-	//DoorRedDesc.tTransform2DDesc.vInitialPosition = _float3(0.f, 100.f, 0.f);
-	//DoorRedDesc.iCurLevelID = m_eLevelID;
-	//DoorRedDesc.isHorizontal = true;
-	//DoorRedDesc.eSize = CDoor_2D::LARGE;
-	//DoorRedDesc.eInitialState = CDoor_2D::OPENED;
-	//DoorRedDesc.strSectionTag = L"Chapter4_P0102";
-	//DoorRedDesc.strLayerTag = L"";
-	//DoorRedDesc.isCountLayer = false;
+	DoorRedDesc.fTargetDiff = 13.f;
 
-
-	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorRed"),
-	//	m_eLevelID, L"Layer_MapGimmick", &DoorRedDesc)))
-	//	return E_FAIL;
-
-
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DoorRed"),
+		m_eLevelID, L"Layer_MapGimmick", &DoorRedDesc)))
+		return E_FAIL;
 
 	return S_OK;
 }

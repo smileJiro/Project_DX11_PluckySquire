@@ -103,6 +103,7 @@
 		"Section_Type": 1,
 		"Section_Default": 0,
 		"Section_Info": {
+			"BGM": "LCD_MUS_C08_CHAPTER8INTRO_P0304_OS_FullMix",
 			"Pre_Page_Tag": "Chapter6_P0708",
 			"Next_Page_Tag": "Chapter6_P1112"
 		}
@@ -113,6 +114,7 @@
 		"Section_File_Name": "Chapter6_P1112.m2chc",
 		"Section_Type": 0,
 		"Section_Info": {
+			"BGM": "LCD_MUS_C08_POSTBATTLE_P0708_LOOP_Stem_Base",
 			"Camera_Zoom_Ratio": 2.0,
 			"RenderResolution": {
 				"X": 5120.0,
@@ -132,6 +134,7 @@
 		"Section_File_Name": "Chapter6_P1314.m2chc",
 		"Section_Type": 0,
 		"Section_Info": {
+			"BGM": "LCD_MUS_C08_HUMPGRUMPCONFRONTSMOONBEARD_P1112_LOOP2_FULL",
 			"Camera_Zoom_Ratio": 2.0,
 			"RenderResolution": {
 				"X": 5119.0,
@@ -151,6 +154,7 @@
 		"Section_Type": 1,
 		"Section_Default": 0,
 		"Section_Info": {
+			"BGM": "LCD_MUS_HUMGRUMPCONFRONTSMOON_2_OS_FULL_v2b",
 			"Pre_Page_Tag": "Chapter6_P1112"
 		}
 	},

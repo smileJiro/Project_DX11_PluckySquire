@@ -541,7 +541,6 @@
 					"fposX": 650.0,
 					"fposY": 250.0,
 					"fwaitingTime": 2.6,
-					"isFinishedThisLine": true,
 					"NarAnim": [
 						{
 							"strAnimationid": "C08_P0708_Humgrump",

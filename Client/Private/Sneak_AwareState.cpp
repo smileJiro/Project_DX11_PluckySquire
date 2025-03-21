@@ -17,7 +17,7 @@ HRESULT CSneak_AwareState::Initialize(void* _pArg)
 	m_fAttackRange = pDesc->fAttackRange;
 
 	m_fCoolTime = 2.f;
-	m_fRecognizeTime = 0.5f;
+	m_fRecognizeTime = 0.3f;
 
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;

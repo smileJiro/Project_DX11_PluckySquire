@@ -59,13 +59,13 @@ void CCollider_Circle::Late_Update(_float _fTimeDelta)
     Update_OwnerTransform();
 
     __super::Late_Update(_fTimeDelta);
-//#ifdef _DEBUG
+//#ifdef NDEBUG
 //    m_pGameInstance->Add_DebugComponent(this);
 //#endif // _DEBUG
 
 }
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 
 HRESULT CCollider_Circle::Render(_float2 _fRenderTargetSize)
 {

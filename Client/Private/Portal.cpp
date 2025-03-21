@@ -170,6 +170,7 @@ HRESULT CPortal::Init_Actor()
 
 void CPortal::Use_Portal(CPlayer* _pUser)
 {
+    START_SFX(L"A_sfx_portal_enter",60.f,false);
     _vector vPos = Get_FinalPosition(COORDINATE_2D);
 
     _vector v3DPos = Get_FinalPosition(COORDINATE_3D);
@@ -425,6 +426,8 @@ void CPortal::Active_OnDisable()
 
 void CPortal::Set_FirstActive(_bool _bFirstActive)
 {
+    START_SFX(L"A_sfx_portal_fade_in", 40.f, false);
+
     m_isFirstActive = _bFirstActive;
     Set_Active(m_isFirstActive);
     static_cast<CModelObject*>(m_PartObjects[PORTAL_PART_2D])->Start_FadeAlphaIn();

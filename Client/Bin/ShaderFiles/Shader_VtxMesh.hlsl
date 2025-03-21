@@ -73,6 +73,9 @@ float2 g_vTrailTime;
 /* Gray Scale */
 int g_isGrayScale = 0;
 float g_fGrayScaleColorFactor = 0.12f;
+
+float g_fHitRatio = 0.0f;
+int g_isHit = 0;
 /* ±¸Á¶Ã¼ */
 struct VS_IN
 {

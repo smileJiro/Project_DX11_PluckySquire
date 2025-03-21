@@ -802,6 +802,9 @@
     <Filter Include="02.GameObjects\UI\00. GamePlay\03. InterAction\00. Interaction_Book\01. Tilting_Glove">
       <UniqueIdentifier>{58cd630a-5eb5-4866-92d1-9710e8c90790}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Monster\Boss\Part\Body">
+      <UniqueIdentifier>{86b240a7-2423-4237-a88d-b3c93d46e6dd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -2069,6 +2072,9 @@
     <ClInclude Include="..\Public\Interaction_Key.h">
       <Filter>02.GameObjects\UI\00. GamePlay\03. InterAction\03. Interaction_Key</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\ButterGrump_Body.h">
+      <Filter>02.GameObjects\Monster\Boss\Part</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -3322,6 +3328,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\UI_Interaction_Tilting.cpp">
       <Filter>02.GameObjects\UI\00. GamePlay\03. InterAction\00. Interaction_Book\01. Tilting_Glove</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ButterGrump_Body.cpp">
+      <Filter>02.GameObjects\Monster\Boss\Part</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

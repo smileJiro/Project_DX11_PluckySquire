@@ -33,6 +33,7 @@
 #include "Soldier_Shield.h"
 #include "Soldier_CrossBow.h"
 #include "CrossBow_Arrow.h"
+#include "Goblin_SideScroller.h"
 #include "Bomb.h"
 #include "Rat.h"
 #include "Zippy.h"
@@ -139,7 +140,7 @@ HRESULT CLevel_Chapter_08::Initialize(LEVEL_ID _eLevelID)
 		MSG_BOX(" Failed Ready_Layer_Camera (Level_Chapter_08::Initialize)");
 		assert(nullptr);
 	}
-	if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
+	if (FAILED(Ready_Layer_Monster()))
 	{
 		MSG_BOX(" Failed Ready_Layer_Monster (Level_Chapter_08::Initialize)");
 		assert(nullptr);
@@ -298,38 +299,38 @@ void CLevel_Chapter_08::Update(_float _fTimeDelta)
 
 	/*ImGuiIO& IO = ImGui::GetIO(); (void)IO;*/
 
-	if (KEY_DOWN(KEY::NUM6))
-	{
-		static _int i = 0;
-		i ^= 1;
-		m_pGameInstance->Set_GrayScale_VtxAnimMesh(i);
-		//m_pGameInstance->Set_GrayScale_VtxMesh(i);
-		if (i == 1)
-		{
-			m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/Chapter8_GrayScale.json"));
-		}
-		else
-		{
+	//if (KEY_DOWN(KEY::NUM6))
+	//{
+	//	static _int i = 0;
+	//	i ^= 1;
+	//	m_pGameInstance->Set_GrayScale_VtxAnimMesh(i);
+	//	//m_pGameInstance->Set_GrayScale_VtxMesh(i);
+	//	if (i == 1)
+	//	{
+	//		m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/Chapter8_GrayScale.json"));
+	//	}
+	//	else
+	//	{
 
-		}
-		//// DXGI 팩토리 생성
-		//IDXGIFactory4* pFactory;
-		//CreateDXGIFactory1(__uuidof(IDXGIFactory4), (void**)&pFactory);
+	//	}
+	//	//// DXGI 팩토리 생성
+	//	//IDXGIFactory4* pFactory;
+	//	//CreateDXGIFactory1(__uuidof(IDXGIFactory4), (void**)&pFactory);
 
-		//// 기본 GPU 어댑터 가져오기
-		//IDXGIAdapter3* pAdapter;
-		//pFactory->EnumAdapters1(0, (IDXGIAdapter1**)&pAdapter);
+	//	//// 기본 GPU 어댑터 가져오기
+	//	//IDXGIAdapter3* pAdapter;
+	//	//pFactory->EnumAdapters1(0, (IDXGIAdapter1**)&pAdapter);
 
-		//// VRAM 사용c량 쿼리
-		//DXGI_QUERY_VIDEO_MEMORY_INFO memoryInfo;
-		//pAdapter->QueryVideoMemoryInfo(0, DXGI_MEMORY_SEGMENT_GROUP_LOCAL, &memoryInfo);
+	//	//// VRAM 사용c량 쿼리
+	//	//DXGI_QUERY_VIDEO_MEMORY_INFO memoryInfo;
+	//	//pAdapter->QueryVideoMemoryInfo(0, DXGI_MEMORY_SEGMENT_GROUP_LOCAL, &memoryInfo);
 
-		//// 결과 출력 (MB 단위)
-		//SIZE_T currentUsageMB = memoryInfo.CurrentUsage / (1024 * 1024); // 현재 사용량
-		//SIZE_T availableMB = memoryInfo.AvailableForReservation / (1024 * 1024); // 예약 가능량
+	//	//// 결과 출력 (MB 단위)
+	//	//SIZE_T currentUsageMB = memoryInfo.CurrentUsage / (1024 * 1024); // 현재 사용량
+	//	//SIZE_T availableMB = memoryInfo.AvailableForReservation / (1024 * 1024); // 예약 가능량
 
-		//int a = 0;
-	}
+	//	//int a = 0;
+	//}
 
 	// Change Camera Free  Or Target
 	if (KEY_DOWN(KEY::C)) {
@@ -338,29 +339,29 @@ void CLevel_Chapter_08::Update(_float _fTimeDelta)
 		CCamera_Manager::GetInstance()->Change_CameraType(iCurCameraType);
 	}
 
-	if (KEY_DOWN(KEY::NUM1))
-	{
-		CUI_Manager* pUIManager = CUI_Manager::GetInstance();
+	//if (KEY_DOWN(KEY::NUM1))
+	//{
+	//	CUI_Manager* pUIManager = CUI_Manager::GetInstance();
 
-		if (nullptr == pUIManager)
-			assert(nullptr);
+	//	if (nullptr == pUIManager)
+	//		assert(nullptr);
 
-		if (true == pUIManager->Get_StampHave(0) &&
-			true == pUIManager->Get_StampHave(1))
-		{
-			CUI_Manager::STAMP eStamp;
-			eStamp = pUIManager->Get_StampIndex();
+	//	if (true == pUIManager->Get_StampHave(0) &&
+	//		true == pUIManager->Get_StampHave(1))
+	//	{
+	//		CUI_Manager::STAMP eStamp;
+	//		eStamp = pUIManager->Get_StampIndex();
 
-			if (eStamp == CUI_Manager::STAMP_BOMB)
-			{
-				pUIManager->Set_StampIndex(CUI_Manager::STAMP_STOP);
-			}
-			else if (eStamp == CUI_Manager::STAMP_STOP)
-			{
-				pUIManager->Set_StampIndex(CUI_Manager::STAMP_BOMB);
-			}
-		}
-	}
+	//		if (eStamp == CUI_Manager::STAMP_BOMB)
+	//		{
+	//			pUIManager->Set_StampIndex(CUI_Manager::STAMP_STOP);
+	//		}
+	//		else if (eStamp == CUI_Manager::STAMP_STOP)
+	//		{
+	//			pUIManager->Set_StampIndex(CUI_Manager::STAMP_BOMB);
+	//		}
+	//	}
+	//}
 
 //#ifdef _DEBUG
 //	if (KEY_DOWN(KEY::P))
@@ -1301,9 +1302,16 @@ HRESULT CLevel_Chapter_08::Ready_Layer_NPC(const _wstring& _strLayerTag)
 
 }
 
-HRESULT CLevel_Chapter_08::Ready_Layer_Monster(const _wstring& _strLayerTag, CGameObject** _ppout)
+HRESULT CLevel_Chapter_08::Ready_Layer_Monster()
 {
 	CGameObject* pObject = nullptr;
+
+	if (FAILED(Ready_Layer_Monster_2D()))
+		return E_FAIL;
+
+	//if (FAILED(Ready_Layer_Monster_3D()))
+	//	return E_FAIL;
+
 
 
 	//CSpear_Soldier::MONSTER_DESC Spear_Soldier_Desc;
@@ -1319,50 +1327,50 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 
 
 
-	CBeetle::MONSTER_DESC Beetle_Desc;
-	Beetle_Desc.iCurLevelID = m_eLevelID;
-	Beetle_Desc.eStartCoord = COORDINATE_3D;
-	Beetle_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-	Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(15.f, 11.1f, 3.4f);
-	Beetle_Desc.isSneakMode = true;
-	Beetle_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER8_BEETLE1;
+	//CBeetle::MONSTER_DESC Beetle_Desc;
+	//Beetle_Desc.iCurLevelID = m_eLevelID;
+	//Beetle_Desc.eStartCoord = COORDINATE_3D;
+	//Beetle_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	//Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(15.f, 11.1f, 3.4f);
+	//Beetle_Desc.isSneakMode = true;
+	//Beetle_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER8_BEETLE1;
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, TEXT("Layer_Sneak_Beetle"), &Beetle_Desc)))
-		return E_FAIL;
-
-
-	Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(-6.5f, 18.5f, 44.5f);
-	Beetle_Desc.isSneakMode = false;
-	Beetle_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER8_BEETLE_FINAL_1;
-
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, _strLayerTag, &Beetle_Desc)))
-		return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, TEXT("Layer_Sneak_Beetle"), &Beetle_Desc)))
+	//	return E_FAIL;
 
 
-	Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(-13.5f, 18.3f, 46.5f);
-	Beetle_Desc.isSneakMode = false;
-	Beetle_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER8_BEETLE_FINAL_2;
+	//Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(-6.5f, 18.5f, 44.5f);
+	//Beetle_Desc.isSneakMode = false;
+	//Beetle_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER8_BEETLE_FINAL_1;
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, _strLayerTag, &Beetle_Desc)))
-		return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, TEXT("Layer_Sneak_Beetle"), &Beetle_Desc)))
+	//	return E_FAIL;
 
-	CCrossBow_Soldier::MONSTER_DESC CrossBow_Soldier_Desc;
-	CrossBow_Soldier_Desc.iCurLevelID = m_eLevelID;
-	CrossBow_Soldier_Desc.eStartCoord = COORDINATE_3D;
-	CrossBow_Soldier_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-	CrossBow_Soldier_Desc.tTransform3DDesc.vInitialPosition = _float3(-15.5f, 0.35f, -23.0f);
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_CrossBow_Soldier"), m_eLevelID, _strLayerTag, &CrossBow_Soldier_Desc)))
-		return E_FAIL;
+	//Beetle_Desc.tTransform3DDesc.vInitialPosition = _float3(-13.5f, 18.3f, 46.5f);
+	//Beetle_Desc.isSneakMode = false;
+	//Beetle_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER8_BEETLE_FINAL_2;
 
-	CBomb_Soldier::MONSTER_DESC Bomb_Soldier_Desc;
-	Bomb_Soldier_Desc.iCurLevelID = m_eLevelID;
-	Bomb_Soldier_Desc.eStartCoord = COORDINATE_3D;
-	Bomb_Soldier_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-	Bomb_Soldier_Desc.tTransform3DDesc.vInitialPosition = _float3(-5.5f, 0.35f, -13.0f);
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, TEXT("Layer_Sneak_Beetle"), &Beetle_Desc)))
+	//	return E_FAIL;
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Bomb_Soldier"), m_eLevelID, _strLayerTag, &Bomb_Soldier_Desc)))
-		return E_FAIL;
+	//CCrossBow_Soldier::MONSTER_DESC CrossBow_Soldier_Desc;
+	//CrossBow_Soldier_Desc.iCurLevelID = m_eLevelID;
+	//CrossBow_Soldier_Desc.eStartCoord = COORDINATE_3D;
+	//CrossBow_Soldier_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	//CrossBow_Soldier_Desc.tTransform3DDesc.vInitialPosition = _float3(-15.5f, 0.35f, -23.0f);
+
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_CrossBow_Soldier"), m_eLevelID, _strLayerTag, &CrossBow_Soldier_Desc)))
+	//	return E_FAIL;
+
+	//CBomb_Soldier::MONSTER_DESC Bomb_Soldier_Desc;
+	//Bomb_Soldier_Desc.iCurLevelID = m_eLevelID;
+	//Bomb_Soldier_Desc.eStartCoord = COORDINATE_3D;
+	//Bomb_Soldier_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	//Bomb_Soldier_Desc.tTransform3DDesc.vInitialPosition = _float3(-5.5f, 0.35f, -13.0f);
+
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Bomb_Soldier"), m_eLevelID, _strLayerTag, &Bomb_Soldier_Desc)))
+	//	return E_FAIL;
 
 	//CButterGrump::MONSTER_DESC Boss_Desc;
 	//Boss_Desc.iCurLevelID = m_eLevelID;
@@ -1437,6 +1445,179 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Monster(const _wstring& _strLayerTag, CGa
 
 	//CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter8_SKSP_05"), pObject);
 
+	return S_OK;
+}
+
+HRESULT CLevel_Chapter_08::Ready_Layer_Monster_2D()
+{
+	CGameObject* pObject = nullptr;
+
+	const json* pJson = m_pGameInstance->Find_Json_InLevel(TEXT("Chapter8_Monsters_2D"), m_eLevelID);
+
+	if (nullptr == pJson)
+		return E_FAIL;
+
+	if (pJson->contains("2D"))
+	{
+		_wstring strLayerTag = L"Layer_Monster";
+		_wstring strSectionTag = L"";
+		_wstring strMonsterTag = L"";
+
+		for (auto Json : (*pJson)["2D"])
+		{
+			CMonster::MONSTER_DESC MonsterDesc2D = {};
+
+			MonsterDesc2D.iCurLevelID = m_eLevelID;
+			MonsterDesc2D.eStartCoord = COORDINATE_2D;
+
+			if (Json.contains("Position"))
+			{
+				for (_int j = 0; j < 3; ++j)
+				{
+					*(((_float*)&MonsterDesc2D.tTransform2DDesc.vInitialPosition) + j) = Json["Position"][j];
+				}
+			}
+			if (Json.contains("Scaling"))
+			{
+				for (_int j = 0; j < 3; ++j)
+				{
+					*(((_float*)&MonsterDesc2D.tTransform2DDesc.vInitialScaling) + j) = Json["Scaling"][j];
+				}
+			}
+			if (Json.contains("LayerTag"))
+			{
+				strLayerTag = STRINGTOWSTRING(Json["LayerTag"]);
+			}
+
+			if (Json.contains("SectionTag"))
+			{
+				strSectionTag = STRINGTOWSTRING(Json["SectionTag"]);
+			}
+			else
+				return E_FAIL;
+
+			if (Json.contains("MonsterTag"))
+			{
+				strMonsterTag = STRINGTOWSTRING(Json["MonsterTag"]);
+			}
+			else
+				return E_FAIL;
+
+			if (Json.contains("IsStay"))
+			{
+				MonsterDesc2D.isStay = Json["IsStay"];
+			}
+
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, strMonsterTag, m_eLevelID, strLayerTag, &pObject, &MonsterDesc2D)))
+				return E_FAIL;
+			CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strSectionTag, pObject);
+		}
+	}
+
+	wstring strLayerTag = TEXT("Layer_Monster");
+
+
+	CGoblin_SideScroller::SIDESCROLLDESC Goblin_SideScroller_Desc;
+	Goblin_SideScroller_Desc.iCurLevelID = m_eLevelID;
+	Goblin_SideScroller_Desc.eStartCoord = COORDINATE_2D;
+	Goblin_SideScroller_Desc.tTransform2DDesc.vInitialPosition = _float3(1060.0f, 248.f, 0.f);
+	Goblin_SideScroller_Desc.tTransform2DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	Goblin_SideScroller_Desc.eSideScroll_Bound = SIDESCROLL_PATROLBOUND::CHAPTER8_1;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin_SideScroller"), m_eLevelID, strLayerTag, &pObject, &Goblin_SideScroller_Desc)))
+		return E_FAIL;
+
+	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter8_SKSP_09"), pObject);
+
+	Goblin_SideScroller_Desc.tTransform2DDesc.vInitialPosition = _float3(1298.0f, -81.7f, 0.f);
+	Goblin_SideScroller_Desc.eSideScroll_Bound = SIDESCROLL_PATROLBOUND::CHAPTER8_2;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Goblin_SideScroller"), m_eLevelID, strLayerTag, &pObject, &Goblin_SideScroller_Desc)))
+		return E_FAIL;
+
+	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter8_SKSP_09"), pObject);
+
+	return S_OK;
+}
+
+HRESULT CLevel_Chapter_08::Ready_Layer_Monster_3D()
+{
+	CGameObject* pObject = nullptr;
+
+	const json* pJson = m_pGameInstance->Find_Json_InLevel(TEXT("Chapter8_Monsters_3D"), m_eLevelID);
+
+	if (nullptr == pJson)
+		return E_FAIL;
+	if (pJson->contains("3D"))
+	{
+		_wstring strLayerTag = L"Layer_Monster";
+		_wstring strMonsterTag = L"";
+
+		for (auto Json : (*pJson)["3D"])
+		{
+			CMonster::MONSTER_DESC MonsterDesc3D = {};
+
+			MonsterDesc3D.iCurLevelID = m_eLevelID;
+			MonsterDesc3D.eStartCoord = COORDINATE_3D;
+
+			if (Json.contains("Position"))
+			{
+				for (_int j = 0; j < 3; ++j)
+				{
+					*(((_float*)&MonsterDesc3D.tTransform3DDesc.vInitialPosition) + j) = Json["Position"][j];
+				}
+			}
+			if (Json.contains("Scaling"))
+			{
+				for (_int j = 0; j < 3; ++j)
+				{
+					*(((_float*)&MonsterDesc3D.tTransform3DDesc.vInitialScaling) + j) = Json["Scaling"][j];
+				}
+			}
+			if (Json.contains("LayerTag"))
+			{
+				strLayerTag = STRINGTOWSTRING(Json["LayerTag"]);
+			}
+
+			if (Json.contains("MonsterTag"))
+			{
+				strMonsterTag = STRINGTOWSTRING(Json["MonsterTag"]);
+			}
+			else
+				return E_FAIL;
+
+			if (Json.contains("SneakMode"))
+			{
+				if (Json.contains("SneakWayPointIndex"))
+				{
+					MonsterDesc3D.eWayIndex = Json["SneakWayPointIndex"];
+				}
+				else
+					return E_FAIL;
+				MonsterDesc3D.isSneakMode = Json["SneakMode"];
+			}
+
+			if (Json.contains("IsStay"))
+			{
+				MonsterDesc3D.isStay = Json["IsStay"];
+				if (Json.contains("vLook"))
+				{
+					for (_int j = 0; j < 3; ++j)
+					{
+						*(((_float*)&MonsterDesc3D.vLook) + j) = Json["vLook"][j];
+					}
+				}
+			}
+
+			if (Json.contains("IsIgnoreGround"))
+			{
+				MonsterDesc3D._isIgnoreGround = Json["IsIgnoreGround"];
+			}
+
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, strMonsterTag, m_eLevelID, strLayerTag, &pObject, &MonsterDesc3D)))
+				return E_FAIL;
+		}
+	}
 	return S_OK;
 }
 

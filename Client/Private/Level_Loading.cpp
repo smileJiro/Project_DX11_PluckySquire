@@ -30,6 +30,10 @@ HRESULT CLevel_Loading::Initialize(LEVEL_ID _eNextLevelID)
 	if (FAILED(Ready_Layer_UI(TEXT("Layer_Loading_UI"))))
 		return E_FAIL;
 
+  
+        
+
+
     return S_OK;
 }
 

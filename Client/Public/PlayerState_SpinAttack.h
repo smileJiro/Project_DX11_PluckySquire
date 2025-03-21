@@ -34,6 +34,9 @@ private:
 	_float m_fLaunchableProgress2D = 0.5f;
     _int m_iSpinCount = 0;
     _int m_iSpinAttackLevel= 0;
+
+	_float m_f2DSpinAttackTimeStep = 0.5f;
+	_float m_f2DSpinAttackTimeAcc= 0.f;
 };
 
 END

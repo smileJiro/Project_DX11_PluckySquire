@@ -75,7 +75,8 @@ private:
 	set<CGameObject*> m_AttckedObjects;
 
 	//칼 던지기 관련
-	_float m_fOutingTime = 0.7f;
+	_float m_fOutingTime = 0.5f;
+	_float m_fOutingTimeIncreasePerLev = 0.15f;
 	_float m_fFlyingTimeAcc = 0.f;
 	_vector m_vThrowDirection = {};
 	_vector m_vStuckDirection = {};
