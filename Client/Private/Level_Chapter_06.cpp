@@ -328,7 +328,7 @@ HRESULT CLevel_Chapter_06::Initialize(LEVEL_ID _eLevelID)
 
 	/* Set Shader PlayerHideColor */
 	m_pGameInstance->Set_PlayerHideColor(_float3(0.8f, 0.8f, 0.8f), true);
-
+	
 
 
 #pragma region TestCode
