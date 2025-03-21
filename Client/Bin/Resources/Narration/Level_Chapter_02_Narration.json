@@ -204,7 +204,6 @@
 					"fposY": 275.0,
 					"fwaitingTime": 2.0,
 					"isFinishedThisLine": true,
-					"NextBGM": "MUS_C01_P1314_MoonbeardIntro",
 					"NarAnim": [
 						{
 							"strAnimationid": "P0304_02_01",
