@@ -543,9 +543,20 @@ void CGameEventExecuter_C4::Chapter4_3D_Out_01(_float _fTimeDelta)
 	{
 		if (Is_Start())
 		{
+			_vector vThrashPos = pThrash->Get_FinalPosition() + XMVectorSet(-60.0f, 30.f, 0.0f, 0.0f);
+
 			pViolet->Change_AnyState(CFriend_Violet::VIOLET_MAGIC02_INTO_RIGHT, false, CFriend::DIR_LEFT);
-			pPlayer->Set_2DDirection(F_DIRECTION::LEFT);
-			pThrash->Set_Direction(CFriend::DIR_LEFT);
+			pThrash->Move_Position(_float2(XMVectorGetX(vThrashPos), XMVectorGetY(vThrashPos)), CFriend::DIR_LEFT);
+
+			AUTOMOVE_COMMAND AutoMove2{};
+			AutoMove2.eType = AUTOMOVE_TYPE::LOOK_DIRECTION;
+			AutoMove2.fPostDelayTime = 0.0f;
+			AutoMove2.fPreDelayTime = 0.0f;
+			AutoMove2.vTarget = XMVectorSet(-1.0f, 0.0f, 0.0f, 0.0f);
+			AutoMove2.iAnimIndex = (_uint)CPlayer::ANIM_STATE_2D::PLAYER_IDLE_RIGHT;
+			pPlayer->Add_AutoMoveCommand(AutoMove2);
+			pPlayer->Start_AutoMove(true);
+
 		}
 		Next_Step_Over(1.5f);
 	}

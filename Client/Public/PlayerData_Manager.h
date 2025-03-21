@@ -67,6 +67,8 @@ public:
 	CPlayer*				Get_NormalPlayer_Ptr() { return static_cast<CPlayer*>(m_pPlayers[(_uint)PLAYABLE_ID::NORMAL]); }
 	CDefenderPlayer*		Get_DefenderPlayer_Ptr() { return static_cast<CDefenderPlayer*>(m_pPlayers[(_uint)PLAYABLE_ID::DEFENDER]); }
 
+	_vector					Get_PlayerPosition();
+	COORDINATE				Get_PlayerCoord();
 	//스킬 레벨 용도
 public:
 	void					Set_JumpSkillLevel(_uint _JumpSkill) { m_iJumpSkill = _JumpSkill; }

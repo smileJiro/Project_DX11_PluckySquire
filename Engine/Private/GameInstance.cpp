@@ -1187,6 +1187,24 @@ void CGameInstance::Start_SFX_Distance_Delay(const _wstring& strSFXTag, _fvector
 	return m_pSound_Manager->Start_SFX_Distance_Delay(strSFXTag, _vPosition, _fDelayTime, _fMaxVolume, _fMinVolume, _fMaxVolumeDist, _fFactor, _isLoop);
 }
 
+void CGameInstance::Start_SFX_Distance2D(const _wstring& strSFXTag, _fvector _vPosition, _fvector _vCenter, _float _fMaxVolume, _float _fMinVolume, _float _fMaxVolumeDist, _float _fFactor, _bool _isLoop)
+{
+	if (nullptr == m_pSound_Manager)
+		return;
+
+	return m_pSound_Manager->Start_SFX_Distance2D(strSFXTag, _vPosition, _vCenter, _fMaxVolume, _fMinVolume, _fMaxVolumeDist, _fFactor, _isLoop);
+
+}
+
+void CGameInstance::Start_SFX_Distance2D_Delay(const _wstring& strSFXTag, _fvector _vPosition, _fvector _vCenter, _float _fDelayTime, _float _fMaxVolume, _float _fMinVolume, _float _fMaxVolumeDist, _float _fFactor, _bool _isLoop)
+{
+	if (nullptr == m_pSound_Manager)
+		return;
+
+	return m_pSound_Manager->Start_SFX_Distance2D_Delay(strSFXTag, _vPosition, _vCenter, _fDelayTime, _fMaxVolume, _fMinVolume, _fMaxVolumeDist, _fFactor, _isLoop);
+
+}
+
 
 _bool CGameInstance::Is_SFXPlaying(const wstring& strSFXTag)
 {

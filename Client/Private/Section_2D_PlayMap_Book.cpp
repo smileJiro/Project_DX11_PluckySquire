@@ -13,7 +13,7 @@ CSection_2D_PlayMap_Book::CSection_2D_PlayMap_Book(ID3D11Device* _pDevice, ID3D1
 {
 }
 
-HRESULT CSection_2D_PlayMap_Book::Section_Enter(const _wstring& _strPreSectionTag)
+HRESULT CSection_2D_PlayMap_Book::Section_Enter(const _wstring& _strPreSection3Tag)
 {
 	if (TEXT("Stop") == m_strBGMTag)
 		m_pGameInstance->End_BGM();
