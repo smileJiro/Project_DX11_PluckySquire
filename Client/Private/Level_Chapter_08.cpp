@@ -140,11 +140,11 @@ HRESULT CLevel_Chapter_08::Initialize(LEVEL_ID _eLevelID)
 		MSG_BOX(" Failed Ready_Layer_Camera (Level_Chapter_08::Initialize)");
 		assert(nullptr);
 	}
-	if (FAILED(Ready_Layer_Monster()))
-	{
-		MSG_BOX(" Failed Ready_Layer_Monster (Level_Chapter_08::Initialize)");
-		assert(nullptr);
-	}
+	//if (FAILED(Ready_Layer_Monster()))
+	//{
+	//	MSG_BOX(" Failed Ready_Layer_Monster (Level_Chapter_08::Initialize)");
+	//	assert(nullptr);
+	//}
 	if (FAILED(Ready_Layer_Monster_Projectile(TEXT("Layer_Monster_Projectile"))))
 	{
 		MSG_BOX(" Failed Ready_Layer_Monster_Projectile (Level_Chapter_08::Initialize)");
@@ -241,6 +241,7 @@ HRESULT CLevel_Chapter_08::Initialize(LEVEL_ID _eLevelID)
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::PLAYER);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::MAPOBJECT);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::BLOCKER);
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MONSTER, OBJECT_GROUP::DOOR);
 
 	/* 발판 - 기믹오브젝트, 2D에 해당하는 오브젝트 (주사위, 등.. )*/
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::MAPOBJECT, OBJECT_GROUP::GIMMICK_OBJECT);
@@ -282,7 +283,7 @@ HRESULT CLevel_Chapter_08::Initialize(LEVEL_ID _eLevelID)
 	m_pSneakMinigameManager = CMinigame_Sneak::GetInstance();
 	m_pFormation_Manager = CFormation_Manager::GetInstance();
 
-	m_pFormation_Manager->Initialize();
+	//m_pFormation_Manager->Initialize();
 
 	return S_OK;
 }
@@ -428,95 +429,97 @@ void CLevel_Chapter_08::Update(_float _fTimeDelta)
 		int a = 0;
 	}
 
-	if (KEY_DOWN(KEY::F5))
-	{
-		_float3 vPos = { 37.f, 34.f, 10.5f };
-		CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &vPos);
-	}
 
 
+	//if (KEY_PRESSING(KEY::CTRL))
+	//{
+	//	if (KEY_DOWN(KEY::NUM5))
+	//	{
 
-	if (KEY_PRESSING(KEY::CTRL))
-	{
-		if (KEY_DOWN(KEY::NUM5))
-		{
+	//		CGameObject* pBoss = nullptr; 
+	//		CButterGrump::MONSTER_DESC Boss_Desc;
+	//		Boss_Desc.iCurLevelID = m_eLevelID;
+	//		Boss_Desc.eStartCoord = COORDINATE_3D;
+	//		Boss_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	//		Boss_Desc.tTransform3DDesc.vInitialPosition = _float3(0.53f, 60.35f, -8.0f);
 
-			CGameObject* pBoss = nullptr; 
-			CButterGrump::MONSTER_DESC Boss_Desc;
-			Boss_Desc.iCurLevelID = m_eLevelID;
-			Boss_Desc.eStartCoord = COORDINATE_3D;
-			Boss_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-			Boss_Desc.tTransform3DDesc.vInitialPosition = _float3(0.53f, 60.35f, -8.0f);
+	//		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_ButterGrump"), m_eLevelID, TEXT("Layer_Boss"), &pBoss, &Boss_Desc)))
+	//			return;
 
-			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_ButterGrump"), m_eLevelID, TEXT("Layer_Boss"), &pBoss, &Boss_Desc)))
-				return;
+	//		CCameraPivot*  pPivot = static_cast<CCameraPivot*>(m_pGameInstance->Get_GameObject_Ptr(m_eLevelID, TEXT("Layer_CameraPivot"), 0));
+	//		pPivot->Set_MainTarget(pBoss);
+	//		pPivot->Set_Active(true);
+	//		CCamera_Manager::GetInstance()->Change_CameraTarget(pPivot, 0.f);
+	//		CCamera_Manager::GetInstance()->Get_CurrentCamera()->Get_Arm()->Set_ArmVector(_vector{0.f,0.f,-1.f});
+	//		CCamera_Manager::GetInstance()->Get_CurrentCamera()->Set_Position(_vector{ 0.53f, 60.35f, -8.0f });
+	//		CCamera_Manager::GetInstance()->Get_CurrentCamera()->Get_Arm()->Set_Length(24.6f);
 
-			CCameraPivot*  pPivot = static_cast<CCameraPivot*>(m_pGameInstance->Get_GameObject_Ptr(m_eLevelID, TEXT("Layer_CameraPivot"), 0));
-			pPivot->Set_MainTarget(pBoss);
-			pPivot->Set_Active(true);
-			CCamera_Manager::GetInstance()->Change_CameraTarget(pPivot, 0.f);
-			CCamera_Manager::GetInstance()->Get_CurrentCamera()->Get_Arm()->Set_ArmVector(_vector{0.f,0.f,-1.f});
-			CCamera_Manager::GetInstance()->Get_CurrentCamera()->Set_Position(_vector{ 0.53f, 60.35f, -8.0f });
-			CCamera_Manager::GetInstance()->Get_CurrentCamera()->Get_Arm()->Set_Length(24.6f);
-
-			Event_ChangeMapObject(m_eLevelID, L"Chapter_Boss.mchc", L"Layer_MapObject");
-
-
-			CPlayer* pPlayer = CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr();
-			if (nullptr != pPlayer)
-			{
-	/*			_float3 vPos = _float3(0.53f, 60.35f, -50.0f);
-				if(ACTOR_TYPE::DYNAMIC==pPlayer->Get_ActorCom()->Get_ActorType())
-				{
-					pPlayer->Get_ActorCom()->Set_GlobalPose(vPos);
-				}
-				else if (ACTOR_TYPE::KINEMATIC == pPlayer->Get_ActorCom()->Get_ActorType())
-				{
-					pPlayer->Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSet(vPos.x, vPos.y, vPos.z, 1.f));
-				}*/
-				pPlayer->Set_Mode(CPlayer::PLAYER_MODE_CYBERJOT);
-				pPlayer->Set_State(CPlayer::CYBER_IDLE);
-			}
+	//		Event_ChangeMapObject(m_eLevelID, L"Chapter_Boss.mchc", L"Layer_MapObject");
 
 
-			//m_pGameInstance->Get_ThreadPool()->EnqueueJob([]()
-			//	{
-			SECTION_MGR->Remove_Section(L"Chapter8_SKSP_01");
-			SECTION_MGR->Remove_Section(L"Chapter8_SKSP_02");
-			SECTION_MGR->Remove_Section(L"Chapter8_SKSP_03");
-			SECTION_MGR->Remove_Section(L"Chapter8_SKSP_04");
-			SECTION_MGR->Remove_Section(L"Chapter8_SKSP_05");
-			SECTION_MGR->Remove_Section(L"Chapter8_SKSP_06");
-			SECTION_MGR->Remove_Section(L"Chapter8_SKSP_07");
-			SECTION_MGR->Remove_Section(L"Chapter8_SKSP_08");
-			SECTION_MGR->Remove_Section(L"Chapter8_SKSP_09");
-			SECTION_MGR->Remove_Section(L"Chapter8_SKSP_10");
-				//});
+	//		CPlayer* pPlayer = CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr();
+	//		if (nullptr != pPlayer)
+	//		{
+	///*			_float3 vPos = _float3(0.53f, 60.35f, -50.0f);
+	//			if(ACTOR_TYPE::DYNAMIC==pPlayer->Get_ActorCom()->Get_ActorType())
+	//			{
+	//				pPlayer->Get_ActorCom()->Set_GlobalPose(vPos);
+	//			}
+	//			else if (ACTOR_TYPE::KINEMATIC == pPlayer->Get_ActorCom()->Get_ActorType())
+	//			{
+	//				pPlayer->Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSet(vPos.x, vPos.y, vPos.z, 1.f));
+	//			}*/
+	//			pPlayer->Set_Mode(CPlayer::PLAYER_MODE_CYBERJOT);
+	//			pPlayer->Set_State(CPlayer::CYBER_IDLE);
+	//		}
+
+
+	//		//m_pGameInstance->Get_ThreadPool()->EnqueueJob([]()
+	//		//	{
+	//		SECTION_MGR->Remove_Section(L"Chapter8_SKSP_01");
+	//		SECTION_MGR->Remove_Section(L"Chapter8_SKSP_02");
+	//		SECTION_MGR->Remove_Section(L"Chapter8_SKSP_03");
+	//		SECTION_MGR->Remove_Section(L"Chapter8_SKSP_04");
+	//		SECTION_MGR->Remove_Section(L"Chapter8_SKSP_05");
+	//		SECTION_MGR->Remove_Section(L"Chapter8_SKSP_06");
+	//		SECTION_MGR->Remove_Section(L"Chapter8_SKSP_07");
+	//		SECTION_MGR->Remove_Section(L"Chapter8_SKSP_08");
+	//		SECTION_MGR->Remove_Section(L"Chapter8_SKSP_09");
+	//		SECTION_MGR->Remove_Section(L"Chapter8_SKSP_10");
+	//			//});
+
+	//		//
+	//		CZip_C8::MODELOBJECT_DESC tZipDesc{};
+	//		tZipDesc.iCurLevelID = m_eLevelID;
+	//		tZipDesc.Build_2D_Transform(_float2(-248.0, -111.0), _float2(1.0f, 1.0f));
+	//		CGameObject* pGameObject = nullptr;
+	//		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_ZipC8"), m_eLevelID, TEXT("Layer_Zip"), &pGameObject, &tZipDesc)))
+	//			assert(nullptr);
+	//		CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter8_SKSP_11"), pGameObject, SECTION_2D_PLAYMAP_OBJECT);
 
 			//
-			CZip_C8::MODELOBJECT_DESC tZipDesc{};
+	/*		CZip_C8::MODELOBJECT_DESC tZipDesc{};
 			tZipDesc.iCurLevelID = m_eLevelID;
 			tZipDesc.Build_2D_Transform(_float2(-248.0, -111.0), _float2(1.0f, 1.0f));
 			CGameObject* pGameObject = nullptr;
 			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_ZipC8"), m_eLevelID, TEXT("Layer_Zip"), &pGameObject, &tZipDesc)))
 				assert(nullptr);
-			CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter8_SKSP_11"), pGameObject, SECTION_2D_PLAYMAP_OBJECT);
+			CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter8_SKSP_11"), pGameObject, SECTION_2D_PLAYMAP_OBJECT);*/
 
+	//		// 보스 체력바 관련
+	//		CUI::UIOBJDESC pDesc = {};
+	//		pDesc.iCurLevelID = m_eLevelID;
 
-			// 보스 체력바 관련
-			CUI::UIOBJDESC pDesc = {};
-			pDesc.iCurLevelID = m_eLevelID;
+	//		Uimgr->Set_BossForUI(static_cast<CButterGrump*>(pBoss));
+	//		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_BossHP"), pDesc.iCurLevelID, TEXT("Layer_UI"), &pDesc)))
+	//			return;
 
-			Uimgr->Set_BossForUI(static_cast<CButterGrump*>(pBoss));
-			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Prototype_GameObject_BossHP"), pDesc.iCurLevelID, TEXT("Layer_UI"), &pDesc)))
-				return;
+	//	}
+	//}
 
-		}
-	}
-
-	if (KEY_DOWN(KEY::NUMPAD9))
-	{
-		_float3 vPos = {-90.f, 65.2f, 18.3f};
+	//if (KEY_DOWN(KEY::NUMPAD9))
+	//{
+	//	_float3 vPos = {-90.f, 65.2f, 18.3f};
 
 		//CBeetle::MONSTER_DESC Beetle_Desc;
 		//Beetle_Desc.iCurLevelID = m_eLevelID;
@@ -543,7 +546,7 @@ void CLevel_Chapter_08::Update(_float _fTimeDelta)
 
 		//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Beetle"), m_eLevelID, TEXT("Layer_Sneak_Beetle"), &Beetle_Desc)))
 		//	return;
-	}
+	//}
 
 }
 
@@ -1618,6 +1621,30 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Monster_3D()
 				return E_FAIL;
 		}
 	}
+
+
+	//생성 나중에 하므로 여기서 한번에 진행
+
+	_float3 vPos = { 50.5f, 30.3f, 9.f };
+	CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &pObject, &vPos);
+	//static_cast<CBomb*>(pObject)->Set_Time_Off();
+	static_cast<CBomb*>(pObject)->Set_LifeTime(5.f);
+
+	vPos = { 50.5f, 30.3f, 8.f };
+	CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &pObject, &vPos);
+	//static_cast<CBomb*>(pObject)->Set_Time_Off();
+	static_cast<CBomb*>(pObject)->Set_LifeTime(5.f);
+
+	vPos = { 49.5f, 30.3f, 9.f };
+	CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &pObject, &vPos);
+	//static_cast<CBomb*>(pObject)->Set_Time_Off();
+	static_cast<CBomb*>(pObject)->Set_LifeTime(5.f);
+
+	vPos = { 49.5f, 30.3f, 8.f };
+	CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &pObject, &vPos);
+	//static_cast<CBomb*>(pObject)->Set_Time_Off();
+	static_cast<CBomb*>(pObject)->Set_LifeTime(5.f);
+
 	return S_OK;
 }
 
@@ -1657,27 +1684,27 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Monster_Projectile(const _wstring& _strLa
 	CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Bomb"), Pooling_Desc, BombDesc);
 
 
-	CGameObject* pObject = nullptr;
+	//CGameObject* pObject = nullptr;
 
-	_float3 vPos = { 50.5f, 30.3f, 9.f };
-	CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &pObject, &vPos);
-	//static_cast<CBomb*>(pObject)->Set_Time_Off();
-	static_cast<CBomb*>(pObject)->Set_LifeTime(5.f);
+	//_float3 vPos = { 50.5f, 30.3f, 9.f };
+	//CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &pObject, &vPos);
+	////static_cast<CBomb*>(pObject)->Set_Time_Off();
+	//static_cast<CBomb*>(pObject)->Set_LifeTime(5.f);
 
-	vPos = { 50.5f, 30.3f, 8.f };
-	CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &pObject, &vPos);
-	//static_cast<CBomb*>(pObject)->Set_Time_Off();
-	static_cast<CBomb*>(pObject)->Set_LifeTime(5.f);
+	//vPos = { 50.5f, 30.3f, 8.f };
+	//CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &pObject, &vPos);
+	////static_cast<CBomb*>(pObject)->Set_Time_Off();
+	//static_cast<CBomb*>(pObject)->Set_LifeTime(5.f);
 
-	vPos = { 49.5f, 30.3f, 9.f };
-	CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &pObject, &vPos);
-	//static_cast<CBomb*>(pObject)->Set_Time_Off();
-	static_cast<CBomb*>(pObject)->Set_LifeTime(5.f);
+	//vPos = { 49.5f, 30.3f, 9.f };
+	//CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &pObject, &vPos);
+	////static_cast<CBomb*>(pObject)->Set_Time_Off();
+	//static_cast<CBomb*>(pObject)->Set_LifeTime(5.f);
 
-	vPos = { 49.5f, 30.3f, 8.f };
-	CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &pObject, &vPos);
-	//static_cast<CBomb*>(pObject)->Set_Time_Off();
-	static_cast<CBomb*>(pObject)->Set_LifeTime(5.f);
+	//vPos = { 49.5f, 30.3f, 8.f };
+	//CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &pObject, &vPos);
+	////static_cast<CBomb*>(pObject)->Set_Time_Off();
+	//static_cast<CBomb*>(pObject)->Set_LifeTime(5.f);
 
 	return S_OK;
 }

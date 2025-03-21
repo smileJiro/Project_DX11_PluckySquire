@@ -55,7 +55,7 @@ HRESULT CDraggableObject::Initialize(void* _pArg)
 		ShapeData.isTrigger = false;
 		ShapeData.iShapeUse = (_uint)SHAPE_USE::SHAPE_BODY;
 		ShapeData.FilterData.MyGroup = OBJECT_GROUP::DYNAMIC_OBJECT;
-		ShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::DYNAMIC_OBJECT | OBJECT_GROUP::PLAYER;
+		ShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::DYNAMIC_OBJECT | OBJECT_GROUP::PLAYER | OBJECT_GROUP::PLAYER_TRIGGER;
 		XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(pDesc->vBoxOffset.x, pDesc->vBoxOffset.y, pDesc->vBoxOffset.z));
 		ActorDesc.ShapeDatas.push_back(ShapeData);
 

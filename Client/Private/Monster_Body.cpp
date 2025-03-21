@@ -3,6 +3,7 @@
 #include "GameInstance.h"
 #include "FSM.h"
 #include "DetectionField.h"
+#include "PlayerData_Manager.h"
 
 CMonster_Body::CMonster_Body(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CModelObject(_pDevice, _pContext)
@@ -45,7 +46,26 @@ void CMonster_Body::Late_Update(_float _fTimeDelta)
 	if (COORDINATE_3D == Get_CurCoord())
 	{
 		if (false == m_isFrustumCulling)
-			Register_RenderGroup(m_iRenderGroupID_3D, PR3D_PLAYERDEPTH);
+		{
+			if (m_strModelPrototypeTag[COORDINATE_3D] == TEXT("beetle_01") || m_strModelPrototypeTag[COORDINATE_3D] == TEXT("humgrump_troop_Rig_GT"))
+			{
+
+			}
+			else
+			{
+				CPlayer* pPlayer = CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr();
+				if (nullptr != pPlayer)
+				{
+					if (pPlayer->Is_ValidGameObject() && COORDINATE_3D == pPlayer->Get_CurCoord())
+					{
+						Register_RenderGroup(m_iRenderGroupID_3D, PR3D_PLAYERDEPTH);
+					}
+				}
+			}
+
+
+		}
+			
 	}
 	__super::Late_Update(_fTimeDelta); /* Part Object Late_Update */
 }

@@ -318,7 +318,7 @@ PS_OUT PS_MAIN(PS_IN In)
         vAlbedo.rgb = dot(vAlbedo.rgb, float3(0.299f, 0.587f, 0.114f)) + (vAlbedo.rgb * g_fGrayScaleColorFactor);
     }
     
-   if (vAlbedo.a < 0.01f)
+   if (vAlbedo.a < 0.1f)
        discard;
 
     Out.vDiffuse = vAlbedo;
