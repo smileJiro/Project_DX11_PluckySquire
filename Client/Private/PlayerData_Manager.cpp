@@ -232,7 +232,7 @@ CPlayerItem* CPlayerData_Manager::Get_PlayerItem_Ptr(const _wstring& _strItemTag
 
 void CPlayerData_Manager::Set_Tags()
 {
-	m_ItemTags[FLIPPING_GLOVE] = { TEXT("Flipping_Glove"), TEXT("latch_glove") };
+	m_ItemTags[FLIPPING_GLOVE] = { TEXT("Flipping_Glove"), TEXT("latch_glove") }; 
 	m_ItemTags[TILTING_GLOVE] = { TEXT("Tilting_Glove"), TEXT("latch_glove") };
 	m_ItemTags[STOP_STAMP] = { TEXT("Stop_Stamp"), TEXT("Stop_Stamp") };
 	m_ItemTags[BOMB_STAMP] = { TEXT("Bomb_Stamp"), TEXT("Bomb_Stamp") };

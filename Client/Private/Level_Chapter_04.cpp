@@ -272,6 +272,8 @@ void CLevel_Chapter_04::Update(_float _fTimeDelta)
 		CCamera_Manager::GetInstance()->Change_CameraType(iCurCameraType);
 	}
 
+	CPlayerData_Manager::GetInstance()->Get_PlayerItem(TEXT("Sword"));
+	CPlayerData_Manager::GetInstance()->Get_PlayerItem(TEXT("Flipping_Glove"));
 	//if (KEY_DOWN(KEY::NUM1))
 	//{
 	//	CUI_Manager* pUIManager = CUI_Manager::GetInstance();

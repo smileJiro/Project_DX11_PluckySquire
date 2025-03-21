@@ -653,11 +653,11 @@ void CMiniGame_Defender::Update(_float _fTimeDelta)
         }
     }
 
-	if (KEY_DOWN(KEY::Z))
-	{
-        if(DEFENDER_PROG_GAME == m_eGameState)
-            Mission_Complete();
-	}
+	//if (KEY_DOWN(KEY::Z))
+	//{
+ //       if(DEFENDER_PROG_GAME == m_eGameState)
+ //           Mission_Complete();
+	//}
 }
 
 void CMiniGame_Defender::Late_Update(_float _fTimeDelta)

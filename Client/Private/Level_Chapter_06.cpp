@@ -226,6 +226,11 @@ HRESULT CLevel_Chapter_06::Initialize(LEVEL_ID _eLevelID)
 		assert(nullptr);
 	}
 	
+	CPlayerData_Manager::GetInstance()->Get_PlayerItem(TEXT("Sword"));
+	CPlayerData_Manager::GetInstance()->Get_PlayerItem(TEXT("Bomb_Stamp"));
+	CPlayerData_Manager::GetInstance()->Get_PlayerItem(TEXT("Flipping_Glove"));
+	CPlayerData_Manager::GetInstance()->Get_PlayerItem(TEXT("Tilting_Glove"));
+
 
 //#pragma region Test
 //
