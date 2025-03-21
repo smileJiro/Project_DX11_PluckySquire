@@ -197,12 +197,15 @@ public: /* For. Sound_Manager */
 
 	HRESULT				Load_BGM(const wstring& strBGMTag, const wstring& strBGMFilePath);
 	void				Start_BGM(const wstring& strBGMTag, _float _fVolume = 20.f);
+	void				Transition_BGM(const _wstring& strBGMTag, _float _fVolume = 20.f, _float _fFactor = 15.f); // 현재 BGM의 소리를 줄여가며 다른 BGM을 Play
 	void				Stop_BGM(); // 일시정지
 	void				End_BGM(); // 완전 재생 종료
 	_float				Get_BGMTrackPosition(const wstring& strBGMTag);
 	_bool				Is_BGMPlaying(const wstring& strBGMTag);
 	_float				Get_BGMVolume();
 	void				Set_BGMVolume(_float _fVolume);
+	void				Set_SFXTargetVolume(const _wstring& _strSFXTag, _float _fTargetVolume, _float _fFactor = 15.f);
+	void				Set_BGMTargetVolume(_float _fTargetVolume, _float _fFactor = 15.f);
 
 	HRESULT				Load_SFX(const wstring& strSFXTag, const wstring& strSFXFilePath);
 	void				Start_SFX(const wstring& strSFXTag, _float _fVolume = 70.f, bool _isLoop = false);

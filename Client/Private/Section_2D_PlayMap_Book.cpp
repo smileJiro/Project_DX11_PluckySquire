@@ -18,7 +18,7 @@ HRESULT CSection_2D_PlayMap_Book::Section_Enter(const _wstring& _strPreSectionTa
 	if (TEXT("Stop") == m_strBGMTag)
 		m_pGameInstance->End_BGM();
 	else if (TEXT("") != m_strBGMTag)
-		m_pGameInstance->Start_BGM(m_strBGMTag, 20.f);
+		m_pGameInstance->Transition_BGM(m_strBGMTag, 20.f);
 
 	return S_OK;
 }

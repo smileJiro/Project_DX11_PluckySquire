@@ -174,6 +174,8 @@ void CPlayerData_Manager::Get_PlayerItem(_wstring _szItemTag)
 	// Player에게 이거 가지고 있다고 넘겨주기
 	_uint iItemType = m_ItemState[_szItemTag].second->Get_ItemType();
 	pPlayer->On_GainPlayerItem((PLAYERITEM_TYPE)iItemType);
+
+	m_pGameInstance->Start_SFX(_wstring(L"Jingle_GetItem"), 50.f);
 }
 
 void CPlayerData_Manager::Change_PlayerItemMode(_uint _iPlayerItemType, _uint _iItemMode)

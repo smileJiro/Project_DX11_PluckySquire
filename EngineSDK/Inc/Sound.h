@@ -10,8 +10,9 @@ private:
 
 public:
 	HRESULT Initialize(const _wstring& _strFilePath, LPDIRECTSOUND8 _pSoundDevice);
-
 	_bool Update_DelayTime(_float _fTimeDelta);
+	_int Update_SoundVolume(_float _fTimeDelta); // 0: 계속 Update, 1: 사운드 정지. 2: 사운드가 0이하 -> Stop_Sound;
+
 public:
 	void Play_Sound(_bool _isLoop = false);
 	void Play_BGM(_float _fStartTrackPosition, _bool _isLoop = false);
@@ -20,6 +21,8 @@ public:
 public: /* 볼륨 범위(0 ~100) */
 	void Set_Volume(_float _fVolume);
 	_float Get_Volume() const { return m_fVolume; }
+	void Set_TargetVolume(_float _fTargetVolume, _float _fFactor) { m_fTargetVolume = _fTargetVolume; m_fUpdateFactor = _fFactor; }
+	
 
 public:
 	// Get
@@ -42,6 +45,11 @@ private:
 
 	wstring					m_strSoundTag; // 리소스 키
 	wstring					m_strRelativePath; // 리소스 상대경로
+	
+private:
+	_float					m_fTargetVolume = { 0.f };
+	_float					m_fUpdateFactor = { 0.f };
+
 
 private:
 	_float2					m_vDelayTime = { 0.0f, 0.0f };
