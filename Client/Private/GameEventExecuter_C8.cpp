@@ -392,7 +392,6 @@ void CGameEventExecuter_C8::Chapter8_Laser_Stage(_float _fTimeDelta)
 									pFloorWord->Start_FloorWord();
 							}
 						}
-
 					}
 				}
 			}
@@ -427,13 +426,20 @@ void CGameEventExecuter_C8::Chapter8_Laser_Stage(_float _fTimeDelta)
 
 			if (Is_Start())
 			{
+				START_SFX(L"A_sfx_platform_appear", 50.f, false);
+				START_SFX(L"A_sfx_platform_extend", 50.f, true);
+
 			}
 			_vector vDir = XMVectorSetW(XMVector2Normalize(vTargetPos - m_TargetObjects[BRIDGE]->Get_FinalPosition()), 0.f);
 			m_TargetObjects[BRIDGE]->Get_ControllerTransform()->Go_Direction(vDir, _fTimeDelta);
 			//static_cast<CModelObject*>(m_TargetObjects[BRIDGE])->Get_ControllerTransform()->MoveTo(vTargetPos,_fTimeDelta);
 
 
-			Next_Step(m_TargetObjects[BRIDGE]->Get_ControllerTransform()->Compute_Distance(vTargetPos) < 10.f);
+			if (Next_Step(m_TargetObjects[BRIDGE]->Get_ControllerTransform()->Compute_Distance(vTargetPos) < 10.f))
+			{
+				START_SFX(L"A_sfx_metal_pistons", 50.f, false);
+				STOP_SFX(L"A_sfx_platform_extend");
+			}
 		}
 		else if (Step_Check(STEP_8))
 		{
@@ -540,6 +546,8 @@ void CGameEventExecuter_C8::Chapter8_Friend_Appear_Violet(_float _fTimeDelta)
 	{
 		if (Is_Start())
 		{
+			//
+			START_SFX(L"A_sfx_platform_extend", 40.f, true);
 			m_TargetObjects.resize(LAST);
 
 			pPlayer->Set_BlockPlayerInput(true);
@@ -630,6 +638,7 @@ void CGameEventExecuter_C8::Chapter8_Friend_Appear_Violet(_float _fTimeDelta)
 	{
 		if (Is_Start())
 		{
+			START_SFX(L"A_sfx_violet_wake_up", 40.f, false);
 			static_cast<CFriend*>(m_TargetObjects[VIOLET])->Change_AnyState(CFriend_Violet::VIOLET_C09_LYINGTOSITTINGUP, false, CFriend::DIR_RIGHT);
 		}
 
@@ -651,6 +660,7 @@ void CGameEventExecuter_C8::Chapter8_Friend_Appear_Violet(_float _fTimeDelta)
 	{
 		if (Is_Start())
 		{
+			START_SFX(L"A_sfx_violet_jumping_off_bed", 40.f, false);
 			static_cast<CFriend*>(m_TargetObjects[VIOLET])->Change_AnyState(CFriend_Violet::VIOLET_C09_JUMPINGOFFBED, false, CFriend::DIR_RIGHT);
 		}
 
@@ -800,6 +810,9 @@ void CGameEventExecuter_C8::Chapter8_Friend_Appear_Thrash(_float _fTimeDelta)
 	{
 		if (Is_Start())
 		{
+			START_SFX(L"A_sfx_thrash_jumping_off_pipe", 40.f, false);
+			STOP_SFX(L"A_sfx_thrash_tapping_pipe");
+
 			static_cast<CFriend*>(m_TargetObjects[THRASH])->Change_AnyState(CFriend_Thrash::THRASH_C09_JUMPINGOFFPIPE, false, CFriend::DIR_RIGHT);
 		}
 
