@@ -62,8 +62,8 @@ HRESULT CMainApp::Initialize()
 	EngineDesc.isNewRenderer = true;
 #ifdef _DEBUG
 	EngineDesc.eImportMode |= IMPORT_IMGUI | IMPORT_MESH_PICKING; // IMPORT_IMGUI | IMPORT_MESH_PICKING;NONE_IMPORT
-#elif _DEBUG
-	EngineDesc.eImportMode |= IMPORT_IMGUI | IMPORT_IMGUI;
+#elif NDEBUG
+	EngineDesc.eImportMode |= NONE_IMPORT;
 #endif
 	
 	if (FAILED(m_pGameInstance->Initialize_Engine(EngineDesc, &m_pDevice, &m_pContext)))
