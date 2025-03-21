@@ -566,7 +566,7 @@ void CPlayer::Enter_Section(const _wstring _strIncludeSectionName)
 		CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(_strIncludeSectionName, m_pCarryingObject);
 
 
-
+	SECTION_MGR->Set_PlayerInto(_strIncludeSectionName, true);
 
 
 	auto pSection = SECTION_MGR->Find_Section(_strIncludeSectionName);
@@ -590,6 +590,10 @@ void CPlayer::Enter_Section(const _wstring _strIncludeSectionName)
 void CPlayer::Exit_Section(const _wstring _strIncludeSectionName)
 {
 	__super::Exit_Section(_strIncludeSectionName);
+
+	SECTION_MGR->Set_PlayerInto(_strIncludeSectionName, false);
+
+
 	if (Is_CarryingObject())
 		CSection_Manager::GetInstance()->Remove_GameObject_FromSectionLayer(_strIncludeSectionName, m_pCarryingObject);
 	if (Is_ZetPackMode())

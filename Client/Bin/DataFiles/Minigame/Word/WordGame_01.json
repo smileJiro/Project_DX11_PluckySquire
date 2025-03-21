@@ -411,6 +411,8 @@
         "Controller_Index": 3,
         "Text": "녹슨 문이 ##\n있습니다.",
         "Init_Word_Type": [ 3 ],
+        "FadeIn": false,
+
         "Position": [
           -1800.0,
           -204.0
@@ -424,6 +426,7 @@
         "Controller_Index": 4,
         "Text": "연못 물은\n완전히\n##\n상태였습니다",
         "Init_Word_Type": [ 5 ],
+        "FadeIn": false,
         "Position": [
           1788.0,
           -189.0
@@ -437,6 +440,7 @@
         "Controller_Index": 5,
         "Text": "쥬신은\n언제나\n##\n있습니다",
         "Init_Word_Type": [ 4 ],
+        "FadeIn": false,
         "Position": [
           1250.0,
           79.0
