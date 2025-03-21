@@ -10,6 +10,7 @@ BEGIN(Client)
 class CMap_2D;
 class CSection_2D abstract : public CSection
 {
+
 public:
 	enum SECTION_2D_RENDER_TYPE
 	{
@@ -159,7 +160,7 @@ public:
 		/// 호출시점 CSection_Manager::Change_CurSection() 참조
 		/// </summary>
 		/// <param name="_strPreSectionTag">다음 활성화할 책의 Main Section Tag</param>
-	virtual HRESULT						Section_Exit(const _wstring& _strNextSectionTag);
+	virtual HRESULT						Section_Exit(const _wstring& _strNextSectionTag) { return S_OK; };
 
 
 public:
@@ -192,7 +193,7 @@ protected:
 	_float					m_fCameraRatio = 1.f;
 	
 	_wstring				m_strBGMTag = L""; // 민용추가, Section Enter 할 때 재생시킬 브금.
-	vector<_wstring>		m_SFXTags;
+	vector<pair<_wstring,_bool>>		m_SFXTags;
 
 protected:
 	/// <summary>

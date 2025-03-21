@@ -230,44 +230,74 @@ void CBulb::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _Other)
 
 void CBulb::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
-	if(true == _pMyCollider->Is_Trigger())
+	//if(true == _pMyCollider->Is_Trigger())
+	//{
+	//	if (OBJECT_GROUP::PLAYER & _pOtherCollider->Get_CollisionGroupID())
+	//	{
+	//		if (true == m_isStartSticking)
+	//		{
+	//			if (BULB_2DCOLLIDER_USE::BULB == _pMyCollider->Get_ColliderUse())
+
+	//			{
+	//				Event_Get_Bulb(COORDINATE_2D);
+
+	//				//Effect
+	//				_matrix matFX = Get_ControllerTransform()->Get_WorldMatrix();
+	//				matFX.r[0] = XMVector3Normalize(matFX.r[0]);
+	//				matFX.r[1] = XMVector3Normalize(matFX.r[1]);
+	//				matFX.r[2] = XMVector3Normalize(matFX.r[2]);
+	//				CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("health_pickup_small"), CSection_Manager::GetInstance()->Get_Cur_Section_Key(), matFX);
+
+	//				m_pGameInstance->Start_SFX(_wstring(L"A_sfx_pickup_lightbulb-") + to_wstring(rand() % 4), 50.f);
+	//				m_pGameInstance->Start_SFX(_wstring(L"A_sfx_lightbulb_addv2-") + to_wstring(rand() % 8), 20.f);
+
+	//				Event_DeleteObject(this);
+	//			}
+	//			if (BULB_2DCOLLIDER_USE::BULB_STICKING == _pMyCollider->Get_ColliderUse())
+	//			{
+	//				m_pTargetWorld = _pOtherObject->Get_ControllerTransform()->Get_WorldMatrix_Ptr();
+	//				m_isSticking = true;
+	//			}
+	//		}
+	//	}
+	//}
+}
+
+void CBulb::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
+{
+	if (false == m_isSticking)
 	{
-		if (OBJECT_GROUP::PLAYER & _pOtherCollider->Get_CollisionGroupID())
+		if (true == _pMyCollider->Is_Trigger())
 		{
-			if (true == m_isStartSticking)
+			if (OBJECT_GROUP::PLAYER & _pOtherCollider->Get_CollisionGroupID())
 			{
-				if (BULB_2DCOLLIDER_USE::BULB == _pMyCollider->Get_ColliderUse())
-
+				if (true == m_isStartSticking)
 				{
-					Event_Get_Bulb(COORDINATE_2D);
+					if (BULB_2DCOLLIDER_USE::BULB == _pMyCollider->Get_ColliderUse())
 
-					//Effect
-					_matrix matFX = Get_ControllerTransform()->Get_WorldMatrix();
-					matFX.r[0] = XMVector3Normalize(matFX.r[0]);
-					matFX.r[1] = XMVector3Normalize(matFX.r[1]);
-					matFX.r[2] = XMVector3Normalize(matFX.r[2]);
-					CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("health_pickup_small"), CSection_Manager::GetInstance()->Get_Cur_Section_Key(), matFX);
+					{
+						Event_Get_Bulb(COORDINATE_2D);
 
-					m_pGameInstance->Start_SFX(_wstring(L"A_sfx_pickup_lightbulb-") + to_wstring(rand() % 4), 50.f);
-					m_pGameInstance->Start_SFX(_wstring(L"A_sfx_lightbulb_addv2-") + to_wstring(rand() % 8), 20.f);
+						//Effect
+						_matrix matFX = Get_ControllerTransform()->Get_WorldMatrix();
+						matFX.r[0] = XMVector3Normalize(matFX.r[0]);
+						matFX.r[1] = XMVector3Normalize(matFX.r[1]);
+						matFX.r[2] = XMVector3Normalize(matFX.r[2]);
+						CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("health_pickup_small"), CSection_Manager::GetInstance()->Get_Cur_Section_Key(), matFX);
 
-					Event_DeleteObject(this);
-				}
-				if (BULB_2DCOLLIDER_USE::BULB_STICKING == _pMyCollider->Get_ColliderUse())
-				{
-					m_pTargetWorld = _pOtherObject->Get_ControllerTransform()->Get_WorldMatrix_Ptr();
-					m_isSticking = true;
+						m_pGameInstance->Start_SFX(_wstring(L"A_sfx_pickup_lightbulb-") + to_wstring(rand() % 4), 50.f);
+						m_pGameInstance->Start_SFX(_wstring(L"A_sfx_lightbulb_addv2-") + to_wstring(rand() % 8), 20.f);
+
+						Event_DeleteObject(this);
+					}
+					if (BULB_2DCOLLIDER_USE::BULB_STICKING == _pMyCollider->Get_ColliderUse())
+					{
+						m_pTargetWorld = _pOtherObject->Get_ControllerTransform()->Get_WorldMatrix_Ptr();
+						m_isSticking = true;
+					}
 				}
 			}
 		}
-		//if ((OBJECT_GROUP::PLAYER | OBJECT_GROUP::PLAYER_PROJECTILE) & _pOtherObject->Get_ObjectGroupID())
-		//{
-		//	if (BULB_2DCOLLIDER_USE::BULB_STICKING == _pMyCollider->Get_ColliderUse())
-		//	{
-		//		m_pTargetWorld = _pOtherObject->Get_ControllerTransform()->Get_WorldMatrix_Ptr();
-		//		m_isSticking = true;
-		//	}
-		//}
 	}
 }
 
