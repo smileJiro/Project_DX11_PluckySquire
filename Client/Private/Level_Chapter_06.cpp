@@ -381,10 +381,6 @@ void CLevel_Chapter_06::Update(_float _fTimeDelta)
 		int a = 0;
 	}
 
-	if (KEY_DOWN(KEY::I))
-	{
-		//CTrigger_Manager::GetInstance()->Register_TriggerEvent(L"Next_Chapter_Event", 0);
-	}
 	// Change Camera Free  Or Target
 	if (KEY_DOWN(KEY::C)) {
 		_uint iCurCameraType = CCamera_Manager::GetInstance()->Get_CameraType();

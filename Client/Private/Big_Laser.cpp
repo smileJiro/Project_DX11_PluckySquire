@@ -44,6 +44,11 @@ void CBig_Laser::Update(_float _fTimeDelta)
         Get_ControllerTransform()->Go_Direction(vDir, _fTimeDelta);
         if (Get_ControllerTransform()->Compute_Distance(vTargetPos) < 5.f)
         {
+            if (m_p2DColliderComs[0]->Is_Active())
+            {
+                START_SFX(L"A_sfx_laser_shutdown", 60.f, false);
+				END_SFX(L"A_sfx_laser_shooting_loop");
+            }
             Set_Beam_Collider(false);
             m_isMove = false;
             if (Get_CurrentAnimIndex() == LASER_LOOP)
@@ -98,6 +103,8 @@ void CBig_Laser::Anim_End(COORDINATE _eCoord, _uint iAnimIdx)
 
 void CBig_Laser::Move_Start(_float _fMovePosX, _float _fSpeed)
 {
+    if (m_p2DColliderComs[0]->Is_Active())
+        START_SFX(L"A_sfx_laser_shooting_loop", 60.f, true);
     _vector vPos = Get_FinalPosition();
     XMStoreFloat2(&m_fTargetPos, XMVectorSetX(vPos, XMVectorGetX(vPos) + _fMovePosX));
     Get_ControllerTransform()->Set_SpeedPerSec(_fSpeed);
@@ -134,7 +141,8 @@ HRESULT CBig_Laser::Ready_Collider()
     if (FAILED(Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
         TEXT("Com_Collider_Trigger"), reinterpret_cast<CComponent**>(&m_p2DColliderComs[0]), &AABBDesc)))
         return E_FAIL;
-
+    else
+        m_p2DColliderComs[0]->Set_Active(false);
     return S_OK;
 }
 
