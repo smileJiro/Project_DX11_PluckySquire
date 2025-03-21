@@ -34,7 +34,7 @@ void CSound_Manager::Update(_float _fTimeDelta)
         {
             iter->first->Play_Sound(iter->second);
             iter->first->Set_Delay(false);
-            Safe_Release(iter->first);
+            //Safe_Release(iter->first);
             iter = m_DelaySFXs.erase(iter);
 
             //if (true == m_DelaySFXs.empty())
@@ -45,6 +45,8 @@ void CSound_Manager::Update(_float _fTimeDelta)
             ++iter;
         }
     }
+
+    
 
     for (auto iter = m_UpdateSounds.begin(); iter != m_UpdateSounds.end(); )
     {
@@ -59,8 +61,24 @@ void CSound_Manager::Update(_float _fTimeDelta)
         }
         else
             ++iter;
-
     }
+
+    if (nullptr != m_pTransitionBGM)
+    {
+        _int iResult = m_pTransitionBGM->Update_SoundVolume(_fTimeDelta);
+
+        if (1 == iResult)
+        {
+            m_pCurPlayBGM = m_pTransitionBGM;
+            m_pTransitionBGM = nullptr;
+        }
+        else if (2 == iResult)
+        {
+            m_pTransitionBGM->Stop_Sound(true);
+            m_pTransitionBGM = nullptr;
+        }
+    }
+    
 
 }
 
@@ -76,10 +94,34 @@ void CSound_Manager::Start_BGM(const wstring& strBGMTag, _float _fVolume)
     }
 
     m_pCurPlayBGM = pBGM;
-    Safe_AddRef(m_pCurPlayBGM);
+    //Safe_AddRef(m_pCurPlayBGM);
     m_pCurPlayBGM->Play_BGM(0.0f, true);
     m_pCurPlayBGM->Set_Volume(_fVolume); // bgm 사운드는 고정 30으로
 }
+
+void CSound_Manager::Transition_BGM(const _wstring& strBGMTag, _float _fVolume, _float _fFactor)
+{
+    CSound* pBGM = Find_BGM(strBGMTag);
+    if (nullptr == pBGM)
+        return;
+
+    // Transition BGM이 있다면 End 시키기.
+    if (nullptr != m_pTransitionBGM)
+    {
+        m_pTransitionBGM->Stop_Sound(true);
+        m_pTransitionBGM = nullptr;
+    }
+
+    m_pTransitionBGM = pBGM;
+    //Safe_AddRef(m_pCurPlayBGM);
+    m_pTransitionBGM->Play_BGM(0.0f, true);
+    m_pTransitionBGM->Set_Volume(1.f);
+    m_pTransitionBGM->Set_TargetVolume(_fVolume, _fFactor);
+
+    Set_BGMTargetVolume(0.f, _fFactor);
+}
+
+
 
 void CSound_Manager::Stop_BGM()
 {
@@ -92,7 +134,7 @@ void CSound_Manager::End_BGM()
     if (nullptr != m_pCurPlayBGM)
     {
         m_pCurPlayBGM->Stop_Sound(true);
-        Safe_Release(m_pCurPlayBGM);
+        //Safe_Release(m_pCurPlayBGM);
         m_pCurPlayBGM = nullptr;
     }
 }
@@ -148,12 +190,13 @@ void CSound_Manager::Set_SFXVolume(const wstring& strSFXTag, _float _fVolume)
 
 HRESULT CSound_Manager::Clear_Sound()
 {
-    Safe_Release(m_pCurPlayBGM);
+    //Safe_Release(m_pCurPlayBGM);
     m_pCurPlayBGM = nullptr;
-    for (auto& Pair : m_DelaySFXs)
-    {
-        Safe_Release(Pair.first);
-    }
+    m_pTransitionBGM = nullptr;
+    //for (auto& Pair : m_DelaySFXs)
+    //{
+    //    Safe_Release(Pair.first);
+    //}
     m_DelaySFXs.clear();
 
 
@@ -279,7 +322,7 @@ void CSound_Manager::Start_SFX_Distance_Delay(const _wstring& strSFXTag, _fvecto
             pSFX->Set_Volume(fVolume);
 
             m_DelaySFXs.push_back(make_pair(pSFX, _isLoop));
-            Safe_AddRef(pSFX);
+            //Safe_AddRef(pSFX);
             return;
         }
     }
@@ -350,7 +393,7 @@ void CSound_Manager::Start_SFX_Delay(const wstring& strSFXTag, _float _fDelayTim
             pSFX->Set_Volume(_fVolume);
 
             m_DelaySFXs.push_back(make_pair(pSFX, _isLoop));
-            Safe_AddRef(pSFX);
+            //Safe_AddRef(pSFX);
             return;
         }
     }

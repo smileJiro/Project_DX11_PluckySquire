@@ -1050,6 +1050,14 @@ void CGameInstance::Start_BGM(const wstring& strBGMTag, _float _fVolume)
 	return m_pSound_Manager->Start_BGM(strBGMTag, _fVolume);
 }
 
+void CGameInstance::Transition_BGM(const _wstring& strBGMTag, _float _fVolume, _float _fFactor)
+{
+	if (nullptr == m_pSound_Manager)
+		return;
+
+	return m_pSound_Manager->Transition_BGM(strBGMTag, _fVolume, _fFactor);
+}
+
 void CGameInstance::Stop_BGM()
 {
 	if (nullptr == m_pSound_Manager)
