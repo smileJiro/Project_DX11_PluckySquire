@@ -561,7 +561,7 @@ void CGameEventExecuter_C8::Chapter8_Friend_Appear_Violet(_float _fTimeDelta)
 				return;
 
 			if (FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(
-				SECTION_MGR->Get_Cur_Section_Key(), pGameObject)))
+				L"Chapter8_P1718", pGameObject)))
 				return;
 			m_TargetObjects[VIOLET] = pGameObject;
 
@@ -578,7 +578,7 @@ void CGameEventExecuter_C8::Chapter8_Friend_Appear_Violet(_float _fTimeDelta)
 				return;
 
 			if (FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(
-				SECTION_MGR->Get_Cur_Section_Key(), pGameObject)))
+				L"Chapter8_P1718", pGameObject)))
 				return;
 			m_TargetObjects[HAT] = pGameObject;
 
@@ -730,7 +730,7 @@ void CGameEventExecuter_C8::Chapter8_Friend_Appear_Thrash(_float _fTimeDelta)
 				return;
 
 			if (FAILED(CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(
-				SECTION_MGR->Get_Cur_Section_Key(), pGameObject)))
+				L"Chapter8_P1718", pGameObject)))
 				return;
 
 			m_TargetObjects[THRASH] = pGameObject;
@@ -1226,8 +1226,7 @@ void CGameEventExecuter_C8::Chapter8_3D_Out_02(_float _fTimeDelta)
 			pPip->Move_Position(_float2(XMVectorGetX(vPipPos), XMVectorGetY(vPipPos)), CFriend::DIR_UP);
 		}
 
-		Change_PlayMap(0.f);
-		Next_Step_Over(0.5f);
+		Next_Step_Over(Change_PlayMap(0.f));
 	}
 	else if (Step_Check(STEP_2))
 	{
