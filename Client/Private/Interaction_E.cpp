@@ -584,6 +584,11 @@ void CInteraction_E::Display_Text(_float3 _vPos, _float2 _vRTSize, IInteractable
 		m_strDisplayText = TEXT("잡기");
 		break;
 
+	case INTERACT_ID::SWORD:
+		m_strDisplayText = TEXT("잡기");
+		break;
+		
+
 
 
 	default:

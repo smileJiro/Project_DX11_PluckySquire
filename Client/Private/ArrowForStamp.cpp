@@ -73,6 +73,10 @@ HRESULT CArrowForStamp::Render()
 	if (false == pPDM->Is_Own(CPlayerData_Manager::BOMB_STAMP) || false == pPDM->Is_Own(CPlayerData_Manager::STOP_STAMP))
 		return S_OK;
 
+	CPlayer* pPlayer = Uimgr->Get_Player();
+	if (true == pPlayer->Is_PlayerInputBlocked())
+		return S_OK;
+
 	if (FAILED(m_pControllerTransform->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
 		return E_FAIL;
 
