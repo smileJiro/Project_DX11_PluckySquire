@@ -44,7 +44,7 @@ void CBackGroundObject::Priority_Update(_float _fTimeDelta)
 
 void CBackGroundObject::Update(_float _fTimeDelta)
 {
-	ImGui::Begin("BackGroundFilter");
+	/*ImGui::Begin("BackGroundFilter");
 
 	if (ImGui::DragFloat3("m_vFilterColor##Light", &m_vFilterColor.x, 0.04f, 0.f, 10.f, "%.3f", ImGuiSliderFlags_AlwaysClamp))
 	{
@@ -56,7 +56,7 @@ void CBackGroundObject::Update(_float _fTimeDelta)
 
 	};
 
-	ImGui::End();
+	ImGui::End();*/
 	__super::Update(_fTimeDelta);
 }
 
