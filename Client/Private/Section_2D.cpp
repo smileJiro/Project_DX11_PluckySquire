@@ -138,6 +138,31 @@ HRESULT CSection_2D::Import(void* _pDesc)
 				{
 					m_strBGMTag = STRINGTOWSTRING(SectionInfo["BGM"]);
 				}
+				
+				if (SectionInfo.contains("SFX") &&
+					SectionInfo["SFX"].is_array()
+					)
+				{
+					_uint iSFXcount = (_uint)SectionInfo["SFX"].size();
+					m_SFXTags.reserve(iSFXcount);
+					for (auto& SFXTagJson : SectionInfo["SFX"])
+					{
+						_bool isStart = true;
+						_string strText = "";
+						if (SFXTagJson.contains("SFXPath"))
+						{
+							strText = SFXTagJson["SFX_Name"];
+						}
+						if (SFXTagJson.contains("isStart"))
+						{
+							isStart = SFXTagJson["isStart"];
+						}
+						if ("" != strText)
+						{
+							m_SFXTags.push_back(make_pair(StringToWstring(strText), isStart));
+						}
+					}
+				}
 
 			}
 		}
@@ -252,13 +277,17 @@ HRESULT CSection_2D::Word_Action_To_Section(const _wstring& _strSectionTag, _uin
 
 HRESULT CSection_2D::Section_Enter(const _wstring& _strPreSectionTag)
 {
-	return E_NOTIMPL;
+	for (auto pPair : m_SFXTags)
+	{
+		if (pPair.second)
+			START_SFX(pPair.first, 30.f, true);
+		else
+			END_SFX(pPair.first);
+	}
+
+	return S_OK;
 }
 
-HRESULT CSection_2D::Section_Exit(const _wstring& _strNextSectionTag)
-{
-	return E_NOTIMPL;
-}
 
 HRESULT CSection_2D::Register_WorldCapture(CModelObject* _pModel)
 {
