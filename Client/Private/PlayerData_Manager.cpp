@@ -178,6 +178,11 @@ void CPlayerData_Manager::Get_PlayerItem(_wstring _szItemTag)
 	m_pGameInstance->Start_SFX(_wstring(L"Jingle_GetItem"), 50.f);
 }
 
+void CPlayerData_Manager::Set_PlayerItem(_wstring _szItemTag)
+{
+	m_ItemState[_szItemTag].first = true;
+}
+
 void CPlayerData_Manager::Change_PlayerItemMode(_uint _iPlayerItemType, _uint _iItemMode)
 {
 	_wstring szPlayerItemTag = m_ItemTags[_iPlayerItemType].first;
