@@ -9,7 +9,7 @@ CGraphic_Device::CGraphic_Device()
 HRESULT CGraphic_Device::Initialize(HWND _hWnd, _bool _isWindowed, _uint _iWinSizeX, _uint _iWinSizeY, _Inout_ ID3D11Device** _ppDevice, _Inout_ ID3D11DeviceContext** _ppContext)
 {
 	_uint iFlag = 0;
-#ifdef _DEBUG
+#ifdef NDEBUG
 	iFlag = D3D11_CREATE_DEVICE_DEBUG;
 #endif
 	

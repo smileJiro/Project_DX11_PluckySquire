@@ -5,6 +5,8 @@
 #include "Trigger_Manager.h"
 #include "Effect_Manager.h"
 
+#include "PlayerData_Manager.h"
+
 CPlayerItem::CPlayerItem(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CTriggerObject(_pDevice, _pContext)
 {
@@ -30,7 +32,7 @@ HRESULT CPlayerItem::Initialize(void* _pArg)
 	pDesc->tTransform3DDesc.fSpeedPerSec = 10.f;
  	m_fOriginScale = pDesc->tTransform3DDesc.vInitialScaling.x;
 	pDesc->iActorType = (_uint)ACTOR_TYPE::DYNAMIC;
-	pDesc->isTrigger = false;
+	pDesc->isTrigger = true;
 	pDesc->eShapeType = (SHAPE_TYPE)SHAPE_TYPE::SPHERE;
 	pDesc->fRadius = 0.8f;
 
@@ -73,7 +75,19 @@ HRESULT CPlayerItem::Initialize(void* _pArg)
 		});
 
 	//m_pControllerTransform->Set_Scale(4.f, 4.f, 4.f);
-	static_cast<CActor_Dynamic*>(m_pActorCom)->Set_Rotation(XMVectorSet(0.f, 0.f, 1.f, 0.f), XMConvertToRadians(45.f));
+
+	_float fAngle = {};
+	switch (m_iItemType) {
+	case CPlayerData_Manager::FLIPPING_GLOVE:
+	case CPlayerData_Manager::TILTING_GLOVE:
+		fAngle = -45.f;
+		break;
+	case CPlayerData_Manager::STOP_STAMP:
+	case CPlayerData_Manager::BOMB_STAMP:
+		fAngle = 45.f;
+		break;
+	}
+	static_cast<CActor_Dynamic*>(m_pActorCom)->Set_Rotation(XMVectorSet(0.f, 0.f, 1.f, 0.f), XMConvertToRadians(fAngle));
 	//m_pActorCom->Set_AngularVelocity({ 0.f, 0.f, XMConvertToRadians(45.f) });
 
 	static_cast<CActor_Dynamic*>(m_pActorCom)->Set_Gravity(false);
@@ -221,8 +235,12 @@ void CPlayerItem::Action_Getting(_float _fTimeDelta)
 			m_isStop = false;
 
 			// 위치 위로 수정
-			m_pActorCom->Set_LinearVelocity(XMVectorSet(0.f, 1.f, 0.f, 0.f), 3.f);
-			m_pActorCom->Get_RigidActor()->setActorFlag(PxActorFlag::eDISABLE_GRAVITY, true);
+			//m_pActorCom->Set_LinearVelocity(XMVectorSet(0.f, 1.f, 0.f, 0.f), 3.f);
+			//m_pActorCom->Get_RigidActor()->setActorFlag(PxActorFlag::eDISABLE_GRAVITY, true);
+
+			_vector vPos = m_pControllerTransform->Get_State(CTransform::STATE_POSITION);
+			vPos += {0.f, 1.5f, 0.f, 0.f};
+			Get_ActorCom()->Set_GlobalPose({ XMVectorGetX(vPos), XMVectorGetY(vPos), XMVectorGetZ(vPos) });
 		}
 	}
 

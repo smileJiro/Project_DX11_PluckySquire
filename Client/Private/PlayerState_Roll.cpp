@@ -63,6 +63,7 @@ void CPlayerState_Roll::Update(_float _fTimeDelta)
 			_float fMaxSpeed = eCoord == COORDINATE_2D ? m_f2DForwardSpeedMax : m_f3DForwardSpeedMax;
 			_float fMinSpeed = eCoord == COORDINATE_2D ? m_f2DForwardSpeedMin : m_f3DForwardSpeedMin;
 			_float fSpeed = fMaxSpeed - (fMaxSpeed - fMinSpeed) * fRatio;
+			//m_pOwner->Set_Upforce(0.f);
 			m_pOwner->Move((m_vDirection)*fSpeed, _fTimeDelta);
 		}
 		else

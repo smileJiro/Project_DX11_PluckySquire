@@ -1253,6 +1253,7 @@ HRESULT CLoader::Loading_Level_Chapter_2(LEVEL_ID _eLoadLevelID)
 		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_Component_Texture_BackGround_Chapter2_Main"),
 			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/BackGround/Chapter2_Main.dds"), 1, true))))
 		return E_FAIL;
+
 		/* For. Prototype_Component_Texture_BackGround_Chapter2_RedHouse */
 		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_Component_Texture_BackGround_Chapter2_RedHouse"),
 			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/BackGround/Chapter2_RedHouse.dds"), 1, true))))
@@ -2402,14 +2403,14 @@ HRESULT CLoader::Loading_Level_Camera_Tool()
 	// 3D Map Load
 	if (FAILED(Load_Models_FromJson(LEVEL_CAMERA_TOOL,
 		MAP_3D_DEFAULT_PATH,
-		L"Chapter_02_Play_Desk.json",
+		L"Chapter_Boss.json",
 		matPretransform, true)))
 		return E_FAIL;
 
-	CSection_Manager::GetInstance()->Set_LoadLevel(LEVEL_CHAPTER_2);
+	CSection_Manager::GetInstance()->Set_LoadLevel(LEVEL_CHAPTER_8);
 
 
-	return Loading_Level_Chapter_2(LEVEL_CAMERA_TOOL);
+	return Loading_Level_Chapter_8(LEVEL_CAMERA_TOOL);
 }
 
 HRESULT CLoader::Model_Load(LEVEL_ID _eResourceLevelID, LEVEL_ID _eLoadLevelID)
@@ -2490,8 +2491,8 @@ HRESULT CLoader::Model_Load(LEVEL_ID _eResourceLevelID, LEVEL_ID _eLoadLevelID)
 			return E_FAIL;
 		break;
 	case LEVEL_CAMERA_TOOL:
-		str3DMapProtoJsonName = L"Chapter_02_Play_Desk.json";
-		strChapterName += L"Chapter2";
+		str3DMapProtoJsonName = L"Chapter_Boss.json";
+		strChapterName += L"Chapter8";
 		break;
 	default:
 		return S_OK;

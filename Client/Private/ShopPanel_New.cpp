@@ -3,6 +3,7 @@
 #include "UI_Manager.h"
 #include "PlayerData_Manager.h"
 #include "Shop_Manager.h"
+#include "Camera_Manager.h"
 
 CShopPanel_New::CShopPanel_New(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CUI(_pDevice, _pContext)
@@ -357,6 +358,12 @@ void CShopPanel_New::Update_KeyInput(_float _fTimeDelta)
 		CPlayer* pPlayer = Uimgr->Get_Player();
 		assert(pPlayer);
 		pPlayer->Set_BlockPlayerInput(false);
+
+		// Camera 원복
+		// 1. Target 변경
+		CCamera_Manager::GetInstance()->Change_CameraTarget(pPlayer, 0.5f);
+		// 2. Arm Data 원복
+		CCamera_Manager::GetInstance()->Start_ResetArm_To_SettingPoint(CCamera_Manager::TARGET_2D, 0.5f);
 	}
 
 }

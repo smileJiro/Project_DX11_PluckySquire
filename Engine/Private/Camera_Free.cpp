@@ -125,7 +125,7 @@ void CCamera_Free::Key_Input(_float fTimeDelta)
 		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, vPos);
 	}
 
-	if (KEY_PRESSING(KEY::W))
+	/*if (KEY_PRESSING(KEY::W))
 	{
 		_float fSpeed = m_pControllerTransform->Get_SpeedPerSec();
 		_vector vPos = m_pControllerTransform->Get_State(CTransform::STATE_POSITION);
@@ -163,22 +163,7 @@ void CCamera_Free::Key_Input(_float fTimeDelta)
 		vPos = vPos + (fTimeDelta * fSpeed * 0.3f * XMVectorSet(1.f, 0.f, 0.f, 0.f));
 
 		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, vPos);
-	}
-
-	//_long		MouseMove = {};
-
-
-	//if (MOUSE_PRESSING(MOUSE_KEY::RB)) {
-	//	if (MouseMove = MOUSE_MOVE(MOUSE_AXIS::X))
-	//	{
-	//		m_pControllerTransform->Turn(MouseMove * fTimeDelta * m_fMouseSensor, XMVectorSet(0.f, 1.f, 0.f, 0.f));
-	//	}
-
-	//	if (MouseMove = MOUSE_MOVE(MOUSE_AXIS::Y))
-	//	{
-	//		m_pControllerTransform->Turn(MouseMove * fTimeDelta * m_fMouseSensor, m_pControllerTransform->Get_State(CTransform::STATE_RIGHT));
-	//	}
-	//}
+	}*/
 
 	_long		MouseMove = {};
 	m_fMouseSensor = 0.02f;
@@ -201,18 +186,21 @@ void CCamera_Free::Key_Input(_float fTimeDelta)
 			}
 		}
 	}
-	else if (MOUSE_PRESSING(MOUSE_KEY::RB)) {
+	else if (KEY_PRESSING(KEY::ALT)) {
+		if (MOUSE_PRESSING(MOUSE_KEY::RB)) {
 
-		if (MouseMove = MOUSE_MOVE(MOUSE_AXIS::X))
-		{
-			m_pControllerTransform->Turn(MouseMove * fTimeDelta * m_fMouseSensor, XMVectorSet(0.f, 1.f, 0.f, 0.f));
+			if (MouseMove = MOUSE_MOVE(MOUSE_AXIS::X))
+			{
+				m_pControllerTransform->Turn(MouseMove * fTimeDelta * m_fMouseSensor, XMVectorSet(0.f, 1.f, 0.f, 0.f));
 
-		}
-		if (MouseMove = MOUSE_MOVE(MOUSE_AXIS::Y))
-		{
-			m_pControllerTransform->Turn(MouseMove * fTimeDelta * m_fMouseSensor, m_pControllerTransform->Get_State(CTransform::STATE_RIGHT));
+			}
+			if (MouseMove = MOUSE_MOVE(MOUSE_AXIS::Y))
+			{
+				m_pControllerTransform->Turn(MouseMove * fTimeDelta * m_fMouseSensor, m_pControllerTransform->Get_State(CTransform::STATE_RIGHT));
+			}
 		}
 	}
+	
 }
 
 CCamera_Free* CCamera_Free::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

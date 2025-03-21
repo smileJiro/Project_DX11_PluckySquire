@@ -129,6 +129,7 @@ HRESULT CTrigger_Manager::Mapping_ExecuterTag()
 	m_EventExecuterTags[CHAPTER8_BOOKFREEZING_OFF] = 	L"Chapter8_BookFreezing_Off";
 	m_EventExecuterTags[CHAPTER8_2D_IN] = 	L"Chapter8_2D_In";
 	m_EventExecuterTags[CHAPTER8_TRANSFORMZIP] = L"Chapter8_TransformZip";
+	m_EventExecuterTags[CHAPTER8_BOSS_INTRO] = 	L"Chapter8_Boss_Intro";
 
 	return S_OK;
 }
@@ -308,7 +309,7 @@ HRESULT CTrigger_Manager::Create_TriggerObject(LEVEL_ID _eProtoLevelId, LEVEL_ID
 #pragma region 2. Coordº° Desc ÆíÁý
 	if (COORDINATE_3D == pDesc->eStartCoord)
 	{
-		
+		pDesc->vRotation = {};
 	}
 	else if (COORDINATE_2D == pDesc->eStartCoord)
 	{

@@ -29,6 +29,7 @@
 
 #include "Zippy.h"
 #include "Room_Door.h"
+#include "NPC_Manager.h"
 
 CGameEventExecuter_C2::CGameEventExecuter_C2(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CGameEventExecuter(_pDevice, _pContext)
@@ -510,6 +511,9 @@ void CGameEventExecuter_C2::Chapter2_Humgrump(_float _fTimeDelta)
 			CTrigger_Manager::GetInstance()->Create_TriggerObject(LEVEL_STATIC, LEVEL_CHAPTER_2, &Desc, pSection);
 			
 			// 기존 NPC 삭제
+			CNPC_Manager::GetInstance()->Remove_SocialNPC(TEXT("Chapter_1_Humgrump"));
+			CNPC_Manager::GetInstance()->Remove_SocialNPC(TEXT("Spear_Trooper0"));
+			CNPC_Manager::GetInstance()->Remove_SocialNPC(TEXT("Spear_Trooper1"));
 
 			// 스레쉬와 바이올렛 생성
 

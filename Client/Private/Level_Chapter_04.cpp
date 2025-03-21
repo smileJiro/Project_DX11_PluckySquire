@@ -231,13 +231,6 @@ HRESULT CLevel_Chapter_04::Initialize(LEVEL_ID _eLevelID)
 	/* Set Shader PlayerHideColor */
 	m_pGameInstance->Set_PlayerHideColor(_float3(1.0f, 0.24f, 0.4666f), true);
 
-	/* Chapter4 Intro Trigger 동적 생성 임시 코드*/
-	//Create_IntroTrigger();
-	// 내거 -> Chapter4_Intro
-
-
-	
-
 	return S_OK;
 }
 
@@ -372,22 +365,6 @@ void CLevel_Chapter_04::Update(_float _fTimeDelta)
 	//	CTrigger_Manager::GetInstance()->Load_Trigger(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("../Bin/DataFiles/Trigger/Chapter2_Trigger.json"));
 	//	CTrigger_Manager::GetInstance()->Load_TriggerEvents(TEXT("../Bin/DataFiles/Trigger/Trigger_Events.json"));
 	//}
-
-	if (KEY_PRESSING(KEY::CTRL))
-	{
-		if (KEY_DOWN(KEY::NUM5))
-		{
-			CButterGrump::MONSTER_DESC Boss_Desc;
-			Boss_Desc.iCurLevelID = m_eLevelID;
-			Boss_Desc.eStartCoord = COORDINATE_3D;
-			Boss_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-			//Boss_Desc.tTransform3DDesc.vInitialPosition = _float3(-3.f, 15.35f, -80.0f);
-			Boss_Desc.tTransform3DDesc.vInitialPosition = _float3(0.53f, 60.35f, -8.0f);
-
-			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_4, TEXT("Prototype_GameObject_ButterGrump"), m_eLevelID, TEXT("Layer_Monster"), &Boss_Desc)))
-				return;
-		}
-	}
 
 }
 
@@ -1616,21 +1593,6 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Friends(const _wstring& _strLayerTag)
 		//CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(strFriendTag);
 	} /* Friend_Violet */
 	return S_OK;
-}
-
-void CLevel_Chapter_04::Create_IntroTrigger()
-{
-	CTriggerObject::TRIGGEROBJECT_DESC Desc = {};
-	Desc.vHalfExtents = { 35.f, 35.f, 0.f };
-	Desc.iTriggerType = (_uint)TRIGGER_TYPE::EVENT_TRIGGER;
-	Desc.szEventTag = TEXT("Chapter4_Intro");
-	Desc.eConditionType = CTriggerObject::TRIGGER_ENTER;
-	Desc.isReusable = false; // 한 번 하고 삭제할 때
-	Desc.eStartCoord = COORDINATE_2D;
-	Desc.tTransform2DDesc.vInitialPosition = { -568.347412f,-22.5205593f, 0.f };
-
-	CSection* pSection = CSection_Manager::GetInstance()->Find_Section(TEXT("Chapter4_P0708"));
-	CTrigger_Manager::GetInstance()->Create_TriggerObject(LEVEL_STATIC, LEVEL_CHAPTER_2, &Desc, pSection);
 }
 
 HRESULT CLevel_Chapter_04::Map_Object_Create(_wstring _strFileName)

@@ -24,7 +24,7 @@ public:
 		_float			fFovy = { 62.f };
 		_float			fAspect = { 16/9.f };
 		_float			fNear = { 0.1f };
-		_float			fFar = { 500.f };
+		_float			fFar = { 700.f };
 
 		// Arm
 		_float3			vArm = {};
