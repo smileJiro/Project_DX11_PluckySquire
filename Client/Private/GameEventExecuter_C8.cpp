@@ -853,6 +853,7 @@ void CGameEventExecuter_C8::Chapter8_Intro(_float _fTimeDelta)
 		{
 			CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::CUTSCENE);
 			CCamera_Manager::GetInstance()->Set_NextCutSceneData(TEXT("Chapter8_Intro"));
+		
 		}
 
 		Next_Step_Over(2.8f);
@@ -2452,6 +2453,7 @@ void CGameEventExecuter_C8::Chapter8_Boss_Intro(_float _fTimeDelta)
 	if (Step_Check(STEP_0))
 	{
 		if (CCamera_Manager::TARGET == CCamera_Manager::GetInstance()->Get_CameraType()) {
+			Get_Player()->Set_BlockPlayerInput(true);
 			Next_Step(true);
 		}
 	}
@@ -2499,6 +2501,9 @@ void CGameEventExecuter_C8::Chapter8_Boss_Intro(_float _fTimeDelta)
 		if (Is_Start()) {
 			CCamera_Manager::GetInstance()->Start_FadeIn(0.7f);
 			CCamera_Manager::GetInstance()->Set_FadeRatio(CCamera_Manager::CUTSCENE, 1.f, true);
+			
+			Get_Player()->Set_BlockPlayerInput(false);
+
 			Next_Step(true);
 		}
 	}
@@ -2517,6 +2522,8 @@ void CGameEventExecuter_C8::Chapter8_Going_To_Boss(_float _fTimeDelta)
 			CCamera_Manager::GetInstance()->Set_NextCutSceneData(TEXT("Going_To_Humgrump"));
 			CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::CUTSCENE);
 			Get_Player()->Set_State(CPlayer::ENGAGE_BOSS);
+			Get_Player()->Set_BlockPlayerInput(true);
+
 			Next_Step(true);
 		}
 	}
@@ -2574,6 +2581,7 @@ void CGameEventExecuter_C8::Chapter8_Going_To_Boss(_float _fTimeDelta)
 
 			// Player State º¯°æ
 			Get_Player()->Set_State(CPlayer::CYBER_FLY);
+			Get_Player()->Set_BlockPlayerInput(false);
 
 			Next_Step(true);
 		}

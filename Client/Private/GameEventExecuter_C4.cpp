@@ -134,13 +134,14 @@ void CGameEventExecuter_C4::Chapter4_Intro(_float _fTimeDelta)
 	if (Step_Check(STEP_0))
 	{
 		if (CCamera_Manager::TARGET == CCamera_Manager::GetInstance()->Get_CameraType()) {
+			Get_Player()->Set_BlockPlayerInput(true);
 			Next_Step(true);
 		}
 
-		Get_Player()->Set_BlockPlayerInput(true);
 	}
 	else if (Step_Check(STEP_1)) {
 		if (m_fTimer >= 0.9f) {
+			
 			CCamera_Manager::GetInstance()->Set_NextCutSceneData(TEXT("Chapter4_Intro"));
 			CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::CUTSCENE, true, 0.8f);
 			Next_Step(true);
@@ -268,6 +269,7 @@ void CGameEventExecuter_C4::Chapter4_Event_Flag(_float _fTimeDelta)
 	if (Step_Check(STEP_0)) {
 		if (Is_Start())
 		{
+			Get_Player()->Set_BlockPlayerInput(true);
 			CCamera_Manager::GetInstance()->Set_NextCutSceneData(TEXT("Chapter4_Flag"));
 			CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::CUTSCENE, true, 0.8f);
 		}
@@ -298,6 +300,8 @@ void CGameEventExecuter_C4::Chapter4_Event_Flag(_float _fTimeDelta)
 		if (Is_Start()) {
 			CCamera_Manager::GetInstance()->Start_FadeIn(0.3f);
 			CCamera_Manager::GetInstance()->Set_FadeRatio(CCamera_Manager::CUTSCENE, 1.f, true);
+
+			Get_Player()->Set_BlockPlayerInput(false);
 			Next_Step(true);
 		}
 	}

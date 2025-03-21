@@ -158,6 +158,7 @@ void CGameEventExecuter_C6::Chapter6_Intro(_float _fTimeDelta)
 	if (Step_Check(STEP_0))
 	{
 		if (CCamera_Manager::TARGET == CCamera_Manager::GetInstance()->Get_CameraType()) {
+			Get_Player()->Set_BlockPlayerInput(true);
 
 			if (FAILED(CFatherGame::GetInstance()->Start_Game(m_pDevice, m_pContext)))
 			{
@@ -196,6 +197,9 @@ void CGameEventExecuter_C6::Chapter6_Intro(_float _fTimeDelta)
 		if (Is_Start()) {
 			CCamera_Manager::GetInstance()->Start_FadeIn(0.7f);
 			CCamera_Manager::GetInstance()->Set_FadeRatio(CCamera_Manager::CUTSCENE, 1.f, true);
+
+			Get_Player()->Set_BlockPlayerInput(false);
+
 			Next_Step(true);
 		}
 	}
