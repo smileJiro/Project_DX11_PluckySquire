@@ -217,8 +217,9 @@ void CGameEventExecuter_C2::Chapter2_BookMagic(_float _fTimeDelta)
 		if (Is_Start())
 		{
 			Ready_Action(SECTION_MGR->Get_Cur_Section_Key(), SECTION_2D_PLAYMAP_BACKGROUND, C2DMapActionObject::ACTIVE_TYPE_DYNAMIC_BACKGROUND);
-			m_pGameInstance->Start_BGM(_wstring(L"LCD_MUS_C01_HUMPGRUMPCUTSCENEMAGIC_FULL_v2a"), g_BGMVolume);
-			m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_C1_Fade_To_Darkness"), 0.6f, g_SFXVolume);
+			m_pGameInstance->Start_BGM(_wstring(L"LCD_MUS_C01_HUMPGRUMPCUTSCENEMAGIC_FULL_v2a"), 2.f);
+			m_pGameInstance->Set_BGMTargetVolume(30.f);
+			m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_C1_Fade_To_Darkness"), 0.6f, 50.f);
 
 		}
 
