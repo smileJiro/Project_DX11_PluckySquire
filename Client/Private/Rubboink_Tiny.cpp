@@ -8,6 +8,7 @@
 #include "Trigger_Manager.h"
 #include "Friend_Controller.h"
 #include "Friend.h"
+#include "PlayerData_Manager.h"
 
 CRubboink_Tiny::CRubboink_Tiny(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CSlipperyObject(_pDevice, _pContext)
@@ -55,7 +56,8 @@ HRESULT CRubboink_Tiny::Initialize(void* _pArg)
 
 
 	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CRubboink_Tiny::On_AnimEnd, this, placeholders::_1, placeholders::_2));
-
+	m_strCurrentSound = TEXT("A_sfx_pig_snoring_loop");
+	START_SFX_DELAY(m_strCurrentSound, 0.f, g_SFXVolume* 0.f, true);
 	return S_OK;
 }
 HRESULT CRubboink_Tiny::Ready_Parts()
@@ -102,7 +104,20 @@ void CRubboink_Tiny::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 
 void CRubboink_Tiny::Update(_float _fTimeDelta)
 {
+	CPlayer* pPlayer = CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr();
+	if (COORDINATE_2D == pPlayer->Get_CurCoord() && pPlayer->Get_Include_Section_Name() == Get_Include_Section_Name())
+	{
+		_float fDist = XMVector3Length(Get_FinalPosition() - pPlayer->Get_FinalPosition()).m128_f32[0];
+		m_fCurVolume = (fDist - m_fMinVolumeDistance) / (m_fMaxVolumeDistance - m_fMinVolumeDistance);
+		m_fCurVolume = min(1.f, max(0.f, m_fCurVolume));
+	}
+	else
+	{
+		m_fCurVolume = 0.f;
+	}
+	SET_VOLUME_SFX(m_strCurrentSound, g_SFXVolume * m_fCurVolume);
 	__super::Update(_fTimeDelta);
+
 }
 
 void CRubboink_Tiny::Late_Update(_float _fTimeDelta)
@@ -127,6 +142,7 @@ void CRubboink_Tiny::On_StartSlip(_fvector _vDirection, _float _fPower)
 	m_pZZZ->Set_Render(false);
 	m_pFace->Set_Render(false);
 	m_p2DColliderComs[0]->Set_Block(false);
+	START_SFX_DELAY(TEXT("A_sfx_pig_roll_and_wake_up"), 0.f, g_SFXVolume, false);
 }
 
 
@@ -162,7 +178,8 @@ void CRubboink_Tiny::On_Impact(CGameObject* _pOtherObject)
 	Desc.Build_2D_Transform({ XMVectorGetX(vPos),XMVectorGetY(vPos) }, {1.f,1.f});
 	CSection* pBookSection = CSection_Manager::GetInstance()->Find_Section(TEXT("Chapter5_P0102"));
 	CTrigger_Manager::GetInstance()->Create_TriggerObject(LEVEL_STATIC, LEVEL_CHAPTER_6, &Desc, pBookSection);
-
+	m_strCurrentSound = TEXT("A_sfx_pig_playing_in_mud_loop");
+	START_SFX_DELAY(m_strCurrentSound, 0.f, g_SFXVolume, false);
 }
 
 CRubboink_Tiny* CRubboink_Tiny::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
