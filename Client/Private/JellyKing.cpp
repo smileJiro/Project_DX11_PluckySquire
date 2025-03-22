@@ -97,7 +97,10 @@ void CJellyKing::Priority_Update(_float _fTimeDelta)
 void CJellyKing::Update(_float _fTimeDelta)
 {
 	Action_State(_fTimeDelta);
-
+	if (KEY_DOWN(KEY::L))
+	{
+		State_Change_Cheer();
+	}
 	__super::Update(_fTimeDelta);
 }
 
@@ -203,6 +206,7 @@ void CJellyKing::State_Change_CheerOld()
 void CJellyKing::State_Change_Cheer()
 {
 	m_pControllerModel->Switch_Animation((_uint)STATE::STATE_CHEER);
+	START_SFX_DELAY(_wstring(L"A_sfx_C6DESK_jellyking_celebrate") , 0.f, 70.f, false);
 
 	CCamera_Manager::GetInstance()->Set_ResetData(CCamera_Manager::TARGET);
 

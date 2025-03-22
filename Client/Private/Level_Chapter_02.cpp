@@ -277,7 +277,7 @@ HRESULT CLevel_Chapter_02::Initialize(LEVEL_ID _eLevelID)
 	CTrigger_Manager::GetInstance()->Load_TriggerEvents(TEXT("../Bin/DataFiles/Trigger/Chapter2_Trigger_Events.json"));
 
 	// BGM 시작
-	m_pGameInstance->Start_BGM(TEXT("LCD_MUS_C01_INTRO_FULL"), 20.f);
+	m_pGameInstance->Start_BGM(TEXT("LCD_MUS_C01_INTRO_FULL"), g_BGMVolume);
 
 	// Intro 시작
 	CTrigger_Manager::GetInstance()->Register_TriggerEvent(TEXT("Chapter2_Intro"), 50);

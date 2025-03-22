@@ -355,8 +355,8 @@ void CGameEventExecuter_C8::Chapter8_Laser_Stage(_float _fTimeDelta)
 			if (Is_Start())
 			{
 				static_cast<CModelObject*>(m_TargetObjects[LASER])->Switch_Animation(CBig_Laser::LASER_START);
-				START_SFX(L"A_sfx_laser_igniting", 60.f, false);
-				START_SFX(L"A_sfx_laser_shooting_loop", 60.f, true);
+				START_SFX(L"A_sfx_laser_igniting", g_SFXVolume * 1.2f, false);
+				START_SFX(L"A_sfx_laser_shooting_loop", g_SFXVolume * 1.2f, true);
 			}
 			Next_Step_Over(1.5f);
 		}
@@ -365,7 +365,7 @@ void CGameEventExecuter_C8::Chapter8_Laser_Stage(_float _fTimeDelta)
 		{
 			if (Is_Start())
 			{
-				START_BGM(L"LCD_MUS_C09_P1718_LASER_FULL", 20.f);
+				START_BGM(L"LCD_MUS_C09_P1718_LASER_FULL", g_BGMVolume);
 				static_cast<CBig_Laser*>(m_TargetObjects[LASER])->Set_Beam_Collider(true);
 				static_cast<CBig_Laser*>(m_TargetObjects[LASER])->Move_Start(1800.f, 100.f);
 				pPlayer->Set_BlockPlayerInput(false);
@@ -426,8 +426,8 @@ void CGameEventExecuter_C8::Chapter8_Laser_Stage(_float _fTimeDelta)
 
 			if (Is_Start())
 			{
-				START_SFX(L"A_sfx_platform_appear", 50.f, false);
-				START_SFX(L"A_sfx_platform_extend", 50.f, true);
+				START_SFX(L"A_sfx_platform_appear", g_SFXVolume, false);
+				START_SFX(L"A_sfx_platform_extend", g_SFXVolume, true);
 
 			}
 			_vector vDir = XMVectorSetW(XMVector2Normalize(vTargetPos - m_TargetObjects[BRIDGE]->Get_FinalPosition()), 0.f);
@@ -437,7 +437,7 @@ void CGameEventExecuter_C8::Chapter8_Laser_Stage(_float _fTimeDelta)
 
 			if (Next_Step(m_TargetObjects[BRIDGE]->Get_ControllerTransform()->Compute_Distance(vTargetPos) < 10.f))
 			{
-				START_SFX(L"A_sfx_metal_pistons", 50.f, false);
+				START_SFX(L"A_sfx_metal_pistons", g_SFXVolume, false);
 				STOP_SFX(L"A_sfx_platform_extend");
 			}
 		}
@@ -500,7 +500,7 @@ void CGameEventExecuter_C8::Chapter8_Laser_Stage_2(_float _fTimeDelta)
 	{
 		if (Is_Start())
 		{
-			START_BGM(L"LCD_MUS_C09_P1718_REUNITEDWITHPIP_Stem_Base", 20.f);
+			START_BGM(L"LCD_MUS_C09_P1718_REUNITEDWITHPIP_Stem_Base", g_BGMVolume);
 			static_cast<CFriend*>(m_TargetObjects[0])->Change_AnyState(CFriend_Pip::PIP_EXCITED_DOWN, false, CFriend::DIR_DOWN);
 		}
 
@@ -547,7 +547,7 @@ void CGameEventExecuter_C8::Chapter8_Friend_Appear_Violet(_float _fTimeDelta)
 		if (Is_Start())
 		{
 			//
-			START_SFX(L"A_sfx_platform_extend", 40.f, true);
+			START_SFX(L"A_sfx_platform_extend", g_SFXVolume * 0.8f, true);
 			m_TargetObjects.resize(LAST);
 
 			pPlayer->Set_BlockPlayerInput(true);
@@ -638,7 +638,7 @@ void CGameEventExecuter_C8::Chapter8_Friend_Appear_Violet(_float _fTimeDelta)
 	{
 		if (Is_Start())
 		{
-			START_SFX(L"A_sfx_violet_wake_up", 40.f, false);
+			START_SFX(L"A_sfx_violet_wake_up", g_BGMVolume * 0.8f, false);
 			static_cast<CFriend*>(m_TargetObjects[VIOLET])->Change_AnyState(CFriend_Violet::VIOLET_C09_LYINGTOSITTINGUP, false, CFriend::DIR_RIGHT);
 		}
 
@@ -660,7 +660,7 @@ void CGameEventExecuter_C8::Chapter8_Friend_Appear_Violet(_float _fTimeDelta)
 	{
 		if (Is_Start())
 		{
-			START_SFX(L"A_sfx_violet_jumping_off_bed", 40.f, false);
+			START_SFX(L"A_sfx_violet_jumping_off_bed", g_BGMVolume * 0.8f, false);
 			static_cast<CFriend*>(m_TargetObjects[VIOLET])->Change_AnyState(CFriend_Violet::VIOLET_C09_JUMPINGOFFBED, false, CFriend::DIR_RIGHT);
 		}
 
@@ -769,7 +769,7 @@ void CGameEventExecuter_C8::Chapter8_Friend_Appear_Thrash(_float _fTimeDelta)
 			{
 				static_cast<CFriend*>(m_TargetObjects[VIOLET])->Move_Position(_float2(235.0f, 61.0f), CFriend::DIR_RIGHT);
 			}
-			START_BGM(L"LCD_MUS_C09_THRASHREUNITED_P5152_LOOP_Stem_Base", 20.f);
+			START_BGM(L"LCD_MUS_C09_THRASHREUNITED_P5152_LOOP_Stem_Base", g_BGMVolume);
 
 			AUTOMOVE_COMMAND AutoMove{};
 			AutoMove.eType = AUTOMOVE_TYPE::MOVE_TO;
@@ -810,7 +810,7 @@ void CGameEventExecuter_C8::Chapter8_Friend_Appear_Thrash(_float _fTimeDelta)
 	{
 		if (Is_Start())
 		{
-			START_SFX(L"A_sfx_thrash_jumping_off_pipe", 40.f, false);
+			START_SFX(L"A_sfx_thrash_jumping_off_pipe", g_BGMVolume * 0.8f, false);
 			STOP_SFX(L"A_sfx_thrash_tapping_pipe");
 
 			static_cast<CFriend*>(m_TargetObjects[THRASH])->Change_AnyState(CFriend_Thrash::THRASH_C09_JUMPINGOFFPIPE, false, CFriend::DIR_RIGHT);
@@ -1200,18 +1200,18 @@ void CGameEventExecuter_C8::Chapter8_3D_Out_02(_float _fTimeDelta)
 	CFriend* pViolet = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Violet"));
 
 //#ifdef _DEBUG
-	if (nullptr == pViolet)
-	{
-		if (false == Is_Dead())
-		{
-			if (Change_PlayMap(0.f))
-			{
-				Get_Book()->Set_Freezing(true);
-				GameEvent_End();
-			}
-		}
-		return;
-	}
+	//if (nullptr == pViolet)
+	//{
+	//	if (false == Is_Dead())
+	//	{
+			//if (Change_PlayMap(0.f))
+			//{
+			//	Get_Book()->Set_Freezing(true);
+			//	//GameEvent_End();
+			//}
+	//	}
+	//	return;
+	//}
 //#endif // _DEBUG
 
 

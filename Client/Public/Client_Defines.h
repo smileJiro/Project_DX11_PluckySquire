@@ -5,8 +5,11 @@ namespace Client
 {
 	const unsigned int g_iWinSizeX = 1600;
 	const unsigned int g_iWinSizeY = 900;
-}
 
+
+}
+extern float g_BGMVolume;
+extern float g_SFXVolume;
 extern HINSTANCE g_hInst;
 extern HWND g_hWnd;
 
