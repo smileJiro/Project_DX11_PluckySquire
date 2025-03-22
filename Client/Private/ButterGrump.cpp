@@ -646,6 +646,7 @@ void CButterGrump::Attack()
         /*_float4 vRot;
         XMStoreFloat4(&vRot, m_pGameInstance->Direction_To_Quaternion(XMVectorSet(0.f, 0.f, 1.f, 0.f), m_pTarget->Get_FinalPosition() - XMLoadFloat3(&vPosition)));*/
         CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Boss_WingSlam"), COORDINATE_3D, &vPosition, &vRotation);
+        m_pGameInstance->Start_SFX_Distance_Delay(_wstring(L"A_sfx_Flap_Attack_Up-") + to_wstring(rand() % 3), m_pControllerTransform->Get_State(CTransform::STATE_POSITION), 0.1f, g_SFXVolume, 0.f, 13.f);
         m_isAttack = false;
         break;
     }
@@ -656,6 +657,7 @@ void CButterGrump::Attack()
   //      _float4 vRot;
 		//XMStoreFloat4(&vRot, m_pGameInstance->Direction_To_Quaternion(XMVectorSet(0.f, 0.f, 1.f, 0.f), m_pTarget->Get_FinalPosition() - XMLoadFloat3(&vPosition)));
         CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Boss_WingSlice"), COORDINATE_3D, &vPosition, &vRotation);
+        m_pGameInstance->Start_SFX_Distance_Delay(_wstring(L"A_sfx_Flap_Attack_Down-") + to_wstring(rand() % 3), m_pControllerTransform->Get_State(CTransform::STATE_POSITION), 0.1f, g_SFXVolume, 0.f, 13.f);
         m_isAttack = false;
         break;
     }

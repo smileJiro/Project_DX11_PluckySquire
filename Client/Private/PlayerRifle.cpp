@@ -130,6 +130,8 @@ void CPlayerRifle::Shoot(_fvector _vTargetPosition)
 			m_fAccEffectDelay = 0.f;
 		}
 
+		//sound
+
 	}
 }
 
