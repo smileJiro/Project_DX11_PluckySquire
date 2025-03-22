@@ -72,6 +72,8 @@ void CPlayerState_GetItem::Enter()
 	{
 	case Engine::COORDINATE_2D:
 	{
+		m_pOwner->UnEquip_Part(CPlayer::PLAYER_PART_SWORD);
+
 		m_pOwner->Set_2DDirection(E_DIRECTION::LEFT);
 		m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_ITEM_RETRIEVE);
 		CModelObject::MODELOBJECT_DESC tModelDesc{};
@@ -127,6 +129,10 @@ void CPlayerState_GetItem::Exit()
 	{
 		Event_DeleteObject(m_pFX);
 		Event_DeleteObject(m_pItemImg);
+	}
+	else
+	{
+		m_pOwner->Equip_Part(CPlayer::PLAYER_PART_SWORD);
 	}
 }
 

@@ -2385,7 +2385,7 @@ void CPlayer::Set_GravityCompOn(_bool _bOn, CGravity::STATE _eGravityState)
 
 void CPlayer::Start_Attack(ATTACK_TYPE _eAttackType)
 {
-
+	m_bInvincible = true;
 	m_eCurAttackType = _eAttackType;
 	if (COORDINATE_2D == Get_CurCoord())
 	{
@@ -2406,6 +2406,7 @@ void CPlayer::Start_Attack(ATTACK_TYPE _eAttackType)
 
 void CPlayer::End_Attack()
 {
+	m_bInvincible = false;
 	Flush_AttckedSet();
 	if (COORDINATE_2D == Get_CurCoord())
 	{
@@ -2606,7 +2607,10 @@ void CPlayer::Key_Input(_float _fTimeDelta)
 	}
 	if (KEY_DOWN(KEY::NUM3))
 	{
-		Acquire_Item(PLAYER_2D_ITEM_ID::FATHER_BODY);
+		if(COORDINATE_2D == Get_CurCoord())
+			Set_State(TRANSFORM_IN);
+		else
+			Set_State(ENGAGE_BOSS);
 	}
     if (KEY_DOWN(KEY::J))
     {
