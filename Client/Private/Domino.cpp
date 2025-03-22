@@ -2,6 +2,8 @@
 #include "Domino.h"
 #include "Actor_Dynamic.h"
 #include "GameInstance.h"
+#include "Interactable.h"
+#include "Dice.h"
 
 CDomino::CDomino(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CModelObject(_pDevice, _pContext)
@@ -101,8 +103,13 @@ void CDomino::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, con
 {
 	__super::OnContact_Enter(_My, _Other, _ContactPointDatas);
 
-	START_SFX_DELAY(_wstring(L"A_sfx_domino_hit_domino-") + to_wstring(rand() % 13), 0.f, 70.f, false);
-
+	START_SFX_DELAY(_wstring(L"A_sfx_domino_hit_domino-") + to_wstring(rand() % 13), 0.f, g_SFXVolume, false);
+	if (OBJECT_GROUP::INTERACTION_OBEJCT & _Other.pActorUserData->iObjectGroup)
+	{
+		CDice* pDIce = dynamic_cast<CDice*>(_Other.pActorUserData->pOwner);
+		if(pDIce)
+			START_SFX_DELAY(_wstring(L"A_sfx_dice_hit_domino"), 0.f, g_SFXVolume, false);
+	}
 }
 
 CDomino* CDomino::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

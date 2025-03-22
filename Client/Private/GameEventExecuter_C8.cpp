@@ -2493,6 +2493,10 @@ void CGameEventExecuter_C8::Chapter8_Boss_Intro(_float _fTimeDelta)
 
 	if (Step_Check(STEP_0))
 	{
+		if (Is_Start())
+		{
+			START_SFX_DELAY(TEXT("A_sfx_C9DESK_LastBoss_Intro"), 1.5f, g_SFXVolume, false);
+		}
 		if (CCamera_Manager::TARGET == CCamera_Manager::GetInstance()->Get_CameraType()) {
 			Get_Player()->Set_BlockPlayerInput(true);
 			Next_Step(true);

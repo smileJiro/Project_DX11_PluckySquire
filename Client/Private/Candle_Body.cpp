@@ -58,6 +58,8 @@ void CCandle_Body::State_Change_TurnOn()
     _vector vPos = Get_FinalPosition();
     _vector vOffsetPos = {0.0f, 1.4f, 0.02f};
     CEffect_Manager::GetInstance()->Active_EffectPosition(TEXT("CandleFire"), true, vPos + vOffsetPos);
+    START_SFX_DELAY(TEXT("A_sfx_candle_ignite-") + to_wstring(rand() % 4), 0.f, g_SFXVolume, false);
+    START_SFX_DELAY(TEXT("A_sfx_candle_flame_loop"), 0.f, g_SFXVolume, true);
 }
 
 void CCandle_Body::State_Change_FlameLoop()
@@ -68,6 +70,8 @@ void CCandle_Body::State_Change_TurnOff()
 {
     // 1. 불 이펙트 재생 끄기. >> 사실 꺼질 일은 없긴 함.
     CEffect_Manager::GetInstance()->InActive_Effect(TEXT("CandleFire"));
+    //END_SFX(TEXT("A_sfx_candle_flame_loop"));
+    START_SFX_DELAY(TEXT("A_sfx_candle_extinguish"), 0.f, g_SFXVolume, false);
 }
 
 CCandle_Body* CCandle_Body::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)

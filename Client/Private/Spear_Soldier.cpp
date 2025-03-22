@@ -494,7 +494,7 @@ void CSpear_Soldier::Change_Animation()
                 if(Is_SneakMode())
                     m_pGameInstance->Start_SFX(TEXT("A_sfx_C9DESK_Caught_by_guards"), 50.f);
                 else
-                    m_pGameInstance->Start_SFX(_wstring(L"A_sfx_speartrooper_swipe_attack_") + to_wstring(rand() % 3), 50.f);
+                    m_pGameInstance->Start_SFX(_wstring(L"A_sfx_speartrooper_swipe_attack_") + to_wstring(rand() % 3), g_SFXVolume);
                 break;
 
             case MONSTER_STATE::FORMATION_IDLE:

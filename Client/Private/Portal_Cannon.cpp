@@ -179,7 +179,7 @@ void CPortal_Cannon::Shoot_Ground(CPlayer* _pUser, E_DIRECTION _e2DLookDir )
             fYRadian += XMConvertToRadians(1.f);
     }
     
-    START_SFX_DELAY(_wstring(L"A_sfx_cannon_shot-00") + to_wstring(rand() % 4),0.f, 70.f, false);
+    START_SFX_DELAY(_wstring(L"A_sfx_cannon_shot-00") + to_wstring(rand() % 4),0.f, g_SFXVolume, false);
 
     m_pBody->Switch_Animation(ANIM_LAUNCH);
 }
@@ -205,7 +205,7 @@ void CPortal_Cannon::Shoot_Target(CPlayer* _pUser, CPortal_Cannon* _vTarget)
             fYRadian += XMConvertToRadians(1.f);
     }
 
-    START_SFX_DELAY(_wstring(L"A_sfx_cannon_shot-00") + to_wstring(rand() % 4), 0.f, 70.f, false);
+    START_SFX_DELAY(_wstring(L"A_sfx_cannon_shot-00") + to_wstring(rand() % 4), 0.f, g_SFXVolume, false);
 
     m_pBody->Switch_Animation(ANIM_LAUNCH);
 }
