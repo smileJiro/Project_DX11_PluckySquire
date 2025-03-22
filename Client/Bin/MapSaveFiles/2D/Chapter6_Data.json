@@ -15,7 +15,19 @@
 		"Section_BackGround_Name": "Chapter5_P0102_BackGround",
 		"Section_File_Name": "Chapter5_P0102.m2chc",
 		"Section_Type": 0,
+
 		"Section_Info": {
+			"BGM": "LCD_MUS_C05_P0304_ARTIA_Stem_Base",
+			"SFX": [
+				{
+					"SFX_Name": "LCD_MUS_C05_P0304_ARTIA_Stem_Group1",
+					"isStart": true
+				},
+				{
+					"SFX_Name": "LCD_MUS_C05_P0304_ARTIA_Stem_Group2",
+					"isStart": true
+				}
+			],
 			"Camera_Zoom_Ratio": 2.0,
 			"RenderResolution": {
 				"X": 5120.0,

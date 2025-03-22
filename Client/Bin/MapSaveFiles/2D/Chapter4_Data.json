@@ -24,7 +24,7 @@
 	{
 		"Section_Name": "Chapter4_P0102",
 		"Section_BackGround_Name": "Chapter4_P0102_BackGround",
-		"Section_File_Name": "Chapter4_P0102.m2chc",
+		"Section_File_Name": "Chapter4_P0102.m2chc",sawddwasw
 		"Section_Type": 0,
 		"Section_Info": {
 			"Camera_Zoom_Ratio": 2.0,
@@ -56,19 +56,19 @@
 			},
 			"LevelSizePixels": {
 				"X": 3840.0,
-				"Y": 1080.0,
-				"BGM": "MUS_C04_SonnetSwamps_Puzzle_Loop",
-				"SFX": [
-					{
-						"SFX_Name": "LCD_MUS_C04_SONNETSWAMPSDAY_LOOP_Stem_Group1",
-						"isStart": false
-					},
-					{
-						"SFX_Name": "LCD_MUS_C04_SONNETSWAMPSDAY_LOOP_Stem_Group2",
-						"isStart": false
-					}
-				]
+				"Y": 1080.0
 			},
+			"BGM": "MUS_C04_SonnetSwamps_Puzzle_Loop",
+			"SFX": [
+				{
+					"SFX_Name": "LCD_MUS_C04_SONNETSWAMPSDAY_LOOP_Stem_Group1",
+					"isStart": false
+				},
+				{
+					"SFX_Name": "LCD_MUS_C04_SONNETSWAMPSDAY_LOOP_Stem_Group2",
+					"isStart": false
+				}
+			],
 			"Pre_Page_Tag": "Chapter4_P0102",
 			"Next_Page_Tag": "Chapter4_P0506"
 		},
@@ -106,7 +106,18 @@
 		"Section_File_Name": "Chapter4_P0708.m2chc",
 		"Section_Type": 0,
 		"Section_Info": {
-			"Pre_Page_Tag": "Chapter4_P0506"
+			"Pre_Page_Tag": "Chapter4_P0506",
+			"BGM": "LCD_MUS_C04_SONNETSWAMPSDAY_LOOP_Stem_Base",
+			"SFX": [
+				{
+					"SFX_Name": "LCD_MUS_C04_SONNETSWAMPSDAY_LOOP_Stem_Group1",
+					"isStart": true
+				},
+				{
+					"SFX_Name": "LCD_MUS_C04_SONNETSWAMPSDAY_LOOP_Stem_Group2",
+					"isStart": true
+				}
+			]
 		},
 		"MiniGame_Info": {
 			"MiniGame_Type": 0,
