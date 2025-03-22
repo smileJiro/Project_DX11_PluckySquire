@@ -20,10 +20,17 @@ CFormation_Manager::CFormation_Manager()
 	Safe_AddRef(m_pGameInstance);
 }
 
-HRESULT CFormation_Manager::Initialize()
+HRESULT CFormation_Manager::Initialize(_uint _iCurLevel)
 {
-	if (FAILED(Ready_Chapter8_Formation()))
-		return E_FAIL;
+	m_iCurLevel = _iCurLevel;
+
+	switch ((LEVEL_ID)m_iCurLevel)
+	{
+	case LEVEL_CHAPTER_8:
+		if (FAILED(Ready_Chapter8_Formation()))
+			return E_FAIL;
+		break;
+	}
 
 	return S_OK;
 }
@@ -82,6 +89,14 @@ _bool CFormation_Manager::Add_To_Formation(CMonster* _pMember, CFormation** _pFo
 	return false;
 }
 
+void CFormation_Manager::Reset_Formation()
+{
+	for (auto pFormation : m_Formations)
+	{
+		pFormation->Reset_Formation();
+	}
+}
+
 HRESULT CFormation_Manager::Ready_Chapter8_Formation()
 {
 	_wstring strLayerTag = TEXT("Layer_Formation");
@@ -98,10 +113,10 @@ HRESULT CFormation_Manager::Ready_Chapter8_Formation()
 	FormationDesc.tTransform3DDesc.fSpeedPerSec = 4.f;
 
 	FormationDesc.strMemberPrototypeTag = TEXT("Prototype_GameObject_Spear_Soldier");
-	FormationDesc.strMemberLayerTag = TEXT("Layer_Monster_Locker");
+	FormationDesc.strMemberLayerTag = TEXT("Layer_Monster_Locker1");
 	FormationDesc.fDelayTime = 2.f;
 
-	//Å×½ºÆ®
+
 	FormationDesc.iRow = 3;
 	FormationDesc.iColumn = 4;
 
@@ -136,6 +151,7 @@ HRESULT CFormation_Manager::Ready_Chapter8_Formation()
 	Register_Formation(pFormation);
 
 
+	FormationDesc.strMemberLayerTag = TEXT("Layer_Monster_Locker2");
 	FormationDesc.tTransform3DDesc.vInitialPosition = _float3(36.f, 24.37f, 10.5f);
 
 	pFormation = static_cast<CFormation*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_CHAPTER_8, TEXT("Prototype_GameObject_Formation"), &FormationDesc));
@@ -145,20 +161,6 @@ HRESULT CFormation_Manager::Ready_Chapter8_Formation()
 	Register_Formation(pFormation);
 
 	return S_OK;
-}
-
-
-CFormation_Manager* CFormation_Manager::Create()
-{
-	CFormation_Manager* pInstance = new CFormation_Manager();
-
-	if (FAILED(pInstance->Initialize()))
-	{
-		MSG_BOX("Failed to Created : CFormation_Manager");
-		Safe_Release(pInstance);
-	}
-
-	return pInstance;
 }
 
 void CFormation_Manager::Free()

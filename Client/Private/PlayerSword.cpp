@@ -526,7 +526,7 @@ void CPlayerSword::Throw(_fvector _vDirection)
     if (COORDINATE_2D == eCoord)
     {
         Set_Position(m_pPlayer->Get_CenterPosition());
-        Set_Active(true);
+        Event_SetActive(this,true);
 		m_pControllerModel->Get_Model(COORDINATE_2D)->Set_Animation(2);  
     }
     if (COORDINATE_3D == Get_CurCoord())

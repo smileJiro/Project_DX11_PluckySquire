@@ -2068,20 +2068,29 @@ void CGameEventExecuter_C8::Chapter8_Meet_Humgrump(_float _fTimeDelta)
 				// Monster 제거
 				CLayer* pLayer = m_pGameInstance->Find_Layer(m_iCurLevelID, TEXT("Layer_Monster"));
 
-				for (auto& Monster : pLayer->Get_GameObjects()) {
-					Event_DeleteObject(Monster);
+				if(nullptr != pLayer)
+				{
+					for (auto& Monster : pLayer->Get_GameObjects()) {
+						Event_DeleteObject(Monster);
+					}
 				}
 
 				pLayer = m_pGameInstance->Find_Layer(m_iCurLevelID, TEXT("Layer_Sneak_Beetle"));
-
-				for (auto& Beetle : pLayer->Get_GameObjects()) {
-					Event_DeleteObject(Beetle);
+				
+				if (nullptr != pLayer)
+				{
+					for (auto& Beetle : pLayer->Get_GameObjects()) {
+						Event_DeleteObject(Beetle);
+					}
 				}
 
 				pLayer = m_pGameInstance->Find_Layer(m_iCurLevelID, TEXT("Layer_Sneak_Soldier"));
 
-				for (auto& Soldier : pLayer->Get_GameObjects()) {
-					Event_DeleteObject(Soldier);
+				if (nullptr != pLayer)
+				{
+					for (auto& Soldier : pLayer->Get_GameObjects()) {
+						Event_DeleteObject(Soldier);
+					}
 				}
 
 				// 이전 Trigger 제거
@@ -2744,7 +2753,7 @@ _bool CGameEventExecuter_C8::Change_PlayMap(_float _fStartTime)
 			}
 		}
 
-		if (FAILED(CFormation_Manager::GetInstance()->Initialize()))
+		if (FAILED(CFormation_Manager::GetInstance()->Initialize(m_iCurLevelID)))
 			return false;
 
 

@@ -43,6 +43,7 @@ public:
 
 public:
 	HRESULT Initialize_Members(void* _pArg);
+	HRESULT Create_Members();
 	HRESULT Initialize_OffSets();
 	void Add_Formation_PatrolPoints(_float3& _vPatrolPoint);
 
@@ -54,6 +55,8 @@ public:
 
 	_bool Get_Formation_Position(CMonster* _pMember, _float3* _vPosition, _float _fTimeDelta);
 	_bool Get_Formation_NextPosition(CMonster* _pMember, _float3* _vPosition);
+
+	void Reset_Formation();
 
 
 private:
@@ -75,6 +78,13 @@ private:
 	_bool m_isDelay = { false };
 	_float m_fAccTime = { 0.f };
 	_float m_fDelayTime = { 0.f };
+
+	_float3 m_vInitialPosition = {};
+
+	_wstring m_strMemberLayerTag = {};
+	_wstring m_strMemberPrototypeTag = {};
+
+	_bool m_isReset = { false };
 
 public:
 	HRESULT Cleanup_DeadReferences() override;
