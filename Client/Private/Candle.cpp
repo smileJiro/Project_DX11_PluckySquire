@@ -252,6 +252,7 @@ void CCandle::State_Change_TurnOff()
     static_cast<CCandle_Body*>(m_PartObjects[CANDLE_BODY])->State_Change_TurnOff();
     static_cast<CCandle_UI*>(m_PartObjects[CANDLE_UI])->State_Change_TurnOff();
     Event_SetActive(m_pTargetLight, false);
+
 }
 
 void CCandle::Action_State(_float _fTimeDelta)

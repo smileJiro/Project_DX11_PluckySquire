@@ -7,6 +7,7 @@
 #include "Player.h"
 #include "Effect2D_Manager.h"
 #include "Pooling_Manager.h"
+#include "PlayerData_Manager.h"
 
 CZippy::CZippy(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : CMonster(_pDevice, _pContext)
@@ -209,7 +210,14 @@ void CZippy::Change_Animation()
                 else if (E_DIRECTION::RIGHT == Get_2DDirection() || E_DIRECTION::LEFT == Get_2DDirection())
                     eAnim = ELEC_RIGHT;
 
-                m_pGameInstance->Start_SFX(_wstring(L"A_sfx_zippi_saw_loop"), 50.f);
+                if (COORDINATE_2D == CPlayerData_Manager::GetInstance()->Get_PlayerCoord())
+                {
+                    if (CSection_Manager::GetInstance()->Is_PlayerInto(m_strSectionName))
+                    {
+                        m_pGameInstance->Start_SFX_Distance2D_Delay(_wstring(L"A_sfx_zippi_saw_loop"),
+                            m_pControllerTransform->Get_State(CTransform::STATE_POSITION), CPlayerData_Manager::GetInstance()->Get_PlayerPosition(), 0.1f, g_SFXVolume*0.5f, 0.f);
+                    }
+                }
             }
             else if (false == m_isElectric)
             {
@@ -257,7 +265,14 @@ void CZippy::Change_Animation()
                 break;
             }
 
-            m_pGameInstance->Start_SFX(_wstring(L"A_sfx_zippi_electrify_loop"), 50.f);
+            if (COORDINATE_2D == CPlayerData_Manager::GetInstance()->Get_PlayerCoord())
+            {
+                if (CSection_Manager::GetInstance()->Is_PlayerInto(m_strSectionName))
+                {
+                    m_pGameInstance->Start_SFX_Distance2D_Delay(_wstring(L"A_sfx_zippi_electrify_loop"),
+                        m_pControllerTransform->Get_State(CTransform::STATE_POSITION), CPlayerData_Manager::GetInstance()->Get_PlayerPosition(), 0.1f, g_SFXVolume*0.5f, 0.f);
+                }
+            }
 
         }
         break;
@@ -273,7 +288,7 @@ void CZippy::Change_Animation()
             m_pGameInstance->End_SFX(_wstring(L"A_sfx_zippi_saw_loop"));
             m_pGameInstance->End_SFX(_wstring(L"A_sfx_zippi_electrify_loop"));
 
-            m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_sword_hit_zippi_") + (to_wstring(rand()%3+1)), 0.1f, g_SFXVolume);
+            m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_sword_hit_zippi_") + (to_wstring(rand()%3+1)), 0.1f, g_SFXVolume*0.5f);
 			break;
 
 		case Client::MONSTER_STATE::DEAD:
@@ -287,7 +302,7 @@ void CZippy::Change_Animation()
             m_pGameInstance->End_SFX(_wstring(L"A_sfx_zippi_saw_loop"));
             m_pGameInstance->End_SFX(_wstring(L"A_sfx_zippi_electrify_loop"));
 
-            m_pGameInstance->Start_SFX(_wstring(L"A_sfx_zippi_death_") + to_wstring(rand() % 2), 50.f);
+            m_pGameInstance->Start_SFX(_wstring(L"A_sfx_zippi_death_") + to_wstring(rand() % 2), g_SFXVolume*0.5f);
 			break;
 		default:
 			break;
@@ -505,7 +520,7 @@ void CZippy::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
         __super::On_Hit(_pHitter, _iDamg, _vForce);
     }
 
-    m_pGameInstance->Start_SFX(_wstring(L"A_sfx_sword_hit_zippi_") + to_wstring(rand() % 3), 50.f);
+    m_pGameInstance->Start_SFX(_wstring(L"A_sfx_sword_hit_zippi_") + to_wstring(rand() % 3), g_SFXVolume*0.5f);
 
 
 }

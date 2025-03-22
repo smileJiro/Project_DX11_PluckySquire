@@ -72,7 +72,6 @@ void CPlayerState_GetItem::Enter()
 	{
 	case Engine::COORDINATE_2D:
 	{
-		m_pOwner->UnEquip_Part(CPlayer::PLAYER_PART_SWORD);
 
 		m_pOwner->Set_2DDirection(E_DIRECTION::LEFT);
 		m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_ITEM_RETRIEVE);
@@ -114,6 +113,7 @@ void CPlayerState_GetItem::Enter()
 		break;
 	}
 	case Engine::COORDINATE_3D:
+		m_pOwner->UnEquip_Part(CPlayer::PLAYER_PART_SWORD);
 		m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_ITEM_GET_NEWRIG);
 		break;
 
@@ -132,7 +132,8 @@ void CPlayerState_GetItem::Exit()
 	}
 	else
 	{
-		m_pOwner->Equip_Part(CPlayer::PLAYER_PART_SWORD);
+		if (m_pOwner->Is_SwordHandling())
+			m_pOwner->Equip_Part(CPlayer::PLAYER_PART_SWORD);
 	}
 }
 

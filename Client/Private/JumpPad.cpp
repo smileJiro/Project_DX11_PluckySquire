@@ -2,6 +2,7 @@
 #include "JumpPad.h"
 #include "Player.h"
 #include "Actor_Dynamic.h"
+#include "GameInstance.h"
 
 CJumpPad::CJumpPad(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CCarriableObject(_pDevice, _pContext)
@@ -135,11 +136,13 @@ void CJumpPad::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, co
 				{
 					Switch_Animation(SMALL_JUMP_3D);
 					Event_KnockBack(static_cast<CCharacter*>(_Other.pActorUserData->pOwner), { 0.f,1.f,0.f }, m_fBouncePower3D * 0.5f);
+					START_SFX_DELAY(TEXT("A_sfx_spring_small"), 0.f, g_SFXVolume, false);
 				}
 				else
 				{
 					Switch_Animation(LARGE_JUMP_3D);
 					Event_KnockBack(static_cast<CCharacter*>(_Other.pActorUserData->pOwner), { 0.f,1.f,0.f }, m_fBouncePower3D);
+					START_SFX_DELAY(TEXT("A_sfx_spring"), 0.f, g_SFXVolume, false);
 				}
 				
 				return;

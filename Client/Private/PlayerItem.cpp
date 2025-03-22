@@ -36,7 +36,7 @@ HRESULT CPlayerItem::Initialize(void* _pArg)
 	pDesc->fRadius = 0.8f;
 
 	pDesc->iFillterMyGroup = OBJECT_GROUP::TRIGGER_OBJECT;
-	pDesc->iFillterOtherGroupMask =  OBJECT_GROUP::MAPOBJECT;
+	pDesc->iFillterOtherGroupMask = OBJECT_GROUP::MAPOBJECT;
 
 	pDesc->iTriggerType = (_uint)TRIGGER_TYPE::EVENT_TRIGGER;
 	m_szModelTag = pDesc->szModelTag;
@@ -266,7 +266,7 @@ void CPlayerItem::Action_Getting(_float _fTimeDelta)
 			//m_pActorCom->Get_RigidActor()->setActorFlag(PxActorFlag::eDISABLE_GRAVITY, true);
 
 			_vector vPos = m_pControllerTransform->Get_State(CTransform::STATE_POSITION);
-			vPos += {0.f, 1.5f, 0.f, 0.f};
+			vPos += {0.f, 0.85f, 0.f, 0.f};
 			Get_ActorCom()->Set_GlobalPose({ XMVectorGetX(vPos), XMVectorGetY(vPos), XMVectorGetZ(vPos) });
 		}
 	}

@@ -244,6 +244,17 @@ COORDINATE CPlayerData_Manager::Get_PlayerCoord()
 	return m_pCurrentPlayer->Get_CurCoord();
 }
 
+void CPlayerData_Manager::Save_PlayerPrePos()
+{
+	_vector vPos = static_cast<CPlayer*>(m_pPlayers[(_uint)PLAYABLE_ID::NORMAL])->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION);
+	XMStoreFloat3(&m_vPrePlayerPos, vPos);
+}
+
+void CPlayerData_Manager::Return_To_PrePos()
+{
+	static_cast<CPlayer*>(m_pPlayers[(_uint)PLAYABLE_ID::NORMAL])->Get_ActorDynamic()->Set_GlobalPose(m_vPrePlayerPos);
+}
+
 CPlayerItem* CPlayerData_Manager::Get_PlayerItem_Ptr(const _wstring& _strItemTag)
 {
 	return m_ItemState[_strItemTag].second;

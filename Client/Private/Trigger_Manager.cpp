@@ -780,13 +780,35 @@ void CTrigger_Manager::Register_Trigger_Action()
 			
 		CCamera_Manager::GetInstance()->Set_ResetData(CCamera_Manager::TARGET);
 
-		CCamera_Manager::GetInstance()->Start_Changing_ArmLength(CCamera_Manager::TARGET, 0.f, 6.f, EASE_IN_OUT);
+		// 0. Item Trigger 모두 끄기
+		CGameObject* pItem = CPlayerData_Manager::GetInstance()->Get_PlayerItem_Ptr(_wszEventTag);
+		static_cast<CPlayerItem*>(pItem)->Get_ActorCom()->Set_AllShapeEnable(false);
+
+		// 1. Player PrePos 저장
+		CPlayerData_Manager::GetInstance()->Save_PlayerPrePos();
 		
-		CCamera_Manager::GetInstance()->Start_Turn_AxisY(CCamera_Manager::TARGET, 0.f, XMConvertToRadians(45.f));
-		CCamera_Manager::GetInstance()->Start_Turn_AxisRight(CCamera_Manager::TARGET, 0.f, XMConvertToRadians(20.f));
-		//auto Arm = CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET)->Get_Arm();
-		//Arm->Turn_ArmY(XMConvertToRadians(45.f));
-		//Arm->Turn_ArmX(XMConvertToRadians(20.f));
+		// 2. Player Item CutScene용 위치로 이동
+		_vector vItemPos = pItem->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION);
+		_vector vPlayerPos = CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr()->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION);
+
+		// 3. Player Kinematic
+		CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr()->Set_Kinematic(true);
+		vPlayerPos = XMVectorSetY(vItemPos + XMVectorSet(-0.85f, 0.f, -1.f, 0.f), XMVectorGetY(vPlayerPos));
+
+		// 4. Player -> Item Direction
+		_vector vDir = XMVector3Normalize(vItemPos - vPlayerPos);
+		CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr()->LookDirectionXZ_Kinematic(vDir);
+		CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr()->Set_Position(XMVectorSetW(vPlayerPos, 1.f));
+		
+		//CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr()->Get_ActorDynamic()->Set_GlobalPose({XMVectorGetX(vPlayerPos), XMVectorGetY(vPlayerPos), XMVectorGetZ(vPlayerPos) });
+		
+		// 3. Camera 이동
+		CCamera_Manager::GetInstance()->Start_Changing_ArmLength(CCamera_Manager::TARGET, 0.f, 5.5f, EASE_IN_OUT);
+		CCamera_Manager::GetInstance()->Start_Changing_AtOffset(CCamera_Manager::TARGET, 0.f, XMVectorSet(1.7f, 1.5f, 0.f, 0.f), EASE_IN_OUT);
+		CCamera_Manager::GetInstance()->Start_Zoom(CCamera_Manager::TARGET, 0.f, CCamera::LEVEL_4, EASE_IN_OUT);
+		CCamera_Manager::GetInstance()->Start_Turn_ArmVector(CCamera_Manager::TARGET, 0.f, XMVectorSet(0.7294f, 0.5295, -0.4331f, 0.f), EASE_IN_OUT);
+		//CCamera_Manager::GetInstance()->Start_Turn_ArmVector(CCamera_Manager::TARGET, 0.f, XMVectorSet(0.7019f, 0.5776f, -0.4168f, 0.f), EASE_IN_OUT);
+		
 		};
 	
 	m_Actions[TEXT("Get_PlayerItem")] = [this](_wstring _wszEventTag) 
@@ -801,6 +823,7 @@ void CTrigger_Manager::Register_Trigger_Action()
 		CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr()->Set_BlockPlayerInput(false);
 		CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr()->Set_State(CPlayer::STATE::IDLE);
 		CPlayerData_Manager::GetInstance()->Change_PlayerItemMode(_wszEventTag, CPlayerItem::DISAPPEAR);
+		CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr()->Set_Kinematic(false);
 		};
 	// 습득후 이벤트 가 없을때 카메라 원복,
 	m_Actions[TEXT("Get_PlayerItem_After_End")] = [this](_wstring _wszEventTag) 
@@ -808,6 +831,11 @@ void CTrigger_Manager::Register_Trigger_Action()
 		CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr()->Set_BlockPlayerInput(false);
 		CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr()->Set_State(CPlayer::STATE::IDLE);
 		CPlayerData_Manager::GetInstance()->Change_PlayerItemMode(_wszEventTag, CPlayerItem::DISAPPEAR);
+		CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr()->Set_Kinematic(false);
+
+		// Player 위치 이전으로 이동
+		CPlayerData_Manager::GetInstance()->Return_To_PrePos();
+
 		CCamera_Manager::GetInstance()->Start_ResetArm_To_SettingPoint(CCamera_Manager::TARGET, 1.f);
 
 		if (_wszEventTag == TEXT("Stop_Stamp"))

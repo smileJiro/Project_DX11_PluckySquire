@@ -70,6 +70,10 @@ public:
 	_vector					Get_PlayerPosition();
 	COORDINATE				Get_PlayerCoord();
 	//스킬 레벨 용도
+
+	void					Save_PlayerPrePos();
+	void					Return_To_PrePos();
+
 public:
 	void					Set_JumpSkillLevel(_uint _JumpSkill) { m_iJumpSkill = _JumpSkill; }
 	void					Set_ThrowSkillLevel(_uint _ThrowSkill) { m_iThorowSkill = _ThrowSkill; }
@@ -111,6 +115,9 @@ private:
 	_int								m_iMaxWhirlSkill = { 3 };
 	_int								m_iAttackDamagePlus = { 0 };
 	_int								m_iMaxAttackDamagePlus = { 3 };
+
+	// Player 위치 저장용
+	_float3								m_vPrePlayerPos = {};
 
 private:
 	void					Set_Tags();
