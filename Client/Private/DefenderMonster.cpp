@@ -6,6 +6,7 @@
 #include "Effect2D_Manager.h"
 #include "ModelObject.h"
 #include "2DModel.h"
+#include "GameInstance.h"
 
 CDefenderMonster::CDefenderMonster(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CCharacter(_pDevice, _pContext)
@@ -89,6 +90,9 @@ void CDefenderMonster::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vFor
 	if (m_tStat.iHP <= 0)
 	{
 		Event_DeleteObject(this);
+		wstring strSFX = TEXT("A_sfx_tank_projectile_explosion-") + to_wstring(rand() % 4);
+		END_SFX(strSFX);
+		START_SFX_DELAY(strSFX, 0.f, g_SFXVolume, false);
 		On_Explode();
 		m_tStat.iHP = m_tStat.iMaxHP;
 		return;
@@ -97,6 +101,7 @@ void CDefenderMonster::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vFor
 
 void CDefenderMonster::On_Explode()
 {
+
 }
 
 void CDefenderMonster::On_Spawned()
@@ -104,6 +109,9 @@ void CDefenderMonster::On_Spawned()
 	m_bSpawned = true;
 	m_PartObjects[PART_BODY]->Set_Active(true);
 	m_pBodyCollider->Set_Active(true);
+	wstring strSFX = TEXT("A_sfx_teleport_small_v2-") + to_wstring(rand() % 7);
+	END_SFX(strSFX);
+	START_SFX_DELAY(strSFX, 0.f, g_SFXVolume * 0.5f, false);
 }
 
 void CDefenderMonster::On_Teleport()
@@ -120,6 +128,11 @@ void CDefenderMonster::On_Teleport()
 		, m_iFXTeleportInIdx, false, 0.f, SECTION_2D_PLAYMAP_EFFECT, (CGameObject**)&m_pTeleportFX);
 	Safe_AddRef(m_pTeleportFX);
 	static_cast<C2DModel*>(m_pTeleportFX->Get_Model(COORDINATE_2D))->Get_Animation(m_iFXTeleportInIdx)->Reset();
+
+
+	wstring strSFX = TEXT("A_sfx_teleport_small-") + to_wstring(rand() % 8);
+	END_SFX(strSFX);
+	START_SFX_DELAY(strSFX, 0.f, g_SFXVolume*0.5f, false);
 }
 
 void CDefenderMonster::On_LifeTimeOut()
