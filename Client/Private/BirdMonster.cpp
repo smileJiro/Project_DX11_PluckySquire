@@ -6,6 +6,8 @@
 #include "Pooling_Manager.h"
 #include "Effect_Manager.h"
 #include "DetectionField.h"
+#include "PlayerData_Manager.h"
+#include "Section_Manager.h"
 
 CBirdMonster::CBirdMonster(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : CMonster(_pDevice, _pContext)
@@ -152,7 +154,7 @@ void CBirdMonster::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
 {
     __super::On_Hit(_pHitter, _iDamg, _vForce);
 
-    m_pGameInstance->Start_SFX(_wstring(L"A_sfx_sword_hit_namastarling_") + to_wstring(rand() % 3), 50.f);
+    m_pGameInstance->Start_SFX_Distance_Delay(_wstring(L"A_sfx_sword_hit_namastarling_") + to_wstring(rand() % 3), m_pControllerTransform->Get_State(CTransform::STATE_POSITION), 0.1f, g_SFXVolume, 0.f, 13.f);
 }
 
 void CBirdMonster::Change_Animation()
@@ -166,7 +168,7 @@ void CBirdMonster::Change_Animation()
             break;
 
         case MONSTER_STATE::ALERT:
-            m_pGameInstance->Start_SFX(_wstring(L"A_sfx_namastarling_alert_") + to_wstring(rand() % 4), 50.f);
+            m_pGameInstance->Start_SFX_Distance_Delay(_wstring(L"A_sfx_namastarling_alert_") + to_wstring(rand() % 4), m_pControllerTransform->Get_State(CTransform::STATE_POSITION), 0.1f, g_SFXVolume, 0.f, 13.f);
 
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(ALERT_EDIT);
             break;
@@ -193,7 +195,7 @@ void CBirdMonster::Change_Animation()
 
         case MONSTER_STATE::DEAD:
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(DIE);
-            m_pGameInstance->Start_SFX(_wstring(L"A_sfx_namastarling_death_") + to_wstring(rand() % 3), 50.f);
+            m_pGameInstance->Start_SFX_Distance_Delay(_wstring(L"A_sfx_namastarling_death_") + to_wstring(rand() % 3), m_pControllerTransform->Get_State(CTransform::STATE_POSITION), 0.1f, g_SFXVolume, 0.f, 13.f);
 
             break;
 
@@ -264,6 +266,8 @@ void CBirdMonster::Attack()
             XMVectorSetY(vTargetPos, vPosition.y);
             XMStoreFloat4(&vRotation, m_pGameInstance->Direction_To_Quaternion(XMVectorSet(0.f, 0.f, 1.f, 0.f), vTargetPos - Get_FinalPosition()));
             CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Projectile_BirdMonster"), eCoord, &vPosition, &vRotation);
+
+            m_pGameInstance->Start_SFX_Distance_Delay(_wstring(L"A_sfx_NamaStarling_fire_seed_") + to_wstring(rand() % 2), m_pControllerTransform->Get_State(CTransform::STATE_POSITION), 0.1f, g_SFXVolume, 0.f, 13.f);
         }
         else if (COORDINATE_2D == eCoord)
         {
@@ -294,12 +298,21 @@ void CBirdMonster::Attack()
 
             CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Projectile_BirdMonster"), eCoord, &vPosition, &vRotation);
 
+            if (COORDINATE_2D == CPlayerData_Manager::GetInstance()->Get_PlayerCoord())
+            {
+                if (CSection_Manager::GetInstance()->Is_PlayerInto(m_strSectionName))
+                {
+                    m_pGameInstance->Start_SFX_Distance2D_Delay(_wstring(L"A_sfx_NamaStarling_fire_seed_") + to_wstring(rand() % 2),
+                        m_pControllerTransform->Get_State(CTransform::STATE_POSITION), CPlayerData_Manager::GetInstance()->Get_PlayerPosition(), 0.1f, g_SFXVolume, 0.f);
+                }
+            }
+
         }
         ++m_iAttackCount;
 
     }
 
-    m_pGameInstance->Start_SFX(_wstring(L"A_sfx_NamaStarling_fire_seed_") + to_wstring(rand() % 2), 50.f);
+    
 
 }
 
