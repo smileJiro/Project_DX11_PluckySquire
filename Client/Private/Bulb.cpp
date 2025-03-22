@@ -57,7 +57,7 @@ HRESULT CBulb::Initialize(void* _pArg)
 		static_cast<CActor_Dynamic*>(m_pActorCom)->Set_Gravity(false);
 	}
 
-	m_fStickingStartTime = 0.3f;
+	m_fStickingStartTime = 0.1f;
 
 	return S_OK;
 }

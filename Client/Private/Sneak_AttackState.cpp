@@ -35,8 +35,8 @@ HRESULT CSneak_AttackState::Initialize(void* _pArg)
 void CSneak_AttackState::State_Enter()
 {
 	_uint iPlayerAnim = static_cast<CModelObject*>(CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr()->Get_Body())->Get_CurrentAnimIndex();
-	if ((_uint)CPlayer::ANIM_STATE_3D::LATCH_KNOCKED_DOWN_AND_EATEN_FROM_BEHIND_LATCH == iPlayerAnim
-		|| (_uint)CPlayer::ANIM_STATE_3D::LATCH_KNOCKED_DOWN_AND_EATEN_FROM_BEHIND_LOOP_LATCH == iPlayerAnim)
+	if ((_uint)CPlayer::ANIM_STATE_3D::LATCH_KNOCKED_DOWN_AND_EATEN_FROM_BEHIND_LATCH != iPlayerAnim
+		&& (_uint)CPlayer::ANIM_STATE_3D::LATCH_KNOCKED_DOWN_AND_EATEN_FROM_BEHIND_LOOP_LATCH != iPlayerAnim)
 	{
 		Beetle_CutScene();
 	}
@@ -64,10 +64,15 @@ void CSneak_AttackState::State_Update(_float _fTimeDelta)
 	//	}
 	//}
 
-	// FadeInOut 시간 계산
-	FadeInOut(_fTimeDelta);
+	_uint iPlayerAnim = static_cast<CModelObject*>(CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr()->Get_Body())->Get_CurrentAnimIndex();
+	if ((_uint)CPlayer::ANIM_STATE_3D::LATCH_KNOCKED_DOWN_AND_EATEN_FROM_BEHIND_LATCH != iPlayerAnim
+		&& (_uint)CPlayer::ANIM_STATE_3D::LATCH_KNOCKED_DOWN_AND_EATEN_FROM_BEHIND_LOOP_LATCH != iPlayerAnim)
+	{
+		// FadeInOut 시간 계산
+		FadeInOut(_fTimeDelta);
 
-	Check_Animation_End();
+		Check_Animation_End();
+	}
 }
 
 void CSneak_AttackState::State_Exit()
