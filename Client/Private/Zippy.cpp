@@ -273,7 +273,7 @@ void CZippy::Change_Animation()
             m_pGameInstance->End_SFX(_wstring(L"A_sfx_zippi_saw_loop"));
             m_pGameInstance->End_SFX(_wstring(L"A_sfx_zippi_electrify_loop"));
 
-            m_pGameInstance->Start_SFX(_wstring(L"A_sfx_sword_hit_zippi_") + (to_wstring(rand()%3+1)), 50.f);
+            m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_sword_hit_zippi_") + (to_wstring(rand()%3+1)), 0.1f, g_SFXVolume);
 			break;
 
 		case Client::MONSTER_STATE::DEAD:
