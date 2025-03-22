@@ -211,8 +211,8 @@ HRESULT CSpear_Soldier::Initialize(void* _pArg)
 
 void CSpear_Soldier::Priority_Update(_float _fTimeDelta)
 {
-    //if (true == m_isDead)
-    //    return;
+    if (true == m_isDead)
+        return;
 
     if (true == IsCool())
     {
@@ -231,7 +231,7 @@ void CSpear_Soldier::Update(_float _fTimeDelta)
     if (true == m_isDead)
     {
         m_isDash = false;
-        //return;
+        return;
     }
 
     if (true == m_isDash)
@@ -266,8 +266,8 @@ void CSpear_Soldier::Update(_float _fTimeDelta)
 
 void CSpear_Soldier::Late_Update(_float _fTimeDelta)
 {
-    //if (true == m_isDead)
-    //    return;
+    if (true == m_isDead)
+        return;
 
     __super::Late_Update(_fTimeDelta); /* Part Object Late_Update */
 }
