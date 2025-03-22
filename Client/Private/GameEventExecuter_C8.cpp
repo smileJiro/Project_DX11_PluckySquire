@@ -1260,9 +1260,12 @@ void CGameEventExecuter_C8::Chapter8_3D_Out_02(_float _fTimeDelta)
 			pPlayer->Add_AutoMoveCommand(AutoMove);
 			pPlayer->Add_AutoMoveCommand(AutoMove2);
 			pPlayer->Start_AutoMove(true);
-			pThrash->Move_Position(_float2(XMVectorGetX(vThrashPos), XMVectorGetY(vThrashPos)), CFriend::DIR_UP);
-			pViolet->Move_Position(_float2(XMVectorGetX(vVioletPos), XMVectorGetY(vVioletPos)), CFriend::DIR_UP);
-			pPip->Move_Position(_float2(XMVectorGetX(vPipPos), XMVectorGetY(vPipPos)), CFriend::DIR_UP);
+
+			if (nullptr != pThrash && nullptr != pViolet && nullptr != pPip) {
+				pThrash->Move_Position(_float2(XMVectorGetX(vThrashPos), XMVectorGetY(vThrashPos)), CFriend::DIR_UP);
+				pViolet->Move_Position(_float2(XMVectorGetX(vVioletPos), XMVectorGetY(vVioletPos)), CFriend::DIR_UP);
+				pPip->Move_Position(_float2(XMVectorGetX(vPipPos), XMVectorGetY(vPipPos)), CFriend::DIR_UP);
+			}
 		}
 
 		Next_Step_Over(Change_PlayMap(0.f));
