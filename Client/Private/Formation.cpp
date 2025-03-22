@@ -4,6 +4,8 @@
 #include "PlayerData_Manager.h"
 #include "Event_Manager.h"
 #include "Monster.h"
+#include "Layer.h"
+#include "FSM.h"
 
 CFormation::CFormation(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CGameObject(_pDevice, _pContext)
@@ -41,6 +43,10 @@ HRESULT CFormation::Initialize(void* _pArg)
 	if (0.f < pDesc->fColumn_Interval)
 		m_fColumn_Interval = pDesc->fColumn_Interval;
 
+	m_vInitialPosition = pDesc->tTransform3DDesc.vInitialPosition;
+	m_strMemberLayerTag = pDesc->strMemberLayerTag;
+	m_strMemberPrototypeTag = pDesc->strMemberPrototypeTag;
+
 	m_fDelayTime = pDesc->fDelayTime;
 
 	m_OffSets.resize(m_iRow * m_iColumn);
@@ -58,6 +64,9 @@ HRESULT CFormation::Initialize(void* _pArg)
 
 void CFormation::Update(_float _fTimeDelta)
 {
+	if (true == m_isReset)
+		m_isReset = false;
+
 	if (true == m_isDelay)
 	{
 		m_fAccTime += _fTimeDelta;
@@ -162,7 +171,7 @@ HRESULT CFormation::Initialize_Members(void* _pArg)
 			Monster_Desc.tTransform3DDesc.vInitialPosition = vPos;
 			Monster_Desc.tTransform3DDesc.fSpeedPerSec = pDesc->tTransform3DDesc.fSpeedPerSec;
 			Monster_Desc.tTransform3DDesc.fRotationPerSec = pDesc->tTransform3DDesc.fRotationPerSec;
-			//Monster_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER8_1;
+			Monster_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER8_FORMATION;
 			Monster_Desc.isFormationMode = true;
 			Monster_Desc.pFormation = this;
 
@@ -178,6 +187,48 @@ HRESULT CFormation::Initialize_Members(void* _pArg)
 			}
 		}
 	}
+	return S_OK;
+}
+
+HRESULT CFormation::Create_Members()
+{
+	CGameObject* pObject = nullptr;
+	_float3 vPos;
+
+	CMonster::MONSTER_DESC Monster_Desc;
+	Monster_Desc.iCurLevelID = m_iCurLevelID;
+	Monster_Desc.eStartCoord = COORDINATE_3D;
+	Monster_Desc.isCoordChangeEnable = false;
+	Monster_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	Monster_Desc.isSneakMode = true;
+
+	for (_uint i = 0; i < m_iRow; ++i)
+	{
+		for (_uint j = 0; j < m_iColumn; ++j)
+		{
+			pObject = nullptr;
+			XMStoreFloat3(&vPos, Get_FinalPosition() + XMLoadFloat3(&m_OffSets[i * m_iColumn + j]));
+
+			Monster_Desc.tTransform3DDesc.vInitialPosition = vPos;
+			Monster_Desc.tTransform3DDesc.fSpeedPerSec = Get_ControllerTransform()->Get_SpeedPerSec();
+			Monster_Desc.tTransform3DDesc.fRotationPerSec = Get_ControllerTransform()->Get_RotationPerSec();
+			Monster_Desc.eWayIndex = SNEAKWAYPOINTINDEX::CHAPTER8_FORMATION;
+			Monster_Desc.isFormationMode = true;
+			Monster_Desc.pFormation = this;
+
+			if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, m_strMemberPrototypeTag, m_iCurLevelID, m_strMemberLayerTag, &pObject, &Monster_Desc)))
+				return E_FAIL;
+
+			if (pObject != nullptr)
+			{
+				CMonster* pMonster = static_cast<CMonster*>(pObject);
+				m_Members.push_back(pMonster);
+				Safe_AddRef(pObject);
+				Event_Set_Kinematic(static_cast<CActor_Dynamic*>(pMonster->Get_ActorCom()), true);
+			}
+		}
+	}
+
 	return S_OK;
 }
 
@@ -375,6 +426,74 @@ _bool CFormation::Get_Formation_NextPosition(CMonster* _pMember, _float3* _vPosi
 		}
 	}
 	return false;
+}
+
+void CFormation::Reset_Formation()
+{
+	if (true == m_isReset)
+		return;
+
+	//위치 이동, 초기화
+	m_isMove =  false;
+	m_isRotate = true;
+	m_iPatrolIndex = 0;
+	m_isBack = false;
+	m_isDelay = false;
+	m_fAccTime = 0.f;
+	Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSet(m_vInitialPosition.x, m_vInitialPosition.y, m_vInitialPosition.z, 1.f));
+
+	m_EmptySlots.clear();
+	m_ReserveSlots.clear();
+
+	_uint iIndex = 0;
+
+	auto pLayer = m_pGameInstance->Find_Layer(m_iCurLevelID, m_strMemberLayerTag);
+
+	if (nullptr != pLayer)
+	{
+		const auto& Objects = pLayer->Get_GameObjects();
+
+		for_each(Objects.begin(), Objects.end(), [&](CGameObject* pGameObject) {
+			auto pObject = dynamic_cast<CMonster*>(pGameObject);
+
+			if (nullptr != pObject)
+			{
+				Event_DeleteObject(pObject);
+
+				//_float3 vMemberPos;
+
+				//XMStoreFloat3(&vMemberPos, Get_FinalPosition() + XMLoadFloat3(&m_OffSets[iIndex]));
+
+				//pObject->Get_ActorCom()->Set_GlobalPose(vMemberPos);
+				//pObject->Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSet(vMemberPos.x, vMemberPos.y, vMemberPos.z, 1.f));
+
+				//CActor_Dynamic* pDynamic = static_cast<CActor_Dynamic*>(pObject->Get_ActorCom());
+				////다이나믹 상태이면 대열에서 빠져있는 상태이므로
+				//if (true == pDynamic->Is_Dynamic())
+				//{
+				//	pDynamic->Set_Kinematic();
+				//	Safe_AddRef(pObject);
+				//}
+				//
+				//pObject->Set_AnimChangeable(true);
+				//pObject->Get_FSM()->Change_State((_uint)MONSTER_STATE::FORMATION_IDLE);
+				////Event_ChangeMonsterState(MONSTER_STATE::FORMATION_IDLE, pObject->Get_FSM());
+				//++iIndex;
+			}
+			});
+	}
+	for (_uint i = 0; i < m_iRow * m_iColumn; ++i)
+	{
+		if (nullptr != m_Members[i])
+		{
+			Safe_Release(m_Members[i]);
+		}
+	}
+	m_Members.clear();
+
+	Create_Members();
+
+	m_isReset = true;
 }
 
 

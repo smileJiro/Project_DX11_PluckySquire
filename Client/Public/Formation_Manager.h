@@ -28,7 +28,7 @@ private:
 	virtual ~CFormation_Manager() = default;
 
 public:
-	HRESULT	Initialize();
+	HRESULT	Initialize(_uint _iCurLevel);
 	void	Update(_float _fTimeDelta);
 
 public:
@@ -37,6 +37,8 @@ public:
 
 	//비어있는 위치로 추가
 	_bool Add_To_Formation(CMonster* _pMember, CFormation** _pFormation);
+
+	void Reset_Formation();
 
 private:
 	HRESULT Ready_Chapter8_Formation();
@@ -47,8 +49,9 @@ private:
 	vector<CFormation*> m_Formations;
 	_uint m_iNumFormations = { 0 };
 
+	_uint m_iCurLevel = {0};
+
 public:
-	static CFormation_Manager* Create();
 	virtual void Free() override;
 };
 
