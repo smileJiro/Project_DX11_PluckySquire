@@ -489,7 +489,7 @@ void CGameEventExecuter_C2::Chapter2_Humgrump(_float _fTimeDelta)
 
 
 	}
-	else if (Step_Check(STEP_2))
+	else if (Step_Check(STEP_1))
 	{
 		CPlayer* pPlayer = Get_Player();
 
@@ -501,7 +501,7 @@ void CGameEventExecuter_C2::Chapter2_Humgrump(_float _fTimeDelta)
 			Next_Step(true);
 		}
 	}
-	else if (Step_Check(STEP_1)) {
+	else if (Step_Check(STEP_2)) {
 
 		if (m_fTimer >= 13.f) {
 			CSection* pSection = CSection_Manager::GetInstance()->Find_Section(TEXT("Chapter2_P1314"));
@@ -1041,9 +1041,12 @@ void CGameEventExecuter_C2::Chapter2_StorySequence(_float _fTimeDelta)
 	{
 		if (Is_Start())
 		{
-			// 암 1 땡기기
-			CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Increase(CCamera_Manager::TARGET, 1.f,
-				1.f, EASE_IN_OUT);
+			// Arm Length 변경
+			CCamera_Manager::GetInstance()->Start_Changing_ArmLength(CCamera_Manager::TARGET, 1.f,
+				7.7f, EASE_IN_OUT);
+			
+			// Arm Vector 변경
+			CCamera_Manager::GetInstance()->Start_Turn_ArmVector(CCamera_Manager::TARGET, 1.f, XMVectorSet(0.2606f, 0.5776f, -0.7736f, 0.f), EASE_IN_OUT);
 
 			// 암 x3 y2 이동
 			CCamera_Manager::GetInstance()->Start_Changing_AtOffset(CCamera_Manager::TARGET,
@@ -1172,7 +1175,7 @@ void CGameEventExecuter_C2::Chapter2_StorySequence(_float _fTimeDelta)
 			// 끝나면 x5로 이동,
 			CCamera_Manager::GetInstance()->Start_Changing_AtOffset(CCamera_Manager::TARGET,
 				1.f,
-				XMVectorSet(12.f, 2.f, 0.f, 0.f),
+				XMVectorSet(12.f, 1.f, 0.f, 0.f),
 				EASE_IN_OUT
 			);
 
@@ -1219,7 +1222,7 @@ void CGameEventExecuter_C2::Chapter2_StorySequence(_float _fTimeDelta)
 			// 끝나면 x5로 이동,
 			CCamera_Manager::GetInstance()->Start_Changing_AtOffset(CCamera_Manager::TARGET,
 				1.f,
-				XMVectorSet(11.f, 4.f, 0.f, 0.f),
+				XMVectorSet(10.f, 5.5f, 0.f, 0.f),
 				EASE_IN_OUT
 			);
 		}

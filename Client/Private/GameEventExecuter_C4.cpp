@@ -399,19 +399,18 @@ void CGameEventExecuter_C4::Chapter4_StorySequence(_float _fTimeDelta)
 	function fCamerafunc = []() {
 
 		// 암 5 땡기기
-		CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Increase(CCamera_Manager::TARGET, 1.f,
-			10.f, EASE_IN_OUT);
-		//CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Decrease(CCamera_Manager::TARGET, 5.f,
-		//	1.f, EASE_IN_OUT);
-		CCamera_Manager::GetInstance()->Start_Turn_AxisRight(CCamera_Manager::TARGET, 1.f, XMConvertToRadians(40.f), XMConvertToRadians(25.f));
+		CCamera_Manager::GetInstance()->Start_Changing_ArmLength(CCamera_Manager::TARGET, 1.f,
+			12.3f, EASE_IN_OUT);
 
-		//// 암 타겟오프셋 x3 y2 z-3 이동
+		CCamera_Manager::GetInstance()->Start_Turn_ArmVector(CCamera_Manager::TARGET, 1.f, XMVectorSet(-0.1577f, 0.6915f, -0.7050f, 0.f), EASE_IN_OUT);
+		
+		// 암 타겟오프셋 x3 y2 z-3 이동
 		CCamera_Manager::GetInstance()->Start_Changing_AtOffset(CCamera_Manager::TARGET,
 			1.f,
 			XMVectorSet(0.f, 0.f, -1.f, 0.f),
 			EASE_IN_OUT);
-
 		};
+
 	if (true == Postit_Process(L"Chapter4_SKSP_Postit", L"Postit_Page_01", 1.f, CPostit_Page::POSTIT_PAGE_POSTION_TYPE_D, false, fCamerafunc))
 	{
 		CSection* pSection = SECTION_MGR->Find_Section(L"Chapter4_SKSP_Postit");
@@ -956,7 +955,7 @@ _bool CGameEventExecuter_C4::Change_PlayMap(_float _fStartTime)
 		}
 
 		// 아이템들 렌더
-		CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)eCurLevelID, TEXT("Tilting_Glove"), _float3(-3.59f, 29.89f, 27.14f));
+		CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)eCurLevelID, TEXT("Tilting_Glove"), _float3(-3.59f, 28.29f, 27.14f));
 		CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)eCurLevelID, TEXT("Bomb_Stamp"), _float3(-45.9f, 10.83f, 8.21f), {1.f,1.f,1.f});
 		CPlayerData_Manager::GetInstance()->Spawn_Bulb(LEVEL_STATIC, (LEVEL_ID)eCurLevelID);
 		m_iSubStep++;
