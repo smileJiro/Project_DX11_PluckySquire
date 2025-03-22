@@ -162,6 +162,9 @@ void CFatherPart_Prop::State_Change_Pickup()
 	CPlayer* pPlayer = CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr();
 	assert(pPlayer);
 
+	START_SFX_DELAY(TEXT("Jingle_GetItem"), 0.1f, g_SFXVolume, false);
+
+	
 	switch (m_iFatherPart)
 	{
 	case CFatherGame::FATHER_PART::FATHER_BODY:

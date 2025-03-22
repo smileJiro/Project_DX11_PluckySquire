@@ -99,6 +99,8 @@ void C3DMapSkspObject::Late_Update(_float _fTimeDelta)
     if (false == m_isFrustumCulling)
     {
         Register_RenderGroup(RENDERGROUP::RG_3D, PRIORITY_3D::PR3D_GEOMETRY);
+        if(m_eSkspType == SKSP_TUB || m_eSkspType == SKSP_CUP || m_eSkspType == SKSP_C09_TUBE)
+        Register_RenderGroup(REDNERGROUP_SHADOWID, 0);
         SECTION_MGR->SetActive_Section(m_strRenderSectionTag, true);
     }
     else

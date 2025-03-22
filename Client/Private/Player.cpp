@@ -2598,6 +2598,7 @@ void CPlayer::Key_Input(_float _fTimeDelta)
 			Set_CurrentStampType(PLAYER_PART_STOP_STMAP);
 			if (STATE::STAMP == Get_CurrentStateID())
 				Equip_Part(PLAYER_PART_STOP_STMAP);
+			START_SFX_DELAY(TEXT("A_sfx_stamp_switch"), 0.f, g_SFXVolume, false);
 		}
 	}
 	else if (KEY_DOWN(KEY::NUM2))
@@ -2605,6 +2606,7 @@ void CPlayer::Key_Input(_float _fTimeDelta)
 		Set_CurrentStampType(PLAYER_PART_BOMB_STMAP);
 		if (STATE::STAMP == Get_CurrentStateID())
 			Equip_Part(PLAYER_PART_BOMB_STMAP);
+		START_SFX_DELAY(TEXT("A_sfx_stamp_switch"), 0.f, g_SFXVolume, false);
 	}
 	if (KEY_DOWN(KEY::NUM3))
 	{

@@ -1621,6 +1621,7 @@ void CGameEventExecuter_C8::Chapter8_Meet_Humgrump(_float _fTimeDelta)
 
 			if (Is_Start()) {
 				static_cast<CModelObject*>(m_TargetObjects[0])->Switch_Animation(CNpc_Humgrump::CHAPTER8_TURN);
+				START_SFX_DELAY(TEXT("A_sfx_humpgrump_staff_hit"), 0.8f, g_SFXVolume, false);
 			}
 		}
 
@@ -1704,6 +1705,7 @@ void CGameEventExecuter_C8::Chapter8_Meet_Humgrump(_float _fTimeDelta)
 			if (Is_Start()) {
 				// 9. Bubble로 변신, 카메라 줌
 				static_cast<CModelObject*>(m_TargetObjects[0])->Switch_Animation(CNpc_Humgrump::CHAPTER8_BUBBLE_BRUST);
+				START_SFX_DELAY(TEXT("A_sfx_humpgrump_emerges"), 0.f, g_SFXVolume * 1.3f, false);
 
 				CCamera_Manager::GetInstance()->Set_ResetData(CCamera_Manager::TARGET_2D);
 				CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Decrease(CCamera_Manager::TARGET_2D, 1.3f, 1.5f, EASE_IN_OUT);
@@ -1727,11 +1729,18 @@ void CGameEventExecuter_C8::Chapter8_Meet_Humgrump(_float _fTimeDelta)
 
 			if (Is_Start()) {
 				static_cast<CModelObject*>(m_TargetObjects[0])->Switch_Animation(CNpc_Humgrump::CHAPTER8_FLY_AWAY);
+				START_SFX_DELAY(TEXT("A_sfx_humgrump_zooms_off_no_pupa"), 0.f, g_SFXVolume, false);
 			}
 		}
 
 		if (false == static_cast<CModelObject*>(m_TargetObjects[0])->Is_DuringAnimation()) {
 			// 10. 다 날아갔으면 Active 끄고 Camera Zoom 더 멀리
+			START_SFX_DELAY(TEXT("A_sfx_humgrump_zooms_off"), 0.0f, g_SFXVolume, false);
+			Next_Step(true);
+		}
+	}
+	else if (Step_Check(STEP_8)) {
+		if (m_fTimer >= 1.f) {
 			m_TargetObjects[0]->Set_Active(false);
 			CCamera_Manager::GetInstance()->Start_Changing_ArmLength(CCamera_Manager::TARGET_2D, 0.5f, 14.4f, EASE_IN_OUT);
 			_vector vCenter = XMVectorSet(0.f, -37.36f, 0.f, 1.f);
@@ -1776,7 +1785,7 @@ void CGameEventExecuter_C8::Chapter8_Meet_Humgrump(_float _fTimeDelta)
 			Next_Step(true);
 		}
 	}
-	else if (Step_Check(STEP_8)) {
+	else if (Step_Check(STEP_9)) {
 
 		CPlayer* pPlayer = Get_Player();
 
@@ -1788,13 +1797,15 @@ void CGameEventExecuter_C8::Chapter8_Meet_Humgrump(_float _fTimeDelta)
 			m_TargetObjects[0]->Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, XMVectorSet(0.0f, -160.f, 0.03f, 1.f));
 			m_iSubStep++;
 
+			START_SFX_DELAY(TEXT("A_sfx_Pupa_intro"), 0.0f, g_SFXVolume, false);
+
 			// 배경 어둡게
 			Ready_Action(SECTION_MGR->Get_Cur_Section_Key(), SECTION_2D_PLAYMAP_BACKGROUND, C2DMapActionObject::ACTIVE_TYPE_DYNAMIC_BACKGROUND, 0.f);
 
 			Next_Step(true);
 		}
 	}
-	else if (Step_Check(STEP_9)) {
+	else if (Step_Check(STEP_10)) {
 
 		// 2. 고치가 튕길 때 Player와 친구들 뒤로 날아가기
 		if (m_fTimer >= 0.1f && 0 == m_iSubStep) {
@@ -1895,7 +1906,7 @@ void CGameEventExecuter_C8::Chapter8_Meet_Humgrump(_float _fTimeDelta)
 			}
 		}
 	}
-	else if (Step_Check(STEP_10)) {
+	else if (Step_Check(STEP_11)) {
 		if (m_fTimer >= 0.8f) {
 			if (Is_Start()) {
 				// 바이올렛 대사 1
@@ -1913,10 +1924,10 @@ void CGameEventExecuter_C8::Chapter8_Meet_Humgrump(_float _fTimeDelta)
 			}
 		}
 	}
-	else if (Step_Check(STEP_11)) {
+	else if (Step_Check(STEP_12)) {
 		if (false == CDialog_Manager::GetInstance()->Get_DisPlayDialogue() && 0 == m_iSubStep) {
 			static_cast<CModelObject*>(m_TargetObjects[0])->Switch_Animation(CNpc_Humgrump::CHAPTER8_PUPA_INTRO_1);
-
+			START_SFX_DELAY(TEXT("A_sfx_Pupa_intro"), 0.5f, g_SFXVolume, false);
 			m_iSubStep++;
 		}
 
@@ -1926,7 +1937,7 @@ void CGameEventExecuter_C8::Chapter8_Meet_Humgrump(_float _fTimeDelta)
 			Next_Step(true);
 		}
 	}
-	else if (Step_Check(STEP_12)) {
+	else if (Step_Check(STEP_13)) {
 		if (m_fTimer >= 0.4f) {
 			if (Is_Start()) {
 				// 5. 험그럼프 대사 1
@@ -1939,6 +1950,8 @@ void CGameEventExecuter_C8::Chapter8_Meet_Humgrump(_float _fTimeDelta)
 
 		if (m_fTimer >= 0.5f && false == CDialog_Manager::GetInstance()->Get_DisPlayDialogue() && 0 == m_iSubStep) {
 			static_cast<CModelObject*>(m_TargetObjects[0])->Switch_Animation(CNpc_Humgrump::CHAPTER8_PUPA_GRUNT_0);
+			
+			START_SFX_DELAY(TEXT("A_sfx_Pupa_Grunt1"), 0.0f, g_SFXVolume, false);
 			m_iSubStep++;
 		}
 
@@ -1956,11 +1969,12 @@ void CGameEventExecuter_C8::Chapter8_Meet_Humgrump(_float _fTimeDelta)
 			Next_Step(true);
 		}
 	}
-	else if (Step_Check(STEP_13)) {
+	else if (Step_Check(STEP_14)) {
 		if (false == CDialog_Manager::GetInstance()->Get_DisPlayDialogue()) {
 			// 7. 커지고 폭발
 			if (Is_Start()) {
 				static_cast<CModelObject*>(m_TargetObjects[0])->Switch_Animation(CNpc_Humgrump::CHAPTER8_PUPA_GROW);
+				START_SFX_DELAY(TEXT("A_sfx_Pupa_explode_sequence"), 0.5f, g_SFXVolume, false);
 
 				// Debug
 				CFriend* pThrash = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Thrash"));
@@ -1986,7 +2000,7 @@ void CGameEventExecuter_C8::Chapter8_Meet_Humgrump(_float _fTimeDelta)
 			}
 		}
 	}
-	else if (Step_Check(STEP_14))
+	else if (Step_Check(STEP_15))
 	{
 		if (m_fTimer >= 0.7f) {
 
@@ -2066,7 +2080,7 @@ void CGameEventExecuter_C8::Chapter8_Meet_Humgrump(_float _fTimeDelta)
 			Next_Step(true);
 		}
 	}
-	else if (Step_Check(STEP_15)) {
+	else if (Step_Check(STEP_16)) {
 		if (m_fTimer >= 1.5f) {
 			if (Is_Start()) {
 				CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Decrease(CCamera_Manager::TARGET_2D, 0.7f, 1.5f, EASE_IN_OUT);

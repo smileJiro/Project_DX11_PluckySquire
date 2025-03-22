@@ -329,12 +329,15 @@ void CDefenderPlayer::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _p
 void CDefenderPlayer::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
 {
 	m_tStat.iHP -= _iDamg;
-
+	wstring strSFX = TEXT("A_sfx_jot_take_damage-") + to_wstring(rand() % 4);
+	END_SFX(strSFX);
+	START_SFX_DELAY(strSFX, 0.f, g_SFXVolume, false);
 	if (m_tStat.iHP <= 0)
 	{
 		m_tStat.iHP = 0;
 		Set_BlockPlayerInput(true);
 		m_pBody->Switch_Animation((_uint)ANIM_STATE_CYBERJOT2D::CYBER2D_DEATH);
+		m_pMinigame->Restart_Game();
 		return;
 	}
 
@@ -353,7 +356,9 @@ void CDefenderPlayer::Shoot()
 		T_DIRECTION::RIGHT == m_eTDirection ? &m_vRightShootQuaternion : &m_vLeftShootQuaternion,
 		(_float3*)nullptr,
 		&m_strSectionName);
-
+	wstring strSFX = TEXT("A_sfx_laser_impact_") + to_wstring(rand() % 5);
+	END_SFX(strSFX);
+	START_SFX_DELAY(strSFX, 0.f, g_SFXVolume, false);
 }
 
 void CDefenderPlayer::Remove_Follower(CDefenderPerson* _pPerson)

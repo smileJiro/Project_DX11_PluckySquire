@@ -116,7 +116,10 @@ void CMiniGame_Defender::Set_GameState(DEFENDER_PROGRESS_STATE _eState)
         break;
     case Client::CMiniGame_Defender::DEFENDER_PROG_ENTERED:
     {
-		m_pPlayer->Set_BlockPlayerInput(true);
+        END_BGM("");
+        START_BGM(TEXT("LCD_MUS_C06_SPACE_DESK_COMBAT_FULL"), g_BGMVolume * 1.4f);
+
+        m_pPlayer->Set_BlockPlayerInput(true);
         m_pPlayer->Set_Position(m_vStart_Position);
 		m_pPlayer->Set_2DDirection(E_DIRECTION::RIGHT);
         CPortal* pTargetPortal = static_cast<CPortal_Default*>(static_cast<CSection_2D_PlayMap*>(CSection_Manager::GetInstance()->Find_Section(m_strSectionName))->Get_Portal(0));
@@ -141,6 +144,7 @@ void CMiniGame_Defender::Set_GameState(DEFENDER_PROGRESS_STATE _eState)
     }
 	case Client::CMiniGame_Defender::DEFENDER_PROG_BEGINNING_DIALOG_ENDED:
 	{
+
 		_vector vPalyerPos = m_pPlayer->Get_FinalPosition();
 		AUTOMOVE_COMMAND tCommand{};
 		tCommand.eType = AUTOMOVE_TYPE::MOVE_TO;
@@ -241,6 +245,8 @@ void CMiniGame_Defender::Set_GameState(DEFENDER_PROGRESS_STATE _eState)
     }
     case Client::CMiniGame_Defender::DEFENDER_PROG_CLEAR:
     {
+        END_BGM("");
+        START_BGM(TEXT("LCD_MUS_C06_SPACE_DESK_SKETCHSPACE_FULL"), g_BGMVolume * 1.3f);
         //Æ÷Å» ÄÑ±â
         CPortal* pTargetPortal = static_cast<CPortal_Default*>(static_cast<CSection_2D_PlayMap*>(CSection_Manager::GetInstance()->Find_Section(m_strSectionName))->Get_Portal(0));
         if (pTargetPortal)
@@ -653,11 +659,11 @@ void CMiniGame_Defender::Update(_float _fTimeDelta)
         }
     }
 
-	//if (KEY_DOWN(KEY::Z))
-	//{
- //       if(DEFENDER_PROG_GAME == m_eGameState)
- //           Mission_Complete();
-	//}
+	if (KEY_DOWN(KEY::Z))
+	{
+        if(DEFENDER_PROG_GAME == m_eGameState)
+            Mission_Complete();
+	}
 }
 
 void CMiniGame_Defender::Late_Update(_float _fTimeDelta)
@@ -722,7 +728,8 @@ void CMiniGame_Defender::Start_Game()
 
 void CMiniGame_Defender::Restart_Game()
 {
-    
+    Set_LeftPersonCount(0);
+    Set_GameState(DEFENDER_PROG_GAME);
 }
 
 void CMiniGame_Defender::Rescue_Person(CDefenderPerson* _pPerson)
