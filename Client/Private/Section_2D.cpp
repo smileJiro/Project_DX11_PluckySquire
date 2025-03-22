@@ -280,7 +280,7 @@ HRESULT CSection_2D::Section_Enter(const _wstring& _strPreSectionTag)
 	for (auto pPair : m_SFXTags)
 	{
 		if (pPair.second)
-			START_SFX(pPair.first, 30.f, true);
+			START_SFX(pPair.first, g_BGMVolume, true);
 		else
 			END_SFX(pPair.first);
 	}

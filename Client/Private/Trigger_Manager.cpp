@@ -837,6 +837,14 @@ void CTrigger_Manager::Register_Trigger_Action()
 		CPlayerData_Manager::GetInstance()->Return_To_PrePos();
 
 		CCamera_Manager::GetInstance()->Start_ResetArm_To_SettingPoint(CCamera_Manager::TARGET, 1.f);
+
+		if (_wszEventTag == TEXT("Stop_Stamp"))
+		{
+			m_pGameInstance->Transition_BGM(TEXT("LCD_MUS_C06_C6FIELDMUSIC_FULL"), g_BGMVolume, 3.0f);
+			
+		}
+
+
 	};
 
 	m_Actions[TEXT("Active_MagicDust")] = [this](_wstring _wszEventTag) 
