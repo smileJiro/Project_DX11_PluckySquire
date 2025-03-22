@@ -689,7 +689,7 @@ HRESULT CSection_Manager::Ready_CurLevelSections(const _wstring& _strJsonPath)
 		return E_FAIL;
 	}
 
-	inputFile >> ChapterJson;
+	inputFile >> ChapterJson;   
 
 	_wstring strStartSectionKey = L"";
 

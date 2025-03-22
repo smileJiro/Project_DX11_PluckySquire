@@ -756,7 +756,7 @@ void CPlayer::Priority_Update(_float _fTimeDelta)
 
 	__super::Priority_Update(_fTimeDelta); /* Part Object Priority_Update */
 #ifdef _DEBUG
-	cout << "FloorDist : " << m_f3DFloorDistance << endl;
+	//cout << "FloorDist : " << m_f3DFloorDistance << endl;
 #endif
 }
 
