@@ -683,7 +683,6 @@ void CLaser_Container::On_BombSwitch(_bool _bOn)
 {
 	if (true != _bOn)
 	{
-		// sd
 		Set_BeamOn(false);
 		//Set_Move(false);
 	}

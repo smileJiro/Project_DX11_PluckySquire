@@ -19,8 +19,14 @@ void CPlayerState_StartPortal::Update(_float _fTimeDelta)
 		{
 			_vector vPlayerPos = m_pOwner->Get_FinalPosition();
 			if (false == m_pOwner->Check_Arrival(m_vTargetPos, COORDINATE_2D == eCoord ? 10.f : 0.5f))
+			{
 				m_pOwner->Move(XMVector3Normalize(m_vTargetPos - vPlayerPos)
 					* m_f2DMoveSpeed, _fTimeDelta);
+			}
+			else
+			{
+				m_pOwner->Get_ActorDynamic()->Set_GlobalPose(_float3{ m_vTargetPos.m128_f32[0], m_vTargetPos.m128_f32[1], m_vTargetPos.m128_f32[2] });
+			}
 
 		}
 	}

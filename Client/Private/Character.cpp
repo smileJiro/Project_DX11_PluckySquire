@@ -795,11 +795,6 @@ _bool CCharacter::Check_Arrival(_fvector _vPosition, _float _fEpsilon)
     return false;
 }
 
-_bool CCharacter::Check_Arrival(_fvector _vPrevPosition, _fvector _vNextPosition, _fvector _vTargetPosition)
-{
-
-    return _bool();
-}
 
 
 void CCharacter::LookDirectionXZ_Kinematic(_fvector _vDir)

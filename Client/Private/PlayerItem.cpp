@@ -3,7 +3,6 @@
 
 #include "GameInstance.h"
 #include "Trigger_Manager.h"
-#include "Effect_Manager.h"
 
 #include "PlayerData_Manager.h"
 
@@ -92,6 +91,25 @@ HRESULT CPlayerItem::Initialize(void* _pArg)
 
 	static_cast<CActor_Dynamic*>(m_pActorCom)->Set_Gravity(false);
 
+	// Fuse Effect
+	CEffect_System::EFFECT_SYSTEM_DESC EffectDesc = {};
+	EffectDesc.eStartCoord = COORDINATE_3D;
+	EffectDesc.isCoordChangeEnable = false;
+	EffectDesc.iSpriteShaderLevel = LEVEL_STATIC;
+	EffectDesc.szSpriteShaderTags = L"Prototype_Component_Shader_VtxPointInstance";
+	EffectDesc.iEffectShaderLevel = LEVEL_STATIC;
+	EffectDesc.szEffectShaderTags = L"Prototype_Component_Shader_VtxMeshEffect";
+	EffectDesc.szSpriteComputeShaderTag = L"Prototype_Component_Compute_Shader_SpriteInstance";
+
+	m_pItemEffect = static_cast<CEffect_System*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, LEVEL_STATIC, TEXT("Guntlet0.json"), &EffectDesc));
+
+	if (nullptr != m_pItemEffect)
+	{
+		m_pItemEffect->Active_Effect(true, 0);
+		m_pItemEffect->Set_SpawnMatrix(m_pControllerTransform->Get_WorldMatrix_Ptr());
+	}
+
+
 	return S_OK;
 }
 
@@ -102,24 +120,24 @@ void CPlayerItem::Priority_Update(_float _fTimeDelta)
 
 void CPlayerItem::Update(_float _fTimeDelta)
 {
-	if (m_pGameInstance->isIn_Frustum_InWorldSpace(Get_FinalPosition(), 6.f))
-	{
-		if (false == m_isInFrustum)
-		{
-			// temp
-			CEffect_Manager::GetInstance()->Active_Effect(TEXT("Guntlet1"), true, m_pControllerTransform->Get_WorldMatrix_Ptr());
-			m_isInFrustum = true;
-		}
-		
-	}
-	else
-	{
-		if (true == m_isInFrustum)
-		{
-			CEffect_Manager::GetInstance()->InActive_Effect(TEXT("Guntlet1"));
-			m_isInFrustum = false;
-		}
-	}
+	//if (m_pGameInstance->isIn_Frustum_InWorldSpace(Get_FinalPosition(), 6.f))
+	//{
+	//	if (false == m_isInFrustum)
+	//	{
+	//		// temp
+	//		CEffect_Manager::GetInstance()->Active_Effect(TEXT("Guntlet1"), true, m_pControllerTransform->Get_WorldMatrix_Ptr());
+	//		m_isInFrustum = true;
+	//	}
+	//	
+	//}
+	//else
+	//{
+	//	if (true == m_isInFrustum)
+	//	{
+	//		CEffect_Manager::GetInstance()->InActive_Effect(TEXT("Guntlet1"));
+	//		m_isInFrustum = false;
+	//	}
+	//}
 
 	PxVec3 AnglularVelocity = static_cast<PxRigidDynamic*>(m_pActorCom->Get_RigidActor())->getAngularVelocity();
 
@@ -133,14 +151,21 @@ void CPlayerItem::Update(_float _fTimeDelta)
 	// Phyxis Manager Update 때문에 일단 Update 위로 올림
 	Action_Mode(_fTimeDelta);
 
+	if (nullptr != m_pItemEffect)
+		m_pItemEffect->Update(_fTimeDelta);
+
 	__super::Update(_fTimeDelta);
 }
 
 void CPlayerItem::Late_Update(_float _fTimeDelta)
 {
-
-	if(false == m_isFrustumCulling)
+	if (false == m_isFrustumCulling)
+	{
 		m_pGameInstance->Add_RenderObject_New(RG_3D, PR3D_GEOMETRY, this);
+
+		if (nullptr != m_pItemEffect)
+			m_pItemEffect->Late_Update(_fTimeDelta);
+	}
 
 	__super::Late_Update(_fTimeDelta);
 }
@@ -163,8 +188,10 @@ void CPlayerItem::Change_Mode(_uint _iItemMode)
 
 	if (GETTING == m_iItemMode)
 	{
+		if (nullptr != m_pItemEffect)
+			m_pItemEffect->Active_Effect(true, 1);
 		// 이펙트 팡
-		CEffect_Manager::GetInstance()->Active_EffectID(TEXT("Guntlet1"), true, m_pControllerTransform->Get_WorldMatrix_Ptr(), 1);
+		//CEffect_Manager::GetInstance()->Active_EffectID(TEXT("Guntlet1"), true, m_pControllerTransform->Get_WorldMatrix_Ptr(), 1);
 
 		//CEffect_Manager::GetInstance()->Active_EffectPositionID(TEXT("Guntlet1"), true, Get_FinalPosition(), 1);
 	}
@@ -277,7 +304,10 @@ void CPlayerItem::Action_Disappear(_float _fTimeDelta)
 	this->Set_Active(false);
 	m_isStop = false; 
 
-	CEffect_Manager::GetInstance()->InActive_EffectID(TEXT("Guntlet1"), 0);
+	if (nullptr != m_pItemEffect)
+		m_pItemEffect->Inactive_Effect();
+
+	//CEffect_Manager::GetInstance()->InActive_EffectID(TEXT("Guntlet1"), 0);
 
 }
 
@@ -340,6 +370,7 @@ void CPlayerItem::Free()
 {
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pModelCom);
+	Safe_Release(m_pItemEffect);
 
 	__super::Free();
 }

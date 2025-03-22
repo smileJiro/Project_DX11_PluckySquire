@@ -119,3 +119,15 @@ void CBlocker::Free()
 
     __super::Free();
 }
+
+void CBlocker::On_BombSwitch(_bool _bOn)
+{
+    if (true != _bOn)
+    {
+        for (auto& pBlocker : m_p2DColliderComs)
+            if (nullptr != pBlocker) pBlocker->Set_Active(false);
+    }
+    else
+    {
+    }
+}

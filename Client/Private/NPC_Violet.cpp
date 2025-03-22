@@ -92,7 +92,7 @@ HRESULT CNPC_Violet::Initialize(void* _pArg)
 	Add_Component(TEXT("AnimEventGenerator"), m_pAnimEventGenerator);
 
 	static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CNPC_Violet::On_AnimEnd, this, placeholders::_1, placeholders::_2));
-	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, _float4(990.f, -36.5f, 0.f, 1.f));
+	m_pControllerTransform->Set_State(CTransform::STATE_POSITION, _float4(988.3, 67.30f, 0.f, 1.f));
 
 	return S_OK;
 }
@@ -319,7 +319,7 @@ void CNPC_Violet::Welcome_Jot(_float _fTimeDelta)
 			{
 				_vector vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
 				m_PartObjects[PART_BODY]->Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, -XMVectorAbs(vRight));
-				static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Violet_Talk01_Right);
+				static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Violet_Talk01);
 				m_eAnimationType = ANIM_LEFT;
 			}
 
@@ -344,7 +344,7 @@ void CNPC_Violet::Welcome_Jot(_float _fTimeDelta)
 
 				_vector vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
 				m_PartObjects[PART_BODY]->Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, -XMVectorAbs(vRight));
-				static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Violet_idle_right);
+				static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(Violet_idle_down);
 
 
 				m_isTrace = true;

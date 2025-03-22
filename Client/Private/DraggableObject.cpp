@@ -46,6 +46,7 @@ HRESULT CDraggableObject::Initialize(void* _pArg)
 		ActorDesc.FreezePosition_XYZ[2] = false;
 		ActorDesc.isAddActorToScene = true;
 
+		//몸체 
 		SHAPE_BOX_DESC ShapeDesc = {};
 		ShapeDesc.vHalfExtents = pDesc->vBoxHalfExtents;
 		SHAPE_DATA ShapeData;
@@ -59,6 +60,7 @@ HRESULT CDraggableObject::Initialize(void* _pArg)
 		XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(pDesc->vBoxOffset.x, pDesc->vBoxOffset.y, pDesc->vBoxOffset.z));
 		ActorDesc.ShapeDatas.push_back(ShapeData);
 
+		//상호작용 용도
 		SHAPE_SPHERE_DESC ShapeDesc2 = {};
 		ShapeDesc2.fRadius = 0.25f;
 		SHAPE_DATA ShapeData2;
@@ -72,6 +74,7 @@ HRESULT CDraggableObject::Initialize(void* _pArg)
 		XMStoreFloat4x4(&ShapeData2.LocalOffsetMatrix, XMMatrixTranslation(0.0f, pDesc->vBoxHalfExtents.y, 0.f));
 		ActorDesc.ShapeDatas.push_back(ShapeData2);
 
+		//주변 플레이어 감지용
 		SHAPE_BOX_DESC ShapeDesc3 = {};
 		ShapeDesc3.vHalfExtents = pDesc->vBoxHalfExtents;
 		ShapeDesc3.vHalfExtents.x += 0.2f;
@@ -82,7 +85,7 @@ HRESULT CDraggableObject::Initialize(void* _pArg)
 		ShapeData3.eShapeType = SHAPE_TYPE::BOX;
 		ShapeData3.eMaterial = ACTOR_MATERIAL::STICKY;
 		ShapeData3.isTrigger = true;
-		ShapeData3.iShapeUse = (_uint)SHAPE_USE::SHAPE_TRIGER;
+		ShapeData3.iShapeUse = (_uint)SHAPE_USE::SHAPE_FOOT;
 		ShapeData3.FilterData.MyGroup = OBJECT_GROUP::MAPOBJECT;
 		ShapeData3.FilterData.OtherGroupMask =OBJECT_GROUP::PLAYER;
 		XMStoreFloat4x4(&ShapeData3.LocalOffsetMatrix, XMMatrixTranslation(pDesc->vBoxOffset.x, pDesc->vBoxOffset.y, pDesc->vBoxOffset.z));
