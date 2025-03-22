@@ -171,12 +171,15 @@ HRESULT CCarriableObject::Set_Carrier(CPlayer* _pCarrier)
 {
 	if (nullptr == _pCarrier)
 	{
+		m_pBody2DColliderCom->Set_Active(true);
+
 		m_pCarrier = nullptr;
 		if (COORDINATE_3D == Get_CurCoord())
 			static_cast<CActor_Dynamic*>(Get_ActorCom())->Set_ShapeEnable((_uint)SHAPE_USE::SHAPE_BODY, true);
 	}
 	else
 	{
+		m_pBody2DColliderCom->Set_Active(false);
 		if (nullptr != m_pCarrier)
 			return E_FAIL;
 		m_fFloorDistance = 0.f;
@@ -290,6 +293,7 @@ void CCarriableObject::PickUpStart(CPlayer* _pPalyer, _fmatrix _matPlayerOffset)
 	XMStoreFloat4x4(&matOffset, _matPlayerOffset);
 	Set_WorldMatrix(matOffset);
 	On_PickUpStart(_pPalyer, _matPlayerOffset);
+
 }
 
 void CCarriableObject::PickUpEnd()
@@ -299,6 +303,7 @@ void CCarriableObject::PickUpEnd()
 
 	Set_Position(_vector{ 0,0,0 });
 	Get_ControllerTransform()->Rotation(0, _vector{ 0,1,0 });
+
 	On_PickUpEnd();
 }
 

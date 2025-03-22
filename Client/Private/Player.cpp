@@ -571,10 +571,18 @@ void CPlayer::Enter_Section(const _wstring _strIncludeSectionName)
 
 	auto pSection = SECTION_MGR->Find_Section(_strIncludeSectionName);
 
+	CSection_2D* pSection2D = static_cast<CSection_2D*>(pSection);
+	
+	/* 8챕터 흑백처리 */
+	if (m_iCurLevelID == LEVEL_CHAPTER_8 && pSection2D->Get_Section_2D_RenderType() == CSection_2D::SECTION_2D_RENDER_TYPE::SECTION_2D_BOOK)
+	{
+		if (TEXT("Chapter8_P0102") != _strIncludeSectionName)
+			m_pGameInstance->Set_GrayScale_VtxAnimMesh(0);
+	}
+	
 	_bool bPlatformer = static_cast<CSection_2D*>(pSection)->Is_Platformer();
 	Set_PlatformerMode(bPlatformer);
-
-	CSection_2D* pCurSection = dynamic_cast<CSection_2D*>(CSection_Manager::GetInstance()->Find_Section(m_strSectionName));
+	CSection_2D* pCurSection = dynamic_cast<CSection_2D*>(CSection_Manager::GetInstance()->Find_Section(_strIncludeSectionName));
 	if (nullptr != pCurSection)
 	{
 		CSection_2D::SECTION_2D_PLAY_TYPE ePlayType = pCurSection->Get_Section_2D_PlayType();
@@ -597,7 +605,6 @@ void CPlayer::Enter_Section(const _wstring _strIncludeSectionName)
 
 void CPlayer::Exit_Section(const _wstring _strIncludeSectionName)
 {
-	__super::Exit_Section(_strIncludeSectionName);
 
 	SECTION_MGR->Set_PlayerInto(_strIncludeSectionName, false);
 
@@ -607,7 +614,10 @@ void CPlayer::Exit_Section(const _wstring _strIncludeSectionName)
 	if (Is_ZetPackMode())
 		Equip_Part(PLAYER_PART_ZETPACK);
 
-	CSection_2D* pCurSection = dynamic_cast<CSection_2D*>(CSection_Manager::GetInstance()->Find_Section(m_strSectionName));
+
+	/* 8챕터 흑백처리 */
+
+	CSection_2D* pCurSection = dynamic_cast<CSection_2D*>(CSection_Manager::GetInstance()->Find_Section(_strIncludeSectionName));
 	if (nullptr != pCurSection)
 	{
 		CSection_2D::SECTION_2D_PLAY_TYPE ePlayType = pCurSection->Get_Section_2D_PlayType();
@@ -618,8 +628,15 @@ void CPlayer::Exit_Section(const _wstring _strIncludeSectionName)
 			m_isRender = false;
 		else
 			m_isRender = true;
+
+		if (m_iCurLevelID == LEVEL_CHAPTER_8 && pCurSection->Get_Section_2D_RenderType() == CSection_2D::SECTION_2D_RENDER_TYPE::SECTION_2D_BOOK)
+			m_pGameInstance->Set_GrayScale_VtxAnimMesh(1);
 	}
+
+	__super::Exit_Section(_strIncludeSectionName);
+
 }
+
 
 
 HRESULT CPlayer::Ready_Components()
@@ -874,7 +891,8 @@ void CPlayer::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)
 	case Client::SHAPE_USE::SHAPE_TRIGER:
 		if (OBJECT_GROUP::MONSTER & _Other.pActorUserData->iObjectGroup)
 			return;
-		if (OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::INTERACTION_OBEJCT | OBJECT_GROUP::DYNAMIC_OBJECT & _Other.pActorUserData->iObjectGroup)
+		if (SHAPE_USE::SHAPE_BODY == (SHAPE_USE)_Other.pShapeUserData->iShapeUse
+			&&OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::INTERACTION_OBEJCT | OBJECT_GROUP::DYNAMIC_OBJECT & _Other.pActorUserData->iObjectGroup)
 			Event_SetSceneQueryFlag(_Other.pActorUserData->pOwner, _Other.pShapeUserData->iShapeIndex, true);
 		break;
 	}
@@ -888,9 +906,10 @@ void CPlayer::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
 	switch (iShapeUse)
 	{
 	case (_uint)Client::SHAPE_USE::SHAPE_TRIGER:
-		if (OBJECT_GROUP::MONSTER == _Other.pActorUserData->iObjectGroup)
+ 		if (OBJECT_GROUP::MONSTER == _Other.pActorUserData->iObjectGroup)
 			return;
-		if (SHAPE_USE::SHAPE_BODY == (SHAPE_USE)_Other.pShapeUserData->iShapeUse)
+		if (SHAPE_USE::SHAPE_BODY == (SHAPE_USE)_Other.pShapeUserData->iShapeUse
+			&& OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::INTERACTION_OBEJCT | OBJECT_GROUP::DYNAMIC_OBJECT & _Other.pActorUserData->iObjectGroup)
 			Event_SetSceneQueryFlag(_Other.pActorUserData->pOwner, _Other.pShapeUserData->iShapeIndex, false);
 		break;
 	case Client::CPlayer::PLAYER_SHAPE_USE::INTERACTION:
@@ -919,16 +938,18 @@ void CPlayer::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCo
 		{
 			if (true == Is_PlatformerMode() && STATE::JUMP_DOWN == Get_CurrentStateID())
 			{
+				
 				_float fAngle = atan2f(_pOtherObject->Get_FinalPosition().m128_f32[1] - Get_FinalPosition().m128_f32[1], _pOtherObject->Get_FinalPosition().m128_f32[0] - Get_FinalPosition().m128_f32[0]);
 				fAngle = XMConvertToDegrees(fAngle);
 				if (fAngle >= -170.f && fAngle <= -10.f)
 				{
 					Attack(_pOtherObject);
 					//밟은 후 플레이어 띄우기
-					Event_KnockBack(this, XMVectorSet(0.f, 1.f, 0.f, 0.f), 2000.f);
+					m_pGravityCom->Set_GravityAcc(0.0f);
+					Event_KnockBack(this, XMVectorSet(0.f, 1.f, 0.f, 0.f), 100.f);
 
 					//Effect
-					CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("Hit_FX1"), CSection_Manager::GetInstance()->Get_Cur_Section_Key(), Get_ControllerTransform()->Get_WorldMatrix());
+					CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("Hit_FX1"), m_strSectionName, Get_ControllerTransform()->Get_WorldMatrix());
 				}
 			}
 		}
@@ -1434,23 +1455,27 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
 		if (KEY_PRESSING(KEY::D))
 			tResult.vDir += _vector{ 1.f, 0.f, 0.f,0.f };
 
-		////카메라가 보는 방향
-		_vector vCamLook = static_cast<CCamera*>(CCamera_Manager::GetInstance()->Get_CurrentCamera())->Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK);
-		vCamLook = -XMVectorSetY(vCamLook, 0.f);
-		vCamLook = -XMVectorSetW(vCamLook, 0.f);
-		//X축이 크면?
-		if (abs(vCamLook.m128_f32[0]) > abs(vCamLook.m128_f32[2]))
+		if (LEVEL_CHAPTER_8 == Get_CurLevelID())
 		{
-			vCamLook.m128_f32[2] = 0.f;
-			vCamLook.m128_f32[0] /= -abs(vCamLook.m128_f32[0]);
-		}
-		else
-		{
-			vCamLook.m128_f32[0] = 0.f;
-			vCamLook.m128_f32[2] /= abs(vCamLook.m128_f32[2]);
-		}
-		tResult.vDir =XMVector3TransformNormal(tResult.vDir, XMMatrixLookToLH(_vector{0.f,0.f,0.f}, vCamLook, _vector{ 0.f,1.f,0.f }));
+			////카메라가 보는 방향
+			_vector vCamLook = static_cast<CCamera*>(CCamera_Manager::GetInstance()->Get_CurrentCamera())->Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK);
+			vCamLook = -XMVectorSetY(vCamLook, 0.f);
+			vCamLook = -XMVectorSetW(vCamLook, 0.f);
+			//X축이 크면?
+			if (abs(vCamLook.m128_f32[0]) > abs(vCamLook.m128_f32[2]))
+			{
+				vCamLook.m128_f32[2] = 0.f;
+				vCamLook.m128_f32[0] /= -abs(vCamLook.m128_f32[0]);
+			}
+			else
+			{
+				vCamLook.m128_f32[0] = 0.f;
+				vCamLook.m128_f32[2] /= abs(vCamLook.m128_f32[2]);
+			}
+			tResult.vDir = XMVector3TransformNormal(tResult.vDir, XMMatrixLookToLH(_vector{ 0.f,0.f,0.f }, vCamLook, _vector{ 0.f,1.f,0.f }));
 
+		}
+		
 	}
 	else if (eCoord == COORDINATE_2D)
 	{

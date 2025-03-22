@@ -2066,7 +2066,7 @@ void CGameEventExecuter_C8::Chapter8_Meet_Humgrump(_float _fTimeDelta)
 				pPlayer->Set_BlockPlayerInput(false);
 
 				// Monster 제거
-				/*CLayer* pLayer = m_pGameInstance->Find_Layer(m_iCurLevelID, TEXT("Layer_Monster"));
+				CLayer* pLayer = m_pGameInstance->Find_Layer(m_iCurLevelID, TEXT("Layer_Monster"));
 
 				for (auto& Monster : pLayer->Get_GameObjects()) {
 					Event_DeleteObject(Monster);
@@ -2082,10 +2082,10 @@ void CGameEventExecuter_C8::Chapter8_Meet_Humgrump(_float _fTimeDelta)
 
 				for (auto& Soldier : pLayer->Get_GameObjects()) {
 					Event_DeleteObject(Soldier);
-				}*/
+				}
 
 				// 이전 Trigger 제거
-				CLayer* pLayer = m_pGameInstance->Find_Layer(m_iCurLevelID, TEXT("Layer_TriggerObject"));
+				pLayer = m_pGameInstance->Find_Layer(m_iCurLevelID, TEXT("Layer_TriggerObject"));
 
 				for (auto& TriggerObject : pLayer->Get_GameObjects()) {
 					if (COORDINATE_3D == TriggerObject->Get_CurCoord())

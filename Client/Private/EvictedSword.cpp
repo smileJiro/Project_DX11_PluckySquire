@@ -80,6 +80,7 @@ HRESULT CEvictedSword::Initialize(void* _pArg)
 
 
     Switch_Animation(EVICT);
+    m_eInteractID = INTERACT_ID::SWORD;
 
     return S_OK;
 }

@@ -880,7 +880,7 @@ void CButterGrump::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
         break;
 
     case LB_INTRO_SH04 :
-        Set_AnimChangeable(true);
+        //Set_AnimChangeable(true);
         if ((_uint)BOSS_STATE::SCENE == m_iState)
         {
             pModelObject->Switch_Animation(IDLE);

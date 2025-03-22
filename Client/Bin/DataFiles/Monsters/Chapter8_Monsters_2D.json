@@ -33,7 +33,7 @@
         {
             "MonsterTag": "Prototype_GameObject_Zippy",
             "SectionTag": "Chapter8_SKSP_05",
-            "LayerTag": "Layer_Monster_Door1",
+            "LayerTag": "Layer_Monster",
             "Position": [
                -120, 
                -10.5,

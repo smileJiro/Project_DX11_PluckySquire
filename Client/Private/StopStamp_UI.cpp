@@ -47,42 +47,54 @@ void CStopStamp_UI::Priority_Update(_float _fTimeDelta)
 void CStopStamp_UI::Update(_float _fTimeDelta)
 {
 	//return tResult;
+	CBook* pBook = Uimgr->Get_Book();
 	CPlayerData_Manager* pPDM = CPlayerData_Manager::GetInstance();
-
-	
-	CUI_Manager* pUIManager = CUI_Manager::GetInstance();
-	if (false == pPDM->Is_Own(CPlayerData_Manager::STOP_STAMP))
+	if (nullptr == pBook)
 		return;
 
-
-	if (m_isActive == false)
-		return;
-
-	// 둘다 있으면 체인지 스탬프 준비하고
-	if (true == pPDM->Is_Own(CPlayerData_Manager::BOMB_STAMP) &&
-		true == pPDM->Is_Own(CPlayerData_Manager::STOP_STAMP))
+	if (true == pBook->Get_PlayerAbove())
 	{
-		ChangeStamp(_fTimeDelta);
-	}
+		m_isRenderStamp = true;
+		CPlayerData_Manager* pPDM = CPlayerData_Manager::GetInstance();
 
-	// 밤만 가지고 있으면 밤 도장 위치를 조정해주자.
-	else if (true == pPDM->Is_Own(CPlayerData_Manager::STOP_STAMP) &&
-		false == pPDM->Is_Own(CPlayerData_Manager::BOMB_STAMP))
-	{
-		if (false == m_isFirstPositionAdjusted)
+
+		CUI_Manager* pUIManager = CUI_Manager::GetInstance();
+		if (false == pPDM->Is_Own(CPlayerData_Manager::STOP_STAMP))
+			return;
+
+
+		if (m_isActive == false)
+			return;
+
+		// 둘다 있으면 체인지 스탬프 준비하고
+		if (true == pPDM->Is_Own(CPlayerData_Manager::BOMB_STAMP) &&
+			true == pPDM->Is_Own(CPlayerData_Manager::STOP_STAMP))
 		{
-			_float2 vPos;
-			// 크기 및 위치 조정
-			vPos.x = g_iWinSizeX - g_iWinSizeX / 12.f;
-			vPos.y = g_iWinSizeY - g_iWinSizeY / 6.f;
+			ChangeStamp(_fTimeDelta);
+		}
 
-			m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(vPos.x - g_iWinSizeX * 0.5f, -vPos.y + g_iWinSizeY * 0.5f, 0.f, 1.f));
+		// 밤만 가지고 있으면 밤 도장 위치를 조정해주자.
+		else if (true == pPDM->Is_Own(CPlayerData_Manager::STOP_STAMP) &&
+			false == pPDM->Is_Own(CPlayerData_Manager::BOMB_STAMP))
+		{
+			if (false == m_isFirstPositionAdjusted)
+			{
+				_float2 vPos;
+				// 크기 및 위치 조정
+				vPos.x = g_iWinSizeX - g_iWinSizeX / 12.f;
+				vPos.y = g_iWinSizeY - g_iWinSizeY / 6.f;
 
-			m_pControllerTransform->Set_Scale(96.f, 148.f, 1.f);
+				m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(vPos.x - g_iWinSizeX * 0.5f, -vPos.y + g_iWinSizeY * 0.5f, 0.f, 1.f));
 
-			//m_isFirstPositionAdjusted = true;
+				m_pControllerTransform->Set_Scale(96.f, 148.f, 1.f);
+
+				//m_isFirstPositionAdjusted = true;
+			}
 		}
 	}
+	else
+		m_isRenderStamp = false;
+
 
 }
 
@@ -105,9 +117,16 @@ void CStopStamp_UI::Late_Update(_float _fTimeDelta)
 
 HRESULT CStopStamp_UI::Render()
 {
+	CPlayer* pPlayer = Uimgr->Get_Player();
+	if (true == pPlayer->Is_PlayerInputBlocked())
+		return S_OK;
+
 	CPlayerData_Manager* pPDM = CPlayerData_Manager::GetInstance();
 
 	if (false == pPDM->Is_Own(CPlayerData_Manager::STOP_STAMP))
+		return S_OK;
+
+	if (false == m_isRenderStamp)
 		return S_OK;
 
 	if (FAILED(m_pControllerTransform->Bind_ShaderResource(m_pShaderCom, "g_WorldMatrix")))

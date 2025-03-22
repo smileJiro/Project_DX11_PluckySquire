@@ -140,11 +140,11 @@ HRESULT CLevel_Chapter_08::Initialize(LEVEL_ID _eLevelID)
 		MSG_BOX(" Failed Ready_Layer_Camera (Level_Chapter_08::Initialize)");
 		assert(nullptr);
 	}
-	//if (FAILED(Ready_Layer_Monster()))
-	//{
-	//	MSG_BOX(" Failed Ready_Layer_Monster (Level_Chapter_08::Initialize)");
-	//	assert(nullptr);
-	//}
+	if (FAILED(Ready_Layer_Monster()))
+	{
+		MSG_BOX(" Failed Ready_Layer_Monster (Level_Chapter_08::Initialize)");
+		assert(nullptr);
+	}
 	if (FAILED(Ready_Layer_Monster_Projectile(TEXT("Layer_Monster_Projectile"))))
 	{
 		MSG_BOX(" Failed Ready_Layer_Monster_Projectile (Level_Chapter_08::Initialize)");
@@ -1974,8 +1974,26 @@ HRESULT CLevel_Chapter_08::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 	CBombSwitch* pBombSwitch = static_cast<CBombSwitch*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_eLevelID, TEXT("Prototype_GameObject_BombSwitch"), &tBombSwitchDesc1));
 	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, _strLayerTag, pBombSwitch);
 	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter8_SKSP_05"), pBombSwitch, SECTION_2D_PLAYMAP_OBJECT);
-
 	
+	
+	CGameObject* pGameObject = nullptr;
+
+	CBlocker::BLOCKER2D_DESC BlockerDesc = {};
+	BlockerDesc.iCurLevelID = (LEVEL_ID)CSection_Manager::GetInstance()->Get_SectionLeveID();
+	BlockerDesc.vColliderExtents = { 1.f, 1.f };
+	BlockerDesc.vColliderScale = { 1000.f, 10.6f };
+	BlockerDesc.Build_2D_Transform({ 0.f, -757.07f });
+	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC,
+		TEXT("Prototype_GameObject_Blocker2D"), BlockerDesc.iCurLevelID, L"Layer_Blocker", &pGameObject, &BlockerDesc)))
+	{
+		assert(nullptr);
+		return E_FAIL;
+	}
+	else
+	{
+		CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter8_SKSP_05"), pGameObject, SECTION_2D_PLAYMAP_OBJECT);
+		pBombSwitch->Add_Receiver(static_cast<CBlocker*>(pGameObject));
+	}
 
 	Desc.tTransform2DDesc.vInitialPosition = _float3(-153.00f, 200.00f, 0.f);
 	Desc.iCurLevelID = m_eLevelID;
