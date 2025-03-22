@@ -1455,23 +1455,27 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
 		if (KEY_PRESSING(KEY::D))
 			tResult.vDir += _vector{ 1.f, 0.f, 0.f,0.f };
 
-		////카메라가 보는 방향
-		_vector vCamLook = static_cast<CCamera*>(CCamera_Manager::GetInstance()->Get_CurrentCamera())->Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK);
-		vCamLook = -XMVectorSetY(vCamLook, 0.f);
-		vCamLook = -XMVectorSetW(vCamLook, 0.f);
-		//X축이 크면?
-		if (abs(vCamLook.m128_f32[0]) > abs(vCamLook.m128_f32[2]))
+		if (LEVEL_CHAPTER_8 == Get_CurLevelID())
 		{
-			vCamLook.m128_f32[2] = 0.f;
-			vCamLook.m128_f32[0] /= -abs(vCamLook.m128_f32[0]);
-		}
-		else
-		{
-			vCamLook.m128_f32[0] = 0.f;
-			vCamLook.m128_f32[2] /= abs(vCamLook.m128_f32[2]);
-		}
-		tResult.vDir =XMVector3TransformNormal(tResult.vDir, XMMatrixLookToLH(_vector{0.f,0.f,0.f}, vCamLook, _vector{ 0.f,1.f,0.f }));
+			////카메라가 보는 방향
+			_vector vCamLook = static_cast<CCamera*>(CCamera_Manager::GetInstance()->Get_CurrentCamera())->Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK);
+			vCamLook = -XMVectorSetY(vCamLook, 0.f);
+			vCamLook = -XMVectorSetW(vCamLook, 0.f);
+			//X축이 크면?
+			if (abs(vCamLook.m128_f32[0]) > abs(vCamLook.m128_f32[2]))
+			{
+				vCamLook.m128_f32[2] = 0.f;
+				vCamLook.m128_f32[0] /= -abs(vCamLook.m128_f32[0]);
+			}
+			else
+			{
+				vCamLook.m128_f32[0] = 0.f;
+				vCamLook.m128_f32[2] /= abs(vCamLook.m128_f32[2]);
+			}
+			tResult.vDir = XMVector3TransformNormal(tResult.vDir, XMMatrixLookToLH(_vector{ 0.f,0.f,0.f }, vCamLook, _vector{ 0.f,1.f,0.f }));
 
+		}
+		
 	}
 	else if (eCoord == COORDINATE_2D)
 	{
