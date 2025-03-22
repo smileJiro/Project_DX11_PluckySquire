@@ -185,7 +185,7 @@ void CGameEventExecuter_C2::C020910_Monster_Spawn(_float _fTimeDelta)
 
 	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(strSectionKey, pObject);
 
-	m_pGameInstance->Start_SFX(_wstring(L"A_sfx_electric_bolt_spawn_") + to_wstring(rand() % 3), 50.f);
+	m_pGameInstance->Start_SFX(_wstring(L"A_sfx_electric_bolt_spawn_") + to_wstring(rand() % 3), g_SFXVolume);
 
 	
 	GameEvent_End();
@@ -240,7 +240,7 @@ void CGameEventExecuter_C2::Chapter2_BookMagic(_float _fTimeDelta)
 			CEffect2D_Manager::GetInstance()->Play_Effect(L"storm", SECTION_MGR->Get_Cur_Section_Key(), XMMatrixTranslation(10.f, 280.f, 0.f), 3.0f, 0, false);
 			CEffect2D_Manager::GetInstance()->Play_Effect(L"storm", SECTION_MGR->Get_Cur_Section_Key(), XMMatrixTranslation(10.f, 280.f, 0.f), 3.6f, 1, true, 999.f);
 
-			m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_electric_bolt_spawn_1"), 2.f, 50.f);
+			m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_electric_bolt_spawn_1"), 2.f, g_SFXVolume);
 
 		}
 
@@ -263,8 +263,8 @@ void CGameEventExecuter_C2::Chapter2_BookMagic(_float _fTimeDelta)
 			if (nullptr != pBook)
 				pBook->Execute_AnimEvent(5);
 
-			m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_C1_Lightning_Sequence_Cutver"), 0.f, 50.f);
-			m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_C1_Lightning_Sequence_Fall"), 7.f, 50.f);
+			m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_C1_Lightning_Sequence_Cutver"), 0.f, g_SFXVolume);
+			m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_C1_Lightning_Sequence_Fall"), 7.f, g_SFXVolume);
 
 			CEffect_Manager::GetInstance()->Active_EffectPosition(TEXT("Book_MagicDust"), true, XMVectorSet(2.f, 0.4f, -17.3f, 1.f));
 			CCamera_2D* pCamera = static_cast<CCamera_2D*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D));
@@ -460,8 +460,8 @@ void CGameEventExecuter_C2::Chapter2_Humgrump(_float _fTimeDelta)
 			m_pGameInstance->Set_BGMTargetVolume(0.f);
 			//m_pGameInstance->End_BGM();
 
-			m_pGameInstance->Start_SFX(_wstring(L"LCD_MUS_C02_CONFRONTINGHUMGRUMP_P4344_CUTSCENE_FULL"), 50.f);
-			m_pGameInstance->Start_SFX(_wstring(L"A_sfx_ejected_sequence"), 50.f);
+			m_pGameInstance->Start_SFX(_wstring(L"LCD_MUS_C02_CONFRONTINGHUMGRUMP_P4344_CUTSCENE_FULL"), g_SFXVolume);
+			m_pGameInstance->Start_SFX(_wstring(L"A_sfx_ejected_sequence"), g_SFXVolume);
 			m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/Chapter2_Night_Main.json"));
 			m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/Chapter2_Night_Main.json"));
 			
@@ -622,8 +622,8 @@ void CGameEventExecuter_C2::Chapter2_Lunchbox_Open(_float _fTimeDelta)
 			m_pGameInstance->Set_SFXTargetVolume(_wstring(L"LCD_MUS_Desk_C02_NIGHTDESK_Stem_Group1"), 2.f);
 			m_pGameInstance->Set_SFXTargetVolume(_wstring(L"LCD_MUS_Desk_C02_NIGHTDESK_Stem_Group2"), 2.f);
 
-			m_pGameInstance->Start_SFX(_wstring(L"LCD_MUS_C02_PAGETHEBOOKWORMTHEME_Stem_Base"), 20.f, true);
-			m_pGameInstance->Start_SFX(_wstring(L"LCD_MUS_C02_PAGETHEBOOKWORMTHEME_Stem_Group1"), 20.f, true);
+			m_pGameInstance->Start_SFX(_wstring(L"LCD_MUS_C02_PAGETHEBOOKWORMTHEME_Stem_Base"), g_SFXVolume * 0.6f, true);
+			m_pGameInstance->Start_SFX(_wstring(L"LCD_MUS_C02_PAGETHEBOOKWORMTHEME_Stem_Group1"), g_SFXVolume * 0.6f, true);
 
 		}
 		Next_Step_Over(1.5f);
@@ -740,7 +740,7 @@ void CGameEventExecuter_C2::Chapter2_Bettle_Page(_float _fTimeDelta)
 			m_pGameInstance->Set_SFXTargetVolume(_wstring(L"LCD_MUS_Desk_C02_NIGHTDESK_Stem_Group1"), 2.f);
 			m_pGameInstance->Set_SFXTargetVolume(_wstring(L"LCD_MUS_Desk_C02_NIGHTDESK_Stem_Group2"), 2.f);
 
-			m_pGameInstance->Start_BGM(TEXT("LCD_MUS_Desk_C02_NIGHTDESK_SKETCHSPACE_FULL"), 20.f);
+			m_pGameInstance->Start_BGM(TEXT("LCD_MUS_Desk_C02_NIGHTDESK_SKETCHSPACE_FULL"), g_BGMVolume);
 		}
 		Next_Step_Over(0.5f);
 	}
@@ -863,7 +863,7 @@ void CGameEventExecuter_C2::Chapter2_OpenBookEvent(_float _fTimeDelta)
 			m_pGameInstance->Set_SFXTargetVolume(_wstring(L"LCD_MUS_Desk_C02_NIGHTDESK_Stem_Group1"), 2.f);
 			m_pGameInstance->Set_SFXTargetVolume(_wstring(L"LCD_MUS_Desk_C02_NIGHTDESK_Stem_Group2"), 2.f);
 
-			m_pGameInstance->Start_BGM(TEXT("LCD_MUS_C02_INTROTOSKETCHSPACE_FULL"), 20.f);
+			m_pGameInstance->Start_BGM(TEXT("LCD_MUS_C02_INTROTOSKETCHSPACE_FULL"), g_BGMVolume);
 		}
 		Next_Step(true);
 	}
@@ -1034,7 +1034,7 @@ void CGameEventExecuter_C2::Chapter2_StorySequence(_float _fTimeDelta)
 			m_pGameInstance->Set_SFXTargetVolume(_wstring(L"LCD_MUS_Desk_C02_NIGHTDESK_Stem_Group1"), 0.f);
 			m_pGameInstance->Set_SFXTargetVolume(_wstring(L"LCD_MUS_Desk_C02_NIGHTDESK_Stem_Group2"), 0.f);
 
-			m_pGameInstance->Start_BGM(TEXT("LCD_MUS_C02_INTROTOSKETCHSPACE_FULL"), 20.f);
+			m_pGameInstance->Start_BGM(TEXT("LCD_MUS_C02_INTROTOSKETCHSPACE_FULL"), g_BGMVolume);
 		}
 		Next_Step(true);
 	}
@@ -1157,7 +1157,7 @@ void CGameEventExecuter_C2::Chapter2_StorySequence(_float _fTimeDelta)
 				}
 				});
 			//Ready_Action(SECTION_MGR->Get_Cur_Section_Key(), SECTION_2D_PLAYMAP_OBJECT, C2DMapActionObject::ACTIVE_TYPE_DYNAMIC_BACKGROUND);
-			m_pGameInstance->Start_SFX(_wstring(L"A_sfx_sticky_note_draw_orange"), 50.f);
+			m_pGameInstance->Start_SFX(_wstring(L"A_sfx_sticky_note_draw_orange"), g_SFXVolume);
 			
 			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_TargetObjects[0]);
 			pPage->Anim_Action(CPostit_Page::POSTIT_PAGE_TALK_1, true);
@@ -1204,7 +1204,7 @@ void CGameEventExecuter_C2::Chapter2_StorySequence(_float _fTimeDelta)
 				}
 				});
 
-			m_pGameInstance->Start_SFX(_wstring(L"A_sfx_sticky_note_draw_green"), 50.f);
+			m_pGameInstance->Start_SFX(_wstring(L"A_sfx_sticky_note_draw_green"), g_SFXVolume);
 
 			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_TargetObjects[0]);
 			pPage->Anim_Action(CPostit_Page::POSTIT_PAGE_TALK_1, true);
@@ -1250,7 +1250,7 @@ void CGameEventExecuter_C2::Chapter2_StorySequence(_float _fTimeDelta)
 				}
 				});
 
-			m_pGameInstance->Start_SFX(_wstring(L"A_sfx_sticky_note_draw_blue"), 50.f);
+			m_pGameInstance->Start_SFX(_wstring(L"A_sfx_sticky_note_draw_blue"), g_SFXVolume);
 
 			CPostit_Page* pPage = dynamic_cast<CPostit_Page*>(m_TargetObjects[0]);
 			pPage->Anim_Action(CPostit_Page::POSTIT_PAGE_TALK_1, true);
@@ -1441,7 +1441,7 @@ void CGameEventExecuter_C2::Chapter2_FriendEvent_0(_float _fTimeDelta)
 			CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(TEXT("Thrash"));
 			CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(TEXT("Violet"));
 
-			m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_Mojam"), 0.25f, 50.f);
+			m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_Mojam"), 0.25f, g_SFXVolume);
 
 		}
 
