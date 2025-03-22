@@ -118,6 +118,7 @@ void CDefenderCapsule::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vFor
 {
 	m_tStat.iHP -= _iDamg;
 	COORDINATE eCoord = Get_CurCoord();
+	START_SFX_DELAY(TEXT("A_sfx_cystal_ball_damaged-") + to_wstring(rand() % 5), 0.f, g_SFXVolume, false);
 	if (m_tStat.iHP <= 0)
 	{
 		Event_DeleteObject(this);

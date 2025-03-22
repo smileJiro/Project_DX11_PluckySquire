@@ -31,7 +31,9 @@ public:
 	virtual HRESULT				Render() override;
 
 public:
-	void						Open_Locker() { m_eCurState = STATE_OPEN; State_Change(); }
+	void						Open_Locker() {
+		m_eCurState = STATE_OPEN; State_Change();
+	}
 
 protected:
 	CPortal*					m_pTargetPortal = nullptr;

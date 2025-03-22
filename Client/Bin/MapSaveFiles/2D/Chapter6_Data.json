@@ -6,17 +6,6 @@
 		"Section_Type": 4,
 		"Section_Default": 0,
 		"Section_Info": {
-			"Camera_Zoom_Ratio": 1.5,
-			"Next_Page_Tag": "Chapter5_P0102"
-		}
-	},
-	{
-		"Section_Name": "Chapter5_P0102",
-		"Section_BackGround_Name": "Chapter5_P0102_BackGround",
-		"Section_File_Name": "Chapter5_P0102.m2chc",
-		"Section_Type": 0,
-
-		"Section_Info": {
 			"BGM": "LCD_MUS_C05_P0304_ARTIA_Stem_Base",
 			"SFX": [
 				{
@@ -28,6 +17,17 @@
 					"isStart": true
 				}
 			],
+			"Camera_Zoom_Ratio": 1.5,
+			"Next_Page_Tag": "Chapter5_P0102"
+		}
+	},
+	{
+		"Section_Name": "Chapter5_P0102",
+		"Section_BackGround_Name": "Chapter5_P0102_BackGround",
+		"Section_File_Name": "Chapter5_P0102.m2chc",
+		"Section_Type": 0,
+
+		"Section_Info": {
 			"Camera_Zoom_Ratio": 2.0,
 			"RenderResolution": {
 				"X": 5120.0,
@@ -65,7 +65,6 @@
 	{
 		"Section_Name": "Chapter6_P0102",
 		"Section_BackGround_Name": "Chapter6_P0102_BackGround",
-
 		"Section_File_Name": "Chapter6_P0102.m2chc",
 		"Section_Type": 0,
 		"Section_Default": 0,
@@ -87,7 +86,6 @@
 	},
 	{
 		"Section_Name": "Chapter6_P0506",
-
 		"Section_BackGround_Name": "Chapter6_P0506_BackGround",
 		"Section_File_Name": "Chapter6_P0506.m2chc",
 		"Section_Type": 0,

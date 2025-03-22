@@ -4,6 +4,7 @@
 #include "Pooling_Manager.h"
 #include "GameInstance.h"
 #include "Section_Manager.h"
+#include "PlayerData_Manager.h"
 
 CProjectile_BarfBug::CProjectile_BarfBug(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CProjectile_Monster(_pDevice, _pContext)
@@ -165,7 +166,8 @@ void CProjectile_BarfBug::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO&
         {
             __super::OnTrigger_Enter(_My, _Other);
 
-            m_pGameInstance->Start_SFX(_wstring(L"A_sfx_barferbug_projectile_impact_") + to_wstring(rand() % 2), 50.f);
+
+            m_pGameInstance->Start_SFX_Distance_Delay(_wstring(L"A_sfx_barferbug_projectile_impact_") + to_wstring(rand() % 2), m_pControllerTransform->Get_State(CTransform::STATE_POSITION), 0.1f, g_SFXVolume, 0.f, 13.f);
         }
 
     }
@@ -189,8 +191,15 @@ void CProjectile_BarfBug::On_Collision2D_Enter(CCollider* _pMyCollider, CCollide
         __super::On_Collision2D_Enter(_pMyCollider, _pOtherCollider, _pOtherObject);
 
         static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(PROJECTILESPLAT);
-        m_pGameInstance->Start_SFX(_wstring(L"A_sfx_barferbug_projectile_impact_") + to_wstring(rand() % 2), 50.f);
-
+        //m_pGameInstance->Start_SFX(_wstring(L"A_sfx_barferbug_projectile_impact_") + to_wstring(rand() % 2), 50.f);
+        if (COORDINATE_2D == CPlayerData_Manager::GetInstance()->Get_PlayerCoord())
+        {
+            if (CSection_Manager::GetInstance()->Is_PlayerInto(m_strSectionName))
+            {
+                m_pGameInstance->Start_SFX_Distance2D_Delay(_wstring(L"A_sfx_barferbug_projectile_impact_") + to_wstring(rand() % 2),
+                    m_pControllerTransform->Get_State(CTransform::STATE_POSITION), CPlayerData_Manager::GetInstance()->Get_PlayerPosition(), 0.1f, g_SFXVolume, 0.f);
+            }
+        }
     }
 }
 

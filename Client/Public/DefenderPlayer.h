@@ -93,7 +93,7 @@ private:
 
 	//STATS
 	_float m_fMoveSpeed = 500.f;
-	_float m_fShootDelay = 0.1f;
+	_float m_fShootDelay = 0.05f;
 	_float m_fShootTimeAcc = 0.f;
 
 	//CONTROL
