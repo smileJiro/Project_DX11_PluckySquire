@@ -8,6 +8,8 @@
 #include "Sneak_DetectionField.h"
 #include "Effect_Manager.h"
 #include "Effect2D_Manager.h"
+#include "Section_Manager.h"
+#include "PlayerData_Manager.h"
 
 CSpear_Soldier::CSpear_Soldier(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
     : CMonster(_pDevice, _pContext)
@@ -315,8 +317,6 @@ void CSpear_Soldier::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _p
 
 void CSpear_Soldier::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
 {
-    m_pGameInstance->Start_SFX(_wstring(L"A_sfx_sword_hit_speartrooper_") + to_wstring(rand() % 7), 50.f);
-
     //챕터 6 보스전에서는 hit 상태와 넉백 없음
     if ((_uint)MONSTER_STATE::DEAD == m_iState)
         return;
@@ -325,6 +325,19 @@ void CSpear_Soldier::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce
     {
         if (true == Get_ActorCom()->Is_Dynamic())
             Stop_Rotate();
+
+        m_pGameInstance->Start_SFX_Distance_Delay(_wstring(L"A_sfx_sword_hit_speartrooper_") + to_wstring(rand() % 7), m_pControllerTransform->Get_State(CTransform::STATE_POSITION), 0.1f, g_SFXVolume, 0.f, 13.f);
+    }
+    else if (COORDINATE_2D == Get_CurCoord())
+    {
+        if (COORDINATE_2D == CPlayerData_Manager::GetInstance()->Get_PlayerCoord())
+        {
+            if (CSection_Manager::GetInstance()->Is_PlayerInto(m_strSectionName))
+            {
+                m_pGameInstance->Start_SFX_Distance2D_Delay(_wstring(L"A_sfx_sword_hit_speartrooper_-") + to_wstring(rand() % 7),
+                    m_pControllerTransform->Get_State(CTransform::STATE_POSITION), CPlayerData_Manager::GetInstance()->Get_PlayerPosition(), 0.1f, g_SFXVolume, 0.f);
+            }
+        }
     }
 
     m_tStat.iHP -= _iDamg;
@@ -459,7 +472,7 @@ void CSpear_Soldier::Change_Animation()
 
             case MONSTER_STATE::ATTACK:
                 static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(DASH_ATTACK_STARTUP);
-                m_pGameInstance->Start_SFX(_wstring(L"A_sfx_speartrooper_swipe_attack_") + to_wstring(rand() % 3), 50.f);
+                m_pGameInstance->Start_SFX_Distance_Delay(_wstring(L"A_sfx_speartrooper_swipe_attack_") + to_wstring(rand() % 3), m_pControllerTransform->Get_State(CTransform::STATE_POSITION), 0.1f, g_SFXVolume, 0.f, 13.f);
 
                 break;
 
@@ -492,7 +505,7 @@ void CSpear_Soldier::Change_Animation()
             case MONSTER_STATE::SNEAK_ATTACK:
                 static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(ARREST);
                 if(Is_SneakMode())
-                    m_pGameInstance->Start_SFX(TEXT("A_sfx_C9DESK_Caught_by_guards"), 50.f);
+                    m_pGameInstance->Start_SFX(TEXT("A_sfx_C9DESK_Caught_by_guards"), g_SFXVolume);
                 else
                     m_pGameInstance->Start_SFX(_wstring(L"A_sfx_speartrooper_swipe_attack_") + to_wstring(rand() % 3), g_SFXVolume);
                 break;
@@ -523,7 +536,7 @@ void CSpear_Soldier::Change_Animation()
 
             case MONSTER_STATE::DEAD:
                 static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(DEATH_01);
-                m_pGameInstance->Start_SFX(_wstring(L"A_sfx_speartrooper_death_") + to_wstring(rand() % 8), 50.f);
+                m_pGameInstance->Start_SFX(_wstring(L"A_sfx_speartrooper_death_") + to_wstring(rand() % 8), g_SFXVolume);
 
                 break;
 

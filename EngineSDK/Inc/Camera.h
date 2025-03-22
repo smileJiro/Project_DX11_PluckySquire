@@ -132,6 +132,7 @@ public:
 	virtual void		Start_ResetArm_To_SettingPoint(_float _fResetTime) {};
 
 	void		Set_ResetData();
+	void		Set_ResetData(RETURN_ARMDATA _tResetArmData);
 	//void		Reset_CameraArm();
 
 	RETURN_ARMDATA		Save_ArmData();

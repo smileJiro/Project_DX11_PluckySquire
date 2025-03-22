@@ -4,6 +4,7 @@
 #include "Pooling_Manager.h"
 #include "GameInstance.h"
 #include "Section_Manager.h"
+#include "PlayerData_Manager.h"
 
 CProjectile_BirdMonster::CProjectile_BirdMonster(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CProjectile_Monster(_pDevice, _pContext)
@@ -155,7 +156,7 @@ void CProjectile_BirdMonster::OnTrigger_Enter(const COLL_INFO& _My, const COLL_I
         if((_uint)SHAPE_USE::SHAPE_BODY == _Other.pShapeUserData->iShapeUse)
         {
             //effect, sound
-            m_pGameInstance->Start_SFX(_wstring(L"A_sfx_namastarling_seed_land_") + to_wstring(rand() % 3), 50.f);
+            m_pGameInstance->Start_SFX_Distance_Delay(_wstring(L"A_sfx_namastarling_seed_land_") + to_wstring(rand() % 3), m_pControllerTransform->Get_State(CTransform::STATE_POSITION), 0.1f, g_SFXVolume, 0.f, 13.f);
 
         }
 
@@ -174,10 +175,18 @@ void CProjectile_BirdMonster::On_Collision2D_Enter(CCollider* _pMyCollider, CCol
 {
     __super::On_Collision2D_Enter(_pMyCollider, _pOtherCollider, _pOtherObject);
 
-    if (OBJECT_GROUP::PLAYER & _pOtherObject->Get_ObjectGroupID() || OBJECT_GROUP::MAPOBJECT & _pOtherObject->Get_ObjectGroupID() || OBJECT_GROUP::BLOCKER & _pOtherObject->Get_ObjectGroupID())
-    {
-        m_pGameInstance->Start_SFX(_wstring(L"A_sfx_namastarling_seed_land_") + to_wstring(rand() % 3), 50.f);
-    }
+    //if (OBJECT_GROUP::PLAYER & _pOtherObject->Get_ObjectGroupID() || OBJECT_GROUP::MAPOBJECT & _pOtherObject->Get_ObjectGroupID() || OBJECT_GROUP::BLOCKER & _pOtherObject->Get_ObjectGroupID())
+    //{
+    //    if (COORDINATE_2D == CPlayerData_Manager::GetInstance()->Get_PlayerCoord())
+    //    {
+    //        if (CSection_Manager::GetInstance()->Is_PlayerInto(m_strSectionName))
+    //        {
+    //            m_pGameInstance->Start_SFX_Distance2D_Delay(_wstring(L"A_sfx_namastarling_seed_land_") + to_wstring(rand() % 3),
+    //                m_pControllerTransform->Get_State(CTransform::STATE_POSITION), CPlayerData_Manager::GetInstance()->Get_PlayerPosition(), 0.1f, g_SFXVolume, 0.f);
+    //        }
+    //    }
+
+    //}
 }
 
 void CProjectile_BirdMonster::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)

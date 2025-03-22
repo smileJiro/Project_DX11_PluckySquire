@@ -31,12 +31,12 @@ HRESULT CPlayerItem::Initialize(void* _pArg)
 	pDesc->tTransform3DDesc.fSpeedPerSec = 10.f;
  	m_fOriginScale = pDesc->tTransform3DDesc.vInitialScaling.x;
 	pDesc->iActorType = (_uint)ACTOR_TYPE::DYNAMIC;
-	pDesc->isTrigger = true;
+	pDesc->isTrigger = false;
 	pDesc->eShapeType = (SHAPE_TYPE)SHAPE_TYPE::SPHERE;
 	pDesc->fRadius = 0.8f;
 
 	pDesc->iFillterMyGroup = OBJECT_GROUP::TRIGGER_OBJECT;
-	pDesc->iFillterOtherGroupMask = OBJECT_GROUP::PLAYER | OBJECT_GROUP::MAPOBJECT;
+	pDesc->iFillterOtherGroupMask = OBJECT_GROUP::MAPOBJECT;
 
 	pDesc->iTriggerType = (_uint)TRIGGER_TYPE::EVENT_TRIGGER;
 	m_szModelTag = pDesc->szModelTag;

@@ -171,7 +171,8 @@ HRESULT CCarriableObject::Set_Carrier(CPlayer* _pCarrier)
 {
 	if (nullptr == _pCarrier)
 	{
-		m_pBody2DColliderCom->Set_Active(true);
+		if (nullptr != m_pBody2DColliderCom)
+			m_pBody2DColliderCom->Set_Active(true);
 
 		m_pCarrier = nullptr;
 		if (COORDINATE_3D == Get_CurCoord())
@@ -179,7 +180,8 @@ HRESULT CCarriableObject::Set_Carrier(CPlayer* _pCarrier)
 	}
 	else
 	{
-		m_pBody2DColliderCom->Set_Active(false);
+		if(nullptr != m_pBody2DColliderCom)
+			m_pBody2DColliderCom->Set_Active(false);
 		if (nullptr != m_pCarrier)
 			return E_FAIL;
 		m_fFloorDistance = 0.f;

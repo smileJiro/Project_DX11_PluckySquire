@@ -128,7 +128,7 @@ void CRat::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
 {
     __super::On_Hit(_pHitter, _iDamg, _vForce);
 
-    m_pGameInstance->Start_SFX(_wstring(L"A_sfx_sword_hit_rat-") + to_wstring(rand() % 5), 50.f);
+    m_pGameInstance->Start_SFX(_wstring(L"A_sfx_sword_hit_rat-") + to_wstring(rand() % 5), g_SFXVolume);
 
 }
 
@@ -154,7 +154,7 @@ void CRat::Change_Animation()
 
             case MONSTER_STATE::DEAD:
                 static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(DIE);
-                m_pGameInstance->Start_SFX(_wstring(L"A_sfx_rat_death_") + to_wstring(rand() % 3), 50.f);                
+                m_pGameInstance->Start_SFX(_wstring(L"A_sfx_rat_death_") + to_wstring(rand() % 3), g_SFXVolume);
                 break;
 
             default:
@@ -200,7 +200,7 @@ void CRat::Change_Animation()
                 else if (E_DIRECTION::RIGHT == Get_2DDirection() || E_DIRECTION::LEFT == Get_2DDirection())
                     eAnim = DIE_RIGHT;
 
-                m_pGameInstance->Start_SFX(_wstring(L"A_sfx_rat_death_") + to_wstring(rand() % 3), 50.f);
+                m_pGameInstance->Start_SFX(_wstring(L"A_sfx_rat_death_") + to_wstring(rand() % 3), g_SFXVolume);
 
                 break;
             default:
