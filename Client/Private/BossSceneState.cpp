@@ -70,8 +70,8 @@ void CBossSceneState::State_Update(_float _fTimeDelta)
 	//		}
 	//	}
 	//}
-	if (true == m_pOwner->Get_AnimChangeable())
-		Event_ChangeBossState(BOSS_STATE::IDLE, m_pFSM);
+	//if (true == m_pOwner->Get_AnimChangeable())
+	//	Event_ChangeBossState(BOSS_STATE::IDLE, m_pFSM);
 }
 
 void CBossSceneState::State_Exit()
