@@ -147,7 +147,7 @@ void CGameEventExecuter_C4::Chapter4_Intro(_float _fTimeDelta)
 			CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::CUTSCENE, true, 0.8f);
 			Next_Step(true);
 
-			m_pGameInstance->Start_SFX(TEXT("LCD_MUS_C04_DESKINTRO_FULL"), 60.f);
+			m_pGameInstance->Start_SFX(TEXT("LCD_MUS_C04_DESKINTRO_FULL"), g_SFXVolume * 1.2f);
 			m_pGameInstance->End_BGM();
 			m_pGameInstance->End_SFX(TEXT("LCD_MUS_C04_SONNETSWAMPSDAY_LOOP_Stem_Group1"));
 			m_pGameInstance->End_SFX(TEXT("LCD_MUS_C04_SONNETSWAMPSDAY_LOOP_Stem_Group2"));
@@ -643,7 +643,7 @@ void CGameEventExecuter_C4::Chapter4_3D_Out_01(_float _fTimeDelta)
 		if (Is_Start())
 		{
 			Ready_Action(L"Chapter4_P0708", SECTION_2D_PLAYMAP_BACKGROUND, C2DMapActionObject::ACTIVE_TYPE_ACTIONANIM);
-			m_pGameInstance->Start_SFX_Delay(TEXT("C04_P1718b"), 0.f, 50.f);
+			m_pGameInstance->Start_SFX_Delay(TEXT("C04_P1718b"), 0.f, g_SFXVolume);
 		}
 		Change_PlayMap(1.f);
 

@@ -14,6 +14,5 @@ namespace Client
 
 #define Uimgr CUI_Manager::GetInstance()
 #define SECTION_MGR CSection_Manager::GetInstance()
-#define BGM_VOLUME 30.f
-#define SFX_VOLUME 30.f
+
 }
