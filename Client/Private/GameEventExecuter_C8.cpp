@@ -1202,18 +1202,18 @@ void CGameEventExecuter_C8::Chapter8_3D_Out_02(_float _fTimeDelta)
 	CFriend* pViolet = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Violet"));
 
 //#ifdef _DEBUG
-	//if (nullptr == pViolet)
-	//{
-	//	if (false == Is_Dead())
-	//	{
-			//if (Change_PlayMap(0.f))
-			//{
-			//	Get_Book()->Set_Freezing(true);
-			//	//GameEvent_End();
-			//}
-	//	}
-	//	return;
-	//}
+	if (nullptr == pViolet)
+	{
+		if (false == Is_Dead())
+		{
+			if (Change_PlayMap(0.f))
+			{
+				Get_Book()->Set_Freezing(true);
+				GameEvent_End();
+			}
+		}
+		return;
+	}
 //#endif // _DEBUG
 
 
@@ -2530,6 +2530,10 @@ void CGameEventExecuter_C8::Chapter8_Boss_Intro(_float _fTimeDelta)
 
 	if (Step_Check(STEP_0))
 	{
+		if (Is_Start())
+		{
+			START_SFX_DELAY(TEXT("A_sfx_C9DESK_LastBoss_Intro"), 1.5f, g_SFXVolume, false);
+		}
 		if (CCamera_Manager::TARGET == CCamera_Manager::GetInstance()->Get_CameraType()) {
 			Get_Player()->Set_BlockPlayerInput(true);
 			Next_Step(true);

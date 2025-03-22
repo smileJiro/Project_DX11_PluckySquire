@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "PlayerState_Stamp.h"
+#include "GameInstance.h"
 
 CPlayerState_Stamp::CPlayerState_Stamp(CPlayer* _pOwner)
 	:CPlayerState(_pOwner, CPlayer::STAMP)
@@ -24,6 +25,7 @@ void CPlayerState_Stamp::Update(_float _fTimeDelta)
 			m_pOwner->Set_State(CPlayer::IDLE);
 		else if (false == tKeyResult.bInputStates[PLAYER_INPUT_KEEP_STAMP])
 		{
+			START_SFX_DELAY(TEXT("A_sfx_stamp_down"), 0.f, g_SFXVolume, false);
 			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_STAMP_ATTACK_EDIT_NEWRIG);
 			m_eStampState = STAMP_SMASH;
 		}
@@ -55,6 +57,7 @@ void CPlayerState_Stamp::Enter()
 	m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_STAMP_PULLOUT_SHORT_NEWRIG);
 	m_fStampSpeed = m_pOwner->Get_MoveSpeed(COORDINATE_3D)*0.5f;
 	m_eStampState = STAMP_START;
+	START_SFX_DELAY(TEXT("A_sfx_stamp_up"), 0.f, g_SFXVolume, false);
 }
 
 void CPlayerState_Stamp::Exit()
