@@ -1307,10 +1307,13 @@ void CGameEventExecuter_C8::Chapter8_Sword(_float _fTimeDelta)
 
 	function fCamerafunc = []()
 		{
-			CCamera_Manager::GetInstance()->Start_Turn_AxisY(CCamera_Manager::TARGET, 1.f, XMConvertToRadians(60.f), (_uint)EASE_IN_OUT);
 
-			//CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Increase(CCamera_Manager::TARGET, 1.f,
-			//	3.f, EASE_IN_OUT);
+			CCamera_Manager::GetInstance()->Start_Changing_ArmLength(CCamera_Manager::TARGET, 1.f,
+				7.4f, EASE_IN_OUT);
+
+			CCamera_Manager::GetInstance()->Start_Turn_ArmVector(CCamera_Manager::TARGET, 1.f,
+				XMVectorSet(-0.9865f, 0.0073f, -0.1636f, 0.f), EASE_IN_OUT);
+
 			CCamera_Manager::GetInstance()->Start_Changing_AtOffset(CCamera_Manager::TARGET,
 				1.f,
 				XMVectorSet(0.f, -2.5f, 0.f, 0.f),
@@ -1350,7 +1353,8 @@ void CGameEventExecuter_C8::Chapter8_Stop_Stamp(_float _fTimeDelta)
 	function fCamerafunc = []()
 		{
 			// <-으로 돌리기. 1초동안
-			CCamera_Manager::GetInstance()->Start_Turn_AxisY(CCamera_Manager::TARGET, 1.f, XMConvertToRadians(-70.f), (_uint)EASE_IN_OUT);
+			CCamera_Manager::GetInstance()->Start_Turn_ArmVector(CCamera_Manager::TARGET, 1.f, XMVectorSet(0.6620f, 0.0620f, -0.7469f, 0.f), EASE_IN_OUT);
+			
 			CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Increase(CCamera_Manager::TARGET, 1.f,
 				3.f, EASE_IN_OUT);
 			CCamera_Manager::GetInstance()->Start_Changing_AtOffset(CCamera_Manager::TARGET,
@@ -1370,9 +1374,12 @@ void CGameEventExecuter_C8::Chapter8_Bomb_Stamp(_float _fTimeDelta)
 
 	function fCamerafunc = []()
 		{
-			CCamera_Manager::GetInstance()->Start_Turn_AxisY(CCamera_Manager::TARGET, 1.f, XMConvertToRadians(-60.f), (_uint)EASE_IN_OUT);
-			CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Increase(CCamera_Manager::TARGET, 1.f,
-				3.f, EASE_IN_OUT);
+			CCamera_Manager::GetInstance()->Start_Changing_ArmLength(CCamera_Manager::TARGET, 1.f,
+				8.1f, EASE_IN_OUT);
+
+			CCamera_Manager::GetInstance()->Start_Turn_ArmVector(CCamera_Manager::TARGET, 1.f,
+				XMVectorSet(0.9560f, 0.2018f, -0.2018f, 0.f), EASE_IN_OUT);
+
 			CCamera_Manager::GetInstance()->Start_Changing_AtOffset(CCamera_Manager::TARGET,
 				1.f,
 				XMVectorSet(0.f, -2.f, 0.f, 0.f),
@@ -1390,14 +1397,13 @@ void CGameEventExecuter_C8::Chapter8_Tilting_Glove(_float _fTimeDelta)
 
 	function fCamerafunc = []()
 		{
-			CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Increase(CCamera_Manager::TARGET, 1.f,
-				1.f, EASE_IN_OUT);
+			CCamera_Manager::GetInstance()->Start_Changing_ArmLength(CCamera_Manager::TARGET, 1.f,
+				10.8f, EASE_IN_OUT);
 			CCamera_Manager::GetInstance()->Start_Changing_AtOffset(CCamera_Manager::TARGET,
 				1.f,
-				XMVectorSet(0.f, -2.5f, 0.f, 0.f),
+				XMVectorSet(0.f, -3.5f, 0.f, 0.f),
 				EASE_IN_OUT);
-
-			CCamera_Manager::GetInstance()->Start_Turn_AxisRight(CCamera_Manager::TARGET, 1.f, XMConvertToRadians(30.f), (_uint)EASE_IN_OUT);
+			CCamera_Manager::GetInstance()->Start_Turn_ArmVector(CCamera_Manager::TARGET, 1.f, XMVectorSet(-0.2194f, 0.0636f, -0.9736f, 0.f), EASE_IN_OUT);
 		};
 	if (true == Postit_Process(L"Chapter8_SKSP_Postit", L"Chapter8_Tilting_Glove", 1.f, CPostit_Page::POSTIT_PAGE_POSTION_TYPE_A, false, fCamerafunc))
 	{
@@ -2682,7 +2688,7 @@ _bool CGameEventExecuter_C8::Change_PlayMap(_float _fStartTime)
 
 		CPlayerData_Manager::GetInstance()->Spawn_Bulb(LEVEL_STATIC, (LEVEL_ID)eCurLevelID);
 		CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)eCurLevelID, TEXT("Bomb_Stamp"), _float3(-15.54f, 26.06f, 16.56f), { 1.f,1.f,1.f });
-		CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)eCurLevelID, TEXT("Sword"), _float3(42.22f, 15.82f, -0.45f), { 2.f,2.f,2.f });
+		CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)eCurLevelID, TEXT("Sword"), _float3(41.72f, 15.82f, -0.25f), { 2.f,2.f,2.f });
 		CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)eCurLevelID, TEXT("Stop_Stamp"), _float3(45.13f, 49.74f, 23.34f), { 1.f,1.f,1.f });
 		CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)eCurLevelID, TEXT("Tilting_Glove"), _float3(30.55f, 30.83f, 23.34f));
 		m_iSubStep++;

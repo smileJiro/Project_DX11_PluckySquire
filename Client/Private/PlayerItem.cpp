@@ -266,7 +266,7 @@ void CPlayerItem::Action_Getting(_float _fTimeDelta)
 			//m_pActorCom->Get_RigidActor()->setActorFlag(PxActorFlag::eDISABLE_GRAVITY, true);
 
 			_vector vPos = m_pControllerTransform->Get_State(CTransform::STATE_POSITION);
-			vPos += {0.f, 1.5f, 0.f, 0.f};
+			vPos += {0.f, 0.85f, 0.f, 0.f};
 			Get_ActorCom()->Set_GlobalPose({ XMVectorGetX(vPos), XMVectorGetY(vPos), XMVectorGetZ(vPos) });
 		}
 	}
