@@ -122,6 +122,8 @@ void CZipline::Ride_Down(_float _fTimeDelta)
 		m_pRidingObject->Set_2DDirection(E_DIRECTION::LEFT);
 		this->Set_Render(false);
 		XMStoreFloat3(&m_vStartPos, m_pControllerTransform->Get_State(CTransform::STATE_POSITION));
+
+		m_pGameInstance->Start_SFX(TEXT("A_sfx_rope_slide"), g_SFXVolume);
 	}
 	//
 	_float fRatio = m_pGameInstance->Calculate_Ratio(&m_fZiplineTime, _fTimeDelta, EASE_IN_OUT);
@@ -131,6 +133,8 @@ void CZipline::Ride_Down(_float _fTimeDelta)
 		m_pRidingObject->Set_GravityCompOn(true);
 		m_fZiplineTime.y = 0.f;
 		this->Set_Active(false);
+
+		m_pGameInstance->Set_SFXTargetVolume(TEXT("A_sfx_rope_slide"), 0.f);
 	}
 
 	_vector vPos = XMVectorLerp(XMLoadFloat3(&m_vStartPos), XMLoadFloat3(&m_vDestination), fRatio);

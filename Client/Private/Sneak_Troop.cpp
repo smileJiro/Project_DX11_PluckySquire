@@ -268,6 +268,7 @@ void CSneak_Troop::Action_Catch()
 				Switch_Animation_ByState();
 				m_pSneakGameManager->GameOver();
 				m_pGameInstance->Start_SFX(TEXT("A_sfx_spotted"), 50.f);
+				
 			}
 		}
 	}

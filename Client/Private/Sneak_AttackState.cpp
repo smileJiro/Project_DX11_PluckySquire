@@ -49,6 +49,8 @@ void CSneak_AttackState::State_Update(_float _fTimeDelta)
 		return;
 	if (nullptr == m_pOwner)
 		return;
+	if (m_pOwner->Is_Dead())
+		return;
 	//cout << "Attack" << endl;
 	//컷씬으로 들어가며 초기화
 	//Event_ChangeMonsterState(MONSTER_STATE::STANDBY, m_pFSM);
@@ -64,15 +66,21 @@ void CSneak_AttackState::State_Update(_float _fTimeDelta)
 	//	}
 	//}
 
-	_uint iPlayerAnim = static_cast<CModelObject*>(CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr()->Get_Body())->Get_CurrentAnimIndex();
-	if ((_uint)CPlayer::ANIM_STATE_3D::LATCH_KNOCKED_DOWN_AND_EATEN_FROM_BEHIND_LATCH != iPlayerAnim
-		&& (_uint)CPlayer::ANIM_STATE_3D::LATCH_KNOCKED_DOWN_AND_EATEN_FROM_BEHIND_LOOP_LATCH != iPlayerAnim)
-	{
-		// FadeInOut 시간 계산
-		FadeInOut(_fTimeDelta);
 
-		Check_Animation_End();
-	}
+	// FadeInOut 시간 계산
+	FadeInOut(_fTimeDelta);
+
+	Check_Animation_End();
+
+	//_uint iPlayerAnim = static_cast<CModelObject*>(CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr()->Get_Body())->Get_CurrentAnimIndex();
+	//if ((_uint)CPlayer::ANIM_STATE_3D::LATCH_KNOCKED_DOWN_AND_EATEN_FROM_BEHIND_LATCH == iPlayerAnim
+	//	|| (_uint)CPlayer::ANIM_STATE_3D::LATCH_KNOCKED_DOWN_AND_EATEN_FROM_BEHIND_LOOP_LATCH == iPlayerAnim)
+	//{
+	//	// FadeInOut 시간 계산
+	//	FadeInOut(_fTimeDelta);
+
+	//	Check_Animation_End();
+	//}
 }
 
 void CSneak_AttackState::State_Exit()

@@ -18,7 +18,7 @@ HRESULT CNeutral_IdleState::Initialize(void* _pArg)
 	if (FAILED(__super::Initialize(pDesc)))
 		return E_FAIL;
 
-	m_fDelayTime = 0.3f;
+	m_fDelayTime = 2.f;
 
 	return S_OK;
 }
