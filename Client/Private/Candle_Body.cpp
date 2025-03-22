@@ -59,7 +59,8 @@ void CCandle_Body::State_Change_TurnOn()
     _vector vOffsetPos = {0.0f, 1.4f, 0.02f};
     CEffect_Manager::GetInstance()->Active_EffectPosition(TEXT("CandleFire"), true, vPos + vOffsetPos);
     START_SFX_DELAY(TEXT("A_sfx_candle_ignite-") + to_wstring(rand() % 4), 0.f, g_SFXVolume, false);
-    START_SFX_DELAY(TEXT("A_sfx_candle_flame_loop"), 0.f, g_SFXVolume, true);
+    START_SFX_DELAY(TEXT("A_sfx_Candle_light_tone"), 0.65f, g_SFXVolume, false);
+    //START_SFX_DELAY(TEXT("A_sfx_candle_flame_loop"), 0.f, g_SFXVolume, true);
 }
 
 void CCandle_Body::State_Change_FlameLoop()

@@ -574,6 +574,14 @@ void CCamera_Manager::Set_ResetData(CAMERA_TYPE _eCameraType)
 	m_Cameras[_eCameraType]->Set_ResetData();
 }
 
+void CCamera_Manager::Set_ResetData(CAMERA_TYPE _eCameraType, RETURN_ARMDATA _tResetData)
+{
+	if (nullptr == m_Cameras[_eCameraType])
+		return;
+
+	m_Cameras[_eCameraType]->Set_ResetData(_tResetData);
+}
+
 void CCamera_Manager::Start_ResetArm_To_SettingPoint(CAMERA_TYPE _eCameraType, _float _fResetTime)
 {
 	if (nullptr == m_Cameras[_eCameraType])

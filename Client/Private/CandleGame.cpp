@@ -66,6 +66,7 @@ void CCandleGame::Check_Clear(_float _fTimeDelta)
             if (CCandle::STATE_TURNON == pCandle->Get_CurState())
             {
                 /* 1. 만약 Candle State 가 FalmeLoop 라면, 카운트증가. */
+
                 ++iFlameCount;
             }
         }
