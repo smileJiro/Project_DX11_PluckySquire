@@ -17,7 +17,7 @@ HRESULT CJumpPad::Initialize(void* _pArg)
 {
 
 	JUMPPAD_DESC* pJumpPadDesc = static_cast<JUMPPAD_DESC*>(_pArg);
-	pJumpPadDesc->eCrriableObjId = CARRIABLE_OBJ_ID::DIEC;
+	pJumpPadDesc->eCrriableObjId = CARRIABLE_OBJ_ID::JUMP_PADDLE;
 	pJumpPadDesc->vHeadUpRoolPitchYaw3D = { 0.f,0.f,0.f };
 	pJumpPadDesc->vHeadUpOffset3D = { 0.f,1.8f,0.f };
 	pJumpPadDesc->isCoordChangeEnable = true;

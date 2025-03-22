@@ -1499,6 +1499,7 @@ HRESULT CLevel_Chapter_04::Ready_Layer_MapGimmick(const _wstring& _strLayerTag)
 		m_eLevelID, L"Layer_MapGimmick", &DoorRedDesc)))
 		return E_FAIL;
 
+
 	return S_OK;
 }
 
