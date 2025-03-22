@@ -96,7 +96,7 @@ public :
 		/* Chapter6_Boss */
 
 		CHAPTER6_HUMGRUMP_REVOLT,	// 달수염 죽는 이벤트
-		CHAPTER6_CHANGE_BOOK_TO_GREATE_HUMGRUMP,		// 위대한 험그럼프로 책 바뀌는 이벤트
+		CHAPTER6_CHANGE_BOOK_TO_GREAT_HUMGRUMP,		// 위대한 험그럼프로 책 바뀌는 이벤트
 		CHAPTER6_STORYSEQUENCE_01, // 왕궁 이벤트
 
 

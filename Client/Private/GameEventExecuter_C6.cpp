@@ -119,8 +119,8 @@ void CGameEventExecuter_C6::Update(_float _fTimeDelta)
 		case Client::CTrigger_Manager::CHAPTER6_HUMGRUMP_REVOLT:
 			Chapter6_Humgrump_Revolt(_fTimeDelta);
 			break;
-		case Client::CTrigger_Manager::CHAPTER6_CHANGE_BOOK_TO_GREATE_HUMGRUMP:
-			Chapter6_Change_Book_To_Greate_Humgrump(_fTimeDelta);
+		case Client::CTrigger_Manager::CHAPTER6_CHANGE_BOOK_TO_GREAT_HUMGRUMP:
+			Chapter6_Change_Book_To_Great_Humgrump(_fTimeDelta);
 			break;
 		case Client::CTrigger_Manager::CHAPTER6_FRIENDEVENT_0:
 			Chapter6_FriendEvent_0(_fTimeDelta);
@@ -1523,6 +1523,8 @@ void CGameEventExecuter_C6::Chapter6_Humgrump_Revolt(_float _fTimeDelta)
 			if (fRatio >= (1.f - EPSILON)) {
 
 				CCamera_Manager::GetInstance()->Start_Shake_ByTime(CCamera_Manager::TARGET_2D, 0.3f, 0.02f);
+				START_SFX_DELAY(L"A_sfx_tank_fire_0", 0.f, g_BGMVolume, false);
+
 				Next_Step(true);
 			}
 
@@ -1548,6 +1550,7 @@ void CGameEventExecuter_C6::Chapter6_Humgrump_Revolt(_float _fTimeDelta)
 			if (Is_Start()) {
 				static_cast<CModelObject*>(m_TargetObjects[1])->Switch_Animation(CNpc_MoonBeard::CHAPTER6_SURPRISED_TURN);
 				static_cast<CNpc_MoonBeard*>(m_TargetObjects[1])->Set_Opposite_Side();
+
 			}
 		}
 
@@ -1555,6 +1558,8 @@ void CGameEventExecuter_C6::Chapter6_Humgrump_Revolt(_float _fTimeDelta)
 		if (false == static_cast<CModelObject*>(m_TargetObjects[1])->Is_DuringAnimation()) {
 			static_cast<CModelObject*>(m_TargetObjects[1])->Switch_Animation(CNpc_MoonBeard::CHAPTER6_SURPRISED_IDLE);
 			static_cast<CModelObject*>(m_TargetObjects[0])->Switch_Animation(CNpc_Humgrump::CHAPTER6_WINDUP);
+			START_SFX_DELAY(L"A_sfx_humpgrump_death_sequence", 0.9f, g_BGMVolume * 1.5f, false);
+
 			Next_Step(true);
 		}
 
@@ -1597,7 +1602,6 @@ void CGameEventExecuter_C6::Chapter6_Humgrump_Revolt(_float _fTimeDelta)
 				// 9. 험그럼프 Beam 끝, 할배 죽기 시작
 				static_cast<CModelObject*>(m_TargetObjects[0])->Switch_Animation(CNpc_Humgrump::CHAPTER6_BEAM_END);
 				static_cast<CModelObject*>(m_TargetObjects[1])->Switch_Animation(CNpc_MoonBeard::CHAPTER6_ZAP_DEATH);
-				START_SFX(L"A_sfx_humpgrump_death_sequence", g_BGMVolume * 0.8f, false);
 
 			}
 		}
@@ -1659,7 +1663,7 @@ void CGameEventExecuter_C6::Chapter6_Humgrump_Revolt(_float _fTimeDelta)
 	}
 }
 
-void CGameEventExecuter_C6::Chapter6_Change_Book_To_Greate_Humgrump(_float _fTimeDelta)
+void CGameEventExecuter_C6::Chapter6_Change_Book_To_Great_Humgrump(_float _fTimeDelta)
 {
 	m_fTimer += _fTimeDelta;
 
