@@ -149,7 +149,7 @@ HRESULT CSection_2D::Import(void* _pDesc)
 					{
 						_bool isStart = true;
 						_string strText = "";
-						if (SFXTagJson.contains("SFXPath"))
+						if (SFXTagJson.contains("SFX_Name"))
 						{
 							strText = SFXTagJson["SFX_Name"];
 						}
@@ -280,9 +280,9 @@ HRESULT CSection_2D::Section_Enter(const _wstring& _strPreSectionTag)
 	for (auto pPair : m_SFXTags)
 	{
 		if (pPair.second)
-			START_SFX(pPair.first, 30.f, true);
+			m_pGameInstance->Start_SFX(pPair.first, 30.f, true);
 		else
-			END_SFX(pPair.first);
+			m_pGameInstance->End_SFX(pPair.first);
 	}
 
 	return S_OK;

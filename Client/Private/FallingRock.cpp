@@ -200,6 +200,15 @@ void CFallingRock::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOt
 			//_vector vPos = Get_FinalPosition();
 			//;
 			CEffect2D_Manager::GetInstance()->Play_Effect(TEXT("FallingRock_Breaking"), m_strSectionName, Get_WorldMatrix());
+
+			if (COORDINATE_2D == CPlayerData_Manager::GetInstance()->Get_PlayerCoord())
+			{
+				if (CSection_Manager::GetInstance()->Is_PlayerInto(m_strSectionName))
+				{
+					m_pGameInstance->Start_SFX_Distance2D(_wstring(L"A_Sfx_RockPlatform_Crumble-") + to_wstring(rand() % 7),
+						m_pControllerTransform->Get_State(CTransform::STATE_POSITION), CPlayerData_Manager::GetInstance()->Get_PlayerPosition(), 70.f, 0.f, 400.f);
+				}
+			}
 			return;
 		}
 

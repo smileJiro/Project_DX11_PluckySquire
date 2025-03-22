@@ -501,6 +501,8 @@ void CGameEventExecuter_C8::Chapter8_Laser_Stage_2(_float _fTimeDelta)
 		if (Is_Start())
 		{
 			START_BGM(L"LCD_MUS_C09_P1718_REUNITEDWITHPIP_Stem_Base", g_BGMVolume);
+			START_SFX(TEXT("LCD_MUS_C09_P1718_REUNITEDWITHPIP_Stem_Group1"), g_SFXVolume, true);
+			START_SFX(TEXT("LCD_MUS_C09_P1718_REUNITEDWITHPIP_Stem_Group2"), g_SFXVolume, true);
 			static_cast<CFriend*>(m_TargetObjects[0])->Change_AnyState(CFriend_Pip::PIP_EXCITED_DOWN, false, CFriend::DIR_DOWN);
 		}
 
@@ -525,7 +527,8 @@ void CGameEventExecuter_C8::Chapter8_Laser_Stage_2(_float _fTimeDelta)
 		CFriend_Controller::GetInstance()->Start_Train();
 
 		pPlayer->Set_BlockPlayerInput(false);
-
+		m_pGameInstance->Set_SFXTargetVolume(TEXT("LCD_MUS_C09_P1718_REUNITEDWITHPIP_Stem_Group1"), 0.f, 2.f);
+		m_pGameInstance->Set_SFXTargetVolume(TEXT("LCD_MUS_C09_P1718_REUNITEDWITHPIP_Stem_Group2"), 0.f, 2.f);
 		GameEvent_End();
 	}
 
@@ -547,7 +550,7 @@ void CGameEventExecuter_C8::Chapter8_Friend_Appear_Violet(_float _fTimeDelta)
 		if (Is_Start())
 		{
 			//
-			START_SFX(L"A_sfx_platform_extend", g_SFXVolume * 0.8f, true);
+			//START_SFX(L"A_sfx_platform_extend", g_SFXVolume * 0.8f, true);
 			m_TargetObjects.resize(LAST);
 
 			pPlayer->Set_BlockPlayerInput(true);
@@ -662,6 +665,17 @@ void CGameEventExecuter_C8::Chapter8_Friend_Appear_Violet(_float _fTimeDelta)
 		{
 			START_SFX(L"A_sfx_violet_jumping_off_bed", g_BGMVolume * 0.8f, false);
 			static_cast<CFriend*>(m_TargetObjects[VIOLET])->Change_AnyState(CFriend_Violet::VIOLET_C09_JUMPINGOFFBED, false, CFriend::DIR_RIGHT);
+
+			m_pGameInstance->Transition_BGM(TEXT("LCD_MUS_C09_THRASHREUNITED_P5152_LOOP_Stem_Base"), g_BGMVolume);
+
+			m_pGameInstance->Set_SFXTargetVolume(TEXT("LCD_MUS_C09_P2728_VIOLET_Stem_Group1"), 0.f);
+			m_pGameInstance->Set_SFXTargetVolume(TEXT("LCD_MUS_C09_P2728_VIOLET_Stem_Group2"), 0.f);
+
+			m_pGameInstance->Start_SFX(TEXT("LCD_MUS_C09_THRASHREUNITED_P5152_LOOP_Stem_Group1"), 1.5f, true);
+			m_pGameInstance->Start_SFX(TEXT("LCD_MUS_C09_THRASHREUNITED_P5152_LOOP_Stem_Group2"), 1.5f, true);
+
+			m_pGameInstance->Set_SFXTargetVolume(TEXT("LCD_MUS_C09_THRASHREUNITED_P5152_LOOP_Stem_Group1"), g_BGMVolume);
+			m_pGameInstance->Set_SFXTargetVolume(TEXT("LCD_MUS_C09_THRASHREUNITED_P5152_LOOP_Stem_Group2"), g_BGMVolume);
 		}
 
 		if (nullptr != m_TargetObjects[HAT])
@@ -700,6 +714,7 @@ void CGameEventExecuter_C8::Chapter8_Friend_Appear_Violet(_float _fTimeDelta)
 
 		CFriend_Controller::GetInstance()->Start_Train();
 		pPlayer->Set_BlockPlayerInput(false);
+
 		GameEvent_End();
 	}
 }
@@ -752,6 +767,7 @@ void CGameEventExecuter_C8::Chapter8_Friend_Appear_Thrash(_float _fTimeDelta)
 			m_TargetObjects[VIOLET] = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Violet"));
 
 			static_cast<CFriend*>(m_TargetObjects[THRASH])->Change_AnyState(CFriend_Thrash::THRASH_C09_TAPPING, true, CFriend::DIR_UP);
+			m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_thrash_tapping_pipe"), 0.f, g_SFXVolume, true);
 
 		}
 		Next_Step_Over(0.8f);
@@ -839,6 +855,8 @@ void CGameEventExecuter_C8::Chapter8_Friend_Appear_Thrash(_float _fTimeDelta)
 			static_cast<CFriend*>(m_TargetObjects[VIOLET])->Change_CurState(CFriend::FRIEND_MOJAM);
 			static_cast<CFriend*>(m_TargetObjects[PIP])->Change_CurState(CFriend::FRIEND_MOJAM);
 			static_cast<CFriend*>(m_TargetObjects[THRASH])->Change_CurState(CFriend::FRIEND_MOJAM);
+
+			m_pGameInstance->Start_SFX(TEXT("A_sfx_mojam_withpip"), g_SFXVolume);
 		}
 		// ¸ðÀë?
 		else if (!CDialog_Manager::GetInstance()->Get_DisPlayDialogue() && CPlayer::STATE::IDLE == pPlayer->Get_CurrentStateID())

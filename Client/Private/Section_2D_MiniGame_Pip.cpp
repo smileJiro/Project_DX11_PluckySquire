@@ -682,6 +682,8 @@ HRESULT CSection_2D_MiniGame_Pip::Section_AddRenderGroup_Process()
 
 HRESULT CSection_2D_MiniGame_Pip::Section_Enter(const _wstring& _strPreSectionTag)
 {
+	__super::Section_Enter(_strPreSectionTag);
+
 	CMinigame_Sneak::GetInstance()->Start_Game();
 
 	return S_OK;

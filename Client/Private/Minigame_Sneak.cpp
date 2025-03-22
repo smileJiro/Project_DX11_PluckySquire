@@ -67,7 +67,11 @@ void CMinigame_Sneak::Start_Game()
 		//Event_SetActive(m_pPlayer, false);
 
 	// Start Music
+	// 기존 : end bgm
+	//m_pGameInstance->Set_BGMTargetVolume(0.f);
 	m_pGameInstance->End_BGM();
+	//m_pGameInstance->Transition_BGM(TEXT("LCD_MUS_C09_P2122_STEALTHMINIGAME_LOOP3_FULL"), g_SFXVolume);
+	m_pGameInstance->Start_SFX(TEXT("LCD_MUS_C09_STEALTHMINIGAME_INTROSTINGER_FULL"), g_SFXVolume);
 }
 
 void CMinigame_Sneak::Update(_float _fTimeDelta)
@@ -632,6 +636,7 @@ void CMinigame_Sneak::Start_Stage()
 	m_iFlipTime = 0;
 
 	m_eGameState = PROGRESS;
+	//기존 : m_pGameInstance->Start_BGM(TEXT("LCD_MUS_C09_P2122_STEALTHMINIGAME_LOOP3_FULL"), 50.f);
 	m_pGameInstance->Start_BGM(TEXT("LCD_MUS_C09_P2122_STEALTHMINIGAME_LOOP3_FULL"), 50.f);
 
 }
@@ -656,7 +661,8 @@ void CMinigame_Sneak::Before_Action()
 			m_fAccTime = 0.5f; // m_fAccTime = m_fAccTime - 0.5f에서 m_fAccTime 0.f로 만들기 위해서..
 
 			m_pGameInstance->Start_SFX(TEXT("A_sfx_ReachFinalRoomExit"), 50.f);
-			//m_pGameInstance->End_BGM();
+			m_pGameInstance->Start_SFX(TEXT("LCD_MUS_C09_STEALTHMINIGAME_ENDSTINGER1_FULL"), 50.f);
+			m_pGameInstance->End_BGM();
 			return;
 		}
 	}

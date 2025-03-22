@@ -220,12 +220,12 @@ void CNpc_Rabbit::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOthe
 
 					//CSection_Manager::GetInstance()->Remove_GameObject_ToCurSectionLayer(_pOtherObject);
 					
-					m_pGameInstance->Set_SFXTargetVolume(_wstring(L"LCD_MUS_C02_PAGETHEBOOKWORMTHEME_Stem_Base"), 0.f);
-					m_pGameInstance->Set_SFXTargetVolume(_wstring(L"LCD_MUS_C02_PAGETHEBOOKWORMTHEME_Stem_Group1"), 0.f);
+					m_pGameInstance->Set_SFXTargetVolume(_wstring(L"LCD_MUS_C02_PAGETHEBOOKWORMTHEME_Stem_Base"), 0.f, 1.f);
+					m_pGameInstance->Set_SFXTargetVolume(_wstring(L"LCD_MUS_C02_PAGETHEBOOKWORMTHEME_Stem_Group1"), 0.f, 1.f);
 
-					m_pGameInstance->Set_SFXTargetVolume(_wstring(L"LCD_MUS_Desk_C02_NIGHTDESK_Stem_Base"), 20.f);
-					m_pGameInstance->Set_SFXTargetVolume(_wstring(L"LCD_MUS_Desk_C02_NIGHTDESK_Stem_Group1"), 20.f);
-					m_pGameInstance->Set_SFXTargetVolume(_wstring(L"LCD_MUS_Desk_C02_NIGHTDESK_Stem_Group2"), 20.f);
+					m_pGameInstance->Set_SFXTargetVolume(_wstring(L"LCD_MUS_Desk_C02_NIGHTDESK_Stem_Base"), 20.f, 1.f);
+					m_pGameInstance->Set_SFXTargetVolume(_wstring(L"LCD_MUS_Desk_C02_NIGHTDESK_Stem_Group1"), 20.f, 1.f);
+					m_pGameInstance->Set_SFXTargetVolume(_wstring(L"LCD_MUS_Desk_C02_NIGHTDESK_Stem_Group2"), 20.f, 1.f);
 
 				}
 			}

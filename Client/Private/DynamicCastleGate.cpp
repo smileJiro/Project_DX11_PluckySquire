@@ -192,6 +192,8 @@ void CDynamicCastleGate::Collapse()
 
 	Set_State(COLLAPSING);
 
+	m_pGameInstance->Start_SFX(TEXT("A_sfx_Castle_Gate_Open"), g_SFXVolume);
+
 }
 
 void CDynamicCastleGate::WorldMap_ReCapture()

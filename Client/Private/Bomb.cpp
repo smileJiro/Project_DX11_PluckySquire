@@ -295,8 +295,8 @@ void CBomb::Explode()
 		CEffect_Manager::GetInstance()->Active_Effect(TEXT("Bomb"), true, &m_WorldMatrices[COORDINATE_3D]);
 
 	}
-	m_pGameInstance->Start_SFX(_wstring(L"A_sfx_caterpillar_death_") + to_wstring(rand() % 4), 50.f);
-	m_pGameInstance->Start_SFX(_wstring(L"A_sfx_caterpillar_bomb_explode_") + to_wstring(rand() % 4), 50.f);
+	m_pGameInstance->Start_SFX(_wstring(L"A_sfx_caterpillar_death_") + to_wstring(rand() % 4), g_SFXVolume);
+	m_pGameInstance->Start_SFX(_wstring(L"A_sfx_caterpillar_bomb_explode_") + to_wstring(rand() % 4), g_SFXVolume);
 
 
 	m_fAccTime = 0.f;
