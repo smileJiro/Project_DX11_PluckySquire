@@ -190,6 +190,7 @@ void CButterGrump::Priority_Update(_float _fTimeDelta)
         if (m_fScene2Time <= m_fScene2AccTime)
         {
             Set_AnimChangeable(true);
+            Event_ChangeBossState(BOSS_STATE::IDLE, m_pBossFSM);
             m_isScene2 = false;
         }
     }

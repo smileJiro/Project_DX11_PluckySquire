@@ -915,7 +915,7 @@ void CGameEventExecuter_C8::Chapter8_Intro(_float _fTimeDelta)
 			if (Is_Start()) {
 				CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::TARGET_2D);
 				CCamera_Manager::GetInstance()->Start_FadeIn(3.f);
-
+				CCamera_Manager::GetInstance()->Set_FadeRatio(CCamera_Manager::CUTSCENE, 1.f, true);
 				m_pGameInstance->Set_GrayScale_VtxAnimMesh(0);
 			}
 		}
@@ -990,7 +990,8 @@ void CGameEventExecuter_C8::Chapter8_Intro_Postit_Sequence(_float _fTimeDelta)
 	function fCamerafunc = []()
 		{
 			// <-으로 돌리기. 1초동안
-			CCamera_Manager::GetInstance()->Start_Turn_AxisY(CCamera_Manager::TARGET, 1.f, XMConvertToRadians(-40.f), XMConvertToRadians(-25.f));
+			CCamera_Manager::GetInstance()->Start_Turn_ArmVector(CCamera_Manager::TARGET, 1.f, XMVectorSet(0.521618307f, 0.170174539f, -0.836034894f, 0.f), EASE_IN_OUT);
+
 			// 암 3.f 줄이기, 1초동안
 			CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Decrease(CCamera_Manager::TARGET, 1.f,
 				3.f, EASE_IN_OUT);
@@ -1000,6 +1001,7 @@ void CGameEventExecuter_C8::Chapter8_Intro_Postit_Sequence(_float _fTimeDelta)
 				XMVectorSet(0.f, -2.f, 0.f, 0.f),
 				EASE_IN_OUT);
 		};
+
 	if (true == Postit_Process(L"Chapter8_SKSP_Postit", L"Chapter8_Intro_Postit_Sequence", 1.f, CPostit_Page::POSTIT_PAGE_POSTION_TYPE_A, true, fCamerafunc))
 	{
 		GameEvent_End();
@@ -1258,9 +1260,12 @@ void CGameEventExecuter_C8::Chapter8_3D_Out_02(_float _fTimeDelta)
 			pPlayer->Add_AutoMoveCommand(AutoMove);
 			pPlayer->Add_AutoMoveCommand(AutoMove2);
 			pPlayer->Start_AutoMove(true);
-			pThrash->Move_Position(_float2(XMVectorGetX(vThrashPos), XMVectorGetY(vThrashPos)), CFriend::DIR_UP);
-			pViolet->Move_Position(_float2(XMVectorGetX(vVioletPos), XMVectorGetY(vVioletPos)), CFriend::DIR_UP);
-			pPip->Move_Position(_float2(XMVectorGetX(vPipPos), XMVectorGetY(vPipPos)), CFriend::DIR_UP);
+
+			if (nullptr != pThrash && nullptr != pViolet && nullptr != pPip) {
+				pThrash->Move_Position(_float2(XMVectorGetX(vThrashPos), XMVectorGetY(vThrashPos)), CFriend::DIR_UP);
+				pViolet->Move_Position(_float2(XMVectorGetX(vVioletPos), XMVectorGetY(vVioletPos)), CFriend::DIR_UP);
+				pPip->Move_Position(_float2(XMVectorGetX(vPipPos), XMVectorGetY(vPipPos)), CFriend::DIR_UP);
+			}
 		}
 
 		Next_Step_Over(Change_PlayMap(0.f));
@@ -1305,10 +1310,13 @@ void CGameEventExecuter_C8::Chapter8_Sword(_float _fTimeDelta)
 
 	function fCamerafunc = []()
 		{
-			CCamera_Manager::GetInstance()->Start_Turn_AxisY(CCamera_Manager::TARGET, 1.f, XMConvertToRadians(60.f), (_uint)EASE_IN_OUT);
 
-			//CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Increase(CCamera_Manager::TARGET, 1.f,
-			//	3.f, EASE_IN_OUT);
+			CCamera_Manager::GetInstance()->Start_Changing_ArmLength(CCamera_Manager::TARGET, 1.f,
+				7.4f, EASE_IN_OUT);
+
+			CCamera_Manager::GetInstance()->Start_Turn_ArmVector(CCamera_Manager::TARGET, 1.f,
+				XMVectorSet(-0.9865f, 0.0073f, -0.1636f, 0.f), EASE_IN_OUT);
+
 			CCamera_Manager::GetInstance()->Start_Changing_AtOffset(CCamera_Manager::TARGET,
 				1.f,
 				XMVectorSet(0.f, -2.5f, 0.f, 0.f),
@@ -1348,7 +1356,8 @@ void CGameEventExecuter_C8::Chapter8_Stop_Stamp(_float _fTimeDelta)
 	function fCamerafunc = []()
 		{
 			// <-으로 돌리기. 1초동안
-			CCamera_Manager::GetInstance()->Start_Turn_AxisY(CCamera_Manager::TARGET, 1.f, XMConvertToRadians(-70.f), (_uint)EASE_IN_OUT);
+			CCamera_Manager::GetInstance()->Start_Turn_ArmVector(CCamera_Manager::TARGET, 1.f, XMVectorSet(0.6620f, 0.0620f, -0.7469f, 0.f), EASE_IN_OUT);
+			
 			CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Increase(CCamera_Manager::TARGET, 1.f,
 				3.f, EASE_IN_OUT);
 			CCamera_Manager::GetInstance()->Start_Changing_AtOffset(CCamera_Manager::TARGET,
@@ -1368,9 +1377,12 @@ void CGameEventExecuter_C8::Chapter8_Bomb_Stamp(_float _fTimeDelta)
 
 	function fCamerafunc = []()
 		{
-			CCamera_Manager::GetInstance()->Start_Turn_AxisY(CCamera_Manager::TARGET, 1.f, XMConvertToRadians(-60.f), (_uint)EASE_IN_OUT);
-			CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Increase(CCamera_Manager::TARGET, 1.f,
-				3.f, EASE_IN_OUT);
+			CCamera_Manager::GetInstance()->Start_Changing_ArmLength(CCamera_Manager::TARGET, 1.f,
+				8.1f, EASE_IN_OUT);
+
+			CCamera_Manager::GetInstance()->Start_Turn_ArmVector(CCamera_Manager::TARGET, 1.f,
+				XMVectorSet(0.9560f, 0.2018f, -0.2018f, 0.f), EASE_IN_OUT);
+
 			CCamera_Manager::GetInstance()->Start_Changing_AtOffset(CCamera_Manager::TARGET,
 				1.f,
 				XMVectorSet(0.f, -2.f, 0.f, 0.f),
@@ -1388,14 +1400,13 @@ void CGameEventExecuter_C8::Chapter8_Tilting_Glove(_float _fTimeDelta)
 
 	function fCamerafunc = []()
 		{
-			CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Increase(CCamera_Manager::TARGET, 1.f,
-				1.f, EASE_IN_OUT);
+			CCamera_Manager::GetInstance()->Start_Changing_ArmLength(CCamera_Manager::TARGET, 1.f,
+				10.8f, EASE_IN_OUT);
 			CCamera_Manager::GetInstance()->Start_Changing_AtOffset(CCamera_Manager::TARGET,
 				1.f,
-				XMVectorSet(0.f, -2.5f, 0.f, 0.f),
+				XMVectorSet(0.f, -3.5f, 0.f, 0.f),
 				EASE_IN_OUT);
-
-			CCamera_Manager::GetInstance()->Start_Turn_AxisRight(CCamera_Manager::TARGET, 1.f, XMConvertToRadians(30.f), (_uint)EASE_IN_OUT);
+			CCamera_Manager::GetInstance()->Start_Turn_ArmVector(CCamera_Manager::TARGET, 1.f, XMVectorSet(-0.2194f, 0.0636f, -0.9736f, 0.f), EASE_IN_OUT);
 		};
 	if (true == Postit_Process(L"Chapter8_SKSP_Postit", L"Chapter8_Tilting_Glove", 1.f, CPostit_Page::POSTIT_PAGE_POSTION_TYPE_A, false, fCamerafunc))
 	{
@@ -1456,65 +1467,65 @@ void CGameEventExecuter_C8::Chapter8_Meet_Humgrump(_float _fTimeDelta)
 
 #pragma region Friends
 			// Debug
-			_wstring strFriendTag = L"Thrash_Debug";
-			{ /* Friend_Thrash */
-				CFriend_Thrash::FRIEND_DESC Desc{};
-				Desc.Build_2D_Transform(_float2(-580.f, 100.f), _float2(1.0f, 1.0f), 400.f);
-				Desc.iCurLevelID = LEVEL_CHAPTER_2;
-				Desc.eStartState = CFriend::FRIEND_IDLE;
-				Desc.eStartDirection = CFriend::DIR_LEFT;
-				Desc.iModelTagLevelID = LEVEL_STATIC;
-				Desc.iNumDialoguesIndices = 0;
-				Desc.strFightLayerTag = TEXT("Layer_Monster");
+			//_wstring strFriendTag = L"Thrash_Debug";
+			//{ /* Friend_Thrash */
+			//	CFriend_Thrash::FRIEND_DESC Desc{};
+			//	Desc.Build_2D_Transform(_float2(-580.f, 100.f), _float2(1.0f, 1.0f), 400.f);
+			//	Desc.iCurLevelID = LEVEL_CHAPTER_2;
+			//	Desc.eStartState = CFriend::FRIEND_IDLE;
+			//	Desc.eStartDirection = CFriend::DIR_LEFT;
+			//	Desc.iModelTagLevelID = LEVEL_STATIC;
+			//	Desc.iNumDialoguesIndices = 0;
+			//	Desc.strFightLayerTag = TEXT("Layer_Monster");
 
-				CGameObject* pGameObject = nullptr;
-				m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Friend_Thrash"), LEVEL_CHAPTER_8, TEXT("Layer_Friends"), &pGameObject, &Desc);
+			//	CGameObject* pGameObject = nullptr;
+			//	m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Friend_Thrash"), LEVEL_CHAPTER_8, TEXT("Layer_Friends"), &pGameObject, &Desc);
 
-				CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter8_P2324"), pGameObject);
+			//	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter8_P2324"), pGameObject);
 
-				CFriend_Controller::GetInstance()->Register_Friend(strFriendTag, static_cast<CFriend*>(pGameObject));
-				CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(strFriendTag);
-			} /* Friend_Thrash */
+			//	CFriend_Controller::GetInstance()->Register_Friend(strFriendTag, static_cast<CFriend*>(pGameObject));
+			//	CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(strFriendTag);
+			//} /* Friend_Thrash */
 
-			{ /* Friend_Violet */
-				strFriendTag = L"Violet_Debug";
-				CFriend_Violet::FRIEND_DESC Desc{};
-				Desc.Build_2D_Transform(_float2(-730.f, 100.f), _float2(1.0f, 1.0f), 400.f);
-				Desc.iCurLevelID = LEVEL_CHAPTER_2;
-				Desc.eStartState = CFriend::FRIEND_IDLE;
-				Desc.eStartDirection = CFriend::DIR_RIGHT;
-				Desc.iModelTagLevelID = LEVEL_STATIC;
-				Desc.iNumDialoguesIndices = 0;
-				Desc.strFightLayerTag = TEXT("Layer_Monster");
+			//{ /* Friend_Violet */
+			//	strFriendTag = L"Violet_Debug";
+			//	CFriend_Violet::FRIEND_DESC Desc{};
+			//	Desc.Build_2D_Transform(_float2(-730.f, 100.f), _float2(1.0f, 1.0f), 400.f);
+			//	Desc.iCurLevelID = LEVEL_CHAPTER_2;
+			//	Desc.eStartState = CFriend::FRIEND_IDLE;
+			//	Desc.eStartDirection = CFriend::DIR_RIGHT;
+			//	Desc.iModelTagLevelID = LEVEL_STATIC;
+			//	Desc.iNumDialoguesIndices = 0;
+			//	Desc.strFightLayerTag = TEXT("Layer_Monster");
 
-				CGameObject* pGameObject = nullptr;
-				m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Friend_Violet"), LEVEL_CHAPTER_8, TEXT("Layer_Friends"), &pGameObject, &Desc);
+			//	CGameObject* pGameObject = nullptr;
+			//	m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Friend_Violet"), LEVEL_CHAPTER_8, TEXT("Layer_Friends"), &pGameObject, &Desc);
 
-				CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter8_P2324"), pGameObject);
+			//	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter8_P2324"), pGameObject);
 
-				CFriend_Controller::GetInstance()->Register_Friend(strFriendTag, static_cast<CFriend*>(pGameObject));
-				CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(strFriendTag);
-			} /* Friend_Violet */
+			//	CFriend_Controller::GetInstance()->Register_Friend(strFriendTag, static_cast<CFriend*>(pGameObject));
+			//	CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(strFriendTag);
+			//} /* Friend_Violet */
 
-			{ /* Friend_Pip */
-				strFriendTag = L"Pip_Debug";
-				CFriend_Pip::FRIEND_DESC Desc{};
-				Desc.Build_2D_Transform(_float2(-990.f, 20.f), _float2(1.0f, 1.0f), 400.f);
-				Desc.iCurLevelID = LEVEL_CHAPTER_2;
-				Desc.eStartState = CFriend::FRIEND_IDLE;
-				Desc.eStartDirection = CFriend::DIR_DOWN;
-				Desc.iModelTagLevelID = LEVEL_STATIC;
-				Desc.iNumDialoguesIndices = 0;
-				Desc.strFightLayerTag = TEXT("Layer_Monster");
+			//{ /* Friend_Pip */
+			//	strFriendTag = L"Pip_Debug";
+			//	CFriend_Pip::FRIEND_DESC Desc{};
+			//	Desc.Build_2D_Transform(_float2(-990.f, 20.f), _float2(1.0f, 1.0f), 400.f);
+			//	Desc.iCurLevelID = LEVEL_CHAPTER_2;
+			//	Desc.eStartState = CFriend::FRIEND_IDLE;
+			//	Desc.eStartDirection = CFriend::DIR_DOWN;
+			//	Desc.iModelTagLevelID = LEVEL_STATIC;
+			//	Desc.iNumDialoguesIndices = 0;
+			//	Desc.strFightLayerTag = TEXT("Layer_Monster");
 
-				CGameObject* pGameObject = nullptr;
-				m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Friend_Pip"), LEVEL_CHAPTER_8, TEXT("Layer_Friends"), &pGameObject, &Desc);
+			//	CGameObject* pGameObject = nullptr;
+			//	m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_Friend_Pip"), LEVEL_CHAPTER_8, TEXT("Layer_Friends"), &pGameObject, &Desc);
 
-				CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter8_P2324"), pGameObject);
+			//	CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter8_P2324"), pGameObject);
 
-				CFriend_Controller::GetInstance()->Register_Friend(strFriendTag, static_cast<CFriend*>(pGameObject));
-				CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(strFriendTag);
-			} /* Friend_Pip */
+			//	CFriend_Controller::GetInstance()->Register_Friend(strFriendTag, static_cast<CFriend*>(pGameObject));
+			//	CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(strFriendTag);
+			//} /* Friend_Pip */
 #pragma endregion
 
 			// 1. Player 자동 이동
@@ -1540,18 +1551,19 @@ void CGameEventExecuter_C8::Chapter8_Meet_Humgrump(_float _fTimeDelta)
 			pPlayer->Start_AutoMove(true);
 
 			// Debug
-			CFriend* pThrash = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Thrash_Debug"));
-			CFriend* pViolet = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Violet_Debug"));
-			CFriend* pPip = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Pip_Debug"));
+			CFriend* pThrash = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Thrash"));
+			CFriend* pViolet = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Violet"));
+			CFriend* pPip = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Pip"));
 
-			pThrash->Move_Position(_float2(-50.f, -322.33f), CFriend::DIR_UP);
-			pViolet->Move_Position(_float2(50.f, -322.33f), CFriend::DIR_UP);
-			pPip->Move_Position(_float2(0.f, -357.33f), CFriend::DIR_UP);
+			if (nullptr != pThrash && nullptr != pViolet && nullptr != pPip) {
+				pThrash->Move_Position(_float2(-50.f, -322.33f), CFriend::DIR_UP);
+				pViolet->Move_Position(_float2(50.f, -322.33f), CFriend::DIR_UP);
+				pPip->Move_Position(_float2(0.f, -357.33f), CFriend::DIR_UP);
 
-			pThrash->Get_ControllerTransform()->Set_SpeedPerSec(200.f);
-			pViolet->Get_ControllerTransform()->Set_SpeedPerSec(200.f);
-			pPip->Get_ControllerTransform()->Set_SpeedPerSec(200.f);
-
+				pThrash->Get_ControllerTransform()->Set_SpeedPerSec(200.f);
+				pViolet->Get_ControllerTransform()->Set_SpeedPerSec(200.f);
+				pPip->Get_ControllerTransform()->Set_SpeedPerSec(200.f);
+			}
 		}
 
 		// 2. 중앙으로 타겟 카메라 변경
@@ -1594,8 +1606,12 @@ void CGameEventExecuter_C8::Chapter8_Meet_Humgrump(_float _fTimeDelta)
 				}
 			}
 
-			CFriend* pPip = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Pip_Debug"));
-			CDialog_Manager::GetInstance()->Set_NPC(pPip);
+			CFriend* pPip = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Pip"));
+
+			if(nullptr != pPip)
+				CDialog_Manager::GetInstance()->Set_NPC(pPip);
+			else
+				CDialog_Manager::GetInstance()->Set_NPC(Get_Player());
 
 			Next_Step(true);
 		}
@@ -1618,8 +1634,13 @@ void CGameEventExecuter_C8::Chapter8_Meet_Humgrump(_float _fTimeDelta)
 			static_cast<CModelObject*>(m_TargetObjects[0])->Switch_Animation(CNpc_Humgrump::CHAPTER8_TALK_HAPPY);
 
 			// 찍찍이로 말하는 대상 설정, 지금은 Player로 임시 설정함
-			CFriend* pPip = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Pip_Debug"));
-			CDialog_Manager::GetInstance()->Set_NPC(pPip);
+			CFriend* pPip = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Pip"));
+
+			if (nullptr != pPip)
+				CDialog_Manager::GetInstance()->Set_NPC(pPip);
+			else
+				CDialog_Manager::GetInstance()->Set_NPC(Get_Player());
+
 			Next_Step(true);
 		}
 	}
@@ -1743,13 +1764,15 @@ void CGameEventExecuter_C8::Chapter8_Meet_Humgrump(_float _fTimeDelta)
 
 
 			// Debug
-			CFriend* pThrash = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Thrash_Debug"));
-			CFriend* pViolet = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Violet_Debug"));
-			CFriend* pPip = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Pip_Debug"));
+			CFriend* pThrash = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Thrash"));
+			CFriend* pViolet = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Violet"));
+			CFriend* pPip = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Pip"));
 
-			pThrash->Move_Position(_float2(-50.f, -95.f), CFriend::DIR_UP);
-			pViolet->Move_Position(_float2(50.f, -95.f), CFriend::DIR_UP);
-			pPip->Move_Position(_float2(0.f, -130.f), CFriend::DIR_UP);
+			if (nullptr != pThrash && nullptr != pViolet && nullptr != pPip) {
+				pThrash->Move_Position(_float2(-50.f, -95.f), CFriend::DIR_UP);
+				pViolet->Move_Position(_float2(50.f, -95.f), CFriend::DIR_UP);
+				pPip->Move_Position(_float2(0.f, -130.f), CFriend::DIR_UP);
+			}
 
 			Next_Step(true);
 		}
@@ -1801,62 +1824,64 @@ void CGameEventExecuter_C8::Chapter8_Meet_Humgrump(_float _fTimeDelta)
 
 			// Debug
 			// Thrash
-			CFriend* pThrash = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Thrash_Debug"));
-			CFriend* pViolet = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Violet_Debug"));
-			CFriend* pPip = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Pip_Debug"));
+			CFriend* pThrash = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Thrash"));
+			CFriend* pViolet = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Violet"));
+			CFriend* pPip = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Pip"));
 
-			tCommand.eType = AUTOMOVE_TYPE::MOVE_TO;
-			tCommand.iAnimIndex = CFriend_Thrash::ANIM::THRASH_KNOCKEDBACK_LOOP;
-			tCommand.vTarget = XMVectorSet(-160.f, -200.f, 0.0f, 1.f);
-			tCommand.fPreDelayTime = 0.3f;
-			tCommand.fPostDelayTime = 0.f;
+			if (nullptr != pThrash && nullptr != pViolet && nullptr != pPip) {
+				tCommand.eType = AUTOMOVE_TYPE::MOVE_TO;
+				tCommand.iAnimIndex = CFriend_Thrash::ANIM::THRASH_KNOCKEDBACK_LOOP;
+				tCommand.vTarget = XMVectorSet(-160.f, -200.f, 0.0f, 1.f);
+				tCommand.fPreDelayTime = 0.3f;
+				tCommand.fPostDelayTime = 0.f;
 
-			pThrash->Add_AutoMoveCommand(tCommand);
+				pThrash->Add_AutoMoveCommand(tCommand);
 
-			tCommand.eType = AUTOMOVE_TYPE::LOOK_DIRECTION;
-			tCommand.iAnimIndex = CFriend_Thrash::ANIM::THRASH_IDLE_FLOOR;
-			tCommand.vTarget = XMVectorSet(0.f, 0.f, 0.0f, 1.f);
-			tCommand.fPreDelayTime = 0.0f;
-			tCommand.fPostDelayTime = 0.f;
+				tCommand.eType = AUTOMOVE_TYPE::LOOK_DIRECTION;
+				tCommand.iAnimIndex = CFriend_Thrash::ANIM::THRASH_IDLE_FLOOR;
+				tCommand.vTarget = XMVectorSet(0.f, 0.f, 0.0f, 1.f);
+				tCommand.fPreDelayTime = 0.0f;
+				tCommand.fPostDelayTime = 0.f;
 
-			pThrash->Add_AutoMoveCommand(tCommand);
-			pThrash->Start_AutoMove(true);
+				pThrash->Add_AutoMoveCommand(tCommand);
+				pThrash->Start_AutoMove(true);
 
-			// Violet
-			tCommand.eType = AUTOMOVE_TYPE::MOVE_TO;
-			tCommand.iAnimIndex = CFriend_Violet::ANIM::VIOLET_KNOCKEDBACK_LOOP;
-			tCommand.vTarget = XMVectorSet(160.f, -200.f, 0.0f, 1.f);
-			tCommand.fPreDelayTime = 0.3f;
-			tCommand.fPostDelayTime = 0.f;
+				// Violet
+				tCommand.eType = AUTOMOVE_TYPE::MOVE_TO;
+				tCommand.iAnimIndex = CFriend_Violet::ANIM::VIOLET_KNOCKEDBACK_LOOP;
+				tCommand.vTarget = XMVectorSet(160.f, -200.f, 0.0f, 1.f);
+				tCommand.fPreDelayTime = 0.3f;
+				tCommand.fPostDelayTime = 0.f;
 
-			pViolet->Add_AutoMoveCommand(tCommand);
+				pViolet->Add_AutoMoveCommand(tCommand);
 
-			tCommand.eType = AUTOMOVE_TYPE::LOOK_DIRECTION;
-			tCommand.iAnimIndex = CFriend_Violet::ANIM::VIOLET_IDLE_FLOOR;
-			tCommand.vTarget = XMVectorSet(0.f, 0.f, 0.0f, 1.f);
-			tCommand.fPreDelayTime = 0.0f;
-			tCommand.fPostDelayTime = 0.f;
+				tCommand.eType = AUTOMOVE_TYPE::LOOK_DIRECTION;
+				tCommand.iAnimIndex = CFriend_Violet::ANIM::VIOLET_IDLE_FLOOR;
+				tCommand.vTarget = XMVectorSet(0.f, 0.f, 0.0f, 1.f);
+				tCommand.fPreDelayTime = 0.0f;
+				tCommand.fPostDelayTime = 0.f;
 
-			pViolet->Add_AutoMoveCommand(tCommand);
-			pViolet->Start_AutoMove(true);
+				pViolet->Add_AutoMoveCommand(tCommand);
+				pViolet->Start_AutoMove(true);
 
-			// Pip
-			tCommand.eType = AUTOMOVE_TYPE::MOVE_TO;
-			tCommand.iAnimIndex = CFriend_Pip::ANIM::PIP_KNOCKEDBACK_LOOP;
-			tCommand.vTarget = XMVectorSet(-52.f, -250.00f, 0.0f, 1.f);
-			tCommand.fPreDelayTime = 0.3f;
-			tCommand.fPostDelayTime = 0.f;
+				// Pip
+				tCommand.eType = AUTOMOVE_TYPE::MOVE_TO;
+				tCommand.iAnimIndex = CFriend_Pip::ANIM::PIP_KNOCKEDBACK_LOOP;
+				tCommand.vTarget = XMVectorSet(-52.f, -250.00f, 0.0f, 1.f);
+				tCommand.fPreDelayTime = 0.3f;
+				tCommand.fPostDelayTime = 0.f;
 
-			pPip->Add_AutoMoveCommand(tCommand);
+				pPip->Add_AutoMoveCommand(tCommand);
 
-			tCommand.eType = AUTOMOVE_TYPE::LOOK_DIRECTION;
-			tCommand.iAnimIndex = CFriend_Pip::ANIM::PIP_IDLE_UP;
-			tCommand.vTarget = XMVectorSet(0.f, 0.f, 0.0f, 1.f);
-			tCommand.fPreDelayTime = 0.0f;
-			tCommand.fPostDelayTime = 0.f;
+				tCommand.eType = AUTOMOVE_TYPE::LOOK_DIRECTION;
+				tCommand.iAnimIndex = CFriend_Pip::ANIM::PIP_IDLE_UP;
+				tCommand.vTarget = XMVectorSet(0.f, 0.f, 0.0f, 1.f);
+				tCommand.fPreDelayTime = 0.0f;
+				tCommand.fPostDelayTime = 0.f;
 
-			pPip->Add_AutoMoveCommand(tCommand);
-			pPip->Start_AutoMove(true);
+				pPip->Add_AutoMoveCommand(tCommand);
+				pPip->Start_AutoMove(true);
+			}
 
 			m_iSubStep++;
 		}
@@ -1878,8 +1903,12 @@ void CGameEventExecuter_C8::Chapter8_Meet_Humgrump(_float _fTimeDelta)
 				CDialog_Manager::GetInstance()->Set_DialogId(L"Chapter8_Disgusting");
 
 				// 바이올렛으로 말하는 대상 설정, 지금은 Player로 임시 설정함
-				CFriend* pViolet = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Violet_Debug"));
-				CDialog_Manager::GetInstance()->Set_NPC(pViolet);
+				CFriend* pViolet = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Violet"));
+
+				if(nullptr != pViolet)
+					CDialog_Manager::GetInstance()->Set_NPC(pViolet);
+				else
+					CDialog_Manager::GetInstance()->Set_NPC(Get_Player());
 
 				Next_Step(true);
 			}
@@ -1935,14 +1964,16 @@ void CGameEventExecuter_C8::Chapter8_Meet_Humgrump(_float _fTimeDelta)
 				static_cast<CModelObject*>(m_TargetObjects[0])->Switch_Animation(CNpc_Humgrump::CHAPTER8_PUPA_GROW);
 
 				// Debug
-				CFriend* pThrash = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Thrash_Debug"));
-				CFriend* pViolet = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Violet_Debug"));
-				CFriend* pPip = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Pip_Debug"));
+				CFriend* pThrash = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Thrash"));
+				CFriend* pViolet = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Violet"));
+				CFriend* pPip = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Pip"));
 
-				pThrash->Get_ControllerTransform()->Set_SpeedPerSec(400.f);
-				pViolet->Get_ControllerTransform()->Set_SpeedPerSec(400.f);
-				pPip->Get_ControllerTransform()->Set_SpeedPerSec(400.f);
-
+				if (nullptr != pThrash && nullptr != pViolet && nullptr != pPip) {
+					pThrash->Get_ControllerTransform()->Set_SpeedPerSec(400.f);
+					pViolet->Get_ControllerTransform()->Set_SpeedPerSec(400.f);
+					pPip->Get_ControllerTransform()->Set_SpeedPerSec(400.f);
+				}
+			
 				m_iSubStep++;
 			}
 		}
@@ -2047,14 +2078,20 @@ void CGameEventExecuter_C8::Chapter8_Meet_Humgrump(_float _fTimeDelta)
 			CDialog_Manager::GetInstance()->Set_DialogId(L"Chapter8_Going_To_Humgrump");
 
 			// Debug
-			CFriend* pThrash = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Thrash_Debug"));
-			CFriend* pViolet = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Violet_Debug"));
-			CFriend* pPip = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Pip_Debug"));
+			CFriend* pThrash = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Thrash"));
+			CFriend* pViolet = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Violet"));
+			CFriend* pPip = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Pip"));
 
-			CDialog_Manager::GetInstance()->Set_NPC(pViolet);
-			CDialog_Manager::GetInstance()->Set_NPC(pPip);
-			CDialog_Manager::GetInstance()->Set_NPC(pThrash);
-
+			if (nullptr != pThrash && nullptr != pViolet && nullptr != pPip) {
+				CDialog_Manager::GetInstance()->Set_NPC(pViolet);
+				CDialog_Manager::GetInstance()->Set_NPC(pPip);
+				CDialog_Manager::GetInstance()->Set_NPC(pThrash);
+			}
+			else {
+				CDialog_Manager::GetInstance()->Set_NPC(Get_Player());
+				CDialog_Manager::GetInstance()->Set_NPC(Get_Player());
+				CDialog_Manager::GetInstance()->Set_NPC(Get_Player());
+			}
 			m_iSubStep++;
 		}
 
@@ -2667,7 +2704,7 @@ _bool CGameEventExecuter_C8::Change_PlayMap(_float _fStartTime)
 
 		CPlayerData_Manager::GetInstance()->Spawn_Bulb(LEVEL_STATIC, (LEVEL_ID)eCurLevelID);
 		CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)eCurLevelID, TEXT("Bomb_Stamp"), _float3(-15.54f, 26.06f, 16.56f), { 1.f,1.f,1.f });
-		CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)eCurLevelID, TEXT("Sword"), _float3(42.22f, 15.82f, -0.45f), { 2.f,2.f,2.f });
+		CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)eCurLevelID, TEXT("Sword"), _float3(41.72f, 15.82f, -0.25f), { 2.f,2.f,2.f });
 		CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)eCurLevelID, TEXT("Stop_Stamp"), _float3(45.13f, 49.74f, 23.34f), { 1.f,1.f,1.f });
 		CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)eCurLevelID, TEXT("Tilting_Glove"), _float3(30.55f, 30.83f, 23.34f));
 		m_iSubStep++;
@@ -2788,6 +2825,7 @@ _bool CGameEventExecuter_C8::Change_PlayMap(_float _fStartTime)
 		m_iSubStep++;
 		return true;
 	}
+
 	return false;
 }
 
