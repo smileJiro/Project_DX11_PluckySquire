@@ -255,6 +255,7 @@ void CJumpBug::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
 
         case DIE:
             Monster_Death();
+            m_pGameInstance->Start_SFX(_wstring(L"A_sfx_jumperbug_death_") + to_wstring(rand() % 4), 50.f);
             break;
 
         default:

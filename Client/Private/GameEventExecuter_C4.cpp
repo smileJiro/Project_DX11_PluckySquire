@@ -187,8 +187,8 @@ void CGameEventExecuter_C4::Chapter4_Intro(_float _fTimeDelta)
 		m_pGameInstance->Start_SFX(TEXT("LCD_MUS_C04_CASTLES_LOOP_FULL_Stem_Group1"), 1.5f);
 		m_pGameInstance->Start_SFX(TEXT("LCD_MUS_C04_CASTLES_LOOP_FULL_Stem_Group2"), 1.5f);
 
-		m_pGameInstance->Set_SFXTargetVolume(TEXT("LCD_MUS_C04_CASTLES_LOOP_FULL_Stem_Group1"), 20.f);
-		m_pGameInstance->Set_SFXTargetVolume(TEXT("LCD_MUS_C04_CASTLES_LOOP_FULL_Stem_Group2"), 20.f);
+		m_pGameInstance->Set_SFXTargetVolume(TEXT("LCD_MUS_C04_CASTLES_LOOP_FULL_Stem_Group1"), g_BGMVolume);
+		m_pGameInstance->Set_SFXTargetVolume(TEXT("LCD_MUS_C04_CASTLES_LOOP_FULL_Stem_Group2"), g_BGMVolume);
 
 	}
 }
