@@ -929,8 +929,6 @@ HRESULT CEvent_Manager::Execute_Book_Main_Section_Change_Start(const EVENT& _tEv
 	Safe_Delete(pPosition);
 	pPosition = nullptr;
 
-	m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_page_turn-") + to_wstring(rand() % 6), 0.5f, 50.f);
-
 	return S_OK;
 }
 
