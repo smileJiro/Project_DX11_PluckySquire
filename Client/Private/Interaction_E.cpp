@@ -584,6 +584,11 @@ void CInteraction_E::Display_Text(_float3 _vPos, _float2 _vRTSize, IInteractable
 		m_strDisplayText = TEXT("잡기");
 		break;
 
+	case INTERACT_ID::SWORD:
+		m_strDisplayText = TEXT("잡기");
+		break;
+		
+
 
 
 	default:
@@ -684,10 +689,11 @@ void CInteraction_E::Render_InteractionE()
 		m_isDisplayInteractionE = false;
 
 	//_int Get_Running_EventExecuterAction(); // 현재 진행 중인 EventExecuterActionType이 뭔지 리턴한다, 없다면  -1을 리턴함
-	if (-1 != CTrigger_Manager::GetInstance()->Get_Running_EventExecuterAction())
+	if (4 == CTrigger_Manager::GetInstance()->Get_Running_EventExecuterAction())
 		m_isDisplayInteractionE = false;
 
+	CPlayer* pPlayer = Uimgr->Get_Player();
 
-
-								
+	if (true == pPlayer->Is_PlayerInputBlocked())
+		m_isDisplayInteractionE = false;					
 }

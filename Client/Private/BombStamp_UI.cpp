@@ -102,6 +102,11 @@ void CBombStamp_UI::Late_Update(_float _fTimeDelta)
 
 HRESULT CBombStamp_UI::Render()
 {
+	CPlayer* pPlayer = Uimgr->Get_Player();
+	if (true == pPlayer->Is_PlayerInputBlocked())
+		return S_OK;
+
+
 	CPlayerData_Manager* pPDM = CPlayerData_Manager::GetInstance();
 	if (false == pPDM->Is_Own(CPlayerData_Manager::BOMB_STAMP))
 		return S_OK;
