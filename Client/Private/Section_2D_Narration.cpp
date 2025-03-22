@@ -125,7 +125,7 @@ HRESULT CSection_2D_Narration::Section_Enter(const _wstring& _strPreSectionTag)
 		pPlayer->Set_BlockPlayerInput(true);
 	
 	if (TEXT("") != m_strBGMTag)
-		m_pGameInstance->Start_BGM(m_strBGMTag, 20.f);
+		m_pGameInstance->Start_BGM(m_strBGMTag, 30.f);
 
 	return __super::Section_Enter(_strPreSectionTag);
 }
