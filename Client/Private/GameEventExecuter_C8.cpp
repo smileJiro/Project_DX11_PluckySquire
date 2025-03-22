@@ -1202,18 +1202,18 @@ void CGameEventExecuter_C8::Chapter8_3D_Out_02(_float _fTimeDelta)
 	CFriend* pViolet = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Violet"));
 
 //#ifdef _DEBUG
-	//if (nullptr == pViolet)
-	//{
-	//	if (false == Is_Dead())
-	//	{
-			//if (Change_PlayMap(0.f))
-			//{
-			//	Get_Book()->Set_Freezing(true);
-			//	//GameEvent_End();
-			//}
-	//	}
-	//	return;
-	//}
+	if (nullptr == pViolet)
+	{
+		if (false == Is_Dead())
+		{
+			if (Change_PlayMap(0.f))
+			{
+				Get_Book()->Set_Freezing(true);
+				GameEvent_End();
+			}
+		}
+		return;
+	}
 //#endif // _DEBUG
 
 
