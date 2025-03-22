@@ -194,6 +194,9 @@ void CDefenderPerson::Dissapear()
 	m_pShield->Set_Active(false);
 	m_pFX->Set_Active(true);
 	m_pFX->Switch_Animation(DISAPPEAR);
+	wstring strSFX = TEXT("A_sfx_rescued_vocal-") + to_wstring(rand() % 7);
+	END_SFX(strSFX);
+	START_SFX_DELAY(strSFX, 0.f, g_SFXVolume*0.65f, false);
 }
 
 void CDefenderPerson::On_BodyAnimEnd(COORDINATE _eCoord, _uint iAnimIdx)

@@ -33,6 +33,7 @@ HRESULT CCandle::Initialize(void* _pArg)
     CActor::ACTOR_DESC ActorDesc;
     ActorDesc.pOwner = this;
 
+    /* 충돌 감지 트리거 */
     SHAPE_SPHERE_DESC SphereDesc = {};
     SphereDesc.fRadius = 1.0f;
     SHAPE_DATA ShapeData = {};
@@ -41,11 +42,25 @@ HRESULT CCandle::Initialize(void* _pArg)
     ShapeData.eMaterial = ACTOR_MATERIAL::DEFAULT;
     ShapeData.iShapeUse = (_uint)SHAPE_USE::SHAPE_TRIGER;
     ShapeData.isTrigger = true;
+    ShapeData.FilterData.MyGroup = OBJECT_GROUP::TRIGGER_OBJECT;
+    ShapeData.FilterData.OtherGroupMask = OBJECT_GROUP::PLAYER;
     XMStoreFloat4x4(&ShapeData.LocalOffsetMatrix, XMMatrixTranslation(0.0f, 1.0f, 0.0f));
     ActorDesc.ShapeDatas.push_back(ShapeData);
+    
+    SHAPE_BOX_DESC BoxDesc = {};
+    BoxDesc.vHalfExtents = {1.0f, 0.3f, 1.0f};
+    SHAPE_DATA ShapeData2 = {};
+    ShapeData2.pShapeDesc = &BoxDesc;
+    ShapeData2.eShapeType = SHAPE_TYPE::BOX;
+    ShapeData2.eMaterial = ACTOR_MATERIAL::NORESTITUTION;
+    ShapeData2.iShapeUse = (_uint)SHAPE_USE::SHAPE_BODY;
+    ShapeData2.isTrigger = false;
+    ShapeData2.FilterData.MyGroup = OBJECT_GROUP::MAPOBJECT;
+    ShapeData2.FilterData.OtherGroupMask = OBJECT_GROUP::PLAYER;
+    XMStoreFloat4x4(&ShapeData2.LocalOffsetMatrix, XMMatrixTranslation(0.0f, 0.0f, 0.0f));
 
-    ActorDesc.tFilterData.MyGroup = OBJECT_GROUP::TRIGGER_OBJECT;
-    ActorDesc.tFilterData.OtherGroupMask = OBJECT_GROUP::PLAYER;
+
+    ActorDesc.ShapeDatas.push_back(ShapeData2);
 
     /* Actor Component Finished */
     pDesc->pActorDesc = &ActorDesc;
@@ -237,6 +252,7 @@ void CCandle::State_Change_TurnOff()
     static_cast<CCandle_Body*>(m_PartObjects[CANDLE_BODY])->State_Change_TurnOff();
     static_cast<CCandle_UI*>(m_PartObjects[CANDLE_UI])->State_Change_TurnOff();
     Event_SetActive(m_pTargetLight, false);
+
 }
 
 void CCandle::Action_State(_float _fTimeDelta)

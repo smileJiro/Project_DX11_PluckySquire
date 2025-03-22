@@ -113,6 +113,7 @@ public:
 	// Camera 원복
 	// 1. 원복하고 싶은 시점에 Set_ResetData 함수를 호출해서 현재 상태를 저장한다
 	void				Set_ResetData(CAMERA_TYPE _eCameraType);
+	void				Set_ResetData(CAMERA_TYPE _eCameraType, RETURN_ARMDATA _tResetData);
 
 	// 2. 원하는 시점으로 _fResetTime 동안 원복하고 싶을 때 호출한다
 	void				Start_ResetArm_To_SettingPoint(CAMERA_TYPE _eCameraType, _float _fResetTime);

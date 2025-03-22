@@ -136,15 +136,13 @@ void CJumpPad::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, co
 				{
 					Switch_Animation(SMALL_JUMP_3D);
 					Event_KnockBack(static_cast<CCharacter*>(_Other.pActorUserData->pOwner), { 0.f,1.f,0.f }, m_fBouncePower3D * 0.5f);
-
-					m_pGameInstance->Start_SFX(TEXT("A_sfx_spring_small"), g_SFXVolume);
+					START_SFX_DELAY(TEXT("A_sfx_spring_small"), 0.f, g_SFXVolume, false);
 				}
 				else
 				{
 					Switch_Animation(LARGE_JUMP_3D);
 					Event_KnockBack(static_cast<CCharacter*>(_Other.pActorUserData->pOwner), { 0.f,1.f,0.f }, m_fBouncePower3D);
-
-					m_pGameInstance->Start_SFX(TEXT("A_sfx_spring"), g_SFXVolume);
+					START_SFX_DELAY(TEXT("A_sfx_spring"), 0.f, g_SFXVolume, false);
 				}
 				
 				return;

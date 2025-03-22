@@ -32,6 +32,7 @@ HRESULT CDice::Initialize(void* _pArg)
 	DiceModelDesc->tTransform2DDesc.vInitialScaling = _float3(200.f, 200.f, 200.f);
 	DiceModelDesc->iRenderGroupID_3D = RG_3D;
 	DiceModelDesc->iPriorityID_3D = PR3D_GEOMETRY;
+	DiceModelDesc->iObjectGroupID = (_uint)OBJECT_GROUP::INTERACTION_OBEJCT;
 	//DiceModelDesc->tTransform3DDesc.vInitialPosition = _float3(0.0f, 1.0f, -10.f);
 	//DiceModelDesc->tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
 	

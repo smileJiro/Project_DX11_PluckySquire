@@ -119,8 +119,8 @@ void CGameEventExecuter_C6::Update(_float _fTimeDelta)
 		case Client::CTrigger_Manager::CHAPTER6_HUMGRUMP_REVOLT:
 			Chapter6_Humgrump_Revolt(_fTimeDelta);
 			break;
-		case Client::CTrigger_Manager::CHAPTER6_CHANGE_BOOK_TO_GREATE_HUMGRUMP:
-			Chapter6_Change_Book_To_Greate_Humgrump(_fTimeDelta);
+		case Client::CTrigger_Manager::CHAPTER6_CHANGE_BOOK_TO_GREAT_HUMGRUMP:
+			Chapter6_Change_Book_To_Great_Humgrump(_fTimeDelta);
 			break;
 		case Client::CTrigger_Manager::CHAPTER6_FRIENDEVENT_0:
 			Chapter6_FriendEvent_0(_fTimeDelta);
@@ -164,7 +164,8 @@ void CGameEventExecuter_C6::Chapter6_Intro(_float _fTimeDelta)
 			{
 				assert(nullptr);
 			}
-
+			END_BGM();
+			START_BGM(TEXT("LCD_MUS_C06_SPACE_DESK_SKETCHSPACE_FULL"), g_BGMVolume * 1.5f);
 			Next_Step(true);
 		}
 	}
@@ -685,6 +686,7 @@ void CGameEventExecuter_C6::Artia_Exit(_float _fTimeDelta)
 	
 		_float3 fNextPos = {-1181.0f,-301.f,0.f };
 		Event_Book_Main_Section_Change_Start(1, &fNextPos);
+
 	}
 }
 
@@ -1521,6 +1523,8 @@ void CGameEventExecuter_C6::Chapter6_Humgrump_Revolt(_float _fTimeDelta)
 			if (fRatio >= (1.f - EPSILON)) {
 
 				CCamera_Manager::GetInstance()->Start_Shake_ByTime(CCamera_Manager::TARGET_2D, 0.3f, 0.02f);
+				START_SFX_DELAY(L"A_sfx_tank_fire_0", 0.f, g_BGMVolume, false);
+
 				Next_Step(true);
 			}
 
@@ -1546,6 +1550,7 @@ void CGameEventExecuter_C6::Chapter6_Humgrump_Revolt(_float _fTimeDelta)
 			if (Is_Start()) {
 				static_cast<CModelObject*>(m_TargetObjects[1])->Switch_Animation(CNpc_MoonBeard::CHAPTER6_SURPRISED_TURN);
 				static_cast<CNpc_MoonBeard*>(m_TargetObjects[1])->Set_Opposite_Side();
+
 			}
 		}
 
@@ -1553,6 +1558,8 @@ void CGameEventExecuter_C6::Chapter6_Humgrump_Revolt(_float _fTimeDelta)
 		if (false == static_cast<CModelObject*>(m_TargetObjects[1])->Is_DuringAnimation()) {
 			static_cast<CModelObject*>(m_TargetObjects[1])->Switch_Animation(CNpc_MoonBeard::CHAPTER6_SURPRISED_IDLE);
 			static_cast<CModelObject*>(m_TargetObjects[0])->Switch_Animation(CNpc_Humgrump::CHAPTER6_WINDUP);
+			START_SFX_DELAY(L"A_sfx_humpgrump_death_sequence", 0.9f, g_BGMVolume * 1.5f, false);
+
 			Next_Step(true);
 		}
 
@@ -1595,7 +1602,6 @@ void CGameEventExecuter_C6::Chapter6_Humgrump_Revolt(_float _fTimeDelta)
 				// 9. 험그럼프 Beam 끝, 할배 죽기 시작
 				static_cast<CModelObject*>(m_TargetObjects[0])->Switch_Animation(CNpc_Humgrump::CHAPTER6_BEAM_END);
 				static_cast<CModelObject*>(m_TargetObjects[1])->Switch_Animation(CNpc_MoonBeard::CHAPTER6_ZAP_DEATH);
-				START_SFX(L"A_sfx_humpgrump_death_sequence", g_BGMVolume * 0.8f, false);
 
 			}
 		}
@@ -1657,7 +1663,7 @@ void CGameEventExecuter_C6::Chapter6_Humgrump_Revolt(_float _fTimeDelta)
 	}
 }
 
-void CGameEventExecuter_C6::Chapter6_Change_Book_To_Greate_Humgrump(_float _fTimeDelta)
+void CGameEventExecuter_C6::Chapter6_Change_Book_To_Great_Humgrump(_float _fTimeDelta)
 {
 	m_fTimer += _fTimeDelta;
 
@@ -2022,6 +2028,13 @@ void CGameEventExecuter_C6::Chapter6_StorySequence_01(_float _fTimeDelta)
 
 	if (Step_Check(STEP_0))
 	{
+		if (Is_Start())
+		{
+			STOP_BGM();
+			END_SFX(TEXT("LCD_MUS_C05_P0304_ARTIA_Stem_Group1"));
+			END_SFX(TEXT("LCD_MUS_C05_P0304_ARTIA_Stem_Group2"));
+			START_SFX_DELAY(TEXT("LCD_MUS_C05_P0102_CHAPTER5INTROCUTSCENE_FULL"), 1.0f, g_SFXVolume, true);
+		}
 		Next_Step_Over(1.5f);
 	}
 	else if (Step_Check(STEP_1))
@@ -2137,6 +2150,8 @@ void CGameEventExecuter_C6::Chapter6_StorySequence_01(_float _fTimeDelta)
 	{
 		if (Is_Start())
 		{
+			END_SFX(TEXT("LCD_MUS_C05_P0102_CHAPTER5INTROCUTSCENE_FULL"));
+			START_SFX_DELAY(TEXT("LCD_MUS_C05_P1112_TRARRGEXPLODE_FULL"), 1.0f, g_SFXVolume, true);
 			m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/Chapter6_2.json"));
 			m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/Chapter6.json"));
 			CCamera_Manager::GetInstance()->Start_FadeIn();
@@ -2304,6 +2319,7 @@ void CGameEventExecuter_C6::Chapter6_StorySequence_01(_float _fTimeDelta)
 			pPlayer->Stop_AutoMove();
 			pPlayer->Set_State(CPlayer::IDLE);
 			_float3 fDefaultPos = {};
+			END_SFX(TEXT("LCD_MUS_C05_P1112_TRARRGEXPLODE_FULL"));
 			Event_Book_Main_Section_Change_Start(1, &fDefaultPos);
 		}
 		Next_Step_Over(1.5f);
@@ -2314,6 +2330,7 @@ void CGameEventExecuter_C6::Chapter6_StorySequence_01(_float _fTimeDelta)
 		pPlayer->Clear_AutoMove();
 		pPlayer->Set_2DDirection(E_DIRECTION::RIGHT);
 		pThrash->Set_Direction(CFriend::DIR_RIGHT);
+		START_BGM(TEXT("LCD_MUS_C06_C6FIELDMUSIC_FULL"), g_BGMVolume);
 		CFriend_Controller::GetInstance()->Erase_Friend_FromTrainList(TEXT("Violet"));
 		CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(TEXT("Thrash"));
 		CFriend_Controller::GetInstance()->Start_Train();

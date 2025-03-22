@@ -756,7 +756,7 @@ void CPlayer::Priority_Update(_float _fTimeDelta)
 
 	__super::Priority_Update(_fTimeDelta); /* Part Object Priority_Update */
 #ifdef _DEBUG
-	cout << "FloorDist : " << m_f3DFloorDistance << endl;
+	//cout << "FloorDist : " << m_f3DFloorDistance << endl;
 #endif
 }
 
@@ -1273,6 +1273,7 @@ void CPlayer::StampSmash()
 
 		return;
 	}
+
 	if (PLAYER_PART::PLAYER_PART_BOMB_STMAP == m_eCurrentStamp)
 	{
 		m_pDetonator->Set_Bombable(m_pBombStmap->Place_Bomb(v2DPosition));
@@ -2597,6 +2598,7 @@ void CPlayer::Key_Input(_float _fTimeDelta)
 			Set_CurrentStampType(PLAYER_PART_STOP_STMAP);
 			if (STATE::STAMP == Get_CurrentStateID())
 				Equip_Part(PLAYER_PART_STOP_STMAP);
+			START_SFX_DELAY(TEXT("A_sfx_stamp_switch"), 0.f, g_SFXVolume, false);
 		}
 	}
 	else if (KEY_DOWN(KEY::NUM2))
@@ -2604,6 +2606,7 @@ void CPlayer::Key_Input(_float _fTimeDelta)
 		Set_CurrentStampType(PLAYER_PART_BOMB_STMAP);
 		if (STATE::STAMP == Get_CurrentStateID())
 			Equip_Part(PLAYER_PART_BOMB_STMAP);
+		START_SFX_DELAY(TEXT("A_sfx_stamp_switch"), 0.f, g_SFXVolume, false);
 	}
 	if (KEY_DOWN(KEY::NUM3))
 	{
@@ -2616,11 +2619,11 @@ void CPlayer::Key_Input(_float _fTimeDelta)
     {
         //Set_State(CPlayer::EVICT);
 		CPlayerData_Manager* pPDM =  CPlayerData_Manager::GetInstance();
-		pPDM->Get_PlayerItem(TEXT("Flipping_Glove"));
-		pPDM->Get_PlayerItem(TEXT("Tilting_Glove"));
-		pPDM->Get_PlayerItem(TEXT("Stop_Stamp"));
-		pPDM->Get_PlayerItem(TEXT("Bomb_Stamp"));
-		pPDM->Get_PlayerItem(TEXT("Sword"));
+		pPDM->Set_PlayerItem(TEXT("Sword"));
+		pPDM->Set_PlayerItem(TEXT("Flipping_Glove"));		
+		pPDM->Set_PlayerItem(TEXT("Tilting_Glove"));
+		pPDM->Set_PlayerItem(TEXT("Stop_Stamp"));
+		pPDM->Set_PlayerItem(TEXT("Bomb_Stamp"));
 		pPDM->UP_JumpSkillLevel();
 		pPDM->UP_ThrowSkillLevel();
 		pPDM->UP_WhirlSkillLevel();

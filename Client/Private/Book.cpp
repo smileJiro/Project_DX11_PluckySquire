@@ -593,6 +593,7 @@ _bool CBook::Book_Action(BOOK_PAGE_ACTION _eAction)
 	}
 
 
+	m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_page_turn-") + to_wstring(rand() % 6), 0.5f, 50.f);
 
 	return true;
 }
@@ -870,7 +871,7 @@ void CBook::SlideObjects_RToL()
 			{
 				CSlipperyObject* pSlippery = dynamic_cast<CSlipperyObject*>(pObj);
 				if (pSlippery)
-					pSlippery->Start_Slip(_vector{ 0.f, 1.f,0.f }, 500.f);
+					pSlippery->Start_Slip(_vector{ 0.f, 1.f,0.f }, 600.f);
 			}
 		}
 	}
@@ -882,7 +883,7 @@ void CBook::SlideObjects_RToL()
 			{
 				CSlipperyObject* pSlippery = dynamic_cast<CSlipperyObject*>(pObj);
 				if (pSlippery)
-					pSlippery->Start_Slip(_vector{ -1.0f, 0.f,0.f }, 500.f);
+					pSlippery->Start_Slip(_vector{ -1.0f, 0.f,0.f }, 600.f);
 			}
 		}
 	}
