@@ -69,68 +69,64 @@ void CUI_Interaction_Tilting::Update(_float _fTimeDelta)
 		{
 			m_isRender = true;
 
-			if (CPlayer::STATE::TURN_BOOK == Uimgr->Get_Player()->Get_CurrentStateID() && 
-				false == CPlayerData_Manager::GetInstance()->Is_Own(CPlayerData_Manager::FLIPPING_GLOVE))
+			if (CPlayer::STATE::TURN_BOOK == Uimgr->Get_Player()->Get_CurrentStateID())
 			{
-
-
-				_float fX = g_iWinSizeX / 2.f - g_iWinSizeX / 12.f;
-				_float fY = g_iWinSizeY - g_iWinSizeY / 18.f;
-
-				if (false == m_isBookInteract)
+				if (false == CPlayerData_Manager::GetInstance()->Is_Own(CPlayerData_Manager::FLIPPING_GLOVE))
 				{
+					_float fX = g_iWinSizeX / 2.f - g_iWinSizeX / 12.f;
+					_float fY = g_iWinSizeY - g_iWinSizeY / 18.f;
+
+					if (false == m_isBookInteract)
 					{
 						m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(fX - g_iWinSizeX * 0.5f, -fY + g_iWinSizeY * 0.5f, 0.f, 1.f));
 						m_pControllerTransform->Set_Scale(COORDINATE_2D, _float3(144.f, 72.f, 1.f));
 						m_isBookInteract = true;
 						m_iTextureNum = 1;
 						wsprintf(m_tFont, L"책 기울이기");
-					}
 
+					}
 				}
-				else
+				else if (true == CPlayerData_Manager::GetInstance()->Is_Own(CPlayerData_Manager::FLIPPING_GLOVE))
 				{
-					if (true == m_isBookInteract && false == CPlayerData_Manager::GetInstance()->Is_Own(CPlayerData_Manager::FLIPPING_GLOVE))
+					_float fX = g_iWinSizeX / 2.f - g_iWinSizeX / 12.f;
+					_float fY = g_iWinSizeY - g_iWinSizeY / 8.5f;
+
+					if (false == m_isBookInteract)
 					{
-						_float fX = g_iWinSizeX / 2.f - g_iWinSizeX / 20.f;
-						_float fY = g_iWinSizeY - g_iWinSizeY / 18.f;
 
 						m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(fX - g_iWinSizeX * 0.5f, -fY + g_iWinSizeY * 0.5f, 0.f, 1.f));
-						m_pControllerTransform->Set_Scale(COORDINATE_2D, _float3(72.f, 72.f, 1.f));
-						m_isBookInteract = false;
-						m_iTextureNum = 0;
-						wsprintf(m_tFont, L"조종");
+						m_pControllerTransform->Set_Scale(COORDINATE_2D, _float3(144.f, 72.f, 1.f));
+						m_isBookInteract = true;
+						m_iTextureNum = 1;
+						wsprintf(m_tFont, L"책 기울이기");
+
+
 					}
 				}
-			}
-			else if (CPlayer::STATE::TURN_BOOK == Uimgr->Get_Player()->Get_CurrentStateID() &&
-				true == CPlayerData_Manager::GetInstance()->Is_Own(CPlayerData_Manager::FLIPPING_GLOVE) &&
-				true == CPlayerData_Manager::GetInstance()->Is_Own(CPlayerData_Manager::TILTING_GLOVE))
-			{
-
 				
-
-				_float fX = g_iWinSizeX / 2.f - g_iWinSizeX / 12.f;
-				_float fY = g_iWinSizeY - g_iWinSizeY / 8.5f;
-
-				if (false == m_isBookInteract)
-				{
-					
-					m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(fX - g_iWinSizeX * 0.5f, -fY + g_iWinSizeY * 0.5f, 0.f, 1.f));
-					m_pControllerTransform->Set_Scale(COORDINATE_2D, _float3(144.f, 72.f, 1.f));
-					m_isBookInteract = true;
-					m_iTextureNum = 1;
-					wsprintf(m_tFont, L"책 기울이기");
-					
-
-				}
 			}
-
-
 			else
 			{
-				m_isRender = false;
+				if (true == m_isBookInteract && false == CPlayerData_Manager::GetInstance()->Is_Own(CPlayerData_Manager::FLIPPING_GLOVE))
+				{
+					_float fX = g_iWinSizeX / 2.f - g_iWinSizeX / 20.f;
+					_float fY = g_iWinSizeY - g_iWinSizeY / 18.f;
+
+					m_pControllerTransform->Set_State(CTransform::STATE_POSITION, XMVectorSet(fX - g_iWinSizeX * 0.5f, -fY + g_iWinSizeY * 0.5f, 0.f, 1.f));
+					m_pControllerTransform->Set_Scale(COORDINATE_2D, _float3(72.f, 72.f, 1.f));
+					m_isBookInteract = false;
+					m_iTextureNum = 0;
+					wsprintf(m_tFont, L"조종");
+				}
+				else if (true == m_isBookInteract && true == CPlayerData_Manager::GetInstance()->Is_Own(CPlayerData_Manager::FLIPPING_GLOVE))
+				{
+					m_isRender = false;
+				}
 			}
+			//else
+			//{
+			//	m_isRender = false;
+			//}
 		}
 		else if (COORDINATE_2D == Uimgr->Get_Player()->Get_CurCoord())
 		{

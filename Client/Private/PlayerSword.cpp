@@ -204,6 +204,8 @@ HRESULT CPlayerSword::Initialize(void* _pArg)
     if (nullptr == m_pBeamEffect)
         return E_FAIL;
 
+   
+
     return S_OK;
 }
 

@@ -43,6 +43,7 @@ void CGravity::Priority_Update(_float _fTimeDelta)
 void CGravity::Change_State(STATE _eState)
 {
     m_eCurState = _eState;
+    State_Change();
 }
 
 
@@ -97,6 +98,16 @@ void CGravity::Action_FallDown(_float _fTimeDelta)
     vOwnerPos += vForce * _fTimeDelta;
     
     m_pOwner->Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, vOwnerPos);
+}
+
+void CGravity::Active_OnEnable()
+{
+    m_fGravityAcc = 0.0f;
+}
+
+void CGravity::Active_OnDisable()
+{
+    m_fGravityAcc = 0.0f;
 }
 
 CGravity* CGravity::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
