@@ -386,7 +386,7 @@ _float2 CWorldMapNPC::Change_PlayerPos()
 	if (POS_HONEYBEE == m_iStartIndex)
 		ChangPlayerPos = _float2(-687.f, 182.4f);
 	else if (POS_TOWER == m_iStartIndex)
-		ChangPlayerPos = _float2(-1968.f, -685.f);
+		ChangPlayerPos = _float2(-1952.f, -685.f);
 	else if (POS_SWAMPEND == m_iStartIndex)
 		ChangPlayerPos = _float2(-14.3f, -664.f);
 	else if (POS_ATRIA == m_iStartIndex)

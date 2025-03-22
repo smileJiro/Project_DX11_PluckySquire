@@ -83,7 +83,7 @@ void CRoom_Door::Start_Turn_Door(_bool _isTurnDoor)
 	switch (m_iCurLevelID)
 	{
 		case Client::LEVEL_CHAPTER_2:
-			START_SFX(L"A_sfx_Desk_001_Intro", 40.f, false);
+			START_SFX(L"A_sfx_Desk_001_Intro_cutver", 40.f, false);
 			break;
 		case Client::LEVEL_CHAPTER_8:
 			START_SFX(L"A_sfx_C9_HG_Intro_door", 40.f, false);

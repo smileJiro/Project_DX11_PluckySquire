@@ -269,6 +269,11 @@ void CZippy::Change_Animation()
 				eAnim = HIT_DOWN;
 			else if (E_DIRECTION::RIGHT == Get_2DDirection() || E_DIRECTION::LEFT == Get_2DDirection())
 				eAnim = HIT_RIGHT;
+
+            //m_pGameInstance->End_SFX(_wstring(L"A_sfx_zippi_saw_loop"));
+            //m_pGameInstance->End_SFX(_wstring(L"A_sfx_zippi_electrify_loop"));
+
+            //m_pGameInstance->Start_SFX(_wstring(L"A_sfx_zippi_saw_loop"), 50.f);
 			break;
 
 		case Client::MONSTER_STATE::DEAD:

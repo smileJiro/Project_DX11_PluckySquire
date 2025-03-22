@@ -891,7 +891,8 @@ void CPlayer::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)
 	case Client::SHAPE_USE::SHAPE_TRIGER:
 		if (OBJECT_GROUP::MONSTER & _Other.pActorUserData->iObjectGroup)
 			return;
-		if (OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::INTERACTION_OBEJCT | OBJECT_GROUP::DYNAMIC_OBJECT & _Other.pActorUserData->iObjectGroup)
+		if (SHAPE_USE::SHAPE_BODY == (SHAPE_USE)_Other.pShapeUserData->iShapeUse
+			&&OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::INTERACTION_OBEJCT | OBJECT_GROUP::DYNAMIC_OBJECT & _Other.pActorUserData->iObjectGroup)
 			Event_SetSceneQueryFlag(_Other.pActorUserData->pOwner, _Other.pShapeUserData->iShapeIndex, true);
 		break;
 	}
@@ -905,9 +906,10 @@ void CPlayer::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
 	switch (iShapeUse)
 	{
 	case (_uint)Client::SHAPE_USE::SHAPE_TRIGER:
-		if (OBJECT_GROUP::MONSTER == _Other.pActorUserData->iObjectGroup)
+ 		if (OBJECT_GROUP::MONSTER == _Other.pActorUserData->iObjectGroup)
 			return;
-		if (SHAPE_USE::SHAPE_BODY == (SHAPE_USE)_Other.pShapeUserData->iShapeUse)
+		if (SHAPE_USE::SHAPE_BODY == (SHAPE_USE)_Other.pShapeUserData->iShapeUse
+			&& OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::INTERACTION_OBEJCT | OBJECT_GROUP::DYNAMIC_OBJECT & _Other.pActorUserData->iObjectGroup)
 			Event_SetSceneQueryFlag(_Other.pActorUserData->pOwner, _Other.pShapeUserData->iShapeIndex, false);
 		break;
 	case Client::CPlayer::PLAYER_SHAPE_USE::INTERACTION:
@@ -1453,23 +1455,27 @@ PLAYER_INPUT_RESULT CPlayer::Player_KeyInput()
 		if (KEY_PRESSING(KEY::D))
 			tResult.vDir += _vector{ 1.f, 0.f, 0.f,0.f };
 
-		////카메라가 보는 방향
-		_vector vCamLook = static_cast<CCamera*>(CCamera_Manager::GetInstance()->Get_CurrentCamera())->Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK);
-		vCamLook = -XMVectorSetY(vCamLook, 0.f);
-		vCamLook = -XMVectorSetW(vCamLook, 0.f);
-		//X축이 크면?
-		if (abs(vCamLook.m128_f32[0]) > abs(vCamLook.m128_f32[2]))
+		if (LEVEL_CHAPTER_8 == Get_CurLevelID())
 		{
-			vCamLook.m128_f32[2] = 0.f;
-			vCamLook.m128_f32[0] /= -abs(vCamLook.m128_f32[0]);
-		}
-		else
-		{
-			vCamLook.m128_f32[0] = 0.f;
-			vCamLook.m128_f32[2] /= abs(vCamLook.m128_f32[2]);
-		}
-		tResult.vDir =XMVector3TransformNormal(tResult.vDir, XMMatrixLookToLH(_vector{0.f,0.f,0.f}, vCamLook, _vector{ 0.f,1.f,0.f }));
+			////카메라가 보는 방향
+			_vector vCamLook = static_cast<CCamera*>(CCamera_Manager::GetInstance()->Get_CurrentCamera())->Get_ControllerTransform()->Get_State(CTransform::STATE_LOOK);
+			vCamLook = -XMVectorSetY(vCamLook, 0.f);
+			vCamLook = -XMVectorSetW(vCamLook, 0.f);
+			//X축이 크면?
+			if (abs(vCamLook.m128_f32[0]) > abs(vCamLook.m128_f32[2]))
+			{
+				vCamLook.m128_f32[2] = 0.f;
+				vCamLook.m128_f32[0] /= -abs(vCamLook.m128_f32[0]);
+			}
+			else
+			{
+				vCamLook.m128_f32[0] = 0.f;
+				vCamLook.m128_f32[2] /= abs(vCamLook.m128_f32[2]);
+			}
+			tResult.vDir = XMVector3TransformNormal(tResult.vDir, XMMatrixLookToLH(_vector{ 0.f,0.f,0.f }, vCamLook, _vector{ 0.f,1.f,0.f }));
 
+		}
+		
 	}
 	else if (eCoord == COORDINATE_2D)
 	{
@@ -2379,7 +2385,7 @@ void CPlayer::Set_GravityCompOn(_bool _bOn, CGravity::STATE _eGravityState)
 
 void CPlayer::Start_Attack(ATTACK_TYPE _eAttackType)
 {
-
+	m_bInvincible = true;
 	m_eCurAttackType = _eAttackType;
 	if (COORDINATE_2D == Get_CurCoord())
 	{
@@ -2400,6 +2406,7 @@ void CPlayer::Start_Attack(ATTACK_TYPE _eAttackType)
 
 void CPlayer::End_Attack()
 {
+	m_bInvincible = false;
 	Flush_AttckedSet();
 	if (COORDINATE_2D == Get_CurCoord())
 	{
@@ -2600,7 +2607,10 @@ void CPlayer::Key_Input(_float _fTimeDelta)
 	}
 	if (KEY_DOWN(KEY::NUM3))
 	{
-		Acquire_Item(PLAYER_2D_ITEM_ID::FATHER_BODY);
+		if(COORDINATE_2D == Get_CurCoord())
+			Set_State(TRANSFORM_IN);
+		else
+			Set_State(ENGAGE_BOSS);
 	}
     if (KEY_DOWN(KEY::J))
     {

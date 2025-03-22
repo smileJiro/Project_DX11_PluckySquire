@@ -1200,18 +1200,18 @@ void CGameEventExecuter_C8::Chapter8_3D_Out_02(_float _fTimeDelta)
 	CFriend* pViolet = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Violet"));
 
 //#ifdef _DEBUG
-	if (nullptr == pViolet)
-	{
-		if (false == Is_Dead())
-		{
-			if (Change_PlayMap(0.f))
-			{
-				Get_Book()->Set_Freezing(true);
-				GameEvent_End();
-			}
-		}
-		return;
-	}
+	//if (nullptr == pViolet)
+	//{
+	//	if (false == Is_Dead())
+	//	{
+			//if (Change_PlayMap(0.f))
+			//{
+			//	Get_Book()->Set_Freezing(true);
+			//	//GameEvent_End();
+			//}
+	//	}
+	//	return;
+	//}
 //#endif // _DEBUG
 
 
@@ -2066,26 +2066,35 @@ void CGameEventExecuter_C8::Chapter8_Meet_Humgrump(_float _fTimeDelta)
 				pPlayer->Set_BlockPlayerInput(false);
 
 				// Monster 제거
-				/*CLayer* pLayer = m_pGameInstance->Find_Layer(m_iCurLevelID, TEXT("Layer_Monster"));
+				CLayer* pLayer = m_pGameInstance->Find_Layer(m_iCurLevelID, TEXT("Layer_Monster"));
 
-				for (auto& Monster : pLayer->Get_GameObjects()) {
-					Event_DeleteObject(Monster);
+				if(nullptr != pLayer)
+				{
+					for (auto& Monster : pLayer->Get_GameObjects()) {
+						Event_DeleteObject(Monster);
+					}
 				}
 
 				pLayer = m_pGameInstance->Find_Layer(m_iCurLevelID, TEXT("Layer_Sneak_Beetle"));
-
-				for (auto& Beetle : pLayer->Get_GameObjects()) {
-					Event_DeleteObject(Beetle);
+				
+				if (nullptr != pLayer)
+				{
+					for (auto& Beetle : pLayer->Get_GameObjects()) {
+						Event_DeleteObject(Beetle);
+					}
 				}
 
 				pLayer = m_pGameInstance->Find_Layer(m_iCurLevelID, TEXT("Layer_Sneak_Soldier"));
 
-				for (auto& Soldier : pLayer->Get_GameObjects()) {
-					Event_DeleteObject(Soldier);
-				}*/
+				if (nullptr != pLayer)
+				{
+					for (auto& Soldier : pLayer->Get_GameObjects()) {
+						Event_DeleteObject(Soldier);
+					}
+				}
 
 				// 이전 Trigger 제거
-				CLayer* pLayer = m_pGameInstance->Find_Layer(m_iCurLevelID, TEXT("Layer_TriggerObject"));
+				pLayer = m_pGameInstance->Find_Layer(m_iCurLevelID, TEXT("Layer_TriggerObject"));
 
 				for (auto& TriggerObject : pLayer->Get_GameObjects()) {
 					if (COORDINATE_3D == TriggerObject->Get_CurCoord())
@@ -2744,7 +2753,7 @@ _bool CGameEventExecuter_C8::Change_PlayMap(_float _fStartTime)
 			}
 		}
 
-		if (FAILED(CFormation_Manager::GetInstance()->Initialize()))
+		if (FAILED(CFormation_Manager::GetInstance()->Initialize(m_iCurLevelID)))
 			return false;
 
 

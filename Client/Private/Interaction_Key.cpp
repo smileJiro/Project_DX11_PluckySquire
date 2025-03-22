@@ -160,6 +160,11 @@ HRESULT CInteraction_Key::Render()
 		return S_OK;
 	}
 
+	CPlayer* pPlayer = Uimgr->Get_Player();
+	if (true == pPlayer->Is_PlayerInputBlocked())
+		return S_OK;
+
+
 	if (false == pPDM->Is_Own(CPlayerData_Manager::FLIPPING_GLOVE) && false == pPDM->Is_Own(CPlayerData_Manager::TILTING_GLOVE) && true == pBook->Get_PlayerAround())
 		return S_OK;
 

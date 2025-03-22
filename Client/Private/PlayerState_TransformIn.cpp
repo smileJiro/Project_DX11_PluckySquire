@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "PlayerState_TransformIn.h"
 #include "Zip_C8.h"
+#include "GameInstance.h"
 
 CPlayerState_TransformIn::CPlayerState_TransformIn(CPlayer* _pOwner, CZip_C8* _pZip)
 	:CPlayerState(_pOwner, CPlayer::TRANSFORM_IN)
@@ -29,6 +30,7 @@ void CPlayerState_TransformIn::Enter()
 		m_pOwner->Set_2DDirection(F_DIRECTION::RIGHT);
 		m_pOwner->Set_Mode(CPlayer::PLAYER_MODE_CYBERJOT);
 		m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_CYBERJOTLITE_TRANSFORM);
+		START_SFX_DELAY(TEXT("A_sfx_C9DESK_Transform_into_cyberjot_boss"),0.f,60.f,false);
 	}
 
 

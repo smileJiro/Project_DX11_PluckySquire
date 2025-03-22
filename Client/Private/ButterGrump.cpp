@@ -880,7 +880,7 @@ void CButterGrump::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
         break;
 
     case LB_INTRO_SH04 :
-        Set_AnimChangeable(true);
+        //Set_AnimChangeable(true);
         if ((_uint)BOSS_STATE::SCENE == m_iState)
         {
             pModelObject->Switch_Animation(IDLE);
@@ -948,14 +948,17 @@ void CButterGrump::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
         break;
 
     case ROAR:
+        if ((_uint)BOSS_STATE::SCENE == m_iState)
+        {
+            pModelObject->Switch_Animation(IDLE);
+            m_isScene2 = true;
+            break;
+        }
+
         Set_AnimChangeable(true);
         if (true == Is_Converse())
             m_isConverse = false;
         //EndRoar();
-        if ((_uint)BOSS_STATE::SCENE == m_iState)
-        {
-            m_isScene2 = true;
-        }
         break;
 
     case RECEIVE_DAMAGE:

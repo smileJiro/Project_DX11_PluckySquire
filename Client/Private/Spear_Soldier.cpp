@@ -211,6 +211,9 @@ HRESULT CSpear_Soldier::Initialize(void* _pArg)
 
 void CSpear_Soldier::Priority_Update(_float _fTimeDelta)
 {
+    if (true == m_isDead)
+        return;
+
     if (true == IsCool())
     {
         m_fAccTime += _fTimeDelta;
@@ -228,6 +231,7 @@ void CSpear_Soldier::Update(_float _fTimeDelta)
     if (true == m_isDead)
     {
         m_isDash = false;
+        return;
     }
 
     if (true == m_isDash)
@@ -262,6 +266,9 @@ void CSpear_Soldier::Update(_float _fTimeDelta)
 
 void CSpear_Soldier::Late_Update(_float _fTimeDelta)
 {
+    if (true == m_isDead)
+        return;
+
     __super::Late_Update(_fTimeDelta); /* Part Object Late_Update */
 }
 
@@ -484,8 +491,10 @@ void CSpear_Soldier::Change_Animation()
 
             case MONSTER_STATE::SNEAK_ATTACK:
                 static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(ARREST);
-                m_pGameInstance->Start_SFX(_wstring(L"A_sfx_speartrooper_swipe_attack_") + to_wstring(rand() % 3), 50.f);
-
+                if(Is_SneakMode())
+                    m_pGameInstance->Start_SFX(TEXT("A_sfx_C9DESK_Caught_by_guards"), 50.f);
+                else
+                    m_pGameInstance->Start_SFX(_wstring(L"A_sfx_speartrooper_swipe_attack_") + to_wstring(rand() % 3), 50.f);
                 break;
 
             case MONSTER_STATE::FORMATION_IDLE:
@@ -666,6 +675,7 @@ void CSpear_Soldier::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
 
         case ARREST:
             //Set_AnimChangeable(true);
+           
             break;
 
         case HIT_FRONT:

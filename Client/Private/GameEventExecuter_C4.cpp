@@ -20,6 +20,7 @@
 #include "PlayerData_Manager.h"
 #include "Door_Red.h"
 #include "Event_Manager.h"
+#include "JumpPad.h"
 
 CGameEventExecuter_C4::CGameEventExecuter_C4(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CGameEventExecuter(_pDevice, _pContext)
@@ -145,6 +146,11 @@ void CGameEventExecuter_C4::Chapter4_Intro(_float _fTimeDelta)
 			CCamera_Manager::GetInstance()->Set_NextCutSceneData(TEXT("Chapter4_Intro"));
 			CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::CUTSCENE, true, 0.8f);
 			Next_Step(true);
+
+			m_pGameInstance->Start_SFX(TEXT("LCD_MUS_C04_DESKINTRO_FULL"), 60.f);
+			m_pGameInstance->End_BGM();
+			m_pGameInstance->End_SFX(TEXT("LCD_MUS_C04_SONNETSWAMPSDAY_LOOP_Stem_Group1"));
+			m_pGameInstance->End_SFX(TEXT("LCD_MUS_C04_SONNETSWAMPSDAY_LOOP_Stem_Group2"));
 		}
 	}
 	else if (Step_Check(STEP_2)) {
@@ -176,8 +182,14 @@ void CGameEventExecuter_C4::Chapter4_Intro(_float _fTimeDelta)
 	}
 	else
 	{
-
 		GameEvent_End();
+		m_pGameInstance->Transition_BGM(TEXT("LCD_MUS_C04_CASTLES_LOOP_FULL_Stem_Base"), 20.f);
+		m_pGameInstance->Start_SFX(TEXT("LCD_MUS_C04_CASTLES_LOOP_FULL_Stem_Group1"), 1.5f);
+		m_pGameInstance->Start_SFX(TEXT("LCD_MUS_C04_CASTLES_LOOP_FULL_Stem_Group2"), 1.5f);
+
+		m_pGameInstance->Set_SFXTargetVolume(TEXT("LCD_MUS_C04_CASTLES_LOOP_FULL_Stem_Group1"), 20.f);
+		m_pGameInstance->Set_SFXTargetVolume(TEXT("LCD_MUS_C04_CASTLES_LOOP_FULL_Stem_Group2"), 20.f);
+
 	}
 }
 
@@ -631,6 +643,7 @@ void CGameEventExecuter_C4::Chapter4_3D_Out_01(_float _fTimeDelta)
 		if (Is_Start())
 		{
 			Ready_Action(L"Chapter4_P0708", SECTION_2D_PLAYMAP_BACKGROUND, C2DMapActionObject::ACTIVE_TYPE_ACTIONANIM);
+			m_pGameInstance->Start_SFX_Delay(TEXT("C04_P1718b"), 0.f, 50.f);
 		}
 		Change_PlayMap(1.f);
 
@@ -855,18 +868,31 @@ _bool CGameEventExecuter_C4::Change_PlayMap(_float _fStartTime)
 	// 3D object Ãß°¡ 
 	if (m_fTimer > _fStartTime && 2 == m_iSubStep)
 	{
-		CDraggableObject::DRAGGABLE_DESC tDraggableDesc = {};
-		tDraggableDesc.iModelPrototypeLevelID_3D = LEVEL_STATIC;
-		tDraggableDesc.iCurLevelID = m_pGameInstance->Get_CurLevelID();
-		tDraggableDesc.strModelPrototypeTag_3D = TEXT("SM_Plastic_Block_04");
-		tDraggableDesc.eStartCoord = COORDINATE_3D;
-		tDraggableDesc.vBoxHalfExtents = { 1.02f,1.02f,1.02f };
-		tDraggableDesc.vBoxOffset = { 0.f,tDraggableDesc.vBoxHalfExtents.y,0.f };
-		tDraggableDesc.tTransform3DDesc.vInitialPosition = { 54.77f, 4.29f, 6.06f };
+		//CDraggableObject::DRAGGABLE_DESC tDraggableDesc = {};
+		//tDraggableDesc.iModelPrototypeLevelID_3D = LEVEL_STATIC;
+		//tDraggableDesc.iCurLevelID = m_pGameInstance->Get_CurLevelID();
+		//tDraggableDesc.strModelPrototypeTag_3D = TEXT("SM_Plastic_Block_04");
+		//tDraggableDesc.eStartCoord = COORDINATE_3D;
+		//tDraggableDesc.vBoxHalfExtents = { 1.02f,1.02f,1.02f };
+		//tDraggableDesc.vBoxOffset = { 0.f,tDraggableDesc.vBoxHalfExtents.y,0.f };
+		//tDraggableDesc.tTransform3DDesc.vInitialPosition = { 54.77f, 4.29f, 6.06f };
 
-		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DraggableObject"),
-			m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Draggable"), &tDraggableDesc)))
-			return false;
+		//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_DraggableObject"),
+		//	m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Draggable"), &tDraggableDesc)))
+		//	return false;
+
+		CJumpPad::tagJumpPadDesc tJumpPadDesc = {};
+
+		tJumpPadDesc.iCurLevelID = LEVEL_CHAPTER_4;
+		tJumpPadDesc.eStartCoord = COORDINATE_3D;
+		tJumpPadDesc.tTransform3DDesc.vInitialPosition = { 54.77f, 4.29f, 6.06f };
+
+		//tJumpPadDesc.strInitialSectionTag = L"Chapter4_SKSP_01";
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CHAPTER_4, TEXT("Prototype_GameObject_JumpPad"),
+			LEVEL_CHAPTER_4, TEXT("Layer_MapGimmick"), &tJumpPadDesc)))
+			return E_FAIL;
+
+	
 
 		CDoor_Red::DOOR_RED_DESC DoorRedDesc = {};
 		//DoorRedDesc.tTransform2DDesc.vInitialPosition = _float3(1010.f, -530.f, 0.f);
