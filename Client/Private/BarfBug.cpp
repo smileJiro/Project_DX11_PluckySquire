@@ -218,7 +218,7 @@ void CBarfBug::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
     m_iAttackCount = 0;
     CoolTime_Off();
 
-    m_pGameInstance->Start_SFX(_wstring(L"A_sfx_sword_hit__barferbug_") + to_wstring(rand() % 4), 50.f);
+    m_pGameInstance->Start_SFX(_wstring(L"A_sfx_sword_hit__barferbug_") + to_wstring(rand() % 4), g_SFXVolume);
 }
 
 HRESULT CBarfBug::Change_Coordinate(COORDINATE _eCoordinate, _float3* _pNewPosition)
@@ -253,7 +253,7 @@ void CBarfBug::Change_Animation()
                 break;
 
             case MONSTER_STATE::ALERT:
-                m_pGameInstance->Start_SFX(_wstring(L"A_sfx_barferbug_alert_") + to_wstring(rand() % 4), 50.f);
+                m_pGameInstance->Start_SFX(_wstring(L"A_sfx_barferbug_alert_") + to_wstring(rand() % 4), g_SFXVolume);
                 static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(ALERT);
                 break;
 
@@ -266,7 +266,7 @@ void CBarfBug::Change_Animation()
                 break;
 
             case MONSTER_STATE::ATTACK:
-                m_pGameInstance->Start_SFX(_wstring(L"A_sfx_barferbug_projectile_") + to_wstring(rand() % 2), 50.f);
+                m_pGameInstance->Start_SFX(_wstring(L"A_sfx_barferbug_projectile_") + to_wstring(rand() % 2), g_SFXVolume);
                 static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(BARF);
                 break;
 
@@ -276,7 +276,7 @@ void CBarfBug::Change_Animation()
 
             case MONSTER_STATE::DEAD:
                 static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(DIE);
-                //m_pGameInstance->Start_SFX(_wstring(L"A_sfx_goblin_die_") + to_wstring(rand() % 5), 50.f);
+                //m_pGameInstance->Start_SFX(_wstring(L"A_sfx_goblin_die_") + to_wstring(rand() % 5), g_SFXVolume);
 
                 break;
 
@@ -316,7 +316,7 @@ void CBarfBug::Change_Animation()
                 else if (E_DIRECTION::RIGHT == Get_2DDirection() || E_DIRECTION::LEFT == Get_2DDirection())
                     eAnim = ALERT_RIGHT;
 
-                m_pGameInstance->Start_SFX(_wstring(L"A_sfx_barferbug_alert_") + to_wstring(rand() % 4), 50.f);
+                m_pGameInstance->Start_SFX(_wstring(L"A_sfx_barferbug_alert_") + to_wstring(rand() % 4), g_SFXVolume);
 
                 break;
 
@@ -346,7 +346,7 @@ void CBarfBug::Change_Animation()
                 else if (E_DIRECTION::RIGHT == Get_2DDirection() || E_DIRECTION::LEFT == Get_2DDirection())
                     eAnim = ATTACK_RIGHT;
 
-                m_pGameInstance->Start_SFX(_wstring(L"A_sfx_barferbug_projectile_") + to_wstring(rand() % 2), 50.f);
+                m_pGameInstance->Start_SFX(_wstring(L"A_sfx_barferbug_projectile_") + to_wstring(rand() % 2), g_SFXVolume);
 
                 break;
 
@@ -475,7 +475,7 @@ void CBarfBug::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
 
         case DIE:
             Monster_Death();
-            m_pGameInstance->Start_SFX(_wstring(L"A_sfx_barferbug_death_") + to_wstring(rand() % 4), 50.f);
+            m_pGameInstance->Start_SFX(_wstring(L"A_sfx_barferbug_death_") + to_wstring(rand() % 4), g_SFXVolume);
 
             //Set_AnimChangeable(true);
 
@@ -526,7 +526,7 @@ void CBarfBug::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
         case DEATH_RIGHT:
         case DEATH_UP:
             Monster_Death();
-            m_pGameInstance->Start_SFX(_wstring(L"A_sfx_barferbug_death_") + to_wstring(rand() % 4), 50.f);
+            m_pGameInstance->Start_SFX(_wstring(L"A_sfx_barferbug_death_") + to_wstring(rand() % 4), g_SFXVolume);
 
             //Set_AnimChangeable(true);
             ////풀링에 넣을 시 변경

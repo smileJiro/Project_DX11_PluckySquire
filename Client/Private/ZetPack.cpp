@@ -166,6 +166,7 @@ void CZetPack::Switch_State(ZET_STATE _eState)
 	switch (_eState)
 	{
 	case STATE_IDLE:
+        END_SFX(TEXT("A_sfx_jetpac_thrust_loop"));
         if (COORDINATE_2D == eCoord)
         {
             m_pControllerModel->Switch_Animation(ANIM_IDLE);
@@ -178,6 +179,11 @@ void CZetPack::Switch_State(ZET_STATE _eState)
         }
         break;
 	case STATE_ASCEND:
+        if(STATE_IDLE== m_eState)
+        {
+            START_SFX_DELAY(TEXT("A_sfx_jetpac_thrust_start-") + to_wstring(rand() % 4), 0.f, g_SFXVolume, false);
+            START_SFX_DELAY(TEXT("A_sfx_jetpac_thrust_loop"), 0.f, g_SFXVolume, true);
+        }
         if (COORDINATE_2D == eCoord)
         {
 		    m_pControllerModel->Switch_Animation(ANIM_ASCEND);
@@ -190,6 +196,11 @@ void CZetPack::Switch_State(ZET_STATE _eState)
         }
 		break;
 	case STATE_DESCEND:
+        if (STATE_IDLE == m_eState)
+        {
+            START_SFX_DELAY(TEXT("A_sfx_jetpac_thrust_start-") + to_wstring(rand() % 4), 0.f, g_SFXVolume, false);
+            START_SFX_DELAY(TEXT("A_sfx_jetpac_thrust_loop"), 0.f, g_SFXVolume, true);
+        }
         if (COORDINATE_2D == eCoord)
         {
 		    m_pControllerModel->Switch_Animation(ANIM_DESCEND);

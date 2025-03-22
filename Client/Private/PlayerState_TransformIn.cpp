@@ -26,11 +26,12 @@ void CPlayerState_TransformIn::Enter()
 	COORDINATE eCoord = m_pOwner->Get_CurCoord();
 	if (COORDINATE_2D == eCoord)
 	{
+
 		m_pOwner->Set_BlockPlayerInput(true);
 		m_pOwner->Set_2DDirection(F_DIRECTION::RIGHT);
 		m_pOwner->Set_Mode(CPlayer::PLAYER_MODE_CYBERJOT);
 		m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_CYBERJOTLITE_TRANSFORM);
-		START_SFX_DELAY(TEXT("A_sfx_C9DESK_Transform_into_cyberjot_boss"),0.f,60.f,false);
+		START_SFX_DELAY(TEXT("A_sfx_C9DESK_Transform_into_cyberjot_boss"),0.f, g_SFXVolume,false);
 	}
 
 

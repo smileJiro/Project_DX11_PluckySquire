@@ -1273,6 +1273,7 @@ void CPlayer::StampSmash()
 
 		return;
 	}
+
 	if (PLAYER_PART::PLAYER_PART_BOMB_STMAP == m_eCurrentStamp)
 	{
 		m_pDetonator->Set_Bombable(m_pBombStmap->Place_Bomb(v2DPosition));
@@ -2616,11 +2617,11 @@ void CPlayer::Key_Input(_float _fTimeDelta)
     {
         //Set_State(CPlayer::EVICT);
 		CPlayerData_Manager* pPDM =  CPlayerData_Manager::GetInstance();
-		pPDM->Get_PlayerItem(TEXT("Flipping_Glove"));
-		pPDM->Get_PlayerItem(TEXT("Tilting_Glove"));
-		pPDM->Get_PlayerItem(TEXT("Stop_Stamp"));
-		pPDM->Get_PlayerItem(TEXT("Bomb_Stamp"));
-		pPDM->Get_PlayerItem(TEXT("Sword"));
+		pPDM->Set_PlayerItem(TEXT("Sword"));
+		pPDM->Set_PlayerItem(TEXT("Flipping_Glove"));		
+		pPDM->Set_PlayerItem(TEXT("Tilting_Glove"));
+		pPDM->Set_PlayerItem(TEXT("Stop_Stamp"));
+		pPDM->Set_PlayerItem(TEXT("Bomb_Stamp"));
 		pPDM->UP_JumpSkillLevel();
 		pPDM->UP_ThrowSkillLevel();
 		pPDM->UP_WhirlSkillLevel();
