@@ -31,7 +31,7 @@ void CPlayerState_EngageBoss::Enter()
 	m_pOwner->Set_Kinematic(true);
 	m_pOwner->LookDirectionXZ_Kinematic(_vector{ 0.f,0.f,-1.f });
 	m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::CYBERJOT_CINE_DO9_LB_ENGAGE_SH01);
-	START_SFX_DELAY(TEXT("A_sfx_C9DESK_LastBoss_Engage"), 0.f, 60.f, false);
+	START_SFX_DELAY(TEXT("A_sfx_C9DESK_LastBoss_Engage"), 5.f, 60.f, false);
 }
 
 void CPlayerState_EngageBoss::Exit()
