@@ -270,10 +270,10 @@ void CZippy::Change_Animation()
 			else if (E_DIRECTION::RIGHT == Get_2DDirection() || E_DIRECTION::LEFT == Get_2DDirection())
 				eAnim = HIT_RIGHT;
 
-            //m_pGameInstance->End_SFX(_wstring(L"A_sfx_zippi_saw_loop"));
-            //m_pGameInstance->End_SFX(_wstring(L"A_sfx_zippi_electrify_loop"));
+            m_pGameInstance->End_SFX(_wstring(L"A_sfx_zippi_saw_loop"));
+            m_pGameInstance->End_SFX(_wstring(L"A_sfx_zippi_electrify_loop"));
 
-            //m_pGameInstance->Start_SFX(_wstring(L"A_sfx_zippi_saw_loop"), 50.f);
+            m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_sword_hit_zippi_") + (to_wstring(rand()%3+1)), 0.1f, g_SFXVolume);
 			break;
 
 		case Client::MONSTER_STATE::DEAD:
@@ -287,6 +287,7 @@ void CZippy::Change_Animation()
             m_pGameInstance->End_SFX(_wstring(L"A_sfx_zippi_saw_loop"));
             m_pGameInstance->End_SFX(_wstring(L"A_sfx_zippi_electrify_loop"));
 
+            m_pGameInstance->Start_SFX(_wstring(L"A_sfx_zippi_death_") + to_wstring(rand() % 2), 50.f);
 			break;
 		default:
 			break;
@@ -363,7 +364,6 @@ void CZippy::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
     case DIE_RIGHT:
     case DIE_UP:
         Monster_Death();
-        m_pGameInstance->Start_SFX(_wstring(L"A_sfx_zippi_death_") + to_wstring(rand() % 2), 50.f);
 
         //Set_AnimChangeable(true);
         ////풀링에 넣을 시 변경
