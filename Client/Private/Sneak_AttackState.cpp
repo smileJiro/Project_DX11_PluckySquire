@@ -202,7 +202,16 @@ void CSneak_AttackState::After_Attack()
 		case Client::SNEAKWAYPOINTINDEX::CHAPTER8_2:
 		case Client::SNEAKWAYPOINTINDEX::CHAPTER8_3:
 		{
-			vPlayerPos = { -9.3f, 21.58f, 0.32f };
+			vPlayerPos = { -9.3f, 21.58f, 0.8f };
+
+			RETURN_ARMDATA tReturnArmData = {};
+			tReturnArmData.vPreArm = { 0.0f, 0.7584891319274902f, -0.651685357093811f };
+			tReturnArmData.fPreLength = 11.29998779296875;
+			tReturnArmData.iZoomLevel = 4;
+			tReturnArmData.vAtOffset = { 0.0f, 1.5f, 0.0f };
+
+			CCamera_Manager::GetInstance()->Set_ResetData(CCamera_Manager::TARGET, tReturnArmData);
+
 			Reset_Chapter8_Soldier(vPlayerPos);
 		}
 		break;

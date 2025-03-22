@@ -1019,7 +1019,7 @@ void CGameEventExecuter_C8::Chapter8_Outro_Postit_Sequence(_float _fTimeDelta)
 		function fCamerafunc = []()
 			{
 				// <-으로 돌리기. 1초동안
-				CCamera_Manager::GetInstance()->Start_Turn_AxisY(CCamera_Manager::TARGET, 1.f, XMConvertToRadians(-40.f), XMConvertToRadians(-25.f));
+				CCamera_Manager::GetInstance()->Start_Turn_ArmVector(CCamera_Manager::TARGET, 1.f, XMVectorSet(0.528993070f, 0.0357950814f, -0.847869396f, 0.f), EASE_IN_OUT);
 				// 암 3.f 줄이기, 1초동안
 				CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Decrease(CCamera_Manager::TARGET, 1.f,
 					3.f, EASE_IN_OUT);
@@ -1045,8 +1045,7 @@ void CGameEventExecuter_C8::Chapter8_Outro_Postit_Sequence(_float _fTimeDelta)
 		if (Is_Start())
 		{
 			m_tReturnArmData = CCamera_Manager::GetInstance()->Save_ArmData();
-			CCamera_Manager::GetInstance()->Start_Turn_AxisY(CCamera_Manager::TARGET, 1.f, 
-				XMConvertToRadians(40.f), XMConvertToRadians(25.f));
+			CCamera_Manager::GetInstance()->Start_Turn_ArmVector(CCamera_Manager::TARGET, 1.f, XMVectorSet(0.677491844f, 0.553469718f, -0.484427720f, 0.f), EASE_IN_OUT);
 			CCamera_Manager::GetInstance()->Start_Changing_AtOffset(CCamera_Manager::TARGET,
 				1.f,
 				XMVectorSet(20.f, 0.f, -5.f, 0.f),
