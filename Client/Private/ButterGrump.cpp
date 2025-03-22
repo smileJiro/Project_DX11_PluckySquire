@@ -503,6 +503,7 @@ void CButterGrump::Attack()
             }
         }
 
+        m_pGameInstance->Start_SFX_Distance_Delay(_wstring(L"A_sfx_fire_rocket-") + to_wstring(rand() % 4), m_pControllerTransform->Get_State(CTransform::STATE_POSITION), 0.5f, g_SFXVolume, 0.f, 13.f);
         ++m_iAttackCount;
 
         if (m_iNumAttack <= m_iAttackCount)
@@ -549,6 +550,8 @@ void CButterGrump::Attack()
         }
 
         CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Boss_YellowBall"), COORDINATE_3D, &vPosition, &vRotation);
+
+        m_pGameInstance->Start_SFX_Distance_Delay(_wstring(L"A_sfx_Fire_YellowBalls"), m_pControllerTransform->Get_State(CTransform::STATE_POSITION), 0.1f, g_SFXVolume, 0.f, 13.f);
 
         ++m_iAttackCount;
 
@@ -621,6 +624,7 @@ void CButterGrump::Attack()
             CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Boss_PurpleBall"), COORDINATE_3D, &vPos, &vRotation);
         }
 
+        m_pGameInstance->Start_SFX_Distance_Delay(_wstring(L"A_sfx_fire_PurpleBalls-") + to_wstring(rand() % 16), m_pControllerTransform->Get_State(CTransform::STATE_POSITION), 0.1f, g_SFXVolume, 0.f, 13.f);
         ++m_iAttackCount;
 
         if (m_iNumAttack <= m_iAttackCount)
@@ -697,6 +701,8 @@ void CButterGrump::Attack()
                 CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Boss_Rock"), COORDINATE_3D, &vPosition, &vQuat);
             }
         }
+
+        m_pGameInstance->Start_SFX_Distance_Delay(_wstring(L"A_sfx_fire_asteroids_individual-") + to_wstring(rand() % 6), m_pControllerTransform->Get_State(CTransform::STATE_POSITION), 0.1f, g_SFXVolume, 0.f, 13.f);
 
         ++m_iAttackCount;
 
@@ -1103,6 +1109,8 @@ void CButterGrump::Roar()
     
     if (nullptr != m_pRoarEffect)
         m_pRoarEffect->Active_All(true);
+
+    m_pGameInstance->Start_SFX_Distance_Delay(_wstring(L"A_sfx_Rage_Attack"), m_pControllerTransform->Get_State(CTransform::STATE_POSITION), 0.1f, g_SFXVolume, 0.f, 13.f);
 }
 
 void CButterGrump::EndRoar()

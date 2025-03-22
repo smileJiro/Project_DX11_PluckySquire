@@ -115,6 +115,7 @@ void CBoss_HomingBall::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _O
                 Event_DeleteObject(this);
                 // Effect
                 CEffect_Manager::GetInstance()->Active_EffectMatrix(TEXT("HomingHit"), true, m_pControllerTransform->Get_WorldMatrix());
+                m_pGameInstance->Start_SFX_Distance_Delay(_wstring(L"A_sfx_rocket_explode-") + to_wstring(rand() % 6), m_pControllerTransform->Get_State(CTransform::STATE_POSITION), 0.1f, g_SFXVolume, 0.f, 13.f);
             }
         }
 
