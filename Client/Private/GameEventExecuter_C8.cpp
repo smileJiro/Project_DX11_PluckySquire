@@ -2772,7 +2772,7 @@ _bool CGameEventExecuter_C8::Change_PlayMap(_float _fStartTime)
 			}
 		}
 
-		if (FAILED(CFormation_Manager::GetInstance()->Initialize()))
+		if (FAILED(CFormation_Manager::GetInstance()->Initialize(m_iCurLevelID)))
 			return false;
 
 

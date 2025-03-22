@@ -24,8 +24,6 @@ private:
 	_float2			m_fSneakFadeTime = { 2.f, 0.f };
 	_bool			m_isStartFade = { false };
 
-
-
 private:
 	void			After_Attack();
 	void			Beetle_CutScene();
