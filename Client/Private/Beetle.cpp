@@ -208,7 +208,7 @@ void CBeetle::Change_Animation()
         switch (MONSTER_STATE(m_iState))
         {
         case MONSTER_STATE::IDLE:
-            m_pGameInstance->Start_SFX_Distance(_wstring(L"A_sfx_beetle_idle-") + to_wstring(rand() % 8), m_pControllerTransform->Get_State(CTransform::STATE_POSITION), 70.f, 0.f, 20.f, 1.5f);
+            m_pGameInstance->Start_SFX_Distance(_wstring(L"A_sfx_beetle_idle-") + to_wstring(rand() % 8), m_pControllerTransform->Get_State(CTransform::STATE_POSITION), 70.f, 0.f, 16.f, 1.5f);
     
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(IDLE);
             break;
@@ -270,7 +270,7 @@ void CBeetle::Change_Animation()
                 static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(WAIT2);
                 break;
             }
-            m_pGameInstance->Start_SFX_Distance(_wstring(L"A_sfx_beetle_idle-") + to_wstring(rand() % 8), m_pControllerTransform->Get_State(CTransform::STATE_POSITION), 70.f, 0.f, 20.f, 1.5f);
+            m_pGameInstance->Start_SFX_Distance(_wstring(L"A_sfx_beetle_idle-") + to_wstring(rand() % 8), m_pControllerTransform->Get_State(CTransform::STATE_POSITION), 70.f, 0.f, 16.f, 1.5f);
 
             //m_pGameInstance->Start_SFX(_wstring(L"A_sfx_beetle_idle-") + to_wstring(rand() % 8), 50.f);
             break;
