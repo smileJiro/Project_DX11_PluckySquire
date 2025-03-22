@@ -134,7 +134,7 @@ void CZipline::Ride_Down(_float _fTimeDelta)
 		m_fZiplineTime.y = 0.f;
 		this->Set_Active(false);
 
-		m_pGameInstance->Set_SFXTargetVolume(TEXT("A_sfx_rope_slide"), );
+		m_pGameInstance->Set_SFXTargetVolume(TEXT("A_sfx_rope_slide"), 0.f);
 	}
 
 	_vector vPos = XMVectorLerp(XMLoadFloat3(&m_vStartPos), XMLoadFloat3(&m_vDestination), fRatio);

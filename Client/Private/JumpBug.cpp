@@ -137,7 +137,7 @@ void CJumpBug::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
 {
     __super::On_Hit(_pHitter, _iDamg, _vForce);
 
-    m_pGameInstance->Start_SFX(_wstring(L"A_sfx_sword_hit_jumperbug_") + to_wstring(rand() % 4), 50.f);
+    m_pGameInstance->Start_SFX(_wstring(L"A_sfx_sword_hit_jumperbug_") + to_wstring(rand() % 4), g_SFXVolume);
 
 }
 
@@ -157,7 +157,7 @@ void CJumpBug::Change_Animation()
                 static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(JUMP_UP);
                 m_isJump = true;
 
-                m_pGameInstance->Start_SFX_Distance(_wstring(L"A_sfx_jumperbug_jump-") + to_wstring(rand() % 7), m_pControllerTransform->Get_State(CTransform::STATE_POSITION), 70.f, 0.f, 13.f);
+                m_pGameInstance->Start_SFX_Distance_Delay(_wstring(L"A_sfx_jumperbug_jump-") + to_wstring(rand() % 7), m_pControllerTransform->Get_State(CTransform::STATE_POSITION), 0.1f, g_SFXVolume, 0.f, 13.f);
 
                 break;
 
@@ -200,8 +200,8 @@ void CJumpBug::Change_Animation()
                 {
                     if (CSection_Manager::GetInstance()->Is_PlayerInto(m_strSectionName))
                     {
-                        m_pGameInstance->Start_SFX_Distance2D(_wstring(L"A_sfx_jumperbug_jump-") + to_wstring(rand() % 7),
-                            m_pControllerTransform->Get_State(CTransform::STATE_POSITION), CPlayerData_Manager::GetInstance()->Get_PlayerPosition(), 70.f, 0.f);
+                        m_pGameInstance->Start_SFX_Distance2D_Delay(_wstring(L"A_sfx_jumperbug_jump-") + to_wstring(rand() % 7),
+                            m_pControllerTransform->Get_State(CTransform::STATE_POSITION), CPlayerData_Manager::GetInstance()->Get_PlayerPosition(), 0.1f, g_SFXVolume, 0.f);
                     }
                 }
                 break;
@@ -255,7 +255,7 @@ void CJumpBug::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
 
         case DIE:
             Monster_Death();
-            m_pGameInstance->Start_SFX(_wstring(L"A_sfx_jumperbug_death_") + to_wstring(rand() % 4), 50.f);
+            m_pGameInstance->Start_SFX(_wstring(L"A_sfx_jumperbug_death_") + to_wstring(rand() % 4), g_SFXVolume);
             break;
 
         default:
@@ -301,7 +301,7 @@ void CJumpBug::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
         case DIE_UP:
         case DIE_RIGHT:
             Monster_Death();
-            m_pGameInstance->Start_SFX(_wstring(L"A_sfx_jumperbug_death_") + to_wstring(rand() % 4), 50.f);
+            m_pGameInstance->Start_SFX(_wstring(L"A_sfx_jumperbug_death_") + to_wstring(rand() % 4), g_SFXVolume);
 
             //Set_AnimChangeable(true);
 
