@@ -728,7 +728,8 @@ void CMiniGame_Defender::Start_Game()
 
 void CMiniGame_Defender::Restart_Game()
 {
-    
+    Set_LeftPersonCount(0);
+    Set_GameState(DEFENDER_PROG_GAME);
 }
 
 void CMiniGame_Defender::Rescue_Person(CDefenderPerson* _pPerson)
