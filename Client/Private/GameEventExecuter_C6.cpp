@@ -1660,7 +1660,7 @@ void CGameEventExecuter_C6::Chapter6_Humgrump_Revolt(_float _fTimeDelta)
 			_float3 fDefaultPos = {};
 
 			Event_Book_Main_Section_Change_Start(1, &fDefaultPos);
-			CTrigger_Manager::GetInstance()->Register_TriggerEvent(TEXT("Chapter6_Change_Book_To_Greate_Humgrump"), 0);
+			CTrigger_Manager::GetInstance()->Register_TriggerEvent(TEXT("Chapter6_Change_Book_To_Great_Humgrump"), 0);
 			GameEvent_End();
 		}
 	}
@@ -1674,13 +1674,14 @@ void CGameEventExecuter_C6::Chapter6_Change_Book_To_Great_Humgrump(_float _fTime
 	if (Step_Check(STEP_0))
 	{
 		if (true == CUI_Manager::GetInstance()->is_PlayNarration()) {
+
 			Next_Step(true);
 		}
 	}
 	else if (Step_Check(STEP_1)) {
 		// 1. Narration이 끝났을 때 Book으로(가운데) 타겟 변경
 		if (true == CUI_Manager::GetInstance()->is_EndNarration()) {
-
+	
 			CGameObject* pBook = m_pGameInstance->Get_GameObject_Ptr(m_iCurLevelID, TEXT("Layer_Book"), 0);
 
 			CCamera_Manager::GetInstance()->Change_CameraTarget(pBook, 0.5f);
@@ -1689,6 +1690,8 @@ void CGameEventExecuter_C6::Chapter6_Change_Book_To_Great_Humgrump(_float _fTime
 
 			CCamera_2D* pCamera = static_cast<CCamera_2D*>(CCamera_Manager::GetInstance()->Get_CurrentCamera());
 			pCamera->Start_Changing_LengthValue(pCamera->Get_LengthValue(), 1.f);
+
+			//START_BGM(TEXT("LCD_MUS_C08_HUMPGRUMPCONFRONTSMOONBEARD_P1112_LOOP1_Stem_Base"), g_BGMVolume);
 
 			Next_Step(true);
 		}
