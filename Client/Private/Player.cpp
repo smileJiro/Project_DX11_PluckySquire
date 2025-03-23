@@ -1159,7 +1159,7 @@ void CPlayer::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 
 void CPlayer::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
 {
-	if (m_bInvincible)
+	if (true == m_bInvincible)
 	{
 		return;
 	}
