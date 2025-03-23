@@ -60,6 +60,7 @@ private:
 	void							C020910_Monster_Spawn(_float _fTimeDelta);
 	void							Chapter2_BookMagic(_float _fTimeDelta);
 	void							Chapter2_Intro(_float _fTimeDelta);
+	void							Chapter2_MapChange(_float _fTimeDelta);
 	void							Chapter2_Humgrump(_float _fTimeDelta);
 
 	void							Chapter2_Lunchbox_Appear(_float _fTimeDelta);
