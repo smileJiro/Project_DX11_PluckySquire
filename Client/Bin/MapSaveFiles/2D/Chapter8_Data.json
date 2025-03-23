@@ -1,6 +1,7 @@
 [
 	{
 		"Section_Name": "Chapter8_P0102",
+		"Section_Start": true,
 		"Section_BackGround_Name": "Chapter8_P0102_BackGround",
 		"Section_Type": 1,
 		"Section_Default": 0,
@@ -75,7 +76,7 @@
 		"Section_Type": 0,
 		"Section_Default": 0,
 		"Section_Info": {
-      "BGM": "Stop",
+			"BGM": "Stop",
 			"Pre_Page_Tag": "Chapter8_P0910",
 			"Next_Page_Tag": "Chapter8_P1314"
 		}
@@ -87,7 +88,8 @@
 		"Section_Default": 0,
 		"Section_Info": {
 			"Pre_Page_Tag": "Chapter8_P1112",
-			"Next_Page_Tag": "Chapter8_P1516"
+			"Next_Page_Tag": "Chapter8_P1516",
+			"BGM": "LCD_MUS_C09_STEALTHMINIGAME_INTROCUTSCENE_FULL"
 		}
 	},
 	{
@@ -112,6 +114,16 @@
 		"Section_Default": 0,
 		"Section_Info": {
 			"BGM": "LCD_MUS_C09_P2728_VIOLET_Stem_Base",
+			"SFX": [
+				{
+					"SFX_Name": "LCD_MUS_C09_P2728_VIOLET_Stem_Group1",
+					"isStart": true
+				},
+				{
+					"SFX_Name": "LCD_MUS_C09_P2728_VIOLET_Stem_Group2",
+					"isStart": true
+				}
+			],
 			"Pre_Page_Tag": "Chapter8_P1112",
 			"Next_Page_Tag": "Chapter8_P1920"
 		}
@@ -124,6 +136,16 @@
 		"Section_Default": 0,
 		"Section_Info": {
 			"BGM": "LCD_MUS_C06_P7374_BEFORETHEEXCAVATOR_Stem_Base",
+			"SFX": [
+				{
+					"SFX_Name": "LCD_MUS_C09_THRASHREUNITED_P5152_LOOP_Stem_Group1",
+					"isStart": false
+				},
+				{
+					"SFX_Name": "LCD_MUS_C09_THRASHREUNITED_P5152_LOOP_Stem_Group2",
+					"isStart": false
+				}
+			],
 			"Pre_Page_Tag": "Chapter8_P1718",
 			"Next_Page_Tag": "Chapter8_P2122"
 		}
@@ -150,7 +172,6 @@
 	},
 	{
 		"Section_Name": "Chapter8_P2324",
-		"Section_Start": true,
 		"Section_File_Name": "Chapter8_P2324.m2chc",
 		"Section_BackGround_Name": "Chapter8_P2324_BackGround",
 		"Section_Type": 0,

@@ -250,6 +250,13 @@ HRESULT CNPC_OnlySocial::LoadFromJson(const std::wstring& filePath)
 				tOnlySocial.strSectionid = StringToWstring(SocialNPC["strSectionid"].get<_string>());
 			}
 
+			if (SocialNPC.contains("isLookReverse") && SocialNPC["isLookReverse"].is_boolean())
+			{
+				tOnlySocial.isLookReverse = SocialNPC["isLookReverse"].get<_bool>();
+			}
+			
+
+
 			CGameObject* pGameObject;
 			tOnlySocial.iCurLevelID = tOnlySocial.strCreateSection;
 			tOnlySocial.tTransform2DDesc.vInitialPosition = _float3(0.f, 0.f, 0.f);

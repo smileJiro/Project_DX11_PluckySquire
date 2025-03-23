@@ -175,11 +175,11 @@
     ]
   },
   {
-    "Trigger_EventTag": "Chapter6_Change_Book_To_Greate_Humgrump",
+    "Trigger_EventTag": "Chapter6_Change_Book_To_Great_Humgrump",
     "Actions": [
       {
         "ActionTag": "Create_EventExecuter",
-        "EventTag": "Chapter6_Change_Book_To_Greate_Humgrump",
+        "EventTag": "Chapter6_Change_Book_To_Great_Humgrump",
         "Is_Sequence": true
       }
     ]

@@ -76,6 +76,10 @@ private:
 
 	CMudPit* m_pMudPit = nullptr;
 	_bool m_bSlipped = false;
+	wstring m_strCurrentSound = TEXT("");
+	_float m_fCurVolume = 1.0f;
+	_float m_fMaxVolumeDistance = 300.f;
+	_float m_fMinVolumeDistance = 800.f;
 public:
 	static CRubboink_Tiny* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext);
 	virtual CGameObject* Clone(void* _pArg) override;

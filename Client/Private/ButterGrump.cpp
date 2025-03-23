@@ -303,6 +303,8 @@ void CButterGrump::Change_Animation()
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(TRANSITION_PHASE2);
             //if (nullptr != m_pRoarEffect)
             //    m_pRoarEffect->Active_All(true);
+
+            m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_enter_angry_phase"), 0.1f, g_SFXVolume);
             break;
 
         case BOSS_STATE::IDLE:
@@ -361,6 +363,7 @@ void CButterGrump::Change_Animation()
 
         case BOSS_STATE::WINGSLAM:
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(WING_SLAM_INTO);
+            m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_wingslam_prepare"), 0.1f, g_SFXVolume);
             break;
 
         case BOSS_STATE::ROCKVOLLEY:
@@ -372,6 +375,7 @@ void CButterGrump::Change_Animation()
 
         case BOSS_STATE::WINGSLICE:
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(WING_SLICE_INTO);
+            m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_wingslice_prepare"), 0.1f, g_SFXVolume);
             break;
 
         case BOSS_STATE::SHIELD:
@@ -503,6 +507,7 @@ void CButterGrump::Attack()
             }
         }
 
+        m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_fire_rocket-") + to_wstring(rand() % 4), 0.5f, g_SFXVolume);
         ++m_iAttackCount;
 
         if (m_iNumAttack <= m_iAttackCount)
@@ -549,6 +554,8 @@ void CButterGrump::Attack()
         }
 
         CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Boss_YellowBall"), COORDINATE_3D, &vPosition, &vRotation);
+
+        m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_Fire_YellowBalls"), 0.1f, g_SFXVolume);
 
         ++m_iAttackCount;
 
@@ -621,6 +628,7 @@ void CButterGrump::Attack()
             CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Boss_PurpleBall"), COORDINATE_3D, &vPos, &vRotation);
         }
 
+        m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_fire_PurpleBalls-") + to_wstring(rand() % 16), 0.1f, g_SFXVolume);
         ++m_iAttackCount;
 
         if (m_iNumAttack <= m_iAttackCount)
@@ -642,6 +650,7 @@ void CButterGrump::Attack()
         /*_float4 vRot;
         XMStoreFloat4(&vRot, m_pGameInstance->Direction_To_Quaternion(XMVectorSet(0.f, 0.f, 1.f, 0.f), m_pTarget->Get_FinalPosition() - XMLoadFloat3(&vPosition)));*/
         CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Boss_WingSlam"), COORDINATE_3D, &vPosition, &vRotation);
+        m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_wingslam_strike"), 0.1f, g_SFXVolume);
         m_isAttack = false;
         break;
     }
@@ -652,6 +661,7 @@ void CButterGrump::Attack()
   //      _float4 vRot;
 		//XMStoreFloat4(&vRot, m_pGameInstance->Direction_To_Quaternion(XMVectorSet(0.f, 0.f, 1.f, 0.f), m_pTarget->Get_FinalPosition() - XMLoadFloat3(&vPosition)));
         CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Boss_WingSlice"), COORDINATE_3D, &vPosition, &vRotation);
+        m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_wingslice_strike"), 0.1f, g_SFXVolume);
         m_isAttack = false;
         break;
     }
@@ -697,6 +707,8 @@ void CButterGrump::Attack()
                 CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Boss_Rock"), COORDINATE_3D, &vPosition, &vQuat);
             }
         }
+
+        m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_fire_asteroids_individual-") + to_wstring(rand() % 6), 0.1f, g_SFXVolume);
 
         ++m_iAttackCount;
 
@@ -855,6 +867,8 @@ void CButterGrump::Shield_Break()
 
         
     }
+
+    m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_shield_destroyed"), 0.1f, g_SFXVolume);
 }
 
 void CButterGrump::Activate_Invinciblility(_bool _isActivate)
@@ -1103,6 +1117,9 @@ void CButterGrump::Roar()
     
     if (nullptr != m_pRoarEffect)
         m_pRoarEffect->Active_All(true);
+
+    m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_shield_roar"), 0.1f, g_SFXVolume);
+    m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_raise_shield"), 0.1f, g_SFXVolume);
 }
 
 void CButterGrump::EndRoar()
@@ -1494,7 +1511,7 @@ HRESULT CButterGrump::Ready_Projectiles()
     pCrystalDesc->pSpawner = this;
 
     pCrystalDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
-    pCrystalDesc->tTransform3DDesc.fSpeedPerSec = 10.f;
+    pCrystalDesc->tTransform3DDesc.fSpeedPerSec = 5.f;
 
     CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Boss_Crystal"), Pooling_Desc, pCrystalDesc);
 
@@ -1508,7 +1525,7 @@ HRESULT CButterGrump::Ready_Projectiles()
     pTennisBallDesc->pSpawner = this;
 
     pTennisBallDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(90.f);
-    pTennisBallDesc->tTransform3DDesc.fSpeedPerSec = 10.f;
+    pTennisBallDesc->tTransform3DDesc.fSpeedPerSec = 5.f;
 
     CPooling_Manager::GetInstance()->Register_PoolingObject(TEXT("Pooling_Boss_TennisBall"), Pooling_Desc, pTennisBallDesc);
 

@@ -184,6 +184,7 @@ void CKey::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherColli
 				Event_SetActive(iter, false);
 			}
 
+			m_pGameInstance->Start_SFX(TEXT("A_sfx_gate_key_unlock"), g_SFXVolume);
 		}
 	}
 

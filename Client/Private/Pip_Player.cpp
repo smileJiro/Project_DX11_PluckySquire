@@ -154,7 +154,7 @@ void CPip_Player::Action_Victory()
 	m_eCurAction = VICTORY;
 	Switch_Animation_ByState();
 
-	m_pGameInstance->Start_SFX(TEXT("A_sfx_C9_TheTraiterousRodent"), 50.f);
+	//m_pGameInstance->Start_SFX(TEXT("A_sfx_C9_TheTraiterousRodent"), 50.f);
 }
 
 void CPip_Player::Switch_Animation_ByState()

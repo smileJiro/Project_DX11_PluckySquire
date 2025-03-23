@@ -3,6 +3,7 @@
 #include "GameInstance.h"
 #include "ModelObject.h"
 #include "Section_Manager.h"
+#include "PlayerData_Manager.h"
 
 CGear::CGear(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CCharacter(_pDevice, _pContext)
@@ -41,6 +42,30 @@ HRESULT CGear::Initialize(void* _pArg)
 		return E_FAIL;
 
     return S_OK;
+}
+
+void CGear::Update(_float _fTimeDelta)
+{
+	__super::Update(_fTimeDelta);
+
+	// 사운드 플레이 중 & 플레이어가 바깥에 있음
+	//if (m_pGameInstance->Is_SFXPlaying(TEXT("A_sfx_machines_loop")))
+	if (m_isOnSound)
+	{
+		if (COORDINATE_3D == CPlayerData_Manager::GetInstance()->Get_PlayerCoord())
+		{
+			m_pGameInstance->Stop_SFX(TEXT("A_sfx_machines_loop"));
+			m_isOnSound = false;
+		}
+	}
+	else
+	{
+		if (COORDINATE_2D == CPlayerData_Manager::GetInstance()->Get_PlayerCoord())
+		{
+			m_pGameInstance->Start_SFX(TEXT("A_sfx_machines_loop"), g_SFXVolume, true);
+			m_isOnSound = true;
+		}
+	}
 }
 
 HRESULT CGear::Render()

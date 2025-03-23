@@ -90,6 +90,8 @@ void CDoor_Red::Update(_float _fTimeDelta)
                 if (XMVectorGetX(XMVector3Length(v3DPosition - vCamPosition)) < m_fTargetDiff)
                 {
                     m_eDoorState = OPEN;
+                    m_pGameInstance->Start_SFX(TEXT("A_sfx_gate_start"), g_SFXVolume);
+                    m_pGameInstance->Start_SFX(TEXT("A_sfx_Gate_loop"), g_SFXVolume, true);
 
                     Switch_Animation_By_State();
                 }
@@ -125,6 +127,9 @@ void CDoor_Red::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
         m_p2DColliderComs[0]->Set_Active(false);
         Switch_Animation_By_State();
 
+        m_pGameInstance->End_SFX(TEXT("A_sfx_Gate_loop"));
+        m_pGameInstance->Start_SFX(TEXT("A_sfx_Gate_FinishedMoving"), g_SFXVolume);
+
         if (0.f < m_fTargetDiff)
         {
             CCamera_Manager::GetInstance()->Change_CameraTarget(CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr());
@@ -133,6 +138,7 @@ void CDoor_Red::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
             if (nullptr != pPlayer)
                 pPlayer->Set_BlockPlayerInput(false);
         }
+
     }
 
 }

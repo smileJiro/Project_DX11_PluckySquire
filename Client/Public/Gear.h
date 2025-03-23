@@ -17,10 +17,11 @@ private:
 public:
 	HRESULT				Initialize_Prototype() override;
 	HRESULT				Initialize(void* _pArg) override;
+	void				Update(_float _fTimeDelta) override;
 	HRESULT				Render() override;
 
 private:
-
+	_bool				m_isOnSound = { true };
 
 private:
 	void				On_Stop() override;	   // ÀÚ±â partobject

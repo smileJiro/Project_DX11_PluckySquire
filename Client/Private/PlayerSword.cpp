@@ -575,13 +575,15 @@ void CPlayerSword::On_StateChange()
         }
         m_pPlayer->CatchSword();
         m_pGameInstance->Start_SFX(_wstring(L"A_sfx_sword_catch-") + to_wstring(rand() % 2), 50.f);
-
+        END_SFX(TEXT("A_sfx_Jot_SwordThrowingLoop"));
         Set_AttackEnable(false);
         break;
     }
     case Client::CPlayerSword::OUTING:
     case Client::CPlayerSword::RETRIEVING:
     {
+        END_SFX(TEXT("A_sfx_Jot_SwordThrowingLoop"));
+        START_SFX_DELAY(TEXT("A_sfx_Jot_SwordThrowingLoop"), 0.f, g_SFXVolume, false);
         if (COORDINATE_3D == eCoord)
         {
             m_pSocketMatrix [COORDINATE_3D] = nullptr;
@@ -602,6 +604,7 @@ void CPlayerSword::On_StateChange()
     }
     case Client::CPlayerSword::STUCK:
     {
+        END_SFX(TEXT("A_sfx_Jot_SwordThrowingLoop"));
         if (COORDINATE_3D == eCoord)
         {
             CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);

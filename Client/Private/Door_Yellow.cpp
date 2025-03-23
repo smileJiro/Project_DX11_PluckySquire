@@ -60,6 +60,9 @@ void CDoor_Yellow::Update(_float _fTimeDelta)
                 m_eDoorState = OPEN;
                 Set_ReverseAnimation(false);
                 Switch_Animation_By_State();
+
+                m_pGameInstance->Start_SFX(TEXT("A_sfx_gate_start"), g_SFXVolume);
+                m_pGameInstance->Start_SFX(TEXT("A_sfx_Gate_loop"), g_SFXVolume, true);
             }
 
             if (CLOSE == m_eDoorState)
@@ -69,6 +72,9 @@ void CDoor_Yellow::Update(_float _fTimeDelta)
                     Set_ReverseAnimation(true);
                 else
                     Set_ReverseAnimation(false);
+
+                m_pGameInstance->Start_SFX(TEXT("A_sfx_gate_start"), g_SFXVolume);
+                m_pGameInstance->Start_SFX(TEXT("A_sfx_Gate_loop"), g_SFXVolume, true);
             }
 
         }   
@@ -121,6 +127,8 @@ void CDoor_Yellow::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
         m_bReverseAnimation = false;
 
         Switch_Animation_By_State();
+        m_pGameInstance->End_SFX(TEXT("A_sfx_Gate_loop"));
+        m_pGameInstance->Start_SFX(TEXT("A_sfx_Gate_FinishedMoving"), g_SFXVolume);
     }
 
     else if (CLOSE == m_eDoorState)
@@ -136,6 +144,9 @@ void CDoor_Yellow::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
         {
 
         }
+        m_pGameInstance->End_SFX(TEXT("A_sfx_Gate_loop"));
+        m_pGameInstance->Start_SFX(TEXT("A_sfx_Gate_FinishedMoving"), g_SFXVolume);
+
     }
 }
 

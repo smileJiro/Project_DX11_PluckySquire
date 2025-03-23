@@ -58,6 +58,8 @@ public:
 
 	void Reset_Formation();
 
+	void Bomb_Alert();
+
 
 private:
 	vector<CMonster*> m_Members;
@@ -85,6 +87,7 @@ private:
 	_wstring m_strMemberPrototypeTag = {};
 
 	_bool m_isReset = { false };
+
 
 public:
 	HRESULT Cleanup_DeadReferences() override;

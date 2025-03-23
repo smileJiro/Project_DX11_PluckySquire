@@ -388,7 +388,7 @@
 					"ispeed": 200,
 					"strtext": "두 도망자 앞에 있는#{125}데이터 센터{100}에는#훌륭하고 근사한#{125}서류들이{100} 가득했고",
 					"strSFX": "C8_P2122_01_1",
-					"strSubSFX": "",
+					"strSubSFX": "LCD_MUS_C09_STEALTHMINIGAME_INTROCUTSCENE_FULL",
 					"fLineHeight": 58.0,
 					"fFadeDuration": 2.0,
 					"fDelayNextLine": 4.6,

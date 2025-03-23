@@ -187,7 +187,7 @@ void CPlayerState_CyberDash::Enter()
 	_float fG = m_pGameInstance->Compute_Random(0.6f, 0.909f);
 	static_cast<CModelObject*>(m_pOwner->Get_PartObject(CPlayer::PART::PART_BODY))->On_Trail(0.025f, 0.5f, _float4(0.0f, fG, 1.0f, 0.7f), _float4(1.f, 1.f, 1.f, 1.f), 0.f, 1.5f);/*,_float4(242.f / 255.f, 44.f / 255.f, 103.f / 255.f, 0.9f)*/
 //	static_cast<CModelObject*>(m_pOwner->Get_PartObject(CPlayer::PLAYER_PART::PLAYER_PART_ZETPACK))->On_Trail(0.05f, 0.5f, _float4(0.0f, fG, 1.0f, 0.7f)/*,_float4(242.f / 255.f, 44.f / 255.f, 103.f / 255.f, 0.9f)*/);
-
+	m_pGameInstance->Start_SFX_Distance_Delay(_wstring(L"A_sfx_jot_dash-") + to_wstring(rand() % 4), m_pOwner->Get_ControllerTransform()->Get_State(CTransform::STATE_POSITION), 0.2f, g_SFXVolume, 0.f, 13.f);
 }
 
 void CPlayerState_CyberDash::Exit()
