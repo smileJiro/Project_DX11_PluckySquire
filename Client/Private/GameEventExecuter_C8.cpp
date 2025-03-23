@@ -2595,8 +2595,10 @@ void CGameEventExecuter_C8::Chapter8_Boss_Intro(_float _fTimeDelta)
 		if (Is_Start())
 		{
 			START_SFX_DELAY(TEXT("A_sfx_C9DESK_LastBoss_Intro"), 1.5f, g_SFXVolume, false);
-			END_BGM();
-			START_BGM(TEXT("LCD_MUS_C09_LASTBOSS_INTRO_MASTER_FULL"), g_BGMVolume);
+			m_pGameInstance->Transition_BGM(TEXT("LCD_MUS_C09_LASTBOSS_INTRO_MASTER_FULL"), g_BGMVolume);
+			
+			m_pGameInstance->Set_SFXTargetVolume(TEXT("LCD_MUS_C09_P129130_PUPA_Stem_Group1"), 0.f);
+			m_pGameInstance->Set_SFXTargetVolume(TEXT("LCD_MUS_C09_P129130_PUPA_Stem_Group2"), 0.f);
 		}
 		if (CCamera_Manager::TARGET == CCamera_Manager::GetInstance()->Get_CameraType()) {
 			Get_Player()->Set_BlockPlayerInput(true);
@@ -2650,6 +2652,8 @@ void CGameEventExecuter_C8::Chapter8_Boss_Intro(_float _fTimeDelta)
 			
 			Get_Player()->Set_BlockPlayerInput(false);
 
+
+
 			Next_Step(true);
 		}
 	}
@@ -2670,8 +2674,7 @@ void CGameEventExecuter_C8::Chapter8_Going_To_Boss(_float _fTimeDelta)
 			Get_Player()->Set_State(CPlayer::ENGAGE_BOSS);
 			Get_Player()->Set_BlockPlayerInput(true);
 
-			END_BGM();
-			START_BGM(TEXT("LCD_MUS_C09_BOSSBATTLE_ENGAGE_FULL"), g_BGMVolume);
+			m_pGameInstance->Transition_BGM(TEXT("LCD_MUS_C09_BOSSBATTLE_ENGAGE_FULL"), g_BGMVolume);
 
 			Next_Step(true);
 		}
@@ -2737,6 +2740,14 @@ void CGameEventExecuter_C8::Chapter8_Going_To_Boss(_float _fTimeDelta)
 	}
 	else
 	{
+		m_pGameInstance->Transition_BGM(TEXT("LCD_MUS_C09_BOSSBATTLE_STAGE1_LOOP_Stem_Base"), g_BGMVolume, 5.f);
+		m_pGameInstance->Start_SFX(TEXT("LCD_MUS_C09_BOSSBATTLE_STAGE1_LOOP_Stem_Group1"), 1.5f, true);
+		m_pGameInstance->Start_SFX(TEXT("LCD_MUS_C09_BOSSBATTLE_STAGE1_LOOP_Stem_Group2"), 1.5f, true);
+
+		m_pGameInstance->Set_SFXTargetVolume(TEXT("LCD_MUS_C09_BOSSBATTLE_STAGE1_LOOP_Stem_Group1"), g_BGMVolume, 5.f);
+		m_pGameInstance->Set_SFXTargetVolume(TEXT("LCD_MUS_C09_BOSSBATTLE_STAGE1_LOOP_Stem_Group2"), g_BGMVolume, 5.f);
+
+
 		GameEvent_End();
 	}
 }
