@@ -1675,8 +1675,6 @@ void CGameEventExecuter_C6::Chapter6_Change_Book_To_Great_Humgrump(_float _fTime
 	{
 		if (true == CUI_Manager::GetInstance()->is_PlayNarration()) {
 
-			END_BGM();
-
 			Next_Step(true);
 		}
 	}
@@ -1693,7 +1691,7 @@ void CGameEventExecuter_C6::Chapter6_Change_Book_To_Great_Humgrump(_float _fTime
 			CCamera_2D* pCamera = static_cast<CCamera_2D*>(CCamera_Manager::GetInstance()->Get_CurrentCamera());
 			pCamera->Start_Changing_LengthValue(pCamera->Get_LengthValue(), 1.f);
 
-			START_BGM(TEXT("LCD_MUS_C08_HUMPGRUMPCONFRONTSMOONBEARD_P1112_LOOP1_Stem_Base"), g_BGMVolume);
+			//START_BGM(TEXT("LCD_MUS_C08_HUMPGRUMPCONFRONTSMOONBEARD_P1112_LOOP1_Stem_Base"), g_BGMVolume);
 
 			Next_Step(true);
 		}

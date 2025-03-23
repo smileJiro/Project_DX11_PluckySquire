@@ -98,6 +98,8 @@ void CPlayerBomb::Detonate()
 {
 	Switch_Animation(EXPLODE);
 	m_pExplosionCollider->Set_Active(true);
+
+    m_pGameInstance->Start_SFX(_wstring(L"A_sfx_bomb_explode-") + to_wstring(rand() % 5), g_SFXVolume);
 }
 
 void CPlayerBomb::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
@@ -105,7 +107,6 @@ void CPlayerBomb::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 	if (iAnimIdx == EXPLODE)
 	{
 		Event_DeleteObject(this);
-        m_pGameInstance->Start_SFX(_wstring(L"A_sfx_bomb_explode-") + to_wstring(rand() % 5), g_SFXVolume);
 
 	}
 }

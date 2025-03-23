@@ -298,6 +298,7 @@ void CDynamicCastleGate::Check_StateChange()
 			pTransform->Set_State(CTransform::STATE_RIGHT, XMVector3Normalize(vRight) * vScale.x);
 			pTransform->Set_State(CTransform::STATE_UP, XMVector3Normalize(vUp) * vScale.y);
 			pTransform->Set_State(CTransform::STATE_LOOK, XMVector3Normalize(vLook) * vScale.z);
+			pTransform->Set_State(CTransform::STATE_POSITION, vPos);
 		}
 			break;
 		default:

@@ -256,6 +256,9 @@ void CBossDeadState::State_Update(_float _fTimeDelta)
 			_float3 fDefaultPos = {};
 			Event_Book_Main_Section_Change_Start(1, &fDefaultPos);
 
+			m_pGameInstance->Set_SFXTargetVolume(TEXT("A_sfx_C9DESK_LastBoss_Outro"), 0.f);
+			m_pGameInstance->Set_SFXTargetVolume(TEXT("LCD_MUS_C09_LASTBOSS_OUTRO_FULL"), 0.f);
+
 			++m_iEffectCount;
 
 		}
@@ -267,8 +270,9 @@ void CBossDeadState::State_Update(_float _fTimeDelta)
 
 
 			CCamera_Manager::GetInstance()->Start_FadeIn_White(1.5f);
-
 			Event_DeleteObject(m_pOwner);
+
+			m_pGameInstance->Transition_BGM(TEXT("LCD_MUS_C10_ENDSEQUENCE_LOOP_FULL"), g_BGMVolume);
 
 			++m_iEffectCount;
 		}
