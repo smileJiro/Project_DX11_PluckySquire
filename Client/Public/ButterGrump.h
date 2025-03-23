@@ -155,6 +155,7 @@ public:
 public:
 	void	Roar();
 	void	EndRoar();
+	void Transition();
 
 private:
 	virtual	HRESULT					Ready_ActorDesc(void* _pArg);
