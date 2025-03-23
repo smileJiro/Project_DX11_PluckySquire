@@ -229,7 +229,6 @@ void CBomb_Soldier::Change_Animation()
 
         case MONSTER_STATE::DEAD:
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(DEATH_02_EDIT);
-            m_pGameInstance->Start_SFX(_wstring(L"A_sfx_bomb_trooper_death-") + to_wstring(rand() % 4), 50.f);
 
             break;
 
@@ -262,6 +261,8 @@ void CBomb_Soldier::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
 
     case DEATH_02_EDIT:
         Monster_Death();
+        m_pGameInstance->Start_SFX(_wstring(L"A_sfx_bomb_trooper_death-") + to_wstring(rand() % 4), 50.f);
+
         break;
 
     default:

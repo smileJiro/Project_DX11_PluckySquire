@@ -29,7 +29,8 @@ HRESULT CCamera_CutScene::Initialize(void* _pArg)
 	pDesc->isCoordChangeEnable = false;
 	pDesc->tTransform3DDesc.fSpeedPerSec = 10.f;
 	pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(180.f);
-
+	pDesc->fFocusDistance = 50.f;
+	
 	if (FAILED(__super::Initialize(_pArg)))
 		return E_FAIL;
 

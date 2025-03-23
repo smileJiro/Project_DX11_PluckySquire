@@ -76,7 +76,7 @@ void CMinigame_Sneak::Start_Game()
 
 void CMinigame_Sneak::Update(_float _fTimeDelta)
 {
-	if (NONE == m_eGameState)
+	if (false == m_isActive || NONE == m_eGameState)
 		return;
 
 #ifdef _DEBUG

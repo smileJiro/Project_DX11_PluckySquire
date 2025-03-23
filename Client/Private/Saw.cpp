@@ -83,6 +83,9 @@ void CSaw::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherColli
 {
 	if (OBJECT_GROUP::PLAYER & _pOtherObject->Get_ObjectGroupID())
 	{
+		if(m_iAttackCount == 0)
+			START_SFX_DELAY(TEXT("A_sfx_saw_hit_player"), 0.0f, g_SFXVolume, false);
+
 		Event_Hit(this, static_cast<CCharacter*>(_pOtherObject), 1, XMVectorSet(0.0f, -500.f, 0.0f, 0.0f));
 		m_iAttackCount++;
 	}
@@ -127,6 +130,7 @@ void CSaw::State_Chage_Hide()
 
 void CSaw::State_Change_Attack()
 {
+	START_SFX_DELAY(TEXT("A_sfx_circular_saw_loop"), 0.1f, g_SFXVolume * 0.5f, true);
 	Switch_Animation(ANIM::SAW_SPIN);
 
 	End_StoppableRender();
@@ -134,8 +138,9 @@ void CSaw::State_Change_Attack()
 
 void CSaw::State_Change_Stop()
 {
+	END_SFX(TEXT("A_sfx_circular_saw_loop"));
+	START_SFX_DELAY(TEXT("A_sfx_circular_saw_stop"), 0.0f, g_SFXVolume, false);
 	Switch_Animation(ANIM::SAW_STOPPABLE);
-
 	Start_StoppableRender();
 }
 
@@ -226,6 +231,8 @@ void CSaw::Action_State_Stop(_float _fTimeDelta)
 void CSaw::On_Stop()
 {
 	m_eCurState = STATE_STOP;
+
+
 }
 
 void CSaw::On_UnStop()

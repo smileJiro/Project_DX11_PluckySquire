@@ -692,6 +692,9 @@ HRESULT CSection_2D_MiniGame_Pip::Section_Enter(const _wstring& _strPreSectionTa
 HRESULT CSection_2D_MiniGame_Pip::Section_Exit(const _wstring& _strNextSectionTag)
 {
 	CPlayerData_Manager::GetInstance()->Set_CurrentPlayer(PLAYABLE_ID::NORMAL);
+
+	CMinigame_Sneak::GetInstance()->Set_Active(false);
+
 	return S_OK;
 }
 

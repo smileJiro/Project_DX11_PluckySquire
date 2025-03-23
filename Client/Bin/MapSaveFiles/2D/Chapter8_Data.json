@@ -1,7 +1,6 @@
 [
 	{
 		"Section_Name": "Chapter8_P0102",
-		"Section_Start": true,
 		"Section_BackGround_Name": "Chapter8_P0102_BackGround",
 		"Section_Type": 1,
 		"Section_Default": 0,
@@ -108,6 +107,7 @@
 	},
 	{
 		"Section_Name": "Chapter8_P1718",
+		"Section_Start": true,
 		"Section_BackGround_Name": "Chapter8_P1718_BackGround",
 		"Section_File_Name": "Chapter8_P1718.m2chc",
 		"Section_Type": 0,
@@ -134,6 +134,7 @@
 		"Section_BackGround_Name": "Chapter8_P1920_BackGround",
 		"Section_Type": 0,
 		"Section_Default": 0,
+		"Section_Start": true,
 		"Section_Info": {
 			"BGM": "LCD_MUS_C06_P7374_BEFORETHEEXCAVATOR_Stem_Base",
 			"SFX": [
@@ -144,6 +145,14 @@
 				{
 					"SFX_Name": "LCD_MUS_C09_THRASHREUNITED_P5152_LOOP_Stem_Group2",
 					"isStart": false
+				},
+				{
+					"SFX_Name": "LCD_MUS_C06_P7374_BEFORETHEEXCAVATOR_Stem_Group1",
+					"isStart": true
+				},
+				{
+					"SFX_Name": "LCD_MUS_C06_P7374_BEFORETHEEXCAVATOR_Stem_Group2",
+					"isStart": true
 				}
 			],
 			"Pre_Page_Tag": "Chapter8_P1718",

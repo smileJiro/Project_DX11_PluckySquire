@@ -224,10 +224,10 @@ _bool C2DMapWordObject::Register_Action(_uint _iControllerIndex, _uint _iContain
     return true;
 }
 
-_bool C2DMapWordObject::Action_Execute(_uint _iControllerIndex, _uint _iContainerIndex, _uint _iWordIndex)
+_bool C2DMapWordObject::Action_Execute(_uint _iControllerIndex, _uint _iContainerIndex, _uint _iWordIndex, _bool _isFirst)
 {
     _bool isExecute = false;
-    for_each(m_Actions.begin(), m_Actions.end(), [this,&isExecute, &_iControllerIndex, &_iContainerIndex, &_iWordIndex]
+    for_each(m_Actions.begin(), m_Actions.end(), [this,&isExecute, &_iControllerIndex, &_iContainerIndex, &_iWordIndex, &_isFirst]
     (WORD_ACTION& tAction){
             if (tAction.iControllerIndex == _iControllerIndex
                 && tAction.iContainerIndex == _iContainerIndex
@@ -246,9 +246,6 @@ _bool C2DMapWordObject::Action_Execute(_uint _iControllerIndex, _uint _iContaine
                     if (m_iModelIndex != iImageIndex)
                         m_pControllerModel->Change_Model(COORDINATE_2D, SECTION_MGR->Get_SectionLeveID(), m_ModelNames[iImageIndex]);
                     m_iModelIndex = iImageIndex;
-
-					if (m_SFXNames.empty() == false && (_uint)m_SFXNames.size() > iImageIndex)
-						START_SFX(m_SFXNames[iImageIndex], 60.f, false);
                 }
                 break;
                 case WORD_OBJECT_ACTIVE:
@@ -292,6 +289,20 @@ _bool C2DMapWordObject::Action_Execute(_uint _iControllerIndex, _uint _iContaine
                     m_IsWordRender = isRender;
                     Set_Render(m_IsWordRender);
                 }
+                break;                
+                case PLAY_SFX:
+                {
+                    if (false == _isFirst)
+                    {
+                        _uint iSFXIndex = any_cast<_uint>(tAction.anyParam);
+
+                        if (m_SFXNames.empty() == false && (_uint)m_SFXNames.size() > iSFXIndex)
+                        {
+                            START_SFX(m_SFXNames[iSFXIndex], 60.f, false);
+                            m_isPlaySFX = true;
+                        }
+                    }
+                }
                 break;
                 default:
 					assert(nullptr);
@@ -300,6 +311,14 @@ _bool C2DMapWordObject::Action_Execute(_uint _iControllerIndex, _uint _iContaine
 
             }
         });
+
+    if (false == _isFirst && true == isExecute && false == m_isPlaySFX)
+    {
+        START_SFX(L"A_sfx_transfer_object", 60.f, false);
+
+    
+    }
+    m_isPlaySFX = false;
     return isExecute;
 }
 

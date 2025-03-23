@@ -77,6 +77,9 @@ public: // ¿Ö private?
 	_bool		Is_PlayerInto() { return m_isPlayerInto; };
 	void		Set_PlayerInto(_bool _isPlayerInto) { m_isPlayerInto = _isPlayerInto; };
 
+
+
+
 protected:
 	virtual HRESULT Layer_Sort() { return S_OK; };
 

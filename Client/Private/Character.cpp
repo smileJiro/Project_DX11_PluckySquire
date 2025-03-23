@@ -129,7 +129,7 @@ void CCharacter::Late_Update(_float _fTimeDelta)
             m_fKnockBackAccTime += _fTimeDelta;
             m_fKnockBackForce = (1 - m_fKnockBackAccTime) * m_fKnockBackForce;
             Get_ControllerTransform()->Set_State(CTransform::STATE_POSITION, Get_FinalPosition() + vKnockBack);
-            if (0.1f >= m_fKnockBackForce)
+            if (1.f >= m_fKnockBackForce)
             {
                 m_fKnockBackForce = 0.f;
                 m_fKnockBackAccTime = 0.f;

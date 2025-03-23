@@ -120,13 +120,10 @@ HRESULT CSection_2D_Narration::Start_Narration()
 
 HRESULT CSection_2D_Narration::Section_Enter(const _wstring& _strPreSectionTag)
 {
-
 	auto pPlayer = Uimgr->Get_Player();
 	if (nullptr != pPlayer)
 		pPlayer->Set_BlockPlayerInput(true);
 	
-	if (TEXT("") != m_strBGMTag)
-		m_pGameInstance->Start_BGM(m_strBGMTag, g_BGMVolume);
 
 	return __super::Section_Enter(_strPreSectionTag);
 }

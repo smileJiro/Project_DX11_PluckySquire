@@ -72,6 +72,19 @@ HRESULT CExcavator_Centre::Render()
 void CExcavator_Centre::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
 {
     _int iHP = CExcavatorGame::GetInstance()->Minus_HP();
+    _float fRand = m_pGameInstance->GetInstance()->Compute_Random(0.0f, 4.f);
+    _int iRand2 = round(fRand);
+    if (iRand2 == 0)
+        START_SFX_DELAY(TEXT("A_sfx_tank_fire_0"), 0.0f, g_SFXVolume * 1.0f, false);
+    else if (iRand2 == 1)
+        START_SFX_DELAY(TEXT("A_sfx_tank_fire_1"), 0.0f, g_SFXVolume * 1.0f, false);
+    else if (iRand2 == 2)
+        START_SFX_DELAY(TEXT("A_sfx_tank_projectile_explosion-0"), 0.1f, g_SFXVolume * 1.0f, false);
+    else if (iRand2 == 3)
+        START_SFX_DELAY(TEXT("A_sfx_tank_projectile_explosion-3"), 0.0f, g_SFXVolume * 1.0f, false);
+    else if (iRand2 == 4)
+        START_SFX_DELAY(TEXT("A_sfx_tank_projectile_explosion-2"), 0.1f, g_SFXVolume * 1.0f, false);
+
     if (iHP == 0)
     {
         static_cast<CModelObject*>(m_PartObjects[CENTRE_PART::CENTRE_REGULATOR])->Switch_Animation(0); // ±úÁø¸ðµ¨
@@ -313,6 +326,7 @@ void CExcavator_Centre::Check_SwitchCount()
     {
         m_isFirst = true;
         static_cast<CModelObject*>(m_PartObjects[CENTRE_PART::CENTRE_SUTTER])->Switch_Animation(0);
+        START_SFX_DELAY(TEXT("A_sfx_ShutterLift"), 0.0f, g_SFXVolume, false);
     }
 
 }

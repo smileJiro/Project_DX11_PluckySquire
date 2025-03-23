@@ -564,6 +564,26 @@ HRESULT CLoader::Loading_Level_Static()
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/UI/Logo/BG/_BACK_T_TitleBG.dds"), 1))))
 		return E_FAIL;
 
+
+	/* For. Prototype_Component_Texture_BackGround_Chapter2_Main */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_BackGround_Chapter2_Main"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/BackGround/Chapter2_Main.dds"), 1, true))))
+		return E_FAIL;
+
+	/* For. Prototype_Component_Texture_BackGround_Chapter2_RedHouse */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_BackGround_Chapter2_RedHouse"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/BackGround/Chapter2_RedHouse.dds"), 1, true))))
+		return E_FAIL;
+
+	/* For. Prototype_Component_Texture_BackGround_Chapter2_Main */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_BackGround_Chapter2_Main_1"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/BackGround/Chapter2_Main_1.dds"), 1, true))))
+		return E_FAIL;
+
+	/* For. Prototype_Component_Texture_BackGround_Chapter2_RedHouse */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_BackGround_Chapter2_RedHouse_1"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/BackGround/Chapter2_RedHouse_1.dds"), 1, true))))
+		return E_FAIL;
 #pragma endregion
 
 #pragma region Static - Sound Load
@@ -1252,15 +1272,6 @@ HRESULT CLoader::Loading_Level_Chapter_2(LEVEL_ID _eLoadLevelID)
 			CAnimEventGenerator::Create(m_pDevice, m_pContext, "../Bin/Resources/Models/2DAnim/Chapter2/MapObject/LightningBolt/LightningBolt.animevt"))))
 			return E_FAIL;
 
-		/* For. Prototype_Component_Texture_BackGround_Chapter2_Main */
-		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_Component_Texture_BackGround_Chapter2_Main"),
-			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/BackGround/Chapter2_Main.dds"), 1, true))))
-		return E_FAIL;
-
-		/* For. Prototype_Component_Texture_BackGround_Chapter2_RedHouse */
-		if (FAILED(m_pGameInstance->Add_Prototype(_eLoadLevelID, TEXT("Prototype_Component_Texture_BackGround_Chapter2_RedHouse"),
-			CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/BackGround/Chapter2_RedHouse.dds"), 1, true))))
-		return E_FAIL;
 
 	#pragma endregion
 

@@ -116,7 +116,7 @@ void CMiniGame_Defender::Set_GameState(DEFENDER_PROGRESS_STATE _eState)
         break;
     case Client::CMiniGame_Defender::DEFENDER_PROG_ENTERED:
     {
-        END_BGM("");
+        END_BGM();
         START_BGM(TEXT("LCD_MUS_C06_SPACE_DESK_COMBAT_FULL"), g_BGMVolume * 1.4f);
 
         m_pPlayer->Set_BlockPlayerInput(true);
@@ -245,7 +245,7 @@ void CMiniGame_Defender::Set_GameState(DEFENDER_PROGRESS_STATE _eState)
     }
     case Client::CMiniGame_Defender::DEFENDER_PROG_CLEAR:
     {
-        END_BGM("");
+        END_BGM();
         START_BGM(TEXT("LCD_MUS_C06_SPACE_DESK_SKETCHSPACE_FULL"), g_BGMVolume * 1.3f);
         //Æ÷Å» ÄÑ±â
         CPortal* pTargetPortal = static_cast<CPortal_Default*>(static_cast<CSection_2D_PlayMap*>(CSection_Manager::GetInstance()->Find_Section(m_strSectionName))->Get_Portal(0));

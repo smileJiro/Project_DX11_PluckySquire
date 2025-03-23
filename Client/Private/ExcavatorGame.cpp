@@ -465,7 +465,7 @@ _bool CExcavatorGame::Update_Progress_6(_float _fTimeDelta)
     else if (m_iProgressLevel == 4)
     {
         m_fDelayTime += _fTimeDelta;
-        if (3.0f < m_fDelayTime)
+        if (1.0f < m_fDelayTime)
         {
             CFriend* pViolet = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Violet"));
             _wstring strCurSection = pViolet->Get_Include_Section_Name();
@@ -478,6 +478,10 @@ _bool CExcavatorGame::Update_Progress_6(_float _fTimeDelta)
             CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(TEXT("Violet"));
             CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(TEXT("Thrash"));
             CFriend_Controller::GetInstance()->Start_Train();
+
+            END_BGM();
+            END_SFX(TEXT("LCD_MUS_C06_EXCAVATORBATTLE_Stem_Group1"));
+            END_SFX(TEXT("LCD_MUS_C06_EXCAVATORBATTLE_Stem_Group2"));
             //m_iProgressLevel = 0;
             return true;
         }
@@ -1001,6 +1005,7 @@ void CExcavatorGame::State_Change()
 void CExcavatorGame::State_Change_Move_R()
 {
     /* Parts 우측 이동 */
+    START_SFX_DELAY(TEXT("A_sfx_excavator_start"), 0.1f, g_SFXVolume, false);
     m_vMoveTime.y = 0.0f;
     static_cast<CExcavator_Tread*>(m_ExcavatorParts[EXCAVATOR_PART::EXCAVATOR_TREAD_L])->Start_Wheel();
     static_cast<CExcavator_Tread*>(m_ExcavatorParts[EXCAVATOR_PART::EXCAVATOR_TREAD_R])->Start_Wheel();
@@ -1035,6 +1040,8 @@ void CExcavatorGame::State_Change_Dead()
 
     m_vMoveTime.x = 7.f;
     m_vMoveTime.y = 0.f;
+
+   
 }
 
 void CExcavatorGame::Action_State(_float _fTimeDelta)
@@ -1104,9 +1111,24 @@ void CExcavatorGame::Action_State_Dead(_float _fTimeDelta)
     else
     {
         _int iRand = rand();
+
         if (iRand % 3 == 0)
         {
             static_cast<CExcavator_Centre*>(m_ExcavatorParts[EXCAVATOR_PART::EXCAVATOR_CENTRE])->Render_DeadEffect();
+
+            _float fRand = m_pGameInstance->GetInstance()->Compute_Random(0.0f, 4.f);
+            _int iRand2 = round(fRand);
+            if(iRand2 == 0)
+                START_SFX_DELAY(TEXT("A_sfx_tank_fire_0"), 0.0f, g_SFXVolume * 1.0f, false);
+            else if (iRand2 == 1)
+                START_SFX_DELAY(TEXT("A_sfx_tank_fire_1"), 0.0f, g_SFXVolume * 1.0f, false);
+            else if (iRand2 == 2)
+                START_SFX_DELAY(TEXT("A_sfx_tank_projectile_explosion-0"), 0.1f, g_SFXVolume * 1.0f, false);
+            else if (iRand2 == 3)
+                START_SFX_DELAY(TEXT("A_sfx_tank_projectile_explosion-3"), 0.0f, g_SFXVolume * 1.0f, false);
+            else if (iRand2 == 4)
+                START_SFX_DELAY(TEXT("A_sfx_tank_projectile_explosion-2"), 0.1f, g_SFXVolume * 1.0f, false);
+
         }
         for (auto& pPart : m_ExcavatorParts)
         {
