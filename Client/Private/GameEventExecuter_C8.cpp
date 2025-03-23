@@ -2136,6 +2136,16 @@ void CGameEventExecuter_C8::Chapter8_Meet_Humgrump(_float _fTimeDelta)
 					}
 				}
 
+				// 전구 제거
+				pLayer = m_pGameInstance->Find_Layer(m_iCurLevelID, TEXT("Layer_Bulb"));
+
+				if (nullptr != pLayer)
+				{
+					for (auto& Bulb : pLayer->Get_GameObjects()) {
+						Event_DeleteObject(Bulb);
+					}
+				}
+
 				// 2D 험그럼프 없애기
 				Event_DeleteObject(m_TargetObjects[0]);
 				m_TargetObjects[0] = nullptr;
