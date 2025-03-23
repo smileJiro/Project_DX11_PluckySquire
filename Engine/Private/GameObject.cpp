@@ -78,7 +78,7 @@ void CGameObject::Late_Update(_float _fTimeDelta)
 
 HRESULT CGameObject::Render()
 {
-//#ifdef NDEBUG
+//#ifdef _DEBUG
 //    for (auto& p2DCollider : m_p2DColliderComs)
 //    {
 //        p2DCollider->Render();
@@ -219,7 +219,7 @@ void CGameObject::Free()
 
 }
 
-#ifdef NDEBUG
+#ifdef _DEBUG
 
 HRESULT CGameObject::Imgui_Render_ObjectInfos()
 {

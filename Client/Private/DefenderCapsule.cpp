@@ -144,11 +144,13 @@ void CDefenderCapsule::On_Explode()
 			return;
 		CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(m_strSectionName, pPerson, SECTION_2D_PLAYMAP_OBJECT);
 	}
+	START_SFX_DELAY(TEXT("A_sfx_escape_pod_destroy"), 0.f, g_SFXVolume, false);
 
 }
 
 void CDefenderCapsule::On_Spawned()
 {
+	START_SFX_DELAY(TEXT("A_sfx_anomaly_detected"), 0.f, g_SFXVolume, false);
 }
 
 void CDefenderCapsule::On_Teleport()

@@ -21,6 +21,7 @@ public:
 private:
 	vector<_float3> m_vecMovePoints;
 	_uint m_iMoveIndex = { 0 };
+	_float m_fOriginSpeed = { 0.f };
 
 public:
 	static CBossMoveState* Create(void* _pArg);

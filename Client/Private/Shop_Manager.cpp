@@ -429,10 +429,14 @@ void CShop_Manager::Delete_ShopItems(_uint _index)
 		//CSection_Manager::GetInstance()->Remove_GameObject_FromSectionLayer(TEXT("Chapter5_P0102"), m_ShopItems[_index][i]);
 	}
 
+
+
+
 	m_ShopItems.erase(m_ShopItems.begin() + _index);
 
 	// ¹îÁö Æ÷Áö¼Ç ÆÄ¾Ç
 	m_BadgePositions.erase(m_BadgePositions.begin() + _index);
+	m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_shop_purchase_confirm"), 0.0f, 30.f, false);
 
 	if (0 < m_ShopItems.size())
 	{
@@ -466,6 +470,9 @@ void CShop_Manager::Delete_ShopItems(_uint _index)
 		
 	//m_isUpdateShopPanel = true;
 	int a = 0;
+	
+	
+
 }
 
 void CShop_Manager::Skill_LevelUp(_uint _index)

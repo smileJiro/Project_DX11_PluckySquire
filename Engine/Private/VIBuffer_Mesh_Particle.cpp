@@ -14,7 +14,7 @@ CVIBuffer_Mesh_Particle::CVIBuffer_Mesh_Particle(const CVIBuffer_Mesh_Particle& 
 	, m_pInstanceVertices(_Prototype.m_pInstanceVertices)
 	, m_iMaterialIndex(_Prototype.m_iMaterialIndex)
 	, m_PreTransformMatrix(_Prototype.m_PreTransformMatrix)
-#ifdef NDEBUG
+#ifdef _DEBUG
 	, m_pTexcoords(_Prototype.m_pTexcoords)
 	, m_pTangents(_Prototype.m_pTangents)
 	, m_iNumFaces(_Prototype.m_iNumFaces)
@@ -47,7 +47,7 @@ HRESULT CVIBuffer_Mesh_Particle::Initialize_Prototype(ifstream& _inFile, const j
 	m_iIndexStride = sizeof(_uint);
 	_uint iNumFaces = 0;
 	_inFile.read(reinterpret_cast<char*>(&iNumFaces), sizeof(_uint));
-#ifdef NDEBUG
+#ifdef _DEBUG
 	m_iNumFaces = iNumFaces;
 #endif
 
@@ -550,7 +550,7 @@ HRESULT CVIBuffer_Mesh_Particle::Ready_VertexBuffer(ifstream& _inFile, _fmatrix 
 	VTXMESH* pVertices = new VTXMESH[m_iNumVertices];
 	ZeroMemory(pVertices, sizeof(VTXMESH) * m_iNumVertices);
 
-#ifdef NDEBUG
+#ifdef _DEBUG
 	m_pTexcoords = new _float2[m_iNumVertices];
 	m_pTangents = new _float3[m_iNumVertices];
 #endif
@@ -566,7 +566,7 @@ HRESULT CVIBuffer_Mesh_Particle::Ready_VertexBuffer(ifstream& _inFile, _fmatrix 
 
 		_inFile.read(reinterpret_cast<char*>(&pVertices[i].vTexcoord), sizeof(_float2));
 		_inFile.read(reinterpret_cast<char*>(&pVertices[i].vTangent), sizeof(_float3));
-#ifdef NDEBUG
+#ifdef _DEBUG
 		m_pTexcoords[i] = pVertices[i].vTexcoord;
 		m_pTangents[i] = pVertices[i].vTangent;
 #endif
@@ -709,13 +709,13 @@ void CVIBuffer_Mesh_Particle::Free()
 	if (false == m_isCloned)
 	{
 		Safe_Delete_Array(m_pInstanceVertices);
-#ifdef NDEBUG
+#ifdef _DEBUG
 		Safe_Delete_Array(m_pTexcoords);
 		Safe_Delete_Array(m_pTangents);
 #endif
 	}
 
-#ifdef NDEBUG
+#ifdef _DEBUG
 	if (m_isToolReset)
 	{
 		Safe_Delete_Array(m_pInstanceVertices);
@@ -726,7 +726,7 @@ void CVIBuffer_Mesh_Particle::Free()
 	__super::Free();
 }
 
-#ifdef NDEBUG
+#ifdef _DEBUG
 
 HRESULT CVIBuffer_Mesh_Particle::Initialize_Prototype(ifstream& _inFile, _uint _iNumInstances, _fmatrix _PreTransformMatrix, _float _fSpawnRate)
 {
@@ -750,7 +750,7 @@ HRESULT CVIBuffer_Mesh_Particle::Initialize_Prototype(ifstream& _inFile, _uint _
 	m_iIndexStride = sizeof(_uint);
 	_uint iNumFaces = 0;
 	_inFile.read(reinterpret_cast<char*>(&iNumFaces), sizeof(_uint));
-#ifdef NDEBUG
+#ifdef _DEBUG
 	m_iNumFaces = iNumFaces;
 #endif
 

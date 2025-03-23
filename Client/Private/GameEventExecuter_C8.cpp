@@ -640,7 +640,7 @@ void CGameEventExecuter_C8::Chapter8_Friend_Appear_Violet(_float _fTimeDelta)
 	{
 		if (Is_Start())
 		{
-			START_SFX(L"A_sfx_violet_wake_up", g_BGMVolume * 0.8f, false);
+			START_SFX_DELAY(L"A_sfx_violet_wake_up", 2.f,g_BGMVolume * 0.8f, false);
 			static_cast<CFriend*>(m_TargetObjects[VIOLET])->Change_AnyState(CFriend_Violet::VIOLET_C09_LYINGTOSITTINGUP, false, CFriend::DIR_RIGHT);
 		}
 
@@ -662,7 +662,7 @@ void CGameEventExecuter_C8::Chapter8_Friend_Appear_Violet(_float _fTimeDelta)
 	{
 		if (Is_Start())
 		{
-			START_SFX(L"A_sfx_violet_jumping_off_bed", g_BGMVolume * 0.8f, false);
+			START_SFX_DELAY(L"A_sfx_violet_jumping_off_bed", 3.f, g_BGMVolume * 0.8f, false);
 			static_cast<CFriend*>(m_TargetObjects[VIOLET])->Change_AnyState(CFriend_Violet::VIOLET_C09_JUMPINGOFFBED, false, CFriend::DIR_RIGHT);
 
 			m_pGameInstance->Transition_BGM(TEXT("LCD_MUS_C09_THRASHREUNITED_P5152_LOOP_Stem_Base"), g_BGMVolume);
@@ -784,7 +784,7 @@ void CGameEventExecuter_C8::Chapter8_Friend_Appear_Thrash(_float _fTimeDelta)
 			{
 				static_cast<CFriend*>(m_TargetObjects[VIOLET])->Move_Position(_float2(235.0f, 61.0f), CFriend::DIR_RIGHT);
 			}
-			START_BGM(L"LCD_MUS_C09_THRASHREUNITED_P5152_LOOP_Stem_Base", g_BGMVolume);
+			//START_BGM(L"LCD_MUS_C09_THRASHREUNITED_P5152_LOOP_Stem_Base", g_BGMVolume);
 
 			AUTOMOVE_COMMAND AutoMove{};
 			AutoMove.eType = AUTOMOVE_TYPE::MOVE_TO;
@@ -856,6 +856,11 @@ void CGameEventExecuter_C8::Chapter8_Friend_Appear_Thrash(_float _fTimeDelta)
 			static_cast<CFriend*>(m_TargetObjects[THRASH])->Change_CurState(CFriend::FRIEND_MOJAM);
 
 			m_pGameInstance->Start_SFX(TEXT("A_sfx_mojam_withpip"), g_SFXVolume);
+
+			// 
+			//m_pGameInstance->Set_SFXTargetVolume(TEXT("LCD_MUS_C09_THRASHREUNITED_P5152_LOOP_Stem_Group1"), 0.f, 30.f);
+			//m_pGameInstance->Set_SFXTargetVolume(TEXT("LCD_MUS_C09_THRASHREUNITED_P5152_LOOP_Stem_Group2"), 0.f, 30.f);
+			//m_pGameInstance->Set_BGMTargetVolume(0.f, 30.f);
 		}
 		// 모잼?
 		else if (!CDialog_Manager::GetInstance()->Get_DisPlayDialogue() && CPlayer::STATE::IDLE == pPlayer->Get_CurrentStateID())
@@ -964,6 +969,13 @@ void CGameEventExecuter_C8::Chapter8_Map_Intro(_float _fTimeDelta)
 	}
 	else if (Step_Check(STEP_1)) {
 		// 3. CutScene 재생
+
+		m_pGameInstance->End_BGM();
+		m_pGameInstance->End_SFX(TEXT("LCD_MUS_C09_DESPONDANT_BASELAYER_Stem_Group1"));
+		m_pGameInstance->End_SFX(TEXT("LCD_MUS_C09_DESPONDANT_BASELAYER_Stem_Group2"));
+
+		m_pGameInstance->Start_SFX(TEXT("LCD_MUS_C09_DESKINTRO_FULL"), g_BGMVolume);
+
 		CCamera_Manager::GetInstance()->Set_NextCutSceneData(TEXT("Chapter8_Map_Intro"));
 		CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::CUTSCENE, true, 1.8f);
 		Next_Step(true);
@@ -996,6 +1008,10 @@ void CGameEventExecuter_C8::Chapter8_Map_Intro(_float _fTimeDelta)
 			// 6. Player 움직임 풀기
 			pPlayer->Set_BlockPlayerInput(false);
 
+			m_pGameInstance->Start_BGM(TEXT("LCD_MUS_C09_DESPONDANT_BASELAYER_Stem_Base"), g_BGMVolume);
+			m_pGameInstance->Start_SFX(TEXT("LCD_MUS_C09_DESPONDANT_BASELAYER_Stem_Group1"), g_SFXVolume, true);
+			m_pGameInstance->Start_SFX(TEXT("LCD_MUS_C09_DESPONDANT_BASELAYER_Stem_Group2"), g_SFXVolume, true);
+
 			GameEvent_End();
 		}
 	}
@@ -1022,6 +1038,18 @@ void CGameEventExecuter_C8::Chapter8_Intro_Postit_Sequence(_float _fTimeDelta)
 
 	if (true == Postit_Process(L"Chapter8_SKSP_Postit", L"Chapter8_Intro_Postit_Sequence", 1.f, CPostit_Page::POSTIT_PAGE_POSTION_TYPE_A, true, fCamerafunc))
 	{
+		m_pGameInstance->Set_SFXTargetVolume(TEXT("LCD_MUS_C06_P7374_BEFORETHEEXCAVATOR_Stem_Group1"), 0.f);
+		m_pGameInstance->Set_SFXTargetVolume(TEXT("LCD_MUS_C06_P7374_BEFORETHEEXCAVATOR_Stem_Group2"), 0.f);
+
+		m_pGameInstance->Start_SFX(TEXT("LCD_MUS_C09_DESPONDANT_BASELAYER_Stem_Group1"), 1.5f, true);
+		m_pGameInstance->Start_SFX(TEXT("LCD_MUS_C09_DESPONDANT_BASELAYER_Stem_Group2"), 1.5f, true);
+
+		m_pGameInstance->Set_SFXTargetVolume(TEXT("LCD_MUS_C09_DESPONDANT_BASELAYER_Stem_Group1"), g_BGMVolume);
+		m_pGameInstance->Set_SFXTargetVolume(TEXT("LCD_MUS_C09_DESPONDANT_BASELAYER_Stem_Group2"), g_BGMVolume);
+
+		m_pGameInstance->Transition_BGM(TEXT("LCD_MUS_C09_DESPONDANT_BASELAYER_Stem_Base"), g_BGMVolume);
+
+
 		GameEvent_End();
 	}
 }
@@ -1283,6 +1311,7 @@ void CGameEventExecuter_C8::Chapter8_3D_Out_02(_float _fTimeDelta)
 				pViolet->Move_Position(_float2(XMVectorGetX(vVioletPos), XMVectorGetY(vVioletPos)), CFriend::DIR_UP);
 				pPip->Move_Position(_float2(XMVectorGetX(vPipPos), XMVectorGetY(vPipPos)), CFriend::DIR_UP);
 			}
+
 		}
 
 		Next_Step(Change_PlayMap(0.f));
@@ -1753,7 +1782,7 @@ void CGameEventExecuter_C8::Chapter8_Meet_Humgrump(_float _fTimeDelta)
 
 		if (false == static_cast<CModelObject*>(m_TargetObjects[0])->Is_DuringAnimation()) {
 			// 10. 다 날아갔으면 Active 끄고 Camera Zoom 더 멀리
-			START_SFX_DELAY(TEXT("A_sfx_humgrump_zooms_off"), 0.0f, g_SFXVolume, false);
+			START_SFX_DELAY(TEXT("A_sfx_humgrump_zooms_off"), 0.f, g_SFXVolume, false);
 			Next_Step(true);
 		}
 	}
@@ -1944,8 +1973,9 @@ void CGameEventExecuter_C8::Chapter8_Meet_Humgrump(_float _fTimeDelta)
 	}
 	else if (Step_Check(STEP_12)) {
 		if (false == CDialog_Manager::GetInstance()->Get_DisPlayDialogue() && 0 == m_iSubStep) {
+			static_cast<CModelObject*>(m_TargetObjects[0])->Get_Model(COORDINATE_2D)->Get_Animation(CNpc_Humgrump::CHAPTER8_PUPA_INTRO_1)->Set_SpeedMagnifier(1.f);
 			static_cast<CModelObject*>(m_TargetObjects[0])->Switch_Animation(CNpc_Humgrump::CHAPTER8_PUPA_INTRO_1);
-			START_SFX_DELAY(TEXT("A_sfx_Pupa_intro"), 0.5f, g_SFXVolume, false);
+			START_SFX_DELAY(TEXT("A_sfx_Pupa_intro"), 0.f, g_SFXVolume, false);
 			m_iSubStep++;
 		}
 
@@ -1991,8 +2021,9 @@ void CGameEventExecuter_C8::Chapter8_Meet_Humgrump(_float _fTimeDelta)
 		if (false == CDialog_Manager::GetInstance()->Get_DisPlayDialogue()) {
 			// 7. 커지고 폭발
 			if (Is_Start()) {
+				static_cast<CModelObject*>(m_TargetObjects[0])->Get_Model(COORDINATE_2D)->Get_Animation(CNpc_Humgrump::CHAPTER8_PUPA_GROW)->Set_SpeedMagnifier(0.25f);
 				static_cast<CModelObject*>(m_TargetObjects[0])->Switch_Animation(CNpc_Humgrump::CHAPTER8_PUPA_GROW);
-				START_SFX_DELAY(TEXT("A_sfx_Pupa_explode_sequence"), 0.5f, g_SFXVolume, false);
+				START_SFX_DELAY(TEXT("A_sfx_Pupa_explode_sequence"), 0.0f, g_SFXVolume, false);
 
 				// Debug
 				CFriend* pThrash = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Thrash"));
@@ -2077,6 +2108,33 @@ void CGameEventExecuter_C8::Chapter8_Meet_Humgrump(_float _fTimeDelta)
 				m_pGameInstance->Add_GameObject_ToLayer(m_iCurLevelID, TEXT("Prototype_GameObject_ZipC8"), m_iCurLevelID, TEXT("Layer_Zip"), &pGameObject, &tZipDesc);
 				CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter8_SKSP_11"), pGameObject, SECTION_2D_PLAYMAP_OBJECT);
 
+				// Monster 제거
+				CLayer* pLayer = m_pGameInstance->Find_Layer(m_iCurLevelID, TEXT("Layer_Monster"));
+
+				if (nullptr != pLayer)
+				{
+					for (auto& Monster : pLayer->Get_GameObjects()) {
+						Event_DeleteObject(Monster);
+					}
+				}
+
+				pLayer = m_pGameInstance->Find_Layer(m_iCurLevelID, TEXT("Layer_Sneak_Beetle"));
+
+				if (nullptr != pLayer)
+				{
+					for (auto& Beetle : pLayer->Get_GameObjects()) {
+						Event_DeleteObject(Beetle);
+					}
+				}
+
+				pLayer = m_pGameInstance->Find_Layer(m_iCurLevelID, TEXT("Layer_Sneak_Soldier"));
+
+				if (nullptr != pLayer)
+				{
+					for (auto& Soldier : pLayer->Get_GameObjects()) {
+						Event_DeleteObject(Soldier);
+					}
+				}
 
 				// 2D 험그럼프 없애기
 				Event_DeleteObject(m_TargetObjects[0]);
@@ -2095,7 +2153,6 @@ void CGameEventExecuter_C8::Chapter8_Meet_Humgrump(_float _fTimeDelta)
 		if (m_fTimer >= 1.3f) {
 			// 검은색 FadeIn 시작
 			CCamera_Manager::GetInstance()->Start_FadeIn(0.6f);
-			CCamera_Manager::GetInstance()->Start_FadeOut(0.6f);
 			CCamera* pCamera = CCamera_Manager::GetInstance()->Get_CurrentCamera();
 			CCamera_2D* pCam = static_cast<CCamera_2D*>(pCamera);
 
@@ -2138,36 +2195,8 @@ void CGameEventExecuter_C8::Chapter8_Meet_Humgrump(_float _fTimeDelta)
 
 				pPlayer->Set_BlockPlayerInput(false);
 
-				// Monster 제거
-				CLayer* pLayer = m_pGameInstance->Find_Layer(m_iCurLevelID, TEXT("Layer_Monster"));
-
-				if(nullptr != pLayer)
-				{
-					for (auto& Monster : pLayer->Get_GameObjects()) {
-						Event_DeleteObject(Monster);
-					}
-				}
-
-				pLayer = m_pGameInstance->Find_Layer(m_iCurLevelID, TEXT("Layer_Sneak_Beetle"));
-				
-				if (nullptr != pLayer)
-				{
-					for (auto& Beetle : pLayer->Get_GameObjects()) {
-						Event_DeleteObject(Beetle);
-					}
-				}
-
-				pLayer = m_pGameInstance->Find_Layer(m_iCurLevelID, TEXT("Layer_Sneak_Soldier"));
-
-				if (nullptr != pLayer)
-				{
-					for (auto& Soldier : pLayer->Get_GameObjects()) {
-						Event_DeleteObject(Soldier);
-					}
-				}
-
 				// 이전 Trigger 제거
-				pLayer = m_pGameInstance->Find_Layer(m_iCurLevelID, TEXT("Layer_TriggerObject"));
+				CLayer* pLayer = m_pGameInstance->Find_Layer(m_iCurLevelID, TEXT("Layer_TriggerObject"));
 
 				for (auto& TriggerObject : pLayer->Get_GameObjects()) {
 					if (COORDINATE_3D == TriggerObject->Get_CurCoord())
@@ -2569,7 +2598,11 @@ void CGameEventExecuter_C8::Chapter8_Boss_Intro(_float _fTimeDelta)
 		if (Is_Start())
 		{
 			m_pGameInstance->Set_GrayScale_VtxAnimMesh(0);
-			START_SFX_DELAY(TEXT("A_sfx_C9DESK_LastBoss_Intro"), 1.5f, g_SFXVolume, false);
+			START_SFX_DELAY(TEXT("A_sfx_C9DESK_LastBoss_Intro"), 0.f, g_SFXVolume, false);
+			m_pGameInstance->Transition_BGM(TEXT("LCD_MUS_C09_LASTBOSS_INTRO_MASTER_FULL"), g_BGMVolume);
+			
+			m_pGameInstance->Set_SFXTargetVolume(TEXT("LCD_MUS_C09_P129130_PUPA_Stem_Group1"), 0.f);
+			m_pGameInstance->Set_SFXTargetVolume(TEXT("LCD_MUS_C09_P129130_PUPA_Stem_Group2"), 0.f);
 		}
 		if (CCamera_Manager::TARGET == CCamera_Manager::GetInstance()->Get_CameraType()) {
 			Get_Player()->Set_BlockPlayerInput(true);
@@ -2623,6 +2656,8 @@ void CGameEventExecuter_C8::Chapter8_Boss_Intro(_float _fTimeDelta)
 			
 			Get_Player()->Set_BlockPlayerInput(false);
 
+
+
 			Next_Step(true);
 		}
 	}
@@ -2642,6 +2677,8 @@ void CGameEventExecuter_C8::Chapter8_Going_To_Boss(_float _fTimeDelta)
 			CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::CUTSCENE);
 			Get_Player()->Set_State(CPlayer::ENGAGE_BOSS);
 			Get_Player()->Set_BlockPlayerInput(true);
+
+			m_pGameInstance->Transition_BGM(TEXT("LCD_MUS_C09_BOSSBATTLE_ENGAGE_FULL"), g_BGMVolume);
 
 			Next_Step(true);
 		}
@@ -2707,6 +2744,14 @@ void CGameEventExecuter_C8::Chapter8_Going_To_Boss(_float _fTimeDelta)
 	}
 	else
 	{
+		m_pGameInstance->Transition_BGM(TEXT("LCD_MUS_C09_BOSSBATTLE_STAGE1_LOOP_Stem_Base"), g_BGMVolume, 5.f);
+		m_pGameInstance->Start_SFX(TEXT("LCD_MUS_C09_BOSSBATTLE_STAGE1_LOOP_Stem_Group1"), 1.5f, true);
+		m_pGameInstance->Start_SFX(TEXT("LCD_MUS_C09_BOSSBATTLE_STAGE1_LOOP_Stem_Group2"), 1.5f, true);
+
+		m_pGameInstance->Set_SFXTargetVolume(TEXT("LCD_MUS_C09_BOSSBATTLE_STAGE1_LOOP_Stem_Group1"), g_BGMVolume, 5.f);
+		m_pGameInstance->Set_SFXTargetVolume(TEXT("LCD_MUS_C09_BOSSBATTLE_STAGE1_LOOP_Stem_Group2"), g_BGMVolume, 5.f);
+
+
 		GameEvent_End();
 	}
 }

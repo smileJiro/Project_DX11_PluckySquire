@@ -129,7 +129,8 @@ void CPlayerRifle::Shoot(_fvector _vTargetPosition)
 			m_pShotEffect->Active_Effect(false);
 			m_fAccEffectDelay = 0.f;
 		}
-
+		wstring strSFX = TEXT("A_sfx_jot_laser");
+		START_SFX_DELAY(strSFX, 0.f, g_SFXVolume, false);
 		//sound
 
 	}

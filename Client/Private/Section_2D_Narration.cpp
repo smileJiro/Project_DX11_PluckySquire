@@ -120,7 +120,6 @@ HRESULT CSection_2D_Narration::Start_Narration()
 
 HRESULT CSection_2D_Narration::Section_Enter(const _wstring& _strPreSectionTag)
 {
-
 	auto pPlayer = Uimgr->Get_Player();
 	if (nullptr != pPlayer)
 		pPlayer->Set_BlockPlayerInput(true);

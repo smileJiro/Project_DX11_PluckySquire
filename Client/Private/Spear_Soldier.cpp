@@ -325,8 +325,8 @@ void CSpear_Soldier::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce
     {
         if (true == Get_ActorCom()->Is_Dynamic())
             Stop_Rotate();
-
-        m_pGameInstance->Start_SFX_Distance_Delay(_wstring(L"A_sfx_sword_hit_speartrooper_") + to_wstring(rand() % 7), m_pControllerTransform->Get_State(CTransform::STATE_POSITION), 0.1f, g_SFXVolume, 0.f, 13.f);
+        m_pGameInstance->Start_SFX(TEXT("A_sfx_sword_hit_speartrooper_") + to_wstring(rand() % 7), g_SFXVolume);
+        //m_pGameInstance->Start_SFX_Distance_Delay(_wstring(L"A_sfx_sword_hit_speartrooper_") + to_wstring(rand() % 7), m_pControllerTransform->Get_State(CTransform::STATE_POSITION), 0.1f, g_SFXVolume, 0.f, 13.f);
     }
     else if (COORDINATE_2D == Get_CurCoord())
     {
@@ -334,8 +334,9 @@ void CSpear_Soldier::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce
         {
             if (CSection_Manager::GetInstance()->Is_PlayerInto(m_strSectionName))
             {
-                m_pGameInstance->Start_SFX_Distance2D_Delay(_wstring(L"A_sfx_sword_hit_speartrooper_-") + to_wstring(rand() % 7),
-                    m_pControllerTransform->Get_State(CTransform::STATE_POSITION), CPlayerData_Manager::GetInstance()->Get_PlayerPosition(), 0.1f, g_SFXVolume, 0.f);
+                m_pGameInstance->Start_SFX(TEXT("A_sfx_sword_hit_speartrooper_") + to_wstring(rand() % 7), g_SFXVolume);
+               // m_pGameInstance->Start_SFX_Distance2D_Delay(_wstring(L"A_sfx_sword_hit_speartrooper_-") + to_wstring(rand() % 7),
+               //     m_pControllerTransform->Get_State(CTransform::STATE_POSITION), CPlayerData_Manager::GetInstance()->Get_PlayerPosition(), 0.1f, g_SFXVolume, 0.f);
             }
         }
     }
@@ -515,6 +516,9 @@ void CSpear_Soldier::Change_Animation()
                 break;
 
             case MONSTER_STATE::FORMATION_MOVE:
+                m_pGameInstance->Start_SFX_Distance_Delay(_wstring(L"A_sfx_troops_v3-") + to_wstring(rand() % 10),
+                    m_pControllerTransform->Get_State(CTransform::STATE_POSITION), m_pGameInstance->Compute_Random(0.f, 0.7f), g_SFXVolume * 0.3f, 0.f, 18.f, 1.2f);
+
                 static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(WALK);
                 break;
 
@@ -528,6 +532,10 @@ void CSpear_Soldier::Change_Animation()
 
             case MONSTER_STATE::PANIC:
                 static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(CHASE);
+                m_pGameInstance->Start_SFX_Distance_Delay(_wstring(L"A_sfx_troops_panic-") + to_wstring(rand() % 7),
+                    m_pControllerTransform->Get_State(CTransform::STATE_POSITION), m_pGameInstance->Compute_Random(0.f, 0.7f), g_SFXVolume * 0.3f, 0.f, 20.f, 1.f);
+
+
                 break;
 
             case MONSTER_STATE::HIT:
@@ -536,7 +544,6 @@ void CSpear_Soldier::Change_Animation()
 
             case MONSTER_STATE::DEAD:
                 static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(DEATH_01);
-                m_pGameInstance->Start_SFX(_wstring(L"A_sfx_speartrooper_death_") + to_wstring(rand() % 8), g_SFXVolume);
 
                 break;
 
@@ -640,7 +647,6 @@ void CSpear_Soldier::Change_Animation()
                     eAnim = DEATH_DOWN;
                 else if (E_DIRECTION::RIGHT == Get_2DDirection() || E_DIRECTION::LEFT == Get_2DDirection())
                     eAnim = DEATH_RIGHT;
-                m_pGameInstance->Start_SFX(_wstring(L"A_sfx_speartrooper_death_") + to_wstring(rand() % 8), 50.f);
 
                 break;
 
@@ -697,10 +703,14 @@ void CSpear_Soldier::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
 
         case DEATH_01:
             Monster_Death();
+            m_pGameInstance->Start_SFX(_wstring(L"A_sfx_speartrooper_death_") + to_wstring(rand() % 8), 50.f);
+
             break;
 
         case DEATH_02_EDIT:
             Monster_Death();
+            m_pGameInstance->Start_SFX(_wstring(L"A_sfx_speartrooper_death_") + to_wstring(rand() % 8), 50.f);
+
             break;
 
         default:
@@ -799,6 +809,8 @@ void CSpear_Soldier::Animation_End(COORDINATE _eCoord, _uint iAnimIdx)
         case DEATH_RIGHT:
         case DEATH_UP:
             Monster_Death();
+            m_pGameInstance->Start_SFX(_wstring(L"A_sfx_speartrooper_death_") + to_wstring(rand() % 8), 50.f);
+
             break;
 
         default:

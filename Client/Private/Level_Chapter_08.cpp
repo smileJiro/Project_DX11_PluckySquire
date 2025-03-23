@@ -237,6 +237,7 @@ HRESULT CLevel_Chapter_08::Initialize(LEVEL_ID _eLevelID)
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_TRIGGER, OBJECT_GROUP::INTERACTION_OBEJCT); //3 8
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::PLAYER_TRIGGER, OBJECT_GROUP::GIMMICK_OBJECT); //3 8
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::INTERACTION_OBEJCT, OBJECT_GROUP::WORD_GAME);
+	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::INTERACTION_OBEJCT, OBJECT_GROUP::BLOCKER);
 
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::RAY_TRIGGER, OBJECT_GROUP::BLOCKER);
 	m_pGameInstance->Check_GroupFilter(OBJECT_GROUP::RAY_TRIGGER, OBJECT_GROUP::BLOCKER_JUMPPASS);
@@ -282,7 +283,7 @@ HRESULT CLevel_Chapter_08::Initialize(LEVEL_ID _eLevelID)
 	//CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)m_eLevelID, TEXT("Tilting_Glove"), _float3(30.55f, 30.98f, 23.34f));
 
 	// Intro ½ÃÀÛ
-	CTrigger_Manager::GetInstance()->Register_TriggerEvent(TEXT("Chapter8_Intro"), 50);
+	//CTrigger_Manager::GetInstance()->Register_TriggerEvent(TEXT("Chapter8_Intro"), 50);
 	CCamera_Manager::GetInstance()->Start_FadeIn(3.f);
 
 	/* Set Shader PlayerHideColor */

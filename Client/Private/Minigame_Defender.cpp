@@ -116,7 +116,7 @@ void CMiniGame_Defender::Set_GameState(DEFENDER_PROGRESS_STATE _eState)
         break;
     case Client::CMiniGame_Defender::DEFENDER_PROG_ENTERED:
     {
-        END_BGM("");
+        END_BGM();
         START_BGM(TEXT("LCD_MUS_C06_SPACE_DESK_COMBAT_FULL"), g_BGMVolume * 1.4f);
 
         m_pPlayer->Set_BlockPlayerInput(true);
@@ -245,7 +245,7 @@ void CMiniGame_Defender::Set_GameState(DEFENDER_PROGRESS_STATE _eState)
     }
     case Client::CMiniGame_Defender::DEFENDER_PROG_CLEAR:
     {
-        END_BGM("");
+        END_BGM();
         START_BGM(TEXT("LCD_MUS_C06_SPACE_DESK_SKETCHSPACE_FULL"), g_BGMVolume * 1.3f);
         //Æ÷Å» ÄÑ±â
         CPortal* pTargetPortal = static_cast<CPortal_Default*>(static_cast<CSection_2D_PlayMap*>(CSection_Manager::GetInstance()->Find_Section(m_strSectionName))->Get_Portal(0));
@@ -738,6 +738,9 @@ void CMiniGame_Defender::Rescue_Person(CDefenderPerson* _pPerson)
     Set_LeftPersonCount(m_iPersonLeft);
 	m_pDefenderPlayer->Remove_Follower(_pPerson);
     _pPerson->Dissapear();
+    wstring strSFX = TEXT("A_sfx_humans_rescued");
+    END_SFX(strSFX);
+    START_SFX_DELAY(strSFX, 0.f, g_SFXVolume * 0.65f, false);
     if (m_iPersonLeft <= 0)
         Mission_Complete();
 }
@@ -745,6 +748,9 @@ void CMiniGame_Defender::Rescue_Person(CDefenderPerson* _pPerson)
 void CMiniGame_Defender::Mission_Complete()
 {
     m_bClear = true;
+    wstring strSFX = TEXT("A_sfx_resotub_mission_complete");
+    END_SFX(strSFX);
+    START_SFX_DELAY(strSFX, 0.f, g_SFXVolume * 0.65f, false);
     for (auto& pSpawner : m_Spawners)
     {
         pSpawner.second->Delete_Pool();
