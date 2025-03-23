@@ -766,6 +766,7 @@ void CPlayer::Update(_float _fTimeDelta)
 {
 	if (KEY_DOWN(KEY::NUM9))
 	{
+		END_BGM();
 		CFriend* pThrash =  CFriend_Controller::GetInstance()->Find_Friend(TEXT("Thrash"));
 		pThrash->Set_Active(true);
 		CFriend* pViolet =  CFriend_Controller::GetInstance()->Find_Friend(TEXT("Violet"));

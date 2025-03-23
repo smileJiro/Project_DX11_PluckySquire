@@ -354,7 +354,7 @@ HRESULT CLevel_Chapter_06::Initialize(LEVEL_ID _eLevelID)
 #pragma endregion // TestCode
 	
 	/* Chapter6 Intro Trigger 悼利 积己 烙矫 内靛*/
-	Create_IntroTrigger();
+	//Create_IntroTrigger();
 
 	return S_OK;
 }
