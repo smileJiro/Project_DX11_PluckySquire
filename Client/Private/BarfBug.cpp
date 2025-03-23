@@ -266,7 +266,7 @@ void CBarfBug::Change_Animation()
                 break;
 
             case MONSTER_STATE::ATTACK:
-                m_pGameInstance->Start_SFX(_wstring(L"A_sfx_barferbug_projectile_") + to_wstring(rand() % 2), g_SFXVolume);
+                m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_barferbug_projectile_") + to_wstring(rand() % 2), 0.7f , g_SFXVolume);
                 static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(BARF);
                 break;
 

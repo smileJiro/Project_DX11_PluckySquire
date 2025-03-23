@@ -91,13 +91,23 @@ void CDoor_Red::Update(_float _fTimeDelta)
                 {
                     m_eDoorState = OPEN;
                     m_pGameInstance->Start_SFX(TEXT("A_sfx_gate_start"), g_SFXVolume);
-                    m_pGameInstance->Start_SFX(TEXT("A_sfx_Gate_loop"), g_SFXVolume, true);
+                    m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_Gate_loop"), 0.2f, g_SFXVolume, true);
 
                     Switch_Animation_By_State();
                 }
             }
         }
     }  
+    if (OPEN == m_eDoorState)
+    {
+        _float fProgress = m_pControllerModel->Get_Model(COORDINATE_2D)->Get_CurrentAnimProgeress();
+
+        if (fProgress > 0.8f && m_pGameInstance->Is_SFXPlaying(L"A_sfx_Gate_loop"))
+        {
+            m_pGameInstance->End_SFX(TEXT("A_sfx_Gate_loop"));
+            m_pGameInstance->Start_SFX(TEXT("A_sfx_Gate_FinishedMoving"), g_SFXVolume);
+        }
+    }
    
     
     __super::Update(_fTimeDelta);
@@ -127,8 +137,8 @@ void CDoor_Red::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
         m_p2DColliderComs[0]->Set_Active(false);
         Switch_Animation_By_State();
 
-        m_pGameInstance->End_SFX(TEXT("A_sfx_Gate_loop"));
-        m_pGameInstance->Start_SFX(TEXT("A_sfx_Gate_FinishedMoving"), g_SFXVolume);
+        //m_pGameInstance->End_SFX(TEXT("A_sfx_Gate_loop"));
+        //m_pGameInstance->Start_SFX(TEXT("A_sfx_Gate_FinishedMoving"), g_SFXVolume);
 
         if (0.f < m_fTargetDiff)
         {
