@@ -391,6 +391,7 @@ void CButterGrump::Change_Animation()
             break;
 
         case BOSS_STATE::DEAD:
+			START_SFX_DELAY(TEXT("A_sfx_C9DESK_LastBoss_Outro"), 0.f, g_SFXVolume, false);
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(EXPLOSION_INTO);
             break;
 
@@ -1087,9 +1088,13 @@ void CButterGrump::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
     }
     else if (true == Is_Phase2())
     {
-        if (m_tStat.iMaxHP * 0.4 >= m_tStat.iHP)
+		if (false == m_isAlreadyMove)
         {
-            m_isMove = true;
+            if (m_tStat.iMaxHP * 0.4 >= m_tStat.iHP)
+            {
+                m_isMove = true;
+                m_isAlreadyMove = true;
+            }
         }
     }
 }

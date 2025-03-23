@@ -4,6 +4,7 @@
 #include "Section_Manager.h"
 #include "Character.h"
 #include "Effect2D_Manager.h"
+#include "GameInstance.h"
 
 CDefenderPlayerProjectile::CDefenderPlayerProjectile(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	: CScrollModelObject(_pDevice, _pContext)
@@ -131,6 +132,10 @@ void CDefenderPlayerProjectile::On_Collision2D_Enter(CCollider* _pMyCollider, CC
 		default:
 			break;
 		}
+
+		wstring strSFX = TEXT("A_sfx_laser_impact_") + to_wstring(rand() % 5);
+		END_SFX(strSFX);
+		START_SFX_DELAY(strSFX, 0.f, g_SFXVolume, false);
 	}
 }
 
