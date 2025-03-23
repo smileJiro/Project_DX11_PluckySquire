@@ -3,6 +3,7 @@
 #include "Narration_Manager.h"
 #include "Dialog_Manager.h"
 #include "Shop_Manager.h"
+#include "Section_Manager.h"
 
 IMPLEMENT_SINGLETON(CUI_Manager)
 
@@ -191,6 +192,12 @@ void CUI_Manager::Set_PlayNarration(const _wstring& _strid)
 	m_pNarration->CBase::Set_Active(true);
 	wsprintf(m_strNarrationID, _strid.c_str());
 	m_isPlayerNarration = true;
+
+
+	auto pSection = SECTION_MGR->Find_Section(SECTION_MGR->Get_Cur_Section_Key());
+
+	if (nullptr != pSection)
+		static_cast<CSection_2D*>(pSection)->Play_SectionBGM();
 }
 
 _bool CUI_Manager::is_PlayNarration()

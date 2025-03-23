@@ -124,7 +124,7 @@ technique11 DefaultTechnique
     pass HDRIEnvPass
     {
         SetRasterizerState(RS_Cull_None); /* 전면 추려내기 */
-        SetDepthStencilState(DSS_None, 0); /* 깊이 버퍼 사용 x */
+        SetDepthStencilState(DSS_Default, 0); /* 깊이 버퍼 사용 x */
         SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
 
         VertexShader = compile vs_5_0 VS_HDRI_ENV();

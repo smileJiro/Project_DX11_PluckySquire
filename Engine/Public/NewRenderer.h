@@ -41,7 +41,7 @@ public:/* Bind Defferd ConstBufferData */
 	HRESULT								Bind_DofConstBuffer(const _char* _szConstBufferName, ID3D11Buffer* _pConstBuffer);
 public:
 	HRESULT								Load_IBL(const _wstring& _strIBLJsonPath);
-#ifdef _DEBUG
+#ifdef NDEBUG
 
 public:
 	void Update_Imgui();
@@ -106,15 +106,21 @@ private: /* Player Hide */
 public:
 	void Set_VtxMesh(CShader* _pShader) { Safe_Release(m_pVtxMesh); m_pVtxMesh = _pShader; Safe_AddRef(m_pVtxMesh); }
 	void Set_VtxAnimMesh(CShader* _pShader) { Safe_Release(m_pVtxAnimMesh); m_pVtxAnimMesh = _pShader; Safe_AddRef(m_pVtxAnimMesh); }
+	void Set_VtxPosTex(CShader* _pShader) { 
+		Safe_Release(m_pVtxPosTex); m_pVtxPosTex = _pShader; Safe_AddRef(m_pVtxPosTex); 
+	}
 	void Set_GrayScale_VtxMesh(_int _isGrayScale);
 	void Set_GrayScale_VtxAnimMesh(_int _isGrayScale);
+	void Set_GrayScale_VtxPosTex(_int _isGrayScale);
 
 private: /* VtxMesh, VtxAnimMesh Shader */
 	_int m_isGray_VtxMesh = false;
 	_int m_isGray_VtxAnimMesh = false;
+	_int m_isGray_VtxPosTex = false;
 	CShader* m_pVtxMesh = nullptr;
 	CShader* m_pVtxAnimMesh = nullptr;
-#ifdef _DEBUG
+	CShader* m_pVtxPosTex = nullptr;
+#ifdef NDEBUG
 private:
 	list<CComponent*> m_DebugComponents;
 	list<CBase*> m_BaseDebugs;

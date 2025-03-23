@@ -155,6 +155,15 @@
             "ImagePath": "C04_0506_water_04_png"
           }
         ],
+		 "SFX_Tag_List": [
+          {
+            "SFXPath": "A_sfx_moat_drained"
+
+          },
+          {
+            "SFXPath": "A_sfx_moat_full_of_water"
+          }
+        ],
         "Word_Action_List": [
           {
             "Controller_Index": 4,
@@ -183,6 +192,20 @@
             "Word_Type": 5,
             "Action_Type": 5,
             "Param": true
+          },
+		  {
+            "Controller_Index": 4,
+            "Container_Index": 0,
+            "Word_Type": 0,
+            "Action_Type": 7,
+            "Param": 0
+          },
+          {
+            "Controller_Index": 4,
+            "Container_Index": 0,
+            "Word_Type": 5,
+            "Action_Type": 7,
+            "Param": 1
           }
         ]
       },
@@ -213,6 +236,11 @@
           },
           {
             "ImagePath": "C04_0506_gate_2_png"
+          }
+        ],		
+		"SFX_Tag_List": [
+          {
+            "SFXPath": "A_sfx_rusty_gate_open"
           }
         ],
         "Word_Action_List": [
@@ -257,6 +285,13 @@
             "Word_Type": 4,
             "Action_Type": 5,
             "Param": false
+          },          
+		  {
+            "Controller_Index": 3,
+            "Container_Index": 0,
+            "Word_Type": 4,
+            "Action_Type": 7,
+            "Param": 0
           }
         ]
       },
@@ -283,6 +318,11 @@
         "Image_Tag_List": [
           {
             "ImagePath": "LargeBarfbug"
+          }
+        ],        
+		"SFX_Tag_List": [
+          {
+            "SFXPath": "A_sfx_Bug_made_tiny"
           }
         ],
         "Word_Action_List": [
@@ -313,6 +353,13 @@
             "Word_Type": 2,
             "Action_Type": 5,
             "Param": false
+          },
+          {
+            "Controller_Index": 0,
+            "Container_Index": 0,
+            "Word_Type": 2,
+            "Action_Type": 7,
+            "Param": 0
           }
         ]
       },
@@ -329,6 +376,11 @@
         "Image_Tag_List": [
           {
             "ImagePath": "tinyfrog"
+          }
+        ],        
+		"SFX_Tag_List": [
+          {
+            "SFXPath": "A_sfx_frog_observing"
           }
         ],
         "Word_Action_List": [
@@ -359,6 +411,20 @@
             "Word_Type": 5,
             "Action_Type": 2,
             "Param": 1
+          },          
+		  {
+            "Controller_Index": 2,
+            "Container_Index": 0,
+            "Word_Type": 2,
+            "Action_Type":7,
+            "Param": 0
+          },
+          {
+            "Controller_Index": 2,
+            "Container_Index": 0,
+            "Word_Type": 5,
+            "Action_Type": 7,
+            "Param": 0
           }
         ]
       }

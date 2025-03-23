@@ -67,6 +67,8 @@
 #include "Friend_Thrash.h"
 #include "Friend_Violet.h"
 
+#include "BackGroundObject.h"
+
 
 
 CLevel_Chapter_04::CLevel_Chapter_04(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
@@ -177,7 +179,12 @@ HRESULT CLevel_Chapter_04::Initialize(LEVEL_ID _eLevelID)
 		MSG_BOX(" Failed Ready_Layer_Friends (CLevel_Chapter_04::Initialize)");
 		assert(nullptr);
 	}
-
+	if (FAILED(Ready_Layer_BackGroundWindow(TEXT("Layer_BackGround"))))
+	{
+		MSG_BOX(" Failed Ready_Layer_BackGroundWindow (CLevel_Chapter_04::Initialize)");
+		assert(nullptr);
+	}
+	
 	CPlayerData_Manager::GetInstance()->Set_PlayerItem(TEXT("Sword"));
 	CPlayerData_Manager::GetInstance()->Set_PlayerItem(TEXT("Flipping_Glove"));
 	CPlayerData_Manager::GetInstance()->Set_JumpSkillLevel(1);
@@ -1603,6 +1610,35 @@ HRESULT CLevel_Chapter_04::Ready_Layer_Friends(const _wstring& _strLayerTag)
 		CFriend_Controller::GetInstance()->Register_Friend(strFriendTag, static_cast<CFriend*>(pGameObject));
 		//CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(strFriendTag);
 	} /* Friend_Violet */
+	return S_OK;
+}
+
+HRESULT CLevel_Chapter_04::Ready_Layer_BackGroundWindow(const _wstring& _strLayerTag)
+{
+	{ // BackGround Test
+
+		CBackGroundObject::BACKGROUNDOBJ_DESC Desc;
+		Desc.iCurLevelID = LEVEL_CHAPTER_4;
+		Desc.isCoordChangeEnable = false;
+		//Desc.strTexturePrototypeTag = TEXT("Prototype_Component_Texture_BackGround_Chapter2_Main");
+		Desc.strTexturePrototypeTag = TEXT("Prototype_Component_Texture_BackGround_Chapter2_RedHouse_1");
+		Desc.Build_3D_Transform(_float3(-20.0f, 60.0f, 150.0f), _float3(400.f, 400.f, 10.f));
+
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BackGroundObject"), LEVEL_CHAPTER_4, TEXT("Layer_BackGround"), &Desc)))
+			return E_FAIL;
+	}
+
+	{ // BackGround RedHouse
+		CBackGroundObject::BACKGROUNDOBJ_DESC Desc;
+		Desc.iCurLevelID = LEVEL_CHAPTER_4;
+		Desc.isCoordChangeEnable = false;
+		Desc.strTexturePrototypeTag = TEXT("Prototype_Component_Texture_BackGround_Chapter2_Main");
+		Desc.Build_3D_Transform(_float3(-350.0f, 80.0f, -150.0f), _float3(300.f, 300.f, 10.f), _float3(0.0f, XMConvertToRadians(-90.f), 0.0f));
+
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BackGroundObject"), LEVEL_CHAPTER_4, TEXT("Layer_BackGround"), &Desc)))
+			return E_FAIL;
+	}
+
 	return S_OK;
 }
 

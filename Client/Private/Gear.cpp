@@ -62,8 +62,11 @@ void CGear::Update(_float _fTimeDelta)
 	{
 		if (COORDINATE_2D == CPlayerData_Manager::GetInstance()->Get_PlayerCoord())
 		{
-			m_pGameInstance->Start_SFX(TEXT("A_sfx_machines_loop"), g_SFXVolume, true);
-			m_isOnSound = true;
+			if (CSection_Manager::GetInstance()->Is_PlayerInto(m_strSectionName))
+			{
+				m_pGameInstance->Start_SFX(TEXT("A_sfx_machines_loop"), g_SFXVolume, true);
+				m_isOnSound = true;
+			}
 		}
 	}
 }

@@ -43,7 +43,7 @@ public:
 	virtual void Free() override;
 
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 public:
 	HRESULT Initialize(MODULE_NAME _eModuleName, _int _iNumInstance);
 
