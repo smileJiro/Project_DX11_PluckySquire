@@ -511,7 +511,8 @@ void CModelObject::Set_3DAnimationTransitionTime(_uint iIdx, _float _fTime)
 
 void CModelObject::Switch_Animation(_uint iIdx)
 {
-    m_pControllerModel->Switch_Animation(iIdx, m_bReverseAnimation);
+    if(nullptr != m_pControllerModel)
+        m_pControllerModel->Switch_Animation(iIdx, m_bReverseAnimation);
 }
 
 void CModelObject::To_NextAnimation()

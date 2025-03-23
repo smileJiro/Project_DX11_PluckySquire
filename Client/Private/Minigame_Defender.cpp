@@ -734,6 +734,8 @@ void CMiniGame_Defender::Restart_Game()
 
 void CMiniGame_Defender::Rescue_Person(CDefenderPerson* _pPerson)
 {
+    if (0 == m_iPersonLeft)
+        return;
 	m_iPersonLeft--;
     Set_LeftPersonCount(m_iPersonLeft);
 	m_pDefenderPlayer->Remove_Follower(_pPerson);
