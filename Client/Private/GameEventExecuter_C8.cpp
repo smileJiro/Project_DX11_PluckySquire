@@ -1219,18 +1219,18 @@ void CGameEventExecuter_C8::Chapter8_3D_Out_02(_float _fTimeDelta)
 	CFriend* pViolet = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Violet"));
 
 //#ifdef _DEBUG
-	if (nullptr == pViolet)
-	{
-		if (false == Is_Dead())
-		{
-			if (Change_PlayMap(0.f))
-			{
-				Get_Book()->Set_Freezing(true);
-				GameEvent_End();
-			}
-		}
-		return;
-	}
+	//if (nullptr == pViolet)
+	//{
+	//	if (false == Is_Dead())
+	//	{
+	//		if (Change_PlayMap(0.f))
+	//		{
+	//			Get_Book()->Set_Freezing(true);
+	//			GameEvent_End();
+	//		}
+	//	}
+	//	return;
+	//}
 //#endif // _DEBUG
 
 
@@ -1285,7 +1285,7 @@ void CGameEventExecuter_C8::Chapter8_3D_Out_02(_float _fTimeDelta)
 			}
 		}
 
-		Next_Step_Over(Change_PlayMap(0.f));
+		Next_Step(Change_PlayMap(0.f));
 	}
 	else if (Step_Check(STEP_2))
 	{
@@ -2732,7 +2732,6 @@ _bool CGameEventExecuter_C8::Change_PlayMap(_float _fStartTime)
 				pObject->Set_Active(true);
 			}
 		}
-
 		CPlayerData_Manager::GetInstance()->Spawn_Bulb(LEVEL_STATIC, (LEVEL_ID)eCurLevelID);
 		CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)eCurLevelID, TEXT("Bomb_Stamp"), _float3(-15.54f, 26.06f, 16.56f), { 1.f,1.f,1.f });
 		CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)eCurLevelID, TEXT("Sword"), _float3(41.72f, 15.82f, -0.25f), { 2.f,2.f,2.f });
@@ -2740,20 +2739,19 @@ _bool CGameEventExecuter_C8::Change_PlayMap(_float _fStartTime)
 		CPlayerData_Manager::GetInstance()->Spawn_PlayerItem(LEVEL_STATIC, (LEVEL_ID)eCurLevelID, TEXT("Tilting_Glove"), _float3(30.55f, 30.83f, 23.34f));
 		m_iSubStep++;
 		return false;
-
 	}
+
 	_fStartTime += 0.2f;
 
 	// 몬스터 추가
 	if (m_fTimer > _fStartTime &&  2 == m_iSubStep)
 	{
-
 		CGameObject* pObject = nullptr;
 
 		const json* pJson = m_pGameInstance->Find_Json_InLevel(TEXT("Chapter8_Monsters_3D"), LEVEL_CHAPTER_8);
 
 		if (nullptr == pJson)
-			return false;
+			assert(nullptr);
 		if (pJson->contains("3D"))
 		{
 			_wstring strLayerTag = L"Layer_Monster";
@@ -2790,7 +2788,7 @@ _bool CGameEventExecuter_C8::Change_PlayMap(_float _fStartTime)
 					strMonsterTag = STRINGTOWSTRING(Json["MonsterTag"]);
 				}
 				else
-					return false;
+					assert(nullptr);
 
 				if (Json.contains("SneakMode"))
 				{
@@ -2799,7 +2797,7 @@ _bool CGameEventExecuter_C8::Change_PlayMap(_float _fStartTime)
 						MonsterDesc3D.eWayIndex = Json["SneakWayPointIndex"];
 					}
 					else
-						return false;
+						assert(nullptr);
 					MonsterDesc3D.isSneakMode = Json["SneakMode"];
 				}
 
@@ -2821,37 +2819,30 @@ _bool CGameEventExecuter_C8::Change_PlayMap(_float _fStartTime)
 				}
 
 				if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, strMonsterTag, LEVEL_CHAPTER_8, strLayerTag, &pObject, &MonsterDesc3D)))
-					return false;
+					assert(nullptr);
 			}
 		}
 
 		if (FAILED(CFormation_Manager::GetInstance()->Initialize(m_iCurLevelID)))
-			return false;
+			assert(nullptr);
 
 
-		//CGameObject* pObject = nullptr;
 
 		_float3 vPos = { 50.5f, 30.3f, 9.f };
 		CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &pObject, &vPos);
-		//static_cast<CBomb*>(pObject)->Set_Time_Off();
 		static_cast<CBomb*>(pObject)->Set_LifeTime(5.f);
 
 		vPos = { 50.5f, 30.3f, 8.f };
 		CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &pObject, &vPos);
-		//static_cast<CBomb*>(pObject)->Set_Time_Off();
 		static_cast<CBomb*>(pObject)->Set_LifeTime(5.f);
 
 		vPos = { 49.5f, 30.3f, 9.f };
 		CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &pObject, &vPos);
-		//static_cast<CBomb*>(pObject)->Set_Time_Off();
 		static_cast<CBomb*>(pObject)->Set_LifeTime(5.f);
 
 		vPos = { 49.5f, 30.3f, 8.f };
 		CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Bomb"), COORDINATE_3D, &pObject, &vPos);
-		//static_cast<CBomb*>(pObject)->Set_Time_Off();
 		static_cast<CBomb*>(pObject)->Set_LifeTime(5.f);
-
-
 
 		m_iSubStep++;
 		return true;
