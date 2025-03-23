@@ -2140,6 +2140,11 @@ void CGameEventExecuter_C8::Chapter8_Meet_Humgrump(_float _fTimeDelta)
 				Event_DeleteObject(m_TargetObjects[0]);
 				m_TargetObjects[0] = nullptr;
 
+				// Light 변경
+				m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/Boss.json"));
+				m_pGameInstance->Set_GrayScale_VtxAnimMesh(0);
+				m_pGameInstance->Set_GrayScale_VtxMesh(0);
+
 				// 포탈 활성화
 				static_cast<CSection_2D_PlayMap*>(SECTION_MGR->Find_Section(SECTION_MGR->Get_Cur_Section_Key()))->Set_PortalActive(true);
 			}
@@ -2592,6 +2597,7 @@ void CGameEventExecuter_C8::Chapter8_Boss_Intro(_float _fTimeDelta)
 	{
 		if (Is_Start())
 		{
+			m_pGameInstance->Set_GrayScale_VtxAnimMesh(0);
 			START_SFX_DELAY(TEXT("A_sfx_C9DESK_LastBoss_Intro"), 0.f, g_SFXVolume, false);
 			m_pGameInstance->Transition_BGM(TEXT("LCD_MUS_C09_LASTBOSS_INTRO_MASTER_FULL"), g_BGMVolume);
 			

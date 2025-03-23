@@ -143,7 +143,8 @@ namespace Client
 		FRIEND =					0x1000000,	
 		PLAYER_BLOCKER =			0x2000000,	// 플레이어만 막는애
 		BOMB =						0x4000000,	// 플레이어만 막는애
-		INTERACTION_PORTAL =						0x8000000,	// 플레이어만 막는애
+		INTERACTION_PORTAL =		0x8000000,	// 플레이어만 막는애
+		COLLAPSE =					0x10000000,	// 콜랩스블록체크용
 
 
 		LAST =					0x40000000 // == 2의 32승 (32개 이상의 그룹은 X) -> enum은 기본 int므로, 오버플로우 발생 여지 있음. 최대값을 30승으로 제한. 0215 박예슬
