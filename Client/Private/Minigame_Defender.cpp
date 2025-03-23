@@ -157,8 +157,8 @@ void CMiniGame_Defender::Set_GameState(DEFENDER_PROGRESS_STATE _eState)
 	}
     case Client::CMiniGame_Defender::DEFENDER_PROG_TRANSFORM_IN:
     {
+
         CPlayerData_Manager* pPDM = CPlayerData_Manager::GetInstance();
-        
         m_pDefenderPlayer = pPDM->Get_DefenderPlayer_Ptr();
         Safe_AddRef(m_pDefenderPlayer);
         m_pDefenderPlayer->Register_AnimEndCallback(bind(&CMiniGame_Defender::On_PlayerAnimEnd, this, placeholders::_1, placeholders::_2));

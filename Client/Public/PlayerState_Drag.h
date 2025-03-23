@@ -29,6 +29,7 @@ private:
     _vector m_vHoldOffset = { 0.f,0.f,0.f };
     F_DIRECTION m_eOldDragDirection = F_DIRECTION::F_DIR_LAST;
 	_uint m_iAdditionalShapeIndex = 0;
+	_bool m_bMoving = false;
 };
 
 END

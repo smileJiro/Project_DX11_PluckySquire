@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "PlayerState_Pull.h"
+#include "GameInstance.h"
 
 CPlayerState_Pull::CPlayerState_Pull(CPlayer* _pOwner)
 	:CPlayerState(_pOwner, CPlayer::ELECTRIC)
@@ -24,6 +25,7 @@ void CPlayerState_Pull::Enter()
 
 void CPlayerState_Pull::Exit()
 {
+
 }
 
 void CPlayerState_Pull::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
