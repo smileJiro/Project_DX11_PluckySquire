@@ -101,7 +101,7 @@ void CBoss_TennisBall::Update(_float _fTimeDelta)
         {
             m_pGameInstance->Reset_TimeScale(TEXT("Timer_120"));
         }
-		Get_ControllerTransform()->Go_Direction(Get_FinalPosition() - m_pTarget->Get_FinalPosition(), Get_ControllerTransform()->Get_SpeedPerSec() * 16.f, _fTimeDelta);
+		Get_ControllerTransform()->Go_Direction(m_pSpawner->Get_FinalPosition() - Get_FinalPosition(), Get_ControllerTransform()->Get_SpeedPerSec() * 16.f, _fTimeDelta);
     }
 
     if(KEY_PRESSING(KEY::CTRL))
