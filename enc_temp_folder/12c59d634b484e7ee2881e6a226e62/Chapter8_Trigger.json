@@ -1493,7 +1493,6 @@
             ],
             "ShapeType": 0
         },
-        "Trigger_Reusable": false,
         "Fillter_MyGroup": 128,
         "Fillter_OtherGroupMask": 2,
         "Trigger_ConditionType": 0,
