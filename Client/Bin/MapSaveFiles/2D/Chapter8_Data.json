@@ -200,6 +200,17 @@
 		"Section_BackGround_Name": "Chapter8_P2324_BackGround",
 		"Section_Type": 0,
 		"Section_Info": {
+			"BGM": "LCD_MUS_C09_P129130_PUPA_Stem_Base",
+			"SFX": [
+				{
+					"SFX_Name": "LCD_MUS_C09_P129130_PUPA_Stem_Group1",
+					"isStart": true
+				},
+				{
+					"SFX_Name": "LCD_MUS_C09_P129130_PUPA_Stem_Group2",
+					"isStart": true
+				}
+			],
 			"Camera_Zoom_Ratio": 1.5,
 			"RenderResolution": {
 				"X": 3839.0,
