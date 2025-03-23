@@ -81,8 +81,6 @@ void CPlayerState_ExitPortal::Enter()
 	m_pPortal->Use_Portal(m_pOwner);
 	static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Set_ShapeEnable((_uint)SHAPE_USE::SHAPE_BODY, false);
 
-
-
 }
 //ÇÃ·¹ÀÌ¾î Á×À¸¸é ¶³¾îÁü
 
@@ -94,6 +92,7 @@ void CPlayerState_ExitPortal::Exit()
 	{
 		if (true == CFriend_Controller::GetInstance()->Is_Train())
 		{
+			
 			CTriggerObject::TRIGGEROBJECT_DESC DescA = {};
 			DescA.vHalfExtents = { 25.f, 25.f, 0.f };
 			DescA.iTriggerType = (_uint)TRIGGER_TYPE::EVENT_TRIGGER;

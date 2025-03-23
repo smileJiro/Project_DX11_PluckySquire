@@ -745,9 +745,13 @@ void CNarration::Update_Narration(_float _fTimeDelta)
 				{
 					if (true == m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].isDirTurn)
 					{
-						vPos = SetPlayerPos(CSection_Manager::GetInstance()->Get_Next_Section_Key());
+						if (true == CSection_Manager::GetInstance()->Has_Next_Section())
+						{
+							vPos = SetPlayerPos(CSection_Manager::GetInstance()->Get_Next_Section_Key());
 
-						Event_Book_Main_Section_Change_Start(1, &vPos);
+							Event_Book_Main_Section_Change_Start(1, &vPos);
+						}
+						
 
 						if (TEXT("") != m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].strNextBGM)
 							m_pGameInstance->Start_BGM(m_NarrationDatas[m_iNarrationCount].lines[m_iCurrentLine].strNextBGM);
