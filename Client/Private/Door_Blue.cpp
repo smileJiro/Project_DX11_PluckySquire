@@ -36,8 +36,13 @@ void CDoor_Blue::Update(_float _fTimeDelta)
 
     if (OPEN == m_eDoorState)
     {
-        
+        _float fProgress = m_pControllerModel->Get_Model(COORDINATE_2D)->Get_CurrentAnimProgeress();
 
+        if (fProgress > 0.9f && m_pGameInstance->Is_SFXPlaying(L"A_sfx_Gate_loop"))
+        {
+            m_pGameInstance->End_SFX(TEXT("A_sfx_Gate_loop"));
+            m_pGameInstance->Start_SFX(TEXT("A_sfx_Gate_FinishedMoving"), g_SFXVolume);
+        }
     }
 }
 

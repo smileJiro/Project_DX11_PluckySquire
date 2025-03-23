@@ -77,6 +77,17 @@ void CDoor_Yellow::Update(_float _fTimeDelta)
                 m_pGameInstance->Start_SFX(TEXT("A_sfx_Gate_loop"), g_SFXVolume, true);
             }
 
+            //if (OPEN == m_eDoorState)
+            //{
+            //    _float fProgress = m_pControllerModel->Get_Model(COORDINATE_2D)->Get_CurrentAnimProgeress();
+
+            //    if (fProgress > 0.8f && m_pGameInstance->Is_SFXPlaying(L"A_sfx_Gate_loop"))
+            //    {
+            //        m_pGameInstance->End_SFX(TEXT("A_sfx_Gate_loop"));
+            //        m_pGameInstance->Start_SFX(TEXT("A_sfx_Gate_FinishedMoving"), g_SFXVolume);
+            //    }
+            //}
+
         }   
 
         // 감압판 눌려있지 않음 -> Close
@@ -127,8 +138,8 @@ void CDoor_Yellow::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
         m_bReverseAnimation = false;
 
         Switch_Animation_By_State();
-        m_pGameInstance->End_SFX(TEXT("A_sfx_Gate_loop"));
-        m_pGameInstance->Start_SFX(TEXT("A_sfx_Gate_FinishedMoving"), g_SFXVolume);
+        //m_pGameInstance->End_SFX(TEXT("A_sfx_Gate_loop"));
+        //m_pGameInstance->Start_SFX(TEXT("A_sfx_Gate_FinishedMoving"), g_SFXVolume);
     }
 
     else if (CLOSE == m_eDoorState)
