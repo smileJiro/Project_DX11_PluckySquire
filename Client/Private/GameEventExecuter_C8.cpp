@@ -2121,7 +2121,6 @@ void CGameEventExecuter_C8::Chapter8_Meet_Humgrump(_float _fTimeDelta)
 		if (m_fTimer >= 1.3f) {
 			// 검은색 FadeIn 시작
 			CCamera_Manager::GetInstance()->Start_FadeIn(0.6f);
-			CCamera_Manager::GetInstance()->Start_FadeOut(0.6f);
 			CCamera* pCamera = CCamera_Manager::GetInstance()->Get_CurrentCamera();
 			CCamera_2D* pCam = static_cast<CCamera_2D*>(pCamera);
 
