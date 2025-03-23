@@ -1782,7 +1782,7 @@ void CGameEventExecuter_C8::Chapter8_Meet_Humgrump(_float _fTimeDelta)
 
 		if (false == static_cast<CModelObject*>(m_TargetObjects[0])->Is_DuringAnimation()) {
 			// 10. 다 날아갔으면 Active 끄고 Camera Zoom 더 멀리
-			START_SFX_DELAY(TEXT("A_sfx_humgrump_zooms_off"), 1.7f, g_SFXVolume, false);
+			START_SFX_DELAY(TEXT("A_sfx_humgrump_zooms_off"), 0.f, g_SFXVolume, false);
 			Next_Step(true);
 		}
 	}
@@ -1973,7 +1973,7 @@ void CGameEventExecuter_C8::Chapter8_Meet_Humgrump(_float _fTimeDelta)
 	}
 	else if (Step_Check(STEP_12)) {
 		if (false == CDialog_Manager::GetInstance()->Get_DisPlayDialogue() && 0 == m_iSubStep) {
-			static_cast<CModelObject*>(m_TargetObjects[0])->Get_Model(COORDINATE_2D)->Get_Animation(CNpc_Humgrump::CHAPTER8_PUPA_INTRO_1)->Set_SpeedMagnifier(1.6f);
+			static_cast<CModelObject*>(m_TargetObjects[0])->Get_Model(COORDINATE_2D)->Get_Animation(CNpc_Humgrump::CHAPTER8_PUPA_INTRO_1)->Set_SpeedMagnifier(1.f);
 			static_cast<CModelObject*>(m_TargetObjects[0])->Switch_Animation(CNpc_Humgrump::CHAPTER8_PUPA_INTRO_1);
 			START_SFX_DELAY(TEXT("A_sfx_Pupa_intro"), 0.f, g_SFXVolume, false);
 			m_iSubStep++;
@@ -2021,7 +2021,7 @@ void CGameEventExecuter_C8::Chapter8_Meet_Humgrump(_float _fTimeDelta)
 		if (false == CDialog_Manager::GetInstance()->Get_DisPlayDialogue()) {
 			// 7. 커지고 폭발
 			if (Is_Start()) {
-				static_cast<CModelObject*>(m_TargetObjects[0])->Get_Model(COORDINATE_2D)->Get_Animation(CNpc_Humgrump::CHAPTER8_PUPA_GROW)->Set_SpeedMagnifier(1.6f);
+				static_cast<CModelObject*>(m_TargetObjects[0])->Get_Model(COORDINATE_2D)->Get_Animation(CNpc_Humgrump::CHAPTER8_PUPA_GROW)->Set_SpeedMagnifier(0.25f);
 				static_cast<CModelObject*>(m_TargetObjects[0])->Switch_Animation(CNpc_Humgrump::CHAPTER8_PUPA_GROW);
 				START_SFX_DELAY(TEXT("A_sfx_Pupa_explode_sequence"), 0.0f, g_SFXVolume, false);
 
@@ -2593,7 +2593,7 @@ void CGameEventExecuter_C8::Chapter8_Boss_Intro(_float _fTimeDelta)
 	{
 		if (Is_Start())
 		{
-			START_SFX_DELAY(TEXT("A_sfx_C9DESK_LastBoss_Intro"), 1.5f, g_SFXVolume, false);
+			START_SFX_DELAY(TEXT("A_sfx_C9DESK_LastBoss_Intro"), 0.f, g_SFXVolume, false);
 			m_pGameInstance->Transition_BGM(TEXT("LCD_MUS_C09_LASTBOSS_INTRO_MASTER_FULL"), g_BGMVolume);
 			
 			m_pGameInstance->Set_SFXTargetVolume(TEXT("LCD_MUS_C09_P129130_PUPA_Stem_Group1"), 0.f);
