@@ -3,6 +3,7 @@
 #include "DraggableObject.h"
 #include "Actor_Dynamic.h"
 #include "PlayerBody.h"
+#include "GameInstance.h"
 
 CPlayerState_Drag::CPlayerState_Drag(CPlayer* _pOwner)
 	:CPlayerState(_pOwner, CPlayer::DRAG)
@@ -45,6 +46,14 @@ void CPlayerState_Drag::Update(_float _fTimeDelta)
 		//E 누른 상태로 wasd키 누름
 		if (tKeyResult.bInputStates[PLAYER_INPUT_MOVE])
 		{
+			if (false == m_bMoving)
+			{
+				m_bMoving = true;
+				START_SFX_DELAY(TEXT("A_sfx_jot_vocal_pull_push-") + to_wstring(rand() % 6), 0.f, g_SFXVolume, false);
+				START_SFX_DELAY(TEXT("A_sfx_drag_object"), 0.f, g_SFXVolume, false);
+			}
+
+			
 			F_DIRECTION eNewDragDirection = To_FDirection(tKeyResult.vMoveDir, eCoord);
 			//드래그 방향이 바뀌면 애니메이션 바꿔야 함.
 			if (eNewDragDirection != m_eOldDragDirection)
@@ -57,9 +66,9 @@ void CPlayerState_Drag::Update(_float _fTimeDelta)
 					Switch_To_PushAnimation(eCoord);
 				else
 					Switch_To_PullAnimation(eCoord, tKeyResult.vMoveDir);
+
 			}
 			m_pOwner->Set_PlayingAnim(true);
-			
 			m_pOwner->Move(XMVector3Normalize(tKeyResult.vMoveDir) * m_fDragMoveSpeed, _fTimeDelta);
 			m_pDraggableObject->Move(XMVector3Normalize(tKeyResult.vMoveDir) * m_fDragMoveSpeed, _fTimeDelta);
 
@@ -75,6 +84,8 @@ void CPlayerState_Drag::Update(_float _fTimeDelta)
 		}
 		else 
 		{
+			m_bMoving = false;
+			END_SFX(TEXT("A_sfx_drag_object"));
 			m_pOwner->Set_PlayingAnim(false);
 		}
 	}
@@ -129,6 +140,7 @@ void CPlayerState_Drag::Exit()
 		//m_pOwner->Set_Kinematic(false);
 	}
 	m_pOwner->Set_PlayingAnim(true);
+	END_SFX(TEXT("A_sfx_drag_object"));
 }
 
 void CPlayerState_Drag::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)

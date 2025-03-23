@@ -267,6 +267,7 @@ void CDefenderPlayer::Start_Transform()
 
 	if (FAILED(Ready_BulletPool()))
 		return ;
+	START_SFX_DELAY(TEXT("A_sfx_Transform_Into_Cyber_Jot"), 0.f, g_SFXVolume, false);
 	m_pBody->Switch_Animation((_uint)ANIM_STATE_CYBERJOT2D::CYBER2D_TRANSFORM_IN);
 	Set_BlockPlayerInput(true);
 }
