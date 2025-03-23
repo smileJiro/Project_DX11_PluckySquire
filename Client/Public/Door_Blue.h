@@ -12,7 +12,7 @@ private:
 
 public:
 	virtual HRESULT Initialize(void* _pArg) override;
-
+	virtual void	Update(_float _fTimeDelta) override;
 
 public:
 	void			On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx);
@@ -20,9 +20,12 @@ public:
 public:
 	virtual void			On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject) override;
 
+
 private:
 	void			Set_AnimLoop();
 	virtual void	Switch_Animation_By_State() override;
+
+
 
 
 public:
