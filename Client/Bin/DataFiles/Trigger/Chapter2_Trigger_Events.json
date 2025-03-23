@@ -10,6 +10,16 @@
     ]
   },
   {
+    "Trigger_EventTag": "Chapter2_MapChange",
+    "Actions": [
+      {
+        "ActionTag": "Create_EventExecuter",
+        "EventTag": "Chapter2_MapChange",
+        "Is_Sequence": true
+      }
+    ]
+  },
+  {
     "Trigger_EventTag": "Chapter2_Intro",
     "Actions": [
       {
