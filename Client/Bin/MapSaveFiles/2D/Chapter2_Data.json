@@ -95,7 +95,6 @@
 			"Camera_Zoom_Ratio": 1.5,
 			"Next_Page_Tag": "Chapter2_P0304",
 			"Pre_Page_Tag": "Chapter2_P0102",
-			"BGM": "LCD_MUS_C02_CLIFFTOP_LOOP_Stem_Base"
 		}
 	},
 	{
@@ -107,7 +106,8 @@
 		"Section_Default": 0,
 		"Section_Info": {
 			"Next_Page_Tag": "Chapter2_P0506",
-			"Pre_Page_Tag": "Chapter2_P0102"
+			"Pre_Page_Tag": "Chapter2_P0102",
+			"BGM": "LCD_MUS_C02_CLIFFTOP_LOOP_Stem_Base"
 		}
 	},
 	{
