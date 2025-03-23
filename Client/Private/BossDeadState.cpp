@@ -239,7 +239,7 @@ void CBossDeadState::State_Update(_float _fTimeDelta)
 	break;
 	case 12:
 	{
-		if (8.5f <= m_fAccTime) {
+		if (10.5f <= m_fAccTime) {
 			
 			CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D)->Enter_Section(TEXT("Chapter8_P2526"));
 			CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::TARGET_2D);
