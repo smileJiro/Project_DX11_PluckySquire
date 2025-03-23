@@ -28,6 +28,7 @@ void CPlayerState_CannonPortal::Update(_float _fTimeDelta)
 	INTERACT_RESULT eResult = m_pOwner->Try_Interact(_fTimeDelta);
 	if (INTERACT_RESULT::CHARGE_CANCEL == eResult)
 	{
+		END_SFX(TEXT("A_sfx_cannon_roll_loop"));
 		m_pPortal->Set_PortalState(CPortal_Cannon::IDLE);
 		m_pOwner->Set_State(CPlayer::IDLE);
 	}
@@ -208,7 +209,7 @@ void CPlayerState_CannonPortal::Set_SubState(SUB_STATE _eState)
 	case Client::CPlayerState_CannonPortal::SUB_SPIN_CHARGE_COMPLETE:
 	{
 		//방향 화살표? 나오게하기
-
+		START_SFX_DELAY(TEXT("A_sfx_cannon_roll_loop"), 0.f, g_SFXVolume, true);
 		break;
 	}
 	case Client::CPlayerState_CannonPortal::SUB_SHOOT_READY:
@@ -220,6 +221,7 @@ void CPlayerState_CannonPortal::Set_SubState(SUB_STATE _eState)
 	}
 	case Client::CPlayerState_CannonPortal::SUB_SHOOT:
 	{
+		END_SFX(TEXT("A_sfx_cannon_roll_loop"));
 		m_pOwner->Get_ActorDynamic()->Set_ShapeEnable((_uint)SHAPE_USE::SHAPE_BODY, false);
 		m_pOwner->Set_Kinematic(false);
 		m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_CANNON);
