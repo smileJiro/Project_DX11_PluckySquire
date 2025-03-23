@@ -82,15 +82,58 @@ void CDialog::Update(_float _fTimeDelta)
 	{
 		_float2 vRTSize = SECTION_MGR->Get_Section_RenderTarget_Size(Get_Dialogue(m_tDialogIndex)[0].Section);
 
+		//if (true == Get_Dialogue(m_tDialogId)[0].lines[m_iCurrentLineIndex].is2D)
+		//{
+		//	// A_sfx_text_minibeard// 드드드드드드득
+		//	// DialogWriting_sfx // 글자쓰는 소리
+		//
+		//
+		//	if (m_iCurrentLineIndex != Get_Dialogue(m_tDialogId)[0].lines.size() - 1)
+		//	{
+		//		m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_text_minibeard"), 0.f, 30.f, false);
+		//		m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_text_minibeard"), 0.1f, 30.f, false);
+		//		m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_text_minibeard"), 0.2f, 30.f, false);
+		//		m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_text_minibeard"), 0.3f, 30.f, false);
+		//		m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_text_minibeard"), 0.4f, 30.f, false);
+		//	}
+		//}
+		//else
+		//{
+		//	if (false == Get_Dialogue(m_tDialogId)[0].lines[m_iCurrentLineIndex].MTMSound)
+		//	{
+		//		if (m_iCurrentLineIndex != Get_Dialogue(m_tDialogId)[0].lines.size() - 1)
+		//		{
+		//			m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_text_minibeard"), 0.f, 30.f, false);
+		//			m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_text_minibeard"), 0.1f, 30.f, false);
+		//			m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_text_minibeard"), 0.2f, 30.f, false);
+		//			m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_text_minibeard"), 0.3f, 30.f, false);
+		//			m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_text_minibeard"), 0.4f, 30.f, false);
+		//			m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_text_minibeard"), 0.5f, 30.f, false);
+		//			m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_text_minibeard"), 0.6f, 30.f, false);
+		//			m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_text_minibeard"), 0.7f, 30.f, false);
+		//		}
+		//	}
+		//	else
+		//	{
+		//		if (m_iCurrentLineIndex != Get_Dialogue(m_tDialogId)[0].lines.size() - 1)
+		//		{
+		//			m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_minibeard_plastic-001"), 0.f, 30.f, false);
+		//			m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_minibeard_plastic-001"), 0.11f, 30.f, false);
+		//			m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_minibeard_plastic-001"), 0.22f, 30.f, false);
+		//			m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_minibeard_plastic-001"), 0.33f, 30.f, false);
+		//			m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_minibeard_plastic-001"), 0.44f, 30.f, false);
+		//			m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_minibeard_plastic-001"), 0.55f, 30.f, false);
+		//			m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_minibeard_plastic-001"), 0.66f, 30.f, false);
+		//			m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_minibeard_plastic-001"), 0.77f, 30.f, false);
+		//			m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_minibeard_plastic-001"), 0.88f, 30.f, false);
+		//		}
+		//	}
+		//}
 		if (true == Get_Dialogue(m_tDialogId)[0].lines[m_iCurrentLineIndex].is2D)
 		{
 			if (m_iCurrentLineIndex != Get_Dialogue(m_tDialogId)[0].lines.size() - 1)
 			{
-				m_pGameInstance->Start_SFX_Delay(TEXT("DialogWriting_sfx"), 0.f, 30.f, false);
-				m_pGameInstance->Start_SFX_Delay(TEXT("DialogWriting_sfx"), 0.1f, 30.f, false);
-				m_pGameInstance->Start_SFX_Delay(TEXT("DialogWriting_sfx"), 0.2f, 30.f, false);
-				m_pGameInstance->Start_SFX_Delay(TEXT("DialogWriting_sfx"), 0.3f, 30.f, false);
-				m_pGameInstance->Start_SFX_Delay(TEXT("DialogWriting_sfx"), 0.4f, 30.f, false);
+				m_pGameInstance->Start_SFX_Delay(TEXT("dialog_test"), 0.f, 100.f, true);
 			}
 		}
 		else
@@ -99,14 +142,7 @@ void CDialog::Update(_float _fTimeDelta)
 			{
 				if (m_iCurrentLineIndex != Get_Dialogue(m_tDialogId)[0].lines.size() - 1)
 				{
-					m_pGameInstance->Start_SFX_Delay(TEXT("DialogWriting_sfx"), 0.f, 30.f, false);
-					m_pGameInstance->Start_SFX_Delay(TEXT("DialogWriting_sfx"), 0.1f, 30.f, false);
-					m_pGameInstance->Start_SFX_Delay(TEXT("DialogWriting_sfx"), 0.2f, 30.f, false);
-					m_pGameInstance->Start_SFX_Delay(TEXT("DialogWriting_sfx"), 0.3f, 30.f, false);
-					m_pGameInstance->Start_SFX_Delay(TEXT("DialogWriting_sfx"), 0.4f, 30.f, false);
-					m_pGameInstance->Start_SFX_Delay(TEXT("DialogWriting_sfx"), 0.5f, 30.f, false);
-					m_pGameInstance->Start_SFX_Delay(TEXT("DialogWriting_sfx"), 0.6f, 30.f, false);
-					m_pGameInstance->Start_SFX_Delay(TEXT("DialogWriting_sfx"), 0.7f, 30.f, false);
+					m_pGameInstance->Start_SFX_Delay(TEXT("dialog_test"), 0.f, 100.f, true);
 				}
 			}
 			else
@@ -126,7 +162,6 @@ void CDialog::Update(_float _fTimeDelta)
 			}
 		}
 		
-
 
 
 		NextDialogue(vRTSize); // 다음 다이얼로그의 위치를 변경한다.
@@ -592,6 +627,22 @@ HRESULT CDialog::DisplayText(_float2 _vRTSize)
 			fWaitTime = 0.0f;
 		}
 	}
+	else
+	{
+		if (true == Get_Dialogue(m_tDialogId)[0].lines[m_iCurrentLineIndex].is2D)
+		{
+			m_pGameInstance->Stop_SFX(TEXT("dialog_test"));
+		}
+		else
+		{
+			if (false == Get_Dialogue(m_tDialogId)[0].lines[m_iCurrentLineIndex].MTMSound)
+			{
+				m_pGameInstance->Stop_SFX(TEXT("dialog_test"));
+
+			}
+		}
+	}
+		
 
 
 	// 위치에 따른 텍스트 위치 조정
@@ -1392,6 +1443,44 @@ void CDialog::NextDialogue(_float2 _RTSize)
 			// 다이얼로그 끝나고 상점을 닫기 위해 해당 다이얼로그가 상점 관련인지 확인한다.
 			isOpenPanel(_strDialogue);
 
+			if (true == Get_Dialogue(m_tDialogId)[0].lines[m_iCurrentLineIndex].is2D)
+			{
+				m_pGameInstance->Stop_SFX(TEXT("dialog_test"));
+			}
+			else
+			{
+
+				if (false == Get_Dialogue(m_tDialogId)[0].lines[m_iCurrentLineIndex].MTMSound)
+				{
+					m_pGameInstance->Stop_SFX(TEXT("dialog_test"));
+				}
+
+				//else
+				//{
+				//	if (m_iCurrentLineIndex != Get_Dialogue(m_tDialogId)[0].lines.size() - 1)
+				//	{
+				//		m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_minibeard_plastic-001"), 0.f, 30.f, false);
+				//		m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_minibeard_plastic-001"), 0.11f, 30.f, false);
+				//		m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_minibeard_plastic-001"), 0.22f, 30.f, false);
+				//		m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_minibeard_plastic-001"), 0.33f, 30.f, false);
+				//		m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_minibeard_plastic-001"), 0.44f, 30.f, false);
+				//		m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_minibeard_plastic-001"), 0.55f, 30.f, false);
+				//		m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_minibeard_plastic-001"), 0.66f, 30.f, false);
+				//		m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_minibeard_plastic-001"), 0.77f, 30.f, false);
+				//		m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_minibeard_plastic-001"), 0.88f, 30.f, false);
+				//	}
+				//}
+
+
+
+
+
+
+			}
+
+
+			
+
 
 
 		}
@@ -1401,48 +1490,77 @@ void CDialog::NextDialogue(_float2 _RTSize)
 // 처음 다이얼로그 입장 시 위치 계산해주는 함수
 void CDialog::FirstCalPos(_float2 _RTSize)
 {
+
+	//A_sfx_text_minibeard // 드드드드드드득
+	// DialogWriting_sfx // 글자쓰는 소리
+
+	//if (true == Get_Dialogue(m_tDialogId)[0].lines[m_iCurrentLineIndex].is2D)
+	//{
+	//	if (m_iCurrentLineIndex != Get_Dialogue(m_tDialogId)[0].lines.size())
+	//	{
+	//		m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_text_minibeard"), 0.f, 30.f, false);
+	//		m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_text_minibeard"), 0.1f, 30.f, false);
+	//		m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_text_minibeard"), 0.2f, 30.f, false);
+	//		m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_text_minibeard"), 0.3f, 30.f, false);
+	//		m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_text_minibeard"), 0.4f, 30.f, false);
+	//	}
+	//}
+	//else
+	//{
+	//	if (false == Get_Dialogue(m_tDialogId)[0].lines[m_iCurrentLineIndex].MTMSound)
+	//	{
+	//		if (m_iCurrentLineIndex != Get_Dialogue(m_tDialogId)[0].lines.size())
+	//		{
+	//			m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_text_minibeard"), 0.f, 30.f, false);
+	//			m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_text_minibeard"), 0.1f, 30.f, false);
+	//			m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_text_minibeard"), 0.2f, 30.f, false);
+	//			m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_text_minibeard"), 0.3f, 30.f, false);
+	//			m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_text_minibeard"), 0.4f, 30.f, false);
+	//		}
+	//	}
+	//	else
+	//	{
+	//		if (m_iCurrentLineIndex != Get_Dialogue(m_tDialogId)[0].lines.size())
+	//		{
+	//			m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_minibeard_plastic-001"), 0.f, 30.f, false);
+	//			m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_minibeard_plastic-001"), 0.11f, 30.f, false);
+	//			m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_minibeard_plastic-001"), 0.22f, 30.f, false);
+	//			m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_minibeard_plastic-001"), 0.33f, 30.f, false);
+	//			m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_minibeard_plastic-001"), 0.44f, 30.f, false);
+	//			m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_minibeard_plastic-001"), 0.55f, 30.f, false);
+	//			m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_minibeard_plastic-001"), 0.66f, 30.f, false);
+	//			m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_minibeard_plastic-001"), 0.77f, 30.f, false);
+	//			m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_minibeard_plastic-001"), 0.88f, 30.f, false);
+	//		}
+	//	}
+	//}
+
+
 	if (true == Get_Dialogue(m_tDialogId)[0].lines[m_iCurrentLineIndex].is2D)
 	{
-		if (m_iCurrentLineIndex != Get_Dialogue(m_tDialogId)[0].lines.size())
-		{
-			m_pGameInstance->Start_SFX_Delay(TEXT("DialogWriting_sfx"), 0.f, 30.f, false);
-			m_pGameInstance->Start_SFX_Delay(TEXT("DialogWriting_sfx"), 0.1f, 30.f, false);
-			m_pGameInstance->Start_SFX_Delay(TEXT("DialogWriting_sfx"), 0.2f, 30.f, false);
-			m_pGameInstance->Start_SFX_Delay(TEXT("DialogWriting_sfx"), 0.3f, 30.f, false);
-			m_pGameInstance->Start_SFX_Delay(TEXT("DialogWriting_sfx"), 0.4f, 30.f, false);
-		}
+		m_pGameInstance->Start_SFX_Delay(TEXT("dialog_test"), 0.f, 100.f, true);
 	}
 	else
 	{
 		if (false == Get_Dialogue(m_tDialogId)[0].lines[m_iCurrentLineIndex].MTMSound)
 		{
-			if (m_iCurrentLineIndex != Get_Dialogue(m_tDialogId)[0].lines.size())
-			{
-				m_pGameInstance->Start_SFX_Delay(TEXT("DialogWriting_sfx"), 0.f, 30.f, false);
-				m_pGameInstance->Start_SFX_Delay(TEXT("DialogWriting_sfx"), 0.1f, 30.f, false);
-				m_pGameInstance->Start_SFX_Delay(TEXT("DialogWriting_sfx"), 0.2f, 30.f, false);
-				m_pGameInstance->Start_SFX_Delay(TEXT("DialogWriting_sfx"), 0.3f, 30.f, false);
-				m_pGameInstance->Start_SFX_Delay(TEXT("DialogWriting_sfx"), 0.4f, 30.f, false);
-			}
+			m_pGameInstance->Start_SFX_Delay(TEXT("dialog_test"), 0.f, 100.f, true);
 		}
 		else
 		{
-			if (m_iCurrentLineIndex != Get_Dialogue(m_tDialogId)[0].lines.size())
-			{
-				m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_minibeard_plastic-001"), 0.f, 30.f, false);
-				m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_minibeard_plastic-001"), 0.11f, 30.f, false);
-				m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_minibeard_plastic-001"), 0.22f, 30.f, false);
-				m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_minibeard_plastic-001"), 0.33f, 30.f, false);
-				m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_minibeard_plastic-001"), 0.44f, 30.f, false);
-				m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_minibeard_plastic-001"), 0.55f, 30.f, false);
-				m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_minibeard_plastic-001"), 0.66f, 30.f, false);
-				m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_minibeard_plastic-001"), 0.77f, 30.f, false);
-				m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_minibeard_plastic-001"), 0.88f, 30.f, false);
-			}
+			m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_minibeard_plastic-001"), 0.f, 30.f, false);
+			m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_minibeard_plastic-001"), 0.11f, 30.f, false);
+			m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_minibeard_plastic-001"), 0.22f, 30.f, false);
+			m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_minibeard_plastic-001"), 0.33f, 30.f, false);
+			m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_minibeard_plastic-001"), 0.44f, 30.f, false);
+			m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_minibeard_plastic-001"), 0.55f, 30.f, false);
+			m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_minibeard_plastic-001"), 0.66f, 30.f, false);
+			m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_minibeard_plastic-001"), 0.77f, 30.f, false);
+			m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_minibeard_plastic-001"), 0.88f, 30.f, false);
 		}
+		
 	}
-
-
+	
 
 
 	CPlayer* pPlayer = Uimgr->Get_Player();
