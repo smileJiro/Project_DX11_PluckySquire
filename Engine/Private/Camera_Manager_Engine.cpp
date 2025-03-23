@@ -22,7 +22,7 @@ void CCamera_Manager_Engine::Update(_float fTimeDelta)
 
 }
 
-#ifdef NDEBUG
+#ifdef _DEBUG
 void CCamera_Manager_Engine::Render()
 {
 
