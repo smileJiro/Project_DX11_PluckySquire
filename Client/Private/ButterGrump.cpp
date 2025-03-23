@@ -304,7 +304,7 @@ void CButterGrump::Change_Animation()
             //if (nullptr != m_pRoarEffect)
             //    m_pRoarEffect->Active_All(true);
 
-            m_pGameInstance->Start_SFX_Distance_Delay(_wstring(L"A_sfx_enter_angry_phase"), m_pControllerTransform->Get_State(CTransform::STATE_POSITION), 0.1f, g_SFXVolume, 0.f, 13.f);
+            m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_enter_angry_phase"), 0.1f, g_SFXVolume);
             break;
 
         case BOSS_STATE::IDLE:
@@ -363,7 +363,7 @@ void CButterGrump::Change_Animation()
 
         case BOSS_STATE::WINGSLAM:
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(WING_SLAM_INTO);
-            m_pGameInstance->Start_SFX_Distance_Delay(_wstring(L"A_sfx_wingslam_prepare"), m_pControllerTransform->Get_State(CTransform::STATE_POSITION), 0.1f, g_SFXVolume, 0.f, 13.f);
+            m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_wingslam_prepare"), 0.1f, g_SFXVolume);
             break;
 
         case BOSS_STATE::ROCKVOLLEY:
@@ -375,7 +375,7 @@ void CButterGrump::Change_Animation()
 
         case BOSS_STATE::WINGSLICE:
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(WING_SLICE_INTO);
-            m_pGameInstance->Start_SFX_Distance_Delay(_wstring(L"A_sfx_wingslice_prepare"), m_pControllerTransform->Get_State(CTransform::STATE_POSITION), 0.1f, g_SFXVolume, 0.f, 13.f);
+            m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_wingslice_prepare"), 0.1f, g_SFXVolume);
             break;
 
         case BOSS_STATE::SHIELD:
@@ -507,7 +507,7 @@ void CButterGrump::Attack()
             }
         }
 
-        m_pGameInstance->Start_SFX_Distance_Delay(_wstring(L"A_sfx_fire_rocket-") + to_wstring(rand() % 4), m_pControllerTransform->Get_State(CTransform::STATE_POSITION), 0.5f, g_SFXVolume, 0.f, 13.f);
+        m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_fire_rocket-") + to_wstring(rand() % 4), 0.5f, g_SFXVolume);
         ++m_iAttackCount;
 
         if (m_iNumAttack <= m_iAttackCount)
@@ -555,7 +555,7 @@ void CButterGrump::Attack()
 
         CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Boss_YellowBall"), COORDINATE_3D, &vPosition, &vRotation);
 
-        m_pGameInstance->Start_SFX_Distance_Delay(_wstring(L"A_sfx_Fire_YellowBalls"), m_pControllerTransform->Get_State(CTransform::STATE_POSITION), 0.1f, g_SFXVolume, 0.f, 13.f);
+        m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_Fire_YellowBalls"), 0.1f, g_SFXVolume);
 
         ++m_iAttackCount;
 
@@ -628,7 +628,7 @@ void CButterGrump::Attack()
             CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Boss_PurpleBall"), COORDINATE_3D, &vPos, &vRotation);
         }
 
-        m_pGameInstance->Start_SFX_Distance_Delay(_wstring(L"A_sfx_fire_PurpleBalls-") + to_wstring(rand() % 16), m_pControllerTransform->Get_State(CTransform::STATE_POSITION), 0.1f, g_SFXVolume, 0.f, 13.f);
+        m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_fire_PurpleBalls-") + to_wstring(rand() % 16), 0.1f, g_SFXVolume);
         ++m_iAttackCount;
 
         if (m_iNumAttack <= m_iAttackCount)
@@ -650,7 +650,7 @@ void CButterGrump::Attack()
         /*_float4 vRot;
         XMStoreFloat4(&vRot, m_pGameInstance->Direction_To_Quaternion(XMVectorSet(0.f, 0.f, 1.f, 0.f), m_pTarget->Get_FinalPosition() - XMLoadFloat3(&vPosition)));*/
         CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Boss_WingSlam"), COORDINATE_3D, &vPosition, &vRotation);
-        m_pGameInstance->Start_SFX_Distance_Delay(_wstring(L"A_sfx_wingslam_strike"), m_pControllerTransform->Get_State(CTransform::STATE_POSITION), 0.1f, g_SFXVolume, 0.f, 13.f);
+        m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_wingslam_strike"), 0.1f, g_SFXVolume);
         m_isAttack = false;
         break;
     }
@@ -661,7 +661,7 @@ void CButterGrump::Attack()
   //      _float4 vRot;
 		//XMStoreFloat4(&vRot, m_pGameInstance->Direction_To_Quaternion(XMVectorSet(0.f, 0.f, 1.f, 0.f), m_pTarget->Get_FinalPosition() - XMLoadFloat3(&vPosition)));
         CPooling_Manager::GetInstance()->Create_Object(TEXT("Pooling_Boss_WingSlice"), COORDINATE_3D, &vPosition, &vRotation);
-        m_pGameInstance->Start_SFX_Distance_Delay(_wstring(L"A_sfx_wingslice_strike"), m_pControllerTransform->Get_State(CTransform::STATE_POSITION), 0.1f, g_SFXVolume, 0.f, 13.f);
+        m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_wingslice_strike"), 0.1f, g_SFXVolume);
         m_isAttack = false;
         break;
     }
@@ -708,7 +708,7 @@ void CButterGrump::Attack()
             }
         }
 
-        m_pGameInstance->Start_SFX_Distance_Delay(_wstring(L"A_sfx_fire_asteroids_individual-") + to_wstring(rand() % 6), m_pControllerTransform->Get_State(CTransform::STATE_POSITION), 0.1f, g_SFXVolume, 0.f, 13.f);
+        m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_fire_asteroids_individual-") + to_wstring(rand() % 6), 0.1f, g_SFXVolume);
 
         ++m_iAttackCount;
 
@@ -868,7 +868,7 @@ void CButterGrump::Shield_Break()
         
     }
 
-    m_pGameInstance->Start_SFX_Distance_Delay(_wstring(L"A_sfx_shield_destroyed"), m_pControllerTransform->Get_State(CTransform::STATE_POSITION), 0.1f, g_SFXVolume, 0.f, 13.f);
+    m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_shield_destroyed"), 0.1f, g_SFXVolume);
 }
 
 void CButterGrump::Activate_Invinciblility(_bool _isActivate)
@@ -1118,8 +1118,8 @@ void CButterGrump::Roar()
     if (nullptr != m_pRoarEffect)
         m_pRoarEffect->Active_All(true);
 
-    m_pGameInstance->Start_SFX_Distance_Delay(_wstring(L"A_sfx_shield_roar"), m_pControllerTransform->Get_State(CTransform::STATE_POSITION), 0.1f, g_SFXVolume, 0.f, 13.f);
-    m_pGameInstance->Start_SFX_Distance_Delay(_wstring(L"A_sfx_raise_shield"), m_pControllerTransform->Get_State(CTransform::STATE_POSITION), 0.1f, g_SFXVolume, 0.f, 13.f);
+    m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_shield_roar"), 0.1f, g_SFXVolume);
+    m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_raise_shield"), 0.1f, g_SFXVolume);
 }
 
 void CButterGrump::EndRoar()
