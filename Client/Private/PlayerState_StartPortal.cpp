@@ -34,8 +34,9 @@ void CPlayerState_StartPortal::Update(_float _fTimeDelta)
 		|| INTERACT_RESULT::NO_INPUT == eResult
 		|| INTERACT_RESULT::CHARGE_CANCEL == eResult)
 	{
+		if (m_pOwner->Is_PlatformerMode())
+			m_pOwner->Set_GravityCompOn(true);
 		m_pOwner->Set_State(CPlayer::IDLE);
-
 		return;
 	}
 	else if(INTERACT_RESULT::SUCCESS == eResult)
@@ -72,7 +73,10 @@ void CPlayerState_StartPortal::Enter()
 	else
 	{
 		if(m_pOwner->Is_PlatformerMode())
+		{
 			m_pOwner->Set_GravityCompOn(false);
+			m_pOwner->Set_Upforce(0.f);
+		}
 		if (m_pOwner->Is_CyvberJotMode())
 		{
 			m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_CYBERJOTLITE_BOOKEXIT_DOWN);
@@ -109,8 +113,7 @@ void CPlayerState_StartPortal::Enter()
 void CPlayerState_StartPortal::Exit()
 {
 	m_pOwner->Set_PlayingAnim(true);
-	if (m_pOwner->Is_PlatformerMode())
-		m_pOwner->Set_GravityCompOn(true, CGravity::STATE_FLOOR);
+
 }
 
 void CPlayerState_StartPortal::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)

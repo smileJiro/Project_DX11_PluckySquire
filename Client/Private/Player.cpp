@@ -781,6 +781,8 @@ void CPlayer::Update(_float _fTimeDelta)
 	__super::Update(_fTimeDelta); /* Part Object Update */
 	if (m_pInteractableObject && false == dynamic_cast<CBase*>(m_pInteractableObject)->Is_Active())
 		m_pInteractableObject = nullptr;
+	//cout << "PlayerPos : " << VectorToString( m_pControllerTransform-> Get_Transform(COORDINATE_3D)->Get_State(CTransform::STATE_POSITION)) << endl;
+	cout << Get_UpForce() << endl;
 }
 
 // 충돌 체크 후 container의 transform을 밀어냈어. 
