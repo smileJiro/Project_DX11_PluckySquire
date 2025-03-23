@@ -29,7 +29,7 @@ public:
 	void Shoot(_fvector _vTargetPosition);
 private:
 	CPlayer* m_pPlayer = nullptr;
-	_float m_fShhotDelay = 0.1f;
+	_float m_fShhotDelay = 0.06f;
 	_float m_fShootTimeAcc = 0.f;
 	_vector m_vBarrelOffset = { 0.f,0.f,0.f };
 	class CPooling_Manager* m_pPoolMgr = nullptr;
