@@ -60,7 +60,11 @@ void CPostit_Page::Anim_Action(POSTIT_PAGE_ANIM_TYPE eType, _bool _isLoop, POSTI
     switch (eType)
     {
     case Client::CPostit_Page::POSTIT_PAGE_APPEAR:
+        START_SFX_DELAY(TEXT("A_sfx_page_disappear"), 0.2f, g_SFXVolume, false);
         Set_Render(true);
+        break;
+    case Client::CPostit_Page::POSTIT_PAGE_DISAPPEAR:
+        START_SFX_DELAY(TEXT("A_sfx_page_disappear"), 0.2f, g_SFXVolume, false);
         break;
     default:
         break;

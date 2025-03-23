@@ -34,7 +34,6 @@
         "SFX_Tag_List": [
           {
             "SFXPath": "A_sfx_iron_gate_shut"
-
           },
           {
             "SFXPath": "A_sfx_iron_gate_broken"
@@ -82,6 +81,20 @@
             "Word_Type": 1,
             "Action_Type": 4,
             "Param": 252.0
+          },         
+		  {
+            "Controller_Index": 0,
+            "Container_Index": 0,
+            "Word_Type": 0,
+            "Action_Type": 7,
+            "Param": 0
+          },
+          {
+            "Controller_Index": 0,
+            "Container_Index": 0,
+            "Word_Type": 1,
+            "Action_Type": 7,
+            "Param": 1
           }
         ]
       }

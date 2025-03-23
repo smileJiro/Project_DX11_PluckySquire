@@ -19,7 +19,8 @@ protected:
 		POSITION_CHANGE_Y,		//4
 		COLLIDER_ACTIVE,		//5
 		WORD_OBJECT_RENDER,		//6
-		WORD_ACTION_LAST		//7
+		PLAY_SFX,				//7
+		WORD_ACTION_LAST		//8
 	};
 
 public :
@@ -51,7 +52,7 @@ public:
 	virtual void					Late_Update(_float _fTimeDelta) override;
 	virtual HRESULT					Render() override;
 
-	virtual _bool					Action_Execute(_uint _iControllerIndex, _uint _iContainerIndex, _uint _iWordIndex);
+	virtual _bool					Action_Execute(_uint _iControllerIndex, _uint _iContainerIndex, _uint _iWordIndex, _bool _isFirst);
 	virtual _bool					Check_Action(_uint _iControllerIndex, _uint _iContainerIndex, _uint _iWordIndex);
 	virtual _bool					Register_Action(_uint _iControllerIndex, _uint _iContainerIndex, _uint _iWordIndex);
 	const WORD_ACTION*				Find_Action(_uint _iControllerIndex, _uint _iContainerIndex, _uint _iWordIndex);
@@ -71,7 +72,8 @@ protected :
 	vector <_wstring>		m_SFXNames;
 	vector <WORD_ACTION>	m_Actions;
 
-	
+	_bool					m_isObjectChange = false;
+	_bool					m_isPlaySFX = false;
 	_bool					m_isRegistered = false;
 	_uint					m_iControllerIndex = 0;	
 	_uint					m_iContainerIndex = 0;
