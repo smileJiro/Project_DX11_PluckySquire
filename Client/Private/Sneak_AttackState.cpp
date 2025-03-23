@@ -36,7 +36,8 @@ void CSneak_AttackState::State_Enter()
 {
 	_uint iPlayerAnim = static_cast<CModelObject*>(CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr()->Get_Body())->Get_CurrentAnimIndex();
 	if ((_uint)CPlayer::ANIM_STATE_3D::LATCH_KNOCKED_DOWN_AND_EATEN_FROM_BEHIND_LATCH != iPlayerAnim
-		&& (_uint)CPlayer::ANIM_STATE_3D::LATCH_KNOCKED_DOWN_AND_EATEN_FROM_BEHIND_LOOP_LATCH != iPlayerAnim)
+		&& (_uint)CPlayer::ANIM_STATE_3D::LATCH_KNOCKED_DOWN_AND_EATEN_FROM_BEHIND_LOOP_LATCH != iPlayerAnim
+		&& (_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_CAUGHT_GT != iPlayerAnim)
 	{
 		Beetle_CutScene();
 	}
@@ -278,8 +279,21 @@ void CSneak_AttackState::Beetle_CutScene()
 
 	// 2. Change Player Animation
 	CPlayer* pPlayer = CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr();
-	pPlayer->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_KNOCKED_DOWN_AND_EATEN_FROM_BEHIND_LATCH);
-
+	//if (m_eWayIndex == SNEAKWAYPOINTINDEX::CHAPTER2_1 || m_eWayIndex == SNEAKWAYPOINTINDEX::CHAPTER2_2
+	//	|| m_eWayIndex == SNEAKWAYPOINTINDEX::CHAPTER2_2_2 || m_eWayIndex == SNEAKWAYPOINTINDEX::CHAPTER2_3
+	//	|| m_eWayIndex == SNEAKWAYPOINTINDEX::CHAPTER2_BRIDGE_1 || m_eWayIndex == SNEAKWAYPOINTINDEX::CHAPTER2_BRIDGE_2
+	//	|| m_eWayIndex == SNEAKWAYPOINTINDEX::CHAPTER2_BRIDGE_3 || m_eWayIndex == SNEAKWAYPOINTINDEX::CHAPTER2_BRIDGE_4
+	//	|| m_eWayIndex == SNEAKWAYPOINTINDEX::CHAPTER8_BEETLE1 || m_eWayIndex == SNEAKWAYPOINTINDEX::CHAPTER8_BEETLE2)
+	
+	if (nullptr != dynamic_cast<CBeetle*>(m_pOwner))
+	{
+		pPlayer->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_KNOCKED_DOWN_AND_EATEN_FROM_BEHIND_LATCH);
+	}
+	else
+	{
+		pPlayer->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_ANIM_CAUGHT_GT);
+	}
+	pPlayer->Start_Invinciblity();
 	// 3. Player Input 막기
 	pPlayer->Set_BlockPlayerInput(true);
 }
@@ -325,7 +339,8 @@ void CSneak_AttackState::Check_Animation_End()
 	// Player Anim 바꾸기
 	CPlayer* pPlayer = CPlayerData_Manager::GetInstance()->Get_NormalPlayer_Ptr();
 	if (false == pPlayer->Get_Body()->Is_AnimTransition() && false == pPlayer->Get_Body()->Is_DuringAnimation()) {
-		pPlayer->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_KNOCKED_DOWN_AND_EATEN_FROM_BEHIND_LOOP_LATCH);
+		if((_uint)CPlayer::ANIM_STATE_3D::LATCH_KNOCKED_DOWN_AND_EATEN_FROM_BEHIND_LATCH ==pPlayer->Get_Body()->Get_CurrentAnimIndex())
+			pPlayer->Switch_Animation((_uint)CPlayer::ANIM_STATE_3D::LATCH_KNOCKED_DOWN_AND_EATEN_FROM_BEHIND_LOOP_LATCH);
 	}
 }
 

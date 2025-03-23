@@ -42,6 +42,7 @@
 #include "TiltSwapPusher.h"
 #include "MudPit.h"
 #include "Book.h"
+#include "BackGroundObject.h"
 
 //DEFENDER
 #include "DefenderPlayer.h"
@@ -226,6 +227,12 @@ HRESULT CLevel_Chapter_06::Initialize(LEVEL_ID _eLevelID)
 		assert(nullptr);
 	}
 	
+	if (FAILED(Ready_Layer_BackGroundWindow(TEXT("Layer_BackGround"))))
+	{
+		MSG_BOX(" Failed Ready_Layer_BackGroundWindow (CLevel_Chapter_06::Initialize)");
+		assert(nullptr);
+	}
+
 	CPlayerData_Manager::GetInstance()->Set_PlayerItem(TEXT("Sword"));
 	CPlayerData_Manager::GetInstance()->Set_PlayerItem(TEXT("Bomb_Stamp"));
 	CPlayerData_Manager::GetInstance()->Set_PlayerItem(TEXT("Flipping_Glove"));
@@ -974,6 +981,24 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Gear(const _wstring& _strLayerTag)
 	
 
 
+
+	return S_OK;
+}
+
+HRESULT CLevel_Chapter_06::Ready_Layer_BackGroundWindow(const _wstring& _strLayerTag)
+{
+	{ // BackGround Test
+
+		CBackGroundObject::BACKGROUNDOBJ_DESC Desc;
+		Desc.iCurLevelID = LEVEL_CHAPTER_6;
+		Desc.isCoordChangeEnable = false;
+		//Desc.strTexturePrototypeTag = TEXT("Prototype_Component_Texture_BackGround_Chapter2_Main");
+		Desc.strTexturePrototypeTag = TEXT("Prototype_Component_Texture_BackGround_Chapter6");
+		Desc.Build_3D_Transform(_float3(-20.0f, 120.0f, 150.0f), _float3(400.f, 400.f, 10.f));
+
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BackGroundObject"), LEVEL_CHAPTER_6, TEXT("Layer_BackGround"), &Desc)))
+			return E_FAIL;
+	}
 
 	return S_OK;
 }
