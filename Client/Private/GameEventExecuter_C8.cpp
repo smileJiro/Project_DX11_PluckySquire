@@ -356,7 +356,6 @@ void CGameEventExecuter_C8::Chapter8_Laser_Stage(_float _fTimeDelta)
 			{
 				static_cast<CModelObject*>(m_TargetObjects[LASER])->Switch_Animation(CBig_Laser::LASER_START);
 				START_SFX(L"A_sfx_laser_igniting", g_SFXVolume * 1.2f, false);
-				START_SFX(L"A_sfx_laser_shooting_loop", g_SFXVolume * 1.2f, true);
 			}
 			Next_Step_Over(1.5f);
 		}
@@ -888,6 +887,7 @@ void CGameEventExecuter_C8::Chapter8_Intro(_float _fTimeDelta)
 	{
 		if (Is_Start())
 		{
+			END_BGM();
 			CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::CUTSCENE);
 			CCamera_Manager::GetInstance()->Set_NextCutSceneData(TEXT("Chapter8_Intro"));
 		

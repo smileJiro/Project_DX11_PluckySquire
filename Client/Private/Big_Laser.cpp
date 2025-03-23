@@ -93,6 +93,7 @@ void CBig_Laser::Anim_End(COORDINATE _eCoord, _uint iAnimIdx)
         if (false == m_bReverseAnimation)
         {
             Set_AnimationLoop(COORDINATE_2D, LASER_LOOP, true);
+            START_SFX(L"A_sfx_laser_shooting_loop", g_SFXVolume * 1.2f, true);
             Switch_Animation(LASER_LOOP);
         }
         else

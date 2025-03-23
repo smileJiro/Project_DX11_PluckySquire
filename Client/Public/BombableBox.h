@@ -37,7 +37,7 @@ public:
 	void On_Detonated();
 	void On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx);
 	virtual void On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)override;
-	virtual _bool	Action_Execute(_uint _iControllerIndex, _uint _iContainerIndex, _uint _iWordIndex) override;
+	virtual _bool	Action_Execute(_uint _iControllerIndex, _uint _iContainerIndex, _uint _iWordIndex, _bool _isFirst) override;
 
 	virtual HRESULT	Render() override;
 
