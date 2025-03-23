@@ -34,6 +34,7 @@ void CBossDeadState::State_Enter()
 	CCamera_Manager::GetInstance()->Start_Shake_ByCount(CCamera_Manager::TARGET, 7.5f, 0.8f, 90000, CCamera::SHAKE_Y, 0.0f);
 	//_int iZoomLevel = CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET)->Get_CurrentZoomLevel();
 	//CCamera_Manager::GetInstance()->Start_Zoom(CCamera_Manager::TARGET, 3.0f, max(iZoomLevel - 3, 0), (_uint)RATIO_TYPE::EASE_IN);
+
 }
 
 void CBossDeadState::State_Update(_float _fTimeDelta)
@@ -52,6 +53,14 @@ void CBossDeadState::State_Update(_float _fTimeDelta)
 	case 0:
 		if (0.f <= m_fAccTime)
 		{
+			m_pGameInstance->Set_SFXTargetVolume(TEXT("LCD_MUS_C09_BOSSBATTLE_STAGE2_LOOP_Stem_Group1"), 0.f, 5.f);
+			m_pGameInstance->Set_SFXTargetVolume(TEXT("LCD_MUS_C09_BOSSBATTLE_STAGE2_LOOP_Stem_Group2"), 0.f, 5.f);
+			m_pGameInstance->Set_BGMTargetVolume(0.f, 5.f);
+
+			m_pGameInstance->Start_SFX(TEXT("A_sfx_C9DESK_LastBoss_Outro"), g_SFXVolume);
+			m_pGameInstance->Start_SFX(TEXT("LCD_MUS_C09_LASTBOSS_OUTRO_FULL"), 1.5f);
+			m_pGameInstance->Set_SFXTargetVolume(TEXT("LCD_MUS_C09_LASTBOSS_OUTRO_FULL"), g_SFXVolume);
+
 			matWorld.r[3] += XMVectorSet(0.f, 17.f, 0.f, 0.f);
 			CEffect_Manager::GetInstance()->Active_EffectMatrix(TEXT("BossDead_4"), true, matWorld);
 			matWorld.r[3] += XMVectorSet(-6.f, 0.f, 0.f, 0.f);
