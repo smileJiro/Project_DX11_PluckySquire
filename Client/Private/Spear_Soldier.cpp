@@ -67,11 +67,6 @@ HRESULT CSpear_Soldier::Initialize(void* _pArg)
     pDesc->_tStat.iMaxHP = 5;
     pDesc->_tStat.iDamg = 1;
 
-    if (true == pDesc->isSneakMode)
-    {
-        m_fAttackRange = m_fAlertRange;
-    }
-
 
     /* Create Test Actor (Desc를 채우는 함수니까. __super::Initialize() 전에 위치해야함. )*/
     if (FAILED(Ready_ActorDesc(pDesc)))
@@ -85,6 +80,11 @@ HRESULT CSpear_Soldier::Initialize(void* _pArg)
 
     if (FAILED(Ready_PartObjects()))
         return E_FAIL;
+
+    if (true == pDesc->isSneakMode)
+    {
+        m_fAttackRange = m_fAlertRange;
+    }
 
 
 	if (true == pDesc->isC6BossMode)

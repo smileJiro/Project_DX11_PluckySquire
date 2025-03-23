@@ -239,14 +239,28 @@ void CBossDeadState::State_Update(_float _fTimeDelta)
 	break;
 	case 12:
 	{
-		if (10.5f <= m_fAccTime) {
-			
+		if (9.5f <= m_fAccTime) {
+
+			///* ÅÂ¿õ Ãß°¡ */
 			CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D)->Enter_Section(TEXT("Chapter8_P2526"));
 			CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::TARGET_2D);
-			CCamera_Manager::GetInstance()->Start_FadeIn_White(1.5f);
+			CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D)->Set_WhiteFade(1);
+			CCamera_Manager::GetInstance()->Set_FadeRatio(CCamera_Manager::TARGET_2D, 0.f, true);
 
 			_float3 fDefaultPos = {};
 			Event_Book_Main_Section_Change_Start(1, &fDefaultPos);
+
+			++m_iEffectCount;
+
+		}
+	}
+	break;
+	case 13:
+	{
+		if (10.5f <= m_fAccTime) {
+			
+			
+			CCamera_Manager::GetInstance()->Start_FadeIn_White(1.5f);
 
 			Event_DeleteObject(m_pOwner);
 

@@ -866,13 +866,13 @@ HRESULT CFSM::Add_FormationState()
 	pState->Set_FSM(this);
 	m_States.emplace((_uint)MONSTER_STATE::SNEAK_CHASE, pState);
 
+
 	pState = CSneak_AttackState::Create(&Desc);
 	if (nullptr == pState)
 		return E_FAIL;
 	pState->Set_Owner(m_pOwner);
 	pState->Set_FSM(this);
 	m_States.emplace((_uint)MONSTER_STATE::SNEAK_ATTACK, pState);
-
 
 
 	pState = CIdleState::Create(&Desc);

@@ -94,6 +94,8 @@ public:
 	void Set_FarZ(const _float _fFar) { m_fFar = _fFar; }
 	void Set_CameraMoveSpeed(const _float _fMoveSpeed) { if (nullptr != m_pControllerTransform) m_pControllerTransform->Set_SpeedPerSec(_fMoveSpeed); }
 	void Off_Shake() { m_isShake = false; }
+	void Set_WhiteFade(_uint _iWhiteFade) { m_tDofData.isWhiteFade = _iWhiteFade; }
+
 public:
 	virtual void	Change_Target(const _float4x4* _pTargetWorldMatrix, _float _fChangingTime = 1.f) {};
 	virtual void	Change_Target(CGameObject* _pTarget, _float _fChangingTime = 1.f) {};

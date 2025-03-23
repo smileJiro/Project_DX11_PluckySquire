@@ -1159,7 +1159,7 @@ void CPlayer::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 
 void CPlayer::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
 {
-	if (m_bInvincible)
+	if (true == m_bInvincible)
 	{
 		return;
 	}
@@ -2608,13 +2608,13 @@ void CPlayer::Key_Input(_float _fTimeDelta)
 			Equip_Part(PLAYER_PART_BOMB_STMAP);
 		START_SFX_DELAY(TEXT("A_sfx_stamp_switch"), 0.f, g_SFXVolume, false);
 	}
-	if (KEY_DOWN(KEY::NUM3))
-	{
-		if(COORDINATE_2D == Get_CurCoord())
-			Set_State(TRANSFORM_IN);
-		else
-			Set_State(ENGAGE_BOSS);
-	}
+	//if (KEY_DOWN(KEY::NUM3))
+	//{
+	//	if(COORDINATE_2D == Get_CurCoord())
+	//		Set_State(TRANSFORM_IN);
+	//	else
+	//		Set_State(ENGAGE_BOSS);
+	//}
     if (KEY_DOWN(KEY::J))
     {
         //Set_State(CPlayer::EVICT);
