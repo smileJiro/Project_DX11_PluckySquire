@@ -57,9 +57,9 @@ void CCubeMap::Late_Update(_float _fTimeDelta)
 {
 	// Camera의 위치를 따라다니는 처리가 필요할 수 있겠지.
 
-	m_pControllerTransform->Set_Scale(_float3(500.f, 500.f, 500.f));
+	//m_pControllerTransform->Set_Scale(_float3(700.f, 700.f, 700.f));
 	// RenderGroup 추가.
-	m_pGameInstance->Add_RenderObject_New(m_iRenderGroupID, 10, this);
+	//m_pGameInstance->Add_RenderObject_New(m_iRenderGroupID, 30, this);
 }
 
 HRESULT CCubeMap::Render()

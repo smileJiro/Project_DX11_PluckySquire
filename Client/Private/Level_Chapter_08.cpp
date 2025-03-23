@@ -15,6 +15,7 @@
 #include "Effect2D_Manager.h"
 #include "JumpStarter.h"
 #include "Formation_Manager.h"
+#include "BackGroundObject.h"
 
 #include "CubeMap.h"
 #include "MainTable.h"
@@ -202,6 +203,13 @@ HRESULT CLevel_Chapter_08::Initialize(LEVEL_ID _eLevelID)
 		MSG_BOX(" Failed Ready_Layer_Gear (Level_Chapter_08::Initialize)");
 		assert(nullptr);
 	}
+
+	if (FAILED(Ready_Layer_BackGroundWindow(TEXT("Layer_BackGround"))))
+	{
+		MSG_BOX(" Failed Ready_Layer_BackGroundWindow (Level_Chapter_08::Initialize)");
+		assert(nullptr);
+	}
+
 	
 	/* Collision Check Matrix */
 	// 그룹필터 추가 >> 중복해서 넣어도 돼 내부적으로 걸러줌 알아서 Door_Yellow
@@ -570,6 +578,7 @@ HRESULT CLevel_Chapter_08::Ready_Lights()
 	m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/Chapter8_GrayScale.json"));
 	m_pGameInstance->Set_GrayScale_VtxAnimMesh(1);
 	m_pGameInstance->Set_GrayScale_VtxMesh(1);
+	//m_pGameInstance->Set_GrayScale_VtxPosTex(1);
 #endif // _DEBUG
 
 	//CONST_LIGHT LightDesc{};
@@ -2255,6 +2264,35 @@ HRESULT CLevel_Chapter_08::Ready_Layer_Gear(const _wstring& _strLayerTag)
 		CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter8_P1920"), pGameObject);
 	}// Chapter_8 FirstGear
 
+	return S_OK;
+}
+
+HRESULT CLevel_Chapter_08::Ready_Layer_BackGroundWindow(const _wstring& _strLayerTag)
+{
+	{ // BackGround Test
+
+		CBackGroundObject::BACKGROUNDOBJ_DESC Desc;
+		Desc.iCurLevelID = LEVEL_CHAPTER_8;
+		Desc.isCoordChangeEnable = false;
+		//Desc.strTexturePrototypeTag = TEXT("Prototype_Component_Texture_BackGround_Chapter2_Main");
+		Desc.strTexturePrototypeTag = TEXT("Prototype_Component_Texture_BackGround_Chapter2_RedHouse_1");
+		Desc.Build_3D_Transform(_float3(-20.0f, 60.0f, 150.0f), _float3(400.f, 400.f, 10.f));
+
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BackGroundObject"), LEVEL_CHAPTER_8, TEXT("Layer_BackGround"), &Desc)))
+			return E_FAIL;
+	}
+
+	{ // BackGround RedHouse
+
+		CBackGroundObject::BACKGROUNDOBJ_DESC Desc2;
+		Desc2.iCurLevelID = LEVEL_CHAPTER_8;
+		Desc2.isCoordChangeEnable = false;
+		Desc2.strTexturePrototypeTag = TEXT("Prototype_Component_Texture_BackGround_Chapter2_Main");
+		Desc2.Build_3D_Transform(_float3(-350.0f, 80.0f, -100.0f), _float3(300.f, 300.f, 10.f), _float3(0.0f, XMConvertToRadians(-90.f), 0.0f));
+
+		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BackGroundObject"), LEVEL_CHAPTER_8, TEXT("Layer_BackGround"), &Desc2)))
+			return E_FAIL;
+	}
 	return S_OK;
 }
 

@@ -13,7 +13,7 @@ protected:
 public:
 	HRESULT Initialize(_wstring _strName, _uint _iWidth, _uint _iHeight, DXGI_FORMAT _ePixelFormat, const _float4& _vClearColor);
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 public:
 	HRESULT Ready_Debug(_float _fX, _float _fY, _float _fSizeX, _float _fSizeY);
 	HRESULT Render_Debug(CShader* _pShader, CVIBuffer_Rect* _pVIBufferRect);
@@ -42,7 +42,7 @@ protected:
 	ID3D11ShaderResourceView*	m_pSRV = nullptr;
 	_float4						m_vClearColor = {};
 	_float2						m_vSize = {};
-#ifdef _DEBUG
+#ifdef NDEBUG
 protected:
 	_float4x4					m_WorldMatrix = {}; /* 디버그용 렌더를 하기 위해 사용 할 WorldMatrix */
 #endif // _DEBUG

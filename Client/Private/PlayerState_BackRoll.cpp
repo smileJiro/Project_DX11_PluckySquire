@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "PlayerState_BackRoll.h"
+#include "GameInstance.h"
 
 CPlayerState_BackRoll::CPlayerState_BackRoll(CPlayer* _pOwner)
 	:CPlayerState(_pOwner, CPlayer::ELECTRIC)
@@ -25,6 +26,7 @@ void CPlayerState_BackRoll::Update(_float _fTimeDelta)
 void CPlayerState_BackRoll::Enter()
 {
 	assert(COORDINATE_2D == m_pOwner->Get_CurCoord());
+	START_SFX_DELAY(TEXT("A_sfx_JotLeverPulled_Success"), 0.0f, g_SFXVolume, false);
 	m_pOwner->Switch_Animation((_uint)CPlayer::ANIM_STATE_2D::PLAYER_ROLL_INTO);
 	m_vRollTime.y = 0.0f;
 	m_isRollLoop = false;

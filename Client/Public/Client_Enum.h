@@ -30,7 +30,7 @@ namespace Client
 		PR3D_AFTERPOSTPROCESSING =	59,
 
 		PR3D_COMBINE =				60, // ToneMapping
-
+		
 		PR3D_BLEND =				70,
 
 		PR3D_EFFECT =				80,

@@ -118,7 +118,7 @@ HRESULT CRenderer::Initialize()
     if (FAILED(Ready_DepthStencilView(DSV_BOOK2D, RTSIZE_BOOK2D_X, RTSIZE_BOOK2D_Y)))
         return E_FAIL;
 
-#ifdef _DEBUG
+#ifdef NDEBUG
     /* 위치 설정. */
     _float fSizeX = ViewportDesc.Width * 0.2f;
     _float fSizeY = ViewportDesc.Height * 0.2f;
@@ -212,7 +212,7 @@ HRESULT CRenderer::Draw_RenderObject()
         return E_FAIL;
     }
 
-#ifdef _DEBUG
+#ifdef NDEBUG
     if (true == m_isDebugRender)
     {
         if (FAILED(Render_Debug()))
@@ -491,7 +491,7 @@ HRESULT CRenderer::Render_After_Effect()
     return S_OK;
 }
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 
 HRESULT CRenderer::Render_Debug()
 {
@@ -628,7 +628,7 @@ void CRenderer::Free()
 {
     __super::Free();
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 
     for (auto& pDebugCom : m_DebugComponents)
         Safe_Release(pDebugCom);

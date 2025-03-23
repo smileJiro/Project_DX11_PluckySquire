@@ -353,6 +353,13 @@ PS_OUT PS_BACKGROUND(PS_IN In)
     float fSpecular = 0.0f;
     float fEmissive = 0.0f;
 
+    
+    if (g_isGrayScale == 1)
+    {
+        vAlbedo *= Material.MultipleAlbedo;
+        vAlbedo.rgb = dot(vAlbedo.rgb, float3(0.299f, 0.587f, 0.114f)) + (vAlbedo.rgb * g_fGrayScaleColorFactor);
+    }
+    
     if (vAlbedo.a < 0.1f)
         discard;
     
@@ -895,7 +902,7 @@ technique11 DefaultTechnique
 
     pass Background // 14
     {
-        SetRasterizerState(RS_Default);
+        SetRasterizerState(RS_Cull_None);
         SetDepthStencilState(DSS_Default, 0);
         SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
         VertexShader = compile vs_5_0 VS_MAIN();
