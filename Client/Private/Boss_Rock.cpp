@@ -124,7 +124,7 @@ void CBoss_Rock::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
     if (0 >= m_tStat.iHP && false == Is_Dead())
     {
         CEffect_Manager::GetInstance()->Active_EffectMatrix(TEXT("RockBroke"), true, m_pControllerTransform->Get_WorldMatrix());
-        m_pGameInstance->Start_SFX_Distance_Delay(_wstring(L"A_sfx_asteroid_explosion-") + to_wstring(rand() % 4), m_pControllerTransform->Get_State(CTransform::STATE_POSITION), 0.1f, g_SFXVolume, 0.f, 13.f);
+        m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_asteroid_explosion-") + to_wstring(rand() % 4), 0.1f, g_SFXVolume);
         Event_DeleteObject(this);
     }
 }

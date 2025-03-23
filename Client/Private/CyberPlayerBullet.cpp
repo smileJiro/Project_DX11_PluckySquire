@@ -181,12 +181,12 @@ void CCyberPlayerBullet::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& 
 		if (nullptr != dynamic_cast<CBoss_TennisBall*>(_Other.pActorUserData->pOwner))
 		{
 			CEffect_Manager::GetInstance()->Active_EffectPosition(TEXT("BulletHitTennis"), true, Get_FinalPosition());
-			m_pGameInstance->Start_SFX_Distance_Delay(_wstring(L"A_sfx_jot_laser_hits_tennisball-") + to_wstring(rand() % 6), m_pControllerTransform->Get_State(CTransform::STATE_POSITION), 0.1f, g_SFXVolume, 0.f, 13.f);
+			m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_jot_laser_hits_tennisball-") + to_wstring(rand() % 6), 0.1f, g_SFXVolume);
 		}
 		else if (nullptr != dynamic_cast<CButterGrump_Shield*>(_Other.pActorUserData->pOwner))
 		{
 			CEffect_Manager::GetInstance()->Active_EffectPosition(TEXT("BulletHitShield"), true, Get_FinalPosition());
-			m_pGameInstance->Start_SFX_Distance_Delay(_wstring(L"A_sfx_impact_nodamage-") + to_wstring(rand() % 6), m_pControllerTransform->Get_State(CTransform::STATE_POSITION), 0.1f, g_SFXVolume, 0.f, 13.f);
+			m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_impact_nodamage-") + to_wstring(rand() % 6), 0.1f, g_SFXVolume);
 		}
 		else
 		{
