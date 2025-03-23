@@ -239,9 +239,9 @@ void CBossDeadState::State_Update(_float _fTimeDelta)
 	case 12:
 	{
 		if ((1.f - EPSILON) <= CCamera_Manager::GetInstance()->Get_DofBufferData().fFadeRatio) {
+			CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D)->Enter_Section(TEXT("Chapter8_P2526"));
 			CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::TARGET_2D);
 			CCamera_Manager::GetInstance()->Start_FadeIn_White(1.f);
-			CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D)->Enter_Section(TEXT("Chapter8_P2526"));
 		}
 	}
 	break;
