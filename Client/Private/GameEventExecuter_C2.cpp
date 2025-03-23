@@ -85,6 +85,9 @@ void CGameEventExecuter_C2::Update(_float _fTimeDelta)
 		case Client::CTrigger_Manager::C02P0910_MONSTER_SPAWN:
 			C020910_Monster_Spawn(_fTimeDelta);
 			break;
+		case Client::CTrigger_Manager::CHAPTER2_MAPCHANGE:
+			Chapter2_MapChange(_fTimeDelta);
+			break;
 		case Client::CTrigger_Manager::CHAPTER2_BOOKMAGIC:
 			Chapter2_BookMagic(_fTimeDelta);
 			break;
@@ -235,8 +238,8 @@ void CGameEventExecuter_C2::Chapter2_BookMagic(_float _fTimeDelta)
 			CEffect2D_Manager::GetInstance()->Play_Effect(L"beam", SECTION_MGR->Get_Cur_Section_Key(), XMMatrixTranslation(-236.f, 217.f, 0.f), 2.8f, 0, true, 999.f);// ºö½î´Â°Å
 			CEffect2D_Manager::GetInstance()->Play_Effect(L"EffectBack", SECTION_MGR->Get_Cur_Section_Key(), XMMatrixTranslation(-276.f, 181.4f, 0.f), 0.f, 0); // ¹é ½ÃÀÛ
 			CEffect2D_Manager::GetInstance()->Play_Effect(L"EffectBack", SECTION_MGR->Get_Cur_Section_Key(), XMMatrixTranslation(-276.f, 181.4f, 0.f), 0.8f, 1, true, 999.f); //¹é ·çÇÁ
-			CEffect2D_Manager::GetInstance()->Play_Effect(L"hum", SECTION_MGR->Get_Cur_Section_Key(), XMMatrixTranslation(-276.f, 172.4f, 0.f), 0.f, 0);
-			CEffect2D_Manager::GetInstance()->Play_Effect(L"hum", SECTION_MGR->Get_Cur_Section_Key(), XMMatrixTranslation(-276.f, 172.4f, 0.f), 1.8f, 1, false, 999.f);
+			//CEffect2D_Manager::GetInstance()->Play_Effect(L"hum", SECTION_MGR->Get_Cur_Section_Key(), XMMatrixTranslation(-276.f, 172.4f, 0.f), 0.f, 0);
+			CEffect2D_Manager::GetInstance()->Play_Effect(L"hum", SECTION_MGR->Get_Cur_Section_Key(), XMMatrixTranslation(-276.f, 178.4f, 0.f), 1.8f, 1, false, 999.f);
 			CEffect2D_Manager::GetInstance()->Play_Effect(L"storm", SECTION_MGR->Get_Cur_Section_Key(), XMMatrixTranslation(10.f, 280.f, 0.f), 3.0f, 0, false);
 			CEffect2D_Manager::GetInstance()->Play_Effect(L"storm", SECTION_MGR->Get_Cur_Section_Key(), XMMatrixTranslation(10.f, 280.f, 0.f), 3.6f, 1, true, 999.f);
 
@@ -447,6 +450,19 @@ void CGameEventExecuter_C2::Chapter2_Intro(_float _fTimeDelta)
 	}
 }
 
+void CGameEventExecuter_C2::Chapter2_MapChange(_float _fTimeDelta)
+{
+	m_fTimer += _fTimeDelta;
+
+	if (Change_PlayMap(0.f))
+	{
+
+		m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/Chapter2_Night_Main.json"));
+		m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/Chapter2_Night_Main.json"));
+		GameEvent_End();
+	}
+}
+
 void CGameEventExecuter_C2::Chapter2_Humgrump(_float _fTimeDelta)
 {
 	m_fTimer += _fTimeDelta;
@@ -462,8 +478,6 @@ void CGameEventExecuter_C2::Chapter2_Humgrump(_float _fTimeDelta)
 
 			m_pGameInstance->Start_SFX(_wstring(L"LCD_MUS_C02_CONFRONTINGHUMGRUMP_P4344_CUTSCENE_FULL"), g_SFXVolume);
 			m_pGameInstance->Start_SFX(_wstring(L"A_sfx_ejected_sequence"), g_SFXVolume);
-			m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/Chapter2_Night_Main.json"));
-			m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/Chapter2_Night_Main.json"));
 			
 
 			CCamera_2D* pCamera = static_cast<CCamera_2D*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D));
@@ -483,7 +497,7 @@ void CGameEventExecuter_C2::Chapter2_Humgrump(_float _fTimeDelta)
 			//pCamera->Start_Changing_AtOffset(3.f, XMVectorSet(0.f, 4.f, 0.f, 0.f), EASE_IN_OUT);
 
 		}
-		else if(Change_PlayMap(0.f))
+		else 
 		{
 			Next_Step(true);
 		}
