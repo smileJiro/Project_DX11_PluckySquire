@@ -328,9 +328,15 @@ void CGameEventExecuter_C4::Chapter4_GateEvent(_float _fTimeDelta)
 	{
 		if (Is_Start())
 		{
-			CCamera_Manager::GetInstance()->Save_ArmData(CCamera_Manager::TARGET_2D);
-			CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Increase(CCamera_Manager::TARGET_2D,
-				1.f,8.f, EASE_IN_OUT);
+			//CCamera_Manager::GetInstance()->Save_ArmData(CCamera_Manager::TARGET_2D);
+			/*CCamera_Manager::GetInstance()->Start_Changing_ArmLength_Increase(CCamera_Manager::TARGET_2D,
+				1.f,8.f, EASE_IN_OUT);*/
+
+			CCamera_Manager::GetInstance()->Start_Changing_ArmLength(CCamera_Manager::TARGET_2D, 1.f, 13.6, EASE_IN_OUT);
+			CCamera_Manager::GetInstance()->Start_Changing_AtOffset(CCamera_Manager::TARGET_2D, 1.f, XMVectorSet(0.f, -3.f, 0.f, 0.f), EASE_IN_OUT);
+			CCamera_Manager::GetInstance()->Start_Zoom(CCamera_Manager::TARGET_2D, 1.f, CCamera::LEVEL_5, EASE_IN_OUT);
+			CCamera_Manager::GetInstance()->Start_Turn_ArmVector(CCamera_Manager::TARGET_2D, 1.f, XMVector3Normalize(XMVectorSet(0.0f, 0.1710f, -0.9853, 0.f)), EASE_IN_OUT);
+
 			CPlayer* pPlayer = Get_Player();
 			
 			if(nullptr != pPlayer)
@@ -392,8 +398,12 @@ void CGameEventExecuter_C4::Chapter4_GateEvent(_float _fTimeDelta)
 	{
 		if (Is_Start())
 		{
+			//CCamera_Manager::GetInstance()->Start_ResetArm_To_SettingPoint(CCamera_Manager::TARGET_2D,1.f);
+			CCamera_Manager::GetInstance()->Start_Changing_ArmLength(CCamera_Manager::TARGET_2D, 1.f, 12.11f, EASE_IN_OUT);
+			CCamera_Manager::GetInstance()->Start_Changing_AtOffset(CCamera_Manager::TARGET_2D, 1.f, XMVectorSet(0.f, -3.f, -2.f, 0.f), EASE_IN_OUT);
+			CCamera_Manager::GetInstance()->Start_Zoom(CCamera_Manager::TARGET_2D, 1.f, CCamera::LEVEL_5, EASE_IN_OUT);
+			CCamera_Manager::GetInstance()->Start_Turn_ArmVector(CCamera_Manager::TARGET_2D, 1.f, XMVectorSet(0.0f, 0.5716f, -0.8205f, 0.f), EASE_IN_OUT);
 
-			CCamera_Manager::GetInstance()->Start_ResetArm_To_SettingPoint(CCamera_Manager::TARGET_2D,1.f);
 			CPlayer* pPlayer = Get_Player();
 
 			if (nullptr != pPlayer)

@@ -69,5 +69,12 @@
         "Arm_Tag": [
           "Chapter4_Default"
         ]
+    },
+    {
+        "Section_Tag": "Chapter4_SKSP_Postit",
+        "Arm_Tag": [
+          "Chapter4_Default",
+           "Chapter4_Default"
+        ]
     }
 ]
