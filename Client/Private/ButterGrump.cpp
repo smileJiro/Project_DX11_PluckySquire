@@ -108,6 +108,10 @@ HRESULT CButterGrump::Initialize(void* _pArg)
     pModelObject->Set_Animation(IDLE);
     
     pModelObject->Register_OnAnimEndCallBack(bind(&CButterGrump::Animation_End, this, placeholders::_1, placeholders::_2));
+     //156 diffuse 1
+    static_cast<C3DModel*>(pModelObject->Get_Model(COORDINATE_3D))->Binding_TextureIndex(1, aiTextureType_DIFFUSE, 1);
+    static_cast<C3DModel*>(pModelObject->Get_Model(COORDINATE_3D))->Binding_TextureIndex(5, aiTextureType_DIFFUSE, 1);
+    static_cast<C3DModel*>(pModelObject->Get_Model(COORDINATE_3D))->Binding_TextureIndex(6, aiTextureType_DIFFUSE, 1);
 
     Bind_AnimEventFunc("On_Attack", bind(&CButterGrump::On_Attack, this));
     Bind_AnimEventFunc("On_Move", bind(&CButterGrump::On_Move, this));
@@ -159,6 +163,9 @@ HRESULT CButterGrump::Initialize(void* _pArg)
     }
 
     Safe_AddRef(m_pTarget);
+
+
+    
 
     return S_OK;
 }
