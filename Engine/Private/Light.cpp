@@ -97,7 +97,7 @@ HRESULT CLight::Render_Light(CShader* _pShader, CVIBuffer_Rect* _pVIBuffer)
 
 
 #ifdef NDEBUG
-	m_pGameInstance->Add_BaseDebug(this);
+	//m_pGameInstance->Add_BaseDebug(this);
 	//
 #endif // _DEBUG
 
