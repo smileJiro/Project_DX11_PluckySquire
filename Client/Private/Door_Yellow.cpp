@@ -138,8 +138,8 @@ void CDoor_Yellow::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
         m_bReverseAnimation = false;
 
         Switch_Animation_By_State();
-        //m_pGameInstance->End_SFX(TEXT("A_sfx_Gate_loop"));
-        //m_pGameInstance->Start_SFX(TEXT("A_sfx_Gate_FinishedMoving"), g_SFXVolume);
+        m_pGameInstance->End_SFX(TEXT("A_sfx_Gate_loop"));
+        m_pGameInstance->Start_SFX(TEXT("A_sfx_Gate_FinishedMoving"), g_SFXVolume);
     }
 
     else if (CLOSE == m_eDoorState)
