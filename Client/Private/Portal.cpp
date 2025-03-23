@@ -426,7 +426,8 @@ void CPortal::Active_OnDisable()
 
 void CPortal::Set_FirstActive(_bool _bFirstActive)
 {
-    START_SFX(L"A_sfx_portal_fade_in", 40.f, false);
+    if(false == m_isFirstActive && true == _bFirstActive)
+        START_SFX(L"A_sfx_portal_fade_in", 40.f, false);
 
     m_isFirstActive = _bFirstActive;
     Set_Active(m_isFirstActive);
