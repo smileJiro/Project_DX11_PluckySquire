@@ -1,7 +1,9 @@
 [
 	{
 		"Section_Name": "Chapter8_P0102",
+		"Section_Start": true,
 		"Section_BackGround_Name": "Chapter8_P0102_BackGround",
+		"Section_Start": true,
 		"Section_Type": 1,
 		"Section_Default": 0,
 		"Section_Info": {
@@ -162,7 +164,6 @@
 		"Section_File_Name": "Chapter8_P2122.m2chc",
 		"Section_BackGround_Name": "Chapter8_P2122_BackGround",
 		"Section_Type": 0,
-		"Section_Start": true,
 		"Section_Info": {
 			"Camera_Zoom_Ratio": 1.5,
 			"Rotation": true,
