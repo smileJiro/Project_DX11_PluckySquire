@@ -243,7 +243,8 @@ void CFriend_Pip::Switch_AnimIndex_State()
 		Change_AnimIndex_CurDirection();
 		break;
 	case Client::CFriend::FRIEND_MOJAM:
-		m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_pip_appears"), 0.75f, 50.f);
+		if (LEVEL_CHAPTER_2 == m_iCurLevelID)
+			m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_pip_appears"), 0.75f, g_SFXVolume);
 
 		Switch_PartAnim(PART_BODY, ANIM::PIP_C09_MOJAM, false);
 		break;
