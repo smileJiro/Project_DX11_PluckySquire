@@ -887,7 +887,7 @@ void CCamera_2D::Switching(_float _fTimeDelta)
 	/*CSection* pSection = CSection_Manager::GetInstance()->Find_Section(m_strSectionName);
 	_uint iNormalType = static_cast<CSection_2D*>(pSection)->Get_Override_Normal();*/
 
-	if (ARM_NORMAL_TYPE::NORMAL_MAP == m_iNormalType) {
+	if (ARM_NORMAL_TYPE::NORMAL_MAP == m_iNormalType && CSection_2D::SKSP == m_iPlayType) {
 		auto& iter = m_NormalTargets.find(m_strSectionName);
 
 		if (iter == m_NormalTargets.end())
