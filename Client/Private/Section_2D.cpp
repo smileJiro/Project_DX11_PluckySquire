@@ -230,7 +230,7 @@ _float2 CSection_2D::Get_RenderTarget_Size()
 	return m_pMap->Get_RenderTarget_Size();
 }
 
-HRESULT CSection_2D::Word_Action_To_Section(const _wstring& _strSectionTag, _uint _iControllerIndex, _uint _iContainerIndex, _uint _iWordType, _bool _isRegistered)
+HRESULT CSection_2D::Word_Action_To_Section(const _wstring& _strSectionTag, _uint _iControllerIndex, _uint _iContainerIndex, _uint _iWordType, _bool _isRegistered, _bool _isFirst)
 {
 
 	CLayer* pTargetLayer = m_Layers[SECTION_2D_PLAYMAP_WORDOBJ];
@@ -263,11 +263,11 @@ HRESULT CSection_2D::Word_Action_To_Section(const _wstring& _strSectionTag, _uin
 		}
 		else 
 		{
-			for_each(GameObjects.begin(), GameObjects.end(), [&_iControllerIndex, &_iContainerIndex, &_iWordType](CGameObject* pGameObject) {
+			for_each(GameObjects.begin(), GameObjects.end(), [&_iControllerIndex, &_iContainerIndex, &_iWordType, &_isFirst](CGameObject* pGameObject) {
 				C2DMapWordObject* pWordObj = dynamic_cast<C2DMapWordObject*>(pGameObject);
 
 				if (nullptr != pWordObj)
-					pWordObj->Action_Execute(_iControllerIndex, _iContainerIndex, _iWordType);
+					pWordObj->Action_Execute(_iControllerIndex, _iContainerIndex, _iWordType, _isFirst);
 				});
 		}
 	}
@@ -288,6 +288,12 @@ HRESULT CSection_2D::Section_Enter(const _wstring& _strPreSectionTag)
 	return S_OK;
 }
 
+
+void CSection_2D::Play_SectionBGM()
+{
+	if (TEXT("") != m_strBGMTag)
+		m_pGameInstance->Start_BGM(m_strBGMTag, g_BGMVolume);
+}
 
 HRESULT CSection_2D::Register_WorldCapture(CModelObject* _pModel)
 {

@@ -88,7 +88,7 @@ HRESULT CNewRenderer::Draw_RenderObject()
 			Pair.second->Render(m_pShader, m_pVIBuffer);
 	}
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 	if (true == m_isDebugRender)
 	{
 		if (FAILED(Render_Debug()))
@@ -298,7 +298,7 @@ HRESULT CNewRenderer::Load_IBL(const _wstring& _strIBLJsonPath)
 	return S_OK;
 }
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 void CNewRenderer::Update_Imgui()
 {
 	for (auto& Pair : m_RenderGroups)
@@ -343,8 +343,15 @@ void CNewRenderer::Set_GrayScale_VtxAnimMesh(_int _isGrayScale)
 	m_pVtxAnimMesh->Bind_RawValue("g_isGrayScale", &m_isGray_VtxAnimMesh, sizeof(_int));
 }
 
+void CNewRenderer::Set_GrayScale_VtxPosTex(_int _isGrayScale)
+{
+	m_isGray_VtxPosTex = 0 < _isGrayScale ? 1 : 0;
 
-#ifdef _DEBUG
+	m_pVtxPosTex->Bind_RawValue("g_isGrayScale", &m_isGray_VtxPosTex, sizeof(_int));
+}
+
+
+#ifdef NDEBUG
 
 HRESULT CNewRenderer::Render_Debug()
 {
@@ -443,7 +450,7 @@ void CNewRenderer::Free()
 		Safe_Release(Pair.second);
 	}
 	m_DSVs.clear();
-#ifdef _DEBUG
+#ifdef NDEBUG
 	for (auto& pDebugComponent : m_DebugComponents)
 	{
 		Safe_Release(pDebugComponent);
@@ -459,6 +466,7 @@ void CNewRenderer::Free()
 
 	Safe_Release(m_pVtxMesh);
 	Safe_Release(m_pVtxAnimMesh);
+	Safe_Release(m_pVtxPosTex);
 	Safe_Release(m_pGlobalIBLConstBuffer);
 	Safe_Release(m_pVIBuffer);
 	Safe_Release(m_pShader);

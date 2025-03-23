@@ -125,7 +125,7 @@ public:
 	_bool								Is_Scrolling() { return m_isScrolling; }
 	_uint								Get_Override_Normal() { return m_iOverride_Normal; }
 
-	HRESULT								Word_Action_To_Section(const _wstring& _strSectionTag, _uint _iControllerIndex, _uint _iContainerIndex, _uint _iWordType, _bool _isRegistered);
+	HRESULT								Word_Action_To_Section(const _wstring& _strSectionTag, _uint _iControllerIndex, _uint _iContainerIndex, _uint _iWordType, _bool _isRegistered, _bool _isFirst = false);
 
 
 	_float								Get_CameraRatio() { return m_fCameraRatio;  }
@@ -163,6 +163,8 @@ public:
 	virtual HRESULT						Section_Exit(const _wstring& _strNextSectionTag) { return S_OK; };
 
 
+
+	virtual void		Play_SectionBGM();
 public:
 	HRESULT					Register_WorldCapture(CModelObject* _pModel);
 

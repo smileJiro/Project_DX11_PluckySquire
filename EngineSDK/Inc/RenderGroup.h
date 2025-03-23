@@ -22,7 +22,7 @@ protected:
 
 public:
 	virtual HRESULT				Initialize(void* _pArg);
-#ifdef _DEBUG
+#ifdef NDEBUG
 	virtual void				Update_Imgui() { return; }
 #endif // _DEBUG
 

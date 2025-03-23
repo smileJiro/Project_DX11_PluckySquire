@@ -60,6 +60,8 @@ HRESULT CCamera::Initialize(void* _pArg)
 	Ready_DofConstData(pDesc);
 	Create_Arm(pDesc);
 
+
+	
 	return S_OK;
 }
 

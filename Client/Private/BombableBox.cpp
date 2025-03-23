@@ -91,7 +91,7 @@ void CBombableBox::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOth
 {
 }
 
-_bool CBombableBox::Action_Execute(_uint _iControllerIndex, _uint _iContainerIndex, _uint _iWordIndex)
+_bool CBombableBox::Action_Execute(_uint _iControllerIndex, _uint _iContainerIndex, _uint _iWordIndex, _bool _isFirst)
 {
     _bool isExecute = false;
     for_each(m_Actions.begin(), m_Actions.end(), [this, &isExecute, &_iControllerIndex, &_iContainerIndex, &_iWordIndex]
