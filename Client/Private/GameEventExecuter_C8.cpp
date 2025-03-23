@@ -640,7 +640,7 @@ void CGameEventExecuter_C8::Chapter8_Friend_Appear_Violet(_float _fTimeDelta)
 	{
 		if (Is_Start())
 		{
-			START_SFX(L"A_sfx_violet_wake_up", g_BGMVolume * 0.8f, false);
+			START_SFX_DELAY(L"A_sfx_violet_wake_up", 2.f,g_BGMVolume * 0.8f, false);
 			static_cast<CFriend*>(m_TargetObjects[VIOLET])->Change_AnyState(CFriend_Violet::VIOLET_C09_LYINGTOSITTINGUP, false, CFriend::DIR_RIGHT);
 		}
 
@@ -662,7 +662,7 @@ void CGameEventExecuter_C8::Chapter8_Friend_Appear_Violet(_float _fTimeDelta)
 	{
 		if (Is_Start())
 		{
-			START_SFX(L"A_sfx_violet_jumping_off_bed", g_BGMVolume * 0.8f, false);
+			START_SFX_DELAY(L"A_sfx_violet_jumping_off_bed", 3.f, g_BGMVolume * 0.8f, false);
 			static_cast<CFriend*>(m_TargetObjects[VIOLET])->Change_AnyState(CFriend_Violet::VIOLET_C09_JUMPINGOFFBED, false, CFriend::DIR_RIGHT);
 
 			m_pGameInstance->Transition_BGM(TEXT("LCD_MUS_C09_THRASHREUNITED_P5152_LOOP_Stem_Base"), g_BGMVolume);

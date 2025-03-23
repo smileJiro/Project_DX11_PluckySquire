@@ -1558,7 +1558,7 @@ void CGameEventExecuter_C6::Chapter6_Humgrump_Revolt(_float _fTimeDelta)
 		if (false == static_cast<CModelObject*>(m_TargetObjects[1])->Is_DuringAnimation()) {
 			static_cast<CModelObject*>(m_TargetObjects[1])->Switch_Animation(CNpc_MoonBeard::CHAPTER6_SURPRISED_IDLE);
 			static_cast<CModelObject*>(m_TargetObjects[0])->Switch_Animation(CNpc_Humgrump::CHAPTER6_WINDUP);
-			START_SFX_DELAY(L"A_sfx_humpgrump_death_sequence", 0.9f, g_BGMVolume * 1.5f, false);
+			START_SFX_DELAY(L"A_sfx_humpgrump_death_sequence", 0.f, g_BGMVolume * 1.5f, false);
 
 			Next_Step(true);
 		}
