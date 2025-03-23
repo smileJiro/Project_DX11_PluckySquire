@@ -245,7 +245,7 @@ void CBossDeadState::State_Update(_float _fTimeDelta)
 			CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D)->Enter_Section(TEXT("Chapter8_P2526"));
 			CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::TARGET_2D);
 			CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D)->Set_WhiteFade(1);
-			CCamera_Manager::GetInstance()->Set_FadeRatio(CCamera_Manager::TARGET_2D, 0.f, true);
+			CCamera_Manager::GetInstance()->Set_FadeRatio(CCamera_Manager::TARGET_2D, 1.f, true);
 
 			_float3 fDefaultPos = {};
 			Event_Book_Main_Section_Change_Start(1, &fDefaultPos);
