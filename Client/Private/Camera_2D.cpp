@@ -36,7 +36,7 @@ HRESULT CCamera_2D::Initialize(void* pArg)
 	pDesc->isCoordChangeEnable = false;
 	pDesc->tTransform3DDesc.fSpeedPerSec = 10.f;
 	pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(180.f);
-	pDesc->fFocusDistance = 20.f;
+	pDesc->fFocusDistance = 25.f;
 	m_fSmoothSpeed = pDesc->fSmoothSpeed;
 	m_eCameraMode = pDesc->eCameraMode;
 	m_vAtOffset = pDesc->vAtOffset;

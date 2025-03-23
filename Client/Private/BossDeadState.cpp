@@ -233,16 +233,19 @@ void CBossDeadState::State_Update(_float _fTimeDelta)
 			///* ÅÂ¿õ Ãß°¡ */
 			CCamera_Manager::GetInstance()->Start_FadeOut_White(1.0f);
 			++m_iEffectCount;
+
 		}
 	}
 	break;
 	case 12:
 	{
-		if ((1.f - EPSILON) <= CCamera_Manager::GetInstance()->Get_DofBufferData().fFadeRatio) {
+		if (7.5f <= m_fAccTime) {
 			CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D)->Enter_Section(TEXT("Chapter8_P2526"));
 			CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::TARGET_2D);
-			CCamera_Manager::GetInstance()->Start_FadeIn_White(1.f);
+			CCamera_Manager::GetInstance()->Start_FadeIn_White(1.5f);
+			++m_iEffectCount;
 		}
+
 	}
 	break;
 	default:

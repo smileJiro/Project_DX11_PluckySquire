@@ -45,8 +45,8 @@ HRESULT CBoss_TennisBall::Initialize(void* _pArg)
 {
     BOSS_TENNISBALL_DESC* pDesc = static_cast<BOSS_TENNISBALL_DESC*>(_pArg);
 
-    pDesc->_tStat.iMaxHP = 10;
-    pDesc->_tStat.iHP = 10;
+    pDesc->_tStat.iMaxHP = 17;
+    pDesc->_tStat.iHP = 17;
     pDesc->_tStat.iDamg = 1;
 
     if (FAILED(Ready_ActorDesc(pDesc)))
