@@ -183,7 +183,7 @@ void CGameEventExecuter_C4::Chapter4_Intro(_float _fTimeDelta)
 	else
 	{
 		GameEvent_End();
-		m_pGameInstance->Transition_BGM(TEXT("LCD_MUS_C04_CASTLES_LOOP_FULL_Stem_Base"), 20.f);
+		m_pGameInstance->Transition_BGM(TEXT("LCD_MUS_C04_CASTLES_LOOP_FULL_Stem_Base"), 20.f, 5.f);
 		m_pGameInstance->Start_SFX(TEXT("LCD_MUS_C04_CASTLES_LOOP_FULL_Stem_Group1"), 1.5f);
 		m_pGameInstance->Start_SFX(TEXT("LCD_MUS_C04_CASTLES_LOOP_FULL_Stem_Group2"), 1.5f);
 
