@@ -30,7 +30,7 @@ HRESULT CJumpBug::Initialize(void* _pArg)
     pDesc->isCoordChangeEnable = true;
 
     pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(360.f);
-    pDesc->tTransform3DDesc.fSpeedPerSec = 6.f;
+    pDesc->tTransform3DDesc.fSpeedPerSec = 3.f;
     pDesc->tTransform2DDesc.fRotationPerSec = XMConvertToRadians(360.f);
     pDesc->tTransform2DDesc.fSpeedPerSec = 30.f;
 
@@ -364,7 +364,7 @@ void CJumpBug::Monster_Move(_fvector _vDirection)
 
         if (true == m_isJump)
         {
-            _vector vDirection = _vDirection + XMVectorSet(0.f, 0.5f, 0.f, 0.f);
+            _vector vDirection = _vDirection + XMVectorSet(0.f, 0.2f, 0.f, 0.f);
             Get_ActorCom()->Set_LinearVelocity(XMVector3Normalize(vDirection), Get_ControllerTransform()->Get_SpeedPerSec());
         }
         else
