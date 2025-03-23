@@ -108,15 +108,12 @@ HRESULT CButterGrump::Initialize(void* _pArg)
     pModelObject->Set_Animation(IDLE);
     
     pModelObject->Register_OnAnimEndCallBack(bind(&CButterGrump::Animation_End, this, placeholders::_1, placeholders::_2));
-     //156 diffuse 1
-    static_cast<C3DModel*>(pModelObject->Get_Model(COORDINATE_3D))->Binding_TextureIndex(1, aiTextureType_DIFFUSE, 1);
-    static_cast<C3DModel*>(pModelObject->Get_Model(COORDINATE_3D))->Binding_TextureIndex(5, aiTextureType_DIFFUSE, 1);
-    static_cast<C3DModel*>(pModelObject->Get_Model(COORDINATE_3D))->Binding_TextureIndex(6, aiTextureType_DIFFUSE, 1);
 
     Bind_AnimEventFunc("On_Attack", bind(&CButterGrump::On_Attack, this));
     Bind_AnimEventFunc("On_Move", bind(&CButterGrump::On_Move, this));
     Bind_AnimEventFunc("Roar", bind(&CButterGrump::Roar, this));
     Bind_AnimEventFunc("EndRoar", bind(&CButterGrump::EndRoar, this));
+    Bind_AnimEventFunc("Transition", bind(&CButterGrump::Transition, this));
 
     /* Com_AnimEventGenerator */
     CAnimEventGenerator::ANIMEVTGENERATOR_DESC tAnimEventDesc{};
@@ -1150,6 +1147,15 @@ void CButterGrump::EndRoar()
 {
     if (nullptr != m_pRoarEffect)
         m_pRoarEffect->Stop_SpawnAll(0.5f);
+}
+
+void CButterGrump::Transition()
+{
+    //156 diffuse 1
+    C3DModel* pModel = static_cast<C3DModel*>(static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D));
+    pModel->Binding_TextureIndex(1, aiTextureType_DIFFUSE, 1);
+    pModel->Binding_TextureIndex(5, aiTextureType_DIFFUSE, 1);
+    pModel->Binding_TextureIndex(6, aiTextureType_DIFFUSE, 1);
 }
 
 HRESULT CButterGrump::Ready_ActorDesc(void* _pArg)

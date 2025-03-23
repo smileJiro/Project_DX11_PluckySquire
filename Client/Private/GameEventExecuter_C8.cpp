@@ -2108,6 +2108,33 @@ void CGameEventExecuter_C8::Chapter8_Meet_Humgrump(_float _fTimeDelta)
 				m_pGameInstance->Add_GameObject_ToLayer(m_iCurLevelID, TEXT("Prototype_GameObject_ZipC8"), m_iCurLevelID, TEXT("Layer_Zip"), &pGameObject, &tZipDesc);
 				CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter8_SKSP_11"), pGameObject, SECTION_2D_PLAYMAP_OBJECT);
 
+				// Monster 제거
+				CLayer* pLayer = m_pGameInstance->Find_Layer(m_iCurLevelID, TEXT("Layer_Monster"));
+
+				if (nullptr != pLayer)
+				{
+					for (auto& Monster : pLayer->Get_GameObjects()) {
+						Event_DeleteObject(Monster);
+					}
+				}
+
+				pLayer = m_pGameInstance->Find_Layer(m_iCurLevelID, TEXT("Layer_Sneak_Beetle"));
+
+				if (nullptr != pLayer)
+				{
+					for (auto& Beetle : pLayer->Get_GameObjects()) {
+						Event_DeleteObject(Beetle);
+					}
+				}
+
+				pLayer = m_pGameInstance->Find_Layer(m_iCurLevelID, TEXT("Layer_Sneak_Soldier"));
+
+				if (nullptr != pLayer)
+				{
+					for (auto& Soldier : pLayer->Get_GameObjects()) {
+						Event_DeleteObject(Soldier);
+					}
+				}
 
 				// 2D 험그럼프 없애기
 				Event_DeleteObject(m_TargetObjects[0]);
@@ -2163,36 +2190,8 @@ void CGameEventExecuter_C8::Chapter8_Meet_Humgrump(_float _fTimeDelta)
 
 				pPlayer->Set_BlockPlayerInput(false);
 
-				// Monster 제거
-				CLayer* pLayer = m_pGameInstance->Find_Layer(m_iCurLevelID, TEXT("Layer_Monster"));
-
-				if(nullptr != pLayer)
-				{
-					for (auto& Monster : pLayer->Get_GameObjects()) {
-						Event_DeleteObject(Monster);
-					}
-				}
-
-				pLayer = m_pGameInstance->Find_Layer(m_iCurLevelID, TEXT("Layer_Sneak_Beetle"));
-				
-				if (nullptr != pLayer)
-				{
-					for (auto& Beetle : pLayer->Get_GameObjects()) {
-						Event_DeleteObject(Beetle);
-					}
-				}
-
-				pLayer = m_pGameInstance->Find_Layer(m_iCurLevelID, TEXT("Layer_Sneak_Soldier"));
-
-				if (nullptr != pLayer)
-				{
-					for (auto& Soldier : pLayer->Get_GameObjects()) {
-						Event_DeleteObject(Soldier);
-					}
-				}
-
 				// 이전 Trigger 제거
-				pLayer = m_pGameInstance->Find_Layer(m_iCurLevelID, TEXT("Layer_TriggerObject"));
+				CLayer* pLayer = m_pGameInstance->Find_Layer(m_iCurLevelID, TEXT("Layer_TriggerObject"));
 
 				for (auto& TriggerObject : pLayer->Get_GameObjects()) {
 					if (COORDINATE_3D == TriggerObject->Get_CurCoord())
