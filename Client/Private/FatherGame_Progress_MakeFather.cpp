@@ -79,7 +79,6 @@ HRESULT CFatherGame_Progress_MakeFather::Progress_Clear()
     if (CZetPack_Father::STATE_IDLE == m_pZetPack_Father->Get_CurState() && CZetPack_Child::STATE_PORTALOUT == pZetPack_Child->Get_CurState())
     {
         m_isClearProgress = true;
-
         /* 3. 자기 자신의 Active 상태를 False로 변경 */
         Event_SetActive(this, false);
 #ifdef _DEBUG
