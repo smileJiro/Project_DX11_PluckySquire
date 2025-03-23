@@ -30,6 +30,8 @@ public:
 		_float		fRotateAngle			= { 0.f };
 		wstring		strNPCName				= { TEXT("")};
 
+		_bool		isLookReverse			= { false };
+
 	};
 
 

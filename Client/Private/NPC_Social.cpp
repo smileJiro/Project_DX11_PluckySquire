@@ -133,6 +133,16 @@ HRESULT CNPC_Social::Initialize(void* _pArg)
 		static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Register_OnAnimEndCallBack(bind(&CNPC_Social::On_AnimEnd, this, placeholders::_1, placeholders::_2));
 		m_pControllerTransform->Set_State(CTransform::STATE_POSITION, _float4(m_vPosition.x, m_vPosition.y, m_vPosition.z, 1.f));
 
+
+		if (true == pDesc->isLookReverse)
+		{
+			_vector vRight = m_pControllerTransform->Get_State(CTransform::STATE_RIGHT);
+			Get_ControllerTransform()->Set_State(CTransform::STATE_RIGHT, -1.f * XMVectorAbs(vRight));
+		}
+
+
+
+
 		
 	}
 
@@ -154,6 +164,11 @@ HRESULT CNPC_Social::Initialize(void* _pArg)
 		pModelObject->Set_AnimationLoop(COORDINATE::COORDINATE_3D, m_iStartAnimation, true);
 		pModelObject->Set_Animation(m_iStartAnimation);
 		pModelObject->Set_PlayingAnim(false);
+
+
+		
+		
+
 	}
 
 	return S_OK;
