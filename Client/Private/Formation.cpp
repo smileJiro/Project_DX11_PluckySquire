@@ -496,6 +496,11 @@ void CFormation::Reset_Formation()
 	m_isReset = true;
 }
 
+void CFormation::Bomb_Alert()
+{
+
+}
+
 
 HRESULT CFormation::Cleanup_DeadReferences()
 {
