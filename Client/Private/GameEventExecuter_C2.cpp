@@ -503,8 +503,35 @@ void CGameEventExecuter_C2::Chapter2_Humgrump(_float _fTimeDelta)
 		}
 	}
 	else if (Step_Check(STEP_2)) {
+		CCamera_CutScene* pCamera = static_cast<CCamera_CutScene*>(CCamera_Manager::GetInstance()->Get_CurrentCamera());
+		if (true == pCamera->Is_Finish_CutScene()) {
+			Next_Step(true);
+		}
+	}
+	else if (Step_Check(STEP_3)) {
+		if (Is_Start()) {
+			CCamera_Manager::GetInstance()->Start_FadeOut(0.7f);
+		}
 
-		if (m_fTimer >= 13.f) {
+		// 3. FadeOut이 끝난 후 CutScene Camera -> Target Camera로 전환
+		if (m_fTimer > 0.7f) {
+			static_cast<CCamera_CutScene*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::CUTSCENE))->Set_Pause_After_CutScene(false);
+			
+			// Target의 Arm으로 변경
+			CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET)->Get_Arm()->Set_ArmVector(XMVectorSet(0.f, 0.67f, -0.74f, 0.f));
+			CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET)->Get_Arm()->Set_Length(14.6f);
+			
+			Next_Step(true);
+		}
+	}
+	// 4. 전환 후 Target Camera로(다음 프레임) FadeIn 시작 + 기존 CutScene Camera를 다시 밝게 만들기
+	else if (Step_Check(STEP_4)) {
+		if (Is_Start()) {
+			CCamera_Manager::GetInstance()->Start_FadeIn(0.7f);
+			CCamera_Manager::GetInstance()->Set_FadeRatio(CCamera_Manager::CUTSCENE, 1.f, true);
+
+			Get_Player()->Set_BlockPlayerInput(false);
+
 			CSection* pSection = CSection_Manager::GetInstance()->Find_Section(TEXT("Chapter2_P1314"));
 
 			// Event Trigger 생성
@@ -518,7 +545,7 @@ void CGameEventExecuter_C2::Chapter2_Humgrump(_float _fTimeDelta)
 			Desc.tTransform2DDesc.vInitialPosition = { 70.f, 130.f, 0.f };
 
 			CTrigger_Manager::GetInstance()->Create_TriggerObject(LEVEL_STATIC, LEVEL_CHAPTER_2, &Desc, pSection);
-			
+
 			// 기존 NPC 삭제
 			CNPC_Manager::GetInstance()->Remove_SocialNPC(TEXT("Chapter_1_Humgrump"));
 			CNPC_Manager::GetInstance()->Remove_SocialNPC(TEXT("Spear_Trooper0"));
@@ -541,6 +568,7 @@ void CGameEventExecuter_C2::Chapter2_Humgrump(_float _fTimeDelta)
 			pThrash->Set_Direction(CFriend::DIR_RIGHT);
 			pViolet->Set_Position(vPortalPos + XMVectorSet(100.f, -100.f, 0.0f, 1.0f));
 			pViolet->Set_Direction(CFriend::DIR_LEFT);
+
 			GameEvent_End();
 		}
 	}
