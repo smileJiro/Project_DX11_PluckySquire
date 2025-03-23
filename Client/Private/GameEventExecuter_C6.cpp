@@ -2161,7 +2161,7 @@ void CGameEventExecuter_C6::Chapter6_StorySequence_01(_float _fTimeDelta)
 		{
 			END_SFX(TEXT("LCD_MUS_C05_P0102_CHAPTER5INTROCUTSCENE_FULL"));
 			START_SFX_DELAY(TEXT("LCD_MUS_C05_P1112_TRARRGEXPLODE_FULL"), 1.0f, g_SFXVolume, true);
-			m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/Chapter6_2.json"));
+			m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/Chapter_6_2.json"));
 			m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/Chapter6.json"));
 			CCamera_Manager::GetInstance()->Start_FadeIn();
 			CDialog_Manager::GetInstance()->Set_DialogId(L"Chapter6_StorySequence_01_03");
