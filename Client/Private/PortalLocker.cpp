@@ -127,7 +127,8 @@ void CPortalLocker::State_Change_Lock()
 void CPortalLocker::State_Change_Open()
 {
 	m_pControllerModel->Switch_Animation((_uint)m_ePortalLockerType + (_uint)m_eCurState);
-	START_SFX_DELAY(TEXT("A_sfx_portal_lids"), 0.2f, g_SFXVolume, false);
+	if (LEVEL_CHAPTER_6 == m_iCurLevelID)
+		START_SFX_DELAY(TEXT("A_sfx_portal_lids"), 0.2f, g_SFXVolume, false);
 }
 
 void CPortalLocker::State_Change_Dead()
