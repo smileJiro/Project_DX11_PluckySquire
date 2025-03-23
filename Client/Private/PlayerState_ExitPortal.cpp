@@ -76,6 +76,7 @@ void CPlayerState_ExitPortal::Enter()
 {
 	m_pPortal = dynamic_cast<CPortal*>(m_pOwner->Get_InteractableObject());
 	assert(nullptr != m_pPortal);
+	m_pOwner->Set_Upforce(0.f);
 	m_ePortalNormal = m_pPortal->Get_PortalNormal();
 	m_pPortal->Use_Portal(m_pOwner);
 	static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Set_ShapeEnable((_uint)SHAPE_USE::SHAPE_BODY, false);
