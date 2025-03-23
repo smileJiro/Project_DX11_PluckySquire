@@ -8,6 +8,7 @@
 
 #include "Effect_Manager.h"
 #include "Camera_Manager.h"
+#include "PlayerData_Manager.h"
 
 CBossDeadState::CBossDeadState()
 {
@@ -239,30 +240,16 @@ void CBossDeadState::State_Update(_float _fTimeDelta)
 	break;
 	case 12:
 	{
-		if (9.5f <= m_fAccTime) {
-
-			///* ÅÂ¿õ Ãß°¡ */
+		if (10.5f <= m_fAccTime) {
+			
 			CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D)->Enter_Section(TEXT("Chapter8_P2526"));
 			CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::TARGET_2D);
-			CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D)->Set_WhiteFade(1);
-			CCamera_Manager::GetInstance()->Set_FadeRatio(CCamera_Manager::TARGET_2D, 0.f, true);
+			CCamera_Manager::GetInstance()->Start_FadeIn_White(1.5f);
+			CPlayerData_Manager::GetInstance()->Get_CurrentPlayer_Ptr()->Set_Active(false);
+			Event_DeleteObject(m_pOwner);
 
 			_float3 fDefaultPos = {};
 			Event_Book_Main_Section_Change_Start(1, &fDefaultPos);
-
-			++m_iEffectCount;
-
-		}
-	}
-	break;
-	case 13:
-	{
-		if (10.5f <= m_fAccTime) {
-			
-			
-			CCamera_Manager::GetInstance()->Start_FadeIn_White(1.5f);
-
-			Event_DeleteObject(m_pOwner);
 
 			++m_iEffectCount;
 		}
