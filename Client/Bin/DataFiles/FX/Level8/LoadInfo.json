@@ -30,5 +30,6 @@
         "../Bin/DataFiles/FX/Level8/BossDead_Red_2.json",
         "../Bin/DataFiles/FX/Level8/BossEnd.json",
         "../Bin/DataFiles/FX/Level8/BossRoar.json"
+
     ]
 }
