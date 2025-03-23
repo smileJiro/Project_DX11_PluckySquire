@@ -473,7 +473,7 @@ void CSpear_Soldier::Change_Animation()
 
             case MONSTER_STATE::ATTACK:
                 static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(DASH_ATTACK_STARTUP);
-                m_pGameInstance->Start_SFX_Distance_Delay(_wstring(L"A_sfx_speartrooper_swipe_attack_") + to_wstring(rand() % 3), m_pControllerTransform->Get_State(CTransform::STATE_POSITION), 0.1f, g_SFXVolume, 0.f, 13.f);
+                m_pGameInstance->Start_SFX_Distance_Delay(_wstring(L"A_sfx_speartrooper_swipe_attack_") + to_wstring(rand() % 3), m_pControllerTransform->Get_State(CTransform::STATE_POSITION), 0.8f, g_SFXVolume, 0.f, 13.f);
 
                 break;
 
@@ -508,7 +508,7 @@ void CSpear_Soldier::Change_Animation()
                 if(Is_SneakMode())
                     m_pGameInstance->Start_SFX(TEXT("A_sfx_C9DESK_Caught_by_guards"), g_SFXVolume);
                 else
-                    m_pGameInstance->Start_SFX(_wstring(L"A_sfx_speartrooper_swipe_attack_") + to_wstring(rand() % 3), g_SFXVolume);
+                    m_pGameInstance->Start_SFX_Distance_Delay(_wstring(L"A_sfx_speartrooper_swipe_attack_") + to_wstring(rand() % 3), m_pControllerTransform->Get_State(CTransform::STATE_POSITION), 0.8f, g_SFXVolume, 0.f, 13.f);
                 break;
 
             case MONSTER_STATE::FORMATION_IDLE:
@@ -627,8 +627,9 @@ void CSpear_Soldier::Change_Animation()
                     eAnim = DASHATTACK_INTO_DOWN;
                 else if (E_DIRECTION::RIGHT == Get_2DDirection() || E_DIRECTION::LEFT == Get_2DDirection())
                     eAnim = DASHATTACK_INTO_RIGHT;
+                m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_speartrooper_swipe_attack_") + to_wstring(rand() % 3), 
+                    0.8f, g_SFXVolume);
                 break;
-                m_pGameInstance->Start_SFX(_wstring(L"A_sfx_speartrooper_swipe_attack_") + to_wstring(rand() % 3), 50.f);
 
 
             case MONSTER_STATE::HIT:

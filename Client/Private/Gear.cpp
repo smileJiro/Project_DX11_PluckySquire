@@ -60,7 +60,7 @@ void CGear::Update(_float _fTimeDelta)
 	}
 	else
 	{
-		if (COORDINATE_2D == CPlayerData_Manager::GetInstance()->Get_PlayerCoord())
+		if (false == m_isStop && COORDINATE_2D == CPlayerData_Manager::GetInstance()->Get_PlayerCoord())
 		{
 			if (CSection_Manager::GetInstance()->Is_PlayerInto(m_strSectionName))
 			{
@@ -104,6 +104,8 @@ void CGear::On_Stop()
 	static_cast<CModelObject*>(m_PartObjects[GEAR_PART_TEETH])->Start_StoppableRender();
 	Event_SetActive(m_p2DColliderComs[0], false);
 
+	m_isStop = true;
+
 	m_pGameInstance->Stop_SFX(TEXT("A_sfx_machines_loop"));
 }
 
@@ -114,6 +116,8 @@ void CGear::On_UnStop()
 	static_cast<CModelObject*>(m_PartObjects[GEAR_PART_TEETH])->Switch_Animation(GEAR_PART_TEETH);
 	static_cast<CModelObject*>(m_PartObjects[GEAR_PART_TEETH])->End_StoppableRender();
 	Event_SetActive(m_p2DColliderComs[0], true);
+
+	m_isStop = false;
 
 	m_pGameInstance->Start_SFX(TEXT("A_sfx_machines_loop"), g_SFXVolume, true);
 }

@@ -22,6 +22,7 @@ public:
 
 private:
 	_bool				m_isOnSound = { true };
+	_bool				m_isStop = { false };
 
 private:
 	void				On_Stop() override;	   // ÀÚ±â partobject
