@@ -1927,7 +1927,7 @@ HRESULT CLevel_Chapter_02::Ready_Layer_BackGroundWindow(const _wstring& _strLaye
 		Desc.isCoordChangeEnable = false;
 		//Desc.strTexturePrototypeTag = TEXT("Prototype_Component_Texture_BackGround_Chapter2_Main");
 		Desc.strTexturePrototypeTag = TEXT("Prototype_Component_Texture_BackGround_Chapter2_RedHouse_1");
-		Desc.Build_3D_Transform(_float3(-20.0f, 60.0f, 150.0f), _float3(400.f, 400.f, 10.f));
+		Desc.Build_3D_Transform(_float3(-20.0f, 50.0f, 150.0f), _float3(400.f, 400.f, 10.f));
 
 		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BackGroundObject"), LEVEL_CHAPTER_2, TEXT("Layer_BackGround"), &Desc)))
 			return E_FAIL;

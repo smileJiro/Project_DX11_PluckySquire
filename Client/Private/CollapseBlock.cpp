@@ -2,6 +2,7 @@
 #include "CollapseBlock.h"
 #include "GameInstance.h"
 #include "Section_Manager.h"
+#include "Player.h"
 
 CCollapseBlock::CCollapseBlock(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:C2DMapObject(_pDevice, _pContext)
@@ -22,7 +23,8 @@ HRESULT CCollapseBlock::Initialize_Prototype()
 HRESULT CCollapseBlock::Initialize(void* _pArg)
 {
 	// Save Desc
-
+	MAPOBJ_DESC*  pDesc = static_cast<CCollapseBlock::MAPOBJ_DESC*>(_pArg);
+	pDesc->iObjectGroupID = OBJECT_GROUP::COLLAPSE;
 	// Add Desc
 	if (FAILED(__super::Initialize(_pArg)))
 		return E_FAIL;
@@ -78,7 +80,10 @@ void CCollapseBlock::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _p
 		if (STATE::STATE_IDLE == m_eCurState)
 		{
 			/* 첫 충돌 발생 시 + IDLE 상태인 경우 */
-
+			_pOtherObject->Get_GravityCom()->Set_GravityAcc(0.0f);
+			_pOtherObject->Get_GravityCom()->Change_State(CGravity::STATE_FLOOR);
+			static_cast<CPlayer*>(_pOtherObject)->Set_Upforce(0.0f);
+			static_cast<CPlayer*>(_pOtherObject)->Set_State(CPlayer::IDLE);
 			m_eCurState = STATE::STATE_SHAKE;
 		}
 	}
@@ -90,6 +95,16 @@ void CCollapseBlock::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pO
 
 void CCollapseBlock::On_Collision2D_Exit(CCollider* _pMyCollider, CCollider* _pOtherCollider, CGameObject* _pOtherObject)
 {
+	_uint iCollisionGroupID = _pOtherCollider->Get_CollisionGroupID();
+
+	if (OBJECT_GROUP::PLAYER == (OBJECT_GROUP)iCollisionGroupID)
+	{
+		/* 첫 충돌 발생 시 + IDLE 상태인 경우 */
+		_pOtherObject->Get_GravityCom()->Set_GravityAcc(0.0f);
+		_pOtherObject->Get_GravityCom()->Change_State(CGravity::STATE_FALLDOWN);
+		//_pOtherObject->Get_GravityCom()->Set_Active(true);
+		//static_cast<CPlayer*>(_pOtherObject)->Set_Upforce(0.0f);
+	}
 }
 
 void CCollapseBlock::State_Change()

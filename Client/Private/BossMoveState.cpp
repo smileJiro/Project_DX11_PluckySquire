@@ -34,6 +34,12 @@ void CBossMoveState::State_Enter()
 
 	m_pOwner->Set_AnimChangeable(false);
 	m_iMoveIndex = static_cast<CButterGrump*>(m_pOwner)->Get_CurMoveIndex();
+
+	if (1 == m_iMoveIndex)
+	{
+		m_fOriginSpeed = m_pOwner->Get_ControllerTransform()->Get_SpeedPerSec();
+		m_pOwner->Get_ControllerTransform()->Set_SpeedPerSec(m_fOriginSpeed * 1.5f);
+	}
 }
 
 void CBossMoveState::State_Update(_float _fTimeDelta)
@@ -72,6 +78,11 @@ void CBossMoveState::State_Update(_float _fTimeDelta)
 
 void CBossMoveState::State_Exit()
 {
+	if (1 == m_iMoveIndex)
+	{
+		m_pOwner->Get_ControllerTransform()->Set_SpeedPerSec(m_fOriginSpeed);
+	}
+
 	if (m_vecMovePoints.size() <= ++m_iMoveIndex)
 		m_iMoveIndex = 0;
 	static_cast<CButterGrump*>(m_pOwner)->Set_CurMoveIndex(m_iMoveIndex);
