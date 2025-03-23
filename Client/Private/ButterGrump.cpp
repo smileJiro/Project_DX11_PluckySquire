@@ -780,14 +780,22 @@ void CButterGrump::On_Attack()
         break;
 
     case BOSS_STATE::YELLOWBALL:
-        m_fDelayTime = 0.5f;
-        m_iNumAttack = 1;
-        
-        if (true == Is_Enforce() || true == Is_Phase2())
+        if (true == Is_Phase2())
+        {
+            m_isAttackChained = true;
+            m_iNumAttackChain = 5;
+            m_fChainDelayTime = 1.2f;
+        }
+        else if (true == Is_Enforce())
         {
             m_isAttackChained = true;
             m_iNumAttackChain = 3;
             m_fChainDelayTime = 1.2f;
+        }
+        else
+        {
+            m_fDelayTime = 0.5f;
+            m_iNumAttack = 1;
         }
         break;
 
