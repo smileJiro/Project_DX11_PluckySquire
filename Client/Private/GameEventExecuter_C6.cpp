@@ -618,7 +618,7 @@ void CGameEventExecuter_C6::Artia_PigEvent_End(_float _fTimeDelta)
 			CDialog_Manager::GetInstance()->Set_DialogId(L"Artia_PigEvent_05");
 		}
 		else
-			if (Next_Step(!CDialog_Manager::GetInstance()->Get_DisPlayDialogue()))
+			if (Next_Step(false == CDialog_Manager::GetInstance()->Get_DisPlayDialogue()))
 				pPlayer->Set_BlockPlayerInput(true);
 	}
 	else if (Step_Check(STEP_3))
@@ -626,32 +626,6 @@ void CGameEventExecuter_C6::Artia_PigEvent_End(_float _fTimeDelta)
 		if (Is_Start())
 		{
 			CNPC_Manager::GetInstance()->ChangeDialogue(L"Eray", L"Eray_Dialogue_02");
-			// 실질 END 처리
-			//{
-			//	"Collider_Info": {
-			//		"Position": [
-			//			-16.0,
-			//			717.0
-			//		] ,
-			//			"Scale" : [
-			//				114.0,
-			//				18.0
-			//			]
-			//	},
-			//		"Fillter_MyGroup": 2,
-			//		"Fillter_OtherGroupMask" : 128,
-			//		"Trigger_ConditionType" : 0,
-			//		"Trigger_Coordinate" : 0,
-			//		"Trigger_EventTag" : "BookSectionChange_Next",
-			//		"Trigger_Type" : 6,
-			//		"MapTrigger_Info" : {
-			//		"Next_Position": [
-			//			-1181.0,
-			//			-301.0
-			//		]
-			//	}
-			//},
-
 
 			CTriggerObject::TRIGGEROBJECT_DESC Desc = {};
 			Desc.vHalfExtents = { 0.5f, 0.5f, 0.5f };
@@ -660,15 +634,13 @@ void CGameEventExecuter_C6::Artia_PigEvent_End(_float _fTimeDelta)
 			Desc.eConditionType = CTriggerObject::TRIGGER_ENTER;
 			Desc.isReusable = false;
 			Desc.eStartCoord = COORDINATE_2D;
-			Desc.Build_2D_Transform({ -16.0f, 697.0f }, { 114.0f,18.0f });
+			Desc.Build_2D_Transform({ -16.0f, 697.0f }, { 114.0f,30.0f });
 
 			CSection* pBookSection = CSection_Manager::GetInstance()->Find_Section(TEXT("Chapter5_P0102"));
 			CTrigger_Manager::GetInstance()->Create_TriggerObject(LEVEL_STATIC, LEVEL_CHAPTER_6, &Desc, pBookSection);
-
-
-
 		}
-		Next_Step(true);
+		else
+			Next_Step(true);
 	}
 	else
 	{
