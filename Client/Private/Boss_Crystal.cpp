@@ -124,12 +124,12 @@ void CBoss_Crystal::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
     if (0 >= m_tStat.iHP && false == Is_Dead())
     {
         CEffect_Manager::GetInstance()->Active_EffectMatrix(TEXT("Meteorite"), true, m_pControllerTransform->Get_WorldMatrix());
-		m_pGameInstance->Start_SFX_Distance_Delay(_wstring(L"A_sfx_cystal_ball_damaged-") + to_wstring(rand() % 5), m_pControllerTransform->Get_State(CTransform::STATE_POSITION), 0.1f, g_SFXVolume, 0.f, 13.f);
+		m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_cystal_ball_damaged-") + to_wstring(rand() % 5), 0.1f, g_SFXVolume);
         Event_DeleteObject(this);
     }
     else if (0 < m_tStat.iHP)
     {
-        m_pGameInstance->Start_SFX_Distance_Delay(_wstring(L"A_sfx_impact_nodamage-") + to_wstring(rand() % 6), m_pControllerTransform->Get_State(CTransform::STATE_POSITION), 0.1f, g_SFXVolume, 0.f, 13.f);
+        m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_impact_nodamage-") + to_wstring(rand() % 6), 0.1f, g_SFXVolume);
     }
 }
 

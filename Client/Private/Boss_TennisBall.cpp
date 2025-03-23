@@ -101,7 +101,7 @@ void CBoss_TennisBall::Update(_float _fTimeDelta)
         {
             m_pGameInstance->Reset_TimeScale(TEXT("Timer_120"));
         }
-		Get_ControllerTransform()->Go_Direction(Get_FinalPosition() - m_pTarget->Get_FinalPosition(), Get_ControllerTransform()->Get_SpeedPerSec() * 16.f, _fTimeDelta);
+		Get_ControllerTransform()->Go_Direction(m_pSpawner->Get_FinalPosition() - Get_FinalPosition(), Get_ControllerTransform()->Get_SpeedPerSec() * 16.f, _fTimeDelta);
     }
 
     if(KEY_PRESSING(KEY::CTRL))
@@ -169,7 +169,7 @@ void CBoss_TennisBall::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& _O
             }
         }
         CEffect_Manager::GetInstance()->Active_EffectPosition(TEXT("ShieldHit"), true, m_pControllerTransform->Get_State(CTransform::STATE_POSITION));
-        m_pGameInstance->Start_SFX_Distance_Delay(_wstring(L"A_sfx_tennisball_hit_buttergrump"), m_pControllerTransform->Get_State(CTransform::STATE_POSITION), 0.1f, g_SFXVolume, 0.f, 13.f);
+        m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_tennisball_hit_buttergrump"), 0.1f, g_SFXVolume);
     }
 }
 
@@ -191,8 +191,8 @@ void CBoss_TennisBall::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vFor
             m_isShoot = true;
             m_pGameInstance->Set_TimeScale(m_fStopTimeScale, TEXT("Timer_120"));
             m_vStopTime.y = 0.0f;
-            m_pGameInstance->Start_SFX_Distance_Delay(_wstring(L"A_sfx_slowdown"), m_pControllerTransform->Get_State(CTransform::STATE_POSITION), 0.1f, g_SFXVolume, 0.f, 13.f);
-            m_pGameInstance->Start_SFX_Distance_Delay(_wstring(L"A_sfx__tennisball_fully_charged"), m_pControllerTransform->Get_State(CTransform::STATE_POSITION), 0.1f, g_SFXVolume, 0.f, 13.f);
+            m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_slowdown"), 0.1f, g_SFXVolume);
+            m_pGameInstance->Start_SFX(_wstring(L"A_sfx__tennisball_fully_charged"), g_SFXVolume);
         }
     }
 }

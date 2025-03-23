@@ -108,7 +108,7 @@ void CButterGrump_RightEye::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector 
     m_pParent->On_Hit(_pHitter, _iDamg, _vForce);
     Start_HitRender();
 
-    m_pGameInstance->Start_SFX_Distance_Delay(_wstring(L"A_sfx_laser_impact_eyes-") + to_wstring(rand() % 5), m_pControllerTransform->Get_State(CTransform::STATE_POSITION), 0.1f, g_SFXVolume, 0.f, 13.f);
+    m_pGameInstance->Start_SFX_Delay(_wstring(L"A_sfx_laser_impact_eyes-") + to_wstring(rand() % 5), 0.1f, g_SFXVolume);
 }
 
 HRESULT CButterGrump_RightEye::Ready_ActorDesc(void* _pArg)
