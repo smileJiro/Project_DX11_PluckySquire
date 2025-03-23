@@ -133,6 +133,7 @@ void CTurret::State_Change_Open()
 
 void CTurret::State_Change_Rise()
 {
+    START_SFX_DELAY(TEXT("A_sfx_turret_open"), 0.0f, g_SFXVolume, false);
     Switch_Animation(STATE::STATE_RISE);
 }
 

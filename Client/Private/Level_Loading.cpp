@@ -55,9 +55,11 @@ void CLevel_Loading::Update(_float _fTimeDelta)
                 /* Renderer¿¡ Shader µî·Ï VtxMesh, VtxAnimMesh */
                 CShader* pVtxMesh = static_cast<CShader*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxMesh"), nullptr));
                 CShader* pVtxAnimMesh = static_cast<CShader*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxAnimMesh"), nullptr));
+                CShader* pVtxPosTex = static_cast<CShader*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_COMPONENT, LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxPosTex"), nullptr));
                 m_pGameInstance->Set_VtxMesh(pVtxMesh);
                 m_pGameInstance->Set_VtxAnimMesh(pVtxAnimMesh);
-
+                m_pGameInstance->Set_VtxPosTex(pVtxPosTex);
+                
                 Event_LevelChange(m_eNextLevelID);
             }
 
