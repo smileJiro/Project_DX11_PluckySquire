@@ -8,6 +8,7 @@
 
 #include "Effect_Manager.h"
 #include "Camera_Manager.h"
+#include "PlayerData_Manager.h"
 
 CBossDeadState::CBossDeadState()
 {
@@ -247,6 +248,11 @@ void CBossDeadState::State_Update(_float _fTimeDelta)
 			CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D)->Set_WhiteFade(1);
 			CCamera_Manager::GetInstance()->Set_FadeRatio(CCamera_Manager::TARGET_2D, 1.f, true);
 
+			m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/Chapter2_Sky.json"));
+			m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/Chapter2_Bright.json"));
+
+			CPlayerData_Manager::GetInstance()->Get_CurrentPlayer_Ptr()->Set_Active(false);
+
 			_float3 fDefaultPos = {};
 			Event_Book_Main_Section_Change_Start(1, &fDefaultPos);
 
@@ -258,8 +264,8 @@ void CBossDeadState::State_Update(_float _fTimeDelta)
 	case 13:
 	{
 		if (10.5f <= m_fAccTime) {
-			
-			
+
+
 			CCamera_Manager::GetInstance()->Start_FadeIn_White(1.5f);
 
 			Event_DeleteObject(m_pOwner);
