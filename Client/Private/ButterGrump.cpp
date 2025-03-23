@@ -1154,8 +1154,8 @@ void CButterGrump::Transition()
     //156 diffuse 1
     C3DModel* pModel = static_cast<C3DModel*>(static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D));
     pModel->Binding_TextureIndex(1, aiTextureType_DIFFUSE, 1);
-    pModel->Binding_TextureIndex(5, aiTextureType_DIFFUSE, 1);
-    pModel->Binding_TextureIndex(6, aiTextureType_DIFFUSE, 1);
+    pModel->Binding_TextureIndex(1, aiTextureType_DIFFUSE, 5);
+    pModel->Binding_TextureIndex(1, aiTextureType_DIFFUSE, 6);
 }
 
 HRESULT CButterGrump::Ready_ActorDesc(void* _pArg)
