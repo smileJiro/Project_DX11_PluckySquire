@@ -616,7 +616,7 @@ _bool CMonster::Check_InAir_Next(_fvector _vForce, _float _fTimeDelta)
 	}
 
 	//임계값보다 큰 길이로 스윕
-	if (false == m_pGameInstance->SingleSweep_GroupFilter(&pxGeomHolder.any(), m_matQueryShapeOffset, vOrigin, vRayDir, m_fStepHeightThreshold + 0.1f, OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE))
+	if (false == m_pGameInstance->SingleSweep_GroupFilter(&pxGeomHolder.any(), m_matQueryShapeOffset, vOrigin, vRayDir, m_fStepHeightThreshold, OBJECT_GROUP::MONSTER | OBJECT_GROUP::MONSTER_PROJECTILE))
 	{
 		return true;
 	}
