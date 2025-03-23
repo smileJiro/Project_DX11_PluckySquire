@@ -2646,6 +2646,8 @@ void CGameEventExecuter_C8::Chapter8_Boss_Intro(_float _fTimeDelta)
 			
 			Get_Player()->Set_BlockPlayerInput(false);
 
+
+
 			Next_Step(true);
 		}
 	}
