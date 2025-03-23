@@ -69,6 +69,7 @@ public:
 	const _wstring&				Get_Include_Section_Name()						{ return m_strSectionName; }
 	_uint						Get_ObjectGroupID() const { return m_iObjectGroupID; }
 	_bool						Is_ValidGameObject(); // 자기 자신이 유효한 오브젝트인지, 검사하여 리턴(액티브true, dead 아니면 true)
+	CGravity*					Get_GravityCom() const { return m_pGravityCom; }
 
 	//Set
 	void						Set_Name(const _wstring& _strName)				{ m_strName = _strName; }
