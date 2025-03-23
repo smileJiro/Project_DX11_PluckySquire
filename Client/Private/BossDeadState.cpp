@@ -241,11 +241,7 @@ void CBossDeadState::State_Update(_float _fTimeDelta)
 	{
 		if (9.5f <= m_fAccTime) {
 
-			CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D)->Enter_Section(TEXT("Chapter8_P2526"));
-			CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::TARGET_2D);
-
 			///* ÅÂ¿õ Ãß°¡ */
-
 			CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D)->Enter_Section(TEXT("Chapter8_P2526"));
 			CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::TARGET_2D);
 			CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D)->Set_WhiteFade(1);
