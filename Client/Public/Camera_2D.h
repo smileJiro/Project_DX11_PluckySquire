@@ -156,7 +156,7 @@ private:
 	_bool						m_isChangingLengthValue = { false };
 
 	_uint						m_iPlayType = {};
-	_bool						m_iNarrationPosType = { false };		// 나중에 int로 바꾸기, 지금은 true면 left
+	_uint						m_iNarrationPosType = { false };		// 나중에 int로 바꾸기, 지금은 true면 left
 
 	// Arm
 	map<_wstring, pair<ARM_DATA*, SUB_DATA*>>	m_ArmDatas;
