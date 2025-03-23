@@ -175,6 +175,21 @@
 				"X": 1080.0,
 				"Y": 3840.0
 			},
+			"BGM": "LCD_MUS_C09_P097098_DEEPPALACE_LOOP_FULL",
+			"SFX": [
+				{
+					"SFX_Name": "LCD_MUS_C09_DESPONDANT_BASELAYER_Stem_Group1",
+					"isStart": false
+				},
+				{
+					"SFX_Name": "LCD_MUS_C09_DESPONDANT_BASELAYER_Stem_Group2",
+					"isStart": false
+				},
+				{
+					"SFX_Name": "A_sfx_machines_loop",
+					"isStart": false
+				}
+			],
 			"Pre_Page_Tag": "Chapter8_P1920",
 			"Next_Page_Tag": "Chapter8_P2324"
 		}

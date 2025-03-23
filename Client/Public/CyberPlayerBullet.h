@@ -37,7 +37,7 @@ public:
 private:
 	CFresnelModelObject* m_pModel = nullptr;
 	_vector m_vLookDIr = { 0.f,0.f,0.f,0.f };
-	_float m_fLifeTime = 10.f;
+	_float m_fLifeTime = 5.f;
 	_float m_fLifeTimeAcc = 0.f;
 	_int m_iDamg = 1;
 	_float m_fSpeed = 100.f;
