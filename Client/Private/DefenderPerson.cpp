@@ -197,6 +197,11 @@ void CDefenderPerson::Dissapear()
 	wstring strSFX = TEXT("A_sfx_rescued_vocal-") + to_wstring(rand() % 7);
 	END_SFX(strSFX);
 	START_SFX_DELAY(strSFX, 0.f, g_SFXVolume*0.65f, false);
+
+
+	strSFX = TEXT("A_sfx_humans_rescued");
+	END_SFX(strSFX);
+	START_SFX_DELAY(strSFX, 0.f, g_SFXVolume * 0.65f, false);
 }
 
 void CDefenderPerson::On_BodyAnimEnd(COORDINATE _eCoord, _uint iAnimIdx)

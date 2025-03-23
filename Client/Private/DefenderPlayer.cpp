@@ -315,6 +315,10 @@ void CDefenderPlayer::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _
 		pPerson->Start_FollowObject(pFollowObj);
 		m_Followers.push_back(pPerson);
 		Safe_AddRef(pPerson);
+
+		wstring strSFX = TEXT("A_sfx_collect_humans");
+		END_SFX(strSFX);
+		START_SFX_DELAY(strSFX, 0.f, g_SFXVolume * 0.65f, false);
 	}
 
 }
@@ -357,8 +361,7 @@ void CDefenderPlayer::Shoot()
 		T_DIRECTION::RIGHT == m_eTDirection ? &m_vRightShootQuaternion : &m_vLeftShootQuaternion,
 		(_float3*)nullptr,
 		&m_strSectionName);
-	wstring strSFX = TEXT("A_sfx_laser_impact_") + to_wstring(rand() % 5);
-	END_SFX(strSFX);
+	wstring strSFX = TEXT("A_sfx_jot_laser");
 	START_SFX_DELAY(strSFX, 0.f, g_SFXVolume, false);
 }
 

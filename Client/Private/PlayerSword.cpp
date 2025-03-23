@@ -696,23 +696,23 @@ void CPlayerSword::Set_AttackEnable(_bool _bOn, CPlayer::ATTACK_TYPE _eAttackTyp
     }
    
 
+    if (HANDLING == m_eCurrentState)
+        m_pTrailEffect->Set_AddUpdate(_bOn);
+     m_pTrailEffect->Delete_Delay(0.5f);
+    if (_bOn)
+    {
+        if (CPlayer::ATTACK_TYPE::ATTACK_TYPE_NORMAL3 == _eAttackType)
+            CEffect_Manager::GetInstance()->Active_Effect(TEXT("SwordCombo"), true, &m_WorldMatrices[COORDINATE_3D]);
+        /*     if (CPlayer::ATTACK_TYPE::ATTACK_TYPE_JUMPATTACK == _eAttackType)
+                    CEffect_Manager::GetInstance()->Active_EffectPosition(TEXT("SwordJumpAttack"), true, XMLoadFloat4((_float4*)&m_WorldMatrices[COORDINATE_3D].m[3]));*/
+    }
+    else
+    {
+    }
     //ÀÌÆåÆ® Ã³¸®
     if (COORDINATE_3D == eCoord)
     {
 
-        if (HANDLING == m_eCurrentState)
-            m_pTrailEffect->Set_AddUpdate(_bOn);
-        if (_bOn)
-        {
-            if (CPlayer::ATTACK_TYPE::ATTACK_TYPE_NORMAL3 == _eAttackType)
-                CEffect_Manager::GetInstance()->Active_Effect(TEXT("SwordCombo"), true, &m_WorldMatrices[COORDINATE_3D]);
-            /*     if (CPlayer::ATTACK_TYPE::ATTACK_TYPE_JUMPATTACK == _eAttackType)
-                     CEffect_Manager::GetInstance()->Active_EffectPosition(TEXT("SwordJumpAttack"), true, XMLoadFloat4((_float4*)&m_WorldMatrices[COORDINATE_3D].m[3]));*/
-        }
-        else
-        {
-            m_pTrailEffect->Delete_Delay(0.5f);
-        }
     }
 
 }
