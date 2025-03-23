@@ -1973,7 +1973,7 @@ void CGameEventExecuter_C8::Chapter8_Meet_Humgrump(_float _fTimeDelta)
 	}
 	else if (Step_Check(STEP_12)) {
 		if (false == CDialog_Manager::GetInstance()->Get_DisPlayDialogue() && 0 == m_iSubStep) {
-			static_cast<CModelObject*>(m_TargetObjects[0])->Get_Model(COORDINATE_3D)->Get_Animation(CNpc_Humgrump::CHAPTER8_PUPA_INTRO_1)->Set_SpeedMagnifier(1.6f);
+			static_cast<CModelObject*>(m_TargetObjects[0])->Get_Model(COORDINATE_2D)->Get_Animation(CNpc_Humgrump::CHAPTER8_PUPA_INTRO_1)->Set_SpeedMagnifier(1.6f);
 			static_cast<CModelObject*>(m_TargetObjects[0])->Switch_Animation(CNpc_Humgrump::CHAPTER8_PUPA_INTRO_1);
 			START_SFX_DELAY(TEXT("A_sfx_Pupa_intro"), 0.f, g_SFXVolume, false);
 			m_iSubStep++;
@@ -2021,7 +2021,7 @@ void CGameEventExecuter_C8::Chapter8_Meet_Humgrump(_float _fTimeDelta)
 		if (false == CDialog_Manager::GetInstance()->Get_DisPlayDialogue()) {
 			// 7. Ä¿Áö°í Æø¹ß
 			if (Is_Start()) {
-				static_cast<CModelObject*>(m_TargetObjects[0])->Get_Model(COORDINATE_3D)->Get_Animation(CNpc_Humgrump::CHAPTER8_PUPA_GROW)->Set_SpeedMagnifier(1.6f);
+				static_cast<CModelObject*>(m_TargetObjects[0])->Get_Model(COORDINATE_2D)->Get_Animation(CNpc_Humgrump::CHAPTER8_PUPA_GROW)->Set_SpeedMagnifier(1.2f);
 				static_cast<CModelObject*>(m_TargetObjects[0])->Switch_Animation(CNpc_Humgrump::CHAPTER8_PUPA_GROW);
 				START_SFX_DELAY(TEXT("A_sfx_Pupa_explode_sequence"), 0.0f, g_SFXVolume, false);
 

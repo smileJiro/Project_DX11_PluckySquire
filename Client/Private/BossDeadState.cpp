@@ -4,6 +4,7 @@
 #include "BossDeadState.h"
 #include "Monster.h"
 #include "FSM.h"
+#include "Camera_2D.h"
 
 #include "Effect_Manager.h"
 #include "Camera_Manager.h"
@@ -213,12 +214,28 @@ void CBossDeadState::State_Update(_float _fTimeDelta)
 		{
 			CEffect_Manager::GetInstance()->Active_EffectMatrix(TEXT("BossEnd"), true, matWorld);
 
-			///* ÅÂ¿õ Ãß°¡ */
-			CCamera_Manager::GetInstance()->Start_FadeOut_White(1.0f);
 			++m_iEffectCount;
 		}
 		break;
 	}
+	case 11:
+	{
+		if (6.4f <= m_fAccTime) {
+			///* ÅÂ¿õ Ãß°¡ */
+			CCamera_Manager::GetInstance()->Start_FadeOut_White(1.0f);
+			++m_iEffectCount;
+		}
+	}
+	break;
+	case 12:
+	{
+		if ((1.f - EPSILON) <= CCamera_Manager::GetInstance()->Get_DofBufferData().fFadeRatio) {
+			CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::TARGET_2D);
+			CCamera_Manager::GetInstance()->Start_FadeIn_White(1.f);
+			CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D)->Enter_Section(TEXT("Chapter8_P2526"));
+		}
+	}
+	break;
 	default:
 		break;
 	}
