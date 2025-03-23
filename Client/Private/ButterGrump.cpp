@@ -391,6 +391,7 @@ void CButterGrump::Change_Animation()
             break;
 
         case BOSS_STATE::DEAD:
+			START_SFX_DELAY(TEXT("A_sfx_C9DESK_LastBoss_Outro"), 0.f, g_SFXVolume, false);
             static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Switch_Animation(EXPLOSION_INTO);
             break;
 

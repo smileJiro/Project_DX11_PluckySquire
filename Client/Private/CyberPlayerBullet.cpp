@@ -192,6 +192,10 @@ void CCyberPlayerBullet::OnTrigger_Enter(const COLL_INFO& _My, const COLL_INFO& 
 		{
 			CEffect_Manager::GetInstance()->Active_EffectPosition(TEXT("CyberBulletHit"), true, Get_FinalPosition());
 		}
+
+		wstring strSFX = TEXT("A_sfx_laser_impact_") + to_wstring(rand() % 5);
+		END_SFX(strSFX);
+		START_SFX_DELAY(strSFX, 0.f, g_SFXVolume, false);
 		if (nullptr != m_pParticleTrailEffect)
 			m_pParticleTrailEffect->Inactive_All();
 	}
