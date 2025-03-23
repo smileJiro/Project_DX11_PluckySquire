@@ -87,7 +87,6 @@ HRESULT CFatherGame_Progress_PartBody::Progress_Clear()
             break;
         case 2:
             Event_Register_Trigger(TEXT("Chapter6_FatherGame_Progress_Fatherpart_2"));
-            CFatherGame::GetInstance()->Start_Progress(CFatherGame::FATHER_PROGRESS_PARTHEAD);
             break;
         case 3:
             assert(nullptr);
