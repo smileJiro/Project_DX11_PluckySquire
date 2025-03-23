@@ -84,13 +84,17 @@ void CDialog::Update(_float _fTimeDelta)
 
 		if (true == Get_Dialogue(m_tDialogId)[0].lines[m_iCurrentLineIndex].is2D)
 		{
+			// A_sfx_text_minibeard// 드드드드드드득
+			// DialogWriting_sfx // 글자쓰는 소리
+
+
 			if (m_iCurrentLineIndex != Get_Dialogue(m_tDialogId)[0].lines.size() - 1)
 			{
-				m_pGameInstance->Start_SFX_Delay(TEXT("DialogWriting_sfx"), 0.f, 30.f, false);
-				m_pGameInstance->Start_SFX_Delay(TEXT("DialogWriting_sfx"), 0.1f, 30.f, false);
-				m_pGameInstance->Start_SFX_Delay(TEXT("DialogWriting_sfx"), 0.2f, 30.f, false);
-				m_pGameInstance->Start_SFX_Delay(TEXT("DialogWriting_sfx"), 0.3f, 30.f, false);
-				m_pGameInstance->Start_SFX_Delay(TEXT("DialogWriting_sfx"), 0.4f, 30.f, false);
+				m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_text_minibeard"), 0.f, 30.f, false);
+				m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_text_minibeard"), 0.1f, 30.f, false);
+				m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_text_minibeard"), 0.2f, 30.f, false);
+				m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_text_minibeard"), 0.3f, 30.f, false);
+				m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_text_minibeard"), 0.4f, 30.f, false);
 			}
 		}
 		else
@@ -99,14 +103,14 @@ void CDialog::Update(_float _fTimeDelta)
 			{
 				if (m_iCurrentLineIndex != Get_Dialogue(m_tDialogId)[0].lines.size() - 1)
 				{
-					m_pGameInstance->Start_SFX_Delay(TEXT("DialogWriting_sfx"), 0.f, 30.f, false);
-					m_pGameInstance->Start_SFX_Delay(TEXT("DialogWriting_sfx"), 0.1f, 30.f, false);
-					m_pGameInstance->Start_SFX_Delay(TEXT("DialogWriting_sfx"), 0.2f, 30.f, false);
-					m_pGameInstance->Start_SFX_Delay(TEXT("DialogWriting_sfx"), 0.3f, 30.f, false);
-					m_pGameInstance->Start_SFX_Delay(TEXT("DialogWriting_sfx"), 0.4f, 30.f, false);
-					m_pGameInstance->Start_SFX_Delay(TEXT("DialogWriting_sfx"), 0.5f, 30.f, false);
-					m_pGameInstance->Start_SFX_Delay(TEXT("DialogWriting_sfx"), 0.6f, 30.f, false);
-					m_pGameInstance->Start_SFX_Delay(TEXT("DialogWriting_sfx"), 0.7f, 30.f, false);
+					m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_text_minibeard"), 0.f, 30.f, false);
+					m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_text_minibeard"), 0.1f, 30.f, false);
+					m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_text_minibeard"), 0.2f, 30.f, false);
+					m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_text_minibeard"), 0.3f, 30.f, false);
+					m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_text_minibeard"), 0.4f, 30.f, false);
+					m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_text_minibeard"), 0.5f, 30.f, false);
+					m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_text_minibeard"), 0.6f, 30.f, false);
+					m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_text_minibeard"), 0.7f, 30.f, false);
 				}
 			}
 			else
@@ -1401,15 +1405,19 @@ void CDialog::NextDialogue(_float2 _RTSize)
 // 처음 다이얼로그 입장 시 위치 계산해주는 함수
 void CDialog::FirstCalPos(_float2 _RTSize)
 {
+
+	//A_sfx_text_minibeard // 드드드드드드득
+	// DialogWriting_sfx // 글자쓰는 소리
+
 	if (true == Get_Dialogue(m_tDialogId)[0].lines[m_iCurrentLineIndex].is2D)
 	{
 		if (m_iCurrentLineIndex != Get_Dialogue(m_tDialogId)[0].lines.size())
 		{
-			m_pGameInstance->Start_SFX_Delay(TEXT("DialogWriting_sfx"), 0.f, 30.f, false);
-			m_pGameInstance->Start_SFX_Delay(TEXT("DialogWriting_sfx"), 0.1f, 30.f, false);
-			m_pGameInstance->Start_SFX_Delay(TEXT("DialogWriting_sfx"), 0.2f, 30.f, false);
-			m_pGameInstance->Start_SFX_Delay(TEXT("DialogWriting_sfx"), 0.3f, 30.f, false);
-			m_pGameInstance->Start_SFX_Delay(TEXT("DialogWriting_sfx"), 0.4f, 30.f, false);
+			m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_text_minibeard"), 0.f, 30.f, false);
+			m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_text_minibeard"), 0.1f, 30.f, false);
+			m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_text_minibeard"), 0.2f, 30.f, false);
+			m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_text_minibeard"), 0.3f, 30.f, false);
+			m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_text_minibeard"), 0.4f, 30.f, false);
 		}
 	}
 	else
@@ -1418,11 +1426,11 @@ void CDialog::FirstCalPos(_float2 _RTSize)
 		{
 			if (m_iCurrentLineIndex != Get_Dialogue(m_tDialogId)[0].lines.size())
 			{
-				m_pGameInstance->Start_SFX_Delay(TEXT("DialogWriting_sfx"), 0.f, 30.f, false);
-				m_pGameInstance->Start_SFX_Delay(TEXT("DialogWriting_sfx"), 0.1f, 30.f, false);
-				m_pGameInstance->Start_SFX_Delay(TEXT("DialogWriting_sfx"), 0.2f, 30.f, false);
-				m_pGameInstance->Start_SFX_Delay(TEXT("DialogWriting_sfx"), 0.3f, 30.f, false);
-				m_pGameInstance->Start_SFX_Delay(TEXT("DialogWriting_sfx"), 0.4f, 30.f, false);
+				m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_text_minibeard"), 0.f, 30.f, false);
+				m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_text_minibeard"), 0.1f, 30.f, false);
+				m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_text_minibeard"), 0.2f, 30.f, false);
+				m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_text_minibeard"), 0.3f, 30.f, false);
+				m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_text_minibeard"), 0.4f, 30.f, false);
 			}
 		}
 		else
