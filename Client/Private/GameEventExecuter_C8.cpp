@@ -2121,7 +2121,6 @@ void CGameEventExecuter_C8::Chapter8_Meet_Humgrump(_float _fTimeDelta)
 		if (m_fTimer >= 1.3f) {
 			// 검은색 FadeIn 시작
 			CCamera_Manager::GetInstance()->Start_FadeIn(0.6f);
-			CCamera_Manager::GetInstance()->Start_FadeOut(0.6f);
 			CCamera* pCamera = CCamera_Manager::GetInstance()->Get_CurrentCamera();
 			CCamera_2D* pCam = static_cast<CCamera_2D*>(pCamera);
 
@@ -2594,7 +2593,7 @@ void CGameEventExecuter_C8::Chapter8_Boss_Intro(_float _fTimeDelta)
 	{
 		if (Is_Start())
 		{
-			START_SFX_DELAY(TEXT("A_sfx_C9DESK_LastBoss_Intro"), 1.5f, g_SFXVolume, false);
+			START_SFX_DELAY(TEXT("A_sfx_C9DESK_LastBoss_Intro"), 0.f, g_SFXVolume, false);
 			m_pGameInstance->Transition_BGM(TEXT("LCD_MUS_C09_LASTBOSS_INTRO_MASTER_FULL"), g_BGMVolume);
 			
 			m_pGameInstance->Set_SFXTargetVolume(TEXT("LCD_MUS_C09_P129130_PUPA_Stem_Group1"), 0.f);
