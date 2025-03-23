@@ -1846,6 +1846,12 @@ void CGameEventExecuter_C6::Chapter6_Boss_Start(_float _fTimeDelta)
 		/* 1. Save Reset ArmData */
 		if (Is_Start())
 		{
+			// sound
+			END_BGM();
+			START_BGM(TEXT("LCD_MUS_C06_EXCAVATORBATTLE_Stem_Base"), g_BGMVolume * 1.2f);
+			START_SFX(TEXT("LCD_MUS_C06_EXCAVATORBATTLE_Stem_Group1"), g_BGMVolume, true);
+			START_SFX(TEXT("LCD_MUS_C06_EXCAVATORBATTLE_Stem_Group2"), g_BGMVolume, true);
+
 			// Boss Àü ½ÃÀÛ.
 			CExcavatorGame::GetInstance()->Initialize(m_pDevice, m_pContext);
 

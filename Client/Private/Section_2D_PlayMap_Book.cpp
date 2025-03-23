@@ -7,6 +7,7 @@
 #include "Engine_Macro.h"
 #include "MapObjectFactory.h"
 #include "Trigger_Manager.h"
+#include "PlayerData_Manager.h"
 
 CSection_2D_PlayMap_Book::CSection_2D_PlayMap_Book(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CSection_2D_PlayMap(_pDevice, _pContext, PLAYMAP, SECTION_2D_BOOK)
@@ -17,10 +18,14 @@ HRESULT CSection_2D_PlayMap_Book::Section_Enter(const _wstring& _strPreSection3T
 {
 	__super::Section_Enter(_strPreSection3Tag);
 
-	if (TEXT("Stop") == m_strBGMTag)
-		m_pGameInstance->End_BGM();
-	else if (TEXT("") != m_strBGMTag)
-		m_pGameInstance->Transition_BGM(m_strBGMTag, g_BGMVolume);
+	if (COORDINATE_3D != CPlayerData_Manager::GetInstance()->Get_PlayerCoord())
+	{
+		if (TEXT("Stop") == m_strBGMTag)
+			m_pGameInstance->End_BGM();
+		else if (TEXT("") != m_strBGMTag)
+			m_pGameInstance->Transition_BGM(m_strBGMTag, g_BGMVolume);
+	}
+
 
 	return S_OK;
 }

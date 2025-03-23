@@ -414,7 +414,7 @@ HRESULT CLevel_Chapter_02::Ready_Lights()
 	m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/DirectionalTest2.json"));
 	//m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/Chapter2_Night_Main.json"));
 #elif NDEBUG
-	m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/Chapter2_Bright_Sky.json"));
+	m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/Chapter2_Sky.json"));
 #endif // _DEBUG
 
 	//m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/Chapter2_Night_Main.json"));
@@ -1925,8 +1925,9 @@ HRESULT CLevel_Chapter_02::Ready_Layer_BackGroundWindow(const _wstring& _strLaye
 		CBackGroundObject::BACKGROUNDOBJ_DESC Desc;
 		Desc.iCurLevelID = LEVEL_CHAPTER_2;
 		Desc.isCoordChangeEnable = false;
-		Desc.strTexturePrototypeTag = TEXT("Prototype_Component_Texture_BackGround_Chapter2_Main");
-		Desc.Build_3D_Transform(_float3(-20.0f, 90.0f, 150.0f), _float3(400.f, 400.f, 10.f));
+		//Desc.strTexturePrototypeTag = TEXT("Prototype_Component_Texture_BackGround_Chapter2_Main");
+		Desc.strTexturePrototypeTag = TEXT("Prototype_Component_Texture_BackGround_Chapter2_RedHouse_1");
+		Desc.Build_3D_Transform(_float3(-20.0f, 60.0f, 150.0f), _float3(400.f, 400.f, 10.f));
 
 		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BackGroundObject"), LEVEL_CHAPTER_2, TEXT("Layer_BackGround"), &Desc)))
 			return E_FAIL;
@@ -1937,8 +1938,8 @@ HRESULT CLevel_Chapter_02::Ready_Layer_BackGroundWindow(const _wstring& _strLaye
 		CBackGroundObject::BACKGROUNDOBJ_DESC Desc;
 		Desc.iCurLevelID = LEVEL_CHAPTER_2;
 		Desc.isCoordChangeEnable = false;
-		Desc.strTexturePrototypeTag = TEXT("Prototype_Component_Texture_BackGround_Chapter2_RedHouse");
-		Desc.Build_3D_Transform(_float3(-300.0f, 80.0f, -150.0f), _float3(300.f, 300.f, 10.f), _float3(0.0f, XMConvertToRadians(-90.f), 0.0f));
+		Desc.strTexturePrototypeTag = TEXT("Prototype_Component_Texture_BackGround_Chapter2_Main");
+		Desc.Build_3D_Transform(_float3(-350.0f, 80.0f, -100.0f), _float3(300.f, 300.f, 10.f), _float3(0.0f, XMConvertToRadians(-90.f), 0.0f));
 
 		if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_BackGroundObject"), LEVEL_CHAPTER_2, TEXT("Layer_BackGround"), &Desc)))
 			return E_FAIL;

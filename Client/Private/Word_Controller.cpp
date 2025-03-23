@@ -114,7 +114,7 @@ HRESULT CWord_Controller::Import(CSection_2D* _pSection, json _ControllerJson)
 				auto pGenerator = SECTION_MGR->Get_Word_Generator();
 				CWord* pWord = pGenerator->Find_Word(iWordIndex);
 
-				static_cast<CWord_Container*>(m_PartObjects[iIndex])->Set_Word(pWord, CWord::WORD_MODE_SETUP, false);
+				static_cast<CWord_Container*>(m_PartObjects[iIndex])->Set_Word(pWord, CWord::WORD_MODE_SETUP, false, true);
 			}
 			iIndex++;
 		}

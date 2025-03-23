@@ -29,6 +29,11 @@
           {
             "ImagePath": "C04_0910_lilypad_02_png1"
           }
+        ],        
+		"SFX_Tag_List": [
+          {
+            "SFXPath": "C04_P0910"
+          }
         ],
         "Word_Action_List": [
           {
@@ -58,6 +63,13 @@
             "Word_Type": 1,
             "Action_Type": 5,
             "Param": false
+          },
+          {
+            "Controller_Index": 0,
+            "Container_Index": 0,
+            "Word_Type": 1,
+            "Action_Type": 7,
+            "Param": 0
           }
         ]
       }

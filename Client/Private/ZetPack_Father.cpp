@@ -141,6 +141,7 @@ void CZetPack_Father::State_Change()
 
 void CZetPack_Father::State_Change_State_FireEngine()
 {
+	START_SFX_DELAY(TEXT("A_sfx_jetpac_thrust_start-3"), 0.0f, g_SFXVolume * 1.2f, false);
 	m_pControllerModel->Switch_Animation(STATE::STATE_FIREENGINE);
 	_uint iCurZoomLevel = CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::CAMERA_TYPE::TARGET_2D)->Get_CurrentZoomLevel();
 	CCamera_Manager::GetInstance()->Start_Zoom(CCamera_Manager::CAMERA_TYPE::TARGET_2D, 1.0f, iCurZoomLevel + 1, RATIO_TYPE::EASE_IN);
@@ -148,6 +149,7 @@ void CZetPack_Father::State_Change_State_FireEngine()
 
 void CZetPack_Father::State_Change_Reassemble()
 {
+	START_SFX_DELAY(TEXT("A_sfx_zap_reconstruct"), 0.1f, g_SFXVolume * 1.4f, false);
 	m_isRender = true;
 	CCamera_Manager::GetInstance()->Change_CameraTarget(this);
 	_uint iCurZoomLevel = CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::CAMERA_TYPE::TARGET_2D)->Get_CurrentZoomLevel();
@@ -290,6 +292,7 @@ void CZetPack_Father::On_AnimEnd(COORDINATE _eCoord, _uint _iAnimIdx)
 	{
 	case Client::CZetPack_Father::STATE_FIREENGINE:
 	{
+		START_SFX_DELAY(TEXT("A_sfx_tank_fire_0"), 0.0f, g_SFXVolume * 1.2f, false);
 		CCamera_Manager::GetInstance()->Start_ZoomIn();
 		m_eCurState = STATE_TALK;
 		// TODO:: 도장 튀어 나오게도 해야함. 컵 돌아가면서 

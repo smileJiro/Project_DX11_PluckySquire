@@ -23,7 +23,7 @@ HRESULT CCamera_Free::Initialize(void* pArg)
 
 	pDesc->eStartCoord = COORDINATE_3D;
 	pDesc->isCoordChangeEnable = false;
-	pDesc->tTransform3DDesc.fSpeedPerSec = 10.f;
+	pDesc->tTransform3DDesc.fSpeedPerSec = 60.f;
 	pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(180.f);
 	m_fMouseSensor = pDesc->fMouseSensor;
 	switch (pDesc->eMode)
