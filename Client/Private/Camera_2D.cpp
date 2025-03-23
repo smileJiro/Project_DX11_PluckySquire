@@ -36,7 +36,7 @@ HRESULT CCamera_2D::Initialize(void* pArg)
 	pDesc->isCoordChangeEnable = false;
 	pDesc->tTransform3DDesc.fSpeedPerSec = 10.f;
 	pDesc->tTransform3DDesc.fRotationPerSec = XMConvertToRadians(180.f);
-
+	pDesc->fFocusDistance = 20.f;
 	m_fSmoothSpeed = pDesc->fSmoothSpeed;
 	m_eCameraMode = pDesc->eCameraMode;
 	m_vAtOffset = pDesc->vAtOffset;
@@ -1479,6 +1479,12 @@ HRESULT CCamera_2D::Ready_TargetLight()
 
 void CCamera_2D::Update_TargetLight()
 {
+	if (m_iCurLevelID == LEVEL_CHAPTER_2)
+	{
+		m_pTargetLight->Set_Active(false);
+		return;
+	}
+
 	if (CSection_2D::SECTION_2D_PLAY_TYPE::SKSP == m_iPlayType)
 		m_pTargetLight->Set_Active(true);
 	else

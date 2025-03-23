@@ -584,6 +584,12 @@ HRESULT CLoader::Loading_Level_Static()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_BackGround_Chapter2_RedHouse_1"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/BackGround/Chapter2_RedHouse_1.dds"), 1, true))))
 		return E_FAIL;
+
+	/* For. Prototype_Component_Texture_BackGround_Night */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_BackGround_Night"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/BackGround/Night.dds"), 1, true))))
+		return E_FAIL;
+
 #pragma endregion
 
 #pragma region Static - Sound Load

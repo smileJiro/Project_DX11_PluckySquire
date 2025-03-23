@@ -357,7 +357,7 @@ PS_OUT PS_BACKGROUND(PS_IN In)
     if (g_isGrayScale == 1)
     {
         vAlbedo *= Material.MultipleAlbedo;
-        vAlbedo.rgb = dot(vAlbedo.rgb, float3(0.299f, 0.587f, 0.114f)) + (vAlbedo.rgb * g_fGrayScaleColorFactor);
+        vAlbedo.rgb = dot(vAlbedo.rgb, float3(0.299f, 0.587f, 0.114f));
     }
     
     if (vAlbedo.a < 0.1f)

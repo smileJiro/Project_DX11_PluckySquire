@@ -2108,10 +2108,42 @@ void CGameEventExecuter_C8::Chapter8_Meet_Humgrump(_float _fTimeDelta)
 				m_pGameInstance->Add_GameObject_ToLayer(m_iCurLevelID, TEXT("Prototype_GameObject_ZipC8"), m_iCurLevelID, TEXT("Layer_Zip"), &pGameObject, &tZipDesc);
 				CSection_Manager::GetInstance()->Add_GameObject_ToSectionLayer(TEXT("Chapter8_SKSP_11"), pGameObject, SECTION_2D_PLAYMAP_OBJECT);
 
+				// Monster 제거
+				CLayer* pLayer = m_pGameInstance->Find_Layer(m_iCurLevelID, TEXT("Layer_Monster"));
+
+				if (nullptr != pLayer)
+				{
+					for (auto& Monster : pLayer->Get_GameObjects()) {
+						Event_DeleteObject(Monster);
+					}
+				}
+
+				pLayer = m_pGameInstance->Find_Layer(m_iCurLevelID, TEXT("Layer_Sneak_Beetle"));
+
+				if (nullptr != pLayer)
+				{
+					for (auto& Beetle : pLayer->Get_GameObjects()) {
+						Event_DeleteObject(Beetle);
+					}
+				}
+
+				pLayer = m_pGameInstance->Find_Layer(m_iCurLevelID, TEXT("Layer_Sneak_Soldier"));
+
+				if (nullptr != pLayer)
+				{
+					for (auto& Soldier : pLayer->Get_GameObjects()) {
+						Event_DeleteObject(Soldier);
+					}
+				}
 
 				// 2D 험그럼프 없애기
 				Event_DeleteObject(m_TargetObjects[0]);
 				m_TargetObjects[0] = nullptr;
+
+				// Light 변경
+				m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/Boss.json"));
+				m_pGameInstance->Set_GrayScale_VtxAnimMesh(0);
+				m_pGameInstance->Set_GrayScale_VtxMesh(0);
 
 				// 포탈 활성화
 				static_cast<CSection_2D_PlayMap*>(SECTION_MGR->Find_Section(SECTION_MGR->Get_Cur_Section_Key()))->Set_PortalActive(true);
@@ -2163,36 +2195,8 @@ void CGameEventExecuter_C8::Chapter8_Meet_Humgrump(_float _fTimeDelta)
 
 				pPlayer->Set_BlockPlayerInput(false);
 
-				// Monster 제거
-				CLayer* pLayer = m_pGameInstance->Find_Layer(m_iCurLevelID, TEXT("Layer_Monster"));
-
-				if(nullptr != pLayer)
-				{
-					for (auto& Monster : pLayer->Get_GameObjects()) {
-						Event_DeleteObject(Monster);
-					}
-				}
-
-				pLayer = m_pGameInstance->Find_Layer(m_iCurLevelID, TEXT("Layer_Sneak_Beetle"));
-				
-				if (nullptr != pLayer)
-				{
-					for (auto& Beetle : pLayer->Get_GameObjects()) {
-						Event_DeleteObject(Beetle);
-					}
-				}
-
-				pLayer = m_pGameInstance->Find_Layer(m_iCurLevelID, TEXT("Layer_Sneak_Soldier"));
-
-				if (nullptr != pLayer)
-				{
-					for (auto& Soldier : pLayer->Get_GameObjects()) {
-						Event_DeleteObject(Soldier);
-					}
-				}
-
 				// 이전 Trigger 제거
-				pLayer = m_pGameInstance->Find_Layer(m_iCurLevelID, TEXT("Layer_TriggerObject"));
+				CLayer* pLayer = m_pGameInstance->Find_Layer(m_iCurLevelID, TEXT("Layer_TriggerObject"));
 
 				for (auto& TriggerObject : pLayer->Get_GameObjects()) {
 					if (COORDINATE_3D == TriggerObject->Get_CurCoord())
@@ -2593,6 +2597,7 @@ void CGameEventExecuter_C8::Chapter8_Boss_Intro(_float _fTimeDelta)
 	{
 		if (Is_Start())
 		{
+			m_pGameInstance->Set_GrayScale_VtxAnimMesh(0);
 			START_SFX_DELAY(TEXT("A_sfx_C9DESK_LastBoss_Intro"), 0.f, g_SFXVolume, false);
 			m_pGameInstance->Transition_BGM(TEXT("LCD_MUS_C09_LASTBOSS_INTRO_MASTER_FULL"), g_BGMVolume);
 			
