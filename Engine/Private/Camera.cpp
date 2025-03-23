@@ -213,9 +213,6 @@ void CCamera::Start_Shake_ByCount(_float _fShakeTime, _float _fShakeForce, _int 
 
 void CCamera::Start_PostProcessing_Fade(FADE_TYPE _eFadeType, _float _fFadeTime)
 {
-	if (FADE_TYPE::FADE_LAST != m_eFadeType)
-		return;
-
 	if (FADE_TYPE::FADE_LAST <= _eFadeType)
 		return;
 

@@ -113,6 +113,7 @@ HRESULT CButterGrump::Initialize(void* _pArg)
     Bind_AnimEventFunc("On_Move", bind(&CButterGrump::On_Move, this));
     Bind_AnimEventFunc("Roar", bind(&CButterGrump::Roar, this));
     Bind_AnimEventFunc("EndRoar", bind(&CButterGrump::EndRoar, this));
+    Bind_AnimEventFunc("Transition", bind(&CButterGrump::Transition, this));
 
     /* Com_AnimEventGenerator */
     CAnimEventGenerator::ANIMEVTGENERATOR_DESC tAnimEventDesc{};
@@ -159,6 +160,9 @@ HRESULT CButterGrump::Initialize(void* _pArg)
     }
 
     Safe_AddRef(m_pTarget);
+
+
+    
 
     return S_OK;
 }
@@ -1035,6 +1039,18 @@ void CButterGrump::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
             m_isConverse = false;
             Hit();
             Event_ChangeBossState(BOSS_STATE::TRANSITION, m_pBossFSM);
+
+            m_pGameInstance->Transition_BGM(TEXT("LCD_MUS_C09_BOSSBATTLE_STAGE2_LOOP_Stem_Base"), g_BGMVolume, 5.f);
+
+            m_pGameInstance->Set_SFXTargetVolume(TEXT("LCD_MUS_C09_BOSSBATTLE_STAGE1_LOOP_Stem_Group1"), 0.f, 5.f);
+            m_pGameInstance->Set_SFXTargetVolume(TEXT("LCD_MUS_C09_BOSSBATTLE_STAGE1_LOOP_Stem_Group2"), 0.f, 5.f);
+
+            m_pGameInstance->Start_SFX(TEXT("LCD_MUS_C09_BOSSBATTLE_STAGE2_LOOP_Stem_Group1"), 1.5f, true);
+            m_pGameInstance->Start_SFX(TEXT("LCD_MUS_C09_BOSSBATTLE_STAGE2_LOOP_Stem_Group2"), 1.5f, true);
+
+            m_pGameInstance->Set_SFXTargetVolume(TEXT("LCD_MUS_C09_BOSSBATTLE_STAGE2_LOOP_Stem_Group1"), g_SFXVolume, 5.f);
+            m_pGameInstance->Set_SFXTargetVolume(TEXT("LCD_MUS_C09_BOSSBATTLE_STAGE2_LOOP_Stem_Group2"), g_SFXVolume, 5.f);
+
         }
         else
         {
@@ -1131,6 +1147,15 @@ void CButterGrump::EndRoar()
 {
     if (nullptr != m_pRoarEffect)
         m_pRoarEffect->Stop_SpawnAll(0.5f);
+}
+
+void CButterGrump::Transition()
+{
+    //156 diffuse 1
+    C3DModel* pModel = static_cast<C3DModel*>(static_cast<CModelObject*>(m_PartObjects[PART_BODY])->Get_Model(COORDINATE_3D));
+    pModel->Binding_TextureIndex(1, aiTextureType_DIFFUSE, 1);
+    pModel->Binding_TextureIndex(5, aiTextureType_DIFFUSE, 1);
+    pModel->Binding_TextureIndex(6, aiTextureType_DIFFUSE, 1);
 }
 
 HRESULT CButterGrump::Ready_ActorDesc(void* _pArg)

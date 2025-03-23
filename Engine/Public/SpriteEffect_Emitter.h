@@ -62,7 +62,7 @@ public:
 	virtual void		 Free() override;
 	virtual HRESULT		 Cleanup_DeadReferences() override;
 
-#ifdef NDEBUG
+#ifdef _DEBUG
 
 public:
 	virtual void				Tool_Setting() override;
