@@ -165,7 +165,8 @@ void CGameEventExecuter_C6::Chapter6_Intro(_float _fTimeDelta)
 				assert(nullptr);
 			}
 			END_BGM();
-			START_BGM(TEXT("LCD_MUS_C06_SPACE_DESK_SKETCHSPACE_FULL"), g_BGMVolume * 1.5f);
+			START_BGM(TEXT("LCD_MUS_C06_DESKINTRO_FULL"), g_BGMVolume * 1.5f);
+
 			Next_Step(true);
 		}
 	}
@@ -206,6 +207,8 @@ void CGameEventExecuter_C6::Chapter6_Intro(_float _fTimeDelta)
 	}
 	else
 	{
+		END_BGM();
+		START_BGM(TEXT("LCD_MUS_C06_SPACE_DESK_SKETCHSPACE_FULL"), g_BGMVolume * 1.5f);
 		GameEvent_End();
 	}
 }

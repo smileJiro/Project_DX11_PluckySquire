@@ -65,7 +65,7 @@ public:
 
 protected:
 	_float3 m_vSneakPos = {};
-	SNEAKWAYPOINTINDEX m_eWayIndex = {};
+	SNEAKWAYPOINTINDEX m_eWayIndex = { SNEAKWAYPOINTINDEX::LAST };
 	vector<Node> m_WayPoints = {};
 	vector<_uint> m_Ways;
 
