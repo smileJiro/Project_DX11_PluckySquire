@@ -30,6 +30,17 @@ HRESULT CDoor_Blue::Initialize(void* _pArg)
     return S_OK;
 }
 
+void CDoor_Blue::Update(_float _fTimeDelta)
+{
+    __super::Update(_fTimeDelta);
+
+    if (OPEN == m_eDoorState)
+    {
+        
+
+    }
+}
+
 
 void CDoor_Blue::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
 {
@@ -38,9 +49,6 @@ void CDoor_Blue::On_AnimEnd(COORDINATE _eCoord, _uint iAnimIdx)
         m_eDoorState = OPENED;
         m_p2DColliderComs[0]->Set_Active(false);
         Switch_Animation_By_State();
-
-        m_pGameInstance->End_SFX(TEXT("A_sfx_Gate_loop"));
-        m_pGameInstance->Start_SFX(TEXT("A_sfx_Gate_FinishedMoving"), g_SFXVolume);
     }
 }
 
@@ -62,6 +70,7 @@ void CDoor_Blue::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _pOthe
 
             m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_gate_start"), 1.f, g_SFXVolume);
             m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_Gate_loop"), 1.f, g_SFXVolume, true);
+
 
         }
     }
