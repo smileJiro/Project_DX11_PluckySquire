@@ -103,12 +103,12 @@ void CDomino::OnContact_Enter(const COLL_INFO& _My, const COLL_INFO& _Other, con
 {
 	__super::OnContact_Enter(_My, _Other, _ContactPointDatas);
 
-	START_SFX_DELAY(_wstring(L"A_sfx_domino_hit_domino-") + to_wstring(rand() % 13), 0.f, g_SFXVolume, false);
+	m_pGameInstance->Start_SFX_Distance(_wstring(L"A_sfx_domino_hit_domino-") + to_wstring(rand() % 13), Get_FinalPosition(), g_SFXVolume * 1.1f, 0.f, 20.f, 0.7f);
 	if (OBJECT_GROUP::INTERACTION_OBEJCT & _Other.pActorUserData->iObjectGroup)
 	{
 		CDice* pDIce = dynamic_cast<CDice*>(_Other.pActorUserData->pOwner);
 		if(pDIce)
-			START_SFX_DELAY(_wstring(L"A_sfx_dice_hit_domino"), 0.f, g_SFXVolume, false);
+			m_pGameInstance->Start_SFX_Distance(_wstring(L"A_sfx_dice_hit_domino-") + to_wstring(rand() % 13), Get_FinalPosition(), g_SFXVolume * 1.1f, 0.f, 20.f, 0.7f);
 	}
 }
 

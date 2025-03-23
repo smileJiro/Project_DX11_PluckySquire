@@ -54,7 +54,9 @@ void CPlayerState_JumpToPortal::Enter()
 
     if (COORDINATE_3D == eCoord)
     {
-        if (m_pPortal->Get_Distance(eCoord, m_pOwner) <= m_f3DDistanceThreshold)
+        _vector vPlayerPos = m_pOwner->Get_FinalPosition();
+        if (m_pPortal->Get_Distance(eCoord, m_pOwner) <= m_f3DDistanceThreshold
+            || Check_ExceedPortal(vPlayerPos))
         {
 
             m_pOwner->Set_State(CPlayer::EXIT_PORTAL);

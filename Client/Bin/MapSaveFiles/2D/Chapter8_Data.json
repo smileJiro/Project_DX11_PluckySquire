@@ -1,10 +1,11 @@
 [
 	{
 		"Section_Name": "Chapter8_P0102",
+		"Section_Start": true,
 		"Section_BackGround_Name": "Chapter8_P0102_BackGround",
+		"Section_Start": true,
 		"Section_Type": 1,
 		"Section_Default": 0,
-		"Section_Start": true,
 		"Section_Info": {
 			"BGM": "LCD_MUS_C09_P0102_INTRO_FULL",
 			"Next_Page_Tag": "Chapter8_P0304"

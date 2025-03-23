@@ -1609,6 +1609,8 @@ void CGameEventExecuter_C8::Chapter8_Meet_Humgrump(_float _fTimeDelta)
 				pThrash->Get_ControllerTransform()->Set_SpeedPerSec(200.f);
 				pViolet->Get_ControllerTransform()->Set_SpeedPerSec(200.f);
 				pPip->Get_ControllerTransform()->Set_SpeedPerSec(200.f);
+
+				CFriend_Controller::GetInstance()->End_Train();
 			}
 		}
 
