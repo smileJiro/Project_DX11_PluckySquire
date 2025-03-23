@@ -7,6 +7,7 @@
 #include "Collider_AABB.h"
 #include "Word_Controller.h"
 #include "Effect2D_Manager.h"
+#include "GameInstance.h"
 
 CWord_Container::CWord_Container(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	:CPartObject(_pDevice,_pContext)
@@ -244,6 +245,7 @@ void CWord_Container::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _
 	{
 		if (m_pMyWord != nullptr)
 		{
+			START_SFX(L"A_sfx_word_slide-001", 30.f, false);
 			// 위 치 설 정 
 			_vector fDir = XMVector2Normalize(XMLoadFloat2(&_pMyCollider->Get_Position()) - XMLoadFloat2(&_pOtherCollider->Get_Position()));
 			_float3 fPos = {};
@@ -258,7 +260,10 @@ void CWord_Container::On_Collision2D_Enter(CCollider* _pMyCollider, CCollider* _
 
 void CWord_Container::Set_Word(CWord* _pWord, CWord::WORD_MODE _eMode, _bool _isWordActionRegister, _bool isFirst)
 {
-
+	if (false == isFirst)
+	{
+		START_SFX(L"A_sfx_drop_word", 30.f, false);
+	}
 
 	// 있는 단어가 있으면, 지운다.
 	// 단어를 넣는다.

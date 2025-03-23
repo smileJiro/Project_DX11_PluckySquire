@@ -64,6 +64,7 @@ HRESULT CTrigger_Manager::Mapping_ExecuterTag()
 	m_EventExecuterTags[START_TRAIN] = L"Start_Train";
 	m_EventExecuterTags[FRIEND_MAPENTER] = L"Friend_MapEnter";
 	m_EventExecuterTags[CHAPTER2_BOOKMAGIC] = L"Chapter2_BookMagic";
+	m_EventExecuterTags[CHAPTER2_MAPCHANGE] = L"Chapter2_MapChange";
 	m_EventExecuterTags[CHAPTER2_INTRO] = L"Chapter2_Intro";
 	m_EventExecuterTags[CHAPTER2_HUMGRUMP] = L"Chapter2_Humgrump";
 	m_EventExecuterTags[CHAPTER2_LUNCHBOX_APPEAR] = L"Chapter2_LunchBox_Appear";

@@ -62,6 +62,12 @@ void CShopPanel_New::Update(_float _fTimeDelta)
 		CPlayer* pPlayer = Uimgr->Get_Player();
 		assert(pPlayer);
 		pPlayer->Set_BlockPlayerInput(true);
+
+
+		m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_shop_open"), 0.0f, 30.f, false);
+
+		
+
 	}
 
 	// 해당 인덱스를 체크해서 true로한다.
@@ -214,6 +220,10 @@ void CShopPanel_New::Update_KeyInput(_float _fTimeDelta)
 		if (true == pShopManager->Get_Confirm())
 		{
 			if (true == pShopManager->Get_isPurchase())
+
+				m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_shop_cursor_down"), 0.0f, 30.f, false);
+				
+
 				pShopManager->Set_isPurchase(false);
 			return;
 		}
@@ -223,6 +233,7 @@ void CShopPanel_New::Update_KeyInput(_float _fTimeDelta)
 
 		++m_iChooseIndex;
 		pShopManager->Set_ChooseIndex(m_iChooseIndex);
+		m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_shop_cursor_down"), 0.0f, 30.f, false);
 	}
 
 	if (KEY_DOWN(KEY::UP))
@@ -233,6 +244,7 @@ void CShopPanel_New::Update_KeyInput(_float _fTimeDelta)
 		if (true == pShopManager->Get_Confirm())
 		{
 			if (false == pShopManager->Get_isPurchase())
+				m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_shop_cursor_down"), 0.0f, 30.f, false);
 				pShopManager->Set_isPurchase(true);
 			return;
 		}
@@ -245,6 +257,7 @@ void CShopPanel_New::Update_KeyInput(_float _fTimeDelta)
 	
 		--m_iChooseIndex;
 		pShopManager->Set_ChooseIndex(m_iChooseIndex);
+		m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_shop_cursor_down"), 0.0f, 30.f, false);
 	}
 
 
@@ -284,6 +297,9 @@ void CShopPanel_New::Update_KeyInput(_float _fTimeDelta)
 						pShopManager->Set_OpenConfirmUI(false);
 						 pShopManager->Set_isPurchase(true);
 						m_iConfirmItemIndex = 0;
+						m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_shop_purchase_cancel"), 0.0f, 30.f, false);
+						
+
 						return;
 					}
 					else
@@ -364,6 +380,8 @@ void CShopPanel_New::Update_KeyInput(_float _fTimeDelta)
 		CCamera_Manager::GetInstance()->Change_CameraTarget(pPlayer, 0.5f);
 		// 2. Arm Data 원복
 		CCamera_Manager::GetInstance()->Start_ResetArm_To_SettingPoint(CCamera_Manager::TARGET_2D, 0.5f);
+		m_pGameInstance->Start_SFX_Delay(TEXT("A_sfx_shop_close"), 0.0f, 30.f, false);
+		
 	}
 
 }

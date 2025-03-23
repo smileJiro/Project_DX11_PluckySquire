@@ -263,6 +263,8 @@ void CWord::On_LayDownEnd(_fmatrix _matWoroverride)
 
 void CWord::On_PickUpStart(CPlayer* _pPalyer, _fmatrix _matPlayerOffset)
 {
+	START_SFX(L"A_sfx_pickup_word", 30.f, false);
+
 	m_bLaydown = false;
 }
 

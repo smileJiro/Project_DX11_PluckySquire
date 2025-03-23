@@ -85,6 +85,9 @@ void CGameEventExecuter_C2::Update(_float _fTimeDelta)
 		case Client::CTrigger_Manager::C02P0910_MONSTER_SPAWN:
 			C020910_Monster_Spawn(_fTimeDelta);
 			break;
+		case Client::CTrigger_Manager::CHAPTER2_MAPCHANGE:
+			Chapter2_MapChange(_fTimeDelta);
+			break;
 		case Client::CTrigger_Manager::CHAPTER2_BOOKMAGIC:
 			Chapter2_BookMagic(_fTimeDelta);
 			break;
@@ -235,8 +238,8 @@ void CGameEventExecuter_C2::Chapter2_BookMagic(_float _fTimeDelta)
 			CEffect2D_Manager::GetInstance()->Play_Effect(L"beam", SECTION_MGR->Get_Cur_Section_Key(), XMMatrixTranslation(-236.f, 217.f, 0.f), 2.8f, 0, true, 999.f);// 빔쏘는거
 			CEffect2D_Manager::GetInstance()->Play_Effect(L"EffectBack", SECTION_MGR->Get_Cur_Section_Key(), XMMatrixTranslation(-276.f, 181.4f, 0.f), 0.f, 0); // 백 시작
 			CEffect2D_Manager::GetInstance()->Play_Effect(L"EffectBack", SECTION_MGR->Get_Cur_Section_Key(), XMMatrixTranslation(-276.f, 181.4f, 0.f), 0.8f, 1, true, 999.f); //백 루프
-			CEffect2D_Manager::GetInstance()->Play_Effect(L"hum", SECTION_MGR->Get_Cur_Section_Key(), XMMatrixTranslation(-276.f, 172.4f, 0.f), 0.f, 0);
-			CEffect2D_Manager::GetInstance()->Play_Effect(L"hum", SECTION_MGR->Get_Cur_Section_Key(), XMMatrixTranslation(-276.f, 172.4f, 0.f), 1.8f, 1, false, 999.f);
+			//CEffect2D_Manager::GetInstance()->Play_Effect(L"hum", SECTION_MGR->Get_Cur_Section_Key(), XMMatrixTranslation(-276.f, 172.4f, 0.f), 0.f, 0);
+			CEffect2D_Manager::GetInstance()->Play_Effect(L"hum", SECTION_MGR->Get_Cur_Section_Key(), XMMatrixTranslation(-276.f, 178.4f, 0.f), 1.8f, 1, false, 999.f);
 			CEffect2D_Manager::GetInstance()->Play_Effect(L"storm", SECTION_MGR->Get_Cur_Section_Key(), XMMatrixTranslation(10.f, 280.f, 0.f), 3.0f, 0, false);
 			CEffect2D_Manager::GetInstance()->Play_Effect(L"storm", SECTION_MGR->Get_Cur_Section_Key(), XMMatrixTranslation(10.f, 280.f, 0.f), 3.6f, 1, true, 999.f);
 
@@ -447,6 +450,19 @@ void CGameEventExecuter_C2::Chapter2_Intro(_float _fTimeDelta)
 	}
 }
 
+void CGameEventExecuter_C2::Chapter2_MapChange(_float _fTimeDelta)
+{
+	m_fTimer += _fTimeDelta;
+
+	if (Change_PlayMap(0.f))
+	{
+
+		m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/Chapter2_Night_Main.json"));
+		m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/Chapter2_Night_Main.json"));
+		GameEvent_End();
+	}
+}
+
 void CGameEventExecuter_C2::Chapter2_Humgrump(_float _fTimeDelta)
 {
 	m_fTimer += _fTimeDelta;
@@ -462,8 +478,6 @@ void CGameEventExecuter_C2::Chapter2_Humgrump(_float _fTimeDelta)
 
 			m_pGameInstance->Start_SFX(_wstring(L"LCD_MUS_C02_CONFRONTINGHUMGRUMP_P4344_CUTSCENE_FULL"), g_SFXVolume);
 			m_pGameInstance->Start_SFX(_wstring(L"A_sfx_ejected_sequence"), g_SFXVolume);
-			m_pGameInstance->Load_Lights(TEXT("../Bin/DataFiles/DirectLights/Chapter2_Night_Main.json"));
-			m_pGameInstance->Load_IBL(TEXT("../Bin/DataFiles/IBL/Chapter2_Night_Main.json"));
 			
 
 			CCamera_2D* pCamera = static_cast<CCamera_2D*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET_2D));
@@ -483,7 +497,7 @@ void CGameEventExecuter_C2::Chapter2_Humgrump(_float _fTimeDelta)
 			//pCamera->Start_Changing_AtOffset(3.f, XMVectorSet(0.f, 4.f, 0.f, 0.f), EASE_IN_OUT);
 
 		}
-		else if(Change_PlayMap(0.f))
+		else 
 		{
 			Next_Step(true);
 		}
@@ -503,8 +517,35 @@ void CGameEventExecuter_C2::Chapter2_Humgrump(_float _fTimeDelta)
 		}
 	}
 	else if (Step_Check(STEP_2)) {
+		CCamera_CutScene* pCamera = static_cast<CCamera_CutScene*>(CCamera_Manager::GetInstance()->Get_CurrentCamera());
+		if (true == pCamera->Is_Finish_CutScene()) {
+			Next_Step(true);
+		}
+	}
+	else if (Step_Check(STEP_3)) {
+		if (Is_Start()) {
+			CCamera_Manager::GetInstance()->Start_FadeOut(0.7f);
+		}
 
-		if (m_fTimer >= 13.f) {
+		// 3. FadeOut이 끝난 후 CutScene Camera -> Target Camera로 전환
+		if (m_fTimer > 0.7f) {
+			static_cast<CCamera_CutScene*>(CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::CUTSCENE))->Set_Pause_After_CutScene(false);
+			
+			// Target의 Arm으로 변경
+			CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET)->Get_Arm()->Set_ArmVector(XMVectorSet(0.f, 0.67f, -0.74f, 0.f));
+			CCamera_Manager::GetInstance()->Get_Camera(CCamera_Manager::TARGET)->Get_Arm()->Set_Length(14.6f);
+			
+			Next_Step(true);
+		}
+	}
+	// 4. 전환 후 Target Camera로(다음 프레임) FadeIn 시작 + 기존 CutScene Camera를 다시 밝게 만들기
+	else if (Step_Check(STEP_4)) {
+		if (Is_Start()) {
+			CCamera_Manager::GetInstance()->Start_FadeIn(0.7f);
+			CCamera_Manager::GetInstance()->Set_FadeRatio(CCamera_Manager::CUTSCENE, 1.f, true);
+
+			Get_Player()->Set_BlockPlayerInput(false);
+
 			CSection* pSection = CSection_Manager::GetInstance()->Find_Section(TEXT("Chapter2_P1314"));
 
 			// Event Trigger 생성
@@ -518,7 +559,7 @@ void CGameEventExecuter_C2::Chapter2_Humgrump(_float _fTimeDelta)
 			Desc.tTransform2DDesc.vInitialPosition = { 70.f, 130.f, 0.f };
 
 			CTrigger_Manager::GetInstance()->Create_TriggerObject(LEVEL_STATIC, LEVEL_CHAPTER_2, &Desc, pSection);
-			
+
 			// 기존 NPC 삭제
 			CNPC_Manager::GetInstance()->Remove_SocialNPC(TEXT("Chapter_1_Humgrump"));
 			CNPC_Manager::GetInstance()->Remove_SocialNPC(TEXT("Spear_Trooper0"));
@@ -541,6 +582,7 @@ void CGameEventExecuter_C2::Chapter2_Humgrump(_float _fTimeDelta)
 			pThrash->Set_Direction(CFriend::DIR_RIGHT);
 			pViolet->Set_Position(vPortalPos + XMVectorSet(100.f, -100.f, 0.0f, 1.0f));
 			pViolet->Set_Direction(CFriend::DIR_LEFT);
+
 			GameEvent_End();
 		}
 	}

@@ -1782,7 +1782,7 @@ void CGameEventExecuter_C8::Chapter8_Meet_Humgrump(_float _fTimeDelta)
 
 		if (false == static_cast<CModelObject*>(m_TargetObjects[0])->Is_DuringAnimation()) {
 			// 10. 다 날아갔으면 Active 끄고 Camera Zoom 더 멀리
-			START_SFX_DELAY(TEXT("A_sfx_humgrump_zooms_off"), 0.0f, g_SFXVolume, false);
+			START_SFX_DELAY(TEXT("A_sfx_humgrump_zooms_off"), 1.7f, g_SFXVolume, false);
 			Next_Step(true);
 		}
 	}
@@ -1973,8 +1973,9 @@ void CGameEventExecuter_C8::Chapter8_Meet_Humgrump(_float _fTimeDelta)
 	}
 	else if (Step_Check(STEP_12)) {
 		if (false == CDialog_Manager::GetInstance()->Get_DisPlayDialogue() && 0 == m_iSubStep) {
+			static_cast<CModelObject*>(m_TargetObjects[0])->Get_Model(COORDINATE_2D)->Get_Animation(CNpc_Humgrump::CHAPTER8_PUPA_INTRO_1)->Set_SpeedMagnifier(1.6f);
 			static_cast<CModelObject*>(m_TargetObjects[0])->Switch_Animation(CNpc_Humgrump::CHAPTER8_PUPA_INTRO_1);
-			START_SFX_DELAY(TEXT("A_sfx_Pupa_intro"), 0.5f, g_SFXVolume, false);
+			START_SFX_DELAY(TEXT("A_sfx_Pupa_intro"), 0.f, g_SFXVolume, false);
 			m_iSubStep++;
 		}
 
@@ -2020,8 +2021,9 @@ void CGameEventExecuter_C8::Chapter8_Meet_Humgrump(_float _fTimeDelta)
 		if (false == CDialog_Manager::GetInstance()->Get_DisPlayDialogue()) {
 			// 7. 커지고 폭발
 			if (Is_Start()) {
+				static_cast<CModelObject*>(m_TargetObjects[0])->Get_Model(COORDINATE_2D)->Get_Animation(CNpc_Humgrump::CHAPTER8_PUPA_GROW)->Set_SpeedMagnifier(1.6f);
 				static_cast<CModelObject*>(m_TargetObjects[0])->Switch_Animation(CNpc_Humgrump::CHAPTER8_PUPA_GROW);
-				START_SFX_DELAY(TEXT("A_sfx_Pupa_explode_sequence"), 0.5f, g_SFXVolume, false);
+				START_SFX_DELAY(TEXT("A_sfx_Pupa_explode_sequence"), 0.0f, g_SFXVolume, false);
 
 				// Debug
 				CFriend* pThrash = CFriend_Controller::GetInstance()->Find_Friend(TEXT("Thrash"));
@@ -2592,7 +2594,11 @@ void CGameEventExecuter_C8::Chapter8_Boss_Intro(_float _fTimeDelta)
 	{
 		if (Is_Start())
 		{
-			START_SFX_DELAY(TEXT("A_sfx_C9DESK_LastBoss_Intro"), 0.f, g_SFXVolume, false);
+			START_SFX_DELAY(TEXT("A_sfx_C9DESK_LastBoss_Intro"), 1.5f, g_SFXVolume, false);
+			m_pGameInstance->Transition_BGM(TEXT("LCD_MUS_C09_LASTBOSS_INTRO_MASTER_FULL"), g_BGMVolume);
+			
+			m_pGameInstance->Set_SFXTargetVolume(TEXT("LCD_MUS_C09_P129130_PUPA_Stem_Group1"), 0.f);
+			m_pGameInstance->Set_SFXTargetVolume(TEXT("LCD_MUS_C09_P129130_PUPA_Stem_Group2"), 0.f);
 		}
 		if (CCamera_Manager::TARGET == CCamera_Manager::GetInstance()->Get_CameraType()) {
 			Get_Player()->Set_BlockPlayerInput(true);
@@ -2646,6 +2652,8 @@ void CGameEventExecuter_C8::Chapter8_Boss_Intro(_float _fTimeDelta)
 			
 			Get_Player()->Set_BlockPlayerInput(false);
 
+
+
 			Next_Step(true);
 		}
 	}
@@ -2665,6 +2673,8 @@ void CGameEventExecuter_C8::Chapter8_Going_To_Boss(_float _fTimeDelta)
 			CCamera_Manager::GetInstance()->Change_CameraType(CCamera_Manager::CUTSCENE);
 			Get_Player()->Set_State(CPlayer::ENGAGE_BOSS);
 			Get_Player()->Set_BlockPlayerInput(true);
+
+			m_pGameInstance->Transition_BGM(TEXT("LCD_MUS_C09_BOSSBATTLE_ENGAGE_FULL"), g_BGMVolume);
 
 			Next_Step(true);
 		}
@@ -2730,6 +2740,14 @@ void CGameEventExecuter_C8::Chapter8_Going_To_Boss(_float _fTimeDelta)
 	}
 	else
 	{
+		m_pGameInstance->Transition_BGM(TEXT("LCD_MUS_C09_BOSSBATTLE_STAGE1_LOOP_Stem_Base"), g_BGMVolume, 5.f);
+		m_pGameInstance->Start_SFX(TEXT("LCD_MUS_C09_BOSSBATTLE_STAGE1_LOOP_Stem_Group1"), 1.5f, true);
+		m_pGameInstance->Start_SFX(TEXT("LCD_MUS_C09_BOSSBATTLE_STAGE1_LOOP_Stem_Group2"), 1.5f, true);
+
+		m_pGameInstance->Set_SFXTargetVolume(TEXT("LCD_MUS_C09_BOSSBATTLE_STAGE1_LOOP_Stem_Group1"), g_BGMVolume, 5.f);
+		m_pGameInstance->Set_SFXTargetVolume(TEXT("LCD_MUS_C09_BOSSBATTLE_STAGE1_LOOP_Stem_Group2"), g_BGMVolume, 5.f);
+
+
 		GameEvent_End();
 	}
 }
