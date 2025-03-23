@@ -738,6 +738,9 @@ void CMiniGame_Defender::Rescue_Person(CDefenderPerson* _pPerson)
     Set_LeftPersonCount(m_iPersonLeft);
 	m_pDefenderPlayer->Remove_Follower(_pPerson);
     _pPerson->Dissapear();
+    wstring strSFX = TEXT("A_sfx_humans_rescued");
+    END_SFX(strSFX);
+    START_SFX_DELAY(strSFX, 0.f, g_SFXVolume * 0.65f, false);
     if (m_iPersonLeft <= 0)
         Mission_Complete();
 }
@@ -745,6 +748,9 @@ void CMiniGame_Defender::Rescue_Person(CDefenderPerson* _pPerson)
 void CMiniGame_Defender::Mission_Complete()
 {
     m_bClear = true;
+    wstring strSFX = TEXT("A_sfx_resotub_mission_complete");
+    END_SFX(strSFX);
+    START_SFX_DELAY(strSFX, 0.f, g_SFXVolume * 0.65f, false);
     for (auto& pSpawner : m_Spawners)
     {
         pSpawner.second->Delete_Pool();
