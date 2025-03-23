@@ -388,7 +388,7 @@
             "Position": [
                 -1.3220000267028809,
                 22.878999710083008,
-                -2.8460000038146973
+                -2.8459999561309814
             ],
             "Radius": 0.5,
             "Rotation": [
@@ -515,38 +515,6 @@
         "Trigger_Coordinate": 1,
         "Trigger_EventTag": "Chapter8_FreezeZ_3",
         "Trigger_Type": 5
-    },
-    {
-        "Arm_Info": {
-            "Exit_Return_Mask": {
-                "ReturnMask": 0
-            }
-        },
-        "Collider_Info": {
-            "HalfExtents": [
-                6.199999809265137,
-                1.7999999523162842,
-                4.0
-            ],
-            "Position": [
-                9.236000061035156,
-                23.07900047302246,
-                16.624000549316406
-            ],
-            "Radius": 0.5,
-            "Rotation": [
-                -0.0,
-                0.0,
-                -0.0
-            ],
-            "ShapeType": 0
-        },
-        "Fillter_MyGroup": 128,
-        "Fillter_OtherGroupMask": 2,
-        "Trigger_ConditionType": 0,
-        "Trigger_Coordinate": 1,
-        "Trigger_EventTag": "Chapter8_10",
-        "Trigger_Type": 1
     },
     {
         "Arm_Info": {
@@ -1406,34 +1374,33 @@
         "Trigger_EventTag": "Chapter8_2",
         "Trigger_Type": 1
     },
-  {
-    "Collider_Info": {
-      "HalfExtents": [
-        1.0999999046325684,
-        3.799999952316284,
-        3.0999999046325684
-      ],
-      "Position": [
-        -115.94000244140625,
-        64.43000030517578,
-        23.530000686645508
-      ],
-      "Radius": 0.5,
-      "Rotation": [
-        -0.0,
-        0.0,
-        -0.0
-      ],
-      "ShapeType": 0
+    {
+        "Collider_Info": {
+            "HalfExtents": [
+                1.0999999046325684,
+                3.799999952316284,
+                3.0999999046325684
+            ],
+            "Position": [
+                -115.94000244140625,
+                64.43000030517578,
+                23.530000686645508
+            ],
+            "Radius": 0.5,
+            "Rotation": [
+                -0.0,
+                0.0,
+                -0.0
+            ],
+            "ShapeType": 0
+        },
+        "Fillter_MyGroup": 128,
+        "Fillter_OtherGroupMask": 2,
+        "Trigger_ConditionType": 0,
+        "Trigger_Coordinate": 1,
+        "Trigger_EventTag": "Chapter8_Intro_Postit_Sequence",
+        "Trigger_Type": 0
     },
-    "Fillter_MyGroup": 128,
-    "Fillter_OtherGroupMask": 2,
-    "Trigger_Reusable": false,
-    "Trigger_ConditionType": 0,
-    "Trigger_Coordinate": 1,
-    "Trigger_EventTag": "Chapter8_Intro_Postit_Sequence",
-    "Trigger_Type": 0
-  },
     {
         "Collider_Info": {
             "HalfExtents": [
@@ -1526,8 +1493,7 @@
             ],
             "ShapeType": 0
         },
-      "Fillter_MyGroup": 128,
-        "Trigger_Reusable" : false,
+        "Fillter_MyGroup": 128,
         "Fillter_OtherGroupMask": 2,
         "Trigger_ConditionType": 0,
         "Trigger_Coordinate": 1,
@@ -1569,5 +1535,41 @@
         "Trigger_Coordinate": 1,
         "Trigger_EventTag": "Chapter8_LookAt_Last",
         "Trigger_Type": 8
-    }
+    },
+  {
+    "Collider_Info": {
+      "HalfExtents": [
+        1.7000000476837158,
+        1.600000023841858,
+        3.5
+      ],
+      "Position": [
+        8.536202430725098,
+        22.878999710083008,
+        17.82251739501953
+      ],
+      "Radius": 0.5,
+      "Rotation": [
+        -0.0,
+        0.0,
+        -0.0
+      ],
+      "ShapeType": 0
+    },
+    "Enable_LookAt_Info": {
+      "Exit_LookAt_Mask": {
+        "ExitLookAtMask": 15
+      },
+      "Is_LookAt": {
+        "CustomData": true,
+        "CustomData_Tag": "IsLookAt"
+      }
+    },
+    "Fillter_MyGroup": 128,
+    "Fillter_OtherGroupMask": 2,
+    "Trigger_ConditionType": 0,
+    "Trigger_Coordinate": 1,
+    "Trigger_EventTag": "Chapter8_LookAt_Last_2",
+    "Trigger_Type": 8
+  }
 ]
