@@ -785,6 +785,9 @@ void CTrigger_Manager::Register_Trigger_Action()
 		CGameObject* pItem = CPlayerData_Manager::GetInstance()->Get_PlayerItem_Ptr(_wszEventTag);
 		static_cast<CPlayerItem*>(pItem)->Get_ActorCom()->Set_AllShapeEnable(false);
 
+		// 중력 끄기
+		static_cast<CActor_Dynamic*>(static_cast<CPlayerItem*>(pItem)->Get_ActorCom())->Set_Gravity(false);
+
 		// 1. Player PrePos 저장
 		CPlayerData_Manager::GetInstance()->Save_PlayerPrePos();
 		

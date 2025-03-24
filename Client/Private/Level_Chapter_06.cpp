@@ -354,7 +354,7 @@ HRESULT CLevel_Chapter_06::Initialize(LEVEL_ID _eLevelID)
 #pragma endregion // TestCode
 	
 	/* Chapter6 Intro Trigger 동적 생성 임시 코드*/
-	Create_IntroTrigger();
+	//Create_IntroTrigger();
 
 	return S_OK;
 }
@@ -812,22 +812,22 @@ HRESULT CLevel_Chapter_06::Ready_Layer_Player(const _wstring& _strLayerTag, CGam
 
 HRESULT CLevel_Chapter_06::Ready_Layer_Defender()
 {
-	CSection_Manager* pSectionMgr = CSection_Manager::GetInstance();
+	//CSection_Manager* pSectionMgr = CSection_Manager::GetInstance();
 
-	CMiniGame_Defender::DEFENDER_DESC tDesc = {};
-	tDesc.iCurLevelID = m_eLevelID;
-	tDesc.tTransform2DDesc.vInitialPosition = { -2020.f, -80.f, 0.f };   // TODO ::임시 위치
-	CMiniGame_Defender* pTower = static_cast<CMiniGame_Defender*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_eLevelID, TEXT("Prototype_GameObject_Minigame_Defender"), &tDesc));;
-	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Layer_Defender"), pTower);
-	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter6_SKSP_04"), pTower, SECTION_2D_PLAYMAP_OBJECT);
+	//CMiniGame_Defender::DEFENDER_DESC tDesc = {};
+	//tDesc.iCurLevelID = m_eLevelID;
+	//tDesc.tTransform2DDesc.vInitialPosition = { -2020.f, -80.f, 0.f };   // TODO ::임시 위치
+	//CMiniGame_Defender* pTower = static_cast<CMiniGame_Defender*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_eLevelID, TEXT("Prototype_GameObject_Minigame_Defender"), &tDesc));;
+	//m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Layer_Defender"), pTower);
+	//pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter6_SKSP_04"), pTower, SECTION_2D_PLAYMAP_OBJECT);
 
-	CDefenderPlayer::DEFENDERPLAYER_DESC tDeffenderPlayerDesc = {};
-	tDeffenderPlayerDesc.iCurLevelID = m_eLevelID;
-	tDeffenderPlayerDesc.pMinigame = pTower;
-	CDefenderPlayer* pPlayer = static_cast<CDefenderPlayer*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_eLevelID, TEXT("Prototype_GameObject_DefenderPlayer"), &tDeffenderPlayerDesc));
-	m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Layer_Defender"), pPlayer);
-	pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter6_SKSP_04"), pPlayer, SECTION_2D_PLAYMAP_OBJECT);
-	pPlayer->Set_Active(false);
+	//CDefenderPlayer::DEFENDERPLAYER_DESC tDeffenderPlayerDesc = {};
+	//tDeffenderPlayerDesc.iCurLevelID = m_eLevelID;
+	//tDeffenderPlayerDesc.pMinigame = pTower;
+	//CDefenderPlayer* pPlayer = static_cast<CDefenderPlayer*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::PROTO_GAMEOBJ, m_eLevelID, TEXT("Prototype_GameObject_DefenderPlayer"), &tDeffenderPlayerDesc));
+	//m_pGameInstance->Add_GameObject_ToLayer(m_eLevelID, TEXT("Layer_Defender"), pPlayer);
+	//pSectionMgr->Add_GameObject_ToSectionLayer(TEXT("Chapter6_SKSP_04"), pPlayer, SECTION_2D_PLAYMAP_OBJECT);
+	//pPlayer->Set_Active(false);
 
 	return S_OK;
 }

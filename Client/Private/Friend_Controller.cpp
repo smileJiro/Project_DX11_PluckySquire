@@ -130,7 +130,7 @@ HRESULT CFriend_Controller::Register_Friend_ToTrainList(const _wstring& _strFrie
     // 친구목록에 없으면 Fail
     if (nullptr == Find_Friend(_strFriendTag))
         return E_FAIL;
-
+     
     // 이미 TrainList에 있으면 Fail
     if (nullptr != Find_Friend_FromTrainList(_strFriendTag))
         return E_FAIL;

@@ -35,10 +35,10 @@ void CTimer::Update_Timer(void)
 
 	m_fTimeDelta = (_float)(m_FrameTime.QuadPart - m_LastTime.QuadPart) / (_float)m_CpuTick.QuadPart * m_fTimeScale;
 
-	if (m_fTimeDelta > (1.f / 60.f))
-	{
-		m_fTimeDelta = (1.f / 60.f);
-	}
+	//if (m_fTimeDelta > (1.f / 60.f))
+	//{
+	//	m_fTimeDelta = (1.f / 60.f);
+	//}
 
 	m_LastTime = m_FrameTime;
 	Compute_FPS();

@@ -34,6 +34,8 @@ HRESULT CCamera_Target::Initialize(void* pArg)
 		pDesc->fFocusDistance = 35.f;
 	else if (pDesc->iCurLevelID == LEVEL_CHAPTER_6)
 		pDesc->fFocusDistance = 40.f;
+	else
+		pDesc->fFocusDistance = 14.f;
 
 	m_fSmoothSpeed = pDesc->fSmoothSpeed;
 	m_eCameraMode = pDesc->eCameraMode;

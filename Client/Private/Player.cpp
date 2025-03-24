@@ -5,6 +5,7 @@
 #include "StateMachine.h"
 #include "ModelObject.h"
 #include "Controller_Transform.h"
+#include "Friend.h"
 #include "PlayerState_Idle.h"
 #include "PlayerState_Run.h"
 #include "PlayerState_Attack.h"
@@ -763,7 +764,17 @@ void CPlayer::Priority_Update(_float _fTimeDelta)
 
 void CPlayer::Update(_float _fTimeDelta)
 {
-
+	if (KEY_DOWN(KEY::NUM9))
+	{
+		END_BGM();
+		CFriend* pThrash =  CFriend_Controller::GetInstance()->Find_Friend(TEXT("Thrash"));
+		pThrash->Set_Active(true);
+		CFriend* pViolet =  CFriend_Controller::GetInstance()->Find_Friend(TEXT("Violet"));
+		pViolet->Set_Active(true);
+		CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(TEXT("Thrash"));
+		CFriend_Controller::GetInstance()->Register_Friend_ToTrainList(TEXT("Violet"));
+		CFriend_Controller::GetInstance()->Start_Train();
+	}
 	Key_Input(_fTimeDelta);
 	COORDINATE eCoord = Get_CurCoord();
 
