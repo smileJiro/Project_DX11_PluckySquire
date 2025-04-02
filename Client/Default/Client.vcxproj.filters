@@ -493,9 +493,6 @@
     <Filter Include="02.GameObjects\UI\00. GamePlay\03. InterAction\02. Interaction_E">
       <UniqueIdentifier>{2aab60c7-a543-45be-93ec-270840324c3a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="NewFilter1">
-      <UniqueIdentifier>{ce7fbcc7-0a2a-4ec8-a33f-ed2f8c2ad06f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Interface">
       <UniqueIdentifier>{a6abd73e-7852-42b2-91b9-1145a5d597bd}</UniqueIdentifier>
     </Filter>
@@ -804,6 +801,9 @@
     </Filter>
     <Filter Include="02.GameObjects\Monster\Boss\Part\Body">
       <UniqueIdentifier>{86b240a7-2423-4237-a88d-b3c93d46e6dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Meteor">
+      <UniqueIdentifier>{d0888622-2816-468a-98ae-36f841b4c39c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1961,7 +1961,6 @@
     <ClInclude Include="..\Public\JumpStarter.h">
       <Filter>02.GameObjects\2DGimmik\JumpStarter</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Meteor.h" />
     <ClInclude Include="..\Public\Formation_Manager.h">
       <Filter>02.GameObjects\Formation\Manager</Filter>
     </ClInclude>
@@ -1984,12 +1983,6 @@
       <Filter>02.GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\DynamicCastleGate.h">
-      <Filter>02.GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\DefenderPerson.h">
-      <Filter>02.GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\DefenderCapsule.h">
       <Filter>02.GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\BigPressurePlate.h">
@@ -2074,6 +2067,15 @@
     </ClInclude>
     <ClInclude Include="..\public\ButterGrump_Body.h">
       <Filter>02.GameObjects\Monster\Boss\Part</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Meteor.h">
+      <Filter>02.GameObjects\Meteor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\DefenderCapsule.h">
+      <Filter>05.MiniGames\Defender</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\DefenderPerson.h">
+      <Filter>05.MiniGames\Defender</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -3218,7 +3220,6 @@
     <ClCompile Include="..\Private\JumpStarter.cpp">
       <Filter>02.GameObjects\2DGimmik\JumpStarter</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Meteor.cpp" />
     <ClCompile Include="..\Private\Formation_Manager.cpp">
       <Filter>02.GameObjects\Formation\Manager</Filter>
     </ClCompile>
@@ -3241,12 +3242,6 @@
       <Filter>02.GameObjects</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\DynamicCastleGate.cpp">
-      <Filter>02.GameObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\DefenderPerson.cpp">
-      <Filter>02.GameObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\DefenderCapsule.cpp">
       <Filter>02.GameObjects</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\BigPressurePlate.cpp">
@@ -3331,6 +3326,15 @@
     </ClCompile>
     <ClCompile Include="..\private\ButterGrump_Body.cpp">
       <Filter>02.GameObjects\Monster\Boss\Part</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Meteor.cpp">
+      <Filter>02.GameObjects\Meteor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\DefenderCapsule.cpp">
+      <Filter>05.MiniGames\Defender</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\DefenderPerson.cpp">
+      <Filter>05.MiniGames\Defender</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -105,7 +105,7 @@ HRESULT CContainerObject::Register_RenderGroup(_uint _iGroupId, _uint _iPriority
         }
     }
 
-#ifdef _DEBUG
+#ifdef NDEBUG
     m_pGameInstance->Add_RenderObject_New(_iGroupId, _iPriorityID, this); // Collider2D Render 및 debug관련 렌더를 container에서 수행.
 #endif // _DEBUG
 
@@ -226,7 +226,7 @@ HRESULT CContainerObject::Cleanup_DeadReferences()
     return S_OK;
 }
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 
 HRESULT CContainerObject::Imgui_Render_ObjectInfos()
 {

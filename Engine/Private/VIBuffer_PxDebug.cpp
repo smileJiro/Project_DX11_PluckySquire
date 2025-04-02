@@ -74,7 +74,6 @@ void CVIBuffer_PxDebug::Update_PxDebug(const PxRenderBuffer& _PxRenderBuffer)
 
 	VTXPOSCOLOR* pVertices = static_cast<VTXPOSCOLOR*>(SubResource.pData);
 
-
 	const PxDebugLine* pLines =  _PxRenderBuffer.getLines();
 	m_iNumRenderLines = _PxRenderBuffer.getNbLines();
 	for (_uint i = 0; i < m_iNumRenderLines; ++i)
@@ -84,16 +83,16 @@ void CVIBuffer_PxDebug::Update_PxDebug(const PxRenderBuffer& _PxRenderBuffer)
 
 		/* Start Point */
 		pVertices[i * 2].vPosition = _float3(pLines[i].pos0.x, pLines[i].pos0.y, pLines[i].pos0.z);
-		pVertices[i * 2].vColor.x = ((pLines[i].color0 >> 16) & 0xFF) / 255.0f; // R
-		pVertices[i * 2].vColor.y = ((pLines[i].color0 >> 8) & 0xFF) / 255.0f; // G
-		pVertices[i * 2].vColor.z = ((pLines[i].color0 >> 0) & 0xFF) / 255.0f; // B
+		pVertices[i * 2].vColor.x = 0.0f;// ((pLines[i].color0 >> 16) & 0xFF) / 255.0f; // R
+		pVertices[i * 2].vColor.y = 1.0f;//((pLines[i].color0 >> 8) & 0xFF) / 255.0f; // G
+		pVertices[i * 2].vColor.z = 0.0f; // ((pLines[i].color0 >> 0) & 0xFF) / 255.0f; // B
 		pVertices[i * 2].vColor.w = 1.0f; // ((pLines[i].color0 >> 24) & 0xFF) / 255.0f; // A
 
 		/* End Point */
 		pVertices[i * 2 + 1].vPosition = _float3(pLines[i].pos1.x, pLines[i].pos1.y, pLines[i].pos1.z);
-		pVertices[i * 2 + 1].vColor.x = ((pLines[i].color1 >> 16) & 0xFF) / 255.0f; // R
-		pVertices[i * 2 + 1].vColor.y = ((pLines[i].color1 >> 8) & 0xFF) / 255.0f; // G
-		pVertices[i * 2 + 1].vColor.z = ((pLines[i].color1 >> 0) & 0xFF) / 255.0f; // B
+		pVertices[i * 2 + 1].vColor.x = 0.0f;//((pLines[i].color1 >> 16) & 0xFF) / 255.0f; // R
+		pVertices[i * 2 + 1].vColor.y = 1.0f;//((pLines[i].color1 >> 8) & 0xFF) / 255.0f; // G
+		pVertices[i * 2 + 1].vColor.z = 0.0f;//((pLines[i].color1 >> 0) & 0xFF) / 255.0f; // B
 		pVertices[i * 2 + 1].vColor.w = 1.0f; // ((pLines[i].color0 >> 24) & 0xFF) / 255.0f; // A
 
 	}

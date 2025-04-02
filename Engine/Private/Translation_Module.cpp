@@ -2,7 +2,7 @@
 #include "GameInstance.h"
 #include "Compute_Shader.h"
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 
 const _char* CTranslation_Module::g_szModuleNames[9] = { "POINT_VELOCITY", "LINEAR_VELOCITY", "INIT_ACCELERATION", "GRAVITY", "DRAG",
         "VORTEX_ACCELERATION", "POINT_ACCELERATION", "LIMIT_ACCELERATION", "POSITION_BY_NUMBER" };
@@ -32,7 +32,7 @@ HRESULT CTranslation_Module::Initialize(const json& _jsonModuleInfo)
     if (false == _jsonModuleInfo.contains("Module"))
         return E_FAIL;
     m_eModuleName = _jsonModuleInfo["Module"];
-#ifdef _DEBUG
+#ifdef NDEBUG
     m_strTypeName = _jsonModuleInfo["Module"];
 #endif
     
@@ -383,7 +383,7 @@ void CTranslation_Module::Free()
     __super::Free();
 
 }
-#ifdef _DEBUG
+#ifdef NDEBUG
 
 HRESULT CTranslation_Module::Initialize(MODULE_NAME _eType, const _string& _strTypeName)
 {

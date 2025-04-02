@@ -31,7 +31,7 @@ public:
 	virtual void			Update(_float _fTimeDelta) override;
 	virtual void			Late_Update(_float _fTimeDelta) override;
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 
 	virtual HRESULT			Render();
 	virtual HRESULT			Render(_float2 _fRenderTargetSize);
@@ -63,7 +63,7 @@ public:
 	void						Set_Offset(_float2 _vOffset) { m_vOffsetPosition = _vOffset; }
 	void						Set_Block(_bool _isBlock) { m_isBlock = _isBlock; }
 	void					Set_Scale(_float2 _vScale) { m_vScale = _vScale; }
-#ifdef _DEBUG
+#ifdef NDEBUG
 	void					Set_DebugColor(const _float4& _vDebugColor) { m_vDebugColor = _vDebugColor; }
 #endif // _DEBUG
 
@@ -85,7 +85,7 @@ protected:
 	_float2					m_vScale = {};
 
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 protected:
 	PrimitiveBatch<VertexPositionColor>*	m_pBatch = nullptr;
 	BasicEffect*							m_pEffect = nullptr;

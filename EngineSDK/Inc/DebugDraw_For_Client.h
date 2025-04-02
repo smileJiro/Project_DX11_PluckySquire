@@ -13,14 +13,14 @@ private:
 public:
 	virtual HRESULT Initialize_Prototype();
 	virtual HRESULT Initialize(void* _pArg);
-#ifdef _DEBUG
+#ifdef NDEBUG
 public:
 	HRESULT Render_Frustum(BoundingFrustum& _Frustum, _float4& _vDebugColor);
 	HRESULT Render_Ring(_fvector _vPosition, _fvector _vMajorAxis, _fvector _vMinorAxis, _gvector _vDebugColor);
 #endif
 
 private:
-#ifdef _DEBUG
+#ifdef NDEBUG
 	PrimitiveBatch<VertexPositionColor>* m_pBatch = { nullptr };
 	BasicEffect*						m_pEffect = { nullptr };
 	ID3D11InputLayout*					m_pInputLayout = { nullptr };
