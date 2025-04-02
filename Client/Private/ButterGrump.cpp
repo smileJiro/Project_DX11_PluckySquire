@@ -1052,8 +1052,8 @@ void CButterGrump::On_Hit(CGameObject* _pHitter, _int _iDamg, _fvector _vForce)
             m_pGameInstance->Set_SFXTargetVolume(TEXT("LCD_MUS_C09_BOSSBATTLE_STAGE1_LOOP_Stem_Group1"), 0.f, 5.f);
             m_pGameInstance->Set_SFXTargetVolume(TEXT("LCD_MUS_C09_BOSSBATTLE_STAGE1_LOOP_Stem_Group2"), 0.f, 5.f);
 
-            m_pGameInstance->Start_SFX(TEXT("LCD_MUS_C09_BOSSBATTLE_STAGE2_LOOP_Stem_Group1"), 1.5f, true);
-            m_pGameInstance->Start_SFX(TEXT("LCD_MUS_C09_BOSSBATTLE_STAGE2_LOOP_Stem_Group2"), 1.5f, true);
+            //m_pGameInstance->Start_SFX(TEXT("LCD_MUS_C09_BOSSBATTLE_STAGE2_LOOP_Stem_Group1"), 1.5f, true);
+            //m_pGameInstance->Start_SFX(TEXT("LCD_MUS_C09_BOSSBATTLE_STAGE2_LOOP_Stem_Group2"), 1.5f, true);
 
             m_pGameInstance->Set_SFXTargetVolume(TEXT("LCD_MUS_C09_BOSSBATTLE_STAGE2_LOOP_Stem_Group1"), g_SFXVolume, 5.f);
             m_pGameInstance->Set_SFXTargetVolume(TEXT("LCD_MUS_C09_BOSSBATTLE_STAGE2_LOOP_Stem_Group2"), g_SFXVolume, 5.f);

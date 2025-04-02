@@ -664,8 +664,8 @@ void CGameEventExecuter_C2::Chapter2_Lunchbox_Open(_float _fTimeDelta)
 			m_pGameInstance->Set_SFXTargetVolume(_wstring(L"LCD_MUS_Desk_C02_NIGHTDESK_Stem_Group1"), 2.f);
 			m_pGameInstance->Set_SFXTargetVolume(_wstring(L"LCD_MUS_Desk_C02_NIGHTDESK_Stem_Group2"), 2.f);
 
-			m_pGameInstance->Start_SFX(_wstring(L"LCD_MUS_C02_PAGETHEBOOKWORMTHEME_Stem_Base"), g_SFXVolume * 0.6f, true);
-			m_pGameInstance->Start_SFX(_wstring(L"LCD_MUS_C02_PAGETHEBOOKWORMTHEME_Stem_Group1"), g_SFXVolume * 0.6f, true);
+			//m_pGameInstance->Start_SFX(_wstring(L"LCD_MUS_C02_PAGETHEBOOKWORMTHEME_Stem_Base"), g_SFXVolume * 0.6f, true);
+			//m_pGameInstance->Start_SFX(_wstring(L"LCD_MUS_C02_PAGETHEBOOKWORMTHEME_Stem_Group1"), g_SFXVolume * 0.6f, true);
 
 		}
 		Next_Step_Over(1.5f);
