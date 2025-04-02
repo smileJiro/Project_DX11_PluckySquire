@@ -640,7 +640,7 @@ void CGameEventExecuter_C8::Chapter8_Friend_Appear_Violet(_float _fTimeDelta)
 	{
 		if (Is_Start())
 		{
-			START_SFX_DELAY(L"A_sfx_violet_wake_up", 2.f, g_BGMVolume * 0.8f, false);
+			START_SFX_DELAY(L"A_sfx_violet_wake_up", 0.f, g_BGMVolume * 0.8f, false);
 			static_cast<CFriend*>(m_TargetObjects[VIOLET])->Change_AnyState(CFriend_Violet::VIOLET_C09_LYINGTOSITTINGUP, false, CFriend::DIR_RIGHT);
 		}
 
@@ -662,7 +662,7 @@ void CGameEventExecuter_C8::Chapter8_Friend_Appear_Violet(_float _fTimeDelta)
 	{
 		if (Is_Start())
 		{
-			START_SFX_DELAY(L"A_sfx_violet_jumping_off_bed", 2.5f, g_BGMVolume * 0.8f, false);
+			START_SFX_DELAY(L"A_sfx_violet_jumping_off_bed", 0.f, g_BGMVolume * 0.8f, false);
 			static_cast<CFriend*>(m_TargetObjects[VIOLET])->Change_AnyState(CFriend_Violet::VIOLET_C09_JUMPINGOFFBED, false, CFriend::DIR_RIGHT);
 
 			m_pGameInstance->Transition_BGM(TEXT("LCD_MUS_C09_THRASHREUNITED_P5152_LOOP_Stem_Base"), g_BGMVolume);
@@ -670,8 +670,8 @@ void CGameEventExecuter_C8::Chapter8_Friend_Appear_Violet(_float _fTimeDelta)
 			m_pGameInstance->Set_SFXTargetVolume(TEXT("LCD_MUS_C09_P2728_VIOLET_Stem_Group1"), 0.f);
 			m_pGameInstance->Set_SFXTargetVolume(TEXT("LCD_MUS_C09_P2728_VIOLET_Stem_Group2"), 0.f);
 
-			m_pGameInstance->Start_SFX(TEXT("LCD_MUS_C09_THRASHREUNITED_P5152_LOOP_Stem_Group1"), 1.5f, true);
-			m_pGameInstance->Start_SFX(TEXT("LCD_MUS_C09_THRASHREUNITED_P5152_LOOP_Stem_Group2"), 1.5f, true);
+			//m_pGameInstance->Start_SFX(TEXT("LCD_MUS_C09_THRASHREUNITED_P5152_LOOP_Stem_Group1"), 1.5f, true);
+			//m_pGameInstance->Start_SFX(TEXT("LCD_MUS_C09_THRASHREUNITED_P5152_LOOP_Stem_Group2"), 1.5f, true);
 
 			m_pGameInstance->Set_SFXTargetVolume(TEXT("LCD_MUS_C09_THRASHREUNITED_P5152_LOOP_Stem_Group1"), g_BGMVolume);
 			m_pGameInstance->Set_SFXTargetVolume(TEXT("LCD_MUS_C09_THRASHREUNITED_P5152_LOOP_Stem_Group2"), g_BGMVolume);
@@ -1009,8 +1009,8 @@ void CGameEventExecuter_C8::Chapter8_Map_Intro(_float _fTimeDelta)
 			pPlayer->Set_BlockPlayerInput(false);
 
 			m_pGameInstance->Start_BGM(TEXT("LCD_MUS_C09_DESPONDANT_BASELAYER_Stem_Base"), g_BGMVolume);
-			m_pGameInstance->Start_SFX(TEXT("LCD_MUS_C09_DESPONDANT_BASELAYER_Stem_Group1"), g_SFXVolume, true);
-			m_pGameInstance->Start_SFX(TEXT("LCD_MUS_C09_DESPONDANT_BASELAYER_Stem_Group2"), g_SFXVolume, true);
+			//m_pGameInstance->Start_SFX(TEXT("LCD_MUS_C09_DESPONDANT_BASELAYER_Stem_Group1"), g_SFXVolume, true);
+			//m_pGameInstance->Start_SFX(TEXT("LCD_MUS_C09_DESPONDANT_BASELAYER_Stem_Group2"), g_SFXVolume, true);
 
 			GameEvent_End();
 		}
@@ -1041,8 +1041,8 @@ void CGameEventExecuter_C8::Chapter8_Intro_Postit_Sequence(_float _fTimeDelta)
 		m_pGameInstance->Set_SFXTargetVolume(TEXT("LCD_MUS_C06_P7374_BEFORETHEEXCAVATOR_Stem_Group1"), 0.f);
 		m_pGameInstance->Set_SFXTargetVolume(TEXT("LCD_MUS_C06_P7374_BEFORETHEEXCAVATOR_Stem_Group2"), 0.f);
 
-		m_pGameInstance->Start_SFX(TEXT("LCD_MUS_C09_DESPONDANT_BASELAYER_Stem_Group1"), 1.5f, true);
-		m_pGameInstance->Start_SFX(TEXT("LCD_MUS_C09_DESPONDANT_BASELAYER_Stem_Group2"), 1.5f, true);
+		//m_pGameInstance->Start_SFX(TEXT("LCD_MUS_C09_DESPONDANT_BASELAYER_Stem_Group1"), 1.5f, true);
+		//m_pGameInstance->Start_SFX(TEXT("LCD_MUS_C09_DESPONDANT_BASELAYER_Stem_Group2"), 1.5f, true);
 
 		m_pGameInstance->Set_SFXTargetVolume(TEXT("LCD_MUS_C09_DESPONDANT_BASELAYER_Stem_Group1"), g_BGMVolume);
 		m_pGameInstance->Set_SFXTargetVolume(TEXT("LCD_MUS_C09_DESPONDANT_BASELAYER_Stem_Group2"), g_BGMVolume);
@@ -2756,9 +2756,9 @@ void CGameEventExecuter_C8::Chapter8_Going_To_Boss(_float _fTimeDelta)
 	}
 	else
 	{
-		m_pGameInstance->Transition_BGM(TEXT("LCD_MUS_C09_BOSSBATTLE_STAGE1_LOOP_Stem_Base"), g_BGMVolume, 5.f);
-		m_pGameInstance->Start_SFX(TEXT("LCD_MUS_C09_BOSSBATTLE_STAGE1_LOOP_Stem_Group1"), 1.5f, true);
-		m_pGameInstance->Start_SFX(TEXT("LCD_MUS_C09_BOSSBATTLE_STAGE1_LOOP_Stem_Group2"), 1.5f, true);
+		//m_pGameInstance->Transition_BGM(TEXT("LCD_MUS_C09_BOSSBATTLE_STAGE1_LOOP_Stem_Base"), g_BGMVolume, 5.f);
+		//m_pGameInstance->Start_SFX(TEXT("LCD_MUS_C09_BOSSBATTLE_STAGE1_LOOP_Stem_Group1"), 1.5f, true);
+		//m_pGameInstance->Start_SFX(TEXT("LCD_MUS_C09_BOSSBATTLE_STAGE1_LOOP_Stem_Group2"), 1.5f, true);
 
 		m_pGameInstance->Set_SFXTargetVolume(TEXT("LCD_MUS_C09_BOSSBATTLE_STAGE1_LOOP_Stem_Group1"), g_BGMVolume, 5.f);
 		m_pGameInstance->Set_SFXTargetVolume(TEXT("LCD_MUS_C09_BOSSBATTLE_STAGE1_LOOP_Stem_Group2"), g_BGMVolume, 5.f);
