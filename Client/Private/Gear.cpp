@@ -54,7 +54,7 @@ void CGear::Update(_float _fTimeDelta)
 	{
 		if (COORDINATE_3D == CPlayerData_Manager::GetInstance()->Get_PlayerCoord())
 		{
-			m_pGameInstance->Stop_SFX(TEXT("A_sfx_machines_loop"));
+			//m_pGameInstance->Stop_SFX(TEXT("A_sfx_machines_loop"));
 			m_isOnSound = false;
 		}
 	}
@@ -64,7 +64,7 @@ void CGear::Update(_float _fTimeDelta)
 		{
 			if (CSection_Manager::GetInstance()->Is_PlayerInto(m_strSectionName))
 			{
-				m_pGameInstance->Start_SFX(TEXT("A_sfx_machines_loop"), g_SFXVolume, true);
+				//m_pGameInstance->Start_SFX(TEXT("A_sfx_machines_loop"), g_SFXVolume, true);
 				m_isOnSound = true;
 			}
 		}
@@ -104,7 +104,7 @@ void CGear::On_Stop()
 	static_cast<CModelObject*>(m_PartObjects[GEAR_PART_TEETH])->Start_StoppableRender();
 	Event_SetActive(m_p2DColliderComs[0], false);
 
-	m_pGameInstance->Stop_SFX(TEXT("A_sfx_machines_loop"));
+	//m_pGameInstance->Stop_SFX(TEXT("A_sfx_machines_loop"));
 }
 
 void CGear::On_UnStop()
@@ -115,7 +115,7 @@ void CGear::On_UnStop()
 	static_cast<CModelObject*>(m_PartObjects[GEAR_PART_TEETH])->End_StoppableRender();
 	Event_SetActive(m_p2DColliderComs[0], true);
 
-	m_pGameInstance->Start_SFX(TEXT("A_sfx_machines_loop"), g_SFXVolume, true);
+	//m_pGameInstance->Start_SFX(TEXT("A_sfx_machines_loop"), g_SFXVolume, true);
 }
 
 HRESULT CGear::Ready_Components(GEAR_DESC* _pDesc)

@@ -84,41 +84,41 @@ void CSound_Manager::Update(_float _fTimeDelta)
 
 void CSound_Manager::Start_BGM(const wstring& strBGMTag, _float _fVolume)
 {
-    CSound* pBGM = Find_BGM(strBGMTag);
-    if (nullptr == pBGM)
-        return;
+    //CSound* pBGM = Find_BGM(strBGMTag);
+    //if (nullptr == pBGM)
+    //    return;
 
-    if (nullptr != m_pCurPlayBGM)
-    {
-        End_BGM();
-    }
+    //if (nullptr != m_pCurPlayBGM)
+    //{
+    //    End_BGM();
+    //}
 
-    m_pCurPlayBGM = pBGM;
-    //Safe_AddRef(m_pCurPlayBGM);
-    m_pCurPlayBGM->Play_BGM(0.0f, true);
-    m_pCurPlayBGM->Set_Volume(_fVolume); // bgm 사운드는 고정 30으로
+    //m_pCurPlayBGM = pBGM;
+    ////Safe_AddRef(m_pCurPlayBGM);
+    //m_pCurPlayBGM->Play_BGM(0.0f, true);
+    //m_pCurPlayBGM->Set_Volume(_fVolume); // bgm 사운드는 고정 30으로
 }
 
 void CSound_Manager::Transition_BGM(const _wstring& strBGMTag, _float _fVolume, _float _fFactor)
 {
-    CSound* pBGM = Find_BGM(strBGMTag);
-    if (nullptr == pBGM)
-        return;
+    //CSound* pBGM = Find_BGM(strBGMTag);
+    //if (nullptr == pBGM)
+    //    return;
 
-    // Transition BGM이 있다면 End 시키기.
-    if (nullptr != m_pTransitionBGM)
-    {
-        m_pTransitionBGM->Stop_Sound(true);
-        m_pTransitionBGM = nullptr;
-    }
+    //// Transition BGM이 있다면 End 시키기.
+    //if (nullptr != m_pTransitionBGM)
+    //{
+    //    m_pTransitionBGM->Stop_Sound(true);
+    //    m_pTransitionBGM = nullptr;
+    //}
 
-    m_pTransitionBGM = pBGM;
-    //Safe_AddRef(m_pCurPlayBGM);
-    m_pTransitionBGM->Play_BGM(0.0f, true);
-    m_pTransitionBGM->Set_Volume(1.f);
-    m_pTransitionBGM->Set_TargetVolume(_fVolume, _fFactor);
+    //m_pTransitionBGM = pBGM;
+    ////Safe_AddRef(m_pCurPlayBGM);
+    //m_pTransitionBGM->Play_BGM(0.0f, true);
+    //m_pTransitionBGM->Set_Volume(1.f);
+    //m_pTransitionBGM->Set_TargetVolume(_fVolume, _fFactor);
 
-    Set_BGMTargetVolume(0.f, _fFactor);
+    //Set_BGMTargetVolume(0.f, _fFactor);
 }
 
 

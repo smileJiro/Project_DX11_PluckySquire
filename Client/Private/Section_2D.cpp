@@ -277,13 +277,13 @@ HRESULT CSection_2D::Word_Action_To_Section(const _wstring& _strSectionTag, _uin
 
 HRESULT CSection_2D::Section_Enter(const _wstring& _strPreSectionTag)
 {
-	for (auto pPair : m_SFXTags)
-	{
-		if (pPair.second)
-			START_SFX(pPair.first, g_BGMVolume, true);
-		else
-			m_pGameInstance->End_SFX(pPair.first);
-	}
+	//for (auto pPair : m_SFXTags)
+	//{
+	//	if (pPair.second)
+	//		START_SFX(pPair.first, g_BGMVolume, true);
+	//	else
+	//		m_pGameInstance->End_SFX(pPair.first);
+	//}
 
 	return S_OK;
 }
@@ -291,8 +291,8 @@ HRESULT CSection_2D::Section_Enter(const _wstring& _strPreSectionTag)
 
 void CSection_2D::Play_SectionBGM()
 {
-	if (TEXT("") != m_strBGMTag)
-		m_pGameInstance->Start_BGM(m_strBGMTag, g_BGMVolume);
+	//if (TEXT("") != m_strBGMTag)
+	//	m_pGameInstance->Start_BGM(m_strBGMTag, g_BGMVolume);
 }
 
 HRESULT CSection_2D::Register_WorldCapture(CModelObject* _pModel)
