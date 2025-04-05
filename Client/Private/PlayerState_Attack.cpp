@@ -42,7 +42,7 @@ void CPlayerState_Attack::Update(_float _fTimeDelta)
             }
         }
         else
-            m_pOwner->Move(EDir_To_Vector( m_pOwner->Get_2DDirection())  *m_f2DForwardSpeed, _fTimeDelta);
+            m_pOwner->Move(/*EDir_To_Vector( m_pOwner->Get_2DDirection())*/ m_pOwner->Get_AttackTargetDirection() *m_f2DForwardSpeed, _fTimeDelta);
 	}
 	if (fProgress >= fMotionCancelProgress)
 	{
@@ -89,20 +89,21 @@ void CPlayerState_Attack::Enter()
 {
      PLAYER_INPUT_RESULT tKeyResult  = m_pOwner->Player_KeyInput();
     COORDINATE eCoord = m_pOwner->Get_CurCoord();
+    _vector fAttackDirection = m_pOwner->Get_AttackTargetDirection();
+
+
     if (COORDINATE_3D == eCoord)
     {
-        _vector vDir;
-        if (tKeyResult.bInputStates[PLAYER_INPUT_MOVE])
-            vDir = m_pOwner->Get_3DTargetDirection();
+        if (m_pOwner->Is_Dynamic())
+            m_pOwner->LookDirectionXZ_Dynamic(fAttackDirection);
         else
-            vDir = m_pOwner->Get_LookDirection();
-        m_pOwner->LookDirectionXZ_Dynamic(vDir);
+            m_pOwner->LookDirectionXZ_Kinematic(fAttackDirection);
         m_pOwner->Stop_Rotate();
     }
     else
     {
 	    m_f2DForwardSpeed = m_pOwner->Get_2DAttackForwardingSpeed();
-
+        m_pOwner->Set_2DDirection(To_FDirection(fAttackDirection));
     }
 
 	Switch_To_AttackAnimation(m_iComboCount);

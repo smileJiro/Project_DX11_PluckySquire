@@ -635,6 +635,7 @@ public:
 	_vector Get_ClamberEndPosition() { return m_vClamberEndPosition; }
 	_vector Get_WallNormal() { return m_vWallNormal; }
 	_vector Get_BodyPosition();
+	_vector Get_AttackTargetDirection();
 	IInteractable* Get_InteractableObject() { return m_pInteractableObject; }
 	STATE Get_CurrentStateID();
 	PLAYER_MODE Get_PlayerMode() { return m_ePlayerMode; }
@@ -775,6 +776,7 @@ private:
 	//기타 관계된 오브젝트
 	CCarriableObject* m_pCarryingObject = nullptr;
 	set<CGameObject*> m_AttckedObjects;
+	CGameObject* m_pAttackTarget = nullptr;
 	IInteractable* m_pInteractableObject = nullptr;
 	CBook* m_pBook = nullptr;
 	CPlayerBomb* m_pBomb = nullptr;

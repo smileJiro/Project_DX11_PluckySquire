@@ -792,8 +792,11 @@ void CPlayer::Update(_float _fTimeDelta)
 	__super::Update(_fTimeDelta); /* Part Object Update */
 	if (m_pInteractableObject && false == dynamic_cast<CBase*>(m_pInteractableObject)->Is_Active())
 		m_pInteractableObject = nullptr;
+	if (nullptr != m_pAttackTarget 
+		&& (false == m_pAttackTarget->Is_Active()|| false == m_pAttackTarget->Is_Dead()))
+		m_pAttackTarget = nullptr;
 	//cout << "PlayerPos : " << VectorToString( m_pControllerTransform-> Get_Transform(COORDINATE_3D)->Get_State(CTransform::STATE_POSITION)) << endl;
-	cout << Get_UpForce() << endl;
+	//cout << Get_UpForce() << endl;
 }
 
 // 충돌 체크 후 container의 transform을 밀어냈어. 
@@ -896,6 +899,24 @@ void CPlayer::OnTrigger_Stay(const COLL_INFO& _My, const COLL_INFO& _Other)
 			}
 
 		}
+		else if (OBJECT_GROUP::MONSTER & eOtehrGroup)
+		{
+			//이미 타겟이 있으면 가장 가까운 애 찾기
+			if (m_pAttackTarget)
+			{
+				_float fOtherDistance = 0.f, fCurrentDistance = 0.f;
+				_vector vMyPos = Get_FinalPosition();
+				fOtherDistance = XMVectorGetX(XMVector3Length(vMyPos - _Other.pActorUserData->pOwner->Get_FinalPosition()));
+				fCurrentDistance = XMVectorGetX(XMVector3Length(vMyPos - m_pAttackTarget->Get_FinalPosition()));
+				if (fOtherDistance < fCurrentDistance)
+					m_pAttackTarget = _Other.pActorUserData->pOwner;
+			}
+			else
+			{
+				m_pAttackTarget = _Other.pActorUserData->pOwner;
+			}
+
+		}
 	}
 
 	SHAPE_USE eShapeUse = (SHAPE_USE)_My.pShapeUserData->iShapeUse;
@@ -930,6 +951,9 @@ void CPlayer::OnTrigger_Exit(const COLL_INFO& _My, const COLL_INFO& _Other)
 			&& dynamic_cast<CGameObject*>(m_pInteractableObject) == _Other.pActorUserData->pOwner
 			&& false == m_pInteractableObject->Is_Interacting())
 			m_pInteractableObject = nullptr;
+		if (m_pAttackTarget
+			&& m_pAttackTarget == _Other.pActorUserData->pOwner)
+			m_pAttackTarget = nullptr;
 		break;
 	}
 
@@ -1054,6 +1078,23 @@ void CPlayer::On_Collision2D_Stay(CCollider* _pMyCollider, CCollider* _pOtherCol
 			{
 				if (Check_ReplaceInteractObject(pInteractable))
 					m_pInteractableObject = pInteractable;
+			}
+		}
+		if (OBJECT_GROUP::MONSTER == eGroup)
+		{
+			//이미 타겟이 있으면 가장 가까운 애 찾기
+			if (m_pAttackTarget)
+			{
+				_float fOtherDistance = 0.f, fCurrentDistance = 0.f;
+				_vector vMyPos = Get_FinalPosition();
+				fOtherDistance = XMVectorGetX(XMVector3Length(vMyPos - _pOtherObject->Get_FinalPosition()));
+				fCurrentDistance = XMVectorGetX(XMVector3Length(vMyPos - m_pAttackTarget->Get_FinalPosition()));
+				if (fOtherDistance < fCurrentDistance)
+					m_pAttackTarget = _pOtherObject;
+			}
+			else
+			{
+				m_pAttackTarget = _pOtherObject;
 			}
 		}
 	}
@@ -2020,6 +2061,14 @@ _vector CPlayer::Get_BodyPosition()
 	return m_pBody->Get_FinalPosition();
 }
 
+_vector CPlayer::Get_AttackTargetDirection()
+{
+	if (m_pAttackTarget)
+		return XMVectorSetW( XMVector3Normalize(m_pAttackTarget->Get_FinalPosition() -Get_FinalPosition() ),0.f);
+	else
+		return Get_LookDirection();
+}
+
 CPlayer::STATE CPlayer::Get_CurrentStateID()
 {
 	return m_pStateMachine->Get_CurrentState()->Get_StateID();
@@ -2413,6 +2462,7 @@ void CPlayer::Start_Attack(ATTACK_TYPE _eAttackType)
 	}
 	else
 	{
+	
 		m_pActorCom->Set_ShapeEnable(PLAYER_SHAPE_USE::BODYGUARD, true);
 		m_pSword->Set_AttackEnable(true, _eAttackType);
 	}
