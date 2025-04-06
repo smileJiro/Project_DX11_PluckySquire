@@ -269,17 +269,17 @@ HRESULT CLevel_Camera_Tool_Client::Ready_Layer_Camera(const _wstring& _strLayerT
 
 HRESULT CLevel_Camera_Tool_Client::Ready_Layer_Player(const _wstring& _strLayerTag, CGameObject** _ppOut)
 {
-	CGameObject** pGameObject = nullptr;
+	//CGameObject** pGameObject = nullptr;
 
-	CPlayer::CONTAINEROBJ_DESC PlayerDesc = {};
-	PlayerDesc.iCurLevelID = m_eLevelID;
-	PlayerDesc.tTransform3DDesc.vInitialPosition = { 1.99f, 1.07f, -16.0f };//{ -10.0362425f, 5.76746035f, 11.9308004f };   // TODO ::임시 위치
-	PlayerDesc.tTransform3DDesc.vInitialRotation = { 0.f, XMConvertToRadians(0.f), 0.f};   // TODO ::임시 위치
-	PlayerDesc.eStartCoord = COORDINATE_3D;
-	_int a = sizeof(CPlayer::CONTAINEROBJ_DESC);
+	//CPlayer::CONTAINEROBJ_DESC PlayerDesc = {};
+	//PlayerDesc.iCurLevelID = m_eLevelID;
+	//PlayerDesc.tTransform3DDesc.vInitialPosition = { 1.99f, 1.07f, -16.0f };//{ -10.0362425f, 5.76746035f, 11.9308004f };   // TODO ::임시 위치
+	//PlayerDesc.tTransform3DDesc.vInitialRotation = { 0.f, XMConvertToRadians(0.f), 0.f};   // TODO ::임시 위치
+	//PlayerDesc.eStartCoord = COORDINATE_3D;
+	//_int a = sizeof(CPlayer::CONTAINEROBJ_DESC);
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_TestPlayer"), m_eLevelID, _strLayerTag, _ppOut, &PlayerDesc)))
-		return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_STATIC, TEXT("Prototype_GameObject_TestPlayer"), m_eLevelID, _strLayerTag, _ppOut, &PlayerDesc)))
+	//	return E_FAIL;
 
 	//CPlayer* pPlayer = { nullptr };
 	//pPlayer = dynamic_cast<CPlayer*>(*_ppOut);
@@ -339,21 +339,21 @@ HRESULT CLevel_Camera_Tool_Client::Ready_Layer_TestTerrain(const _wstring& _strL
 	//m_ModelObjects.push_back(pOut);
 
 	// Humgrump
-	CButterGrump::MONSTER_DESC Boss_Desc;
-	Boss_Desc.iCurLevelID = m_eLevelID;
-	Boss_Desc.eStartCoord = COORDINATE_3D;
-	Boss_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
-	Boss_Desc.tTransform3DDesc.vInitialPosition = _float3(0.53f, 50.f, 30.0f);
+	//CButterGrump::MONSTER_DESC Boss_Desc;
+	//Boss_Desc.iCurLevelID = m_eLevelID;
+	//Boss_Desc.eStartCoord = COORDINATE_3D;
+	//Boss_Desc.tTransform3DDesc.vInitialScaling = _float3(1.f, 1.f, 1.f);
+	//Boss_Desc.tTransform3DDesc.vInitialPosition = _float3(0.53f, 50.f, 30.0f);
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CAMERA_TOOL, TEXT("Prototype_GameObject_ButterGrump"), m_eLevelID, TEXT("Layer_Boss"), reinterpret_cast<CGameObject**>(&pOut), &Boss_Desc)))
-		return E_FAIL;
-	m_ModelObjects.push_back(pOut);
+	//if (FAILED(m_pGameInstance->Add_GameObject_ToLayer(LEVEL_CAMERA_TOOL, TEXT("Prototype_GameObject_ButterGrump"), m_eLevelID, TEXT("Layer_Boss"), reinterpret_cast<CGameObject**>(&pOut), &Boss_Desc)))
+	//	return E_FAIL;
+	//m_ModelObjects.push_back(pOut);
 
-	// 
-	// Player	
-	CPlayer* pPlayer = static_cast<CPlayer*>(m_pGameInstance->Get_GameObject_Ptr(LEVEL_CAMERA_TOOL, TEXT("Layer_Player"), 0));
-	CModelObject* pPlayerBody = static_cast<CModelObject*>(pPlayer->Get_PlayerPartObject(CPlayer::PLAYER_PART_BODY));
-	m_ModelObjects.push_back(pPlayerBody);
+	//// 
+	//// Player	
+	//CPlayer* pPlayer = static_cast<CPlayer*>(m_pGameInstance->Get_GameObject_Ptr(LEVEL_CAMERA_TOOL, TEXT("Layer_Player"), 0));
+	//CModelObject* pPlayerBody = static_cast<CModelObject*>(pPlayer->Get_PlayerPartObject(CPlayer::PLAYER_PART_BODY));
+	//m_ModelObjects.push_back(pPlayerBody);
 
 	//pPlayer->Set_Kinematic(true);
 
@@ -2748,7 +2748,7 @@ void CLevel_Camera_Tool_Client::Play_CutScene(_float fTimeDelta)
 		m_isTimeCount = true;
 		static_cast<CCamera_CutScene_Save*>(pCamera)->Set_NextCutScene(m_CutSceneTags[m_iSelectedCutSceneNum]);
 
-		for (_int i = 0; i < 3; ++i) {
+	/*	for (_int i = 0; i < 3; ++i) {
 			if (true == m_isSelectModel[i]) {
 				m_ModelObjects[i]->Set_AnimationLoop(COORDINATE_3D, m_iAnim[i], m_isLoop);
 				m_ModelObjects[i]->Set_Animation(m_iAnim[i]);
@@ -2760,8 +2760,8 @@ void CLevel_Camera_Tool_Client::Play_CutScene(_float fTimeDelta)
 					pPlayer->LookDirectionXZ_Kinematic(_vector{ 0,0,-1 });
 				}
 			}
-		}
-		static_cast<CButterGrump*>(m_pGameInstance->Get_GameObject_Ptr(m_eLevelID, TEXT("Layer_Boss"), 0))->Play_Intro(0);
+		}*/
+		//static_cast<CButterGrump*>(m_pGameInstance->Get_GameObject_Ptr(m_eLevelID, TEXT("Layer_Boss"), 0))->Play_Intro(0);
 	/*	CPlayer* pPlayer = static_cast<CPlayer*>(m_pGameInstance->Get_GameObject_Ptr(m_eLevelID, TEXT("Layer_Player"), 0));
 		pPlayer->Set_State(CPlayer::ENGAGE_BOSS);*/
 

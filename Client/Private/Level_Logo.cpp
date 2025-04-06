@@ -26,8 +26,8 @@ HRESULT CLevel_Logo::Initialize()
 
 void CLevel_Logo::Update(_float _fTimeDelta)
 {
-	//if (KEY_DOWN(KEY::ENTER))
-	//	Event_LevelChange(LEVEL_LOADING, LEVEL_CHAPTER_2);
+	if (KEY_DOWN(KEY::F8))
+		Event_LevelChange(LEVEL_LOADING, LEVEL_CAMERA_TOOL);
 
 }
 
