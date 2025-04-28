@@ -29,8 +29,8 @@ void CPlayerState_JumpToPortal::Update(_float _fTimeDelta)
     else
     {
 		_vector vPlayerPos = m_pOwner->Get_FinalPosition();
-        if(m_pPortal->Get_Distance(eCoord, m_pOwner) <= m_f3DDistanceThreshold
-            || Check_ExceedPortal(vPlayerPos))
+        if((m_pPortal->Get_Distance(eCoord, m_pOwner) <= m_f3DDistanceThreshold
+                || Check_ExceedPortal(vPlayerPos)))
 		{
 
             m_pOwner->Set_State(CPlayer::EXIT_PORTAL);
@@ -56,7 +56,7 @@ void CPlayerState_JumpToPortal::Enter()
     {
         _vector vPlayerPos = m_pOwner->Get_FinalPosition();
         if (m_pPortal->Get_Distance(eCoord, m_pOwner) <= m_f3DDistanceThreshold
-            || Check_ExceedPortal(vPlayerPos))
+            /*|| Check_ExceedPortal(vPlayerPos)*/)
         {
 
             m_pOwner->Set_State(CPlayer::EXIT_PORTAL);
@@ -122,9 +122,9 @@ void CPlayerState_JumpToPortal::OnTrigger_Enter(const COLL_INFO& _My, const COLL
 
 _bool CPlayerState_JumpToPortal::Check_ExceedPortal(_vector vPos)
 {
-    _bool bExeedX = (m_vPortalPos.m128_f32[0] - m_vPlayerStartPos.m128_f32[0]) * (m_vPortalPos.m128_f32[0] - vPos.m128_f32[0]) <= 0.f;
-    _bool bExeedY = (m_vPortalPos.m128_f32[1] - m_vPlayerStartPos.m128_f32[1]) * (m_vPortalPos.m128_f32[0] - vPos.m128_f32[1]) <= 0.f;
-    _bool bExeedZ = (m_vPortalPos.m128_f32[2] - m_vPlayerStartPos.m128_f32[2]) * (m_vPortalPos.m128_f32[0] - vPos.m128_f32[2]) <= 0.f;
+    _bool bExeedX = (m_vPortalPos.m128_f32[0] - m_vPlayerStartPos.m128_f32[0]) * (m_vPortalPos.m128_f32[0] - vPos.m128_f32[0]) < 0.f;
+    _bool bExeedY = (m_vPortalPos.m128_f32[1] - m_vPlayerStartPos.m128_f32[1]) * (m_vPortalPos.m128_f32[1] - vPos.m128_f32[1]) < 0.f;
+    _bool bExeedZ = (m_vPortalPos.m128_f32[2] - m_vPlayerStartPos.m128_f32[2]) * (m_vPortalPos.m128_f32[2] - vPos.m128_f32[2]) < 0.f;
     return bExeedX || bExeedZ || bExeedY;
 }
 
