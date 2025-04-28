@@ -531,6 +531,25 @@ void CCamera_Target::Key_Input(_float _fTimeDelta)
 		//Set_FreezeExit(FREEZE_Y, 0);
 	}
 #endif
+
+	if (KEY_DOWN(KEY::K)) {
+		Start_Changing_ArmVector(1.5f, XMVectorSet(0.421764702f, 0.599464059f, -0.680257618f, 0.f), EASE_IN);
+	}
+	if (KEY_DOWN(KEY::L)) {
+		Start_Changing_ArmVector(1.5f, XMVectorSet(0.421764702f, 0.599464059f, -0.680257618f, 0.f), EASE_OUT);
+	}
+	if (KEY_DOWN(KEY::U)) {
+		Start_Changing_ArmVector(1.5f, XMVectorSet(0.421764702f, 0.599464059f, -0.680257618f, 0.f), EASE_IN_OUT);
+	}
+
+	if (KEY_DOWN(KEY::J)) {
+		Set_ResetData();
+	}
+
+	if (KEY_DOWN(KEY::R)) {
+		Start_ResetArm_To_SettingPoint(2.f);
+	}
+
 }
 
 void CCamera_Target::Action_Mode(_float _fTimeDelta)
