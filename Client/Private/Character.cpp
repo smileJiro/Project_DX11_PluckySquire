@@ -563,110 +563,111 @@ _float CCharacter::Measure_FloorDistance()
 }
 
 _vector CCharacter::StepAssist(_fvector _vVelocity,_float _fTimeDelta)
-{ 
-    if (COORDINATE_3D == Get_CurCoord())
+{
+    if (COORDINATE_3D != Get_CurCoord())
+        return _vVelocity;
+
+    CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
+
+    _vector vPredictMove = XMVectorSetY(_vVelocity * _fTimeDelta, 0.f);
+
+    _float3 vHitPos = {};
+    _float  fMaxDiffY = -999.f;
+
+    if (Try_SweepStep(vPredictMove, vHitPos, fMaxDiffY))
     {
-        CActor_Dynamic* pDynamicActor = static_cast<CActor_Dynamic*>(m_pActorCom);
-        _float3 vMyPos;// = pDynamicActor->Get_GlobalPose();
+        _float fVelocitySlope = abs(XMVectorGetY(XMVector3Normalize(_vVelocity)));
+        _float3 vMyPos;
         XMStoreFloat3(&vMyPos, Get_FinalPosition());
-		_vector vPredictMove = _vVelocity * _fTimeDelta;
-		vPredictMove = XMVectorSetY(vPredictMove, 0.f);
-        _float3 vOrigin = vMyPos;
-		vOrigin.x += vPredictMove.m128_f32[0];
-		vOrigin.z += vPredictMove.m128_f32[2];
-
-        _float3 vDir = { 0.f,-1.f, 0.f };
-        _float fDistance = m_fStepHeightThreshold*2.f;
-        list<CActorObject*> hitActors;
-        list<RAYCASTHIT> raycastHits;
-        PxGeometryHolder pxGeomHolder= m_pActorCom->Get_Shapes()[(_uint)SHAPE_USE::SHAPE_BODY]->getGeometry().any();
-        PxGeometryType::Enum eGeomType = pxGeomHolder.getType();
-        if (PxGeometryType::eCAPSULE == eGeomType)
+        _float fDiffXZ = XMVectorGetX(XMVector2Length({ vHitPos.x - vMyPos.x, vHitPos.z - vMyPos.z }));
+        if (fDiffXZ > 0.f)
         {
-			 PxCapsuleGeometry& pxCapsule = pxGeomHolder.capsule();
+            _vector vNewVelocity = XMVectorSetY(_vVelocity, 0.f);
+            vNewVelocity.m128_f32[1] += fMaxDiffY / fDiffXZ * XMVectorGetX(XMVector3Length(vNewVelocity));
 
-            //캡슐의 경우 y축 아니면 z축 회전하므로 y축 회전했을 때를 따로 처리
-            if (1.f == m_matQueryShapeOffset._22)
-            {
-                vOrigin.y += (vPredictMove.m128_f32[1] + m_fStepHeightThreshold + pxCapsule.radius);
-            }
-            //기본을 z축 기준 90도 회전으로 생각
-            else
-            {
-                vOrigin.y += (vPredictMove.m128_f32[1] + m_fStepHeightThreshold + pxCapsule.halfHeight + pxCapsule.radius);
-            }
-		}
-		else if (PxGeometryType::eBOX == eGeomType)
-		{
-			 PxBoxGeometry& pxBox = pxGeomHolder.box();
-			vOrigin.y += (vPredictMove.m128_f32[1] + m_fStepHeightThreshold + pxBox.halfExtents.y);
-		}
-		else if (PxGeometryType::eSPHERE == eGeomType)
-		{
-             PxSphereGeometry& pxSphere = pxGeomHolder.sphere();
-			vOrigin.y += (vPredictMove.m128_f32[1] + m_fStepHeightThreshold + pxSphere.radius);
-        }
+            vNewVelocity.m128_f32[1] += (fMaxDiffY > 0.f ? 1.f : -1.f) * m_fGravity * _fTimeDelta;
 
-        _bool bResult = m_pGameInstance->MultiSweep(&pxGeomHolder.any(), m_matQueryShapeOffset, vOrigin, vDir, fDistance, hitActors, raycastHits);
-
-        if (bResult)
-        {
-            _bool bFloorChecked = false;
-            _float fMaxDiffY = -999.f;
-			_float3 vMaxDiffYPos = { 0.f,0.f,0.f };
-            auto& iterHitPoint = raycastHits.begin();
-            for (auto& pActor : hitActors)
-            {
-                OBJECT_GROUP eOtherGroup = (OBJECT_GROUP)pActor->Get_ObjectGroupID();
-                if (OBJECT_GROUP::MAPOBJECT & eOtherGroup
-                    || OBJECT_GROUP::DYNAMIC_OBJECT & eOtherGroup)
-                {
-                    //맵이나 다이나믹 오브젝트와 충돌됐을 경우
-                    //오브젝트의 높이를 판단함.
-					//높이가 m_fStepHeightThreshold이하일 경우, 높이만큼 위로 이동시킴.
-					_float fDiffY = iterHitPoint->vPosition.y - vMyPos.y;
-                    //cout << "DiffY: " << fDiffY << endl;
-                    if (fDiffY <= m_fStepHeightThreshold
-                        && fDiffY > 0.f
-                        && fMaxDiffY < fDiffY
-                        && iterHitPoint->vNormal.y > m_fStepSlopeThreshold)
-                    {
-                        fMaxDiffY = fDiffY;
-						vMaxDiffYPos = iterHitPoint->vPosition;
-                        bFloorChecked = true;
-                    }
-                }
-                iterHitPoint++;
-            }
-            if (bFloorChecked)
-            {
-
-               // vMyPos.y += fMaxDiffY;
-               // pDynamicActor->Set_GlobalPose(vMyPos);
-
-                _float fVelocitySlope = abs(XMVector3Normalize(_vVelocity).m128_f32[1]);
-                if (fVelocitySlope < m_fStepSlopeThreshold)
-                {
-                    _float fDiffXZ = sqrtf(powf(vMaxDiffYPos.x - vMyPos.x, 2.f) + powf(vMaxDiffYPos.z - vMyPos.z, 2));
-                    _vector vNewVelocity = _vVelocity;
-                    vNewVelocity = XMVectorSetY(vNewVelocity, 0.f);
-                    vNewVelocity.m128_f32[1] += fMaxDiffY / fDiffXZ * XMVector3Length(vNewVelocity).m128_f32[0];
-      
-                    if (fMaxDiffY > 0)
-                        vNewVelocity.m128_f32[1] += m_fGravity * _fTimeDelta;
-                    else
-                        vNewVelocity.m128_f32[1] -= m_fGravity * _fTimeDelta;
-                    
-                    return vNewVelocity;
-                }
-         
-            }
-
+            return vNewVelocity;
         }
     }
-	return _vVelocity;
+
+    return _vVelocity;
+}
+_bool CCharacter::Try_SweepStep(_fvector _vPredictMove, _float3& _vHitPos, _float& _fMaxDiffY)
+{
+    _float3 vMyPos;
+    XMStoreFloat3(&vMyPos, Get_FinalPosition());
+    const _float3 vSweepOrigin = Calculate_SweepOrigin(vMyPos, _vPredictMove);
+    const _float3 vSweepDir = { 0.f, -1.f, 0.f };
+    const _float  fSweepDistance = m_fStepHeightThreshold * 2.f;
+
+    PxGeometryHolder pxGeomHolder = m_pActorCom->Get_Shapes()[(_uint)SHAPE_USE::SHAPE_BODY]->getGeometry().any();
+
+    list<CActorObject*> sweepHitActors;
+    list<RAYCASTHIT> sweepHits;
+
+    if (false == m_pGameInstance->MultiSweep(&pxGeomHolder.any(), m_matQueryShapeOffset, vSweepOrigin, vSweepDir, fSweepDistance, sweepHitActors, sweepHits))
+        return false;
+
+    auto iterHit = sweepHits.begin();
+    _bool bFloorFound = false;
+
+    for (CActorObject* pActor : sweepHitActors)
+    {
+        OBJECT_GROUP eGroup = (OBJECT_GROUP)pActor->Get_ObjectGroupID();
+
+        if (eGroup & (OBJECT_GROUP::MAPOBJECT | OBJECT_GROUP::DYNAMIC_OBJECT))
+        {
+            _float fDiffY = iterHit->vPosition.y - vMyPos.y;
+            // Sweep에 검출된 물체가 넘을 수 있는 턱인지 체크
+            if (0.f < fDiffY && fDiffY <= m_fStepHeightThreshold
+                && iterHit->vNormal.y > m_fStepSlopeThreshold)
+            {
+                // 검출된 턱 중 가장 높은 턱의 높이 찾기
+                if (fDiffY > _fMaxDiffY)
+                {
+                    _fMaxDiffY = fDiffY;
+                    _vHitPos = iterHit->vPosition;
+                    bFloorFound = true;
+                }
+            }
+        }
+        ++iterHit;
+    }
+
+    return bFloorFound;
 }
 
+_float3 CCharacter::Calculate_SweepOrigin(_float3 _vMyPos, _fvector _vPredictMove)
+{
+    _vMyPos.x += XMVectorGetX(_vPredictMove);
+    _vMyPos.z += XMVectorGetZ(_vPredictMove);
+    _vMyPos.y += Get_CollisionShapeHeight() + _vPredictMove.m128_f32[1] + m_fStepHeightThreshold;
+
+    return _vMyPos;
+}
+
+_float CCharacter::Get_CollisionShapeHeight() const
+{
+    PxGeometryHolder pxGeomHolder = m_pActorCom->Get_Shapes()[(_uint)SHAPE_USE::SHAPE_BODY]->getGeometry().any();
+    PxGeometryType::Enum eType = pxGeomHolder.getType();
+
+    switch (eType)
+    {
+    case PxGeometryType::eCAPSULE:
+    {
+        const PxCapsuleGeometry& capsule = pxGeomHolder.capsule();
+        //캡슐이 누워있으면 radius 반환, 아니면 높이 반환
+        return (1.f == m_matQueryShapeOffset._22) ? capsule.radius : (capsule.halfHeight + capsule.radius);
+    }
+    case PxGeometryType::eBOX:
+        return pxGeomHolder.box().halfExtents.y;
+    case PxGeometryType::eSPHERE:
+        return pxGeomHolder.sphere().radius;
+    default:
+        return 0.f;
+    }
+}
 void CCharacter::Go_Straight_F_Dir(_float _fTimeDelta)
 {
     switch (Get_2DDirection())

@@ -141,11 +141,15 @@ public:
 
 	
 	_float Measure_FloorDistance();
+public:
+	void Go_Straight_F_Dir(_float _fTimeDelta);
 protected:
 	_vector StepAssist(_fvector _vVelocity, _float _fTimeDelta);
 
-public:
-	void Go_Straight_F_Dir(_float _fTimeDelta);
+private:
+	_bool Try_SweepStep(_fvector _vPredictMove, _float3& _vHitPos, _float& _fMaxDiffY);
+	_float3 Calculate_SweepOrigin(_float3 _vMyPos, _fvector _vPredictMove);
+	_float Get_CollisionShapeHeight() const;
 
 //AUTO MOVE
 public:
