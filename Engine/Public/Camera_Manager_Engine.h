@@ -25,7 +25,7 @@ public:
 	HRESULT				Initialize();
 	void				Update(_float fTimeDelta);
 
-#ifdef NDEBUG
+#ifdef _DEBUG
 	void				Render();
 #endif
 

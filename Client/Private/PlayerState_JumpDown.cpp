@@ -8,6 +8,8 @@
 #include "ModelObject.h"
 #include "PlayerBody.h"
 
+#define CLAMBER_OVERLAP_OFFSET 0.1f
+
 CPlayerState_JumpDown::CPlayerState_JumpDown(CPlayer* _pOwner)
 	:CPlayerState(_pOwner, CPlayer::JUMP_DOWN)
 {
@@ -245,114 +247,150 @@ _bool CPlayerState_JumpDown::Try_Clamber()
 {
 	_vector vPlayerPos = m_pOwner->Get_FinalPosition();
 
-	//벽이 아직 감지되지 않음 -> 벽 감지
-	if (m_fWallYPosition < 0)
+	if (m_fWallYPosition < 0.f)
 	{
-		//벽 감지하기
-		_float3 vOrigin;
-		XMStoreFloat3(&vOrigin, vPlayerPos + _vector{ 0,m_fHeadHeight,0 } + m_pOwner->Get_LookDirection() * m_fArmLength);
-		_float3 vRayDir = { 0,-1,0 };
-		list<CActorObject*> hitActors;
-		list<RAYCASTHIT> raycasthits;
-		_float fSlopeThreshold = m_pOwner->Get_StepSlopeThreshold();
-		if (m_pGameInstance->RayCast(vOrigin, vRayDir, m_fHeadHeight, hitActors, raycasthits))
+		if (DetectWall(vPlayerPos))
 		{
-			auto& iterHitPoint = raycasthits.begin();
-			for (auto& pActor : hitActors)
-			{
-				if(OBJECT_GROUP::MAPOBJECT ==  pActor->Get_ObjectGroupID())
-				if (iterHitPoint->vNormal.y < fSlopeThreshold)
-				{
-					iterHitPoint++;
-					continue;
-				}
-				if (m_pOwner != pActor)
-				{
-					if (iterHitPoint->vPosition.y > m_fWallYPosition)
-					{
-						//OverlapTest 벽
-						SHAPE_BOX_DESC tBoxDesc;
-						tBoxDesc.vHalfExtents = { 0.25f,0.5f,0.25f };
-						PxCapsuleGeometry pxGeom;
-						m_pOwner->Get_ActorCom()->Get_Shapes()[0]->getCapsuleGeometry(pxGeom);
-						_vector vTmp = { iterHitPoint->vPosition.x, iterHitPoint->vPosition.y, iterHitPoint->vPosition.z,1 };
-						_vector vCheckPos =  XMVectorSetY(vTmp, XMVectorGetY(vTmp) + pxGeom.halfHeight + pxGeom.radius + 0.1f);
-						list<CActorObject*> hitActors2;
-						if (false == m_pGameInstance->Overlap(&pxGeom,
-							vCheckPos, hitActors2))
-						{
-  							m_fWallYPosition = iterHitPoint->vPosition.y;
-							m_vClamberEndPosition = vTmp;
-						}
-						else
-						{
-    							int a = 0;
-						}
-					}
-				}
-				iterHitPoint++;
-			}
+			return false; // 벽만 감지했을 뿐, 바로 Clamber 시작은 아님
 		}
 	}
-	//벽이 이미 감지됨 -> 팔 높이를 넘어가는지 체크
 	else
 	{
-		//
-		//현재 바닥 높이가 팔 높이보다 높고 이전 바닥 높이는 팔 높이보다 낮으면?
-		//-> 기어오르기
- 		_float fArmYPositionCurrent = XMVectorGetY(vPlayerPos) + m_fArmHeight;
-		if (m_fArmYPositionBefore> m_fWallYPosition
-			&& fArmYPositionCurrent <= m_fWallYPosition)
+		if (Check_ClamberCondition(vPlayerPos))
 		{
-			_float3 vOrigin;
-			XMStoreFloat3(&vOrigin, vPlayerPos + _vector{ 0,m_fArmHeight,0 } );
-			_float3 vRayDir; 
-			_vector vLook = m_pOwner->Get_LookDirection();
-			XMStoreFloat3(&vRayDir, vLook);
-			list<CActorObject*> hitActors;
-			list<RAYCASTHIT> raycasthits;
-			_vector vWallNormal = { 0,0,0,-1 };
-			_vector vNewWallNormal;
-			//WallNormal 찾기
-			if (m_pGameInstance->RayCast(vOrigin, vRayDir, m_fArmLength + 1.f, hitActors, raycasthits))
-			{
-				auto& iterHitPoint = raycasthits.begin();
-				for (auto& pActor : hitActors)
-				{
-					if (pActor == m_pOwner)
-						continue;
-					if (-1 == XMVectorGetW(vWallNormal)) //이전 벽 노말이 저장되지 않았을 때
-					{
-						vWallNormal = { iterHitPoint->vNormal.x,iterHitPoint->vNormal.y,iterHitPoint->vNormal.z,0 };
-						continue;
-					}
-					else
-						vNewWallNormal = { iterHitPoint->vNormal.x,iterHitPoint->vNormal.y,iterHitPoint->vNormal.z,0 };
-					_float fDotBefore = XMVectorGetX(XMVector3Dot(vWallNormal, vLook));
-					_float fDotAfter = XMVectorGetX(XMVector3Dot(vNewWallNormal, vLook));
-					if (fDotBefore < fDotAfter)
-					{
-						vWallNormal = vNewWallNormal;
-					}
-					iterHitPoint++;
-				}
-			}
-			if (0.f == XMVector3Length(vWallNormal).m128_f32[0])
-			{
-				return false;
-			}
-			m_pOwner->Set_ClamberEndPosition(m_vClamberEndPosition);
-			m_pOwner->Set_WallNormal(vWallNormal);
-			m_pOwner->Set_State(CPlayer::CLAMBER);
+			StartClamber();
 			return true;
 		}
-		else
-		{
-			m_fArmYPositionBefore = fArmYPositionCurrent;
-		}
-		
 	}
 
-
 	return false;
+}
+_bool CPlayerState_JumpDown::DetectWall(const _vector& vPlayerPos)
+{
+	_float3 vStart;
+	XMStoreFloat3(&vStart, vPlayerPos + _vector{ 0.f, m_fHeadHeight, 0.f } + m_pOwner->Get_LookDirection() * m_fArmLength);
+	_float3 vRayDir = { 0.f, -1.f, 0.f };
+
+	list<CActorObject*> hitActors;
+	list<RAYCASTHIT> hitInfos;
+
+	if (!m_pGameInstance->RayCast(vStart, vRayDir, m_fHeadHeight, hitActors, hitInfos))
+		return false;
+
+	auto hitInfoIter = hitInfos.begin();
+	for (auto& pActor : hitActors)
+	{
+		if (pActor->Get_ObjectGroupID() != OBJECT_GROUP::MAPOBJECT)
+		{
+			++hitInfoIter;
+			continue;
+		}
+
+		if (hitInfoIter->vNormal.y < m_pOwner->Get_StepSlopeThreshold())
+		{
+			++hitInfoIter;
+			continue;
+		}
+
+		if (pActor == m_pOwner)
+		{
+			++hitInfoIter;
+			continue;
+		}
+
+		if (hitInfoIter->vPosition.y > m_fWallYPosition)
+		{
+			if (false == Is_OverlapOnClamber(hitInfoIter->vPosition))
+			{
+				m_fWallYPosition = hitInfoIter->vPosition.y;
+				m_vClamberEndPosition = XMVectorSetW( XMLoadFloat3(&hitInfoIter->vPosition),1.f);
+			}
+		}
+
+		++hitInfoIter;
+	}
+
+	return true;
+}
+
+//벽 위에 플레이어가 올라갈 공간이 있는지 체크
+_bool CPlayerState_JumpDown::Is_OverlapOnClamber(const _float3& _vWallPosition)
+{
+	PxCapsuleGeometry capsuleGeom;
+	m_pOwner->Get_ActorCom()->Get_Shapes()[0]->getCapsuleGeometry(capsuleGeom);
+
+	_vector vCheckPos = XMVectorSetW(XMLoadFloat3( &_vWallPosition), 1.f);
+	vCheckPos = XMVectorSetY(vCheckPos, XMVectorGetY(vCheckPos) + capsuleGeom.halfHeight + capsuleGeom.radius + CLAMBER_OVERLAP_OFFSET);
+
+	list<CActorObject*> overlapActors;
+	return m_pGameInstance->Overlap(&capsuleGeom, vCheckPos, overlapActors);
+}
+
+_bool CPlayerState_JumpDown::Check_ClamberCondition(const _vector& _vPlayerPos)
+{
+	_float fCurrentArmY = XMVectorGetY(_vPlayerPos) + m_fArmHeight;
+
+	if (m_fArmYPositionBefore > m_fWallYPosition && fCurrentArmY <= m_fWallYPosition)
+	{
+		m_fArmYPositionBefore = fCurrentArmY;
+		return true;
+	}
+
+	m_fArmYPositionBefore = fCurrentArmY;
+	return false;
+}
+
+void CPlayerState_JumpDown::StartClamber()
+{
+	_vector vPlayerPos = m_pOwner->Get_FinalPosition();
+	_vector vLookDir = m_pOwner->Get_LookDirection();
+
+	_float3 vRayOrigin, vRayDir;
+	XMStoreFloat3(&vRayOrigin, vPlayerPos + _vector{ 0.f, m_fArmHeight, 0.f });
+	XMStoreFloat3(&vRayDir, vLookDir);
+	list<CActorObject*> hitActors;
+	list<RAYCASTHIT> hitInfos;
+	if (!m_pGameInstance->RayCast(vRayOrigin, vRayDir, m_fArmLength + 1.f, hitActors, hitInfos))
+		return;
+
+	_vector vBestNormal = { 0.f, 0.f, 0.f, -1.f }; // W 속성은 아직 WallNormal을 못 찾았다는 표시
+	_vector vTempNormal = { 0.f, 0.f, 0.f, 0.f };
+
+	auto hitInfoIter = hitInfos.begin();
+	for (auto& pActor : hitActors)
+	{
+		if (pActor == m_pOwner)
+		{
+			++hitInfoIter;
+			continue;
+		}
+
+		if (-1.f == XMVectorGetW(vBestNormal))//이전 벽 노말이 저장되지 않았을 때
+		{
+			vBestNormal = XMLoadFloat3(&hitInfoIter->vNormal);
+			++hitInfoIter;
+			continue;
+		}
+
+		vTempNormal = XMLoadFloat3(&hitInfoIter->vNormal);
+
+		_float fDotBefore = XMVectorGetX(XMVector3Dot(vBestNormal, vLookDir));
+		_float fDotAfter = XMVectorGetX(XMVector3Dot(vTempNormal, vLookDir));
+		//바라보는 방향과 더 가까운 벽 찾기
+		if (fDotBefore < fDotAfter)
+		{
+			vBestNormal = vTempNormal;
+		}
+
+		++hitInfoIter;
+	}
+
+	if (0.f == XMVectorGetX(XMVector3Length(vBestNormal)))
+		return;
+
+	//벽타기가 끝나면 위치할 지점 저장
+	m_pOwner->Set_ClamberEndPosition(m_vClamberEndPosition);
+	//벽의 Normal(플레이어가 바라봐야 할 방향) 저장
+	m_pOwner->Set_WallNormal(XMVectorSetW(vBestNormal, 0.f));
+	m_pOwner->Set_State(CPlayer::CLAMBER);
 }

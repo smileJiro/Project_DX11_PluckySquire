@@ -35,6 +35,7 @@ void CPlayerState_Clamber::Enter()
 	static_cast<CActor_Dynamic*>(m_pOwner->Get_ActorCom())->Set_ShapeEnable((_uint)SHAPE_USE::SHAPE_BODY, false);
 	m_pOwner->Stop_Move();
 	m_pOwner->Set_Kinematic(true);
+	_vector vPos = m_pOwner->Get_FinalPosition();
 
 	m_pOwner->UnEquip_Part(CPlayer::PLAYER_PART_SWORD);
 	m_vClamberNormal = m_pOwner->Get_WallNormal();

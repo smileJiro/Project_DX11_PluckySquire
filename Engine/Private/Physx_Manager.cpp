@@ -21,7 +21,7 @@ HRESULT CPhysx_Manager::Initialize()
 	if (FAILED(Initialize_Foundation()))
 		return E_FAIL;
 
-#ifdef NDEBUG
+#ifdef _DEBUG
 
 	if (FAILED(Initialize_PVD()))
 		return E_FAIL;
@@ -47,7 +47,7 @@ HRESULT CPhysx_Manager::Initialize()
 	PxTransform transform(PxVec3(0.0f, -9.5f, 0.0f)); // 위치: (0, 0, 0)
 
 	// 필요한 시각화 기능 활성화
-#ifdef NDEBUG
+#ifdef _DEBUG
 
 		/* Debug */
 	m_pVIBufferCom = CVIBuffer_PxDebug::Create(m_pDevice, m_pContext, 300000);
@@ -86,7 +86,7 @@ void CPhysx_Manager::Update(_float _fTimeDelta)
 		//fetch 끝났는지 확인
 		if (m_pPxScene->fetchResults(true))
 		{
-#ifdef NDEBUG
+#ifdef _DEBUG
 			//if (true == m_isDebugRender)
 			//{
 			//	const PxRenderBuffer& RenderBuffer = m_pPxScene->getRenderBuffer();
@@ -109,7 +109,7 @@ void CPhysx_Manager::Update(_float _fTimeDelta)
 //		if (nullptr != m_pPhysx_EventCallBack)
 //			m_pPhysx_EventCallBack->Update();
 //
-//#ifdef NDEBUG
+//#ifdef _DEBUG
 //		const PxRenderBuffer& RenderBuffer = m_pPxScene->getRenderBuffer();
 //		m_pVIBufferCom->Update_PxDebug(RenderBuffer);
 //#endif // _DEBUG
@@ -616,7 +616,7 @@ HRESULT CPhysx_Manager::Initialize_Scene()
 	//m_pPxScene->addBroadPhaseRegion(region);
 	/* Setting Pvd */
 	//PxPvdSceneClient* pvdClient = m_pPxScene->getScenePvdClient();
-#ifdef NDEBUG
+#ifdef _DEBUG
 	//if (pvdClient) {
 	//	pvdClient->setScenePvdFlag(PxPvdSceneFlag::eTRANSMIT_CONSTRAINTS, false);
 	//	pvdClient->setScenePvdFlag(PxPvdSceneFlag::eTRANSMIT_CONTACTS, false);
@@ -776,7 +776,7 @@ void CPhysx_Manager::Free()
 		m_pPxPhysics = nullptr;
 	}
 
-#ifdef NDEBUG
+#ifdef _DEBUG
 
 	// 5. PVD(PxVisualDebugger) 연결 해제 및 리소스 정리
 	if (m_pPxPvd)

@@ -699,7 +699,7 @@ private:
 	_float m_f3DInteractLookOffset = 0.65f;
 	_float m_f3DInteractRadius = 1.f;
 	_float m_fHeadHeight = 1.f;
-	_float m_fArmHeight = 0.6f; // 벽타기 기준 높이
+	_float m_fArmHeight = 0.75f; // 벽타기 기준 높이
 	_float m_fArmLength = 0.325f;// 벽 타기 범위
 	_float m_fFootLength = 0.25f;
 	_float m_fAttackForwardingForce = 12.f;

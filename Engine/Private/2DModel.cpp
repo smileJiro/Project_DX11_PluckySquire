@@ -291,7 +291,7 @@ CTexture* C2DModel::Load_Texture(filesystem::path _path, _uint _iLevelIdx, _bool
 	return pTexture;
 }
 
-#ifdef NDEBUG
+#ifdef _DEBUG
 
 const CSpriteFrame* C2DModel::Get_SpriteFrame()
 {
