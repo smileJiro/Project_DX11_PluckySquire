@@ -129,7 +129,7 @@ VS_OUT VS_MAIN(VS_IN In)
     Out.vTexcoord = In.vTexcoord;
     Out.vWorldPos = mul(vPosition, g_WorldMatrix);
     Out.vProjPos = Out.vPosition;
-    Out.vTangent = vTangent;
+    Out.vTangent = normalize(mul(vTangent, g_WorldMatrix));
     return Out;
 }
 
@@ -189,7 +189,7 @@ VS_OUT VS_MAIN_RENDERTARGET_UV(VS_IN In)
     Out.vTexcoord = vUV;
     Out.vWorldPos = mul(vPosition, g_WorldMatrix);
     Out.vProjPos = Out.vPosition;
-    Out.vTangent = vTangent;
+    Out.vTangent = normalize(mul(vTangent, g_WorldMatrix));
     return Out;
 }
 

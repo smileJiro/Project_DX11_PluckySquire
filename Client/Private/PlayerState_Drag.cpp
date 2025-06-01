@@ -51,9 +51,7 @@ void CPlayerState_Drag::Update(_float _fTimeDelta)
 				m_bMoving = true;
 				START_SFX_DELAY(TEXT("A_sfx_jot_vocal_pull_push-") + to_wstring(rand() % 6), 0.f, g_SFXVolume, false);
 				START_SFX_DELAY(TEXT("A_sfx_drag_object"), 0.f, g_SFXVolume, false);
-			}
-
-			
+			}		
 			F_DIRECTION eNewDragDirection = To_FDirection(tKeyResult.vMoveDir, eCoord);
 			//드래그 방향이 바뀌면 애니메이션 바꿔야 함.
 			if (eNewDragDirection != m_eOldDragDirection)
@@ -69,7 +67,7 @@ void CPlayerState_Drag::Update(_float _fTimeDelta)
 
 			}
 			m_pOwner->Set_PlayingAnim(true);
-			m_pOwner->Move(XMVector3Normalize(tKeyResult.vMoveDir) * m_fDragMoveSpeed, _fTimeDelta);
+			//m_pOwner->Move(XMVector3Normalize(tKeyResult.vMoveDir) * m_fDragMoveSpeed, _fTimeDelta);
 			m_pDraggableObject->Move(XMVector3Normalize(tKeyResult.vMoveDir) * m_fDragMoveSpeed, _fTimeDelta);
 
 			if (COORDINATE_3D == eCoord)
@@ -79,8 +77,6 @@ void CPlayerState_Drag::Update(_float _fTimeDelta)
 				_float3 vNewOwnerPos; XMStoreFloat3(&vNewOwnerPos, vDraggablePos - m_vHoldOffset);
 				pOwnerDynamic->Set_GlobalPose(vNewOwnerPos);
 			}
-
-
 		}
 		else 
 		{

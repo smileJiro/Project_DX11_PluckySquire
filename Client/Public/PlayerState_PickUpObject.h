@@ -17,7 +17,7 @@ public:
     void Align();
 private:
 	CCarriableObject* m_pCarriableObject = nullptr;
-    _bool m_bAligned = false;
+    _bool m_bHeadUp = false;
     _float m_f2DAlignStartProgress = 0.05f;
     _float m_f2DAlignEndProgress = 0.185f;
     _float m_f2DHeadProgress = 0.778f;

@@ -576,7 +576,6 @@ _vector CCharacter::StepAssist(_fvector _vVelocity,_float _fTimeDelta)
 
     if (Try_SweepStep(vPredictMove, vHitPos, fMaxDiffY))
     {
-        _float fVelocitySlope = abs(XMVectorGetY(XMVector3Normalize(_vVelocity)));
         _float3 vMyPos;
         XMStoreFloat3(&vMyPos, Get_FinalPosition());
         _float fDiffXZ = XMVectorGetX(XMVector2Length({ vHitPos.x - vMyPos.x, vHitPos.z - vMyPos.z }));

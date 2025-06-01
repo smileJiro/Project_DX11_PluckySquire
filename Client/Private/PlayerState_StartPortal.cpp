@@ -25,7 +25,8 @@ void CPlayerState_StartPortal::Update(_float _fTimeDelta)
 			}
 			else
 			{
-				m_pOwner->Get_ActorDynamic()->Set_GlobalPose(_float3{ m_vTargetPos.m128_f32[0], m_vTargetPos.m128_f32[1], m_vTargetPos.m128_f32[2] });
+				_float3 vTmp; XMStoreFloat3(&vTmp, m_vTargetPos);
+				m_pOwner->Get_ActorDynamic()->Set_GlobalPose(vTmp);
 			}
 
 		}

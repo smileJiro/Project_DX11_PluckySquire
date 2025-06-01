@@ -291,11 +291,9 @@ void CCarriableObject::PickUpStart(CPlayer* _pPalyer, _fmatrix _matPlayerOffset)
 	Set_ParentMatrix(COORDINATE_2D, _pPalyer->Get_ControllerTransform()->Get_WorldMatrix_Ptr(COORDINATE_2D));
 	Set_ParentBodyMatrix(COORDINATE_3D, _pPalyer->Get_BodyWorldMatrix_Ptr(COORDINATE_3D));
 	Set_ParentBodyMatrix(COORDINATE_2D, _pPalyer->Get_BodyWorldMatrix_Ptr(COORDINATE_2D));
-	_float4x4 matOffset;
-	XMStoreFloat4x4(&matOffset, _matPlayerOffset);
+	_float4x4 matOffset; XMStoreFloat4x4(&matOffset, _matPlayerOffset); 
 	Set_WorldMatrix(matOffset);
 	On_PickUpStart(_pPalyer, _matPlayerOffset);
-
 }
 
 void CCarriableObject::PickUpEnd()

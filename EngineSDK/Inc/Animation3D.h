@@ -18,6 +18,7 @@ public:
 	virtual HRESULT Initialize(ifstream& inFile, const class C3DModel* pModel);
 	bool Update_TransformationMatrices(const vector<class CBone*>& Bones, _float fTimeDelta, _bool _bReverse = false);
 	bool Update_AnimTransition(const vector<class CBone*>& Bones, _float fTimeDelta, const map<_uint, KEYFRAME>& mapAnimTransLeftFrame, _bool _bReverse = false);
+	void Update_CurrentKeyFrameIndices(_bool _bReverse);
 
 	virtual void Reset(_bool _bReverse = false)override;
 
@@ -30,8 +31,6 @@ public:
 	bool Is_AnimChangeable();
 
 	virtual void Set_Progress(_float _fProgerss, _bool _bReverse)override;
-	void Update_CurrentKeyFrameIndices(_bool _bReverse);
-
 	void Set_PostDealyPercent(_float fPercentage) { m_fPostDelayPercentage = fPercentage; }
 	void Set_AnimTransitionTime(_float fTime) { m_fAnimTransitionTime = fTime; }
 

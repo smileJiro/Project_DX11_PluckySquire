@@ -86,8 +86,7 @@ VS_OUT VS_SPRITE2D(VS_IN In)
 
     Out.vTexcoord = clamp(In.vTexcoord, g_vSpriteStartUV, g_vSpriteEndUV);
     Out.vTexcoord = clamp(Out.vTexcoord, float2(0, 0),float2(1, 1));
-    return
-Out;
+    return Out;
 }
 
 

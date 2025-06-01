@@ -391,28 +391,20 @@ _bool C3DModel::Play_Animation(_float fTimeDelta, _bool bReverse)
 	m_bReverseAnimation = bReverse;
 	_bool bAnimEnd = false;
 
-
-
 	//뼈들의 변환행렬을 갱신
+	//애니메이션 전환이 아닐 때
 	if (m_iCurrentAnimIndex == m_iPrevAnimIndex)
 	{
-		if (m_Animations.size() == 14) {
-			int i = 0;
-		}
-
 		bAnimEnd = m_Animations[m_iCurrentAnimIndex]->Update_TransformationMatrices(m_Bones, fTimeDelta,bReverse);
 		m_bDuringAnimation = (false == bAnimEnd);
 	}
-	//else	if (m_Animations[m_iCurrentAnimIndex]->Get_AnimTransitionTime() == 0)
-	//	m_iPrevAnimIndex = m_iCurrentAnimIndex;
+	//애니메이션 전환 중 
 	else
 	{
-		if (m_Animations.size() == 14) {
-			int i = 0;
-		}
 		if (m_Animations[m_iCurrentAnimIndex]->Update_AnimTransition(m_Bones, fTimeDelta, m_mapAnimTransLeftFrame, bReverse))
 			m_iPrevAnimIndex = m_iCurrentAnimIndex;
 		m_bDuringAnimation = false;
+		bAnimEnd = false;
 	}
 
 

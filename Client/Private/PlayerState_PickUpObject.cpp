@@ -13,48 +13,41 @@ CPlayerState_PickUpObject::CPlayerState_PickUpObject(CPlayer* _pOwner)
 void CPlayerState_PickUpObject::Update(_float _fTimeDelta)
 {
 	COORDINATE eCOord = m_pOwner->Get_CurCoord();
-	KEYFRAME tLeftKeyFrame; 
-	KEYFRAME tRightKeyFrame;
-	_float fRatio = 0.f;
 	_float fProgress = m_pOwner->Get_AnimProgress();
-	_float fAlignStartProgress = COORDINATE_3D == eCOord ? m_f3DAlignStartProgress : m_f2DAlignStartProgress;
-	_float fAlignEndProgress = COORDINATE_3D == eCOord ? m_f3DAlignEndProgress : m_f2DAlignEndProgress;
 	_float fHeadProgress = COORDINATE_3D == eCOord ? m_f3DHeadProgress : m_f2DHeadProgress;
 
 	if (fProgress >= fHeadProgress)
 	{
-		if (false == m_bAligned)
+		if (false == m_bHeadUp)
 		{
-			Align();
-			m_bAligned = true;
-			return;
+			m_pCarriableObject->PickUpEnd();
+			m_bHeadUp = true;
 		}
+		return;
 	}
-	 if( fProgress >= fAlignEndProgress)
+
+	KEYFRAME tLeftKeyFrame = m_tOriginalKeyFrame;
+	KEYFRAME tRightKeyFrame = m_tOriginalKeyFrame;
+	_float fRatio = 0.f;
+	_float fAlignStartProgress = COORDINATE_3D == eCOord ? m_f3DAlignStartProgress : m_f2DAlignStartProgress;
+	_float fAlignEndProgress = COORDINATE_3D == eCOord ? m_f3DAlignEndProgress : m_f2DAlignEndProgress;
+	if (fProgress >= fAlignEndProgress)
 	{
 		fRatio = (fProgress - fAlignEndProgress) / (fHeadProgress - fAlignEndProgress);
 		tLeftKeyFrame = m_tPickupKeyFrame;
 		tRightKeyFrame = m_tCarryingKeyFrame;
 	}
-	else if(fProgress >=fAlignStartProgress )
+	else if (fProgress >= fAlignStartProgress)
 	{
 		fRatio = (fProgress - fAlignStartProgress) / (fAlignEndProgress - fAlignStartProgress);
 		tLeftKeyFrame = m_tOriginalKeyFrame;
 		tRightKeyFrame = m_tPickupKeyFrame;
 	}
-	else
-	{
-		 fRatio = 0;
-		 tLeftKeyFrame = m_tOriginalKeyFrame;
-		tRightKeyFrame = m_tOriginalKeyFrame;
-	}
-	 if (false == m_bAligned)
-	 {
-		 KEYFRAME tKeyFrame = Lerp_Frame(tLeftKeyFrame, tRightKeyFrame, fRatio);
-		 _float4x4 matWorld;
-		 XMStoreFloat4x4(&matWorld, XMMatrixAffineTransformation(XMLoadFloat3(&tKeyFrame.vScale), XMVectorSet(0.f, 0.f, 0.f, 1.f), XMLoadFloat4(&tKeyFrame.vRotation), XMVectorSetW(XMLoadFloat3(&tKeyFrame.vPosition), 1.f)));
-		 m_pCarriableObject->Set_WorldMatrix(matWorld);
-	 }
+
+	KEYFRAME tKeyFrame = Lerp_Frame(tLeftKeyFrame, tRightKeyFrame, fRatio);
+	_float4x4 matWorld;
+	XMStoreFloat4x4(&matWorld, XMMatrixAffineTransformation(XMLoadFloat3(&tKeyFrame.vScale), XMVectorSet(0.f, 0.f, 0.f, 1.f), XMLoadFloat4(&tKeyFrame.vRotation), XMVectorSetW(XMLoadFloat3(&tKeyFrame.vPosition), 1.f)));
+	m_pCarriableObject->Set_WorldMatrix(matWorld);
 }
 
 void CPlayerState_PickUpObject::Enter()
