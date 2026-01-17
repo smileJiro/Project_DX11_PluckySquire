@@ -342,12 +342,6 @@ void CLevel_Chapter_08::Update(_float _fTimeDelta)
 	//	//int a = 0;
 	//}
 
-	// Change Camera Free  Or Target
-	if (KEY_DOWN(KEY::C)) {
-		_uint iCurCameraType = CCamera_Manager::GetInstance()->Get_CameraType();
-		iCurCameraType ^= 1;
-		CCamera_Manager::GetInstance()->Change_CameraType(iCurCameraType);
-	}
 
 	//if (KEY_DOWN(KEY::NUM1))
 	//{

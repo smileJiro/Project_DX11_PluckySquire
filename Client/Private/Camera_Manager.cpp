@@ -26,18 +26,27 @@ HRESULT CCamera_Manager::Initialize()
 
 void CCamera_Manager::Update(_float fTimeDelta)
 {
-	//if (KEY_DOWN(KEY::G))
-	//{
-	//	Start_FadeOut_White();
-	//}
-	//if (KEY_DOWN(KEY::H))
-	//{
-	//	Start_FadeOut(1.5f);
-	//}
+	// Debug Change CameraType
+#ifdef _DEBUG
+	if (KEY_DOWN(KEY::NUMPAD7))
+	{
+		_uint iCurCameraType = CCamera_Manager::GetInstance()->Get_CameraType();
+		iCurCameraType = CCamera_Manager::CAMERA_TYPE::FREE;
+		CCamera_Manager::GetInstance()->Change_CameraType(iCurCameraType);
+	}
+	if (KEY_DOWN(KEY::NUMPAD8))
+	{
+		_uint iCurCameraType = CCamera_Manager::GetInstance()->Get_CameraType();
+		iCurCameraType = CCamera_Manager::CAMERA_TYPE::TARGET;
+		CCamera_Manager::GetInstance()->Change_CameraType(iCurCameraType);
+	}
+#endif // _DEBUG
 
+	
 
 	if (IS_IMPORT_IMGUI)
 		Imgui_Dof();
+
 
 
 }
@@ -316,7 +325,8 @@ void CCamera_Manager::Change_CameraMode(_uint _iCameraMode)
 	else if (TARGET_2D == m_eCurrentCameraType) {
 		static_cast<CCamera_2D*>(m_Cameras[m_eCurrentCameraType])->Set_CameraMode(_iCameraMode);
 	}
-		return;
+
+	return;
 }
 
 void CCamera_Manager::Change_CameraType(_uint _iCurrentCameraType, _bool _isInitialData, _float _fInitialTime)
