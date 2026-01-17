@@ -148,6 +148,8 @@ HRESULT CImgui_Manager::Imgui_Debug_Render()
 	Imgui_Debug_IBLGlobalVariable();
 	Imgui_Debug_Lights();
 
+	Imgui_LevelLightingTool();
+
 	
 	HWND hWnd = GetFocus();
 	auto& io = ImGui::GetIO();
@@ -883,6 +885,172 @@ HRESULT CImgui_Manager::Imgui_Debug_Lights()
 	return S_OK;
 	
 }
+
+HRESULT CImgui_Manager::Imgui_LevelLightingTool()
+{
+	ImGui::SetNextWindowPos(ImVec2(3.0f, 3.0f), ImGuiCond_FirstUseEver);
+	ImGui::SetNextWindowSize(ImVec2(600.0f, 800.0f), ImGuiCond_FirstUseEver);
+	ImGui::Begin("Level Lighting Tool");	
+	string strToolID = "Level Lighting Tool";
+	ImGui::PushID(strToolID.c_str());					
+
+	string strPresetName = "Level Preset";
+	bool isDirty = false;
+	DrawLevelPresetBar(strPresetName.c_str(), isDirty);
+	ImGui::Separator(); // 한 줄 아래 얇은 라인(예쁨)
+
+	if (ImGui::BeginTabBar("LightingTabs"))
+	{
+		if (ImGui::BeginTabItem("Direct Light(PBR)"))
+		{
+			// 2컬럼 레이아웃
+			const ImGuiTableFlags flags =
+				ImGuiTableFlags_Resizable |
+				ImGuiTableFlags_BordersInnerV |
+				ImGuiTableFlags_SizingStretchProp;
+
+			// 셀 패딩
+			ImGuiStyle& style = ImGui::GetStyle();
+			ImVec2 oldPad = style.CellPadding;
+			style.CellPadding = ImVec2(4.0f, 4.0f);
+
+			if (ImGui::BeginTable("DirectLayout", 2, flags))
+			{
+				constexpr float iColumnLeftDefaultSize = 320.0f;
+				ImGui::TableSetupColumn("LightsList", ImGuiTableColumnFlags_WidthFixed, iColumnLeftDefaultSize);
+				ImGui::TableSetupColumn("LightProps", ImGuiTableColumnFlags_WidthStretch);
+				ImGui::TableNextRow();
+
+				// Left: Lights List
+				ImGui::TableSetColumnIndex(0);
+				ImGui::TableSetBgColor(ImGuiTableBgTarget_CellBg, IM_COL32(16, 16, 16, 220));
+				ImGui::BeginChild("LightsListChild", ImVec2(0, 0), true);
+				//DrawLightsList();        // Selectable 목록/필터/버튼
+				ImGui::EndChild();
+
+				// Right: Light Properties
+				ImGui::TableSetColumnIndex(1);
+				ImGui::TableSetBgColor(ImGuiTableBgTarget_CellBg, IM_COL32(28, 28, 28, 220));
+				ImGui::BeginChild("LightPropsChild", ImVec2(0, 0), true);
+				//DrawSelectedLightProps(); // 선택된 라이트 디테일
+				ImGui::EndChild();
+
+				ImGui::EndTable();
+			}
+
+
+			ImGui::EndTabItem(); // BeginTabItem("Direct Light(PBR)")
+		}
+
+		if (ImGui::BeginTabItem("Ambient Light(IBL)"))
+		{
+
+
+
+			ImGui::EndTabItem(); // BeginTabItem("Ambient Light(IBL)")
+		}
+
+		ImGui::EndTabBar(); 
+	}
+
+
+
+	ImGui::PopID();										// ID: Level Lighting Tool
+	ImGui::End();										// Level Lighting Tool
+	return S_OK;
+}
+
+void CImgui_Manager::DrawLevelPresetBar(const char* szCurrentPresetName, bool isDirty)
+{
+	// TODO:: Client의 Level에 대한 데이터 어떻게 받아올지 구조 고민 
+	
+	// UI 튜닝 값
+	const float fPresetComboWidth = 260.0f; // 프리셋 콤보 폭
+	const float fActionButtonWidth = 72.0f;  // Save/Load 버튼 폭
+	const float fSaveAsButtonWidth = 88.0f;  // Save As 폭
+
+	// 상단 한 줄을 2컬럼으로 분리: (좌)프리셋 (우)액션버튼
+	const ImGuiTableFlags eBarFlags =
+		ImGuiTableFlags_SizingStretchProp |
+		ImGuiTableFlags_NoPadOuterX;
+
+	if (ImGui::BeginTable("LevelPresetBar", 2, eBarFlags))
+	{
+		ImGui::TableSetupColumn("PresetArea", ImGuiTableColumnFlags_WidthStretch);
+		ImGui::TableSetupColumn("ActionsArea", ImGuiTableColumnFlags_WidthFixed, 0.0f);
+
+		ImGui::TableNextRow();
+
+		// ----------------
+		// Left: Preset Area
+		// ----------------
+		ImGui::TableSetColumnIndex(0);
+
+		ImGui::AlignTextToFramePadding();
+		ImGui::TextUnformatted("Level Preset:");
+		ImGui::SameLine();
+
+		ImGui::SetNextItemWidth(fPresetComboWidth);
+		if (ImGui::BeginCombo("##PresetCombo", szCurrentPresetName))
+		{
+			// TODO: preset items
+			ImGui::EndCombo();
+		}
+
+		// ----------------
+		// Right: Actions Area (오른쪽 정렬 느낌)
+		// ----------------
+		ImGui::TableSetColumnIndex(1);
+
+		const ImGuiStyle& tStyle = ImGui::GetStyle();
+
+		// 액션 그룹의 폭을 대략 계산 (버튼 3개 + badge)
+		float fActionsWidth = 0.0f;
+		fActionsWidth += fActionButtonWidth + tStyle.ItemSpacing.x; // Save
+		fActionsWidth += fActionButtonWidth + tStyle.ItemSpacing.x; // Load
+		fActionsWidth += fSaveAsButtonWidth;                        // Save As
+
+		if (isDirty)
+		{
+			fActionsWidth += tStyle.ItemSpacing.x;
+			fActionsWidth += 14.0f + ImGui::CalcTextSize("Unsaved").x; // 점 + 텍스트(짧게)
+		}
+
+		// 현재 컬럼의 사용 가능 폭
+		float fActionsAvail = ImGui::GetContentRegionAvail().x;
+		if (fActionsAvail > fActionsWidth)
+			ImGui::SetCursorPosX(ImGui::GetCursorPosX() + (fActionsAvail - fActionsWidth));
+
+		// 실제 버튼들
+		if (ImGui::Button("Save", ImVec2(fActionButtonWidth, 0))) { /* TODO */ }
+		ImGui::SameLine();
+		if (ImGui::Button("Load", ImVec2(fActionButtonWidth, 0))) { /* TODO */ }
+		ImGui::SameLine();
+		if (ImGui::Button("Save As", ImVec2(fSaveAsButtonWidth, 0))) { /* TODO */ }
+
+		if (isDirty)
+		{
+			ImGui::SameLine();
+
+			// 노란 점 + "Unsaved"
+			ImDrawList* pDrawList = ImGui::GetWindowDrawList();
+			ImVec2 vScreenPos = ImGui::GetCursorScreenPos();
+
+			const float fRadius = 5.0f;
+			ImVec2 vCenter(vScreenPos.x + fRadius, vScreenPos.y + ImGui::GetFontSize() * 0.5f);
+
+			pDrawList->AddCircleFilled(vCenter, fRadius, IM_COL32(240, 200, 40, 255));
+
+			ImGui::Dummy(ImVec2(fRadius * 2 + 5.0f, 0));
+			ImGui::SameLine();
+			ImGui::AlignTextToFramePadding();
+			ImGui::TextUnformatted("Unsaved");
+		}
+
+		ImGui::EndTable();
+	}
+}
+
 
 #endif // _DEBUG
 

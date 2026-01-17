@@ -30,11 +30,12 @@ public:
 	HRESULT				Imgui_Debug_IBLGlobalVariable();
 	HRESULT				Imgui_Debug_Lights();
 
+	HRESULT				Imgui_LevelLightingTool();
+	void				DrawLevelPresetBar(const char* szCurrentPresetName, bool isDirty);
 
 	HRESULT				Imgui_Select_Debug_ObjectInfo(const wstring _strLayerTag, _uint _iObjectId);
 #endif //  _DEBUG
 
-public :
 	
 private:
 	CGameInstance*			m_pGameInstance = nullptr;
@@ -51,7 +52,7 @@ private:
 public:
 	static CImgui_Manager* Create(HWND _hWnd, ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, _float2 _vViewportSize);
 	virtual void Free();
-	
+
 };
 
 END
