@@ -263,7 +263,7 @@ VS_OUT VS_MAIN_RENDERTARGET_UV(VS_IN In)
     Out.vTexcoord = vUV;
     Out.vWorldPos = mul(Out.vPosition, g_WorldMatrix);
     Out.vProjPos = Out.vPosition; // w 나누기를 수행하지 않은 0 ~ far 사이의 z 값이 보존되어있는 position
-    Out.vTangent = normalize(mul(float4(In.vTangent, 0), g_WorldMatrix));
+    Out.vTangent = normalize(mul(float4(In.vTangent, 0), g_WorldMatrix)); 
 
     return Out;
 }
