@@ -183,6 +183,19 @@ HRESULT CLight_Manager::Delete_Light(_uint _iLightIndex)
 	return S_OK;
 }
 
+HRESULT CLight_Manager::Delete_Light(list<CLight*>::iterator& _iter)
+{
+	if (true == m_Lights.empty())
+		return E_FAIL;
+
+	if (_iter == m_Lights.end())
+		return E_FAIL;
+
+	_iter = m_Lights.erase(_iter);
+
+	return S_OK;
+}
+
 void CLight_Manager::Level_Exit()
 {
 	Clear();
@@ -204,8 +217,8 @@ void CLight_Manager::Clear_Load()
 		CONST_LIGHT tLightDesc = pLight->Get_LightDesc();
 		if (true == (_bool)tLightDesc.isShadow)
 		{
-			_int iShadowLightID = pLight->Get_ShadowLightID();
-			m_pGameInstance->Remove_ShadowLight(iShadowLightID);
+			_int iLightID = pLight->Get_LightID();
+			m_pGameInstance->Remove_ShadowLight(iLightID);
 		}
 		Safe_Release(pLight);
 	}
@@ -227,8 +240,8 @@ void CLight_Manager::Clear()
 		CONST_LIGHT tLightDesc = pLight->Get_LightDesc();
 		if (true == (_bool)tLightDesc.isShadow)
 		{
-			_int iShadowLightID = pLight->Get_ShadowLightID();(_bool)
-			m_pGameInstance->Remove_ShadowLight(iShadowLightID);
+			_int iLightID = pLight->Get_LightID();(_bool)
+			m_pGameInstance->Remove_ShadowLight(iLightID);
 		}
 		Safe_Release(pLight);
 	}

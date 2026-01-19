@@ -26,6 +26,7 @@ public:
 public:
 	HRESULT Load_Lights(const _wstring& _strLightsJsonPath);
 	HRESULT Delete_Light(_uint _iLightIndex);
+	HRESULT Delete_Light(list<CLight*>::iterator& _iter);
 
 public:
 	void	Level_Exit();

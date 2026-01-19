@@ -316,6 +316,7 @@ call UpdateLib.bat</Command>
     <ClInclude Include="..\public\VIBuffer_Beam.h" />
     <ClInclude Include="..\public\VIBuffer_Terrain.h" />
     <ClInclude Include="..\public\VIBuffer_Trail.h" />
+    <ClInclude Include="DrawDebugHelpers.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\2DModel.cpp" />
@@ -436,6 +437,7 @@ call UpdateLib.bat</Command>
     <ClCompile Include="..\private\VIBuffer_Terrain.cpp" />
     <ClCompile Include="..\private\VIBuffer_Trail.cpp" />
     <ClCompile Include="..\Public\Engine_Struct.cpp" />
+    <ClCompile Include="DrawDebugHelpers.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Bin\ShaderFiles\cs\Test_cs.hlsl">

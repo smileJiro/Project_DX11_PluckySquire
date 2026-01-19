@@ -123,6 +123,28 @@ HRESULT CImgui_Manager::LevelChange_Imgui()
 
 #ifdef _DEBUG
 
+bool CImgui_Manager::Is_ImguiFocused() const
+{
+	if (!ImGui::GetCurrentContext())
+		return false;
+
+	// 어떤 ImGui 윈도우든 포커스를 가졌는가 (클릭 등으로 포커스 획득)
+	if (ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow))
+		return true;
+
+	// 혹은 어떤 아이템(입력창/버튼/슬라이더 등)이 활성(클릭/드래그) 상태인가
+	if (ImGui::IsAnyItemActive())
+		return true;
+
+	return false;
+
+	//if (!ImGui::GetCurrentContext())
+	//	return false;
+
+	//ImGuiIO& io = ImGui::GetIO();
+	//return io.WantCaptureMouse || io.WantCaptureKeyboard || io.WantTextInput;
+}
+
 HRESULT CImgui_Manager::Imgui_Debug_Render()
 {
 	if (true == m_isImguiRTRender)
@@ -719,7 +741,7 @@ HRESULT CImgui_Manager::Imgui_Debug_Lights()
 		};
 
 		
-		// Delete Light 
+		
 		if (ImGui::Button("Copy_Light"))
 		{
 			if (Selectiter != Lights.end())
@@ -729,7 +751,7 @@ HRESULT CImgui_Manager::Imgui_Debug_Lights()
 			}
 
 		}
-
+		// Delete Light 
 		if (ImGui::Button("Delete Light"))
 		{
 			// Shadow가 현재 비활성상태이고, 타입이 point가 아닌경우,
@@ -925,7 +947,7 @@ HRESULT CImgui_Manager::Imgui_LevelLightingTool()
 				ImGui::TableSetColumnIndex(0);
 				ImGui::TableSetBgColor(ImGuiTableBgTarget_CellBg, IM_COL32(16, 16, 16, 220));
 				ImGui::BeginChild("LightsListChild", ImVec2(0, 0), true);
-				//DrawLightsList();        // Selectable 목록/필터/버튼
+				DrawLightsList();        //  TODO:: 여기서 반환된 Select Light(ID)를 detail로 띄운다
 				ImGui::EndChild();
 
 				// Right: Light Properties
@@ -960,7 +982,7 @@ HRESULT CImgui_Manager::Imgui_LevelLightingTool()
 	return S_OK;
 }
 
-void CImgui_Manager::DrawLevelPresetBar(const char* szCurrentPresetName, bool isDirty)
+void CImgui_Manager::DrawLevelPresetBar(const char* _szCurrentPresetName, bool _isDirty)
 {
 	// TODO:: Client의 Level에 대한 데이터 어떻게 받아올지 구조 고민 
 	
@@ -987,16 +1009,30 @@ void CImgui_Manager::DrawLevelPresetBar(const char* szCurrentPresetName, bool is
 		ImGui::TableSetColumnIndex(0);
 
 		ImGui::AlignTextToFramePadding();
-		ImGui::TextUnformatted("Level Preset:");
+		ImGui::TextUnformatted("Current Level:");
 		ImGui::SameLine();
 
 		ImGui::SetNextItemWidth(fPresetComboWidth);
-		if (ImGui::BeginCombo("##PresetCombo", szCurrentPresetName))
+
+
+		const vector<string>& LevelNames = m_pGameInstance->Get_LevelNames();
+		int iCurLevelID = m_pGameInstance->Get_CurLevelID();
+		if (iCurLevelID == -1)
 		{
-			// TODO: preset items
-			ImGui::EndCombo();
+			ImGui::EndTable();
+			return;
 		}
 
+		const char* szCurrent = LevelNames[iCurLevelID].empty() ? "Level Name" : LevelNames[iCurLevelID].c_str();
+
+		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.90f, 0.75f, 0.25f, 1.0f));
+		ImGui::TextUnformatted(szCurrent);
+		ImGui::PopStyleColor();
+
+		ImGui::SameLine(0.0f, 20.0f);
+
+
+		
 		// ----------------
 		// Right: Actions Area (오른쪽 정렬 느낌)
 		// ----------------
@@ -1010,7 +1046,7 @@ void CImgui_Manager::DrawLevelPresetBar(const char* szCurrentPresetName, bool is
 		fActionsWidth += fActionButtonWidth + tStyle.ItemSpacing.x; // Load
 		fActionsWidth += fSaveAsButtonWidth;                        // Save As
 
-		if (isDirty)
+		if (_isDirty)
 		{
 			fActionsWidth += tStyle.ItemSpacing.x;
 			fActionsWidth += 14.0f + ImGui::CalcTextSize("Unsaved").x; // 점 + 텍스트(짧게)
@@ -1028,7 +1064,7 @@ void CImgui_Manager::DrawLevelPresetBar(const char* szCurrentPresetName, bool is
 		ImGui::SameLine();
 		if (ImGui::Button("Save As", ImVec2(fSaveAsButtonWidth, 0))) { /* TODO */ }
 
-		if (isDirty)
+		if (_isDirty)
 		{
 			ImGui::SameLine();
 
@@ -1045,6 +1081,159 @@ void CImgui_Manager::DrawLevelPresetBar(const char* szCurrentPresetName, bool is
 			ImGui::SameLine();
 			ImGui::AlignTextToFramePadding();
 			ImGui::TextUnformatted("Unsaved");
+		}
+
+		ImGui::EndTable();
+	}
+}
+
+void CImgui_Manager::DrawLightsList()
+{
+
+	const list<CLight*>& LightsList = m_pGameInstance->Get_Lights();
+
+	const ImGuiTreeNodeFlags SectionHeaderFlags = ImGuiTreeNodeFlags_DefaultOpen |
+												   ImGuiTreeNodeFlags_Framed |
+												   ImGuiTreeNodeFlags_SpanAvailWidth |
+												   ImGuiTreeNodeFlags_FramePadding;
+
+	const ImGuiTableFlags TableFlags = ImGuiTableFlags_RowBg |
+		ImGuiTableFlags_SizingStretchProp |
+		ImGuiTableFlags_NoBordersInBody |
+		ImGuiTableFlags_PadOuterX;
+
+	// -------------------------
+	// Directional
+	// -------------------------
+	if (ImGui::CollapsingHeader("Directional", SectionHeaderFlags))
+	{
+		DrawLightsListTable(LightsList, "DirectionalTable", TableFlags, LIGHT_TYPE::DIRECTOINAL);
+	}
+
+	// -------------------------
+	// Point
+	// -------------------------
+	if (ImGui::CollapsingHeader("Point", SectionHeaderFlags))
+	{
+		DrawLightsListTable(LightsList, "PointTable", TableFlags, LIGHT_TYPE::POINT);
+	}
+
+	// -------------------------
+	// Spot
+	// -------------------------
+	if (ImGui::CollapsingHeader("Spot", SectionHeaderFlags))
+	{
+		DrawLightsListTable(LightsList, "SpotTable", TableFlags, LIGHT_TYPE::SPOT);
+	}
+
+	// (선택) 디버그용: 현재 선택된 라이트 표시
+	if (m_pSelectedLight)
+	{
+		ImGui::Separator();
+		//ImGui::Text("Selected: %s", m_pSelectedLight->().c_str());
+	}
+}
+
+void CImgui_Manager::DrawLightsListTable(const list<CLight*>& LightsList, const char* _szTableName, const ImGuiTableFlags _flagTable, LIGHT_TYPE _eLightType)
+{
+	if (ImGui::BeginTable(_szTableName, 2, _flagTable))
+	{
+		ImGui::TableSetupColumn("Active", ImGuiTableColumnFlags_WidthFixed, 50.f);
+		ImGui::TableSetupColumn("Name", ImGuiTableColumnFlags_WidthStretch);
+
+		for (CLight* Light : LightsList)
+		{
+			if (!Light) continue;
+			if (Light->Get_Type() != _eLightType) // enum/함수명 맞추기				// Param 1 : Light Type enum
+				continue;
+
+			ImGui::PushID(Light);
+			ImGui::TableNextRow();
+
+			// Active
+			//TODO:: f2로 이름바꾸기 directional까지만 적용
+			ImGui::TableSetColumnIndex(0);
+			bool isActive = Light->Is_Active();
+			if (ImGui::Checkbox("##active", &isActive))
+				Light->Set_Active(isActive);
+
+			// Name (single selection)
+			ImGui::TableSetColumnIndex(1);
+			bool bSelected = (m_pSelectedLight == Light);
+			// (1) 평소 Selectable
+			if (m_pRenamingLight != Light)
+			{
+				if (ImGui::Selectable(Light->Get_Name().c_str(), bSelected, ImGuiSelectableFlags_SpanAllColumns))
+					m_pSelectedLight = Light;
+
+				// F2로 rename 시작 (선택된 항목에 대해서만)
+				// 리스트 창이 포커스일 때만 동작시키면 UX 안전함
+				const bool bListFocused = ImGui::IsWindowFocused(ImGuiFocusedFlags_RootAndChildWindows);
+				if (bListFocused && bSelected && ImGui::IsKeyPressed(ImGuiKey_F2))
+				{
+					if (!Light)
+						return;
+
+					m_pRenamingLight = Light;
+					strncpy_s(m_RenameBuffer, Light->Get_Name().c_str(), sizeof(m_RenameBuffer));
+
+					m_RenameFocusRequested = true;
+					m_RenameEverActive = false;
+				}
+
+				// (선택) 더블클릭도 지원하고 싶으면
+				// if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(0)) BeginRename(Light);
+			}
+			else
+			{
+				// (2) Rename 중: InputText로 스왑
+				ImGui::SetNextItemWidth(-FLT_MIN);
+
+				if (m_RenameFocusRequested)
+				{
+					ImGui::SetKeyboardFocusHere();       // "바로 아래 InputText"에 포커스 보장
+					m_RenameFocusRequested = false;
+				}
+
+				const bool enterPressed = ImGui::InputText(
+					"##Rename",
+					m_RenameBuffer,
+					sizeof(m_RenameBuffer),
+					ImGuiInputTextFlags_EnterReturnsTrue |
+					ImGuiInputTextFlags_AutoSelectAll
+				);
+
+				// Active였던 적이 있어야 blur-commit 허용 (첫 프레임 즉시 커밋 버그 방지)
+				if (ImGui::IsItemActive())
+					m_RenameEverActive = true;
+
+				// Enter = 확정
+				if (enterPressed)
+				{
+					Light->Set_Name(m_RenameBuffer);
+					m_pRenamingLight = nullptr;
+					m_RenameEverActive = false;
+				}
+				// Esc = 취소
+				else if (ImGui::IsKeyPressed(ImGuiKey_Escape))
+				{
+					m_pRenamingLight = nullptr;
+					m_RenameEverActive = false;
+				}
+				else
+				{
+					// Blur = 확정 (탐색기 느낌) : 단, Active 경험이 있을 때만
+					if (m_RenameEverActive && !ImGui::IsItemActive() && !ImGui::IsItemFocused())
+					{
+						Light->Set_Name(m_RenameBuffer);
+						m_pRenamingLight = nullptr;
+						m_RenameEverActive = false;
+					}
+				}
+			}
+
+
+			ImGui::PopID();
 		}
 
 		ImGui::EndTable();

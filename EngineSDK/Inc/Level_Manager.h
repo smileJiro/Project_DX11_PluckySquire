@@ -25,6 +25,7 @@ private:
 	virtual ~CLevel_Manager() = default;
 
 public:
+	HRESULT Initialize(_uint _iNumLevels, const char* const* ppLevelNames);
 	HRESULT			Level_Enter(_int _iLevelID, CLevel* _pNewLevel); // Level 진입 시 해야 할 처리.
 	HRESULT			Level_Exit(); //  Level 탈출 시 해야 할 처리.
 
@@ -32,17 +33,22 @@ public:
 	HRESULT			Render(); // 역시나 큰 의미 없겠지, Renderer에서 실제 렌더 코드를 작성할테니.
 public:
 	_int			Get_CurLevelID() const { return m_iCurLevelID;}
+	const vector<string>& Get_LevelNames() const { return m_LevelNames; }
 private:
 	// CurLevelID는 Client에 의존적이지 않으면서, 해당 Level들에 대한 관리를 하는 용도이다.
 	// 그렇기에 어떠한 Client에서 사용될 지 모르지만, 대부분의 게임의 Scene들은 Enum을 통해 관리하니.
 	// -1을 일종의 nullptr 같은 개념으로 보자. 
+
+	_int			m_iNumLevels = 0;
+	vector<string>	m_LevelNames;
+	vector<bool>	m_isLoadable;
 
 	_int			m_iCurLevelID = -1; 
 	CLevel*			m_pCurLevel = nullptr;
 	CGameInstance*	m_pGameInstance = nullptr;
 
 public:
-	static CLevel_Manager* Create();
+	static CLevel_Manager* Create(_uint _iNumLevels, const char* const* ppLevelNames);
 	virtual void Free() override;
 };
 

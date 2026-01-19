@@ -60,6 +60,8 @@ HRESULT CMainApp::Initialize()
 	EngineDesc.iViewportHeight = g_iWinSizeY;
 	EngineDesc.iStaticLevelID = LEVEL_STATIC;
 	EngineDesc.isNewRenderer = true;
+	EngineDesc.ppLevelNames = LevelNames;
+	
 #ifdef _DEBUG
    EngineDesc.eImportMode |= IMPORT_IMGUI; //| IMPORT_MESH_PICKING; // IMPORT_IMGUI | IMPORT_MESH_PICKING;NONE_IMPORT
 #elif NDEBUG

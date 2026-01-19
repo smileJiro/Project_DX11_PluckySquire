@@ -97,7 +97,8 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11De
 	if (nullptr == m_pObject_Manager)
 		return E_FAIL;
 
-	m_pLevel_Manager = CLevel_Manager::Create();
+	
+	m_pLevel_Manager = CLevel_Manager::Create(EngineDesc.iNumLevels, EngineDesc.ppLevelNames);
 	if (nullptr == m_pLevel_Manager)
 		return E_FAIL;
 
@@ -154,6 +155,15 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ID3D11De
 void CGameInstance::Priority_Update_Engine(_float fTimeDelta)
 {
 	m_pTimer_Manager->Update(fTimeDelta);
+
+	if (m_pImgui_Manager && m_pImgui_Manager->Is_ImguiFocused())
+	{
+		m_pKey_Manager->Set_EnableInputUpdate(false);
+	}
+	else
+	{
+		m_pKey_Manager->Set_EnableInputUpdate(true);
+	}
 	m_pKey_Manager->Update();
 	m_pObject_Manager->Priority_Update(fTimeDelta);
 	m_pSound_Manager->Update(fTimeDelta);
@@ -351,6 +361,12 @@ _int CGameInstance::Get_CurLevelID() const
 		return E_FAIL;
 
 	return m_pLevel_Manager->Get_CurLevelID();
+}
+
+const vector<string>& CGameInstance::Get_LevelNames() const
+{
+	return m_pLevel_Manager->Get_LevelNames();
+	// TODO: 여기에 return 문을 삽입합니다.
 }
 
 HRESULT CGameInstance::Add_Prototype(_uint _iLevelID, const _wstring& _strPrototypeTag, CBase* _pPrototype)

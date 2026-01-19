@@ -55,6 +55,7 @@ public: /* For.Level_Manager */
 	HRESULT				Level_Manager_Enter(_int _iLevelID, class CLevel* _pNewLevel); // Level 진입 시 해야 할 처리.
 	HRESULT				Level_Manager_Exit(_int _iChangeLevelID, _int _iNextChangeLevelID = -1); // 현재 레벨에 대한 오브젝트들을 삭제한다.
 	_int				Get_CurLevelID() const;
+	const vector<string>& Get_LevelNames() const;
 
 public: /* For. Proto_Manager */
 	HRESULT				Add_Prototype(_uint _iLevelID, const _wstring& _strPrototypeTag, class CBase* _pPrototype);

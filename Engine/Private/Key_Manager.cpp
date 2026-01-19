@@ -136,7 +136,13 @@ void CKey_Manager::Update()
 
     HWND hWnd = GetFocus(); // 현재 포커싱 중인 윈도우핸들값을 알려준다 >> 포커싱 된 윈도우가 없으면, 0이 나온다 id(0)
 
-    if (nullptr != hWnd) // 윈도우가 포커싱 중일 때
+    if (true == m_isSkipThisFrame)
+    {
+        m_isSkipThisFrame = false;
+        return;
+    }
+
+    if (nullptr != hWnd && m_isEnableInputUpdate) // 윈도우가 포커싱 중이고, m_isEnableInputUpdate == true 일때, (Imgui 상태에 따라 외부에서 변경될 여지 있음)
     {
         for (int i = 0; i < (int)KEY::LAST; ++i)
         {

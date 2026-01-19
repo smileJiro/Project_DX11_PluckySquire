@@ -161,6 +161,8 @@ namespace Engine
 		_uint			iStaticLevelID;
 		_uint			eImportMode;
 		_bool			isNewRenderer = false;
+		
+		const char**	ppLevelNames = nullptr;
 	}ENGINE_DESC;
 
 	typedef struct

@@ -118,7 +118,7 @@ HRESULT CNewRenderer::Draw_RenderObject()
 	}
 	if (KEY_PRESSING(KEY::ALT))
 	{
-		if (KEY_DOWN(KEY::NUM6))
+		if (KEY_DOWN(KEY::F6))
 		{
 			m_isDebugBase ^= 1;
 		}

@@ -2,17 +2,37 @@
 #include "GameInstance.h"
 #include "DebugDraw.h"
 
-_int CLight::s_iShadowLightID = 0;
+_int CLight::s_iLightIDCount = 0;
 
 CLight::CLight(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, LIGHT_TYPE _eLightType)
 	: m_pDevice(_pDevice)
 	, m_pContext(_pContext)
 	, m_pGameInstance(CGameInstance::GetInstance())
 	, m_eType(_eLightType)
+	, m_iLightID(s_iLightIDCount++)
 {
 	Safe_AddRef(m_pDevice);
 	Safe_AddRef(m_pContext);
 	Safe_AddRef(m_pGameInstance);
+
+
+	m_strName = "";
+	switch (m_eType)
+	{
+	case Engine::LIGHT_TYPE::POINT:
+		m_strName = "Point ";
+		break;
+	case Engine::LIGHT_TYPE::DIRECTOINAL:
+		m_strName = "Directional ";
+		break;
+	case Engine::LIGHT_TYPE::SPOT:
+		m_strName = "Spot ";
+		break;
+	default:
+		break;
+	}
+
+	m_strName += to_string(m_iLightID);
 }
 
 HRESULT CLight::Initialize(const CONST_LIGHT& _LightDesc)
@@ -22,12 +42,9 @@ HRESULT CLight::Initialize(const CONST_LIGHT& _LightDesc)
 	// Shadow Light 여부 판단 후 행렬 계산 작업 수행.
 	if (true == (_bool)m_tLightConstData.isShadow)
 	{
-		/* 0. Shadow ID 부여 */
-		m_iShadowLightID = s_iShadowLightID++;
-
 		/* 1. RenderTarget을 만든다, DSV는 DSV_Shadow 사용한다(메인앱에서 생성했음). */
 		_wstring strShadowRTTag = TEXT("Target_Shadow_");
-		strShadowRTTag += to_wstring(m_iShadowLightID);
+		strShadowRTTag += to_wstring(m_iLightID);
 		m_pGameInstance->Add_RenderTarget(strShadowRTTag, (_uint)SHADOWMAP_X, (_uint)SHADOWMAP_Y, DXGI_FORMAT_R32_FLOAT, _float4(1.0f,0.0f,0.0f,0.0f), &m_pShadowRenderTarget);
 		Safe_AddRef(m_pShadowRenderTarget);
 		/* 2. 자기 자신을 shadow rendergroup에 등록한다. */
@@ -97,7 +114,7 @@ HRESULT CLight::Render_Light(CShader* _pShader, CVIBuffer_Rect* _pVIBuffer)
 
 
 #ifdef _DEBUG
-	//m_pGameInstance->Add_BaseDebug(this);
+	m_pGameInstance->Add_BaseDebug(this);
 	//
 #endif // _DEBUG
 
@@ -192,12 +209,9 @@ void CLight::Set_Shadow(_bool _isShadow)
 		{
 			/* RenderTarget이 없는 경우, (첫 쉐도우 생성 요청.)*/
 
-			/* 0. Shadow ID 부여 */
-			m_iShadowLightID = s_iShadowLightID++;
-
 			/* 1. RenderTarget을 만든다, DSV는 DSV_Shadow 사용한다(메인앱에서 생성했음). */
 			_wstring strShadowRTTag = TEXT("Target_Shadow_");
-			strShadowRTTag += to_wstring(m_iShadowLightID);
+			strShadowRTTag += to_wstring(m_iLightID);
 			m_pGameInstance->Add_RenderTarget(strShadowRTTag, (_uint)SHADOWMAP_X,(_uint)SHADOWMAP_Y, DXGI_FORMAT_R32_FLOAT, _float4(1.0f, 0.0f, 0.0f, 0.0f), &m_pShadowRenderTarget);
 			/* 2. 자기 자신을 shadow rendergroup에 등록한다. */
 		}
@@ -219,7 +233,7 @@ void CLight::Set_Shadow(_bool _isShadow)
 			return;
 		
 		m_tLightConstData.isShadow = false;
-		m_pGameInstance->Remove_ShadowLight(m_iShadowLightID);
+		m_pGameInstance->Remove_ShadowLight(m_iLightID);
 	}
 
 	Update_LightConstBuffer();
@@ -278,7 +292,7 @@ void CLight::Free()
 	if (true == (_bool)m_tLightConstData.isShadow)
 	{
 		_wstring strShadowRTTag = TEXT("Target_Shadow_");
-		strShadowRTTag += to_wstring(m_iShadowLightID);
+		strShadowRTTag += to_wstring(m_iLightID);
 		m_pGameInstance->Erase_RenderTarget(strShadowRTTag);
 		Safe_Release(m_pShadowRenderTarget);
 

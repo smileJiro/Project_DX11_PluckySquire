@@ -38,8 +38,9 @@ public:
 	_float4x4* Get_ViewMatrix() { return &m_ViewMatrix; }
 	_float4x4* Get_ProjMatrix() { return &m_ProjMatrix; }
 	CRenderTarget* Get_ShadowRenderTarget() { return m_pShadowRenderTarget; }
-	_int Get_ShadowLightID() const { return m_iShadowLightID; }
+	_int Get_LightID() const { return m_iLightID; }
 	_float Get_DirectionalLightLength() const { return m_fDirectionalLightLength; }
+	const string& Get_Name() const { return m_strName; }
 	_bool Is_ShadowLight() const { return m_tLightConstData.isShadow; }
 	_bool Is_NotClear() const { return m_isNotClear; }
 	// Set
@@ -47,21 +48,23 @@ public:
 	HRESULT Set_LightConstData_AndUpdateBuffer(const CONST_LIGHT& _LightConstData);
 	HRESULT Update_LightConstBuffer();
 	void Set_Shadow(_bool _isShadow);
+	void Set_Name(const string& _strNewName) { m_strName = _strNewName; }
 protected:
 	ID3D11Device*			m_pDevice = nullptr;
 	ID3D11DeviceContext*	m_pContext = nullptr;
 	CGameInstance*			m_pGameInstance = nullptr;
 protected:
+	string					m_strName;
 	LIGHT_TYPE				m_eType = LIGHT_TYPE::LAST;
 	CONST_LIGHT				m_tLightConstData = {};
 	ID3D11Buffer*			m_pLightConstbuffer = nullptr;
 
 protected:
-	static _int				s_iShadowLightID;
+	static _int				s_iLightIDCount;
 	_float4x4				m_ProjMatrix = {};
 
 protected: /* Shadow */
-	_int					m_iShadowLightID = -1;
+	_int					m_iLightID = -1;
 	_float					m_fFovy = 120.f;
 	_float2					m_vNearFarPlane = { 0.1f, 300.f };
 	_float4x4				m_ViewMatrix = {};

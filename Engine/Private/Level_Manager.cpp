@@ -8,6 +8,39 @@ CLevel_Manager::CLevel_Manager()
     Safe_AddRef(m_pGameInstance);
 }
 
+HRESULT CLevel_Manager::Initialize(_uint _iNumLevels, const char* const* ppLevelNames)
+{
+    m_LevelNames.resize(_iNumLevels);
+
+    if (_iNumLevels == 0) return E_FAIL;
+
+    m_LevelNames.clear();
+    m_LevelNames.resize(_iNumLevels);
+
+    m_isLoadable.clear();
+    m_isLoadable.resize(_iNumLevels, false);
+
+
+    for (_uint i = 0; i < _iNumLevels; ++i)
+    {
+        const char* pName = (ppLevelNames ? ppLevelNames[i] : nullptr);
+
+        if (pName && pName[0] != '\0')
+        {
+            m_LevelNames[i] = pName;     // 소유 복사 (OK)
+            m_isLoadable[i] = true;      // 로드 가능
+        }
+        else
+        {
+            // 비실존 레벨 "Loading", "Static" 등
+            m_LevelNames[i] = "";
+            m_isLoadable[i] = false;
+        }
+    }
+
+    return S_OK;
+}
+
 HRESULT CLevel_Manager::Level_Enter(_int _iLevelID, CLevel* _pNewLevel)
 {
     if(nullptr != m_pCurLevel)
@@ -43,9 +76,17 @@ HRESULT CLevel_Manager::Render()
     return S_OK;
 }
 
-CLevel_Manager* CLevel_Manager::Create()
+CLevel_Manager* CLevel_Manager::Create(_uint _iNumLevels, const char* const* ppLevelNames)
 {
-    return new CLevel_Manager();
+    CLevel_Manager* pInstance = new CLevel_Manager();
+
+    if (FAILED(pInstance->Initialize(_iNumLevels, ppLevelNames)))
+    {
+        MSG_BOX("Failed to Created : CLevel_Manager");
+        Safe_Release(pInstance);
+    }
+
+    return pInstance;
 }
 
 void CLevel_Manager::Free()

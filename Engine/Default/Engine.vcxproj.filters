@@ -337,6 +337,9 @@
     <Filter Include="01.Utility\14.RenderGroup\RenderGroup_Trail">
       <UniqueIdentifier>{7f80e6c8-495d-41ed-ab61-6eff7f32b3cf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\96.DrawDebugHelpers">
+      <UniqueIdentifier>{5deacd4b-8bfe-4d47-8f28-5372d9039d0d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Engine_Defines.h">
@@ -690,6 +693,9 @@
     <ClInclude Include="..\Public\RenderGroup_Trail.h">
       <Filter>01.Utility\14.RenderGroup\RenderGroup_Trail</Filter>
     </ClInclude>
+    <ClInclude Include="DrawDebugHelpers.h">
+      <Filter>01.Utility\96.DrawDebugHelpers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -1030,6 +1036,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\RenderGroup_Trail.cpp">
       <Filter>01.Utility\14.RenderGroup\RenderGroup_Trail</Filter>
+    </ClCompile>
+    <ClCompile Include="DrawDebugHelpers.cpp">
+      <Filter>01.Utility\96.DrawDebugHelpers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

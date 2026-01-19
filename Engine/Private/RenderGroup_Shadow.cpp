@@ -91,7 +91,7 @@ HRESULT CRenderGroup_Shadow::Remove_ShadowLight(_int _iShadowLightID)
     auto iter = m_ShadowLights.begin();
     for (; iter != m_ShadowLights.end(); )
     {
-        if (_iShadowLightID == (*iter)->Get_ShadowLightID())
+        if (_iShadowLightID == (*iter)->Get_LightID())
         {
             Safe_Release(*iter);
             iter = m_ShadowLights.erase(iter);

@@ -114,8 +114,16 @@ public:
 	{
 		return *(((_long*)&m_tMouseState) + (int)eMouseMove);
 	}
-private:
+	void Set_EnableInputUpdate(_bool _isEnable) 
+	{ 
+		if (m_isEnableInputUpdate == _isEnable)
+			return;
 
+		if (!m_isEnableInputUpdate && _isEnable)
+			m_isSkipThisFrame = true;
+
+		m_isEnableInputUpdate = _isEnable; 
+	}
 private:
 	vector<tKeyInfo> m_vecKey; // 키 인포 타입을 저장 할 가변배열. // 벡터의 인덱스번호가 해당 키값.
 private:
@@ -127,6 +135,10 @@ private:
 	
 	tKeyInfo				m_arrMouseKey[(int)MOUSE_KEY::LAST];
 	DIMOUSESTATE			m_tMouseState;
+
+	// Imgui UI 입력시 인풋을 제한하기 위해
+	bool					m_isEnableInputUpdate = true;
+	bool					m_isSkipThisFrame = false;
 public:
 	static CKey_Manager* Create(HINSTANCE _hInst, HWND _hWnd);
 	virtual void		Free();
