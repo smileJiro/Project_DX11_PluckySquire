@@ -148,6 +148,7 @@ public: /* For. Light_Manager */
 	HRESULT				Load_Lights(const _wstring& _strLightsJsonPath);
 	const list<class CLight*>& Get_Lights() const;
 	HRESULT				Delete_Light(_uint _iLightIndex);
+	HRESULT				Delete_Light(_int _iDeleteLightID);
 	
 public: /* For. Collision_Manager */
 	//void				Add_CollisionLayerCheckInfo(COLL_CHECK* _pCollCheckLayerData);	/* 충돌 검사 수행 대상 정보 수집. */

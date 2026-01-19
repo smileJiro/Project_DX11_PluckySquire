@@ -142,12 +142,24 @@ HRESULT CLight::Render_Base_Debug()
 	sphere.Center = m_tLightConstData.vPosition;
 	sphere.Radius = 2.0f;
 
-	static _vector m_LightDebugColor = XMVectorSet(1.0f, 1.0f, 0.0f, 1.0f);
-	static _vector m_LightSelectDebugColor = XMVectorSet(1.0f, 0.0f, 0.0f, 1.0f);
-	if(true == m_isSelect)
-		DX::Draw(m_pBatch, sphere, m_LightSelectDebugColor);
-	else
-		DX::Draw(m_pBatch, sphere, m_LightDebugColor);
+	DX::Draw(m_pBatch, sphere, m_vDrawLightColor);
+
+	if (m_eType != LIGHT_TYPE::POINT)
+	{
+		_float fDebugDirectionLen = sphere.Radius * 1.5f;
+		
+		_vector vEndPos = XMLoadFloat3(&m_tLightConstData.vPosition) + XMVector3Normalize(XMLoadFloat3(&m_tLightConstData.vDirection)) * fDebugDirectionLen;
+		DX::DrawRay(
+			m_pBatch, 
+			XMVectorSetW(XMLoadFloat3(&m_tLightConstData.vPosition), 1.0f), 
+			XMVector4Normalize(XMVectorSetW(XMLoadFloat3(&m_tLightConstData.vDirection), 0.0f)) * fDebugDirectionLen, false,
+			DirectX::Colors::White
+		);
+
+		XMStoreFloat3(&sphere.Center, vEndPos);
+		sphere.Radius = 0.5f;
+		DX::Draw(m_pBatch, sphere, DirectX::Colors::White);
+	}
 
 	m_pBatch->End();
 

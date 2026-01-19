@@ -5,6 +5,7 @@
 CLight_Target::CLight_Target(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, LIGHT_TYPE _eLightType)
     :CLight(_pDevice, _pContext, _eLightType)
 {
+    m_strName += "(Target)";
 }
 
 HRESULT CLight_Target::Initialize(const CONST_LIGHT& _LightDesc, CGameObject* _pTargetOwner, const _float3& _vOffsetPos, _bool _isNotClear)

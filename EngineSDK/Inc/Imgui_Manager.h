@@ -36,6 +36,7 @@ public:
 	void				DrawLevelPresetBar(const char* _szCurrentPresetName, bool _isDirty);
 	void				DrawLightsList();
 	void				DrawLightsListTable(const list<CLight*>& LightsList, const char* _szTableName, const ImGuiTableFlags _flagTable, const LIGHT_TYPE _eLightType);
+	void				Set_SelectedLight(CLight* _pNewLight);
 
 	HRESULT				Imgui_Select_Debug_ObjectInfo(const wstring _strLayerTag, _uint _iObjectId);
 #endif //  _DEBUG
@@ -55,6 +56,7 @@ private:
 
 private: // Level Light Tool
 	class CLight* m_pSelectedLight = nullptr;
+	_int m_iSelectedIndex = -1;
 	// rename state
 	CLight* m_pRenamingLight = nullptr;
 	char    m_RenameBuffer[256] = {};

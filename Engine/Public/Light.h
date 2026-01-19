@@ -20,9 +20,6 @@ public:
 
 #ifdef _DEBUG
 	HRESULT Render_Base_Debug() override;
-	_bool m_isSelect = false;
-	_bool Is_Select() const { return m_isSelect; }
-	void Set_Select(_bool _isSelect) { m_isSelect = _isSelect; }
 #endif // !_DEBUG
 
 public: /* Shadow View Proj */
@@ -49,6 +46,7 @@ public:
 	HRESULT Update_LightConstBuffer();
 	void Set_Shadow(_bool _isShadow);
 	void Set_Name(const string& _strNewName) { m_strName = _strNewName; }
+	void Set_DrawLightColor(const _vector& _vColor) { m_vDrawLightColor = _vColor; }
 protected:
 	ID3D11Device*			m_pDevice = nullptr;
 	ID3D11DeviceContext*	m_pContext = nullptr;
@@ -80,6 +78,7 @@ protected:
 	PrimitiveBatch<VertexPositionColor>* m_pBatch = nullptr;
 	BasicEffect* m_pEffect = nullptr;
 	ID3D11InputLayout* m_pInputLayout = nullptr;
+	_vector m_vDrawLightColor = { 1.f, 1.0f, 0.0f, 1.0f };
 #endif // _DEBUG
 
 private:

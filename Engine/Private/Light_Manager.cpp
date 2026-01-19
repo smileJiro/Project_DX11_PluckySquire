@@ -164,6 +164,7 @@ HRESULT CLight_Manager::Load_Lights(const _wstring& _strLightsJsonPath)
 	return S_OK;
 }
 
+
 HRESULT CLight_Manager::Delete_Light(_uint _iLightIndex)
 {
 	if (true == m_Lights.empty())
@@ -194,6 +195,22 @@ HRESULT CLight_Manager::Delete_Light(list<CLight*>::iterator& _iter)
 	_iter = m_Lights.erase(_iter);
 
 	return S_OK;
+}
+
+HRESULT CLight_Manager::Delete_Light(_int _iDeleteLightID)
+{
+	if (true == m_Lights.empty())
+		return E_FAIL;
+
+	for (auto iter = m_Lights.begin(); iter != m_Lights.end(); ++iter)
+	{
+		if ((*iter)->Get_LightID() == _iDeleteLightID)
+		{
+			return Delete_Light(iter);
+		}
+	}
+	
+	return E_FAIL;
 }
 
 void CLight_Manager::Level_Exit()

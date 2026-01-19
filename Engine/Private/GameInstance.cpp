@@ -865,6 +865,11 @@ HRESULT CGameInstance::Delete_Light(_uint _iLightIndex)
 	return m_pLight_Manager->Delete_Light(_iLightIndex);
 }
 
+HRESULT CGameInstance::Delete_Light(_int _iDeleteLightID)
+{
+	return m_pLight_Manager->Delete_Light(_iDeleteLightID);
+}
+
 
 //void CGameInstance::Add_CollisionLayerCheckInfo(COLL_CHECK* _pCollCheckLayerData)
 //{

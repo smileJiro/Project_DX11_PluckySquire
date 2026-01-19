@@ -3,6 +3,7 @@
 #include "GameInstance.h"
 #include "Layer.h"
 #include "Light.h"
+#include "Camera_Manager_Engine.h"
 
 CImgui_Manager::CImgui_Manager()
 	: m_pGameInstance(CGameInstance::GetInstance())
@@ -170,7 +171,7 @@ HRESULT CImgui_Manager::Imgui_Debug_Render()
 	Imgui_Debug_IBLGlobalVariable();
 	Imgui_Debug_Lights();
 
-	Imgui_LevelLightingTool();
+	// Imgui_LevelLightingTool(); 
 
 	
 	HWND hWnd = GetFocus();
@@ -655,8 +656,10 @@ HRESULT CImgui_Manager::Imgui_Debug_Lights()
 				{
 					selected_index = i; // 선택된 항목 업데이트
 					if(Selectiter != Lights.end())
-						(*Selectiter)->Set_Select(false);
-					(*iter)->Set_Select(true);
+					{
+						(*Selectiter)->Set_DrawLightColor(XMVectorSet(1.0f, 0.0f, 0.0f, 1.0f));
+					}
+					(*iter)->Set_DrawLightColor(XMVectorSet(1.0f, 0.0f, 0.0f, 1.0f));
 					tConstLightData = (*iter)->Get_LightDesc();
 					fLength = (*iter)->Get_DirectionalLightLength();
 					eType = (*iter)->Get_Type();
@@ -1102,6 +1105,34 @@ void CImgui_Manager::DrawLightsList()
 		ImGuiTableFlags_NoBordersInBody |
 		ImGuiTableFlags_PadOuterX;
 
+	ImGui::TextUnformatted("Lights List");
+	ImGui::SameLine();
+	const float fAddBtnWidth = 48.0f;
+	ImGui::SetCursorPosX(ImGui::GetCursorPosX() + ImGui::GetContentRegionAvail().x - fAddBtnWidth);
+
+	if (ImGui::Button("Add", ImVec2(fAddBtnWidth, 0)))
+	{
+		ImGui::OpenPopup("AddLightPopup");
+	}
+
+	if (ImGui::BeginPopup("AddLightPopup"))
+	{
+		LIGHT_TYPE eAddLightType = LIGHT_TYPE::LAST;
+		if (ImGui::MenuItem("Directional")) { eAddLightType = LIGHT_TYPE::DIRECTOINAL; }
+		if (ImGui::MenuItem("Point")) { eAddLightType = LIGHT_TYPE::POINT; }
+		if (ImGui::MenuItem("Spot")) { eAddLightType = LIGHT_TYPE::SPOT; }
+
+		if (eAddLightType != LIGHT_TYPE::LAST)
+		{
+			m_pGameInstance->Add_Light(CONST_LIGHT(), (LIGHT_TYPE)eAddLightType);
+		}
+
+		ImGui::EndPopup();
+	}
+
+	ImGui::Separator();
+	
+
 	// -------------------------
 	// Directional
 	// -------------------------
@@ -1141,6 +1172,7 @@ void CImgui_Manager::DrawLightsListTable(const list<CLight*>& LightsList, const 
 		ImGui::TableSetupColumn("Active", ImGuiTableColumnFlags_WidthFixed, 50.f);
 		ImGui::TableSetupColumn("Name", ImGuiTableColumnFlags_WidthStretch);
 
+		_int iPendingDeleteLightID = -1;
 		for (CLight* Light : LightsList)
 		{
 			if (!Light) continue;
@@ -1151,20 +1183,64 @@ void CImgui_Manager::DrawLightsListTable(const list<CLight*>& LightsList, const 
 			ImGui::TableNextRow();
 
 			// Active
-			//TODO:: f2로 이름바꾸기 directional까지만 적용
 			ImGui::TableSetColumnIndex(0);
 			bool isActive = Light->Is_Active();
-			if (ImGui::Checkbox("##active", &isActive))
-				Light->Set_Active(isActive);
+			const bool isLocked = (dynamic_cast<CLight_Target*>(Light) != nullptr); // TODO:: 나중에 가상함수 기반으로 변경하자
+
+			if (isLocked)
+			{
+				ImGui::BeginDisabled(true);
+				ImGui::Checkbox("##active", &isActive);
+				ImGui::EndDisabled();
+
+				// (선택) 왜 잠겼는지 툴팁
+				if (ImGui::IsItemHovered(ImGuiHoveredFlags_DelayShort | ImGuiHoveredFlags_AllowWhenDisabled))
+					ImGui::SetTooltip("Target Lights are controlled automatically and cannot be toggled manually.");
+			}
+			else
+			{
+				if (ImGui::Checkbox("##active", &isActive))
+					Light->Set_Active(isActive);
+			}
 
 			// Name (single selection)
 			ImGui::TableSetColumnIndex(1);
 			bool bSelected = (m_pSelectedLight == Light);
-			// (1) 평소 Selectable
-			if (m_pRenamingLight != Light)
+			
+			if (m_pRenamingLight != Light) // (1) 평소 Selectable (리네임 중이 아님)
 			{
+				// 좌클릭으로 라이트 선택
 				if (ImGui::Selectable(Light->Get_Name().c_str(), bSelected, ImGuiSelectableFlags_SpanAllColumns))
-					m_pSelectedLight = Light;
+				{
+					Set_SelectedLight(Light);
+				}
+
+				// 우클릭해도 팝업과 함께 선택
+				if (ImGui::BeginPopupContextItem("LightItemContext"))
+				{
+					Set_SelectedLight(Light);
+					if (ImGui::MenuItem("Focus Selected"))
+					{
+						// 카메라 세팅을 프리캠으로 변경하고
+						// 프리캠을 라이트 기준 -z축으로 10만큼 떨어진 위치로 이동
+						_float3 vLightPosition = m_pSelectedLight->Get_LightDesc_Ptr()->vPosition;
+						CCamera* pCamera = static_cast<CCamera*>(m_pGameInstance->Get_GameObject_Ptr(m_pGameInstance->Get_CurLevelID(), TEXT("Layer_Camera"), 0));
+						pCamera->Set_Position(XMVectorSet(vLightPosition.x, vLightPosition.y + 2.5f, vLightPosition.z - 10.0f, 1.0f)); // TODO:: World Scale 이 있으면 그거 기준으로 하면 좋을듯함, 일단 매직넘버로 처리해둠
+						pCamera->Get_ControllerTransform()->LookAt_3D(XMVectorSet(vLightPosition.x, vLightPosition.y, vLightPosition.z, 1.0f));
+					}
+					if (ImGui::IsItemHovered(ImGuiHoveredFlags_DelayShort))
+						ImGui::SetTooltip("Moves the camera to focus on the selected light.");
+
+					if (ImGui::MenuItem("Delete"))
+					{
+						iPendingDeleteLightID = Light->Get_LightID();
+						ImGui::CloseCurrentPopup();
+					}
+					if (ImGui::IsItemHovered(ImGuiHoveredFlags_DelayShort))
+						ImGui::SetTooltip("Delete selected light.");
+
+					ImGui::EndPopup();
+				}
 
 				// F2로 rename 시작 (선택된 항목에 대해서만)
 				// 리스트 창이 포커스일 때만 동작시키면 UX 안전함
@@ -1184,9 +1260,9 @@ void CImgui_Manager::DrawLightsListTable(const list<CLight*>& LightsList, const 
 				// (선택) 더블클릭도 지원하고 싶으면
 				// if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(0)) BeginRename(Light);
 			}
-			else
+			else // (2) Rename 중: InputText로 스왑
 			{
-				// (2) Rename 중: InputText로 스왑
+				
 				ImGui::SetNextItemWidth(-FLT_MIN);
 
 				if (m_RenameFocusRequested)
@@ -1236,8 +1312,36 @@ void CImgui_Manager::DrawLightsListTable(const list<CLight*>& LightsList, const 
 			ImGui::PopID();
 		}
 
+
+		// 지연 삭제 처리
+		if (iPendingDeleteLightID != -1)
+		{
+			m_pGameInstance->Delete_Light(iPendingDeleteLightID);
+
+			if (m_pSelectedLight && m_pSelectedLight->Get_LightID() == iPendingDeleteLightID)
+				Set_SelectedLight(nullptr);
+			if (m_pRenamingLight && m_pRenamingLight->Get_LightID() == iPendingDeleteLightID)
+				m_pRenamingLight = nullptr;
+		}
+
+
 		ImGui::EndTable();
 	}
+}
+
+void CImgui_Manager::Set_SelectedLight(CLight* _pNewLight)
+{
+	if (m_pSelectedLight == _pNewLight)
+		return;
+	if (_pNewLight)
+	{
+		_pNewLight->Set_DrawLightColor(XMVectorSet(1.0f, 0.0f, 0.0f, 1.0f));
+	}
+	if (m_pSelectedLight)
+	{
+		m_pSelectedLight->Set_DrawLightColor(XMVectorSet(1.0f, 1.0f, 0.0f, 1.0f));
+	}
+	m_pSelectedLight = _pNewLight;
 }
 
 
