@@ -36,7 +36,15 @@ public:
 	void				DrawLevelPresetBar(const char* _szCurrentPresetName, bool _isDirty);
 	void				DrawLightsList();
 	void				DrawLightsListTable(const list<CLight*>& LightsList, const char* _szTableName, const ImGuiTableFlags _flagTable, const LIGHT_TYPE _eLightType);
+	void				DrawLightDetails();
+	void				DrawLightDetails_Transform();
+	void				DrawLightDetails_Color();
+	void				DrawLightDetails_Attenuation();
+	void				DrawLightDetails_Shadow();
+	void				DrawLightDetails_IO();
+
 	void				Set_SelectedLight(CLight* _pNewLight);
+	void				ApplyEdit_Light();
 
 	HRESULT				Imgui_Select_Debug_ObjectInfo(const wstring _strLayerTag, _uint _iObjectId);
 #endif //  _DEBUG
@@ -56,12 +64,15 @@ private:
 
 private: // Level Light Tool
 	class CLight* m_pSelectedLight = nullptr;
-	_int m_iSelectedIndex = -1;
+	_int m_iSelectedIndex = -1; // 삭제 예정
 	// rename state
 	CLight* m_pRenamingLight = nullptr;
 	char    m_RenameBuffer[256] = {};
 	bool    m_RenameFocusRequested = false; // InputText 직전에 포커스
 	bool    m_RenameEverActive = false;     // 한 번이라도 편집이 Active였나?
+	// edit state
+	CONST_LIGHT m_tEditLightBuffer = {};
+	bool m_isEditDirty = false;
 
 public:
 	static CImgui_Manager* Create(HWND _hWnd, ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext, _float2 _vViewportSize);

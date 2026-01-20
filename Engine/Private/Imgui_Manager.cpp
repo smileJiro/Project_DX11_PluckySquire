@@ -171,7 +171,7 @@ HRESULT CImgui_Manager::Imgui_Debug_Render()
 	Imgui_Debug_IBLGlobalVariable();
 	Imgui_Debug_Lights();
 
-	// Imgui_LevelLightingTool(); 
+	Imgui_LevelLightingTool(); 
 
 	
 	HWND hWnd = GetFocus();
@@ -897,6 +897,9 @@ HRESULT CImgui_Manager::Imgui_Debug_Lights()
 				const _wstring strFilePath = szName;
 				m_pGameInstance->Load_Lights(strFilePath);
 				Selectiter = Lights.begin();
+				m_pSelectedLight = nullptr; // 임시코드
+				m_pRenamingLight = nullptr;
+				m_tEditLightBuffer = CONST_LIGHT();
 			}
 		}
 		
@@ -956,8 +959,8 @@ HRESULT CImgui_Manager::Imgui_LevelLightingTool()
 				// Right: Light Properties
 				ImGui::TableSetColumnIndex(1);
 				ImGui::TableSetBgColor(ImGuiTableBgTarget_CellBg, IM_COL32(28, 28, 28, 220));
-				ImGui::BeginChild("LightPropsChild", ImVec2(0, 0), true);
-				//DrawSelectedLightProps(); // 선택된 라이트 디테일
+				ImGui::BeginChild("LightDetailsChild", ImVec2(0, 0), true);
+				DrawLightDetails(); // 선택된 라이트 디테일
 				ImGui::EndChild();
 
 				ImGui::EndTable();
@@ -1104,7 +1107,7 @@ void CImgui_Manager::DrawLightsList()
 		ImGuiTableFlags_SizingStretchProp |
 		ImGuiTableFlags_NoBordersInBody |
 		ImGuiTableFlags_PadOuterX;
-
+	ImGui::AlignTextToFramePadding();
 	ImGui::TextUnformatted("Lights List");
 	ImGui::SameLine();
 	const float fAddBtnWidth = 48.0f;
@@ -1329,19 +1332,123 @@ void CImgui_Manager::DrawLightsListTable(const list<CLight*>& LightsList, const 
 	}
 }
 
+void CImgui_Manager::DrawLightDetails()
+{
+	// 타이틀
+	ImGui::AlignTextToFramePadding();
+	ImGui::TextUnformatted("Details");
+	ImGui::Separator();
+
+	if (!m_pSelectedLight)
+	{
+		ImGui::TextDisabled("No light selected.");
+		return;
+	}
+
+	// 섹션들
+	DrawLightDetails_Transform();
+	DrawLightDetails_Color();
+	DrawLightDetails_Attenuation();
+	DrawLightDetails_Shadow();
+	DrawLightDetails_IO();
+
+	if (m_isEditDirty)
+	{
+		m_isEditDirty = false;
+		ApplyEdit_Light();
+	}
+}
+
+void CImgui_Manager::DrawLightDetails_Transform()
+{
+	if (!ImGui::CollapsingHeader("Transform##LightDetails", ImGuiTreeNodeFlags_DefaultOpen))
+		return;
+
+	m_isEditDirty |= ImGui::DragFloat3("Position##LightDetails", &m_tEditLightBuffer.vPosition.x, 0.05f);
+	if (ImGui::DragFloat3("Direction", &m_tEditLightBuffer.vDirection.x, 0.01f)) 
+	{ 
+		m_isEditDirty = true; 
+		XMStoreFloat3(&m_tEditLightBuffer.vDirection, XMVector3Normalize(XMLoadFloat3(&m_tEditLightBuffer.vDirection))); 
+	}
+	if (m_pSelectedLight->Get_Type() == LIGHT_TYPE::DIRECTOINAL)
+	{
+		m_isEditDirty |= ImGui::DragFloat("DirectionalLightDistance##LightDetails", &m_tEditLightBuffer.fDirectionalLightDistance, 0.1f);
+	}
+		
+}
+
+void CImgui_Manager::DrawLightDetails_Color()
+{
+	if (!ImGui::CollapsingHeader("Color##LightDetails", ImGuiTreeNodeFlags_DefaultOpen))
+		return;
+
+	ImGuiColorEditFlags flags =
+		//ImGuiColorEditFlags_HDR |        // 1.0 이상 허용
+		ImGuiColorEditFlags_Float |		   // float 기반
+		ImGuiColorEditFlags_DisplayRGB |   // RGB 표시
+		ImGuiColorEditFlags_InputRGB;	   // RGB 입력
+
+	m_isEditDirty |= ImGui::ColorEdit3("Diffuse##LightDetails",	&m_tEditLightBuffer.vDiffuse.x,	flags);
+	m_isEditDirty |= ImGui::ColorEdit3("Ambient##LightDetails",	&m_tEditLightBuffer.vAmbient.x,	flags);
+	m_isEditDirty |= ImGui::ColorEdit3("Specular##LightDetails",	&m_tEditLightBuffer.vSpecular.x,flags);
+	ImGui::Separator();
+	m_isEditDirty |= ImGui::DragFloat3("Radiance##LightDetails", &m_tEditLightBuffer.vRadiance.x, 0.05f, 0.0f, 100.0f);
+
+}
+
+void CImgui_Manager::DrawLightDetails_Attenuation()
+{
+	if (!ImGui::CollapsingHeader("Attenuation##LightDetails", ImGuiTreeNodeFlags_DefaultOpen))
+		return;
+
+	if (m_pSelectedLight->Get_Type() == LIGHT_TYPE::DIRECTOINAL)
+	{
+		ImGui::TextDisabled("Attenuation does not apply to directional lights.");
+		return;
+	}
+
+	m_isEditDirty |= ImGui::DragFloat("FalloutStart##LightDetails", &m_tEditLightBuffer.fFallOutStart, 0.05f, 0.0f, 500.0f);
+	m_isEditDirty |= ImGui::DragFloat("FalloutEnd##LightDetails", &m_tEditLightBuffer.fFallOutEnd, 0.05f, 0.0f, 1000.0f);
+}
+
+void CImgui_Manager::DrawLightDetails_Shadow()
+{
+}
+
+void CImgui_Manager::DrawLightDetails_IO()
+{
+}
+
 void CImgui_Manager::Set_SelectedLight(CLight* _pNewLight)
 {
 	if (m_pSelectedLight == _pNewLight)
 		return;
-	if (_pNewLight)
-	{
-		_pNewLight->Set_DrawLightColor(XMVectorSet(1.0f, 0.0f, 0.0f, 1.0f));
-	}
+
 	if (m_pSelectedLight)
 	{
 		m_pSelectedLight->Set_DrawLightColor(XMVectorSet(1.0f, 1.0f, 0.0f, 1.0f));
+		if (m_isEditDirty)
+		{
+			m_isEditDirty = false;
+			ApplyEdit_Light();
+		}
 	}
+	if (_pNewLight)
+	{
+		_pNewLight->Set_DrawLightColor(XMVectorSet(1.0f, 0.0f, 0.0f, 1.0f));
+		m_tEditLightBuffer = _pNewLight->Get_LightDesc();
+	}
+
 	m_pSelectedLight = _pNewLight;
+	
+}
+
+void CImgui_Manager::ApplyEdit_Light()
+{
+	m_pSelectedLight->Set_LightConstData_AndUpdateBuffer(m_tEditLightBuffer);
+	// (권장) Set 내부에서 clamp/fixup이 있을 수 있으니 최종 값으로 버퍼 동기화
+	m_tEditLightBuffer = m_pSelectedLight->Get_LightDesc();
+	m_pSelectedLight->Compute_ViewProjMatrix();
 }
 
 

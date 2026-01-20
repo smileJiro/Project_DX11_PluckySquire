@@ -74,23 +74,23 @@ namespace Engine
 
 	typedef struct tagLightConstData
 	{
-		XMFLOAT3		vRadiance;		// 빛의 세기와 컬러를 결정.
-		float			fFallOutStart;	// 감쇠(att) 시작 거리 : 해당 지점 이전은 반드시 1
-		XMFLOAT3		vDirection;
-		float			fFallOutEnd;	// 감쇠(att) 끝 거리 : 해당 지점이후는 0 >>> 이게 조명의 Range 역할도 함께 함.
-		XMFLOAT3		vPosition;
-		float			fSpotPower;
+		XMFLOAT3		vRadiance = {1.0f, 1.0f, 1.0f};		// 빛의 세기와 컬러를 결정.
+		float			fFallOutStart = 0.0f;	// 감쇠(att) 시작 거리 : 해당 지점 이전은 반드시 1
+		XMFLOAT3		vDirection = {0.0f, -1.0f, 0.0f};
+		float			fFallOutEnd = 10.f;	// 감쇠(att) 끝 거리 : 해당 지점이후는 0 >>> 이게 조명의 Range 역할도 함께 함.
+		XMFLOAT3		vPosition = {0.0f, 0.0f, 0.0f};
+		float			fSpotPower = 1.0f;
 
 		// 후보정 값으로 남겨두겠음. 분위기 연출 등 
-		XMFLOAT4		vDiffuse;
-		XMFLOAT4		vAmbient;
-		XMFLOAT4		vSpecular;
+		XMFLOAT4		vDiffuse = {1.0f, 1.0f, 1.0f, 1.0f};
+		XMFLOAT4		vAmbient = {0.0f, 0.0f, 0.0f, 1.0f};
+		XMFLOAT4		vSpecular = {1.0f, 1.0f, 1.0f, 1.0f};
 
 		// Shadow 
-		int				isShadow; // 자기 자신이 shadow가 있는 light인지. >> 이 변수가 true라면, shadow map을 텍스쳐링하여 shadowfactor를 계산한다.
+		int				isShadow = false; // 자기 자신이 shadow가 있는 light인지. >> 이 변수가 true라면, shadow map을 텍스쳐링하여 shadowfactor를 계산한다.
 		float			fLightRadius; // 조명의 두께(반지름 pcss)
 		float			fShadowFactor = 1.0f;
-		float			dummy1;
+		float			fDirectionalLightDistance = 10.f;
 
 		// Matrix
 		XMMATRIX		LightViewProjMatrix; // 자기 자신의 view, proj 매트릭스.
@@ -162,7 +162,7 @@ namespace Engine
 		_uint			eImportMode;
 		_bool			isNewRenderer = false;
 		
-		const char**	ppLevelNames = nullptr;
+		const char* const* ppLevelNames = nullptr;
 	}ENGINE_DESC;
 
 	typedef struct
