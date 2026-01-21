@@ -130,7 +130,7 @@ void CCamera_Manager::Imgui_Dof()
 	if (nullptr == m_Cameras[m_eCurrentCameraType])
 		return;
 
-	ImGui::Begin("Set Dof");
+	ImGui::Begin("Post Processing");
 
 	CONST_DOF tDofData = m_Cameras[m_eCurrentCameraType]->Get_DofBufferData();
 	_float fFovy = m_Cameras[m_eCurrentCameraType]->Get_Fovy();

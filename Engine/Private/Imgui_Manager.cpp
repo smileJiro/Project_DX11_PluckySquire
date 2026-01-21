@@ -168,8 +168,8 @@ HRESULT CImgui_Manager::Imgui_Debug_Render()
 		}
 	}
 
-	Imgui_Debug_IBLGlobalVariable();
-	Imgui_Debug_Lights();
+	//Imgui_Debug_IBLGlobalVariable();
+	//Imgui_Debug_Lights();
 
 	Imgui_LevelLightingTool(); 
 
@@ -793,6 +793,7 @@ HRESULT CImgui_Manager::Imgui_Debug_Lights()
 		ImGui::Separator();
 		static char LightsPathBuffer[MAX_PATH] = "../Bin/DataFiles/DirectLights/default.json";
 		ImGui::InputText("Save Path##Lights", LightsPathBuffer, sizeof(LightsPathBuffer));
+
 		if (ImGui::Button("Save Lights Data##Lights"))
 		{
 			json LightsJson;
@@ -931,50 +932,127 @@ HRESULT CImgui_Manager::Imgui_LevelLightingTool()
 	{
 		if (ImGui::BeginTabItem("Direct Light(PBR)"))
 		{
-			// 2컬럼 레이아웃
+			DrawDirectLightsSaveLoadBar();
+
 			const ImGuiTableFlags flags =
 				ImGuiTableFlags_Resizable |
 				ImGuiTableFlags_BordersInnerV |
 				ImGuiTableFlags_SizingStretchProp;
 
-			// 셀 패딩
 			ImGuiStyle& style = ImGui::GetStyle();
 			ImVec2 oldPad = style.CellPadding;
 			style.CellPadding = ImVec2(4.0f, 4.0f);
 
+			// ---- Rounded Panel Tuning ----
+			const float fPanelRounding = 4.0f;   // 둥글기
+			const float fPanelBorder = 1.0f;   // 테두리 굵기
+			const ImVec2 vPanelPadding(8.0f, 6.0f);
+
 			if (ImGui::BeginTable("DirectLayout", 2, flags))
 			{
-				constexpr float iColumnLeftDefaultSize = 320.0f;
-				ImGui::TableSetupColumn("LightsList", ImGuiTableColumnFlags_WidthFixed, iColumnLeftDefaultSize);
+				constexpr float fColumnLeftDefaultSize = 320.0f;
+				ImGui::TableSetupColumn("LightsList", ImGuiTableColumnFlags_WidthFixed, fColumnLeftDefaultSize);
 				ImGui::TableSetupColumn("LightProps", ImGuiTableColumnFlags_WidthStretch);
 				ImGui::TableNextRow();
 
-				// Left: Lights List
+				// Left
 				ImGui::TableSetColumnIndex(0);
-				ImGui::TableSetBgColor(ImGuiTableBgTarget_CellBg, IM_COL32(16, 16, 16, 220));
+
+				// (권장) 셀 bg는 라운딩이 안 되므로 너무 진하게 깔지 말 것
+				// 필요하면 알파를 낮춰서 "깊이감"만 남기기
+				ImGui::TableSetBgColor(ImGuiTableBgTarget_CellBg, IM_COL32(0, 0, 0, 0)); // 아예 끄는 게 제일 깔끔
+
+				ImGui::PushStyleVar(ImGuiStyleVar_ChildRounding, fPanelRounding);
+				ImGui::PushStyleVar(ImGuiStyleVar_ChildBorderSize, fPanelBorder);
+				ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, vPanelPadding);
+				ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.07f, 0.07f, 0.07f, 0.90f));
+
 				ImGui::BeginChild("LightsListChild", ImVec2(0, 0), true);
-				DrawLightsList();        //  TODO:: 여기서 반환된 Select Light(ID)를 detail로 띄운다
+				DrawLightsList();
 				ImGui::EndChild();
 
-				// Right: Light Properties
+				ImGui::PopStyleColor();
+				ImGui::PopStyleVar(3);
+
+				// Right
 				ImGui::TableSetColumnIndex(1);
-				ImGui::TableSetBgColor(ImGuiTableBgTarget_CellBg, IM_COL32(28, 28, 28, 220));
+				ImGui::TableSetBgColor(ImGuiTableBgTarget_CellBg, IM_COL32(0, 0, 0, 0)); // 셀 bg 끄기
+
+				ImGui::PushStyleVar(ImGuiStyleVar_ChildRounding, fPanelRounding);
+				ImGui::PushStyleVar(ImGuiStyleVar_ChildBorderSize, fPanelBorder);
+				ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, vPanelPadding);
+				ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.15f, 0.15f, 0.15f, 0.90f)); // 왼쪽과 살짝 톤 차이
+
 				ImGui::BeginChild("LightDetailsChild", ImVec2(0, 0), true);
-				DrawLightDetails(); // 선택된 라이트 디테일
+				DrawLightDetails();
 				ImGui::EndChild();
+
+				ImGui::PopStyleColor();
+				ImGui::PopStyleVar(3);
 
 				ImGui::EndTable();
 			}
 
+			// 셀 패딩 복구
+			style.CellPadding = oldPad;
 
-			ImGui::EndTabItem(); // BeginTabItem("Direct Light(PBR)")
+			ImGui::EndTabItem();
 		}
 
 		if (ImGui::BeginTabItem("Ambient Light(IBL)"))
 		{
+			DrawAmbientLightSaveLoadBar();
+
+			// 섹션 간 간격/패딩
+			const float fPanelRounding = 4.0f;   // 둥글기
+			const float fPanelBorder = 1.0f;   // 테두리 굵기
+			const ImVec2 vSectionPadding(8.f, 6.f);
+			const float  fGapY = 8.f;
+
+			// 전체 사용 가능 영역
+			ImVec2 vAvail = ImGui::GetContentRegionAvail();
+
+			// 위 섹션 높이(원하는 만큼 고정 또는 내용에 맞게)
+			const float fTopH = 72.0f;  // Environment Map 영역 높이 (원하는 값으로 튜닝)
+			const float fBottomH = vAvail.y - fTopH - fGapY;
+
+			// ----------------------------
+			// Top Section: Environment Map
+			// ----------------------------
+			ImGui::PushStyleVar(ImGuiStyleVar_ChildRounding, fPanelRounding);
+			ImGui::PushStyleVar(ImGuiStyleVar_ChildBorderSize, fPanelBorder);
+			ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, vSectionPadding);
+			ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.07f, 0.07f, 0.07f, 0.9f));
+
+			ImGui::BeginChild("##IBL_TopSection", ImVec2(0, fTopH), true);
+			DrawEnvMapCombo();
+
+			ImGui::EndChild();
+			ImGui::PopStyleColor(); // ChildBg
+			ImGui::PopStyleVar(3);
+
+			ImGui::Dummy(ImVec2(0, fGapY));
+
+			// ----------------------------
+			// Bottom Section: Details
+			// ----------------------------
+			ImGui::Separator();
+			ImGui::PushStyleVar(ImGuiStyleVar_ChildRounding, fPanelRounding);
+			ImGui::PushStyleVar(ImGuiStyleVar_ChildBorderSize, fPanelBorder);
+			ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, vSectionPadding);
+			ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.15f, 0.15f, 0.15f, 0.90f));
+
+			ImGui::BeginChild("##IBL_BottomSection", ImVec2(0, fBottomH), true);
+
+			
+			DrawAmbientLightDetails();    // Strength/Exposure/Gamma 등
+
+			ImGui::EndChild();
+			ImGui::PopStyleColor();
+			ImGui::PopStyleVar(3);
 
 
-
+			
 			ImGui::EndTabItem(); // BeginTabItem("Ambient Light(IBL)")
 		}
 
@@ -993,7 +1071,7 @@ void CImgui_Manager::DrawLevelPresetBar(const char* _szCurrentPresetName, bool _
 	// TODO:: Client의 Level에 대한 데이터 어떻게 받아올지 구조 고민 
 	
 	// UI 튜닝 값
-	const float fPresetComboWidth = 260.0f; // 프리셋 콤보 폭
+	const float fPresetComboWidth = 260.0f;  // 프리셋 콤보 폭
 	const float fActionButtonWidth = 72.0f;  // Save/Load 버튼 폭
 	const float fSaveAsButtonWidth = 88.0f;  // Save As 폭
 
@@ -1095,7 +1173,6 @@ void CImgui_Manager::DrawLevelPresetBar(const char* _szCurrentPresetName, bool _
 
 void CImgui_Manager::DrawLightsList()
 {
-
 	const list<CLight*>& LightsList = m_pGameInstance->Get_Lights();
 
 	const ImGuiTreeNodeFlags SectionHeaderFlags = ImGuiTreeNodeFlags_DefaultOpen |
@@ -1222,7 +1299,19 @@ void CImgui_Manager::DrawLightsListTable(const list<CLight*>& LightsList, const 
 				if (ImGui::BeginPopupContextItem("LightItemContext"))
 				{
 					Set_SelectedLight(Light);
-					if (ImGui::MenuItem("Focus Selected"))
+
+					if (ImGui::MenuItem("Duplicate##LightItemContext"))
+					{
+						if (m_pSelectedLight)
+						{
+							CONST_LIGHT tCopyLightBuffer = m_pSelectedLight->Get_LightDesc();
+							m_pGameInstance->Add_Light(tCopyLightBuffer, m_pSelectedLight->Get_Type());
+						}
+					}
+					if (ImGui::IsItemHovered(ImGuiHoveredFlags_DelayShort))
+						ImGui::SetTooltip("Create a copy of the selected light.");
+
+					if (ImGui::MenuItem("Focus Selected##LightItemContext"))
 					{
 						// 카메라 세팅을 프리캠으로 변경하고
 						// 프리캠을 라이트 기준 -z축으로 10만큼 떨어진 위치로 이동
@@ -1234,7 +1323,7 @@ void CImgui_Manager::DrawLightsListTable(const list<CLight*>& LightsList, const 
 					if (ImGui::IsItemHovered(ImGuiHoveredFlags_DelayShort))
 						ImGui::SetTooltip("Moves the camera to focus on the selected light.");
 
-					if (ImGui::MenuItem("Delete"))
+					if (ImGui::MenuItem("Delete##LightItemContext"))
 					{
 						iPendingDeleteLightID = Light->Get_LightID();
 						ImGui::CloseCurrentPopup();
@@ -1407,16 +1496,439 @@ void CImgui_Manager::DrawLightDetails_Attenuation()
 		return;
 	}
 
-	m_isEditDirty |= ImGui::DragFloat("FalloutStart##LightDetails", &m_tEditLightBuffer.fFallOutStart, 0.05f, 0.0f, 500.0f);
-	m_isEditDirty |= ImGui::DragFloat("FalloutEnd##LightDetails", &m_tEditLightBuffer.fFallOutEnd, 0.05f, 0.0f, 1000.0f);
+	m_isEditDirty |= ImGui::SliderFloat("FalloutStart##LightDetails", &m_tEditLightBuffer.fFallOutStart, 0.0f, m_tEditLightBuffer.fFallOutEnd, "%.3f");
+	m_isEditDirty |= ImGui::SliderFloat("FalloutEnd##LightDetails", &m_tEditLightBuffer.fFallOutEnd, m_tEditLightBuffer.fFallOutStart, 300.f, "%.2f");
+
+	ImGui::BeginDisabled(m_pSelectedLight->Get_Type() != LIGHT_TYPE::SPOT);
+	m_isEditDirty |= ImGui::SliderFloat("SpotFocus(SpotOnly)##LightDetails", &m_tEditLightBuffer.fSpotPower, 0.0f, 10.f, "%.3f");
+	ImGui::EndDisabled();
+	
 }
 
 void CImgui_Manager::DrawLightDetails_Shadow()
 {
+	if (!ImGui::CollapsingHeader("Shadow##LightDetails", ImGuiTreeNodeFlags_DefaultOpen))
+		return;
+
+	if (m_pSelectedLight->Get_Type() == LIGHT_TYPE::POINT)
+	{
+		ImGui::TextDisabled("Point lights do not support shadow casting");
+		return;
+	}
+	m_isShadowCastResult = (m_tEditLightBuffer.isShadow != 0);
+	if (ImGui::Checkbox("Cast Shadows", &m_isShadowCastResult))
+	{
+		m_isEditDirty = true;
+		m_isShadowCastDirty = true;
+	}
+
+	// isShadow는 다음 프레임부터 활성화 된다. (지연 처리)
+	ImGui::BeginDisabled(!m_tEditLightBuffer.isShadow);
+	m_isEditDirty |= ImGui::DragFloat("ShadowStrength##LightDetails", &m_tEditLightBuffer.fShadowFactor, 0.01f, 0.0f, 1.0f);
+#pragma region Depth 정밀도 문제로 ViewSpace Z로 대체 처리한것때문에 SRV에 저장된 값이 대부분 1.f를 초과하는 상태임 디버깅 SRV 별도 출력할게 아니면 의미가 없다.
+	//ImGui::SeparatorText("DebugShadow##LightDetails");
+	//if (ImGui::TreeNodeEx("Shadow Map Preview", ImGuiTreeNodeFlags_Framed))
+	//{
+	//	CRenderTarget* pShadowRTV = m_pSelectedLight->Get_ShadowRenderTarget();
+	//	if (pShadowRTV)
+	//	{
+	//		// 1) 현재 패널(컨텐츠) 기준으로 남은 가로 폭
+	//		//    - 이 시점의 커서 위치 기준 "남은" 폭이라, Shadow 섹션 안에서도 정확히 맞습니다.
+	//		float fPanelWidth = ImGui::GetContentRegionAvail().x;
+
+	//		// 2) 게임 해상도 aspect로 높이 계산
+	//		//    aspect = width / height
+	//		const _float2 vSize = pShadowRTV->Get_Size();
+	//		const float fAspect = vSize.x / vSize.y;
+	//		_float2 vImageSize = { fPanelWidth,  fPanelWidth / fAspect };
+
+	//		// (옵션) 너무 커지는 것 방지: 화면에 따라 상한
+	//		float fMaxHeight = 1280.0f; // 취향/레이아웃에 맞게
+	//		if (vImageSize.y > fMaxHeight)
+	//		{
+	//			vImageSize.y = fMaxHeight;
+	//			vImageSize.x = vImageSize.y / fAspect;
+	//		}
+
+	//		// 3) 출력
+	//		ID3D11ShaderResourceView* pSRV = pShadowRTV->Get_SRV();
+	//		ImGui::Image((ImTextureID)(uintptr_t)pSRV, ImVec2(vImageSize.x, vImageSize.y));
+	//		// 뒤집힘이면:
+	//		// ImGui::Image((ImTextureID)pShadowSRV, ImVec2(imgW, imgH), ImVec2(0,1), ImVec2(1,0));
+	//	}
+	//	else
+	//	{
+	//		ImGui::TextDisabled("No shadow map available.");
+	//	}
+
+	//	ImGui::TreePop();
+	//}
+#pragma endregion
+
+	ImGui::EndDisabled();
 }
 
 void CImgui_Manager::DrawLightDetails_IO()
 {
+	/*if (!ImGui::CollapsingHeader("Save/Load##LightDetails", ImGuiTreeNodeFlags_DefaultOpen))
+		return;*/
+}
+
+void CImgui_Manager::DrawDirectLightsSaveLoadBar()
+{
+	// ---- Save / Load Bar ----
+	ImGui::TextUnformatted("Save/Load");
+	ImGui::SameLine();
+	const ImGuiStyle& tStyle = ImGui::GetStyle();
+
+	// 액션 그룹의 폭을 대략 계산 (버튼 3개 + badge)
+	// UI 튜닝 값
+	const float fPresetComboWidth = 260.0f; // 프리셋 콤보 폭
+	const float fActionButtonWidth = 72.0f;  // Save/Load 버튼 폭
+	const float fSaveAsButtonWidth = 88.0f;  // Save As 폭
+	float fActionsWidth = 0.0f;
+	fActionsWidth += fActionButtonWidth + tStyle.ItemSpacing.x; // Save
+	fActionsWidth += fActionButtonWidth + tStyle.ItemSpacing.x; // Load
+	fActionsWidth += fSaveAsButtonWidth;                        // Save As
+
+	// 현재 컬럼의 사용 가능 폭
+	float fActionsAvail = ImGui::GetContentRegionAvail().x;
+	if (fActionsAvail > fActionsWidth)
+		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + (fActionsAvail - fActionsWidth));
+
+	// 실제 버튼들
+	static char DirectLightsPathBuffer[MAX_PATH] = "../Bin/DataFiles/DirectLights/DefaultSave.json";
+	if (ImGui::Button("Save##DirectLight", ImVec2(fActionButtonWidth, 0)))
+	{
+		Save_DirectLights(DirectLightsPathBuffer);
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Load##DirectLight", ImVec2(fActionButtonWidth, 0)))
+	{
+		const list<CLight*>& Lights = m_pGameInstance->Get_Lights();
+		OPENFILENAME ofn = {};
+		ZeroMemory(&ofn, sizeof(ofn));
+		_tchar szName[MAX_PATH] = {};
+		ofn.lStructSize = sizeof(OPENFILENAME);
+		ofn.hwndOwner = m_pGameInstance->Get_HWND();
+		ofn.lpstrFile = szName;
+		ofn.nMaxFile = sizeof(szName);
+		ofn.lpstrFilter = L".json\0*.json\0";
+		ofn.nFilterIndex = 0;
+		ofn.lpstrFileTitle = nullptr;
+		ofn.nMaxFileTitle = 0;
+		wstring strPath = std::filesystem::absolute(L"../Bin/DataFiles/DirectLights/").wstring();
+		ofn.lpstrInitialDir = strPath.c_str();
+		ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR;
+
+		if (GetOpenFileName(&ofn))
+		{
+			//받아온 파일입니다
+			const _wstring strFilePath = szName;
+			m_pGameInstance->Load_Lights(strFilePath);
+			m_pSelectedLight = nullptr; // 임시코드
+			m_pRenamingLight = nullptr;
+			m_tEditLightBuffer = CONST_LIGHT();
+		}
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Save As##DirectLight", ImVec2(fSaveAsButtonWidth, 0)))
+	{
+		OPENFILENAME ofn = {};
+		ZeroMemory(&ofn, sizeof(ofn));
+
+		// 1) 파일 경로 버퍼 (여기에 결과가 들어옴)
+		_tchar szName[MAX_PATH] = {};
+
+		// 2) 기본 파일명(사용자가 아무것도 안 써도 저장 가능하게)
+		//    원하는 기본 이름으로 바꿔도 됨.
+		wcscpy_s(szName, MAX_PATH, L"DirectLight.json");
+
+		ofn.lStructSize = sizeof(OPENFILENAME);
+		ofn.hwndOwner = m_pGameInstance->Get_HWND();
+		ofn.lpstrFile = szName;
+		ofn.nMaxFile = MAX_PATH;
+
+		// 3) 필터 (Load 코드랑 동일한 스타일)
+		//    "설명\0패턴\0" 형태 + 마지막에 \0 하나 더 필요
+		ofn.lpstrFilter = L".json\0*.json\0";
+		ofn.nFilterIndex = 0;
+
+		// 4) 초기 폴더(상대경로 -> 절대경로로 변환)
+		std::wstring strPath = std::filesystem::absolute(L"../Bin/DataFiles/DirectLights/").wstring();
+		ofn.lpstrInitialDir = strPath.c_str();
+
+		// 5) 확장자 기본값
+		//    사용자가 확장자 안 붙여도 json이 붙게 유도
+		ofn.lpstrDefExt = L"json";
+
+		// 6) 플래그
+		ofn.Flags =
+			OFN_PATHMUSTEXIST |     // 경로 존재
+			OFN_OVERWRITEPROMPT |   // 덮어쓰기 확인
+			OFN_NOCHANGEDIR;        // 작업 디렉토리 변경 방지
+
+		if (GetSaveFileName(&ofn))
+		{
+			// 받아온 파일 경로
+			std::wstring strFilePath = szName;
+
+			// 7) 확장자 보정(필요 시)
+			if (strFilePath.size() < 5 ||
+				_wcsicmp(strFilePath.c_str() + strFilePath.size() - 5, L".json") != 0)
+			{
+				// 사용자가 확장자 없이 입력한 경우 붙여줌
+				// (이미 다른 확장자 붙여서 저장한 경우까지 강제로 .json 붙이고 싶지 않으면 조건을 더 엄격히)
+				strFilePath += L".json";
+			}
+
+			// 8) 실제 저장 호출
+			Save_DirectLights(WSTRINGTOSTRING(strFilePath).c_str());
+		}
+	}
+
+
+	ImGui::Separator();
+}
+
+void CImgui_Manager::DrawAmbientLightSaveLoadBar()
+{
+	// ---- Save / Load Bar ----
+	ImGui::TextUnformatted("Save/Load");
+	ImGui::SameLine();
+	const ImGuiStyle& tStyle = ImGui::GetStyle();
+
+	const float fPresetComboWidth = 260.0f; // 프리셋 콤보 폭
+	const float fActionButtonWidth = 72.0f;  // Save/Load 버튼 폭
+	const float fSaveAsButtonWidth = 88.0f;  // Save As 폭
+	float fActionsWidth = 0.0f;
+	fActionsWidth += fActionButtonWidth + tStyle.ItemSpacing.x; // Save
+	fActionsWidth += fActionButtonWidth + tStyle.ItemSpacing.x; // Load
+	fActionsWidth += fSaveAsButtonWidth;                        // Save As
+
+	// 현재 컬럼의 사용 가능 폭
+	float fActionsAvail = ImGui::GetContentRegionAvail().x;
+	if (fActionsAvail > fActionsWidth)
+		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + (fActionsAvail - fActionsWidth));
+
+	// 실제 버튼들
+	static char AmbientLightPathBuffer[MAX_PATH] = "../Bin/DataFiles/IBL/DefaultSave.json";
+	if (ImGui::Button("Save##AmbientLight", ImVec2(fActionButtonWidth, 0)))
+	{
+		Save_AmbientLight(AmbientLightPathBuffer);
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Load##AmbientLight", ImVec2(fActionButtonWidth, 0)))
+	{
+		OPENFILENAME ofn = {};
+		ZeroMemory(&ofn, sizeof(ofn));
+		_tchar szName[MAX_PATH] = {};
+		ofn.lStructSize = sizeof(OPENFILENAME);
+		ofn.hwndOwner = m_pGameInstance->Get_HWND();
+		ofn.lpstrFile = szName;
+		ofn.nMaxFile = sizeof(szName);
+		ofn.lpstrFilter = L".json\0*.json\0";
+		ofn.nFilterIndex = 0;
+		ofn.lpstrFileTitle = nullptr;
+		ofn.nMaxFileTitle = 0;
+		wstring strPath = std::filesystem::absolute(L"../Bin/DataFiles/IBL/").wstring();
+		ofn.lpstrInitialDir = strPath.c_str();
+		ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR;
+
+		if (GetOpenFileName(&ofn))
+		{
+			//받아온 파일입니다
+			const _wstring strFilePath = szName;
+			m_pGameInstance->Load_IBL(strFilePath);
+			m_tEditAmbientBuffer = m_pGameInstance->Get_GlobalIBLData();
+			m_isAmbientEditDirty = false;
+			
+		}
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Save As##AmbientLight", ImVec2(fSaveAsButtonWidth, 0)))
+	{
+		OPENFILENAME ofn = {};
+		ZeroMemory(&ofn, sizeof(ofn));
+
+		// 1) 파일 경로 버퍼 (여기에 결과가 들어옴)
+		_tchar szName[MAX_PATH] = {};
+
+		// 2) 기본 파일명(사용자가 아무것도 안 써도 저장 가능하게)
+		//    원하는 기본 이름으로 바꿔도 됨.
+		wcscpy_s(szName, MAX_PATH, L"AmbientLight.json");
+
+		ofn.lStructSize = sizeof(OPENFILENAME);
+		ofn.hwndOwner = m_pGameInstance->Get_HWND();
+		ofn.lpstrFile = szName;
+		ofn.nMaxFile = MAX_PATH;
+
+		// 3) 필터 (Load 코드랑 동일한 스타일)
+		//    "설명\0패턴\0" 형태 + 마지막에 \0 하나 더 필요
+		ofn.lpstrFilter = L".json\0*.json\0";
+		ofn.nFilterIndex = 0;
+
+		// 4) 초기 폴더(상대경로 -> 절대경로로 변환)
+		std::wstring strPath = std::filesystem::absolute(L"../Bin/DataFiles/IBL/").wstring();
+		ofn.lpstrInitialDir = strPath.c_str();
+
+		// 5) 확장자 기본값
+		//    사용자가 확장자 안 붙여도 json이 붙게 유도
+		ofn.lpstrDefExt = L"json";
+
+		// 6) 플래그
+		ofn.Flags =
+			OFN_PATHMUSTEXIST |     // 경로 존재
+			OFN_OVERWRITEPROMPT |   // 덮어쓰기 확인
+			OFN_NOCHANGEDIR;        // 작업 디렉토리 변경 방지
+
+		if (GetSaveFileName(&ofn))
+		{
+			// 받아온 파일 경로
+			std::wstring strFilePath = szName;
+
+			// 7) 확장자 보정(필요 시)
+			if (strFilePath.size() < 5 ||
+				_wcsicmp(strFilePath.c_str() + strFilePath.size() - 5, L".json") != 0)
+			{
+				// 사용자가 확장자 없이 입력한 경우 붙여줌
+				// (이미 다른 확장자 붙여서 저장한 경우까지 강제로 .json 붙이고 싶지 않으면 조건을 더 엄격히)
+				strFilePath += L".json";
+			}
+
+			// 8) 실제 저장 호출
+			Save_AmbientLight(WSTRINGTOSTRING(strFilePath).c_str());
+		}
+	}
+
+	ImGui::Separator();
+}
+
+void CImgui_Manager::DrawEnvMapCombo()
+{
+	const int iIBLEnvMapCount = (int)(sizeof(g_arrIBLEnvMaps) / sizeof(g_arrIBLEnvMaps[0]));
+	if (m_iSelectedIBLEnvMapIdx < 0) m_iSelectedIBLEnvMapIdx = 0;
+	if (m_iSelectedIBLEnvMapIdx >= iIBLEnvMapCount) m_iSelectedIBLEnvMapIdx = iIBLEnvMapCount - 1;
+
+	// 현재 선택 프리뷰
+	const char* szPreview = g_arrIBLEnvMaps[m_iSelectedIBLEnvMapIdx].szDisplayName;
+
+	// 콤보 폭: 남은 폭 전체 사용(단일 컬럼 페이지에 잘 맞음)
+	ImGui::TextUnformatted("Environment Map");
+	ImGui::Separator();
+	ImGui::SetNextItemWidth(-FLT_MIN);
+	if (ImGui::BeginCombo("##EnvMap##AmbientLight", szPreview))
+	{
+		for (int iIdx = 0; iIdx < iIBLEnvMapCount; ++iIdx)
+		{
+			const bool bSelected = (iIdx == m_iSelectedIBLEnvMapIdx);
+
+			if (ImGui::Selectable(g_arrIBLEnvMaps[iIdx].szDisplayName, bSelected))
+			{
+				m_iSelectedIBLEnvMapIdx = iIdx;
+
+				// 선택 즉시 적용
+				m_pGameInstance->Change_CubeMap(g_arrIBLEnvMaps[iIdx].tszResourceKey);
+			}
+
+			if (bSelected)
+				ImGui::SetItemDefaultFocus();
+		}
+
+		ImGui::EndCombo();
+	}
+}
+
+void CImgui_Manager::DrawAmbientLightDetails()
+{
+	// Ambient Details
+	ImGui::TextUnformatted("Details");
+	ImGui::Separator();
+
+	// 섹션들
+	DrawLightDetails_IBLLighting();
+	DrawLightDetails_ToneMapping();
+
+	if (m_isAmbientEditDirty)
+	{
+		m_isAmbientEditDirty = false;
+		m_pGameInstance->Set_GlobalIBLData(m_tEditAmbientBuffer, true);
+	}
+
+}
+
+void CImgui_Manager::DrawLightDetails_IBLLighting()
+{
+	if (!ImGui::CollapsingHeader("IBL Lighting##IBL", ImGuiTreeNodeFlags_DefaultOpen))
+		return;
+
+
+	m_tEditAmbientBuffer = m_pGameInstance->Get_GlobalIBLData();
+
+	m_isAmbientEditDirty |= ImGui::SliderFloat("Intensity##IBL", &m_tEditAmbientBuffer.fStrengthIBL, 0.0f, 10.0f, "%.4f");
+	m_isAmbientEditDirty |= ImGui::SliderInt("Base Mip##IBL", &m_tEditAmbientBuffer.iSpecularBaseMipLevel, 0, 10);
+	m_isAmbientEditDirty |= ImGui::SliderFloat("Roughness Mip Factor##IBL", &m_tEditAmbientBuffer.fRoughnessToMipFactor, 0.0f, 20.0f, "%.4f");
+	m_isAmbientEditDirty |= ImGui::SliderFloat("HDR Max Luminance##IBL", &m_tEditAmbientBuffer.fHDRMaxLuminance, 0.5f, 50.0f, "%.4f");
+}
+
+void CImgui_Manager::DrawLightDetails_ToneMapping()
+{
+	if (!ImGui::CollapsingHeader("Tone Mapping##IBL", ImGuiTreeNodeFlags_DefaultOpen))
+		return;
+
+	ImGui::SeparatorText("Style");
+	int iSelectedFlag = m_tEditAmbientBuffer.iToneMappingFlag;
+	if (ImGui::RadioButton("Linear", iSelectedFlag == 0))
+	{
+		iSelectedFlag = 0;
+	}
+	if (ImGui::RadioButton("Filmic", iSelectedFlag == 1))
+	{
+		iSelectedFlag = 1; 
+	}
+	if (ImGui::RadioButton("Filmic (Uncharted 2)", iSelectedFlag == 2))
+	{
+		iSelectedFlag = 2;
+	}
+	if (ImGui::RadioButton("Reinhard (Luminance)", iSelectedFlag == 3))
+	{
+		iSelectedFlag = 3; 
+	}
+	if (m_tEditAmbientBuffer.iToneMappingFlag != iSelectedFlag)
+	{
+		m_tEditAmbientBuffer.iToneMappingFlag = iSelectedFlag;
+		m_isAmbientEditDirty = true;
+	}
+	ImGui::Separator();
+	
+
+	m_isAmbientEditDirty |= ImGui::SliderFloat("Exposure", &m_tEditAmbientBuffer.fExposure, 0.1f, 10.0f, "%.4f");
+	m_isAmbientEditDirty |= ImGui::SliderFloat("Gamma", &m_tEditAmbientBuffer.fGamma, 0.1f, 5.0f, "%.4f");
+
+	ImGui::Separator();
+	ImGui::TextDisabled("Adjusts the overall brightness and contrast of the final image.");
+}
+
+HRESULT CImgui_Manager::Save_AmbientLight(const char* AmbientLightPathBuffer)
+{
+	json AmbientJson;
+	AmbientJson["fStrengthIBL"] = m_tEditAmbientBuffer.fStrengthIBL;
+	AmbientJson["iSpecularBaseMipLevel"] = m_tEditAmbientBuffer.iSpecularBaseMipLevel;
+	AmbientJson["fRoughnessToMipFactor"] = m_tEditAmbientBuffer.fRoughnessToMipFactor;
+	AmbientJson["fHDRMaxLuminance"] = m_tEditAmbientBuffer.fHDRMaxLuminance;
+	AmbientJson["iToneMappingFlag"] = m_tEditAmbientBuffer.iToneMappingFlag;
+	AmbientJson["fExposure"] = m_tEditAmbientBuffer.fExposure;
+	AmbientJson["fGamma"] = m_tEditAmbientBuffer.fGamma;
+
+	std::ofstream outFile(AmbientLightPathBuffer);
+	if (false == outFile.is_open())
+	{
+		MSG_BOX("Failed Ambient Data Save Path Open");
+	}
+	outFile << AmbientJson.dump(4);
+	outFile.close();
+
+	return S_OK;
 }
 
 void CImgui_Manager::Set_SelectedLight(CLight* _pNewLight)
@@ -1437,6 +1949,7 @@ void CImgui_Manager::Set_SelectedLight(CLight* _pNewLight)
 	{
 		_pNewLight->Set_DrawLightColor(XMVectorSet(1.0f, 0.0f, 0.0f, 1.0f));
 		m_tEditLightBuffer = _pNewLight->Get_LightDesc();
+		m_isShadowCastResult = m_tEditLightBuffer.isShadow;
 	}
 
 	m_pSelectedLight = _pNewLight;
@@ -1445,10 +1958,104 @@ void CImgui_Manager::Set_SelectedLight(CLight* _pNewLight)
 
 void CImgui_Manager::ApplyEdit_Light()
 {
+	// 등록
+	if (true == m_isShadowCastDirty)
+	{
+		// ConstBuffer Update 전에 ShadowLight 등록 절차를 밟아야한다.
+		
+		m_pSelectedLight->Set_Shadow(m_isShadowCastResult);
+		m_tEditLightBuffer.isShadow = m_isShadowCastResult;
+		m_isShadowCastDirty = false;
+	}
 	m_pSelectedLight->Set_LightConstData_AndUpdateBuffer(m_tEditLightBuffer);
+
 	// (권장) Set 내부에서 clamp/fixup이 있을 수 있으니 최종 값으로 버퍼 동기화
 	m_tEditLightBuffer = m_pSelectedLight->Get_LightDesc();
+
+
 	m_pSelectedLight->Compute_ViewProjMatrix();
+}
+
+HRESULT CImgui_Manager::Save_DirectLights(const char* DirectLightsPathBuffer)
+{
+	json LightsJson;
+	const list<CLight*>& Lights = m_pGameInstance->Get_Lights();
+	auto Saveiter = Lights.begin();
+	for (; Saveiter != Lights.end(); ++Saveiter)
+	{
+		if (nullptr != dynamic_cast<CLight_Target*>(*Saveiter))
+		{
+			continue;
+		}
+		CONST_LIGHT tConstLightData = (*Saveiter)->Get_LightDesc();
+		LIGHT_TYPE eType = (*Saveiter)->Get_Type();
+		json LightJson;
+
+		switch (eType)
+		{
+		case Engine::LIGHT_TYPE::POINT:
+			LightJson["eType"] = "POINT";
+			break;
+		case Engine::LIGHT_TYPE::DIRECTOINAL:
+			LightJson["eType"] = "DIRECTOINAL";
+			break;
+		case Engine::LIGHT_TYPE::SPOT:
+			LightJson["eType"] = "SPOT";
+			break;
+		}
+		LightJson["vRadiance"]["x"] = tConstLightData.vRadiance.x;
+		LightJson["vRadiance"]["y"] = tConstLightData.vRadiance.y;
+		LightJson["vRadiance"]["z"] = tConstLightData.vRadiance.z;
+
+		LightJson["fFallOutStart"] = tConstLightData.fFallOutStart;
+
+		LightJson["vDirection"]["x"] = tConstLightData.vDirection.x;
+		LightJson["vDirection"]["y"] = tConstLightData.vDirection.y;
+		LightJson["vDirection"]["z"] = tConstLightData.vDirection.z;
+
+		LightJson["fFallOutEnd"] = tConstLightData.fFallOutEnd;
+
+		LightJson["vPosition"]["x"] = tConstLightData.vPosition.x;
+		LightJson["vPosition"]["y"] = tConstLightData.vPosition.y;
+		LightJson["vPosition"]["z"] = tConstLightData.vPosition.z;
+
+		LightJson["fSpotPower"] = tConstLightData.fSpotPower;
+
+		LightJson["vDiffuse"]["r"] = tConstLightData.vDiffuse.x;
+		LightJson["vDiffuse"]["g"] = tConstLightData.vDiffuse.y;
+		LightJson["vDiffuse"]["b"] = tConstLightData.vDiffuse.z;
+		LightJson["vDiffuse"]["a"] = tConstLightData.vDiffuse.w;
+
+		LightJson["vAmbient"]["r"] = tConstLightData.vAmbient.x;
+		LightJson["vAmbient"]["g"] = tConstLightData.vAmbient.y;
+		LightJson["vAmbient"]["b"] = tConstLightData.vAmbient.z;
+		LightJson["vAmbient"]["a"] = tConstLightData.vAmbient.w;
+
+		LightJson["vSpecular"]["r"] = tConstLightData.vSpecular.x;
+		LightJson["vSpecular"]["g"] = tConstLightData.vSpecular.y;
+		LightJson["vSpecular"]["b"] = tConstLightData.vSpecular.z;
+		LightJson["vSpecular"]["a"] = tConstLightData.vSpecular.w;
+
+		LightJson["isShadow"] = tConstLightData.isShadow;
+
+		if (eType != LIGHT_TYPE::POINT && true == (_bool)tConstLightData.isShadow)
+			LightJson["fShadowFactor"] = tConstLightData.fShadowFactor;
+
+		LightsJson.push_back(LightJson);
+	}
+
+
+	std::ofstream outFile(DirectLightsPathBuffer);
+	if (false == outFile.is_open())
+	{
+		MSG_BOX("Failed Lights Data Save Path Open");
+	}
+	outFile << LightsJson.dump(4);
+	outFile.close();
+
+
+
+	return S_OK;
 }
 
 

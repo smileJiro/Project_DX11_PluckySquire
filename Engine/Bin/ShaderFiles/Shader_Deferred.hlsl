@@ -270,7 +270,7 @@ float PCF_Filter(float2 _vUV, float _fZReceiverNDC, float _fFilterRadiusUV, Text
             float2 vOffset = diskSamples64[poissonIndex] * _fFilterRadiusUV;
 
             // Ω¶µµøÏ∏ ø°º≠ ±Ì¿Ã ª˘«√∏µ
-            float fSampledDepth = _ShadowMapTexture.Sample(LinearSampler_Clamp, _vUV + vOffset);
+            float fSampledDepth = _ShadowMapTexture.Sample(LinearSampler_Clamp, _vUV + vOffset).r;
 
             // ±Ì¿Ã ∫Ò±≥ (¡¬«•∞Ë »Æ¿Œ « ø‰)
             if (fSampledDepth <= _fZReceiverNDC)

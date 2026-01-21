@@ -388,14 +388,14 @@ struct PS_SHADOW_IN
 // LightDepth ±â·Ï¿ë PixelShader 
 struct PS_SHADOWMAP_OUT
 {
-    float vLightDepth : SV_TARGET0;
+    float4 vLightDepth : SV_TARGET0;
 };
 
 PS_SHADOWMAP_OUT PS_SHADOWMAP(PS_SHADOW_IN In)
 {
     PS_SHADOWMAP_OUT Out = (PS_SHADOWMAP_OUT) 0;
 
-    Out.vLightDepth = In.vProjPos.w;
+    Out.vLightDepth.r = In.vProjPos.w;
     
     return Out;
 }

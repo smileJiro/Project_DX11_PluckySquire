@@ -224,7 +224,7 @@ void CLight::Set_Shadow(_bool _isShadow)
 			/* 1. RenderTarget을 만든다, DSV는 DSV_Shadow 사용한다(메인앱에서 생성했음). */
 			_wstring strShadowRTTag = TEXT("Target_Shadow_");
 			strShadowRTTag += to_wstring(m_iLightID);
-			m_pGameInstance->Add_RenderTarget(strShadowRTTag, (_uint)SHADOWMAP_X,(_uint)SHADOWMAP_Y, DXGI_FORMAT_R32_FLOAT, _float4(1.0f, 0.0f, 0.0f, 0.0f), &m_pShadowRenderTarget);
+			m_pGameInstance->Add_RenderTarget(strShadowRTTag, (_uint)SHADOWMAP_X,(_uint)SHADOWMAP_Y, DXGI_FORMAT_R32_FLOAT, _float4(0.0f, 0.0f, 0.0f, 1.0f), &m_pShadowRenderTarget);
 			/* 2. 자기 자신을 shadow rendergroup에 등록한다. */
 		}
 		else
