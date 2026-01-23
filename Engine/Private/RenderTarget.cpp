@@ -47,7 +47,7 @@ HRESULT CRenderTarget::Initialize(_wstring _strName, _uint _iWidth, _uint _iHeig
 	return S_OK;
 }
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 
 HRESULT CRenderTarget::Ready_Debug(_float _fX, _float _fY, _float _fSizeX, _float _fSizeY)
 {

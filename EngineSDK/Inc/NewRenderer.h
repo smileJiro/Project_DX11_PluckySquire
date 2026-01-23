@@ -41,7 +41,7 @@ public:/* Bind Defferd ConstBufferData */
 	HRESULT								Bind_DofConstBuffer(const _char* _szConstBufferName, ID3D11Buffer* _pConstBuffer);
 public:
 	HRESULT								Load_IBL(const _wstring& _strIBLJsonPath);
-#ifdef _DEBUG
+#ifdef NDEBUG
 
 public:
 	void Update_Imgui();
@@ -120,7 +120,7 @@ private: /* VtxMesh, VtxAnimMesh Shader */
 	CShader* m_pVtxMesh = nullptr;
 	CShader* m_pVtxAnimMesh = nullptr;
 	CShader* m_pVtxPosTex = nullptr;
-#ifdef _DEBUG
+#ifdef NDEBUG
 private:
 	list<CComponent*> m_DebugComponents;
 	list<CBase*> m_BaseDebugs;

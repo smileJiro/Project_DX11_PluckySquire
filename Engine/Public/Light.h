@@ -18,7 +18,7 @@ public:
 	virtual void	Update(_float _fTimeDelta);
 	virtual HRESULT Render_Light(CShader* _pShader, CVIBuffer_Rect* _pVIBuffer);
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 	HRESULT Render_Base_Debug() override;
 #endif // !_DEBUG
 
@@ -74,7 +74,7 @@ protected:
 	_bool					m_isNotClear = false; // Clear_Load 호출 시 삭제되지 않는 
 
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 	PrimitiveBatch<VertexPositionColor>* m_pBatch = nullptr;
 	BasicEffect* m_pEffect = nullptr;
 	ID3D11InputLayout* m_pInputLayout = nullptr;

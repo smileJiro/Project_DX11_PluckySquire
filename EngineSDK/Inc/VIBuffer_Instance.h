@@ -132,7 +132,7 @@ public:
 
 
 	/* 이하 Tool 함수 & 변수입니다. */
-#ifdef _DEBUG
+#ifdef NDEBUG
 public:
 	virtual void Tool_Setting();
 	virtual void Tool_Update(_float _fTimeDelta);

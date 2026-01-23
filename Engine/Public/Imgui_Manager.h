@@ -39,7 +39,7 @@ public:
 
 	HRESULT				LevelChange_Imgui();
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 	bool				Is_ImguiFocused() const;
 	HRESULT				Imgui_Debug_Render();
 	HRESULT				Imgui_Debug_Render_RT();
@@ -78,7 +78,6 @@ public:
 	HRESULT				Imgui_Select_Debug_ObjectInfo(const wstring _strLayerTag, _uint _iObjectId);
 #endif //  _DEBUG
 
-	
 private:
 	CGameInstance*			m_pGameInstance = nullptr;
 	ID3D11Device*			m_pDevice = nullptr;

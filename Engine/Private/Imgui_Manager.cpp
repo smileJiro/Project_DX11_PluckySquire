@@ -122,7 +122,7 @@ HRESULT CImgui_Manager::LevelChange_Imgui()
 	return S_OK;
 }
 
-#ifdef _DEBUG
+#ifdef NDEBUG
 
 bool CImgui_Manager::Is_ImguiFocused() const
 {

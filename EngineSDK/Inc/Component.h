@@ -16,7 +16,7 @@ public:
 	virtual void	Priority_Update(_float _fTimeDelta) { return; }
 	virtual void	Update(_float _fTimeDelta) { return; }
 	virtual void	Late_Update(_float _fTimeDelta) { return; }
-#ifdef _DEBUG
+#ifdef NDEBUG
 public:
 	virtual HRESULT Render() { return S_OK; }
 #endif

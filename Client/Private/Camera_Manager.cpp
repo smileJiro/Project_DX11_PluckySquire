@@ -27,14 +27,14 @@ HRESULT CCamera_Manager::Initialize()
 void CCamera_Manager::Update(_float fTimeDelta)
 {
 	// Debug Change CameraType
-#ifdef _DEBUG
-	if (KEY_DOWN(KEY::NUMPAD7))
+#ifdef NDEBUG
+	if (KEY_DOWN(KEY::NUM9))
 	{
 		_uint iCurCameraType = CCamera_Manager::GetInstance()->Get_CameraType();
 		iCurCameraType = CCamera_Manager::CAMERA_TYPE::FREE;
 		CCamera_Manager::GetInstance()->Change_CameraType(iCurCameraType);
 	}
-	if (KEY_DOWN(KEY::NUMPAD8))
+	if (KEY_DOWN(KEY::NUM0))
 	{
 		_uint iCurCameraType = CCamera_Manager::GetInstance()->Get_CameraType();
 		iCurCameraType = CCamera_Manager::CAMERA_TYPE::TARGET;
