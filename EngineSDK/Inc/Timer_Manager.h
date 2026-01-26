@@ -12,7 +12,7 @@ private:
 	virtual ~CTimer_Manager() = default; // 소멸자를 막아두는 이유, 우리는 Free() 함수를 통해 좀 더 자유도 있는 소멸 과정을 설계한다.
 
 public:
-	void Update(_float _fTimeDelta);
+	void Update(HWND _hWnd, _float _fTimeDelta);
 
 public:
 	_float Get_TimeDelta(const _wstring& strTimerTag);

@@ -39,8 +39,8 @@ public:
 
 	HRESULT				LevelChange_Imgui();
 
-#ifdef NDEBUG
 	bool				Is_ImguiFocused() const;
+#ifdef _DEBUG
 	HRESULT				Imgui_Debug_Render();
 	HRESULT				Imgui_Debug_Render_RT();
 	HRESULT				Imgui_Debug_Render_RT_FullScreen();

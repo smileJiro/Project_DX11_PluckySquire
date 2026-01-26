@@ -388,9 +388,10 @@ void CLevel_Chapter_04::Update(_float _fTimeDelta)
 
 HRESULT CLevel_Chapter_04::Render()
 {
+	m_pGameInstance->Render_FPS(TEXT("Timer_Default"));
 #ifdef _DEBUG
-	//m_pGameInstance->Render_FPS(TEXT("Timer_Default"));
-	SetWindowText(g_hWnd, TEXT("게임플레이레벨입니다."));
+	//
+	//SetWindowText(g_hWnd, TEXT("게임플레이레벨입니다."));
 #endif
 
 	return S_OK;

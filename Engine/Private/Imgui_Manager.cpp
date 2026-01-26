@@ -122,8 +122,6 @@ HRESULT CImgui_Manager::LevelChange_Imgui()
 	return S_OK;
 }
 
-#ifdef NDEBUG
-
 bool CImgui_Manager::Is_ImguiFocused() const
 {
 	if (!ImGui::GetCurrentContext())
@@ -145,6 +143,8 @@ bool CImgui_Manager::Is_ImguiFocused() const
 	//ImGuiIO& io = ImGui::GetIO();
 	//return io.WantCaptureMouse || io.WantCaptureKeyboard || io.WantTextInput;
 }
+
+#ifdef _DEBUG
 
 HRESULT CImgui_Manager::Imgui_Debug_Render()
 {

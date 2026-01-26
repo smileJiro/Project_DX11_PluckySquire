@@ -5,7 +5,7 @@ CTimer_Manager::CTimer_Manager()
 {
 }
 
-void CTimer_Manager::Update(_float _fTimeDelta)
+void CTimer_Manager::Update(HWND _hWnd, _float _fTimeDelta)
 {
 	++m_iCallCount;
 	m_fAcc += _fTimeDelta; // DT ´©Àû
@@ -14,6 +14,10 @@ void CTimer_Manager::Update(_float _fTimeDelta)
 		m_iFPS = m_iCallCount;
 		m_fAcc = 0.;
 		m_iCallCount = 0;
+
+		wchar_t szBuffer[255] = {};
+		swprintf_s(szBuffer, L"FPS : %d, DT : %f", m_iFPS, _fTimeDelta);
+		SetWindowText(_hWnd, szBuffer);
 	}
 }
 

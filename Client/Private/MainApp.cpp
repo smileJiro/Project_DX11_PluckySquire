@@ -63,9 +63,9 @@ HRESULT CMainApp::Initialize()
 	EngineDesc.ppLevelNames = LevelNames;
 	
 #ifdef _DEBUG
-   EngineDesc.eImportMode |= IMPORT_IMGUI; //| IMPORT_MESH_PICKING; // IMPORT_IMGUI | IMPORT_MESH_PICKING;NONE_IMPORT
+   EngineDesc.eImportMode |= NONE_IMPORT; //| IMPORT_MESH_PICKING; // IMPORT_IMGUI | IMPORT_MESH_PICKING;NONE_IMPORT
 #elif NDEBUG
-   EngineDesc.eImportMode |= NONE_IMPORT | IMPORT_IMGUI;// / ;
+   EngineDesc.eImportMode |= NONE_IMPORT;// / ;
 #endif
 	
 	if (FAILED(m_pGameInstance->Initialize_Engine(EngineDesc, &m_pDevice, &m_pContext)))
@@ -99,6 +99,7 @@ void CMainApp::Progress(_float _fTimeDelta)
 	m_pGameInstance->Priority_Update_Engine(_fTimeDelta);
 	if (IS_IMPORT_IMGUI)
 		Imgui_FPS(_fTimeDelta);
+
 
 	m_pGameInstance->Update_Engine(_fTimeDelta);
 	CEffect_Manager::GetInstance()->Update_Manager();

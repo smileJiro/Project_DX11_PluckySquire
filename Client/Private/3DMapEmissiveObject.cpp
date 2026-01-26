@@ -27,8 +27,8 @@ HRESULT C3DMapEmissiveObject::Initialize(void* _pArg)
     //m_vColor = pDesc->m_vColor;
     //vBloomColor = pDesc->vBloomColor;
 
-    if (FAILED(Ready_TargetLight()))
-        return E_FAIL;
+    //if (FAILED(Ready_TargetLight()))
+    //    return E_FAIL;
 
     // 나중에 지우도록 하죠라..
     m_iShaderPasses[COORDINATE_3D] = (_uint)(PASS_VTXMESH::EMISSIVE_COLOR); 

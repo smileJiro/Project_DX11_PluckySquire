@@ -41,7 +41,7 @@ public:/* Bind Defferd ConstBufferData */
 	HRESULT								Bind_DofConstBuffer(const _char* _szConstBufferName, ID3D11Buffer* _pConstBuffer);
 public:
 	HRESULT								Load_IBL(const _wstring& _strIBLJsonPath);
-#ifdef NDEBUG
+#ifdef _DEBUG
 
 public:
 	void Update_Imgui();
@@ -74,6 +74,7 @@ public:
 	const _float4x4* Get_WorldMatrix() const { return &m_WorldMatrix; }
 	const _float4x4* Get_ViewMatrix() const { return &m_ViewMatrix; }
 	const _float4x4* Get_ProjMatrix() const { return &m_ProjMatrix; }
+	vector<CRenderGroup*>::iterator Get_Iterator(const _int _iTargetID);
 
 private:
 	ID3D11Device*						m_pDevice = nullptr;
@@ -88,7 +89,8 @@ private: /* 직교 투영으로 그리기 위한 */
 	map<_wstring, ID3D11DepthStencilView*> m_DSVs;
 
 private:
-	map<_int, CRenderGroup*>			m_RenderGroups;
+	//map<_int, CRenderGroup*>			m_RenderGroups;
+	vector<CRenderGroup*>				m_RenderGroups;
 
 	/* Shader Const Data */
 public:
@@ -120,7 +122,7 @@ private: /* VtxMesh, VtxAnimMesh Shader */
 	CShader* m_pVtxMesh = nullptr;
 	CShader* m_pVtxAnimMesh = nullptr;
 	CShader* m_pVtxPosTex = nullptr;
-#ifdef NDEBUG
+#ifdef _DEBUG
 private:
 	list<CComponent*> m_DebugComponents;
 	list<CBase*> m_BaseDebugs;

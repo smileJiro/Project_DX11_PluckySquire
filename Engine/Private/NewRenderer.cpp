@@ -61,9 +61,6 @@ HRESULT CNewRenderer::Initialize()
 	Safe_Release(pRenderGroup_Shdow);
 	pRenderGroup_Shdow = nullptr;
 
-
-
-
 	m_pShader->Bind_RawValue("g_vHideColor", &m_vPlayerHideColor, sizeof(_float3));
 	return S_OK;
 }
@@ -82,13 +79,13 @@ HRESULT CNewRenderer::Add_RenderObject(_int _iGroupID, _int _iPriorityID, CGameO
 
 HRESULT CNewRenderer::Draw_RenderObject()
 {
-	for (auto& Pair : m_RenderGroups)
+	for (auto& RenderGroup : m_RenderGroups)
 	{
-		if(true == Pair.second->Is_Active())
-			Pair.second->Render(m_pShader, m_pVIBuffer);
+		if(RenderGroup->Is_Active())
+			RenderGroup->Render(m_pShader, m_pVIBuffer);
 	}
 
-#ifdef NDEBUG
+#ifdef _DEBUG
 	if (true == m_isDebugRender)
 	{
 		if (FAILED(Render_Debug()))
@@ -126,26 +123,23 @@ HRESULT CNewRenderer::Draw_RenderObject()
 	}
 
 #endif
-
 	return S_OK;
 }
 
 HRESULT CNewRenderer::Add_RenderGroup(_int _iGroupID, _int _iPriorityID, CRenderGroup* _pRenderGroup)
 {
-	if (nullptr != Find_RenderGroup(_iGroupID, _iPriorityID))
-	{
-		MSG_BOX("비상!!! 렌더러 렌더그룹 중복 키값 발생!");
+	if (!_pRenderGroup)
 		return E_FAIL;
-	}
-	
-	if (nullptr == _pRenderGroup)
-	{
-		MSG_BOX("비상!!! 렌더그룹 nullptr을 등록하려했어!");
+
+	const _int iTargetID = _iGroupID + _iPriorityID;
+	auto iter = Get_Iterator(iTargetID);
+
+	// 중복 키 검사
+	if (iter != m_RenderGroups.end() && (*iter)->Get_FinalID() == iTargetID)
 		return E_FAIL;
-	}
-		
-	_int iKey = _iGroupID + _iPriorityID;
-	m_RenderGroups.emplace(iKey, _pRenderGroup);
+
+
+	m_RenderGroups.emplace(iter, _pRenderGroup);
 	Safe_AddRef(_pRenderGroup);
 
 	return S_OK;
@@ -153,25 +147,35 @@ HRESULT CNewRenderer::Add_RenderGroup(_int _iGroupID, _int _iPriorityID, CRender
 
 CRenderGroup* CNewRenderer::Find_RenderGroup(_int _iGroupID, _int _iPriorityID)
 {
-	_int iKey = _iGroupID + _iPriorityID;
-	auto& iter = m_RenderGroups.find(iKey);
+	const _int iTargetID = _iGroupID + _iPriorityID;
 
-	if (iter == m_RenderGroups.end())
+	auto iter = Get_Iterator(iTargetID);
+
+	if (iter == m_RenderGroups.end() || (*iter)->Get_FinalID() != iTargetID)
+	{
 		return nullptr;
+	}
 
-	return (*iter).second;
+	return *iter;
 }
 
 HRESULT CNewRenderer::Erase_RenderGroup(_int _iGroupID, _int _iPriorityID)
 {
-	_int iKey = _iGroupID + _iPriorityID;
-	auto& iter = m_RenderGroups.find(iKey);
-	if (iter == m_RenderGroups.end())
+	if (m_RenderGroups.empty())
+		return E_FAIL;
+
+	const _int iTargetID = _iGroupID + _iPriorityID;
+
+	auto iter = Get_Iterator(iTargetID);
+
+	if (iter == m_RenderGroups.end() || (*iter)->Get_FinalID() != iTargetID)
 	{
-		MSG_BOX("현재 렌더그룹에 존재하지 않는 렌더그룹 삭제요청함.");
+#ifdef _DEBUG
+		MSG_BOX("존재하지 않는 렌더그룹 삭제 요청");
+#endif
 		return E_FAIL;
 	}
-	Safe_Release(iter->second);
+	Safe_Release(*iter);
 	m_RenderGroups.erase(iter);
 
 	return S_OK;
@@ -298,17 +302,26 @@ HRESULT CNewRenderer::Load_IBL(const _wstring& _strIBLJsonPath)
 	return S_OK;
 }
 
-#ifdef NDEBUG
+#ifdef _DEBUG
 void CNewRenderer::Update_Imgui()
 {
-	for (auto& Pair : m_RenderGroups)
+	for (auto& pRenderGroup : m_RenderGroups)
 	{
-		Pair.second->Update_Imgui();
+		pRenderGroup->Update_Imgui();
 	}
 }
 #endif // _DEBUG
 
 
+
+vector<CRenderGroup*>::iterator CNewRenderer::Get_Iterator(const _int _iTargetID)
+{
+	return std::lower_bound(m_RenderGroups.begin(), m_RenderGroups.end(), _iTargetID,
+		[](CRenderGroup* _pGroup, _int _iValue) -> _bool
+		{
+			return _pGroup->Get_FinalID() < _iValue;
+		});
+}
 
 void CNewRenderer::Set_GlobalIBLData(const CONST_IBL& _tGlobalIBLData, _bool _isUpdateConstBuffer)
 {
@@ -351,7 +364,7 @@ void CNewRenderer::Set_GrayScale_VtxPosTex(_int _isGrayScale)
 }
 
 
-#ifdef NDEBUG
+#ifdef _DEBUG
 
 HRESULT CNewRenderer::Render_Debug()
 {
@@ -439,9 +452,9 @@ CNewRenderer* CNewRenderer::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* 
 
 void CNewRenderer::Free()
 {
-	for (auto& Pair : m_RenderGroups)
+	for (auto& pRenderGroup : m_RenderGroups)
 	{
-		Safe_Release(Pair.second);
+		Safe_Release(pRenderGroup);
 	}
 	m_RenderGroups.clear();
 
@@ -450,7 +463,7 @@ void CNewRenderer::Free()
 		Safe_Release(Pair.second);
 	}
 	m_DSVs.clear();
-#ifdef NDEBUG
+#ifdef _DEBUG
 	for (auto& pDebugComponent : m_DebugComponents)
 	{
 		Safe_Release(pDebugComponent);

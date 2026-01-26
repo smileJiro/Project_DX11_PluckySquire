@@ -85,7 +85,7 @@ void CCamera_2D::Late_Update(_float fTimeDelta)
 {
 	Key_Input(fTimeDelta);
 #ifdef _DEBUG
-	Imgui(fTimeDelta);
+	// Imgui(fTimeDelta); -> IMPORT_NONE일때 터짐, 예외처리 없음
 #endif
 
 

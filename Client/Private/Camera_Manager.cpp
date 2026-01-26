@@ -27,7 +27,7 @@ HRESULT CCamera_Manager::Initialize()
 void CCamera_Manager::Update(_float fTimeDelta)
 {
 	// Debug Change CameraType
-#ifdef NDEBUG
+#ifdef _DEBUG
 	if (KEY_DOWN(KEY::NUM9))
 	{
 		_uint iCurCameraType = CCamera_Manager::GetInstance()->Get_CameraType();

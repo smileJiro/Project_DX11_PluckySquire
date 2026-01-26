@@ -21,7 +21,7 @@ HRESULT CTimer::Ready_Timer(void)
 
 void CTimer::Update_Timer(void)
 {
-	QueryPerformanceCounter(&m_FrameTime); // Current Countnmnnmmnnaaaaaaaaaaadddd
+	QueryPerformanceCounter(&m_FrameTime); // Current Count
 
 	/* 아래 코드는 요즘 같은 경우 불필요하다. QuadPart가 늘 고정값이기 때문,.*/
 	if (m_FrameTime.QuadPart - m_FixTime.QuadPart >= m_CpuTick.QuadPart)

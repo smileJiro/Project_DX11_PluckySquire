@@ -18,8 +18,9 @@ public:
 	virtual void	Update(_float _fTimeDelta);
 	virtual HRESULT Render_Light(CShader* _pShader, CVIBuffer_Rect* _pVIBuffer);
 
-#ifdef NDEBUG
+#ifdef _DEBUG
 	HRESULT Render_Base_Debug() override;
+	void Set_DrawLightColor(const _vector& _vColor) { m_vDrawLightColor = _vColor; }
 #endif // !_DEBUG
 
 public: /* Shadow View Proj */
@@ -46,7 +47,7 @@ public:
 	HRESULT Update_LightConstBuffer();
 	void Set_Shadow(_bool _isShadow);
 	void Set_Name(const string& _strNewName) { m_strName = _strNewName; }
-	void Set_DrawLightColor(const _vector& _vColor) { m_vDrawLightColor = _vColor; }
+	
 protected:
 	ID3D11Device*			m_pDevice = nullptr;
 	ID3D11DeviceContext*	m_pContext = nullptr;
@@ -74,7 +75,7 @@ protected:
 	_bool					m_isNotClear = false; // Clear_Load 호출 시 삭제되지 않는 
 
 
-#ifdef NDEBUG
+#ifdef _DEBUG
 	PrimitiveBatch<VertexPositionColor>* m_pBatch = nullptr;
 	BasicEffect* m_pEffect = nullptr;
 	ID3D11InputLayout* m_pInputLayout = nullptr;

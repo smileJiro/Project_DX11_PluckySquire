@@ -33,9 +33,9 @@ void CLevel_Logo::Update(_float _fTimeDelta)
 
 HRESULT CLevel_Logo::Render()
 {
+	m_pGameInstance->Render_FPS(TEXT("Timer_Default"));
 #ifdef _DEBUG
-	//m_pGameInstance->Render_FPS(TEXT("Timer_Default"));
-	SetWindowText(g_hWnd, TEXT("로고레벨입니다."));
+	//SetWindowText(g_hWnd, TEXT("로고레벨입니다."));
 #endif
 	return S_OK;
 }

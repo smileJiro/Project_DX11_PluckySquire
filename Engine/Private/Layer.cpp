@@ -172,14 +172,14 @@ void CLayer::Clear_GameObjects()
 
 void CLayer::Check_FrustumCulling()
 {
-    //if (true == m_isLayerCulling)
-    //{
-    //    for (auto& pGameObject : m_GameObjects)
-    //    {
-    //        if (true == pGameObject->Is_Active())
-    //            pGameObject->Check_FrustumCulling();
-    //    }
-    //}
+    if (true == m_isLayerCulling)
+    {
+        for (auto& pGameObject : m_GameObjects)
+        {
+            if (true == pGameObject->Is_Active())
+                pGameObject->Check_FrustumCulling();
+        }
+    }
 }
 
 CGameObject* CLayer::Get_GameObject_Ptr(_int _iObjectIndex)
